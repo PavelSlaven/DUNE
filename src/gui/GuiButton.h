@@ -14,9 +14,11 @@ struct GuiButtonParams {
     GuiRenderKind kind = GuiRenderKind::OPAQUE_WITH_BORDER;
     GuiTheme theme = GuiTheme::Light();
     GuiTextAlignHorizontal align = GuiTextAlignHorizontal::CENTER;
+    float textScale = 1.0F;
     std::function<void()> onLeftClick = nullptr;
     std::function<void()> onRightClick = nullptr;
     Texture *tex = nullptr;
+    bool enabled = true;
 };
 
 
@@ -36,6 +38,7 @@ public:
     void setTextDrawer(cTextDrawer *cTextDrawer);
     void setRenderKind(GuiRenderKind value);
     void setTexture(Texture *tex);
+    void setTextScale(float scale);
 
     void nextRenderKind();
 
@@ -60,6 +63,7 @@ private:
     // pressed state
     bool m_pressed;
     bool m_enabled;
+    float m_textScale = 1.0F;
 
     // Functions
     void drawText() const;
@@ -105,6 +109,11 @@ public:
         return *this;
     }
 
+    GuiButtonBuilder& withTextScale(float scale) {
+        params.textScale = scale;
+        return *this;
+    }
+
     GuiButtonBuilder& onClick(std::function<void()> callback) {
         params.onLeftClick = std::move(callback);
         return *this;
@@ -120,13 +129,20 @@ public:
         return *this;
     }
 
+    GuiButtonBuilder& withEnabled(bool enabled) {
+        params.enabled = enabled;
+        return *this;
+    }
+
     GuiButton* build() const {
         GuiButton* btn = new GuiButton(params.rect, params.label);
         btn->setTextDrawer(params.drawer);
         btn->setRenderKind(params.kind);
         btn->setTheme(params.theme);
         btn->setTextAlignHorizontal(params.align);
+        btn->setTextScale(params.textScale);
         btn->setTexture(params.tex);
+        btn->setEnabled(params.enabled);
         if (params.onLeftClick) {
             btn->setOnLeftMouseButtonClickedAction(params.onLeftClick);
         }

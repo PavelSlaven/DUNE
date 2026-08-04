@@ -30,6 +30,7 @@ public:
     // From GuiObject
     void draw() const override;
     void setTextAlignHorizontal(GuiTextAlignHorizontal value);
+    void setText(const std::string &value);
     void setTextDrawer(cTextDrawer *cTextDrawer);
     void setRenderKind(GuiRenderKind value);
     void setTexture(Texture *tex);

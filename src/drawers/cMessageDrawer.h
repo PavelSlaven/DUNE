@@ -39,7 +39,7 @@ public:
     void initCombatPosition();
 
     void setMessage(const std::string &msg, bool keepMessage = false);
-    std::string getMessage() {
+    std::string getMessage() const {
         return m_message;
     }
     bool hasMessage() {

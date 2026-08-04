@@ -14,9 +14,11 @@
 #include "player/cPlayer.h"
 #include "utils/cLog.h"
 #include "utils/Graphics.hpp"
+#include "utils/Localization.hpp"
 #include "utils/RNG.hpp"
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
+#include "context/TextContext.hpp"
 
 #include <format>
 #include <algorithm>
@@ -32,10 +34,27 @@ static bool mouse_within_rect(int x, int y, int width, int height)
 }
 
 
-static bool gui_draw_frame(int x, int y, int width, int height)
+static bool gui_draw_frame(
+    int x,
+    int y,
+    int width,
+    int height,
+    bool hdLayout)
 {
     cRectangle rect = cRectangle(x, y, width, height);
-    renderDrawer->gui_DrawRect(rect);
+    if (hdLayout) {
+        renderDrawer->renderRectFillColor(
+            rect,
+            Color{25, 31, 35, 255}
+        );
+        renderDrawer->renderRectColor(
+            rect,
+            Color{173, 125, 39, 255}
+        );
+    }
+    else {
+        renderDrawer->gui_DrawRect(rect);
+    }
     // auto m_mouse = game.getMouse();
     return mouse_within_rect(x, y, width, height);
     // return rect.isPointWithin(m_mouse->getMouseCoords());
@@ -46,8 +65,33 @@ static bool gui_draw_frame(int x, int y, int width, int height)
     // return false; // not hovering on it
 }
 
-static bool gui_draw_frame_pressed(int x1, int y1, int width, int height)
+static bool gui_draw_frame_pressed(
+    int x1,
+    int y1,
+    int width,
+    int height,
+    bool hdLayout)
 {
+    if (hdLayout) {
+        const cRectangle rect(x1, y1, width, height);
+        renderDrawer->renderRectFillColor(
+            rect,
+            Color{43, 49, 53, 255}
+        );
+        renderDrawer->renderRectColor(
+            rect,
+            Color{235, 185, 77, 255}
+        );
+        renderDrawer->renderRectColor(
+            x1 + 3,
+            y1 + 3,
+            width - 6,
+            height - 6,
+            Color{102, 78, 35, 255}
+        );
+        return mouse_within_rect(x1, y1, width, height);
+    }
+
     renderDrawer->renderRectFillColor(x1, y1, width, height, 176,176,196,255);
     renderDrawer->renderRectColor(x1, y1, width, height, 84,84,120,255);
 
@@ -62,10 +106,15 @@ static bool gui_draw_frame_pressed(int x1, int y1, int width, int height)
 
 cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::shared_ptr<cPreviewMaps> previewMaps) :
     cGameState(game, ctx),
-    m_textDrawer(ctx->getTextContext()->getBeneTextDrawer()),
+    m_textDrawer(
+        game.isHdGraphicsActive()
+            ? ctx->getTextContext()->getMenuTextDrawer()
+            : ctx->getTextContext()->getBeneTextDrawer()
+    ),
     m_previewMaps(std::move(previewMaps)),
     m_gfxinter(ctx->getGraphicsContext()->gfxinter.get())
 {
+    m_hdLayout = game.isHdGraphicsActive();
     for (int i = 0; i < MAX_PLAYERS; i++) {
         s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[i];
         // index 0 == human player, but to keep our lives sane we don't change the index.
@@ -98,18 +147,27 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
     detonateBlooms = true;
 
     // Colors
-    colorDarkishBackground = Color{32, 32, 32,255};
-    colorDarkishBorder = Color{227, 229, 211,255};
-    colorDarkerYellow = Color{225, 177, 21,255}; // a bit darker Color::yellow() to give some visual clue (hover color)
-    colorDisabled = Color{128, 128, 128,255};
+    colorDarkishBackground = m_hdLayout
+        ? Color{21, 27, 31, 255}
+        : Color{32, 32, 32,255};
+    colorDarkishBorder = m_hdLayout
+        ? Color{173, 125, 39, 255}
+        : Color{227, 229, 211,255};
+    colorDarkerYellow = m_hdLayout
+        ? Color{255, 224, 139, 255}
+        : Color{225, 177, 21,255};
+    colorDisabled = m_hdLayout
+        ? Color{92, 96, 98, 255}
+        : Color{128, 128, 128,255};
 
     // Basic coordinates
-    topBarHeight = 21;
+    topBarHeight = m_hdLayout ? 28 : 21;
     previewMapHeight = 129;
     previewMapWidth = 129;
     widthOfRightColumn = 300;
-    mapItemButtonHeight = 175;
+    mapItemButtonHeight = m_hdLayout ? 150 : 175;
     mapItemButtonWidth = 145;
+    m_playerRowHeight = m_hdLayout ? 26 : 22;
 
     // Screen
     screen_x = m_game.m_screenW;
@@ -166,14 +224,30 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
     int mapListTopY = mapListTitle.getY() + mapListTitle.getHeight();
     int previewMapY = playerListBarY + playerListBarHeight+previewMapFrameHeight;
     int previewMapX = screen_x - widthOfSidebar;
-    previewMap = cRectangle(previewMapX, previewMapY, widthOfRightColumn, widthOfRightColumn+65);
-    previewMapRect = cRectangle(previewMapX+25, previewMapY+25, widthOfRightColumn-50, widthOfRightColumn-50);
+    const int previewAreaHeight =
+        screen_y - topBarHeight - previewMapY;
+    previewMap = cRectangle(
+        previewMapX,
+        previewMapY,
+        widthOfRightColumn,
+        previewAreaHeight
+    );
+    const int previewSize = m_hdLayout
+        ? std::min(widthOfRightColumn - 50, previewAreaHeight - 92)
+        : widthOfRightColumn - 50;
+    previewMapRect = cRectangle(
+        previewMapX + (widthOfRightColumn - previewSize) / 2,
+        previewMapY + (m_hdLayout ? 18 : 25),
+        previewSize,
+        previewSize
+    );
 
     selectArea = cRectangle(0, mapListTopY, screen_x -widthOfRightColumn-2, screen_y-topBarHeight-mapListTopY);
     int margin = 10;
 
     maxMapsInSelectAreaHorizontally = selectArea.getWidth() / (mapItemButtonWidth+margin);
-    maxMapsInSelectAreaVertically = selectArea.getHeight() / (mapItemButtonHeight+5);
+    maxMapsInSelectAreaVertically =
+        selectArea.getHeight() / (mapItemButtonHeight + 15);
     maxMapsInSelectArea = maxMapsInSelectAreaHorizontally * maxMapsInSelectAreaVertically;
 
     // Stefan: Pages are computed here
@@ -199,19 +273,31 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
 
     nextMapButton = GuiButtonBuilder()
         .withRect(nextMaps)
-        .withLabel("Next")
+        .withLabel(localization::text("Next", "Далее"))
         .withTextDrawer(m_textDrawer)
-        .withTheme(GuiTheme::Light())
-        .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+        .withTheme(
+            m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light()
+        )
+        .withKind(
+            m_hdLayout
+                ? GuiRenderKind::REMASTER_BUTTON
+                : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER
+        )
         .onClick(nextFunction)
         .build();
 
     previousMapButton = GuiButtonBuilder()
             .withRect(previousMaps)
-            .withLabel("Previous")
+            .withLabel(localization::text("Back", "Назад"))
             .withTextDrawer(m_textDrawer)
-            .withTheme(GuiTheme::Light())
-            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTheme(
+                m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light()
+            )
+            .withKind(
+                m_hdLayout
+                    ? GuiRenderKind::REMASTER_BUTTON
+                    : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER
+            )
             .onClick(previousFunction)
             .build();
 
@@ -220,49 +306,59 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
     // Starting positions
     int startPointsX = screen_x - widthOfRightColumn;
     int startPointsY = topBarHeight + 6;
-    int startPointHitBoxWidth = 130;
-    int startPointHitBoxHeight = 16;
+    int startPointHitBoxWidth = m_hdLayout ? 260 : 130;
+    int startPointHitBoxHeight = m_hdLayout
+        ? m_textDrawer->getFontHeight() + 4
+        : 16;
     startPointsRect = cRectangle(startPointsX, startPointsY, startPointHitBoxWidth, startPointHitBoxHeight);
 
     // Worms
     int wormsX = screen_x - widthOfRightColumn;
     int wormsY = startPointsY + 32;
-    int wormsHitBoxWidth = 130;
-    int wormsHitBoxHeight = 16;
+    int wormsHitBoxWidth = startPointHitBoxWidth;
+    int wormsHitBoxHeight = startPointHitBoxHeight;
     wormsRect = cRectangle(wormsX, wormsY, wormsHitBoxWidth, wormsHitBoxHeight);
 
     // Spice Blooms
     int bloomsX = screen_x - widthOfRightColumn;
     int bloomsY = wormsY + 32;
-    int bloomsHitBoxWidth = 130;
-    int bloomsHitBoxHeight = 16;
+    int bloomsHitBoxWidth = startPointHitBoxWidth;
+    int bloomsHitBoxHeight = startPointHitBoxHeight;
     bloomsRect = cRectangle(bloomsX, bloomsY, bloomsHitBoxWidth, bloomsHitBoxHeight);
 
     int detonateX = screen_x - widthOfRightColumn;
     int detonateY = bloomsY + 32;
-    int detonateHitBoxWidth = 130;
-    int detonateHitBoxHeight = 16;
+    int detonateHitBoxWidth = startPointHitBoxWidth;
+    int detonateHitBoxHeight = startPointHitBoxHeight;
     detonateBloomsRect = cRectangle(detonateX, detonateY, detonateHitBoxWidth, detonateHitBoxHeight);
 
     // Techlevel
     int techLevelX = screen_x - widthOfRightColumn;
     int techLevelY = detonateY + 32;
-    int techLevelHitBoxWidth = 130;
-    int techLevelHitBoxHeight = 16;
+    int techLevelHitBoxWidth = startPointHitBoxWidth;
+    int techLevelHitBoxHeight = startPointHitBoxHeight;
     techLevelRect = cRectangle(techLevelX, techLevelY, techLevelHitBoxWidth, techLevelHitBoxHeight);
 
     // Back button (bottom left)
-    int backButtonWidth = m_textDrawer->getTextLength(" BACK");
+    int backButtonWidth = m_hdLayout
+        ? 150
+        : m_textDrawer->getTextLength(localization::text(" BACK", " НАЗАД"));
     int backButtonHeight = topBarHeight;
     int backButtonY = screen_y - topBarHeight;
     int backButtonX = 0;
     cRectangle backButtonRect(backButtonX, backButtonY, backButtonWidth, backButtonHeight);
     backButton = GuiButtonBuilder()
             .withRect(backButtonRect)        
-            .withLabel("BACK")
+            .withLabel(localization::text("BACK", "НАЗАД"))
             .withTextDrawer(m_textDrawer)
-            .withTheme(GuiTheme::Light())
-            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTheme(
+                m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light()
+            )
+            .withKind(
+                m_hdLayout
+                    ? GuiRenderKind::REMASTER_BUTTON
+                    : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER
+            )
             .onClick([this]() {
                 m_game.setNextStateToTransitionTo(GAME_MENU);
                 m_game.initiateFadingOut();
@@ -270,17 +366,25 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
             .build();
 
     // Start skirmish mission (bottom right)
-    int startButtonWidth = m_textDrawer->getTextLength("START");
+    int startButtonWidth = m_hdLayout
+        ? 150
+        : m_textDrawer->getTextLength(localization::text("START", "НАЧАТЬ"));
     int startButtonHeight = topBarHeight;
     int startButtonY = screen_y - topBarHeight;
     int startButtonX = screen_x - startButtonWidth;
     cRectangle startButtonRect = cRectangle(startButtonX, startButtonY, startButtonWidth, startButtonHeight);
     startButton = GuiButtonBuilder()
             .withRect(startButtonRect)        
-            .withLabel("START")
+            .withLabel(localization::text("START", "НАЧАТЬ"))
             .withTextDrawer(m_textDrawer)
-            .withTheme(GuiTheme::Light())
-            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTheme(
+                m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light()
+            )
+            .withKind(
+                m_hdLayout
+                    ? GuiRenderKind::REMASTER_BUTTON
+                    : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER
+            )
             .onClick([this]() {
                 if (iSkirmishMap > -1) {
                     prepareSkirmishGameToPlayAndTransitionToCombatState(iSkirmishMap);
@@ -304,21 +408,68 @@ void cSetupSkirmishState::thinkFast()
 
 void cSetupSkirmishState::draw() const
 {
-    // @Mira rewrite it on Texture
-    renderDrawer->gui_DrawRect(topBar);
+    if (m_hdLayout) {
+        renderDrawer->renderClearToColor(Color{10, 13, 15, 255});
+    }
 
-    m_textDrawer->drawTextCentered("Skirmish", 1);
+    const auto drawPanel = [this](
+        const cRectangle &rect,
+        Color fill,
+        Color border)
+    {
+        if (m_hdLayout) {
+            renderDrawer->renderRectFillColor(rect, fill);
+            renderDrawer->renderRectColor(rect, border);
+        }
+        else {
+            renderDrawer->gui_DrawRect(
+                rect,
+                fill,
+                border,
+                border
+            );
+        }
+    };
 
-    renderDrawer->gui_DrawRect(playerTitleBar, colorDarkishBackground, Color::white(), Color::white());
-    renderDrawer->gui_DrawRect(topRightBox);
-    renderDrawer->gui_DrawRect(playerList, colorDarkishBackground, Color::white(), Color::white());
-    renderDrawer->gui_DrawRect(mapListTitle, colorDarkishBackground, colorDarkishBorder, colorDarkishBorder);
+    if (m_hdLayout) {
+        drawPanel(topBar, Color{25, 31, 35, 255}, colorDarkishBorder);
+    }
+    else {
+        renderDrawer->gui_DrawRect(topBar);
+    }
 
-    m_textDrawer->drawTextCentered("Maps", mapListTitle.getX(), mapListTitle.getWidth(), mapListTitle.getY() + 4, Color::yellow());
-    renderDrawer->gui_DrawRect(previewMapTitle, colorDarkishBackground, colorDarkishBorder, colorDarkishBorder);    //renderDrawer->gui_DrawRect(previewMap, colorDarkishBackground, colorDarkishBorder, colorDarkishBorder);      
-    m_textDrawer->drawTextCentered("Preview", previewMapTitle.getX(), previewMapTitle.getWidth(), previewMapTitle.getY() + 4, Color::yellow());
-    renderDrawer->gui_DrawRect(previewMap, colorDarkishBackground, colorDarkishBorder, colorDarkishBorder);
-    renderDrawer->gui_DrawRect(selectArea, colorDarkishBackground, colorDarkishBorder, colorDarkishBorder);
+    m_textDrawer->drawTextCentered(
+        localization::text("Skirmish", "Схватка"),
+        (topBarHeight - m_textDrawer->getFontHeight()) / 2,
+        m_hdLayout ? Color{231, 190, 91, 255} : Color::white()
+    );
+
+    drawPanel(playerTitleBar, colorDarkishBackground, colorDarkishBorder);
+    drawPanel(
+        topRightBox,
+        m_hdLayout ? Color{25, 31, 35, 255} : Color{176,176,196,255},
+        colorDarkishBorder
+    );
+    drawPanel(playerList, colorDarkishBackground, colorDarkishBorder);
+    drawPanel(mapListTitle, colorDarkishBackground, colorDarkishBorder);
+
+    m_textDrawer->drawTextCentered(
+        localization::text("Maps", "Карты"),
+        mapListTitle.getX(),
+        mapListTitle.getWidth(),
+        mapListTitle.getY() + 4,
+        m_hdLayout ? Color{231, 190, 91, 255} : Color::yellow()
+    );
+    drawPanel(previewMapTitle, colorDarkishBackground, colorDarkishBorder);
+    m_textDrawer->drawTextCentered(
+        localization::text("Preview", "Просмотр"),
+        previewMapTitle.getX(),
+        previewMapTitle.getWidth(),
+        previewMapTitle.getY() + 4,
+        m_hdLayout ? Color{231, 190, 91, 255} : Color::yellow()
+    );
+    drawPanel(previewMap, colorDarkishBackground, colorDarkishBorder);
+    drawPanel(selectArea, colorDarkishBackground, colorDarkishBorder);
     ///////
     /// DRAW PREVIEW MAP
     //////
@@ -338,11 +489,19 @@ void cSetupSkirmishState::draw() const
     drawMapList(selectArea);
 
     // Header text for players
-    m_textDrawer->drawText(4, 25, "Player      House      Credits       Units    Team");
+    m_textDrawer->drawText(
+        4,
+        playerTitleBar.getY() + 3,
+        m_hdLayout ? Color{231, 190, 91, 255} : Color::white(),
+        localization::text(
+            "Player    House    Credits  Units   Team",
+            "Игрок    Дом       Кр.       Войска  Ком.")
+    );
 
     // draw players who will be playing ;)
     for (int p = 0; p < (AI_WORM - 1); p++) {
-        const int iDrawY = playerList.getY() + 4 + (p * 22);
+        const int iDrawY =
+            playerList.getY() + 4 + (p * m_playerRowHeight);
         const int iDrawX = 4;
 
         const s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[p];
@@ -381,7 +540,16 @@ void cSetupSkirmishState::draw() const
     }
 
     cRectangle bottomBarRect = cRectangle(-1, screen_y - topBarHeight, screen_x + 2, topBarHeight + 2);
-    renderDrawer->gui_DrawRect(bottomBarRect);
+    if (m_hdLayout) {
+        drawPanel(
+            bottomBarRect,
+            Color{25, 31, 35, 255},
+            colorDarkishBorder
+        );
+    }
+    else {
+        renderDrawer->gui_DrawRect(bottomBarRect);
+    }
 
     // For now in draw function
     startButton->setEnabled(iSkirmishMap > -1);
@@ -435,18 +603,23 @@ void cSetupSkirmishState::drawHouse(const s_SkirmishPlayer &sSkirmishPlayer, con
 {
     Color textColor = getTextColorForRect(sSkirmishPlayer, houseRec);
     const std::string &cPlayerHouseString = cPlayer::getHouseNameForId(sSkirmishPlayer.iHouse);
-    const char *cHouse = sSkirmishPlayer.iHouse > 0 ? cPlayerHouseString.c_str() : "Random";
+    const char *cHouse = sSkirmishPlayer.iHouse > 0
+        ? cPlayerHouseString.c_str()
+        : localization::text("Random", "Случайно");
     m_textDrawer->drawText(houseRec.getX(), houseRec.getY(), textColor, cHouse);
 }
 
 void cSetupSkirmishState::drawPlayerBrain(const s_SkirmishPlayer &sSkirmishPlayer, const cRectangle &brainRect) const
 {
     if (sSkirmishPlayer.bHuman) {
-        m_textDrawer->drawText(brainRect.getX(), brainRect.getY(), "Human");
+        m_textDrawer->drawText(
+            brainRect.getX(), brainRect.getY(), localization::text("Player", "Игрок"));
     }
     else {
         Color textColor = getTextColorForRect(sSkirmishPlayer, brainRect);
-        m_textDrawer->drawText(brainRect.getX(), brainRect.getY(), textColor, "  CPU");
+        m_textDrawer->drawText(
+            brainRect.getX(), brainRect.getY(), textColor,
+            localization::text("  AI", "  ИИ"));
     }
 }
 
@@ -462,7 +635,8 @@ void cSetupSkirmishState::drawStartPoints(int iStartingPoints, const cRectangle 
         textColor = colorDisabled;
     }
 
-    m_textDrawer->drawText(startPoints.getX(), startPoints.getY(), textColor,std::format("Startpoints: {}",iStartingPoints));
+    m_textDrawer->drawText(startPoints.getX(), startPoints.getY(), textColor,
+        localization::format("Start points: {}", "Точки старта: {}", iStartingPoints));
 }
 
 void cSetupSkirmishState::drawPreviewMapAndMore(const cRectangle &previewMapRect) const
@@ -496,13 +670,22 @@ void cSetupSkirmishState::drawPreviewMapAndMore(const cRectangle &previewMapRect
                 renderDrawer->renderStrechFullSprite(m_gfxinter->getTexture(BMP_UNKNOWNMAP), dst);
             }
         }
-        m_textDrawer->drawText(previewMapRect.getX() + 4, previewMapRect.getY() + previewMapRect.getHeight() + 16,
-                            Color::yellow(), std::format("Name: {}", selectedMap.name));
-        m_textDrawer->drawText(previewMapRect.getX() + 4, previewMapRect.getY() + previewMapRect.getHeight() + 32+8,
-                            Color::white(), std::format("Author: {}", selectedMap.author));
-        m_textDrawer->drawText(previewMapRect.getEndX() -50, previewMapRect.getY() + previewMapRect.getHeight() + 16,
+        const int infoY =
+            previewMapRect.getY() + previewMapRect.getHeight() +
+            (m_hdLayout ? 8 : 16);
+        m_textDrawer->drawText(previewMapRect.getX() + 4, infoY,
+                            Color::yellow(), localization::format(
+                                "Name: {}", "Название: {}", selectedMap.name));
+        m_textDrawer->drawText(
+            previewMapRect.getX() + 4,
+            infoY + m_textDrawer->getFontHeight() + 2,
+                            Color::white(), localization::format(
+                                "Author: {}", "Автор: {}", selectedMap.author));
+        m_textDrawer->drawText(previewMapRect.getEndX() -50, infoY,
                             Color{225, 177, 21,255}, std::format("{}", m_previewMaps->getMapSize(iSkirmishMap)));
-        m_textDrawer->drawText(previewMapRect.getX() + 4, previewMapRect.getY() + previewMapRect.getHeight() + 32+30,
+        m_textDrawer->drawText(
+            previewMapRect.getX() + 4,
+            infoY + (m_textDrawer->getFontHeight() + 2) * 2,
                             Color::white(), std::format("{}", selectedMap.description));
         
     }
@@ -513,10 +696,12 @@ void cSetupSkirmishState::drawDetonateBlooms(const cRectangle &detonateBloomsRec
     if (spawnBlooms) {
         Color textColor = detonateBloomsRect.isPointWithin(mouse->getX(), mouse->getY()) ? Color::red() : Color::white();
         m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), textColor,
-                            std::format("Auto-detonate : {}", detonateBlooms ? "YES" : "NO"));
+                            localization::format("Auto-detonate: {}", "Автовзрыв: {}",
+                                detonateBlooms ? localization::text("YES", "ДА") : localization::text("NO", "НЕТ")));
     }
     else {
-        m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), colorDisabled, "Auto-detonate : -");
+        m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), colorDisabled,
+            localization::text("Auto-detonate: -", "Автовзрыв: -"));
     }
 }
 
@@ -524,21 +709,22 @@ void cSetupSkirmishState::drawBlooms(const cRectangle &bloomsRect) const
 {
     Color textColor = bloomsRect.isPointWithin(mouse->getX(), mouse->getY()) ? Color::red() : Color::white();
     m_textDrawer->drawText(bloomsRect.getX(), bloomsRect.getY(), textColor,
-                        std::format("Spice blooms : {}", spawnBlooms ? "YES" : "NO"));
+                        localization::format("Blooms: {}", "Выбросы: {}",
+                            spawnBlooms ? localization::text("YES", "ДА") : localization::text("NO", "НЕТ")));
 }
 
 void cSetupSkirmishState::drawWorms(const cRectangle &wormsRect) const
 {
     Color textColor = wormsRect.isPointWithin(mouse->getX(), mouse->getY()) ? Color::red() : Color::white();
     m_textDrawer->drawText(wormsRect.getX(), wormsRect.getY(), textColor,
-                        std::format("Worms? : {}", spawnWorms));
+                        localization::format("Worms: {}", "Черви: {}", spawnWorms));
 }
 
 void cSetupSkirmishState::drawTechLevel(const cRectangle &techLevelRect) const
 {
     Color textColor = techLevelRect.isPointWithin(mouse->getX(), mouse->getY()) ? Color::red() : Color::white();
     m_textDrawer->drawText(techLevelRect.getX(), techLevelRect.getY(), textColor,
-                        std::format("TechLevel : {}", techLevel));
+                        localization::format("Tech level: {}", "Тех. уровень: {}", techLevel));
 }
 
 void cSetupSkirmishState::prepareSkirmishGameToPlayAndTransitionToCombatState(int iSkirmishMap)
@@ -869,7 +1055,8 @@ void cSetupSkirmishState::onMouseRightButtonClicked(const s_MouseEvent &)
 void cSetupSkirmishState::onMouseRightButtonClickedAtPlayerList()  // draw players who will be playing ;)
 {
     for (int p = 0; p < (AI_WORM - 1); p++) {
-        const int iDrawY = playerList.getY() + 4 + (p * 22);
+        const int iDrawY =
+            playerList.getY() + 4 + (p * m_playerRowHeight);
 
         if (p < startingPoints) {
             s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[p];
@@ -948,7 +1135,8 @@ void cSetupSkirmishState::onMouseLeftButtonClicked(const s_MouseEvent &)
 void cSetupSkirmishState::onMouseLeftButtonClickedAtPlayerList()
 {
     for (int p = 0; p < (AI_WORM - 1); p++) {
-        int iDrawY = playerList.getY() + 4 + (p * 22);
+        int iDrawY =
+            playerList.getY() + 4 + (p * m_playerRowHeight);
         int iDrawX = 4;
 
         if (p < startingPoints) {
@@ -1194,20 +1382,38 @@ void cSetupSkirmishState::drawMapList(const cRectangle &selectMapArea) const
         bool isRenderingSelectedMap = mapIndexToRender == iSkirmishMap;
 
         // RENDERS ! & also get true/false if mouse hovers
-        const bool bHover = gui_draw_frame(iDrawX, iDrawY, mapItemButtonWidth, mapItemButtonHeight);
+        const bool bHover = gui_draw_frame(
+            iDrawX,
+            iDrawY,
+            mapItemButtonWidth,
+            mapItemButtonHeight,
+            m_hdLayout
+        );
 
         Color textColor = bHover ? Color::red() : Color::white();
 
         if (bHover && mapToRender.validMap && mouse->isLeftButtonClicked()) {
             // RENDERS (AGAIN)!
-            gui_draw_frame_pressed(iDrawX, iDrawY, mapItemButtonWidth, mapItemButtonHeight);
+            gui_draw_frame_pressed(
+                iDrawX,
+                iDrawY,
+                mapItemButtonWidth,
+                mapItemButtonHeight,
+                m_hdLayout
+            );
         }
 
         // selected map, always render as pressed
         if (isRenderingSelectedMap) {
             textColor = bHover ? colorDarkerYellow : Color::yellow();
             // RENDERS (AGAIN)!
-            gui_draw_frame_pressed(iDrawX, iDrawY, mapItemButtonWidth, mapItemButtonHeight);
+            gui_draw_frame_pressed(
+                iDrawX,
+                iDrawY,
+                mapItemButtonWidth,
+                mapItemButtonHeight,
+                m_hdLayout
+            );
         }
 
         // In case invalid map, render as not-selectable
@@ -1215,7 +1421,12 @@ void cSetupSkirmishState::drawMapList(const cRectangle &selectMapArea) const
             textColor = colorDisabled;
         }
 
-        m_textDrawer->drawText(iDrawX + 4, iDrawY + 4, textColor, mapToRender.name);
+        m_textDrawer->drawText(
+            iDrawX + 4,
+            iDrawY + 4,
+            textColor,
+            mapToRender.name
+        );
 
         Texture *tex = nullptr;
         if (mapIndexToRender == 0) {
@@ -1226,7 +1437,15 @@ void cSetupSkirmishState::drawMapList(const cRectangle &selectMapArea) const
         }
 
         // Render preview map on tile
-        cRectangle dest = cRectangle(iDrawX + 4, iDrawY + 20, mapItemButtonWidth - 8, mapItemButtonHeight - 24);
+        const int imageTop =
+            iDrawY + m_textDrawer->getFontHeight() + 7;
+        cRectangle dest = cRectangle(
+            iDrawX + 4,
+            imageTop,
+            mapItemButtonWidth - 8,
+            mapItemButtonHeight -
+                m_textDrawer->getFontHeight() - 11
+        );
         renderDrawer->renderStrechFullSprite(tex, dest);
 
         // Determine next tile coordinates, and if needed wrap to next row

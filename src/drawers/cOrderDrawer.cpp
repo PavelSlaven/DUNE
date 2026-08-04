@@ -3,17 +3,21 @@
 #include "d2tmc.h"
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
+#include "drawers/cTextDrawer.h"
 #include "gameobjects/structures/cOrderProcesser.h"
 #include "player/cPlayer.h"
 #include "sidebar/cSideBar.h"
 #include "utils/Graphics.hpp"
+#include "utils/Localization.hpp"
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
+#include "context/TextContext.hpp"
 #include <SDL2/SDL.h>
 
 cOrderDrawer::cOrderDrawer(GameContext *ctx, cPlayer *player) :
     m_ctx(ctx),
-    m_player(player)
+    m_player(player),
+    m_textDrawer(ctx->getTextContext()->getSmallTextDrawer())
 {
     auto *gfxinter = m_ctx->getGraphicsContext()->gfxinter.get();
     m_buttonBitmap = player->createTextureFromIndexedSurfaceWithPalette(gfxinter->getSurface(BTN_ORDER), TransparentColorIndex);
@@ -47,6 +51,17 @@ void cOrderDrawer::drawOrderButton(cPlayer *thePlayer)
     else {
         renderDrawer->renderSprite(m_buttonBitmap, m_buttonRect.getX(), m_buttonRect.getY());
     }
+
+    const Color labelColor = orderProcesser->isOrderPlaced()
+        ? Color{105, 99, 83, 255}
+        : Color{92, 12, 8, 255};
+    m_textDrawer->drawTextScaledCenteredInBox(
+        localization::text("ORDER", "ЗАКАЗ"),
+        m_buttonRect,
+        0.92F,
+        labelColor,
+        true
+    );
 
     if (m_isMouseOverOrderButton) {
         drawRectangleOrderButton();

@@ -84,8 +84,16 @@ void cInteractionManager::onNotifyMouseEvent(const s_MouseEvent &mouseEvent)
         cGameControlsContext *pContext = player->getGameControlsContext();
         pContext->onNotifyMouseEvent(mouseEvent); // must be first because other classes rely on this context
 
+        drawManager->getCommandBarDrawer()->onNotifyMouseEvent(mouseEvent);
+
         sidebar->onNotifyMouseEvent(mouseEvent);
-        mapCamera->onNotifyMouseEvent(mouseEvent);
+
+        const bool isWheelEvent =
+            mouseEvent.eventType == eMouseEventType::MOUSE_SCROLLED_UP ||
+            mouseEvent.eventType == eMouseEventType::MOUSE_SCROLLED_DOWN;
+        if ((!isWheelEvent || !pContext->isMouseOnSidebarOrMinimap()) && !pContext->isMouseOnCommandBar()) {
+            mapCamera->onNotifyMouseEvent(mouseEvent);
+        }
 
         // do like this because drawManager gets deleted/recreated
         drawManager->getMiniMapDrawer()->onNotifyMouseEvent(mouseEvent);

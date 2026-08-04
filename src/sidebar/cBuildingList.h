@@ -79,8 +79,20 @@ public:
         return buttonDrawY;
     }
 
+    int getButtonWidth() const {
+        return buttonWidth;
+    }
+
+    int getButtonHeight() const {
+        return buttonHeight;
+    }
+
     bool isAvailable() {
         return maxItems > 0;
+    }
+
+    int getItemCount() const {
+        return maxItems;
     }
 
     std::array<int, 6> isBuildingItem();

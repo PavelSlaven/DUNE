@@ -6,6 +6,8 @@
 #include "observers/cInputObserver.h"
 #include "sMouseEvent.h"
 
+#include <array>
+
 class Texture;
 class cPlayer;
 class GameContext;
@@ -41,8 +43,23 @@ private:
     cBuildingListDrawer m_buildingListDrawer;
     cSideBar *m_sidebar;
     Color m_sidebarColor;
+    cTextDrawer *m_smallTextDrawer;
+    std::array<Texture *, 3> m_houseCrests{};
 
     void createCandyBar();
+    void drawHdSidebar();
+    void drawHdBuildingLists();
+    void drawHdRadarPanel();
+    void drawHdCapacities();
+    void drawHdMeter(
+        const cRectangle &rect,
+        const std::string &label,
+        int value,
+        int maximum,
+        Color fill,
+        bool warning) const;
+    [[nodiscard]] Texture *getHouseCrest() const;
+    [[nodiscard]] std::string getHouseDisplayName() const;
 
     void drawPowerUsage() const;
     void drawCreditsUsage();

@@ -43,6 +43,8 @@ public:
     SDL_Surface *getSurface(const std::string &name);
     // return index of a surface
     int getIndexFromName(const std::string &name);
+    int getIndexFromSurface(SDL_Surface *surface) const;
+    std::string getNameFromIndex(int index) const;
     // return a music from his index in pack
     Mix_Music *getMusic(int index);
     // return a music from his name
@@ -54,10 +56,12 @@ public:
     // for debug
     void displayPackFile();
     int getNumberOfFile() const; //should take a extension parameters
+    [[nodiscard]] bool isValid() const;
 private:
     std::unique_ptr<ReaderPack> reader;
     // for memory management
     std::unordered_map<int, SDL_Surface *> surfaceCache;
+    std::unordered_map<SDL_Surface *, int> surfaceIndex;
     std::unordered_map<int, Mix_Music *> musicCache;
     std::unordered_map<int, Mix_Chunk *> sampleCache;
 };

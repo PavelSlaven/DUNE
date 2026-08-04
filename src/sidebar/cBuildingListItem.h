@@ -12,6 +12,7 @@
 #include <string>
 
 class cBuildingList;
+class SaveGameManager;
 
 class cBuildingListItem {
 
@@ -252,6 +253,7 @@ public:
     void decreaseFlashingTimer();
 
 private:
+    friend class SaveGameManager;
     void setProgress(int value) {
         progress = value;
     }

@@ -488,6 +488,7 @@ public:
 
     Texture *createTextureFromIndexedSurfaceWithPalette(SDL_Surface *referenceSurface, int paletteIndexForTransparency);
 private:
+    friend class SaveGameManager;
     cBuildingListItem *isUpgradeAvailableToGrant(eBuildType providesType, int providesTypeId) const;
 
     void clearStructureTypeBitmaps();
@@ -539,6 +540,7 @@ private:
 
     Texture *bmp_unit[MAX_UNITTYPES]; // the body of unit
     Texture *bmp_unit_top[MAX_UNITTYPES]; // optionally a 'top' of unit (barrel of tank, for example)
+    bool m_hdTextureReferences = false;
 
     int iPrimaryBuilding[MAX_STRUCTURETYPES];    // remember the primary ID (structure id) of each structure type
     int iStructures[MAX_STRUCTURETYPES]; // remember what is built for each type of structure
@@ -560,6 +562,9 @@ private:
     int spiceQuota;              // > 0 means this amount to harvest, (if win/lose flags set accordingly for game)
 
     bool alive;
+
+    Uint64 m_lastEnemyWarningMs = 0;
+    bool m_hasPlayedEnemyWarning = false;
 
     std::vector<cPlayerNotification> notifications;
 

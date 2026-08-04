@@ -6,6 +6,8 @@
 #include <unordered_map>
 
 #include "include/Texture.hpp"
+#include "utils/Color.hpp"
+#include "utils/cRectangle.h"
 
 class DataPack;
 
@@ -16,7 +18,11 @@ class DataPack;
  */
 class Graphics {
 public:
-    explicit Graphics(SDL_Renderer *_renderer, const std::string &filePackName);
+    explicit Graphics(
+        SDL_Renderer *_renderer,
+        const std::string &filePackName,
+        int assetDensity = 1
+    );
     ~Graphics();
     // return a surface from his index
     SDL_Surface *getSurface(int index) const;
@@ -26,10 +32,36 @@ public:
     Texture *getTexture(int index);
     // return a texture from his name
     Texture *getTexture(const std::string &name);
+    // return a named texture, or nullptr without logging when it is absent
+    Texture *findTexture(const std::string &name);
+    // Return an isolated atlas frame so linear filtering cannot sample a
+    // neighbouring frame.
+    Texture *getFrameTexture(int index, const cRectangle &logicalFrame);
+    Texture *findFrameTexture(
+        const std::string &name,
+        const cRectangle &logicalFrame
+    );
+    Texture *getHouseTexture(
+        SDL_Surface *reference,
+        int houseId,
+        int paletteSwapStart,
+        Color houseColor,
+        int transparentIndex
+    );
     // return number of file in Pack
     int getNumberOfFiles();
+    [[nodiscard]] bool isValid() const;
+    [[nodiscard]] int getDensity() const {
+        return density;
+    }
+    [[nodiscard]] int getLogicalWidth(int index) const;
+    [[nodiscard]] int getLogicalHeight(int index) const;
 private:
     SDL_Renderer *renderer;
+    int density;
     std::unique_ptr<DataPack> dataPack;
     std::unordered_map<int, Texture *> texCache;
+    std::unordered_map<std::string, Texture *> frameTexCache;
+    std::unordered_map<std::string, Texture *> houseTexCache;
+    std::unordered_map<std::string, bool> loggedFallbacks;
 };

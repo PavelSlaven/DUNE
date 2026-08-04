@@ -18,6 +18,8 @@
 #include <SDL2/SDL.h>
 #include "utils/Graphics.hpp"
 
+#include <algorithm>
+#include <cmath>
 #include <iostream>
 
 std::map<std::pair<int, int>, Texture*> cParticle::particleTextureCache = {};
@@ -97,12 +99,42 @@ void cParticle::think_position()
         }
     }
 
-    // keep updating dimensions
-    dimensions->move(draw_x(), draw_y());
     if (mapCamera) {
-        dimensions->resize(mapCamera->factorZoomLevel(getFrameWidth()),
-                           mapCamera->factorZoomLevel(getFrameHeight()));
+        const cRectangle visual = getVisualRectangle();
+        dimensions->move(visual.getX(), visual.getY());
+        dimensions->resize(visual.getWidth(), visual.getHeight());
     }
+}
+
+cRectangle cParticle::getVisualRectangle()
+{
+    const int originalWidth = std::max(
+        1,
+        static_cast<int>(std::lround(
+            mapCamera->factorZoomLevel(getFrameWidth())
+        ))
+    );
+    const int originalHeight = std::max(
+        1,
+        static_cast<int>(std::lround(
+            mapCamera->factorZoomLevel(getFrameHeight())
+        ))
+    );
+    const float worldScale = game.getWorldScaleFactor();
+    const int visualWidth = std::max(
+        1,
+        static_cast<int>(std::lround(originalWidth * worldScale))
+    );
+    const int visualHeight = std::max(
+        1,
+        static_cast<int>(std::lround(originalHeight * worldScale))
+    );
+    return {
+        draw_x() - (visualWidth - originalWidth) / 2,
+        draw_y() - (visualHeight - originalHeight) / 2,
+        visualWidth,
+        visualHeight,
+    };
 }
 
 // draw
@@ -112,19 +144,18 @@ void cParticle::draw()
     int frameWidth = getFrameWidth();
     int frameHeight = getFrameHeight();
 
-    // create proper sized bitmap
-    int bmp_width = mapCamera->factorZoomLevel(frameWidth);
-    int bmp_height = mapCamera->factorZoomLevel(frameHeight);
-
-    int drawX = draw_x();
-    int drawY = draw_y();
-
     cRectangle src = { (frameWidth * frameIndex), 0, frameWidth, frameHeight};
-    cRectangle dest= { drawX, drawY, bmp_width, bmp_height};
+    const cRectangle dest = getVisualRectangle();
 
     if (isUsingAlphaChannel()) {
         if (particleInfo.usesAdditiveBlending) {
-            renderDrawer->renderStrechSprite(bmp, src, dest,iAlpha);
+            renderDrawer->renderStrechSprite(
+                bmp,
+                src,
+                dest,
+                iAlpha,
+                SDL_BLENDMODE_ADD
+            );
         }
         else {
             renderDrawer->renderStrechSprite(bmp, src, dest,iAlpha);

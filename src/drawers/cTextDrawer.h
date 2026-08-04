@@ -11,7 +11,7 @@ class cTextTextureCache;
 class cTextDrawer {
 public:
     // Constructor, initializes the drawer with a TTF font
-    explicit cTextDrawer(TTF_Font *theFont);
+    explicit cTextDrawer(TTF_Font *theFont, int density = 1);
     ~cTextDrawer();
 
     // Draws text at (x, y) in white, with optional shadow
@@ -37,6 +37,7 @@ public:
     void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const;
     // Draws centered text inside a rectangle, with color and offset
     void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const;
+    void drawTextScaledCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;
     // Draws text at the bottom right of the screen, in white, with margin
     void drawTextBottomRight(const std::string &msg, int margin=0) const;
     // Draws text at the bottom left of the screen, in white, with margin
@@ -59,5 +60,6 @@ protected:
 
 private:
     TTF_Font *m_font;
+    int m_density;
     std::unique_ptr<cTextTextureCache> m_textCache;
 };

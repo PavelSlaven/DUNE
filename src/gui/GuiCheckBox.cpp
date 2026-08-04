@@ -30,6 +30,7 @@ void GuiCheckBox::draw() const
         case TRANSPARENT_WITHOUT_BORDER:
             drawBox();
             break;
+        case REMASTER_BUTTON:
         case OPAQUE_WITH_BORDER:
             renderDrawer->renderRectFillColor(m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight(), m_theme.fillColor);
             drawBox();

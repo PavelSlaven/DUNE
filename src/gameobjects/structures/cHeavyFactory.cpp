@@ -85,16 +85,13 @@ void cHeavyFactory::draw()
         // what frame is being drawn. So multiply the height of the structure size times frame
         int iSourceY = pixelHeight * 0; // flash have only 1 frame for now
 
-        int drawX = iDrawX();
-        int drawY = iDrawY();
-
-        int scaledWidth = mapCamera->factorZoomLevel(pixelWidth);
-        int scaledHeight = mapCamera->factorZoomLevel(pixelHeight);
-
         Texture *bitmapToDraw = getPlayer()->getStructureBitmapFlash(getType());
         cRectangle src = { 0, iSourceY, pixelWidth, pixelHeight};
-        cRectangle dest= { drawX, drawY, scaledWidth, scaledHeight};
-        renderDrawer->renderStrechSprite(bitmapToDraw, src, dest);
+        renderDrawer->renderStrechSprite(
+            bitmapToDraw,
+            src,
+            getVisualRectangle()
+        );
 
 
     }

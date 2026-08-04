@@ -1,10 +1,12 @@
 #include "cLightFactory.h"
 
 #include "d2tmc.h"
+#include "data/gfxdata.h"
 #include "drawers/SDLDrawer.hpp"
 #include "definitions.h"
 #include "map/cMapCamera.h"
 #include "player/cPlayer.h"
+#include "utils/Graphics.hpp"
 
 // Constructor
 cLightFactory::cLightFactory()
@@ -62,8 +64,34 @@ void cLightFactory::think_guard()
 void cLightFactory::draw()
 {
     drawWithShadow();
+
+    bool drewHdProduction = false;
+    if (isAnimating() && gfxdata && gfxdata->getDensity() > 1) {
+        Texture *production =
+            gfxdata->findTexture("BUILD_LIGHTFACTORY_PRODUCTION");
+        if (production) {
+            constexpr int logicalFrameSize = 64;
+            constexpr int frameCount = 8;
+            const int phase = static_cast<int>(
+                (SDL_GetTicks() / 125U) % frameCount
+            );
+            const cRectangle source = {
+                0,
+                phase * logicalFrameSize,
+                logicalFrameSize,
+                logicalFrameSize,
+            };
+            renderDrawer->renderStrechSprite(
+                production,
+                source,
+                getVisualRectangle()
+            );
+            drewHdProduction = true;
+        }
+    }
+
     // draw flashing light
-    if (drawFlash) {
+    if (drawFlash && !drewHdProduction) {
         int pixelWidth = getWidthInPixels();
         int pixelHeight = getHeightInPixels();
 
@@ -71,16 +99,13 @@ void cLightFactory::draw()
         // what frame is being drawn. So multiply the height of the structure size times frame
         int iSourceY = pixelHeight * 0; // flash have only 1 frame for now
 
-        int drawX = iDrawX();
-        int drawY = iDrawY();
-
-        int scaledWidth = mapCamera->factorZoomLevel(pixelWidth);
-        int scaledHeight = mapCamera->factorZoomLevel(pixelHeight);
-
         Texture *bitmapToDraw = getPlayer()->getStructureBitmapFlash(getType());
         cRectangle src = { 0, iSourceY, pixelWidth, pixelHeight};
-        cRectangle dest= {drawX, drawY, scaledWidth, scaledHeight};
-        renderDrawer->renderStrechSprite(bitmapToDraw, src, dest);
+        renderDrawer->renderStrechSprite(
+            bitmapToDraw,
+            src,
+            getVisualRectangle()
+        );
     }
 }
 

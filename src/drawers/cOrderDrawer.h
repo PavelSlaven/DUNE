@@ -7,6 +7,7 @@ class cPlayer;
 struct SDL_Surface;
 class Texture;
 class GameContext;
+class cTextDrawer;
 
 class cOrderDrawer {
 public:
@@ -29,6 +30,7 @@ private:
     bool m_isMouseOverOrderButton;
     GameContext *m_ctx;
     cPlayer *m_player;
+    cTextDrawer *m_textDrawer;
     cRectangle m_buttonRect;
     Texture *m_buttonBitmap;
 };

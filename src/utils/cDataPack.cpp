@@ -39,6 +39,17 @@ int DataPack::getIndexFromName(const std::string &name)
     return reader->getIndexFromName(name);
 }
 
+int DataPack::getIndexFromSurface(SDL_Surface *surface) const
+{
+    const auto it = surfaceIndex.find(surface);
+    return it == surfaceIndex.end() ? -1 : it->second;
+}
+
+std::string DataPack::getNameFromIndex(int index) const
+{
+    return reader->getNameFromIndex(index);
+}
+
 SDL_Surface *DataPack::getSurface(int index)
 {
     if (index < 0 || index >= reader->getNumberOfFiles()) {
@@ -54,6 +65,9 @@ SDL_Surface *DataPack::getSurface(int index)
         printf("Failed to load image %i : %s\n", index, SDL_GetError());
     }
     surfaceCache[index] = out;
+    if (out) {
+        surfaceIndex[out] = index;
+    }
     return out;
 }
 
@@ -108,6 +122,11 @@ Mix_Chunk *DataPack::getSample(int index)
 int DataPack::getNumberOfFile() const
 {
     return reader->getNumberOfFiles();
+}
+
+bool DataPack::isValid() const
+{
+    return reader && reader->isValid();
 }
 
 /*

@@ -20,6 +20,7 @@
 #include <memory>
 
 class cTextDrawer;
+class SaveGameManager;
 
 enum class eTransferType {
     NONE,                               // nothing to transfer
@@ -157,6 +158,7 @@ public:
 
     int draw_x();
     int draw_y();
+    cRectangle getVisualRectangle();
 
     int pos_x();
     int pos_y();
@@ -444,6 +446,7 @@ public:
     bool canUnload();
 
 private:
+    friend class SaveGameManager;
     eActionType m_action;
     eUnitActionIntent intent;
 

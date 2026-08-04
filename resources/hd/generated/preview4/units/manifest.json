@@ -1,0 +1,24 @@
+{
+  "release": "v0.8.0-ru4-preview3",
+  "direction_order": [
+    "E",
+    "NE",
+    "N",
+    "NW",
+    "W",
+    "SW",
+    "S",
+    "SE"
+  ],
+  "sources": [
+    "harvester-v2",
+    "launcher-v2",
+    "mcv-v2",
+    "quad-v2",
+    "raider-v2",
+    "trike-v2",
+    "tankbase-v2",
+    "tanktop-v2"
+  ],
+  "policy": "one north-facing density-first master per object; deterministic pivot-locked 45 degree rotations"
+}

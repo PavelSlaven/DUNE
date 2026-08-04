@@ -62,6 +62,22 @@ public:
         return hasKey(firstScanCode) || hasKey(secondScanCode);
     }
 
+    bool hasAssignedKey(SDL_Scancode scanCode) const {
+        switch (scanCode) {
+            case SDL_SCANCODE_LCTRL:
+            case SDL_SCANCODE_RCTRL:
+                return hasEitherKey(SDL_SCANCODE_LCTRL, SDL_SCANCODE_RCTRL);
+            case SDL_SCANCODE_LSHIFT:
+            case SDL_SCANCODE_RSHIFT:
+                return hasEitherKey(SDL_SCANCODE_LSHIFT, SDL_SCANCODE_RSHIFT);
+            case SDL_SCANCODE_LALT:
+            case SDL_SCANCODE_RALT:
+                return hasEitherKey(SDL_SCANCODE_LALT, SDL_SCANCODE_RALT);
+            default:
+                return hasKey(scanCode);
+        }
+    }
+
     bool isType(eKeyEventType type) const {
         return eventType == type;
     }
@@ -71,6 +87,10 @@ public:
      * @return
      */
     int getGroupNumber() const;
+
+    [[nodiscard]] SDL_Scancode firstKey() const {
+        return keys.empty() ? SDL_SCANCODE_UNKNOWN : *keys.begin();
+    }
 
 private:
     inline const char *toStringKeyboardEventType(const eKeyEventType &type) const {

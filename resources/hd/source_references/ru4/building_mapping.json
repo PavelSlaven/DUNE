@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "source_page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+  "rule": "Use the original healthy Dune 2000 building sprites directly; retain the three House designs and fit them into the unchanged D2TM logical footprints.",
+  "houses": [
+    "ATREIDES",
+    "HARKONNEN",
+    "ORDOS"
+  ],
+  "mappings": [
+    {"sheet": "Barracks", "d2tm": ["BUILD_BARRACKS", "BUILD_WOR"], "note": "WOR uses the Harkonnen Barracks design"},
+    {"sheet": "Construction Yard", "d2tm": ["BUILD_CONSTYARD"]},
+    {"sheet": "Heavy Factory", "d2tm": ["BUILD_HEAVYFACTORY"]},
+    {"sheet": "High Tech Factory", "d2tm": ["BUILD_HIGHTECH"]},
+    {"sheet": "Light Factory", "d2tm": ["BUILD_LIGHTFACTORY"]},
+    {"sheet": "Outpost", "d2tm": ["BUILD_RADAR"]},
+    {"sheet": "Palace", "d2tm": ["BUILD_PALACE"]},
+    {"sheet": "Spice Refinery", "d2tm": ["BUILD_REFINERY"]},
+    {"sheet": "Spice Silo", "d2tm": ["BUILD_SILO"]},
+    {"sheet": "Starport", "d2tm": ["BUILD_STARPORT"]},
+    {"sheet": "Wind Trap", "d2tm": ["BUILD_WINDTRAP"]}
+  ],
+  "fallbacks": [
+    {"d2tm": "BUILD_IX", "reason": "No Dune 2000 sheet on the source page"},
+    {"d2tm": "BUILD_REPAIR", "reason": "No Dune 2000 sheet on the source page"},
+    {"d2tm": "BUILD_TURRET", "reason": "No Dune 2000 sheet on the source page"},
+    {"d2tm": "BUILD_RTURRET", "reason": "No Dune 2000 sheet on the source page"}
+  ],
+  "processing": [
+    "select healthy sprite for each House",
+    "remove transparent or magenta service background",
+    "fit into the unchanged D2TM logical footprint",
+    "repeat a static source frame where D2TM expects an animation atlas",
+    "generate House-colour mask and deterministic shadow",
+    "build HD4 master and derive HD2 deterministically"
+  ],
+  "pack_naming": "Building variants use compact HV_A/H/O_ and HM_ aliases because the original D2TM pack directory limits resource names to 39 UTF-8 bytes."
+}

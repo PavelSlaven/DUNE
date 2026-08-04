@@ -5,6 +5,8 @@
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
 #include "utils/Graphics.hpp"
+#include "utils/HdUiTextureLoader.hpp"
+#include "utils/Localization.hpp"
 #include "include/Texture.hpp"
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
@@ -17,11 +19,29 @@ cCreditsState::cCreditsState(cGame &theGame, GameContext* ctx) :
     m_textDrawer(ctx->getTextContext()->getBeneTextDrawer())
 {
     auto *gfxinter = ctx->getGraphicsContext()->gfxinter.get();
-    m_duneBmp = gfxinter->getTexture(BMP_GAME_DUNE);
-    m_titleBmp = gfxinter->getTexture(BMP_D2TM);
-    int duneAtTheRight = m_game.m_screenW - (m_duneBmp->w * 1.1f);
-    int duneAlmostAtBottom = m_game.m_screenH - (m_duneBmp->h * 1.1f);
-    m_duneCoordinates = cPoint(duneAtTheRight, duneAlmostAtBottom);
+    if (m_game.isHdGraphicsActive()) {
+        m_teamBmp = loadHdUiTexture(
+            "credits_team.png",
+            m_game.getGraphicsDensity(),
+            "HD credits team photo"
+        );
+        m_titleBmp = loadHdUiTexture(
+            "credits_title.png",
+            m_game.getGraphicsDensity(),
+            "HD credits title"
+        );
+        m_ownsTeamBmp = m_teamBmp != nullptr;
+        m_ownsTitleBmp = m_titleBmp != nullptr;
+    }
+    if (!m_teamBmp) {
+        m_teamBmp = gfxinter->getTexture(CREDITS_DUNE2_CORE_TEAM);
+    }
+    if (!m_titleBmp) {
+        m_titleBmp = gfxinter->getTexture(D2TM_TITLE);
+    }
+    const int teamAtTheRight = m_game.m_screenW - (m_teamBmp->w * 1.1f);
+    const int teamAlmostAtBottom = m_game.m_screenH - (m_teamBmp->h * 1.1f);
+    m_teamCoordinates = cPoint(teamAtTheRight, teamAlmostAtBottom);
 
     int titleWidth = m_titleBmp->w;
     m_titleHeight = m_titleBmp->h;
@@ -31,14 +51,15 @@ cCreditsState::cCreditsState(cGame &theGame, GameContext* ctx) :
     m_titleX = centerOfScreen - (titleWidth / 2);
     resetCrawler();
 
-    int backButtonWidth = m_textDrawer->getTextLength(" BACK");
+    int backButtonWidth = m_textDrawer->getTextLength(
+        localization::text(" BACK", " НАЗАД"));
     int backButtonHeight = 21;
     int backButtonY = m_game.m_screenH - 21;
     int backButtonX = 0;
     cRectangle backButtonRect(backButtonX, backButtonY, backButtonWidth, backButtonHeight);
     backButton = GuiButtonBuilder()
             .withRect(backButtonRect)
-            .withLabel("BACK")
+            .withLabel(localization::text("BACK", "НАЗАД"))
             .withTextDrawer(m_textDrawer)
             .withTheme(GuiTheme::Light())
             .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -355,7 +376,13 @@ void cCreditsState::resetCrawler()
 
 cCreditsState::~cCreditsState()
 {
-    m_duneBmp = nullptr;
+    if (m_ownsTeamBmp) {
+        delete m_teamBmp;
+    }
+    if (m_ownsTitleBmp) {
+        delete m_titleBmp;
+    }
+    m_teamBmp = nullptr;
     m_titleBmp = nullptr;
 }
 
@@ -375,7 +402,7 @@ void cCreditsState::thinkFast()
 
 void cCreditsState::draw() const
 {
-    renderDrawer->renderSprite(m_duneBmp, m_duneCoordinates.x, m_duneCoordinates.y);
+    renderDrawer->renderSprite(m_teamBmp, m_teamCoordinates.x, m_teamCoordinates.y);
 
     int halfScreen = m_game.m_screenW / 2;
 

@@ -28,9 +28,24 @@ protected:
     int determinePreBuildAnimationIndex(cAbstractStructure *structure);
 
 private:
+    Graphics *m_gfxdata;
     Graphics *m_gfxinter;
     cStructureUtils structureUtils;
 
     void renderIconOfUnitBeingRepaired(cAbstractStructure *structure) const;
     void renderIconThatStructureIsBeingRepaired(cAbstractStructure *structure) const;
+    void drawHdBuildingFoundation(cAbstractStructure *structure) const;
+    bool drawHdBarracksFlag(cAbstractStructure *structure) const;
+    bool drawHdWorFlag(cAbstractStructure *structure) const;
+    bool drawHdRadarFlag(cAbstractStructure *structure) const;
+    bool drawHdConstYardFlag(cAbstractStructure *structure) const;
+    bool drawHdRefineryFlag(cAbstractStructure *structure) const;
+    bool drawHdPalaceFlag(cAbstractStructure *structure) const;
+    bool drawHdIxFlag(cAbstractStructure *structure) const;
+    bool drawHdLightFactoryFlag(cAbstractStructure *structure) const;
+    bool drawHdHighTechFlag(cAbstractStructure *structure) const;
+    bool drawHdSiloFlag(cAbstractStructure *structure) const;
+    bool drawHdStarportFlag(cAbstractStructure *structure) const;
+    bool drawHdWindTrapFlag(cAbstractStructure *structure) const;
+    void drawHarvesterOnRefineryPad(cAbstractStructure *structure) const;
 };

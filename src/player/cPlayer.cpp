@@ -10,6 +10,7 @@
 #include "player/cHousesInfo.h"
 #include "drawers/SDLDrawer.hpp"
 #include "utils/Graphics.hpp"
+#include "utils/Localization.hpp"
 #include "include/Texture.hpp"
 #include "utils/RNG.hpp"
 #include "map/MapGeometry.hpp"
@@ -68,6 +69,15 @@ cPlayer::~cPlayer()
 
 void cPlayer::destroyAllegroBitmaps()
 {
+    if (m_hdTextureReferences) {
+        bmp_flag = nullptr;
+        bmp_flag_small = nullptr;
+        memset(bmp_structure, 0, sizeof(bmp_structure));
+        memset(bmp_unit, 0, sizeof(bmp_unit));
+        memset(bmp_unit_top, 0, sizeof(bmp_unit_top));
+        m_hdTextureReferences = false;
+        return;
+    }
     if (bmp_flag) {
         delete bmp_flag;
     }
@@ -231,6 +241,8 @@ void cPlayer::init(int id, brains::cPlayerBrain *brain)
 
     iTeam = -1;
     notifications.clear();
+    m_lastEnemyWarningMs = 0;
+    m_hasPlayedEnemyWarning = false;
 }
 
 /**
@@ -259,8 +271,28 @@ void cPlayer::setHouse(int iHouse)
         emblemBackgroundColor = getEmblemBackgroundColorForHouse(house);
 
         destroyAllegroBitmaps();
-        bmp_flag = createTextureFromIndexedSurfaceWithPalette(gfxdata->getSurface(BUILDING_FLAG_LARGE),TransparentColorIndex);
-        bmp_flag_small = createTextureFromIndexedSurfaceWithPalette(gfxdata->getSurface(BUILDING_FLAG_SMALL),TransparentColorIndex);
+        m_hdTextureReferences = gfxdata->getDensity() > 1;
+        const int paletteSwapStart = m_HousesInfo->getSwapColor(house);
+        const auto createHouseTexture = [&](SDL_Surface *surface) {
+            return m_hdTextureReferences
+                ? gfxdata->getHouseTexture(
+                    surface,
+                    house,
+                    paletteSwapStart,
+                    minimapColor,
+                    TransparentColorIndex
+                )
+                : createTextureFromIndexedSurfaceWithPalette(
+                    surface,
+                    TransparentColorIndex
+                );
+        };
+        bmp_flag = createHouseTexture(
+            gfxdata->getSurface(BUILDING_FLAG_LARGE)
+        );
+        bmp_flag_small = createHouseTexture(
+            gfxdata->getSurface(BUILDING_FLAG_SMALL)
+        );
 
         // now copy / set all structures for this player, with the correct color
         for (int i = 0; i < MAX_STRUCTURETYPES; i++) {
@@ -268,7 +300,7 @@ void cPlayer::setHouse(int iHouse)
 
             if (!structureType.configured) continue;
 
-            bmp_structure[i] = createTextureFromIndexedSurfaceWithPalette(structureType.bmp, TransparentColorIndex);
+            bmp_structure[i] = createHouseTexture(structureType.bmp);
             if (!bmp_structure[i]) {
                 std::cerr << "Could not create bmp structure bitmap!? - Imminent crash.\n";
             }
@@ -280,7 +312,7 @@ void cPlayer::setHouse(int iHouse)
                 if (!bitmap) {
                     std::cerr << "Could not create FLASH bmp structure bitmap!? - Imminent crash.\n";
                 }
-                bmp_structure[j] = createTextureFromIndexedSurfaceWithPalette(structureType.flash, TransparentColorIndex);
+                bmp_structure[j] = createHouseTexture(structureType.flash);
             }
 
         }
@@ -290,13 +322,13 @@ void cPlayer::setHouse(int iHouse)
         for (int i = 0; i < MAX_UNITTYPES; i++) {
             s_UnitInfo &unitType = sUnitInfo[i];
 
-            bmp_unit[i] = createTextureFromIndexedSurfaceWithPalette(unitType.bmp, TransparentColorIndex);
+            bmp_unit[i] = createHouseTexture(unitType.bmp);
             if (!bmp_unit[i]) {
                 std::cerr << "Could not create bmp unit bitmap!? - Imminent crash.\n";
             }
             if (unitType.top) {
 
-                bmp_unit_top[i] = createTextureFromIndexedSurfaceWithPalette(unitType.top, TransparentColorIndex);
+                bmp_unit_top[i] = createHouseTexture(unitType.top);
             }
         }
     }
@@ -695,30 +727,30 @@ std::string cPlayer::getHouseName() const
 std::string cPlayer::getHouseNameForId(int house)
 {
     if (house == ATREIDES) {
-        return "Atreides";
+        return localization::text("Atreides", "Атрейдесы");
     }
     else if (house == HARKONNEN) {
-        return "Harkonnen";
+        return localization::text("Harkonnen", "Харконнены");
     }
     else if (house == ORDOS) {
-        return "Ordos";
+        return localization::text("Ordos", "Ордос");
     }
     else if (house == SARDAUKAR) {
-        return "Sardaukar";
+        return localization::text("Sardaukar", "Сардаукары");
     }
     else if (house == FREMEN) {
-        return "Fremen";
+        return localization::text("Fremen", "Фримены");
     }
     else if (house == MERCENARY) {
-        return "Mercenary";
+        return localization::text("Mercenary", "Наёмники");
     }
     else if (house == GENERALHOUSE) {
-        return "Generalhouse (none)";
+        return localization::text("No House", "Без Дома");
     }
     else if (house == CORRINO) {
-        return "Corrino / House for worms";
+        return localization::text("Corrino", "Коррино");
     }
-    return "Unknown !?";
+    return localization::text("Unknown", "Неизвестно");
 }
 
 void cPlayer::giveCredits(float amountToGive)
@@ -1517,18 +1549,18 @@ void cPlayer::onNotifyGameEvent(const s_GameEvent &event)
 {
     // notify building list updater if it was a structure of mine. So it gets removed from the building list.
     if (event.eventType == eGameEventType::GAME_EVENT_PLAYER_DEFEATED) {
-        auto msg = std::format("Player {} ({}) has been defeated.", event.player->getId(), event.player->getHouseName());
+        auto msg = localization::format("Player {} ({}) defeated.", "Игрок {} ({}) побеждён.", event.player->getId(), event.player->getHouseName());
         addNotification(msg, eNotificationType::BAD);
     }
 
     if (event.eventType == eGameEventType::GAME_EVENT_SPECIAL_LAUNCHED) {
-        auto msg = std::format("{} launched!", event.buildingListItem->getNameString());
+        auto msg = localization::format("Launched: {}!", "Запущено: {}!", event.buildingListItem->getNameString());
         addNotification(msg, eNotificationType::BAD);
     }
 
     if (event.player == this) {
         if (event.eventType == eGameEventType::GAME_EVENT_SPECIAL_SELECT_TARGET) {
-            auto msg = std::format("{} is ready for deployment.", event.buildingListItem->getNameString());
+            auto msg = localization::format("Ready to place: {}.", "Готово к размещению: {}.", event.buildingListItem->getNameString());
             addNotification(msg, eNotificationType::PRIORITY);
         }
 
@@ -1556,7 +1588,7 @@ void cPlayer::onNotifyGameEvent(const s_GameEvent &event)
 
         if (event.eventType == eGameEventType::GAME_EVENT_LIST_ITEM_FINISHED) {
             if (event.entityType == eBuildType::UPGRADE) {
-                auto msg = std::format("Upgrade: {} completed.", event.buildingListItem->getNameString());
+                auto msg = localization::format("Upgrade '{}' complete.", "Улучшение «{}» завершено.", event.buildingListItem->getNameString());
                 addNotification(msg, eNotificationType::PRIORITY);
             }
         }
@@ -1835,17 +1867,10 @@ void cPlayer::onEntityDiscovered(const s_GameEvent &event)
 //        return;
 //    }
 
-    if (game.m_musicType != MUSIC_PEACE) {
-        // nothing to do here music-wise
-        return;
-    }
-
     bool discoveringPlayerIsSameTeamAsThisPlayer = isSameTeamAs(event.player);
 
     int voiceId = -1;
 
-    // when state of music is not attacking, do attacking stuff and say "Warning enemy unit approaching
-    bool triggerMusic = false;
     if (event.entityType == eBuildType::UNIT) {
         cUnit &pUnit = unit[event.entityID];
         bool detectedEntityIsHuman = pUnit.getPlayer()->isHuman();
@@ -1854,7 +1879,6 @@ void cPlayer::onEntityDiscovered(const s_GameEvent &event)
 //        if (detectedEntityIsHuman || (isHuman() && !detectedEntityIsHuman)) {
         if (detectedEntityIsHuman || isHuman()) {
             if (discoveringPlayerIsSameTeamAsThisPlayer && !isSameTeamAs(pUnit.getPlayer())) {
-                triggerMusic = true;
                 if (pUnit.iType == SANDWORM) {
                     voiceId = SOUND_VOICE_10_ATR; // wormsign
                 }
@@ -1878,7 +1902,7 @@ void cPlayer::onEntityDiscovered(const s_GameEvent &event)
             if (discoveringPlayerIsSameTeamAsThisPlayer && !isSameTeamAs(pStructure->getPlayer())) {
                 // only things that can harm us will trigger attack music?
                 if (event.entitySpecificType == RTURRET || event.entitySpecificType == TURRET) {
-                    triggerMusic = true;
+                    // Turrets do not have a dedicated warning voice.
                 }
             }
         }
@@ -1888,20 +1912,14 @@ void cPlayer::onEntityDiscovered(const s_GameEvent &event)
         }
     }
 
-    bool hasVoiceToPlay = isHuman() && voiceId > -1; // don't warn when already in "attack music mode"
-
-    bool mayPlayVoice = true;
-    if (triggerMusic) {
-        if (game.m_musicType != MUSIC_ATTACK) {
-            mayPlayVoice = game.playMusicByType(MUSIC_ATTACK, getId(), hasVoiceToPlay);
-        }
-        else {
-            mayPlayVoice = false;
-        }
-    }
-
-    if (mayPlayVoice && hasVoiceToPlay) {
+    constexpr Uint64 warningCooldownMs = 30'000;
+    const Uint64 now = SDL_GetTicks64();
+    const bool cooldownExpired =
+        !m_hasPlayedEnemyWarning || now - m_lastEnemyWarningMs >= warningCooldownMs;
+    if (isHuman() && voiceId > -1 && cooldownExpired) {
         game.playVoice(voiceId, getId());
+        m_lastEnemyWarningMs = now;
+        m_hasPlayedEnemyWarning = true;
     }
 }
 
@@ -1987,14 +2005,14 @@ void cPlayer::onMyUnitDestroyed(const s_GameEvent &event)
     // If a harvester died, and it is the last. And we have atleast one REFINERY; then send a Harvester to that
     // player
     if (pUnit.isHarvester()) { // a harvester died
-        addNotification("You've lost a Harvester.", eNotificationType::PRIORITY);
+        addNotification(localization::text("You lost a harvester.", "Вы потеряли харвестер."), eNotificationType::PRIORITY);
         const std::vector<int> &refineries = getAllMyStructuresAsIdForType(REFINERY);
 
         int harvesters = getAmountOfUnitsForType(HARVESTER);
 
         // if 1, or less
         if (harvesters == 1) {
-            addNotification("You have one Harvester left.", eNotificationType::NEUTRAL);
+            addNotification(localization::text("You have one harvester left.", "У вас остался один харвестер."), eNotificationType::NEUTRAL);
         }
 
         if (!refineries.empty()) { // and its player still has a refinery
@@ -2007,7 +2025,7 @@ void cPlayer::onMyUnitDestroyed(const s_GameEvent &event)
         }
         else {
             if (harvesters < 1) {
-                addNotification("No harvesters and refineries left!", eNotificationType::BAD);
+                addNotification(localization::text("No harvesters or refineries left!", "Не осталось харвестеров и перерабатывающих заводов!"), eNotificationType::BAD);
             }
         }
     }
@@ -2028,7 +2046,7 @@ void cPlayer::reinforceHarvesterIfNeeded(int cell)
 
         // No harvester found, deliver one
         if (harvesters < 1) {
-            addNotification("No more Harvester left, reinforcing...", BAD);
+            addNotification(localization::text("No harvesters left. Reinforcements incoming...", "Харвестеров не осталось. Прибывает подкрепление…"), BAD);
 
             // deliver
             cAbstractStructure *refinery = global_map.findClosestStructureType(cell, REFINERY, this);
@@ -2311,6 +2329,47 @@ Texture *cPlayer::createTextureFromIndexedSurfaceWithPalette(SDL_Surface *refere
     assert(referenceSurface && "referenceSurface must be given");
     SDL_Renderer *_renderer = renderDrawer->getRenderer();
 
+    const auto createTextureFromRgba = [this, _renderer](SDL_Surface *rgbaSurface) -> Texture * {
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, rgbaSurface);
+        if (!texture) {
+            SDL_Log("SDL_CreateTextureFromSurface error : %s", SDL_GetError());
+            return nullptr;
+        }
+
+        SDL_SetTextureScaleMode(
+            texture,
+            game.getGraphicsDensity() > 1
+                ? SDL_ScaleModeLinear
+                : SDL_ScaleModeNearest
+        );
+        return new Texture(
+            texture,
+            rgbaSurface->w,
+            rgbaSurface->h,
+            false,
+            game.getGraphicsDensity()
+        );
+    };
+
+    // HD packs contain true-colour PNG surfaces. Palette replacement only
+    // applies to the classic INDEX8 assets; treating RGBA pixels as palette
+    // indices would copy four bytes per pixel into a one-byte destination.
+    if (referenceSurface->format->format != SDL_PIXELFORMAT_INDEX8 ||
+        referenceSurface->format->palette == nullptr) {
+        SDL_Surface *rgbaSurface = SDL_ConvertSurfaceFormat(
+            referenceSurface,
+            SDL_PIXELFORMAT_RGBA8888,
+            0
+        );
+        if (!rgbaSurface) {
+            SDL_Log("SDL_ConvertSurfaceFormat error : %s", SDL_GetError());
+            return nullptr;
+        }
+        Texture *result = createTextureFromRgba(rgbaSurface);
+        SDL_FreeSurface(rgbaSurface);
+        return result;
+    }
+
     // Step 1: Create a copy of the surface (same INDEX8 format)
     SDL_Surface *modifiableSurface = SDL_CreateRGBSurfaceWithFormat(0, referenceSurface->w, referenceSurface->h, 8, SDL_PIXELFORMAT_INDEX8);
     if (!modifiableSurface) {
@@ -2319,9 +2378,23 @@ Texture *cPlayer::createTextureFromIndexedSurfaceWithPalette(SDL_Surface *refere
     }
 
     // Copy pixels
-    SDL_LockSurface(referenceSurface);
-    SDL_LockSurface(modifiableSurface);
-    memcpy(modifiableSurface->pixels, referenceSurface->pixels, referenceSurface->h * referenceSurface->pitch);
+    if (SDL_LockSurface(referenceSurface) != 0) {
+        SDL_Log("SDL_LockSurface error : %s", SDL_GetError());
+        SDL_FreeSurface(modifiableSurface);
+        return nullptr;
+    }
+    if (SDL_LockSurface(modifiableSurface) != 0) {
+        SDL_Log("SDL_LockSurface error : %s", SDL_GetError());
+        SDL_UnlockSurface(referenceSurface);
+        SDL_FreeSurface(modifiableSurface);
+        return nullptr;
+    }
+    const int rowBytes = std::min(referenceSurface->pitch, modifiableSurface->pitch);
+    for (int y = 0; y < referenceSurface->h; ++y) {
+        auto *destination = static_cast<Uint8 *>(modifiableSurface->pixels) + y * modifiableSurface->pitch;
+        const auto *source = static_cast<const Uint8 *>(referenceSurface->pixels) + y * referenceSurface->pitch;
+        memcpy(destination, source, rowBytes);
+    }
     SDL_UnlockSurface(referenceSurface);
     SDL_UnlockSurface(modifiableSurface);
 
@@ -2377,13 +2450,7 @@ Texture *cPlayer::createTextureFromIndexedSurfaceWithPalette(SDL_Surface *refere
     }
 
     // Step 5: Create the final texture
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, rgbaSurface);
-    if (!texture) {
-        SDL_Log("SDL_CreateTextureFromSurface error : %s", SDL_GetError());
-        return nullptr;
-    }
-
-    auto *newTexture = new Texture(texture, rgbaSurface->w, rgbaSurface->h);
+    Texture *newTexture = createTextureFromRgba(rgbaSurface);
     SDL_FreeSurface(rgbaSurface);
     return newTexture;
 }

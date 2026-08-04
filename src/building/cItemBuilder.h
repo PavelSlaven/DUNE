@@ -10,6 +10,7 @@
 
 class cPlayer;
 class cBuildingListUpdater;
+class SaveGameManager;
 
 class cItemBuilder : cInputObserver {
 
@@ -51,6 +52,7 @@ public:
     }
 
 private:
+    friend class SaveGameManager;
     cBuildingListItem *m_items[MAX_ITEMS];
 
     cPlayer *m_player;  // the player context for this builder

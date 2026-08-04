@@ -23,10 +23,31 @@
 
 #include "utils/cHandleArgument.h"
 #include "utils/common.h"
+#include <filesystem>
 #include <string>
 
 #include <iostream>
 #include <SDL2/SDL_ttf.h>
+
+namespace {
+void useExecutableDirectoryAsWorkingDirectory()
+{
+    char *basePath = SDL_GetBasePath();
+    if (basePath == nullptr) {
+        return;
+    }
+
+    try {
+        const auto *utf8BasePath = reinterpret_cast<const char8_t *>(basePath);
+        std::filesystem::current_path(std::filesystem::path(utf8BasePath));
+    }
+    catch (const std::filesystem::filesystem_error &error) {
+        std::cerr << "Unable to use the game directory: " << error.what() << '\n';
+    }
+
+    SDL_free(basePath);
+}
+}
 
 // the ultimate game variable(s)
 cGame          				game;
@@ -60,6 +81,8 @@ std::shared_ptr<Graphics> gfxdata;		// graphics (terrain, units, structures)
 */
 int main(int argc, char **argv)
 {
+    useExecutableDirectoryAsWorkingDirectory();
+
     std::unique_ptr<GameSettings> settings = loadSettingsFromIni("settings.ini");
     
     // read command-line arguments, can override settings.ini

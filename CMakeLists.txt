@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 project(d2tm)
 
+include(CTest)
+
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     message(STATUS "No build type selected, defaulting to Debug")
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
@@ -176,3 +178,211 @@ else()
 endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+if(BUILD_TESTING)
+    add_executable(
+        command_bindings_tests
+        tests/CommandBindingsTests.cpp
+        src/controls/cKeyboardEvent.cpp
+    )
+    target_include_directories(
+        command_bindings_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+    )
+    add_test(NAME command_bindings COMMAND command_bindings_tests)
+
+    add_executable(
+        render_scale_tests
+        tests/RenderScaleTests.cpp
+        src/utils/RenderScale.cpp
+    )
+    target_include_directories(
+        render_scale_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME render_scale_calculations COMMAND render_scale_tests)
+
+    add_executable(
+        graphics_mode_tests
+        tests/GraphicsModeTests.cpp
+    )
+    target_include_directories(
+        graphics_mode_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME graphics_mode_selection COMMAND graphics_mode_tests)
+
+    add_executable(
+        hud_layout_tests
+        tests/HudLayoutTests.cpp
+        src/utils/cRectangle.cpp
+    )
+    target_include_directories(
+        hud_layout_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+    )
+    add_test(NAME hud_layout_geometry COMMAND hud_layout_tests)
+
+    add_executable(
+        options_menu_layout_tests
+        tests/OptionsMenuLayoutTests.cpp
+        src/utils/cRectangle.cpp
+    )
+    target_include_directories(
+        options_menu_layout_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+    )
+    add_test(NAME options_menu_layout_geometry COMMAND options_menu_layout_tests)
+
+    add_executable(
+        command_bar_layout_tests
+        tests/CommandBarLayoutTests.cpp
+        src/utils/cRectangle.cpp
+    )
+    target_include_directories(
+        command_bar_layout_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+    )
+    add_test(NAME command_bar_layout_geometry COMMAND command_bar_layout_tests)
+
+    add_executable(
+        terrain_variation_tests
+        tests/TerrainVariationTests.cpp
+    )
+    target_include_directories(
+        terrain_variation_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME terrain_variation_selection COMMAND terrain_variation_tests)
+
+    add_executable(
+        world_scale_tests
+        tests/WorldScaleTests.cpp
+        src/utils/WorldScale.cpp
+    )
+    target_include_directories(
+        world_scale_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME world_scale_selection COMMAND world_scale_tests)
+
+    add_executable(
+        world_object_scale_tests
+        tests/WorldObjectScaleTests.cpp
+    )
+    target_include_directories(
+        world_object_scale_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME world_object_scale_selection COMMAND world_object_scale_tests)
+
+    add_executable(
+        hd_presentation_tests
+        tests/HdPresentationTests.cpp
+    )
+    target_include_directories(
+        hd_presentation_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME hd_presentation_selection COMMAND hd_presentation_tests)
+
+    add_executable(
+        campaign_map_layout_tests
+        tests/CampaignMapLayoutTests.cpp
+        src/utils/cRectangle.cpp
+    )
+    target_include_directories(
+        campaign_map_layout_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+    )
+    add_test(NAME campaign_map_layout_geometry COMMAND campaign_map_layout_tests)
+
+    add_executable(
+        render_target_state_tests
+        tests/RenderTargetStateTests.cpp
+        src/drawers/SDLDrawer.cpp
+        src/utils/cRectangle.cpp
+    )
+    target_include_directories(
+        render_target_state_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+    )
+    add_test(NAME render_target_state_restoration COMMAND render_target_state_tests)
+
+    add_executable(
+        save_file_codec_tests
+        tests/SaveFileCodecTests.cpp
+        src/save/SaveFileCodec.cpp
+    )
+    target_include_directories(
+        save_file_codec_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME save_file_codec_roundtrip COMMAND save_file_codec_tests)
+
+    add_executable(
+        save_slot_name_tests
+        tests/SaveSlotNameTests.cpp
+    )
+    target_include_directories(
+        save_slot_name_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME save_slot_name_handling COMMAND save_slot_name_tests)
+
+    add_executable(
+        music_playlist_tests
+        tests/MusicPlaylistTests.cpp
+        src/audio/MusicPlaylist.cpp
+    )
+    target_include_directories(
+        music_playlist_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME music_playlist_shuffle_history COMMAND music_playlist_tests)
+
+    add_executable(
+        music_transition_policy_tests
+        tests/MusicTransitionPolicyTests.cpp
+    )
+    target_include_directories(
+        music_transition_policy_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME music_transition_policy COMMAND music_transition_policy_tests)
+
+    add_executable(
+        music_controls_layout_tests
+        tests/MusicControlsLayoutTests.cpp
+        src/utils/cRectangle.cpp
+    )
+    target_include_directories(
+        music_controls_layout_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+    )
+    add_test(NAME music_controls_layout_geometry COMMAND music_controls_layout_tests)
+endif()

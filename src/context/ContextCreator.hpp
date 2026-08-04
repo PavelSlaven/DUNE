@@ -12,7 +12,11 @@ class cTextDrawer;
 
 class ContextCreator {
 public:
-    ContextCreator(SDL_Renderer *renderer, cFileValidator *settingsValidator);
+    ContextCreator(
+        SDL_Renderer *renderer,
+        cFileValidator *settingsValidator,
+        int assetDensity = 1
+    );
     ContextCreator() = delete;
     ~ContextCreator();
 
@@ -28,4 +32,7 @@ private:
     TTF_Font *game_font = nullptr; 	// arrakeen.fon
     TTF_Font *bene_font = nullptr;	// benegesserit font.
     TTF_Font *small_font = nullptr;	// small font.
+    TTF_Font *menu_font = nullptr;   // larger menu and adaptive UI font.
+    TTF_Font *mentat_hd_font = nullptr; // dedicated Cyrillic remaster font.
+    int density = 1;
 };

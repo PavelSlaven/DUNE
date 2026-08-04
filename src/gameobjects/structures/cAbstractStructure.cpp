@@ -11,6 +11,7 @@
   */
 
 #include "cAbstractStructure.h"
+#include "utils/WorldObjectScale.hpp"
 
 #include "d2tmc.h"
 #include "data/gfxdata.h"
@@ -23,7 +24,9 @@
 #include "utils/cSoundPlayer.h"
 #include "include/Texture.hpp"
 #include "utils/RNG.hpp"
+#include "utils/Localization.hpp"
 #include <SDL2/SDL.h>
+#include <cmath>
 #include <format>
 
 #include "data/gfxaudio.h"
@@ -896,21 +899,40 @@ void cAbstractStructure::drawWithShadow()
     // what frame is being drawn. So multiply the height of the structure size times frame
     int iSourceY = pixelHeight * iFrame;
 
-    int drawX = iDrawX();
-    int drawY = iDrawY();
-
-    int scaledWidth = mapCamera->factorZoomLevel(pixelWidth);
-    int scaledHeight = mapCamera->factorZoomLevel(pixelHeight);
+    const cRectangle visual = getVisualRectangle();
 
     Texture *bitmapToDraw = getBitmap();
 
     cRectangle src =  {0, iSourceY, pixelWidth, pixelHeight};
-    cRectangle dest =  {drawX, drawY, scaledWidth, scaledHeight};
     Texture *shadow = getShadowBitmap();
     if (shadow) {
-        renderDrawer->renderStrechSprite(shadow, src, dest, ShadowTrans);
+        renderDrawer->renderStrechSprite(shadow, src, visual, ShadowTrans);
     }
-    renderDrawer->renderStrechSprite(bitmapToDraw, src, dest);
+    renderDrawer->renderStrechSprite(bitmapToDraw, src, visual);
+}
+
+cRectangle cAbstractStructure::getVisualRectangle()
+{
+    const int originalWidth = static_cast<int>(std::lround(
+        mapCamera->factorZoomLevel(getWidthInPixels())
+    ));
+    const int originalHeight = static_cast<int>(std::lround(
+        mapCamera->factorZoomLevel(getHeightInPixels())
+    ));
+    const float visualScale =
+        structureWorldScaleFactor(game.getWorldScaleFactor());
+    const int visualWidth = static_cast<int>(std::lround(
+        originalWidth * visualScale
+    ));
+    const int visualHeight = static_cast<int>(std::lround(
+        originalHeight * visualScale
+    ));
+    return {
+        iDrawX() - (visualWidth - originalWidth) / 2,
+        iDrawY() - (visualHeight - originalHeight),
+        visualWidth,
+        visualHeight
+    };
 }
 
 /**
@@ -960,5 +982,5 @@ std::string cAbstractStructure::getDefaultStatusMessageBar() const
 {
     s_StructureInfo info = getStructureInfo();
     int health = getHealthNormalized() * 100;
-    return std::format("{} at {} percent health", info.name, health);
+    return localization::format("{}: health {}%", "{}: здоровье {}%", info.name, health);
 }

@@ -15,9 +15,21 @@ public:
     SDLDrawer(SDL_Renderer *_renderer);
     virtual ~SDLDrawer();
     void renderSprite(Texture *src,int x, int y,Uint8 opacity = 255);
-    void renderStrechSprite(Texture *src, cRectangle src_pos, cRectangle dest_pos, Uint8 opacity = 255);
+    void renderStrechSprite(
+        Texture *src,
+        cRectangle src_pos,
+        cRectangle dest_pos,
+        Uint8 opacity = 255,
+        SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND
+    );
     void renderStrechFullSprite(Texture *src, cRectangle dest_pos, Uint8 opacity = 255);
-    void renderFromSurface(SDL_Surface *src, int x, int y,Uint8 opacity = 255);
+    void renderFromSurface(
+        SDL_Surface *src,
+        int x,
+        int y,
+        Uint8 opacity = 255,
+        int density = 1
+    );
     void renderTexture(SDL_Texture *tex, int x, int y, int w, int h, Uint8 opacity = 255);
 
     void renderRectFillColor(int x, int y, int width, int height, Uint8 r, Uint8 g, Uint8 b, unsigned char opacity=255);
@@ -58,6 +70,17 @@ public:
     void beginDrawingToTexture(Texture* targetTexture);
     void endDrawingToTexture();
 private:
+    struct RenderTargetState {
+        SDL_Texture *target = nullptr;
+        int logicalWidth = 0;
+        int logicalHeight = 0;
+        SDL_Rect viewport{};
+        SDL_Rect clipRect{};
+        SDL_bool clippingEnabled = SDL_FALSE;
+        float scaleX = 1.0F;
+        float scaleY = 1.0F;
+    };
+
     void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel_color);
 
     Uint32 get_pixel(SDL_Surface *surface, int x, int y);
@@ -70,5 +93,5 @@ private:
     SDL_Renderer *renderer=nullptr;
     Uint32 transparentColorKey;
     void renderChangeColor(Color color);
-    std::stack<SDL_Texture*> renderTargetStack;
+    std::stack<RenderTargetState> renderTargetStack;
 };

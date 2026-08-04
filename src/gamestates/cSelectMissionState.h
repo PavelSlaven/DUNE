@@ -9,6 +9,7 @@
 struct SDL_Surface;
 class cGame;
 class GameContext;
+class Texture;
 
 class cSelectMissionState : public cGameState {
 public:
@@ -27,4 +28,6 @@ private:
     cTextDrawer *m_textDrawer = nullptr;
 
     GuiWindow *gui_window;
+    Texture *m_hdBackground = nullptr;
+    bool m_hdLayout = false;
 };

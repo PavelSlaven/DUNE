@@ -79,9 +79,9 @@ public:
 
     static const int LIST_MAX = 7;
 
-    static const int VerticalCandyBarWidth = 24;
-    static const int SidebarWidthWithoutCandyBar = 200;
-    static const int SidebarWidth = SidebarWidthWithoutCandyBar + VerticalCandyBarWidth; // including vertical candy bar
+    static constexpr int VerticalCandyBarWidth = 24;
+    inline static int SidebarWidthWithoutCandyBar = 200;
+    inline static int SidebarWidth = 224;
     static const int TopBarHeight = 42;
     static const int HeightOfMinimap = 200 + 8;
     static const int WidthOfMinimap = 200;
@@ -94,6 +94,8 @@ public:
 
     static const int TotalHeightBeforePowerBarStarts =
         TopBarHeight + HeightOfMinimap + HorizontalCandyBarHeight + PowerBarMarginHeight;
+
+    static void configureLayout(bool hdMode, int logicalWidth);
 
     void onNotifyMouseEvent(const s_MouseEvent &event);
 

@@ -19,6 +19,7 @@
 #include <SDL2/SDL.h>
 
 struct GameSettings;
+enum class GraphicsMode;
 
 
 /**
@@ -53,3 +54,22 @@ int distanceBetweenCellAndCenterOfScreen(int iCell);
 const char *toStringBuildTypeSpecificType(const eBuildType &buildType, const int &specificTypeId);
 
 std::unique_ptr<GameSettings> loadSettingsFromIni(const std::string& filename);
+
+bool saveDisplaySettingsToIni(
+    const std::string &filename,
+    int screenWidth,
+    int screenHeight,
+    bool fullscreen,
+    int renderScalePercent,
+    int worldScalePercent,
+    GraphicsMode graphicsMode,
+    std::string &errorMessage
+);
+
+// Saves every setting which is understood by loadSettingsFromIni while
+// preserving the rest of the INI file (comments, unknown keys and layout).
+bool saveSettingsToIni(
+    const std::string &filename,
+    const GameSettings &settings,
+    std::string &errorMessage
+);

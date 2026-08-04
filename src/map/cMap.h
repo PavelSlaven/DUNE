@@ -29,6 +29,7 @@ class cReinforcements;
 class MapGeometry;
 struct s_TerrainInfo;
 class GameContext;
+class SaveGameManager;
 
 class cMap : public cScenarioObserver {
 
@@ -538,6 +539,7 @@ public:
 
     void setTerrainInfo(std::shared_ptr<s_TerrainInfo> terrainInfo);
 private:
+    friend class SaveGameManager;
     void setVisible(int iCell, int iPlayer, bool flag);
 
     std::vector<tCell> cell;

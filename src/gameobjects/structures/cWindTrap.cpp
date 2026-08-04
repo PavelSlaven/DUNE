@@ -4,6 +4,7 @@
 #include "definitions.h"
 #include "player/cPlayer.h"
 #include "utils/RNG.hpp"
+#include "utils/Localization.hpp"
 #include <format>
 
 // Constructor
@@ -101,5 +102,5 @@ int cWindTrap::getMaxPowerOut() const
 std::string cWindTrap::getStatusForMessageBar() const
 {
     int powerProduction = ((float)getPowerOut() / (float)getMaxPowerOut()) * (float)100;
-    return std::format("{} and producing at {} percent capacity", cAbstractStructure::getDefaultStatusMessageBar(), powerProduction);
+    return localization::format("{}; output {}%", "{}; выработка {}%", cAbstractStructure::getDefaultStatusMessageBar(), powerProduction);
 }

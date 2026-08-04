@@ -404,7 +404,7 @@ void cMouseUnitsSelectedState::onNotifyKeyboardEvent(const cKeyboardEvent &event
 
 void cMouseUnitsSelectedState::onKeyDown(const cKeyboardEvent &event)
 {
-    if (event.hasKey(SDL_SCANCODE_LCTRL) || event.hasKey(SDL_SCANCODE_RCTRL)) {
+    if (event.hasAssignedKey(game.m_commandBindings.attack)) {
         setState(SELECTED_STATE_ATTACK);
         mouseTile = MOUSE_ATTACK;
     }
@@ -460,7 +460,7 @@ void cMouseUnitsSelectedState::onKeyDown(const cKeyboardEvent &event)
 
 void cMouseUnitsSelectedState::onKeyPressed(const cKeyboardEvent &event)
 {
-    if (event.hasKey(SDL_SCANCODE_LCTRL) || event.hasKey(SDL_SCANCODE_RCTRL)) {
+    if (event.hasAssignedKey(game.m_commandBindings.attack)) {
         setState(SELECTED_STATE_ATTACK);
         evaluateMouseMoveState();
     }
@@ -471,12 +471,12 @@ void cMouseUnitsSelectedState::onKeyPressed(const cKeyboardEvent &event)
     }
 
     // go to repair state
-    if (event.hasKey(SDL_SCANCODE_R)) {
+    if (event.hasAssignedKey(game.m_commandBindings.repair)) {
         m_context->setMouseState(MOUSESTATE_REPAIR);
     }
 
     // order any selected harvester to return to refinery
-    if (event.hasKey(SDL_SCANCODE_D)) {
+    if (event.hasAssignedKey(game.m_commandBindings.unload)) {
         const std::vector<int> &selectedUnits = m_player->getSelectedUnits();
         for (auto &id : selectedUnits) {
             cUnit &pUnit = unit[id];
@@ -510,4 +510,22 @@ void cMouseUnitsSelectedState::onBlur()
 {
     m_mouse->resetBoxSelect();
     m_mouse->resetDragViewportInteraction();
+}
+
+void cMouseUnitsSelectedState::setCommandState(eMouseUnitsSelectedState newState)
+{
+    setState(newState);
+    switch (newState) {
+        case SELECTED_STATE_ATTACK:
+        case SELECTED_STATE_FORCE_ATTACK:
+            mouseTile = MOUSE_ATTACK;
+            break;
+        case SELECTED_STATE_REPAIR:
+            mouseTile = MOUSE_REPAIR;
+            break;
+        default:
+            mouseTile = MOUSE_MOVE;
+            break;
+    }
+    m_mouse->setTile(mouseTile);
 }

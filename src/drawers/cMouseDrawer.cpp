@@ -8,6 +8,7 @@
 #include "gameobjects/structures/cWindTrap.h"
 #include "gui/cTextWriter.h"
 #include "player/cPlayer.h"
+#include "utils/Localization.hpp"
 
 #include <SDL2/SDL.h>
 
@@ -171,12 +172,12 @@ void cMouseDrawer::drawToolTipTurretInformation(cAbstractStructure *theStructure
 {
     assert(theStructure);
     if (theStructure->belongsTo(player)) {
-        textWriter->write(std::format("Sight : {}", theStructure->getSight()));
-        textWriter->write(std::format("Range : {}", theStructure->getRange()));
+        textWriter->write(localization::format("Sight: {}", "Обзор: {}", theStructure->getSight()));
+        textWriter->write(localization::format("Range: {}", "Дальность: {}", theStructure->getRange()));
     }
     else {
-        textWriter->write("Sight : Unknown");
-        textWriter->write("Range : Unknown");
+        textWriter->write(localization::text("Sight: unknown", "Обзор: неизвестно"));
+        textWriter->write(localization::text("Range: unknown", "Дальность: неизвестно"));
     }
 }
 
@@ -193,9 +194,9 @@ void cMouseDrawer::drawToolTipGeneralInformation(cAbstractStructure *theStructur
         description=std::format("{}", structureType.name);
     }
     textWriter->write(description.c_str(), Color{255, 255, 0,255});
-    textWriter->writef("Hitpoints : {}/{}", theStructure->getHitPoints(), theStructure->getMaxHP());
-    textWriter->writef("Armor : {}", theStructure->getArmor());
-    textWriter->writef("Protected : {}%%", (100-theStructure->getPercentageNotPaved()));
+    textWriter->write(localization::format("Health: {}/{}", "Прочность: {}/{}", theStructure->getHitPoints(), theStructure->getMaxHP()));
+    textWriter->write(localization::format("Armor: {}", "Броня: {}", theStructure->getArmor()));
+    textWriter->write(localization::format("Foundation: {}%", "Фундамент: {}%", (100-theStructure->getPercentageNotPaved())));
 }
 
 void cMouseDrawer::drawToolTipWindTrapInformation(cWindTrap *theWindTrap)
@@ -206,16 +207,16 @@ void cMouseDrawer::drawToolTipWindTrapInformation(cWindTrap *theWindTrap)
         int powerUse = theWindTrap->getPlayer()->getPowerUsage();
 
         if (powerUse <= powerOut) {
-            textWriter->writef("Total usage : {}/{} (OK)", powerUse, powerOut);
+            textWriter->write(localization::format("Usage: {}/{} (normal)", "Расход: {}/{} (норма)", powerUse, powerOut));
         }
         else {
-            textWriter->writef("Total usage : {}/{} (LOW)", powerUse, powerOut);
+            textWriter->write(localization::format("Usage: {}/{} (low)", "Расход: {}/{} (мало)", powerUse, powerOut));
         }
-        textWriter->writef("Windtrap outage : {}/{}", theWindTrap->getPowerOut(), theWindTrap->getMaxPowerOut());
+        textWriter->write(localization::format("Power output: {}/{}", "Выработка энергии: {}/{}", theWindTrap->getPowerOut(), theWindTrap->getMaxPowerOut()));
     }
     else {
-        textWriter->write("Total usage : Unknown");
-        textWriter->write("Windtrap outage : Unknown");
+        textWriter->write(localization::text("Usage: unknown", "Расход: неизвестно"));
+        textWriter->write(localization::text("Power output: unknown", "Выработка энергии: неизвестно"));
     }
 }
 
@@ -242,15 +243,15 @@ void cMouseDrawer::drawToolTipSiloInformation(cAbstractStructure *theStructure)
         int maxSpice = thePlayer->getMaxCredits();
         int currentSpice =  thePlayer->getCredits();
         if (currentSpice <= maxSpice) {
-            textWriter->writef("Total usage : {}/{} (OK)", currentSpice, maxSpice);
+            textWriter->write(localization::format("Stored: {}/{} (normal)", "Запас: {}/{} (норма)", currentSpice, maxSpice));
         }
         else {
-            textWriter->writef("Total usage : {}/{} (NOK)", currentSpice, maxSpice);
+            textWriter->write(localization::format("Stored: {}/{} (low)", "Запас: {}/{} (мало)", currentSpice, maxSpice));
         }
-        textWriter->writef("Silo capacity : {}/{}", spiceCapacityOfStructure, 1000);
+        textWriter->write(localization::format("Storage capacity: {}/{}", "Вместимость хранилища: {}/{}", spiceCapacityOfStructure, 1000));
     }
     else {
-        textWriter->write("Spice usage : Unknown");
+        textWriter->write(localization::text("Spice storage: unknown", "Запас пряности: неизвестно"));
     }
 }
 

@@ -5,17 +5,24 @@
 #include "data/gfxdata.h"
 #include "d2tmc.h"
 #include "gameobjects/structures/cGunTurret.h"
+#include "gameobjects/structures/cRefinery.h"
 #include "gameobjects/structures/cRepairFacility.h"
 #include "gameobjects/structures/cRocketTurret.h"
 #include "gameobjects/structures/cWindTrap.h"
+#include "gameobjects/units/cUnit.h"
 #include "map/cMapCamera.h"
 #include "player/cPlayer.h"
 #include "utils/Graphics.hpp"
+#include "utils/WorldObjectScale.hpp"
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
 #include <SDL2/SDL.h>
 
+#include <algorithm>
+#include <cmath>
+
 cStructureDrawer::cStructureDrawer(GameContext *ctx) :
+    m_gfxdata(ctx->getGraphicsContext()->gfxdata.get()),
     m_gfxinter(ctx->getGraphicsContext()->gfxinter.get())
 {
 }
@@ -195,6 +202,9 @@ void cStructureDrawer::drawStructureAnimationRefinery(cAbstractStructure *struct
     assert(structure->getType() == REFINERY);
 
     drawStructureAnimation(structure);
+    if (game.isHdGraphicsActive() && structure->hasUnitWithin()) {
+        drawHarvesterOnRefineryPad(structure);
+    }
 }
 
 void cStructureDrawer::drawStructureForLayer(cAbstractStructure *structure, int layer)
@@ -230,7 +240,46 @@ void cStructureDrawer::drawStructureForLayer(cAbstractStructure *structure, int 
             else {
                 drawStructureAnimation(structure);
             }
-            structure->drawFlags();
+            bool drewHdHouseMarker = false;
+            if (game.isHdGraphicsActive()) {
+                drewHdHouseMarker = drawHdRefineryFlag(structure);
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdSiloFlag(structure);
+                }
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdWindTrapFlag(structure);
+                }
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdConstYardFlag(structure);
+                }
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdBarracksFlag(structure);
+                }
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdWorFlag(structure);
+                }
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdRadarFlag(structure);
+                }
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdStarportFlag(structure);
+                }
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdPalaceFlag(structure);
+                }
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdIxFlag(structure);
+                }
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdLightFactoryFlag(structure);
+                }
+                if (!drewHdHouseMarker) {
+                    drewHdHouseMarker = drawHdHighTechFlag(structure);
+                }
+            }
+            if (!drewHdHouseMarker) {
+                structure->drawFlags();
+            }
         }
         else {
             drawStructurePrebuildAnimation(structure);
@@ -249,10 +298,605 @@ void cStructureDrawer::drawStructureForLayer(cAbstractStructure *structure, int 
     }
 }
 
+bool cStructureDrawer::drawHdRadarFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != RADAR) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_RADAR_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameSize = 64;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameSize,
+        logicalFrameSize,
+        logicalFrameSize,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdBarracksFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != BARRACKS) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_BARRACKS_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameSize = 64;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameSize,
+        logicalFrameSize,
+        logicalFrameSize,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdWorFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != WOR) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_WOR_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameSize = 64;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameSize,
+        logicalFrameSize,
+        logicalFrameSize,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdRefineryFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != REFINERY) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_REFINERY_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameWidth = 96;
+    constexpr int logicalFrameHeight = 64;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameHeight,
+        logicalFrameWidth,
+        logicalFrameHeight,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdWindTrapFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != WINDTRAP) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_WINDTRAP_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameSize = 64;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameSize,
+        logicalFrameSize,
+        logicalFrameSize,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdSiloFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != SILO) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_SILO_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameSize = 64;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameSize,
+        logicalFrameSize,
+        logicalFrameSize,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdStarportFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != STARPORT) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_STARPORT_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameSize = 96;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameSize,
+        logicalFrameSize,
+        logicalFrameSize,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdPalaceFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != PALACE) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_PALACE_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameSize = 96;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameSize,
+        logicalFrameSize,
+        logicalFrameSize,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdIxFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != IX) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_IX_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameSize = 64;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameSize,
+        logicalFrameSize,
+        logicalFrameSize,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdLightFactoryFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != LIGHTFACTORY) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_LIGHTFACTORY_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameSize = 64;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameSize,
+        logicalFrameSize,
+        logicalFrameSize,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdHighTechFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != HIGHTECH) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_HIGHTECH_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameWidth = 96;
+    constexpr int logicalFrameHeight = 64;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameHeight,
+        logicalFrameWidth,
+        logicalFrameHeight,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+bool cStructureDrawer::drawHdConstYardFlag(
+    cAbstractStructure *structure) const
+{
+    if (!structure || structure->getType() != CONSTYARD) {
+        return false;
+    }
+    SDL_Surface *flagSurface =
+        m_gfxdata->getSurface("BUILD_CONSTYARD_FLAG");
+    if (!flagSurface) {
+        return false;
+    }
+
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        flagSurface,
+        owner->getHouse(),
+        -1,
+        owner->getMinimapColor(),
+        TransparentColorIndex
+    );
+    if (!flag) {
+        return false;
+    }
+
+    constexpr int logicalFrameSize = 64;
+    constexpr int frameCount = 8;
+    const int phase =
+        static_cast<int>((SDL_GetTicks() / 125U) % frameCount);
+    const cRectangle source = {
+        0,
+        phase * logicalFrameSize,
+        logicalFrameSize,
+        logicalFrameSize,
+    };
+    renderDrawer->renderStrechSprite(
+        flag,
+        source,
+        structure->getVisualRectangle()
+    );
+    return true;
+}
+
+void cStructureDrawer::drawHdBuildingFoundation(
+    cAbstractStructure *structure) const
+{
+    Texture *foundation =
+        m_gfxdata->findTexture("BUILDING_FOUNDATION_HD");
+    if (!foundation) {
+        return;
+    }
+
+    const cRectangle destination = {
+        structure->iDrawX(),
+        structure->iDrawY(),
+        std::max(
+            1,
+            static_cast<int>(std::lround(
+                mapCamera->factorZoomLevel(
+                    structure->getWidthInPixels()
+                )
+            ))
+        ),
+        std::max(
+            1,
+            static_cast<int>(std::lround(
+                mapCamera->factorZoomLevel(
+                    structure->getHeightInPixels()
+                )
+            ))
+        ),
+    };
+    renderDrawer->renderStrechFullSprite(
+        foundation,
+        destination,
+        230
+    );
+}
+
+void cStructureDrawer::drawHarvesterOnRefineryPad(
+    cAbstractStructure *structure) const
+{
+    if (!structure || !structure->hasUnitWithin()) {
+        return;
+    }
+    const int unitId = structure->getUnitIdWithin();
+    if (unitId < 0 || unitId >= MAX_UNITS) {
+        return;
+    }
+    cUnit &harvester = unit[unitId];
+    if (!harvester.isValid() || harvester.iType != HARVESTER) {
+        return;
+    }
+
+    Texture *bitmap =
+        players[structure->getOwner()].getUnitBitmap(HARVESTER);
+    if (!bitmap) {
+        return;
+    }
+    const int frameWidth = harvester.getBmpWidth();
+    const int frameHeight = harvester.getBmpHeight();
+    // The classic refinery's occupied frame always shows the harvester
+    // aligned vertically on the unloading deck.  Do not inherit an arbitrary
+    // approach angle after the unit has entered the structure.
+    const int bodyFrame = convertAngleToDrawIndex(FACE_DOWN);
+    const cRectangle source = {
+        bodyFrame * frameWidth,
+        0,
+        frameWidth,
+        frameHeight,
+    };
+
+    const cRectangle refineryVisual = structure->getVisualRectangle();
+    const WorldObjectLayout harvesterVisual = refineryHarvesterLayout(
+        refineryVisual.getX(),
+        refineryVisual.getY(),
+        refineryVisual.getWidth(),
+        refineryVisual.getHeight()
+    );
+    const cRectangle destination = {
+        harvesterVisual.x,
+        harvesterVisual.y,
+        harvesterVisual.width,
+        harvesterVisual.height,
+    };
+    renderDrawer->renderStrechSprite(
+        bitmap,
+        source,
+        destination
+    );
+}
+
 void cStructureDrawer::renderIconThatStructureIsBeingRepaired(cAbstractStructure *structure) const
 {
-    int iconWidth = (gfxdata->getSurface(MOUSE_REPAIR))->w;
-    int iconHeight = (gfxdata->getSurface(MOUSE_REPAIR))->h;
+    int iconWidth = gfxdata->getLogicalWidth(MOUSE_REPAIR);
+    int iconHeight = gfxdata->getLogicalHeight(MOUSE_REPAIR);
     int drawX = structure->iDrawX();
     int drawY = structure->iDrawY();
     int offsetX = (structure->getWidthInPixels() - iconWidth) / 2;
@@ -273,8 +917,8 @@ void cStructureDrawer::renderIconOfUnitBeingRepaired(cAbstractStructure *structu
     cUnit &pUnit = unit[unitId];
     int iconId = pUnit.getUnitInfo().icon;
 
-    int iconWidth = (m_gfxinter->getSurface(iconId))->w;
-    int iconHeight = (m_gfxinter->getSurface(iconId))->h;
+    int iconWidth = m_gfxinter->getLogicalWidth(iconId);
+    int iconHeight = m_gfxinter->getLogicalHeight(iconId);
 
     // draw health bar of unit on top of icon?
     int draw_x = 3;
@@ -312,6 +956,18 @@ void cStructureDrawer::renderIconOfUnitBeingRepaired(cAbstractStructure *structu
 
 void cStructureDrawer::drawStructuresForLayer(int layer)
 {
+    if (layer == 0 && game.isHdGraphicsActive()) {
+        // Foundations are a separate pass so a later structure's ground pad
+        // can never cover an already drawn neighbouring building.
+        for (int i = 0; i < MAX_STRUCTURES; ++i) {
+            cAbstractStructure *candidate = structure[i];
+            if (candidate &&
+                structureUtils.isStructureVisibleOnScreen(candidate)) {
+                drawHdBuildingFoundation(candidate);
+            }
+        }
+    }
+
     for (int i=0; i < MAX_STRUCTURES; i++) {
         cAbstractStructure *theStructure = structure[i];
 
@@ -322,6 +978,12 @@ void cStructureDrawer::drawStructuresForLayer(int layer)
             drawStructureForLayer(theStructure, layer);
 
             cPlayer &player = players[HUMAN]; // TODO: Pass it as variable? (instead of getting it from here)
+            const bool skipHdHeavyFactoryOutline =
+                game.isHdGraphicsActive() &&
+                theStructure->getType() == HEAVYFACTORY;
+            if (skipHdHeavyFactoryOutline) {
+                continue;
+            }
             // regardless if selected, render this so you know from which structure things will come?
             if (player.isPrimaryStructureForStructureType(theStructure->getType(), i)) {
                 drawRectangleOfStructure(theStructure, player.getPrimaryBuildingFadingColor());
@@ -349,11 +1011,10 @@ void cStructureDrawer::drawStructureHealthBar(int iStructure)
     }
 
     // Draw structure health
-    int draw_x = theStructure->iDrawX() - 1;
-    int draw_y = theStructure->iDrawY() - 5;
-
-    int widthBmp = mapCamera->factorZoomLevel(theStructure->getStructureInfo().bmp_width);
-    int width_x = widthBmp - 1;
+    const cRectangle visual = theStructure->getVisualRectangle();
+    int draw_x = visual.getX() - 1;
+    int draw_y = visual.getY() - 5;
+    int width_x = visual.getWidth() - 1;
 
     int height_y = 4;
 

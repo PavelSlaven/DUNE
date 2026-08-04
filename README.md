@@ -16,6 +16,10 @@ Dune II - The Maker
 ===================
 A.k.a. D2TM. Is a [Dune 2](http://en.wikipedia.org/wiki/Dune_II) remake.
 
+> **AI agents and maintainers of the local RU/HD build:** start with
+> [`README_AI.md`](README_AI.md). It documents the actual architecture,
+> toolchain, runtime layout, tests, resources, and safe change workflow.
+
 - Website: [https://dune2themaker.fundynamic.com](https://dune2themaker.fundynamic.com)
 - Discord: [https://dune2themaker.fundynamic.com/discord](https://dune2themaker.fundynamic.com/discord)
 - Twitter: [https://twitter.com/dune2themaker](https://twitter.com/dune2themaker)

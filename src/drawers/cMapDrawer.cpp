@@ -4,6 +4,7 @@
 #include "data/gfxdata.h"
 #include "d2tmc.h"
 #include "drawers/SDLDrawer.hpp"
+#include "drawers/TerrainVariation.hpp"
 #include "drawers/cTextDrawer.h"
 #include "player/cPlayer.h"
 #include "utils/Graphics.hpp"
@@ -69,7 +70,10 @@ void cMapDrawer::drawShroud()
                     if (tile > -1) {
                         const cRectangle src_pos = {tile * 32, 0, 32, 32};
                         cRectangle dest_pos = {iDrawX, iDrawY, iTileWidth, iTileHeight};
-                        renderDrawer->renderStrechSprite(gfxdata->getTexture(SHROUD), src_pos, dest_pos);
+                        renderDrawer->renderStrechFullSprite(
+                            gfxdata->getFrameTexture(SHROUD, src_pos),
+                            dest_pos
+                        );
                     }
                 }
                 else {
@@ -78,7 +82,10 @@ void cMapDrawer::drawShroud()
                     // tile 0 of shroud is entirely black... (effectively the same as drawing a rect here)
                     const cRectangle src_pos = {0, 0, 32, 32};
                     cRectangle dest_pos = {iDrawX, iDrawY, iTileWidth, iTileHeight};
-                    renderDrawer->renderStrechSprite(gfxdata->getTexture(SHROUD), src_pos, dest_pos);
+                    renderDrawer->renderStrechFullSprite(
+                        gfxdata->getFrameTexture(SHROUD, src_pos),
+                        dest_pos
+                    );
                 }
             }
         }
@@ -143,7 +150,31 @@ void cMapDrawer::drawTerrain()
                 // valid type
                 const cRectangle src_pos = {cell->tile * 32, 0,32, 32};
                 cRectangle dest_pos = {iDrawX, iDrawY, iTileWidth, iTileHeight};
-                renderDrawer->renderStrechSprite(gfxdata->getTexture(cell->type), src_pos, dest_pos);
+                Texture *terrainTexture =
+                    gfxdata->getFrameTexture(cell->type, src_pos);
+                if (game.isHdGraphicsActive()) {
+                    const int variant =
+                        hdTerrainVariantIndex(iCell, cell->type);
+                    const char *variantName =
+                        hdTerrainVariantName(
+                            cell->type,
+                            cell->tile,
+                            variant
+                        );
+                    if (variantName) {
+                        if (Texture *candidate =
+                                gfxdata->findFrameTexture(
+                                    variantName,
+                                    src_pos
+                                )) {
+                            terrainTexture = candidate;
+                        }
+                    }
+                }
+                renderDrawer->renderStrechFullSprite(
+                    terrainTexture,
+                    dest_pos
+                );
             }
 
             // draw Smudge if necessary

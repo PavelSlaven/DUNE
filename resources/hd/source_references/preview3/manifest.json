@@ -1,0 +1,26 @@
+{
+  "release": "v0.8.0-ru4-preview3",
+  "usage": "Local, non-commercial D2TM Russian build",
+  "sources": [
+    {
+      "file": "commando_enemy_soldiers_281892.png",
+      "page_url": "https://www.spriters-resource.com/arcade/commando/asset/281892/",
+      "asset_url": "https://www.spriters-resource.com/media/assets/279/281892.png?updated=1755495966",
+      "title": "Enemy Soldiers (DE) - Commando",
+      "width": 761,
+      "height": 387,
+      "bytes": 71411,
+      "sha256": "fbf0fb089333fe46ba3a879545a67e75aa8a6fd9f5284086c69443961bbee0cf"
+    },
+    {
+      "file": "battle_for_arrakis_buildings_239094.png",
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/239094/",
+      "asset_url": "https://www.spriters-resource.com/media/assets/236/239094.png?updated=1755492237",
+      "title": "Buildings - Dune II: The Battle for Arrakis",
+      "width": 512,
+      "height": 352,
+      "bytes": 55590,
+      "sha256": "3f73042e24d2211011e44da22aa6da1c024b8ba29203208fbf03a70184dad7ba"
+    }
+  ]
+}

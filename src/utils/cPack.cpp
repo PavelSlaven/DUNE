@@ -29,12 +29,22 @@ const int extensionSize = 4; // "WAV", "JPG", ...
 ReaderPack::ReaderPack(const std::string &filename)
 {
     fpName = filename;
-    if (readHeader()) {
-        sizeInMemory = SDL_RWsize(rfp.get()) - titleSize - nbrFilesSize - (fileNameSize+offsetSize)*fileInPak;
-        fileInMemory = std::make_unique<char[]>(sizeInMemory);
-        readFileLines();
+    if (!readHeader()) {
+        return;
     }
+    sizeInMemory =
+        SDL_RWsize(rfp.get()) -
+        titleSize -
+        nbrFilesSize -
+        (fileNameSize + extensionSize + offsetSize) * fileInPak;
+    if (sizeInMemory == 0) {
+        std::cerr << "Pack contains no data: " << fpName << std::endl;
+        return;
+    }
+    fileInMemory = std::make_unique<char[]>(sizeInMemory);
+    readFileLines();
     readDataIntoMemory();
+    valid = fileInPack.size() == static_cast<std::size_t>(fileInPak);
 }
 
 ReaderPack::~ReaderPack()
@@ -119,7 +129,7 @@ int ReaderPack::getIndexFromName(const std::string &fileId) const
 
 SDL_RWops *ReaderPack::getData(unsigned int index)
 {
-    if (index >= fileInPack.size()) {
+    if (!valid || index >= fileInPack.size()) {
         std::cerr << "Invalid index: " << index << std::endl;
         return nullptr;
     }
@@ -140,9 +150,23 @@ void ReaderPack::displayPackFile()
 
 void ReaderPack::readDataIntoMemory()
 {
+    if (!rfp || !fileInMemory) {
+        return;
+    }
     uint16_t firstData = titleSize + nbrFilesSize + (fileNameSize+extensionSize+offsetSize) * fileInPak;
     SDL_RWseek(rfp.get(), firstData, RW_SEEK_SET );
-    SDL_RWread(rfp.get(), fileInMemory.get(), sizeInMemory, 1);
+    if (SDL_RWread(rfp.get(), fileInMemory.get(), sizeInMemory, 1) != 1) {
+        std::cerr << "Failed to read pack data: " << fpName << std::endl;
+        fileInPack.clear();
+    }
+}
+
+std::string ReaderPack::getNameFromIndex(int index) const
+{
+    if (index < 0 || index >= static_cast<int>(fileInPack.size())) {
+        return {};
+    }
+    return fileInPack[index].fileId;
 }
 
 // **********************

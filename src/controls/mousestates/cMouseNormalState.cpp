@@ -8,6 +8,7 @@
 #include "gameobjects/units/cUnit.h"
 #include "gameobjects/structures/cAbstractStructure.h"
 #include "player/cPlayer.h"
+#include "utils/Localization.hpp"
 
 #include "d2tmc.h"
 
@@ -69,7 +70,7 @@ void cMouseNormalState::onMouseLeftButtonClicked()
 
         if (!ids.empty()) {
             if (ids.size() > 1) {
-                drawManager->setMessage(std::format("{} units selected", ids.size()));
+                drawManager->setMessage(localization::format("Units selected: {}", "Выбрано бойцов: {}", ids.size()));
             }
             else {
                 cUnit &pUnit = unit[ids[0]];
@@ -208,7 +209,7 @@ void cMouseNormalState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 
 void cMouseNormalState::onKeyDown(const cKeyboardEvent &event)
 {
-    if (event.hasKey(SDL_SCANCODE_LCTRL) || event.hasKey(SDL_SCANCODE_RCTRL)) {
+    if (event.hasAssignedKey(game.m_commandBindings.rally)) {
         cAbstractStructure *pSelectedStructure = m_player->getSelectedStructure();
         // when selecting a structure
         if (pSelectedStructure && pSelectedStructure->belongsTo(m_player) && pSelectedStructure->canSpawnUnits()) {
@@ -221,7 +222,8 @@ void cMouseNormalState::onKeyDown(const cKeyboardEvent &event)
 void cMouseNormalState::onKeyPressed(const cKeyboardEvent &event)
 {
     bool createGroup = event.hasKey(SDL_SCANCODE_LCTRL) || event.hasKey(SDL_SCANCODE_RCTRL);
-    if (createGroup) {
+    const bool rallyReleased = event.hasAssignedKey(game.m_commandBindings.rally);
+    if (createGroup || rallyReleased) {
         // actual group creation is at cGameLogic onKeyPressed
         setState(SELECT_STATE_NORMAL);
         mouseTile = MOUSE_NORMAL;
@@ -240,7 +242,7 @@ void cMouseNormalState::onKeyPressed(const cKeyboardEvent &event)
         }
     }
 
-    if (event.hasKey(SDL_SCANCODE_R)) {
+    if (event.hasAssignedKey(game.m_commandBindings.repair)) {
         m_context->setMouseState(MOUSESTATE_REPAIR);
     }
 }
@@ -262,4 +264,11 @@ void cMouseNormalState::onBlur()
 {
     m_mouse->resetBoxSelect();
     m_mouse->resetDragViewportInteraction();
+}
+
+void cMouseNormalState::setRallyPointCommandMode()
+{
+    setState(SELECT_STATE_RALLY);
+    mouseTile = MOUSE_RALLY;
+    m_mouse->setTile(mouseTile);
 }

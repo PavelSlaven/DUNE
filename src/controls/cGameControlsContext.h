@@ -54,8 +54,14 @@ public:
     bool isMouseOnMiniMap() const {
         return m_mouseCell == MOUSECELL_MINIMAP;
     }
+    bool isMouseOnCommandBar() const {
+        return m_mouseCell == MOUSECELL_COMMAND_BAR;
+    }
     bool isMouseOnSidebarOrMinimap() const {
         return isMouseOnSidebar() || isMouseOnMiniMap();
+    }
+    bool isMouseOnInterface() const {
+        return isMouseOnSidebarOrMinimap() || isMouseOnTopBar() || isMouseOnCommandBar();
     }
     bool isMouseOnBattleField() const;
 
@@ -81,6 +87,10 @@ public:
     bool isState(eMouseState other) const;
 
     void onFocusMouseStateEvent();
+
+    void activateMoveCommand();
+    void activateAttackCommand();
+    void activateRallyPointCommand();
 
 protected:
     void determineToolTip();

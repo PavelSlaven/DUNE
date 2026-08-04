@@ -9,6 +9,9 @@
 #include "gameobjects/projectiles/bullet.h"
 #include "player/cPlayer.h"
 #include "utils/Graphics.hpp"
+#include "utils/Localization.hpp"
+#include "sidebar/HudLayout.hpp"
+#include "sidebar/MusicControlsLayout.hpp"
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
 
@@ -17,6 +20,7 @@
 
 cDrawManager::cDrawManager(GameContext *ctx, cPlayer *thePlayer) :
     m_sidebarDrawer(ctx, thePlayer),
+    m_commandBarDrawer(ctx, thePlayer),
     m_creditsDrawer(ctx, thePlayer),
     m_orderDrawer(ctx, thePlayer),
     m_mapDrawer(&global_map, thePlayer, mapCamera),
@@ -28,6 +32,7 @@ cDrawManager::cDrawManager(GameContext *ctx, cPlayer *thePlayer) :
     m_sidebarColor(Color{214, 149, 20,255}),
     m_player(thePlayer),
     m_textDrawer(ctx->getTextContext()->getGameTextDrawer()),
+    m_smallTextDrawer(ctx->getTextContext()->getSmallTextDrawer()),
     m_gfxinter(ctx->getGraphicsContext()->gfxinter.get())
 {
     assert(thePlayer);
@@ -87,8 +92,11 @@ void cDrawManager::drawCombatState()
 
     // THE MESSAGE
     drawMessage();
+    drawTopBarMusicControls();
 
     drawNotifications();
+
+    m_commandBarDrawer.draw();
 
     renderDrawer->resetClippingFor();
 
@@ -133,10 +141,13 @@ void cDrawManager::drawDebugInfoUsages() const
 
     int startY = 74;
     int height = 14;
-    m_textDrawer->drawText(0, startY, std::format("Units {}/{}", unitsUsed, MAX_UNITS));
-    m_textDrawer->drawText(0, startY + 1*height, std::format("Structures %d/%d", structuresUsed, MAX_STRUCTURES));
-    m_textDrawer->drawText(0, startY + 2*height, std::format("Bullets %d/%d", bulletsUsed, MAX_BULLETS));
-    m_textDrawer->drawText(0, startY + 3*height, std::format("Particles %d/%d", particlesUsed, MAX_PARTICLES));
+    m_textDrawer->drawText(0, startY, localization::format("Units {}/{}", "Юниты {}/{}", unitsUsed, MAX_UNITS));
+    m_textDrawer->drawText(0, startY + 1*height,
+                           localization::format("Structures {}/{}", "Здания {}/{}", structuresUsed, MAX_STRUCTURES));
+    m_textDrawer->drawText(0, startY + 2*height,
+                           localization::format("Projectiles {}/{}", "Снаряды {}/{}", bulletsUsed, MAX_BULLETS));
+    m_textDrawer->drawText(0, startY + 3*height,
+                           localization::format("Particles {}/{}", "Эффекты {}/{}", particlesUsed, MAX_PARTICLES));
 }
 
 void cDrawManager::drawCredits()
@@ -156,17 +167,18 @@ void cDrawManager::drawRallyPoint()
     int drawX = mapCamera->getWindowXPositionFromCell(rallyPointCell);
     int drawY = mapCamera->getWindowYPositionFromCell(rallyPointCell);
 
-    SDL_Surface *mouseMoveBitmap = gfxdata->getSurface(MOUSE_MOVE);
+    const int mouseMoveWidth = gfxdata->getLogicalWidth(MOUSE_MOVE);
+    const int mouseMoveHeight = gfxdata->getLogicalHeight(MOUSE_MOVE);
 
-    int rallyPointWidthScaled = mapCamera->factorZoomLevel(mouseMoveBitmap->w);
-    int rallyPointHeightScaled = mapCamera->factorZoomLevel(mouseMoveBitmap->h);
+    int rallyPointWidthScaled = mapCamera->factorZoomLevel(mouseMoveWidth);
+    int rallyPointHeightScaled = mapCamera->factorZoomLevel(mouseMoveHeight);
     cRectangle dest = {drawX, drawY, rallyPointWidthScaled, rallyPointHeightScaled};
     renderDrawer->renderStrechFullSprite(gfxdata->getTexture(MOUSE_MOVE), dest);
 
     int startX = theStructure->iDrawX() + mapCamera->factorZoomLevel(theStructure->getWidthInPixels() / 2);
     int startY = theStructure->iDrawY() + mapCamera->factorZoomLevel(theStructure->getHeightInPixels() / 2);
 
-    int offset = (mouseMoveBitmap->w/2);
+    int offset = (mouseMoveWidth/2);
     drawX = mapCamera->getWindowXPositionFromCellWithOffset(rallyPointCell, offset);
     drawY = mapCamera->getWindowYPositionFromCellWithOffset(rallyPointCell, offset);
 
@@ -225,6 +237,56 @@ void cDrawManager::drawMouse()
 
 void cDrawManager::drawTopBarBackground()
 {
+    if (game.isHdGraphicsActive()) {
+        const Color panel{17, 21, 23, 255};
+        const Color border{151, 113, 43, 255};
+        const Color text{232, 222, 188, 255};
+        renderDrawer->renderRectFillColor(
+            0,
+            0,
+            game.m_screenW,
+            cSideBar::TopBarHeight,
+            panel
+        );
+        renderDrawer->renderLine(
+            0,
+            cSideBar::TopBarHeight - 2,
+            game.m_screenW,
+            cSideBar::TopBarHeight - 2,
+            border
+        );
+
+        const cRectangle optionsRect(7, 4, 126, 33);
+        renderDrawer->renderRectFillColor(
+            optionsRect.getX(),
+            optionsRect.getY(),
+            optionsRect.getWidth(),
+            optionsRect.getHeight(),
+            Color{27, 31, 33, 255}
+        );
+        renderDrawer->renderRectColor(
+            optionsRect.getX(),
+            optionsRect.getY(),
+            optionsRect.getWidth(),
+            optionsRect.getHeight(),
+            border
+        );
+        m_textDrawer->drawTextCenteredInBox(
+            localization::text("OPTIONS", "НАСТРОЙКИ"),
+            optionsRect,
+            text
+        );
+        if (game.getMouse()->isLeftButtonClicked() &&
+            game.getMouse()->isOverRectangle(
+                optionsRect.getX(),
+                optionsRect.getY(),
+                optionsRect.getWidth(),
+                optionsRect.getHeight())) {
+            game.setNextStateToTransitionTo(GAME_OPTIONS);
+        }
+        return;
+    }
+
     Texture *topbarPiece = m_gfxinter->getTexture(BMP_TOPBAR_BACKGROUND);
     for (int x = 0; x < game.m_screenW; x+= topbarPiece->w) {
         renderDrawer->renderSprite(topbarPiece, x, 0);
@@ -239,11 +301,82 @@ void cDrawManager::drawTopBarBackground()
     }
 }
 
+void cDrawManager::drawTopBarMusicControls()
+{
+    const bool hd = game.isHdGraphicsActive();
+    const HudLayout layout = HudLayout::create(hd, game.m_screenW, game.m_screenH);
+    const int left = hd ? 143 : 167;
+    const int right = layout.battlefield.getEndX() - (hd ? 8 : 5);
+    drawMusicControls(left, right, hd);
+}
+
+void cDrawManager::drawMusicControls(int left, int right, bool hd)
+{
+    const MusicControlsLayout layout = MusicControlsLayout::create(left, right, hd);
+    if (!layout.visible) {
+        return;
+    }
+
+    const Color panel = hd ? Color{35, 32, 25, 255} : Color{16, 16, 16, 225};
+    const Color border = hd ? Color{188, 139, 47, 255} : Color{214, 149, 20, 255};
+    const Color text{232, 222, 188, 255};
+
+    for (const cRectangle *rect : {&layout.previous, &layout.next}) {
+        renderDrawer->renderRectFillColor(rect->getX(), rect->getY(), rect->getWidth(), rect->getHeight(), panel);
+        renderDrawer->renderRectColor(rect->getX(), rect->getY(), rect->getWidth(), rect->getHeight(), border);
+    }
+    m_textDrawer->drawTextCenteredInBox("<", layout.previous, text);
+    m_textDrawer->drawTextCenteredInBox(">", layout.next, text);
+
+    if (layout.showsLabel()) {
+        std::string name = game.getCurrentMusicTrackName();
+        bool truncated = false;
+        const std::string ellipsis = "...";
+        while (!name.empty() &&
+               m_smallTextDrawer->getTextLength(name + (truncated ? ellipsis : std::string{})) > layout.label.getWidth() - 10) {
+            std::size_t characterStart = name.size() - 1U;
+            while (characterStart > 0U &&
+                   (static_cast<unsigned char>(name[characterStart]) & 0xC0U) == 0x80U) {
+                --characterStart;
+            }
+            name.erase(characterStart);
+            truncated = true;
+        }
+        while (!name.empty() && truncated &&
+               m_smallTextDrawer->getTextLength(name + ellipsis) > layout.label.getWidth() - 10) {
+            std::size_t characterStart = name.size() - 1U;
+            while (characterStart > 0U &&
+                   (static_cast<unsigned char>(name[characterStart]) & 0xC0U) == 0x80U) {
+                --characterStart;
+            }
+            name.erase(characterStart);
+        }
+        if (!name.empty() && truncated) {
+            name += ellipsis;
+        }
+        renderDrawer->renderRectFillColor(layout.label.getX(), layout.label.getY(), layout.label.getWidth(), layout.label.getHeight(), panel);
+        renderDrawer->renderRectColor(layout.label.getX(), layout.label.getY(), layout.label.getWidth(), layout.label.getHeight(), border);
+        m_smallTextDrawer->drawTextCenteredInBox(name, layout.label, text);
+    }
+
+    if (game.getMouse()->isLeftButtonClicked()) {
+        if (game.getMouse()->isOverRectangle(
+                layout.previous.getX(), layout.previous.getY(), layout.previous.getWidth(), layout.previous.getHeight())) {
+            game.playPreviousGameplayTrack();
+        }
+        else if (game.getMouse()->isOverRectangle(
+                     layout.next.getX(), layout.next.getY(), layout.next.getWidth(), layout.next.getHeight())) {
+            game.playNextGameplayTrack();
+        }
+    }
+}
+
 void cDrawManager::setPlayerToDraw(cPlayer *playerToDraw)
 {
     m_player = playerToDraw;
     m_creditsDrawer.setPlayer(playerToDraw);
     m_sidebarDrawer.setPlayer(playerToDraw);
+    m_commandBarDrawer.setPlayer(playerToDraw);
     m_orderDrawer.setPlayer(playerToDraw);
     miniMapDrawer.setPlayer(playerToDraw);
     m_mapDrawer.setPlayer(playerToDraw);
@@ -251,6 +384,9 @@ void cDrawManager::setPlayerToDraw(cPlayer *playerToDraw)
 
 void cDrawManager::drawOptionBar()
 {
+    if (game.isHdGraphicsActive()) {
+        return;
+    }
     // upper bar
     renderDrawer->renderRectFillColor(0, 0, game.m_screenW, cSideBar::TopBarHeight, Color{0, 0, 0,255});
     renderDrawer->renderRectFillColor(0,game.m_screenW, 40,32, Color{214,149,20,255});
@@ -264,7 +400,7 @@ void cDrawManager::drawNotifications()
 {
     std::vector<cPlayerNotification> &notifications = m_player->getNotifications();
 //    int y = cSideBar::TopBarHeight + 14; // 12 pixels
-    int y = game.m_screenH - 44;
+    int y = game.isHdGraphicsActive() ? m_commandBarDrawer.getTopY() - 18 : game.m_screenH - 44;
     for (auto &notification : notifications) {
         m_textDrawer->drawText(4, y, notification.getColor(), notification.getMessage().c_str());
         y-=15;
@@ -284,6 +420,7 @@ void cDrawManager::init()
 void cDrawManager::onNotifyMouseEvent(const s_MouseEvent &event)
 {
     m_sidebarDrawer.onNotifyMouseEvent(event);
+    m_commandBarDrawer.onNotifyMouseEvent(event);
 }
 
 void cDrawManager::onNotifyKeyboardEvent(const cKeyboardEvent &event)
@@ -352,6 +489,11 @@ void cDrawManager::drawMessageBar()
 void cDrawManager::setMessage(std::string msg, bool keepMessage)
 {
     m_messageDrawer.setMessage(msg, keepMessage);
+}
+
+std::string cDrawManager::getMessage() const
+{
+    return m_messageDrawer.getMessage();
 }
 
 void cDrawManager::setKeepMessage(bool value)

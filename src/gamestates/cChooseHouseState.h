@@ -37,6 +37,7 @@ private:
     Texture *bmp_HouseAtreides;
     Texture *bmp_HouseOrdos;
     Texture *bmp_HouseHarkonnen;
+    Texture *m_hdBackground = nullptr;
 
     // Click areas of house emblems
     cRectangle houseAtreides;
@@ -49,8 +50,17 @@ private:
 
     // Functions
     bool hoversOverBackButton;
+    bool m_hdLayout = false;
+    int m_hoveredHouse = -1;
 
     void onMouseLeftButtonClicked(const s_MouseEvent &event) const;
 
     void onMouseMoved(const s_MouseEvent &event);
+    void drawHdBackground() const;
+    void drawHdHouseCard(
+        const cRectangle &card,
+        Texture *emblem,
+        const std::string &name,
+        bool hovered
+    ) const;
 };

@@ -3,11 +3,14 @@
 #include "d2tmc.h"
 #include "drawers/SDLDrawer.hpp"
 #include "sidebar/cSideBar.h"
+#include "sidebar/HudLayout.hpp"
+#include "sidebar/MusicControlsLayout.hpp"
 #include "utils/Graphics.hpp"
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
 
 #include <SDL2/SDL.h>
+#include <algorithm>
 
 // Game Playing State and SelectYourNextConquestState have their own version
 // this class has to be abstracted in such a way so it is used in both those states, yet without the wonky init
@@ -35,12 +38,78 @@ cMessageDrawer::~cMessageDrawer()
 
 void cMessageDrawer::draw()
 {
+    if (m_state == messages::eMessageDrawerState::COMBAT &&
+        game.isHdGraphicsActive()) {
+        const HudLayout layout = HudLayout::create(
+            true,
+            game.m_screenW,
+            game.m_screenH
+        );
+        const MusicControlsLayout music = MusicControlsLayout::create(
+            143,
+            layout.battlefield.getEndX() - 8,
+            true
+        );
+        const int messageX = music.visible
+            ? music.panel.getEndX() + 8
+            : 140;
+        const cRectangle messageRect(
+            messageX,
+            4,
+            std::max(0, layout.battlefield.getEndX() - 8 - messageX),
+            33
+        );
+        renderDrawer->renderRectFillColor(
+            messageRect.getX(),
+            messageRect.getY(),
+            messageRect.getWidth(),
+            messageRect.getHeight(),
+            Color{20, 24, 26, 255}
+        );
+        renderDrawer->renderRectColor(
+            messageRect.getX(),
+            messageRect.getY(),
+            messageRect.getWidth(),
+            messageRect.getHeight(),
+            Color{112, 87, 42, 255}
+        );
+        if (m_alpha > -1 && !m_message.empty()) {
+            renderDrawer->setClippingFor(
+                messageRect.getX() + 5,
+                messageRect.getY(),
+                messageRect.getEndX() - 5,
+                messageRect.getEndY()
+            );
+            m_textDrawer->drawText(
+                messageRect.getX() + 8,
+                messageRect.getY() + 10,
+                Color{232, 225, 196, Uint8(m_alpha)},
+                m_message,
+                false
+            );
+            renderDrawer->resetClippingFor();
+        }
+        return;
+    }
+
     if (m_state == messages::eMessageDrawerState::COMBAT) {
-        renderDrawer->renderFromSurface(m_bmpBar, m_position.x, m_position.y);
+        renderDrawer->renderFromSurface(
+            m_bmpBar,
+            m_position.x,
+            m_position.y,
+            255,
+            m_gfxinter->getDensity()
+        );
     }
 
     if (m_alpha > -1) {
-        renderDrawer->renderFromSurface(m_bmpBar, m_position.x, m_position.y, m_alpha);
+        renderDrawer->renderFromSurface(
+            m_bmpBar,
+            m_position.x,
+            m_position.y,
+            m_alpha,
+            m_gfxinter->getDensity()
+        );
         // draw message
         m_textDrawer->drawText(m_position.x+13, m_position.y+6, Color{0, 0, 0,Uint8(m_alpha)}, m_message, false);
     }
@@ -154,19 +223,34 @@ void cMessageDrawer::createMessageBarBmp(int desiredWidth)
         SDL_FreeSurface(m_bmpBar);
     }
 
-    m_bmpBar = SDL_CreateRGBSurface(0,desiredWidth, 30,32,0,0,0,255);
+    const int density = m_gfxinter->getDensity();
+    m_bmpBar = SDL_CreateRGBSurfaceWithFormat(
+        0,
+        desiredWidth * density,
+        30 * density,
+        32,
+        SDL_PIXELFORMAT_RGBA8888
+    );
     auto color = SDL_MapRGBA(m_bmpBar->format,255,0,255,255);
     SDL_FillRect(m_bmpBar, nullptr, color);
     SDL_BlitSurface(m_gfxinter->getSurface(MESSAGE_LEFT), nullptr, m_bmpBar, nullptr);
 
-    for (int drawX = 11; drawX < m_bmpBar->w; drawX+= 55) {
+    for (
+        int drawX = 11 * density;
+        drawX < m_bmpBar->w;
+        drawX += 55 * density) {
         auto src = m_gfxinter->getSurface(MESSAGE_MIDDLE);
         auto tmp = cRectangle{drawX, 0,src->w,src->h};
         SDL_Rect destRect = tmp.toSDL();
         SDL_BlitSurface(src, nullptr, m_bmpBar, &destRect);
     }
     auto src = m_gfxinter->getSurface(MESSAGE_RIGHT);
-    auto tmp = cRectangle{m_bmpBar->w - 11, 0,src->w,src->h};
+    auto tmp = cRectangle{
+        m_bmpBar->w - 11 * density,
+        0,
+        src->w,
+        src->h
+    };
     SDL_Rect destRect = tmp.toSDL();
     SDL_BlitSurface(src, nullptr, m_bmpBar, &destRect);
 }

@@ -302,6 +302,10 @@ void cSideBar::onNotifyMouseEvent(const s_MouseEvent &event)
         return;
     }
 
+    if (game.isHdGraphicsActive()) {
+        drawManager->getBuildingListDrawer()->onNotifyMouseEvent(event);
+    }
+
     switch (event.eventType) {
         case eMouseEventType::MOUSE_MOVED_TO:
             onMouseAt(event);
@@ -311,6 +315,9 @@ void cSideBar::onNotifyMouseEvent(const s_MouseEvent &event)
             return;
         case eMouseEventType::MOUSE_RIGHT_BUTTON_CLICKED:
             onMouseClickedRight(event);
+            return;
+        case eMouseEventType::MOUSE_SCROLLED_UP:
+        case eMouseEventType::MOUSE_SCROLLED_DOWN:
             return;
         default:
             return;
@@ -402,4 +409,16 @@ void cSideBar::setSelectedListId(eListType value)
     if (selectedListID > -1 && selectedListID < LIST_MAX) {
         lists[selectedListID]->setSelected(true);
     }
+}
+void cSideBar::configureLayout(bool hdMode, int logicalWidth)
+{
+    if (!hdMode) {
+        SidebarWidthWithoutCandyBar = 200;
+        SidebarWidth = SidebarWidthWithoutCandyBar + VerticalCandyBarWidth;
+        return;
+    }
+
+    SidebarWidth = logicalWidth < 960 ? 280 : 360;
+    // HD uses a narrow graphite divider instead of the 24 px candybar.
+    SidebarWidthWithoutCandyBar = SidebarWidth - 8;
 }

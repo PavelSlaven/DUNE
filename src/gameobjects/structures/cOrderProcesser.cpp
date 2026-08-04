@@ -10,6 +10,7 @@
 #include "managers/cDrawManager.h"
 #include "player/cPlayer.h"
 #include "utils/cSoundPlayer.h"
+#include "utils/Localization.hpp"
 #include <format>
 
 #include "data/gfxaudio.h"
@@ -106,7 +107,7 @@ void cOrderProcesser::think()
 {
     if (secondsUntilArrival > 0) {
         secondsUntilArrival--;
-        std::string msg = std::format("T-{} before Frigate arrival.", secondsUntilArrival);
+        std::string msg = localization::format("Frigate arrives in {} s.", "Фрегат прибудет через {} с.", secondsUntilArrival);
 
         if (secondsUntilArrival <= 5 && player->getId() == HUMAN) {
             playTMinusSound(secondsUntilArrival);
@@ -114,7 +115,7 @@ void cOrderProcesser::think()
 
         if (secondsUntilArrival == 0) {
             sendFrigate();
-            drawManager->setMessage("Frigate is arriving...");
+            drawManager->setMessage(localization::text("Frigate arriving...", "Фрегат прибывает…"));
         }
         else {
             drawManager->setMessage(msg);

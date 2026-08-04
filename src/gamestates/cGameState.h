@@ -4,6 +4,8 @@
 #include "observers/cInputObserver.h"
 #include "sMouseEvent.h"
 
+#include <string_view>
+
 class cGame;
 class GameContext;
 
@@ -42,6 +44,7 @@ public:
 
     virtual void onNotifyMouseEvent(const s_MouseEvent &event) override = 0;
     virtual void onNotifyKeyboardEvent(const cKeyboardEvent &event) override = 0;
+    virtual void onTextInput(std::string_view) {}
     // Do note: not every game state is a scenario observer!
 
     virtual eGameStateType getType() = 0;

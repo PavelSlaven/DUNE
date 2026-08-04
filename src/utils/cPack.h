@@ -31,11 +31,16 @@ public:
     SDL_RWops *getData(unsigned int index);
     //! get index from ressource named fileId
     int getIndexFromName(const std::string &fileId) const;
+    //! get resource name from its stable index
+    std::string getNameFromIndex(int index) const;
     //! print all files in Pack
     void displayPackFile();
     //! get the number of files in the pack
     int getNumberOfFiles() const {
         return fileInPak;
+    }
+    [[nodiscard]] bool isValid() const {
+        return valid;
     }
 private:
     std::vector<FileInPack> fileInPack;
@@ -47,6 +52,7 @@ private:
     std::string fpName;
     int fileInPak = 0;
     uint64_t sizeInMemory =0;
+    bool valid = false;
 };
 
 class WriterPack {

@@ -3,31 +3,45 @@
 #include "data/gfxmentat.h"
 #include "drawers/SDLDrawer.hpp"
 #include "utils/Graphics.hpp"
+#include "utils/Localization.hpp"
 #include "gui/GuiButton.h"
 #include "context/GameContext.hpp"
+#include <algorithm>
 
-HarkonnenMentat::HarkonnenMentat(GameContext* ctx, bool allowMissionSelect) : AbstractMentat(ctx, allowMissionSelect)
+HarkonnenMentat::HarkonnenMentat(GameContext* ctx, bool allowMissionSelect) : AbstractMentat(ctx, allowMissionSelect, true)
 {
     iBackgroundFrame = MENTATH;
-    buildLeftButton(gfxmentat->getTexture(BTN_REPEAT), 293, 423);
-    buildRightButton(gfxmentat->getTexture(BTN_PROCEED), 466, 423);
-    leftGuiButton = GuiButtonBuilder()
+    if (m_adaptiveHdLayout) {
+        leftButton = new cRectangle(baseRect(313, 397, 148, 59));
+        rightButton = new cRectangle(baseRect(479, 397, 139, 59));
+    }
+    else {
+        buildLeftButton(gfxmentat->getTexture(BTN_REPEAT), 293, 423);
+        buildRightButton(gfxmentat->getTexture(BTN_PROCEED), 466, 423);
+    }
+    auto leftBuilder = GuiButtonBuilder()
             .withRect(*leftButton)        
-            .withLabel("Repeat")
-            .withTexture(gfxmentat->getTexture(BTN_REPEAT))
-            .withKind(GuiRenderKind::WITH_TEXTURE)
-            .onClick([this]() {this->resetSpeak();})
-            .build();
+            .withLabel(localization::text("Repeat", "Повторить"))
+            .withTextDrawer(m_textDrawer)
+            .withTextScale(m_adaptiveHdLayout ? 0.85F : 1.0F)
+            .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
+            .withKind(m_adaptiveHdLayout ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER : GuiRenderKind::WITH_TEXTURE)
+            .onClick([this]() {this->resetSpeak();});
+    if (!m_adaptiveHdLayout) leftBuilder.withTexture(gfxmentat->getTexture(BTN_REPEAT));
+    leftGuiButton = leftBuilder.build();
 
-    rightGuiButton = GuiButtonBuilder()
+    auto rightBuilder = GuiButtonBuilder()
             .withRect(*rightButton)        
-            .withLabel("Yes")
-            .withTexture(gfxmentat->getTexture(BTN_YES))
-            .withKind(GuiRenderKind::WITH_TEXTURE)
+            .withLabel(localization::text("Next", "Далее"))
+            .withTextDrawer(m_textDrawer)
+            .withTextScale(m_adaptiveHdLayout ? 0.85F : 1.0F)
+            .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
+            .withKind(m_adaptiveHdLayout ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER : GuiRenderKind::WITH_TEXTURE)
             .onClick([this]() {
                 logbook("cYesButtonCommand::execute()");
-                game.execute(*this);})
-            .build();
+                game.execute(*this);});
+    if (!m_adaptiveHdLayout) rightBuilder.withTexture(gfxmentat->getTexture(BTN_YES));
+    rightGuiButton = rightBuilder.build();
 }
 
 void HarkonnenMentat::think()
@@ -47,10 +61,20 @@ void HarkonnenMentat::draw_other()
 
 void HarkonnenMentat::draw_eyes()
 {
-    renderDrawer->renderSprite(gfxmentat->getTexture(HAR_EYES01+ iMentatEyes), offsetX + 64, offsetY + 256);
+    if (m_adaptiveHdLayout) {
+        drawMentatTexture(gfxmentat->getTexture(HAR_EYES01 + iMentatEyes), 96, 180);
+    }
+    else {
+        renderDrawer->renderSprite(gfxmentat->getTexture(HAR_EYES01 + iMentatEyes), offsetX + 64, offsetY + 256);
+    }
 }
 
 void HarkonnenMentat::draw_mouth()
 {
-    renderDrawer->renderSprite(gfxmentat->getTexture(HAR_MOUTH01+ iMentatMouth), offsetX + 64, offsetY + 288);
+    if (m_adaptiveHdLayout) {
+        drawMentatTexture(gfxmentat->getTexture(HAR_MOUTH01 + iMentatMouth), 100, 210);
+    }
+    else {
+        renderDrawer->renderSprite(gfxmentat->getTexture(HAR_MOUTH01 + iMentatMouth), offsetX + 64, offsetY + 288);
+    }
 }

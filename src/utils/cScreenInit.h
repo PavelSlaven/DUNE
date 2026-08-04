@@ -13,7 +13,12 @@ struct DisplayResolution {
 class cScreenInit {
 public:
     // Creates a window or initializes full-screen with the given resolution at desktop color depth
-    cScreenInit(int desiredWidth, int desiredHeight, const std::string &title);
+    cScreenInit(
+        int desiredWidth,
+        int desiredHeight,
+        int renderScalePercent,
+        const std::string &title
+    );
     // No cleanup required
     ~cScreenInit() = default;
 
@@ -42,7 +47,9 @@ public:
 
 private:
     void getWindowResolution();
-    void adaptResolution(int desiredWidth, int desiredHeight);
+    void adaptResolution(int desiredWidth, int desiredHeight, int renderScalePercent);
+    DisplayResolution getWindowedSize() const;
+    DisplayResolution outputResolution;
     DisplayResolution renderResolution;
     DisplayResolution windowResolution; //display size of screen
     SDL_Window *window = nullptr;

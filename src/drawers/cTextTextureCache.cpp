@@ -2,8 +2,11 @@
 #include "drawers/SDLDrawer.hpp"
 #include "include/d2tmc.h"
 
-cTextTextureCache::cTextTextureCache(TTF_Font *font)
-    : m_font(font)
+#include <algorithm>
+
+cTextTextureCache::cTextTextureCache(TTF_Font *font, int density)
+    : m_font(font),
+    m_density(std::max(1, density))
 {}
 
 cTextTextureCache::~cTextTextureCache()
@@ -22,14 +25,22 @@ cTextTextureCache::~cTextTextureCache()
 std::unique_ptr<textCacheEntry> cTextTextureCache::createCacheEntry(Color color, const std::string &msg) const
 {
     auto newCacheEntry = std::make_unique<textCacheEntry>();
-    SDL_Surface *textSurface = TTF_RenderText_Blended(m_font, msg.c_str(), Color::black().toSDL());
+    SDL_Surface *textSurface = TTF_RenderUTF8_Blended(m_font, msg.c_str(), Color::black().toSDL());
     newCacheEntry->shadowsTexture = SDL_CreateTextureFromSurface(renderDrawer->getRenderer(), textSurface);
+    SDL_SetTextureScaleMode(
+        newCacheEntry->shadowsTexture,
+        m_density > 1 ? SDL_ScaleModeLinear : SDL_ScaleModeNearest
+    );
     SDL_FreeSurface(textSurface);
 
-    textSurface = TTF_RenderText_Blended(m_font, msg.c_str(), color.toSDL());
+    textSurface = TTF_RenderUTF8_Blended(m_font, msg.c_str(), color.toSDL());
     newCacheEntry->texture = SDL_CreateTextureFromSurface(renderDrawer->getRenderer(), textSurface);
-    newCacheEntry->width = textSurface->w;
-    newCacheEntry->height = textSurface->h;
+    SDL_SetTextureScaleMode(
+        newCacheEntry->texture,
+        m_density > 1 ? SDL_ScaleModeLinear : SDL_ScaleModeNearest
+    );
+    newCacheEntry->width = (textSurface->w + m_density - 1) / m_density;
+    newCacheEntry->height = (textSurface->h + m_density - 1) / m_density;
     newCacheEntry->lifeCounter = 10;
     SDL_FreeSurface(textSurface);
 

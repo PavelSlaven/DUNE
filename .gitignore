@@ -3,6 +3,9 @@ log.txt
 *.mid
 *.wav
 
+# The curated runtime music pool is part of the RU/HD source package.
+!resources/bin/music/**/*.wav
+
 # IDE related
 Dune 2.vcxproj
 .project
@@ -16,6 +19,7 @@ Dune 2.vcxproj
 
 # build directories
 build
+build-ru/
 cmake-build-*
 dependencies/allegro-src
 Release/
@@ -23,3 +27,12 @@ Release/
 .DS_Store
 /bin
 config.h
+
+# Local generated/audit output. Canonical sources live in resources/, src/ and tools/.
+artifacts/
+tmp/
+**/__pycache__/
+*.pyc
+
+# Built runtime binary; reproduce it from build-ru instead of storing it in Git.
+resources/bin/d2tm.exe

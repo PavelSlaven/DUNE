@@ -103,6 +103,8 @@ private:
 
     int draw_y() const;
 
+    cRectangle getVisualRectangle();
+
     void init(const s_ParticleInfo &particleInfo);
     void think_position();
     void think_new();

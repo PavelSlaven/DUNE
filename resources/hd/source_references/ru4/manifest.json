@@ -1,0 +1,385 @@
+{
+  "format": 1,
+  "purpose": "Local, unpublished, non-commercial D2TM v0.8.0-ru4 reference archive",
+  "captured": "2026-07-27",
+  "source_policy": {
+    "primary_units": {
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "rule": "Use Dune 2000 geometry, directions and relative scale for every available vehicle or aircraft sheet.",
+      "available": [
+        "Carryall",
+        "Combat Tank (Atreides)",
+        "Combat Tank (Harkonnen)",
+        "Combat Tank (Ordos)",
+        "Devastator",
+        "Deviator",
+        "Harvester",
+        "Missile Tank",
+        "Mobile Construction Vehicle (MCV)",
+        "Ornithopter",
+        "Quad",
+        "Raider Trike",
+        "Sandworm",
+        "Siege Tank",
+        "Sonic Tank",
+        "Trike"
+      ]
+    },
+    "primary_buildings": {
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "rule": "Use the original healthy Dune 2000 sprite for every matching D2TM building and retain the separate Atreides, Harkonnen and Ordos designs.",
+      "available": [
+        "Barracks",
+        "Construction Yard",
+        "Heavy Factory",
+        "High Tech Factory",
+        "Light Factory",
+        "Outpost",
+        "Palace",
+        "Spice Refinery",
+        "Spice Silo",
+        "Starport",
+        "Wind Trap"
+      ]
+    },
+    "fallback_units": "Use Dune II or Battle for Arrakis only when Dune 2000 has no matching pose, animation or object.",
+    "fallback_buildings": "Keep the current HD resource only for IX, Repair Facility, Gun Turret and Rocket Turret because the Dune 2000 source page has no matching sheet.",
+    "relative_scale": {
+      "infantry_height_logical_px": "14-16",
+      "combat_tank_extent_logical_px": "29-30",
+      "rule": "Infantry must remain clearly smaller than vehicles; vehicle proportions follow the Dune 2000 sheets."
+    }
+  },
+  "sources": [
+    {
+      "file": "dune2000_harvester.png",
+      "resource": "Dune 2000 Harvester",
+      "url": "https://www.spriters-resource.com/media/assets/138/140890.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 422,
+      "height": 280,
+      "mode": "P",
+      "sha256": "68131f4aa40042cbea48fb7c7c5c8cd37eb5a146a626168cb4d14e6bc57a8b5d"
+    },
+    {
+      "file": "dune2000_carryall.png",
+      "resource": "Dune 2000 Carryall",
+      "url": "https://www.spriters-resource.com/media/assets/138/140891.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 513,
+      "height": 225,
+      "mode": "P",
+      "sha256": "fddefa3b5a7bf03dd9e44f37c6ed9e574af42f46206eb37dc778d6b237978fcb"
+    },
+    {
+      "file": "dune2000_devastator.png",
+      "resource": "Dune 2000 Devastator",
+      "url": "https://www.spriters-resource.com/media/assets/138/140887.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 406,
+      "height": 164,
+      "mode": "P",
+      "sha256": "80ba977befd3dd52708c1e52a7062940630d829777abcbcc9d7401fef8cd06b4"
+    },
+    {
+      "file": "dune2000_deviator.png",
+      "resource": "Dune 2000 Deviator",
+      "url": "https://www.spriters-resource.com/media/assets/138/140886.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 265,
+      "height": 129,
+      "mode": "P",
+      "sha256": "e67716fa4485340c5f1bd902a9baa76200cbc8fbadfd65e66c8e468a21e8871e"
+    },
+    {
+      "file": "dune2000_missile_tank.png",
+      "resource": "Dune 2000 Missile Tank",
+      "url": "https://www.spriters-resource.com/media/assets/138/140885.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 278,
+      "height": 128,
+      "mode": "P",
+      "sha256": "b1eabb70eb23aa1b75eb59558d85109f5b8945784bdbd5b170a51d526a0ec968"
+    },
+    {
+      "file": "dune2000_mcv.png",
+      "resource": "Dune 2000 Mobile Construction Vehicle (MCV)",
+      "url": "https://www.spriters-resource.com/media/assets/138/140892.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 430,
+      "height": 292,
+      "mode": "P",
+      "sha256": "593a4940512c3edd5347d19bf0c0bb8cd28e5adda744691a14e7861564f0a066"
+    },
+    {
+      "file": "dune2000_ornithopter.png",
+      "resource": "Dune 2000 Ornithopter",
+      "url": "https://www.spriters-resource.com/media/assets/138/140971.png?updated=1755481928",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 689,
+      "height": 193,
+      "mode": "P",
+      "sha256": "b5a86bae9000571e779c4e2eb693016c0eb03adb2df5915111e0eb77671d78ac"
+    },
+    {
+      "file": "dune2000_quad.png",
+      "resource": "Dune 2000 Quad",
+      "url": "https://www.spriters-resource.com/media/assets/138/140889.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 262,
+      "height": 108,
+      "mode": "P",
+      "sha256": "4acf235122ea310a8d209f51a53c32b666cfba9df84f22992498552ef2ae06a0"
+    },
+    {
+      "file": "dune2000_raider_trike.png",
+      "resource": "Dune 2000 Raider Trike",
+      "url": "https://www.spriters-resource.com/media/assets/138/140942.png?updated=1755481926",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 257,
+      "height": 101,
+      "mode": "P",
+      "sha256": "62c4aced10d5d839dbfd964fe8e22ef62402954635fb684990dba1d6e4afb17c"
+    },
+    {
+      "file": "dune2000_sandworm.png",
+      "resource": "Dune 2000 Sandworm",
+      "url": "https://www.spriters-resource.com/media/assets/138/140979.png?updated=1755481929",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 718,
+      "height": 60,
+      "mode": "P",
+      "sha256": "ae35808f94b81d9ccff50ea7232aebc403b9c3baf49aa0a7f7d2c94a08aa556e"
+    },
+    {
+      "file": "dune2000_siege_tank.png",
+      "resource": "Dune 2000 Siege Tank",
+      "url": "https://www.spriters-resource.com/media/assets/138/140921.png?updated=1755481924",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 265,
+      "height": 225,
+      "mode": "P",
+      "sha256": "7a9ecf4ac02633d48f69c841d4e56eb62a10d039f233fb876d8dd7b3485f3aa6"
+    },
+    {
+      "file": "dune2000_sonic_tank.png",
+      "resource": "Dune 2000 Sonic Tank",
+      "url": "https://www.spriters-resource.com/media/assets/138/140884.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 311,
+      "height": 109,
+      "mode": "P",
+      "sha256": "84f98056a92299eb470583bab43dd24dc107dec7f7e1971e32828213e9fdb5da"
+    },
+    {
+      "file": "dune2000_trike.png",
+      "resource": "Dune 2000 Trike",
+      "url": "https://www.spriters-resource.com/media/assets/138/140888.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 270,
+      "height": 116,
+      "mode": "P",
+      "sha256": "49b6db8fa3ec38b093d3d219758f4dada5a8c6d8675eec55ec56029f50603346"
+    },
+    {
+      "file": "dune2000_tank_atreides.png",
+      "resource": "Dune 2000 Atreides Combat Tank",
+      "url": "https://www.spriters-resource.com/media/assets/138/140893.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 287,
+      "height": 168,
+      "mode": "P",
+      "sha256": "d900c2b3115ad05591b717855213e56f01730f916605a59e8a7b41b91707ee1d"
+    },
+    {
+      "file": "dune2000_tank_harkonnen.png",
+      "resource": "Dune 2000 Harkonnen Combat Tank",
+      "url": "https://www.spriters-resource.com/media/assets/138/140894.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 265,
+      "height": 166,
+      "mode": "P",
+      "sha256": "e42e855f9ecbcf66825c7b7ee1c9e55977fb6a2912cf59778c359b67dc82a9a8"
+    },
+    {
+      "file": "dune2000_tank_ordos.png",
+      "resource": "Dune 2000 Ordos Combat Tank",
+      "url": "https://www.spriters-resource.com/media/assets/138/140895.png?updated=1755481923",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 287,
+      "height": 179,
+      "mode": "P",
+      "sha256": "1bbee1c5dcf3393256337be6d9bc465f18a4ef9c267e04dc63217dfcfc832055"
+    },
+    {
+      "file": "dune2000_barracks.png",
+      "resource": "Dune 2000 Barracks",
+      "url": "https://www.spriters-resource.com/media/assets/138/141654.png?updated=1755481982",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 147,
+      "height": 228,
+      "mode": "RGBA",
+      "sha256": "c9492fb9002333049c7243eacbdd9feb86d5a2f4329075efa83f3b8ca33ba26d"
+    },
+    {
+      "file": "dune2000_construction_yard.png",
+      "resource": "Dune 2000 Construction Yard",
+      "url": "https://www.spriters-resource.com/media/assets/138/140919.png?updated=1755481924",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 731,
+      "height": 470,
+      "mode": "P",
+      "sha256": "b688a0fa9581ed3e4daf99bf883fb73921b5e7628c10e21e5bed4fe69a7e094b"
+    },
+    {
+      "file": "dune2000_heavy_factory.png",
+      "resource": "Dune 2000 Heavy Factory",
+      "url": "https://www.spriters-resource.com/media/assets/138/141608.png?updated=1755481979",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 289,
+      "height": 256,
+      "mode": "RGBA",
+      "sha256": "550879abae2b18de3caae2ff5522b262a43ffad12d1824704a24f1464d7809ed"
+    },
+    {
+      "file": "dune2000_high_tech_factory.png",
+      "resource": "Dune 2000 High Tech Factory",
+      "url": "https://www.spriters-resource.com/media/assets/138/141610.png?updated=1755481979",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 193,
+      "height": 294,
+      "mode": "P",
+      "sha256": "6b3f5c467e4d80194b7f66ba61bd7529906d560d3ecfae754f10433d3b52f34b"
+    },
+    {
+      "file": "dune2000_light_factory.png",
+      "resource": "Dune 2000 Light Factory",
+      "url": "https://www.spriters-resource.com/media/assets/138/141609.png?updated=1755481979",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 282,
+      "height": 190,
+      "mode": "RGBA",
+      "sha256": "d63acbb48e940ec28fc718348ebafbc6cd127430504f871abdc1455fb71e4c86"
+    },
+    {
+      "file": "dune2000_outpost.png",
+      "resource": "Dune 2000 Outpost",
+      "url": "https://www.spriters-resource.com/media/assets/138/140941.png?updated=1755481926",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 471,
+      "height": 492,
+      "mode": "P",
+      "sha256": "59f137bd1a259cdfa1c95a306807f6bc89efdaa21d3750ae4a7c5680a631a889"
+    },
+    {
+      "file": "dune2000_palace.png",
+      "resource": "Dune 2000 Palace",
+      "url": "https://www.spriters-resource.com/media/assets/138/140940.png?updated=1755481925",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 574,
+      "height": 340,
+      "mode": "RGBA",
+      "sha256": "8ecdb9fcc0268bd26f63652d0124c092bf0175460dbc3f6da97e793100ea9da9"
+    },
+    {
+      "file": "dune2000_refinery.png",
+      "resource": "Dune 2000 Spice Refinery",
+      "url": "https://www.spriters-resource.com/media/assets/138/141528.png?updated=1755481969",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 341,
+      "height": 235,
+      "mode": "RGBA",
+      "sha256": "6c9ce9ad5a736463ee83366ab289b65b18979e117bdc5f03cee644c771c0134b"
+    },
+    {
+      "file": "dune2000_spice_silo.png",
+      "resource": "Dune 2000 Spice Silo",
+      "url": "https://www.spriters-resource.com/media/assets/138/141529.png?updated=1755481969",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 166,
+      "height": 91,
+      "mode": "RGBA",
+      "sha256": "513b72b964b8ad4b999904e8203aa0c0663fd7f1c46bcb8d1909727ed92e611f"
+    },
+    {
+      "file": "dune2000_starport.png",
+      "resource": "Dune 2000 Starport",
+      "url": "https://www.spriters-resource.com/media/assets/138/140920.png?updated=1755481924",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 197,
+      "height": 327,
+      "mode": "RGBA",
+      "sha256": "481b5800b9c5defd2bb2e64748e20a1183a0a5286601d2638043a731d83d59d7"
+    },
+    {
+      "file": "dune2000_windtrap.png",
+      "resource": "Dune 2000 Wind Trap",
+      "url": "https://www.spriters-resource.com/media/assets/138/140922.png?updated=1755481924",
+      "page": "https://www.spriters-resource.com/pc_computer/dune2000/",
+      "width": 208,
+      "height": 399,
+      "mode": "RGBA",
+      "sha256": "c5022daf20ac5bea31ead8e919710fd4d1282ee6b01bb110f74e7d6591957773"
+    },
+    {
+      "file": "dune2_infantry.png",
+      "resource": "Dune II Infantry",
+      "url": "https://www.spriters-resource.com/media/assets/191/194546.png?updated=1755488408",
+      "page": "https://www.spriters-resource.com/ms_dos/duneiithebuildingofadynasty/",
+      "width": 101,
+      "height": 42,
+      "mode": "P",
+      "sha256": "862529938956ef7336964a04c7b4375b5f416e9c57b45425031c67a0b58fd14c"
+    },
+    {
+      "file": "dune2_explosions.png",
+      "resource": "Dune II Explosions",
+      "url": "https://www.spriters-resource.com/media/assets/191/194409.png?updated=1755488400",
+      "page": "https://www.spriters-resource.com/ms_dos/duneiithebuildingofadynasty/",
+      "width": 529,
+      "height": 48,
+      "mode": "P",
+      "sha256": "d527ac743dcf5f70409124baba8ca5883c3629ceec21fbbb080c1a2443e99c85"
+    },
+    {
+      "file": "battle_for_arrakis_buildings.png",
+      "resource": "Dune II: Battle for Arrakis buildings",
+      "url": "https://segaretro.org/images/f/fa/Dune_II%2C_Buildings.png",
+      "page": "https://segaretro.org/Category:Dune_II:_Battle_for_Arrakis_sprites",
+      "width": 384,
+      "height": 224,
+      "mode": "P",
+      "sha256": "096a8c841ef1dfb22c6dd27911ccd1a3faa3ec0848281a8c9674f35911e8d096"
+    },
+    {
+      "file": "battle_for_arrakis_user_sheet.png",
+      "resource": "User-provided Dune II: Battle for Arrakis reference sheet",
+      "url": "local-user-attachment",
+      "page": "https://segaretro.org/Category:Dune_II:_Battle_for_Arrakis_sprites",
+      "width": 512,
+      "height": 352,
+      "mode": "RGB",
+      "sha256": "db0b03664489b51ff865b8fb8230791419e3bb0bc72453122eff491acdc6689b"
+    },
+    {
+      "file": "main_menu_background_user.png",
+      "resource": "User-provided main menu background",
+      "url": "local-user-attachment",
+      "page": "local-user-request",
+      "width": 2752,
+      "height": 1536,
+      "mode": "RGBA",
+      "sha256": "c8e8a71a8ac853888b5adf6675e67a8d16ca20ac98ec3bf72479528fc0c51006"
+    },
+    {
+      "file": "main_menu_logo_red_alpha.png",
+      "resource": "ImageGen red DUNE II logo without The Maker",
+      "url": "builtin-imagegen:call_IVAGd44ICDuBrn3a7ncJLGba.png",
+      "page": "local-user-request",
+      "width": 2120,
+      "height": 742,
+      "mode": "RGBA",
+      "sha256": "ae4f292c8a9b19643558d7534abfdb4d192ef17407fdc05da5e59ed4e51a2447"
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 #include "cGameControlsContext.h"
 
+#include "player/cPlayer.h"
+
 #include "data/gfxdata.h"
 #include "d2tmc.h"
 #include "managers/cDrawManager.h"
@@ -49,6 +51,12 @@ void cGameControlsContext::updateMouseCell(const cPoint &coords)
         return;
     }
 
+    if (drawManager->getCommandBarDrawer()->isMouseOver(coords)) {
+        m_mouseCell = MOUSECELL_COMMAND_BAR;
+        m_mouseOnBattleField = false;
+        return;
+    }
+
     if (drawManager->getMiniMapDrawer()->isMouseOver()) {
         m_mouseCell = MOUSECELL_MINIMAP; // on minimap
         m_mouseOnBattleField = false;
@@ -62,6 +70,28 @@ void cGameControlsContext::updateMouseCell(const cPoint &coords)
     }
     m_mouseOnBattleField = true;
     m_mouseCell = getMouseCellFromScreen(coords.x, coords.y);
+}
+
+void cGameControlsContext::activateMoveCommand()
+{
+    if (m_player->getSelectedUnits().empty()) return;
+    setMouseState(MOUSESTATE_UNITS_SELECTED);
+    m_mouseUnitsSelectedState->setCommandState(SELECTED_STATE_MOVE);
+}
+
+void cGameControlsContext::activateAttackCommand()
+{
+    if (m_player->getSelectedUnits().empty()) return;
+    setMouseState(MOUSESTATE_UNITS_SELECTED);
+    m_mouseUnitsSelectedState->setCommandState(SELECTED_STATE_FORCE_ATTACK);
+}
+
+void cGameControlsContext::activateRallyPointCommand()
+{
+    cAbstractStructure *selected = m_player->getSelectedStructure();
+    if (!selected || !selected->belongsTo(m_player) || !selected->canSpawnUnits()) return;
+    setMouseState(MOUSESTATE_SELECT);
+    m_mouseNormalState->setRallyPointCommandMode();
 }
 
 int cGameControlsContext::getMouseCellFromScreen(int mouseX, int mouseY) const

@@ -10,6 +10,7 @@ namespace fs = std::filesystem;
 
 #include <algorithm>
 #include "utils/cIniFile.h"
+#include "utils/Localization.hpp"
 
 cPreviewMaps::cPreviewMaps(bool debugMode) : m_debugMode(debugMode)
 {
@@ -202,7 +203,16 @@ void cPreviewMaps::loadSkirmishMaps()
     numberOfMaps = 0; // reset number of maps
     initPreviews(); // clear all of them
 
-    const std::filesystem::path pathfile{"skirmish"};
+    std::filesystem::path pathfile{
+        localization::isEnglish() ? "skirmish_en" : "skirmish"
+    };
+    if (!std::filesystem::is_directory(pathfile)) {
+        logbook(std::format(
+            "Skirmish language directory '{}' is missing; falling back to 'skirmish'",
+            pathfile.string()
+        ));
+        pathfile = "skirmish";
+    }
     for (auto const &file: std::filesystem::directory_iterator{pathfile}) {
         auto fullname = file.path().string();
         if (file.path().extension() == ".ini") {
@@ -240,7 +250,7 @@ void cPreviewMaps::initPreviews()
 void cPreviewMaps::initRandomMap()
 {
     s_PreviewMap &firstSkirmishMap = PreviewMap[0];
-    firstSkirmishMap.name = "Random map";
+    firstSkirmishMap.name = localization::text("Random map", "Случайная карта");
     firstSkirmishMap.validMap = false;
 
     firstSkirmishMap.terrainType = std::vector<int>(1, -1);
@@ -256,17 +266,17 @@ void cPreviewMaps::initRandomMap()
 
 std::string cPreviewMaps::getMapSize(int i) const {
     if (i > MAX_SKIRMISHMAPS) {
-        return "Invalid";
+        return localization::text("ERROR", "ОШИБКА");
     }
     int playableCells = (PreviewMap[i].width-2) * (PreviewMap[i].height-2);
     if (playableCells < 32 *32) {
-        return "SMALL";
+        return localization::text("SMALL", "МАЛАЯ");
     }
     if (playableCells < 64 * 64) {
-        return "MEDIUM";
+        return localization::text("MEDIUM", "СРЕДНЯЯ");
     }
     if (playableCells < 128 * 128) {
-        return "LARGE";
+        return localization::text("LARGE", "БОЛЬШАЯ");
     }
-    return "HUGE";
+    return localization::text("HUGE", "ОГРОМНАЯ");
 }

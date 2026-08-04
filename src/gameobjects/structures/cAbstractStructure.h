@@ -20,8 +20,10 @@
 
 class cPlayer;
 class Texture;
+class SaveGameManager;
 
 class cAbstractStructure : public cScenarioObserver {
+    friend class SaveGameManager;
 
 private:
     int armor;			// armor
@@ -69,6 +71,7 @@ protected:
     void drawWithShadow();
 
 public:
+    cRectangle getVisualRectangle();
 
     // Constructor & Destructor:
     cAbstractStructure(); // default constructor

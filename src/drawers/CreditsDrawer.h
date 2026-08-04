@@ -10,6 +10,7 @@
 class GameContext;
 class Graphics;
 class cPlayer;
+class cTextDrawer;
 struct SDL_Surface;
 
 // the credits drawer takes state of a player, and draws the credits accordingly
@@ -30,6 +31,7 @@ private:
     cPlayer *m_player;  //
     GameContext* m_ctx;
     Graphics* m_gfxinter;
+    cTextDrawer *m_gameTextDrawer;
 
     void thinkAboutIndividualCreditOffsets();
     void drawCurrentCredits(int drawX, int drawY);

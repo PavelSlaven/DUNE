@@ -40,4 +40,26 @@ struct GuiTheme {
             Color::black()
         };
     }
+
+    static GuiTheme Remaster() {
+        return {
+            Color{24, 29, 33, 238},
+            Color{190, 145, 58, 255},
+            Color{71, 50, 24, 255},
+            Color{236, 229, 202, 255},
+            Color{255, 202, 83, 255},
+            Color{4, 6, 7, 220}
+        };
+    }
+
+    static GuiTheme RemasterInactive() {
+        return {
+            Color{20, 24, 27, 220},
+            Color{91, 84, 66, 255},
+            Color{46, 42, 34, 255},
+            Color{132, 132, 124, 255},
+            Color{154, 146, 124, 255},
+            Color{4, 6, 7, 220}
+        };
+    }
 };

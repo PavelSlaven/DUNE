@@ -1,0 +1,34 @@
+{
+  "format": 1,
+  "source": "https://www.spriters-resource.com/pc_computer/dune2000/",
+  "policy": "Original Dune 2000 sprites are imported directly. No ImageGen redraw is used for vehicles.",
+  "direction_mapping": {
+    "dune2000": "32 directions beginning at south and turning toward west",
+    "d2tm": ["west", "north-west", "north", "north-east", "east", "south-east", "south", "south-west"],
+    "selection_32": [8, 12, 16, 20, 24, 28, 0, 4]
+  },
+  "resources": [
+    {"source": "dune2000_carryall.png", "ids": [130, 131], "target": "UNIT_CARRYALL"},
+    {"source": "dune2000_devastator.png", "ids": [132, 133], "target": "UNIT_DEVASTATOR"},
+    {"source": "dune2000_deviator.png", "ids": [134], "target": "UNIT_DEVIATOR"},
+    {"source": "dune2000_harvester.png", "ids": [137, 138], "target": "UNIT_HARVESTER"},
+    {"source": "dune2000_missile_tank.png", "ids": [139, 140], "target": "UNIT_LAUNCHER"},
+    {"source": "dune2000_mcv.png", "ids": [141, 142], "target": "UNIT_MCV"},
+    {"source": "dune2000_ornithopter.png", "ids": [143, 144], "target": "UNIT_ORNITHOPTER"},
+    {"source": "dune2000_quad.png", "ids": [145, 146], "target": "UNIT_QUAD"},
+    {"source": "dune2000_raider_trike.png", "ids": [147, 148], "target": "UNIT_RAIDER"},
+    {"source": "dune2000_sandworm.png", "ids": [150], "target": "UNIT_SANDWORM"},
+    {"source": "dune2000_siege_tank.png", "ids": [151, 152, 153], "target": "UNIT_SIEGETANK"},
+    {"source": "dune2000_sonic_tank.png", "ids": [157, 158], "target": "UNIT_SONICTANK"},
+    {"source": "dune2000_tank_atreides.png", "ids": [159, 160, 161], "target": "UNIT_TANKBASE/UNIT_TANKTOP", "house": "ATREIDES"},
+    {"source": "dune2000_tank_harkonnen.png", "ids": [159, 161], "target": "UNIT_TANKBASE/UNIT_TANKTOP", "house": "HARKONNEN"},
+    {"source": "dune2000_tank_ordos.png", "ids": [159, 161], "target": "UNIT_TANKBASE/UNIT_TANKTOP", "house": "ORDOS"},
+    {"source": "dune2000_trike.png", "ids": [162, 163], "target": "UNIT_TRIKE"}
+  ],
+  "classic_fallback": [
+    {
+      "target": "UNIT_FRIGATE",
+      "reason": "The referenced Dune 2000 page does not provide a frigate sheet."
+    }
+  ]
+}

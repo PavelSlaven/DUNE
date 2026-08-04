@@ -1,5 +1,7 @@
 #pragma once
 
+class SaveGameManager;
+
 class cReinforcement {
 public:
     cReinforcement();
@@ -14,6 +16,7 @@ public:
     void execute() const;
 
 private:
+    friend class SaveGameManager;
     int m_delayInSeconds = -1;
     int m_unitType = -1;      // what unit to deliver?
     int m_playerId = -1;        // for which player?
@@ -34,6 +37,7 @@ public:
     void thinkSlow();
 
 private:
+    friend class SaveGameManager;
     void substractSecondFromValidReinforcements();
 
     std::vector<cReinforcement> reinforcements;

@@ -2,6 +2,7 @@
 
 #include "d2tmc.h"
 #include "sidebar/cBuildingList.h"
+#include "utils/Localization.hpp"
 
 #include <format>
 
@@ -383,27 +384,27 @@ std::string cBuildingListItem::getInfo()
 
     if (isTypeStructure()) {
         s_StructureInfo structureType = getStructureInfo();
-        msg = std::format("${} | {} | {} Power | {} Secs", getBuildCost(), structureType.name, (structureType.power_give - structureType.power_drain), seconds);
+        msg = localization::format("${} | {} | power {} | {} s", "${} | {} | энергия {} | {} с", getBuildCost(), structureType.name, (structureType.power_give - structureType.power_drain), seconds);
     }
     else if (isTypeUnit()) {
         s_UnitInfo unitType = getUnitInfo();
         if (getBuildCost() > 0) {
-            msg = std::format("${} | {} | {} Secs", getBuildCost(), unitType.name, seconds);
+            msg = localization::format("${} | {} | {} s", "${} | {} | {} с", getBuildCost(), unitType.name, seconds);
         }
         else {
-            msg = std::format("{} | {} Secs", sUnitInfo[getBuildId()].name, seconds);
+            msg = localization::format("{} | {} s", "{} | {} с", sUnitInfo[getBuildId()].name, seconds);
         }
     }
     else if (isTypeUpgrade()) {
         s_UpgradeInfo upgrade = getUpgradeInfo();
-        msg = std::format("UPGRADE: ${} | {} | {} Secs", getBuildCost(), upgrade.description, seconds);
+        msg = localization::format("UPGRADE: ${} | {} | {} s", "УЛУЧШЕНИЕ: ${} | {} | {} с", getBuildCost(), upgrade.description, seconds);
     }
     else if (isTypeSpecial()) {
         s_SpecialInfo special = getSpecialInfo();
-        msg = std::format("${} | {} | {} Secs", getBuildCost(), special.description, seconds);
+        msg = localization::format("${} | {} | {} s", "${} | {} | {} с", getBuildCost(), special.description, seconds);
     }
     else {
-        msg = "ERROR: UNKNOWN BUILD TYPE";
+        msg = localization::text("ERROR: UNKNOWN TYPE", "ОШИБКА: НЕИЗВЕСТНЫЙ ТИП");
     }
     return msg;
 }
@@ -442,5 +443,5 @@ std::string cBuildingListItem::getNameString()
         return std::string(special.description);
     }
 
-    return std::string("Unknown type.");
+    return std::string(localization::text("Unknown type.", "Неизвестный тип."));
 }

@@ -3,6 +3,9 @@
 #include "d2tmc.h"
 #include "drawers/SDLDrawer.hpp"
 
+#include <algorithm>
+#include <cmath>
+
 GuiButton::GuiButton(const cRectangle &rect, const std::string &btnText)
     : GuiObject(rect)
     , m_textDrawer(nullptr)
@@ -54,6 +57,57 @@ void GuiButton::draw() const
         case WITH_TEXTURE:
             renderDrawer->renderSprite(m_tex, m_rect.getX(),m_rect.getY());
             break;
+        case REMASTER_BUTTON: {
+            Color fillColor = m_theme.fillColor;
+            Color outerBorder = m_theme.borderDark;
+            Color innerBorder = m_theme.borderLight;
+
+            if (m_enabled && m_focus) {
+                fillColor = Color{
+                    static_cast<Uint8>(std::min(255, fillColor.r + 18)),
+                    static_cast<Uint8>(std::min(255, fillColor.g + 18)),
+                    static_cast<Uint8>(std::min(255, fillColor.b + 18)),
+                    fillColor.a
+                };
+            }
+            if (m_pressed) {
+                fillColor = Color{
+                    static_cast<Uint8>(fillColor.r * 3 / 4),
+                    static_cast<Uint8>(fillColor.g * 3 / 4),
+                    static_cast<Uint8>(fillColor.b * 3 / 4),
+                    fillColor.a
+                };
+                std::swap(outerBorder, innerBorder);
+            }
+
+            renderDrawer->renderRectFillColor(
+                m_rect.getX() + 3,
+                m_rect.getY() + 3,
+                m_rect.getWidth(),
+                m_rect.getHeight(),
+                m_theme.textColorShadow
+            );
+            renderDrawer->renderRectFillColor(m_rect, fillColor);
+            renderDrawer->renderRectColor(m_rect, outerBorder);
+            renderDrawer->renderRectColor(
+                m_rect.getX() + 1,
+                m_rect.getY() + 1,
+                m_rect.getWidth() - 2,
+                m_rect.getHeight() - 2,
+                innerBorder
+            );
+            renderDrawer->renderLine(
+                m_rect.getX() + 4,
+                m_rect.getY() + 3,
+                m_rect.getX() + m_rect.getWidth() - 5,
+                m_rect.getY() + 3,
+                m_enabled && m_focus
+                    ? m_theme.textColorHover
+                    : m_theme.borderLight
+            );
+            drawText();
+            break;
+        }
     }
 }
 
@@ -77,6 +131,11 @@ void GuiButton::setTexture(Texture *tex)
     m_tex = tex;
 }
 
+void GuiButton::setTextScale(float scale)
+{
+    m_textScale = std::max(0.65F, scale);
+}
+
 void GuiButton::drawText() const
 {
     Color textColor = m_focus ? m_theme.textColorHover : m_theme.textColor;
@@ -86,11 +145,25 @@ void GuiButton::drawText() const
 
     switch (m_textAlignHorizontal) {
         case GuiTextAlignHorizontal::CENTER:
-            if (m_pressed) {
-                m_textDrawer->drawTextCenteredInBox(m_buttonText.c_str(), m_rect, textColor, 1, 1);
-            }
-            else {
-                m_textDrawer->drawTextCenteredInBox(m_buttonText.c_str(), m_rect, textColor);
+            {
+                const float widthScale = static_cast<float>(std::max(1, m_rect.getWidth() - 16)) /
+                    std::max(1, m_textDrawer->getTextLength(m_buttonText));
+                const float heightScale = static_cast<float>(std::max(1, m_rect.getHeight() - 8)) /
+                    std::max(1, m_textDrawer->getFontHeight());
+                const float fittedScale = std::clamp(
+                    std::min({m_textScale, widthScale, heightScale}),
+                    0.65F,
+                    m_textScale
+                );
+                const cRectangle textRect = m_pressed
+                    ? cRectangle(m_rect.getX() + 1, m_rect.getY() + 1, m_rect.getWidth(), m_rect.getHeight())
+                    : m_rect;
+                m_textDrawer->drawTextScaledCenteredInBox(
+                    m_buttonText,
+                    textRect,
+                    fittedScale,
+                    textColor
+                );
             }
             break;
         case GuiTextAlignHorizontal::LEFT:

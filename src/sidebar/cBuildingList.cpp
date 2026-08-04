@@ -253,7 +253,14 @@ bool cBuildingList::removeItemFromList(int position)
  */
 bool cBuildingList::isOverButton(int x, int y)
 {
-    return cRectangle::isWithin(x, y, getButtonDrawX(), getButtonDrawY(), 33, 27);
+    return cRectangle::isWithin(
+        x,
+        y,
+        getButtonDrawX(),
+        getButtonDrawY(),
+        buttonWidth,
+        buttonHeight
+    );
 }
 
 /**

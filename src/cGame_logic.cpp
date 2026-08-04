@@ -10,6 +10,8 @@
 
 */
 #include "cGame.h"
+#include "audio/MusicController.h"
+#include "audio/MusicTransitionPolicy.hpp"
 #include "include/Texture.hpp"
 #include "building/cItemBuilder.h"
 #include "d2tmc.h"
@@ -58,6 +60,11 @@
 #include "player/cHousesInfo.h"
 #include "utils/Graphics.hpp"
 #include "utils/GameSettings.hpp"
+#include "utils/Localization.hpp"
+#include "utils/HdPresentation.hpp"
+#include "utils/RenderScale.hpp"
+#include "utils/WorldScale.hpp"
+#include "save/SaveGameManager.hpp"
 #include <format>
 #include "context/GameContext.hpp"
 #include "context/ContextCreator.hpp"
@@ -68,7 +75,10 @@
 #include "utils/cFocusManager.h"
 
 #include <algorithm>
+#include <array>
+#include <filesystem>
 #include <random>
+#include <string_view>
 #include <vector>
 #include <iostream>
 
@@ -78,6 +88,82 @@ namespace {
 
 constexpr auto kMinAlpha = 0;
 constexpr auto kMaxAlpha = 255;
+
+MusicCategory musicCategoryFor(int musicType, int house)
+{
+    switch (musicType) {
+        case MUSIC_PEACE:
+        case MUSIC_ATTACK:
+            return MusicCategory::Gameplay;
+        case MUSIC_MENU:
+            return MusicCategory::Menu;
+        case MUSIC_CONQUEST:
+            return MusicCategory::Conquest;
+        case MUSIC_WIN:
+            return MusicCategory::Victory;
+        case MUSIC_LOSE:
+            return MusicCategory::Defeat;
+        case MUSIC_BRIEFING:
+            if (house == HARKONNEN) return MusicCategory::BriefingHarkonnen;
+            if (house == ORDOS) return MusicCategory::BriefingOrdos;
+            return MusicCategory::BriefingAtreides;
+        default:
+            return MusicCategory::Menu;
+    }
+}
+
+std::string defaultHdDataFileName(
+    std::string_view key,
+    int density)
+{
+    const std::string suffix = density >= 4 ? "_hd4.dat" : "_hd2.dat";
+    if (key == "GFXDATA") return "sdl_data" + suffix;
+    if (key == "GFXINTER") return "sdl_inter" + suffix;
+    if (key == "GFXWORLD") return "sdl_world" + suffix;
+    if (key == "GFXMENTAT") return "sdl_mentat" + suffix;
+    return "";
+}
+
+std::string graphicsDataFileName(
+    const cIniFile &settings,
+    const std::string &section,
+    std::string_view key,
+    int density)
+{
+    const std::string configured =
+        settings.getStringValue(section, std::string(key));
+    return configured.empty()
+        ? defaultHdDataFileName(key, density)
+        : configured;
+}
+
+bool dataFileSectionExists(
+    const cIniFile &settings,
+    const std::string &section,
+    const std::string &gameDir,
+    int density)
+{
+    constexpr std::array<std::string_view, 4> graphicsKeys{
+        "GFXDATA",
+        "GFXINTER",
+        "GFXWORLD",
+        "GFXMENTAT"
+    };
+    for (const std::string_view key : graphicsKeys) {
+        const std::string fileName = graphicsDataFileName(
+            settings,
+            section,
+            key,
+            density
+        );
+        if (fileName.empty() ||
+            !std::filesystem::exists(
+                std::filesystem::path(gameDir) / fileName)) {
+            return false;
+        }
+    }
+    return true;
+}
 
 }
 
@@ -91,6 +177,10 @@ cGame::cGame()
     m_currentState = nullptr;
     m_screenW = -1;
     m_screenH = -1;
+    m_renderScalePercent = 0;
+    m_worldScalePercent = 0;
+    m_effectiveWorldScalePercent = 100;
+    m_graphicsMode = GraphicsMode::Hd;
     m_windowed = false;
     m_allowRepeatingReinforcements = false;
     m_playSound = true;
@@ -118,8 +208,17 @@ cGame::cGame()
 
 void cGame::applySettings(GameSettings *gs)
 {
+    localization::setLanguage(gs->language);
     m_screenW = gs->screenW;
     m_screenH = gs->screenH;
+    m_renderScalePercent = gs->renderScalePercent;
+    m_worldScalePercent = gs->worldScalePercent;
+    m_effectiveWorldScalePercent = resolveWorldScalePercent(
+        m_worldScalePercent,
+        gs->screenH
+    );
+    m_graphicsMode = gs->graphicsMode;
+    m_commandBindings = gs->commandBindings;
     m_cameraDragMoveSpeed = gs->cameraDragMoveSpeed;
     m_cameraBorderOrKeyMoveSpeed = gs->cameraBorderOrKeyMoveSpeed;
     m_cameraEdgeMove = gs->cameraEdgeMove;
@@ -491,27 +590,8 @@ void cGame::think_audio()
     if (!game.m_playMusic) // no music enabled, so no need to think
         return;
 
-    // all this does is repeating music in the same theme.
-    if (m_musicType < 0)
-        return;
-
-    if (m_newMusicCountdown > 0) {
-        m_newMusicCountdown--;
-    }
-
-    if (m_newMusicCountdown == 0) {
-        m_soundPlayer->playMusic(m_newMusicSample);
-        m_newMusicCountdown--; // so we don't keep re-starting music
-    }
-
-    if (m_newMusicCountdown < 0) {
-        if (!m_soundPlayer->isMusicPlaying()) {
-            int desiredMusicType = m_musicType;
-            if (m_musicType == MUSIC_ATTACK) {
-                desiredMusicType = MUSIC_PEACE; // set back to peace
-            }
-            playMusicByType(desiredMusicType);
-        }
+    if (m_musicController) {
+        m_musicController->update();
     }
 }
 
@@ -598,8 +678,25 @@ void cGame::fadeOutOrBlitScreenBuffer() const
 void cGame::drawState()
 {
     if (m_fadeAction == eFadeAction::FADE_OUT) {
-        if (screenTexture) {
-            renderDrawer->renderSprite(screenTexture,0,0,(Uint8)m_fadeAlpha);
+        Texture *fadeTexture = m_hdPresentationFadeCaptureActive
+            ? m_hdPresentationScreenTexture
+            : screenTexture;
+        if (fadeTexture) {
+            if (m_hdPresentationFadeCaptureActive) {
+                renderDrawer->renderStrechFullSprite(
+                    fadeTexture,
+                    cRectangle(0, 0, m_screenW, m_screenH),
+                    static_cast<Uint8>(m_fadeAlpha)
+                );
+            }
+            else {
+                renderDrawer->renderSprite(
+                    fadeTexture,
+                    0,
+                    0,
+                    static_cast<Uint8>(m_fadeAlpha)
+                );
+            }
         }
         return;
     }
@@ -612,6 +709,7 @@ void cGame::drawState()
     if (m_fadeAction == eFadeAction::FADE_IN && m_fadeAlpha>250) {
         m_fadeAlpha = kMaxAlpha;
         m_fadeAction = eFadeAction::FADE_NONE;
+        m_hdPresentationFadeCaptureActive = false;
     }
 
     switch (m_state) {
@@ -664,6 +762,11 @@ void cGame::run()
                 case SDL_KEYUP:
                     m_keyboard->handleEvent(event);
                     break;
+                case SDL_TEXTINPUT:
+                    if (m_currentState) {
+                        m_currentState->onTextInput(event.text.text);
+                    }
+                    break;
 
                 case SDL_MOUSEBUTTONDOWN:
                 case SDL_MOUSEBUTTONUP:
@@ -683,17 +786,148 @@ void cGame::run()
         updateMouseAndKeyboardState();
         updateGamePlaying();
 
-        renderDrawer->beginDrawingToTexture(actualRenderer);
+        const bool hdPresentationFrame = useHdPresentation();
+        Texture *frameTarget = hdPresentationFrame
+            ? ensureHdPresentationRenderTarget(false)
+            : actualRenderer;
+        renderDrawer->beginDrawingToTexture(frameTarget);
+        SDL_RenderSetLogicalSize(renderer, m_screenW, m_screenH);
         renderDrawer->renderClearToColor();
         drawState(); // run game state, includes interaction + drawing
         transitionStateIfRequired();
         shakeScreenAndBlitBuffer();
 
         renderDrawer->endDrawingToTexture();
-        renderDrawer->renderSprite(actualRenderer, m_screenShake->getX(), m_screenShake->getY());
+        presentFrame(frameTarget, hdPresentationFrame);
         SDL_RenderPresent(renderer);
         m_timeManager->waitForCPU(); // wait for CPU to catch up, so we don't run too fast
     }
+}
+
+bool cGame::useHdPresentation() const
+{
+    HdPresentationScene scene = HdPresentationScene::Legacy;
+    if (m_currentState != nullptr) {
+        scene = HdPresentationScene::Menu;
+    }
+    else if (m_state == GAME_PLAYING) {
+        scene = HdPresentationScene::Gameplay;
+    }
+    else if (
+        m_state == GAME_TELLHOUSE ||
+        m_state == GAME_BRIEFING ||
+        m_state == GAME_WINBRIEF ||
+        m_state == GAME_LOSEBRIEF
+    ) {
+        scene = HdPresentationScene::Mentat;
+    }
+    return shouldUsePhysicalHdPresentation(
+        isHdGraphicsActive(),
+        scene
+    );
+}
+
+Texture *cGame::ensureHdPresentationRenderTarget(bool fadeTarget)
+{
+    int outputWidth = m_screenW;
+    int outputHeight = m_screenH;
+    if (SDL_GetRendererOutputSize(
+            renderer,
+            &outputWidth,
+            &outputHeight) < 0) {
+        outputWidth = m_screenW;
+        outputHeight = m_screenH;
+    }
+    outputWidth = std::max(1, outputWidth);
+    outputHeight = std::max(1, outputHeight);
+
+    if (outputWidth != m_hdPresentationRendererWidth ||
+        outputHeight != m_hdPresentationRendererHeight) {
+        delete m_hdPresentationRenderer;
+        m_hdPresentationRenderer = nullptr;
+        delete m_hdPresentationScreenTexture;
+        m_hdPresentationScreenTexture = nullptr;
+        m_hdPresentationRendererWidth = outputWidth;
+        m_hdPresentationRendererHeight = outputHeight;
+        cLogger::getInstance()->log(
+            LOG_INFO,
+            COMP_SDL2,
+            "HD presentation renderer",
+            std::format(
+                "Presentation target : {}x{}",
+                outputWidth,
+                outputHeight
+            )
+        );
+    }
+
+    Texture *&target = fadeTarget
+        ? m_hdPresentationScreenTexture
+        : m_hdPresentationRenderer;
+    if (!target) {
+        target = renderDrawer->createRenderTargetTexture(
+            outputWidth,
+            outputHeight
+        );
+        SDL_SetTextureScaleMode(target->tex, SDL_ScaleModeLinear);
+    }
+    return target;
+}
+
+void cGame::presentFrame(Texture *frameTarget, bool hdPresentationFrame)
+{
+    SDL_RenderSetLogicalSize(renderer, 0, 0);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    SDL_RenderSetLogicalSize(renderer, m_screenW, m_screenH);
+
+    if (hdPresentationFrame) {
+        const int shakeX = m_state == GAME_PLAYING
+            ? m_screenShake->getX()
+            : 0;
+        const int shakeY = m_state == GAME_PLAYING
+            ? m_screenShake->getY()
+            : 0;
+        const SDL_Rect destination = {
+            shakeX,
+            shakeY,
+            m_screenW,
+            m_screenH
+        };
+        SDL_SetTextureScaleMode(frameTarget->tex, SDL_ScaleModeLinear);
+        SDL_RenderCopy(renderer, frameTarget->tex, nullptr, &destination);
+        return;
+    }
+
+    renderDrawer->renderSprite(
+        frameTarget,
+        m_screenShake->getX(),
+        m_screenShake->getY()
+    );
+}
+
+void cGame::captureCurrentFrameForFade()
+{
+    if (useHdPresentation() && m_hdPresentationRenderer) {
+        Texture *fadeTarget = ensureHdPresentationRenderTarget(true);
+        renderDrawer->beginDrawingToTexture(fadeTarget);
+        SDL_RenderSetLogicalSize(renderer, 0, 0);
+        SDL_RenderCopy(
+            renderer,
+            m_hdPresentationRenderer->tex,
+            nullptr,
+            nullptr
+        );
+        renderDrawer->endDrawingToTexture();
+        SDL_RenderSetLogicalSize(renderer, m_screenW, m_screenH);
+        m_hdPresentationFadeCaptureActive = true;
+        return;
+    }
+
+    renderDrawer->beginDrawingToTexture(screenTexture);
+    SDL_RenderCopy(renderer, actualRenderer->tex, nullptr, nullptr);
+    renderDrawer->endDrawingToTexture();
+    m_hdPresentationFadeCaptureActive = false;
 }
 
 void cGame::shakeScreen(int duration)
@@ -759,6 +993,15 @@ void cGame::shutdown()
         players[i].destroyAllegroBitmaps();
     }
 
+    delete m_hdPresentationScreenTexture;
+    m_hdPresentationScreenTexture = nullptr;
+    delete m_hdPresentationRenderer;
+    m_hdPresentationRenderer = nullptr;
+    delete screenTexture;
+    screenTexture = nullptr;
+    delete actualRenderer;
+    actualRenderer = nullptr;
+
     delete renderDrawer;
     delete m_mouse;
     delete m_keyboard;
@@ -798,6 +1041,69 @@ bool cGame::setupGame()
     game.init(); // Must be first! (loads game.ini file at the end, which is required before going on...)
 
     const std::string &gameDir = settings->getStringValue(SECTION_SETTINGS, "GameDir");
+    std::string graphicsSection = "DATAFILE";
+    m_graphicsDensity = 1;
+    if (m_graphicsMode == GraphicsMode::Hd) {
+        const RenderCanvasSize canvas = calculateRenderCanvasSize(
+            m_screenW,
+            m_screenH,
+            m_renderScalePercent
+        );
+        const int preferredDensity =
+            selectHdAssetDensityForDisplay(
+                m_screenW,
+                m_screenH,
+                canvas.width,
+                canvas.height,
+                m_worldScalePercent
+            );
+        const std::array<int, 2> densities{
+            preferredDensity,
+            preferredDensity == 4 ? 2 : 4
+        };
+        for (const int density : densities) {
+            const std::string candidateSection =
+                hdDataFileSection(density);
+            if (dataFileSectionExists(
+                    *settings,
+                    candidateSection,
+                    gameDir,
+                    density)) {
+                graphicsSection = candidateSection;
+                m_graphicsDensity = density;
+                break;
+            }
+            logger->log(
+                LOG_WARN,
+                COMP_INIT,
+                "HD graphics",
+                std::format(
+                    "{} is unavailable; trying fallback",
+                    candidateSection
+                )
+            );
+        }
+        if (m_graphicsDensity == 1) {
+            logger->log(
+                LOG_WARN,
+                COMP_INIT,
+                "HD graphics",
+                "No complete HD pack found; using Classic"
+            );
+        }
+    }
+    logger->log(
+        LOG_INFO,
+        COMP_INIT,
+        "Graphics mode",
+        std::format(
+            "{} ({}x assets, section [{}])",
+            m_graphicsDensity > 1 ? "HD" : "Classic",
+            m_graphicsDensity,
+            graphicsSection
+        )
+    );
+
     std::unique_ptr<cFileValidator> settingsValidator = std::make_unique<cFileValidator>(gameDir);
     {
         std::map<eGameDirFileName, std::string> m_transfertMap;
@@ -805,10 +1111,22 @@ bool cGame::setupGame()
         m_transfertMap[eGameDirFileName::BENEGESS] = settings->getStringValue("FONT", "BENEGESS");
         m_transfertMap[eGameDirFileName::SMALL] = settings->getStringValue("FONT", "SMALL");
 
-        m_transfertMap[eGameDirFileName::GFXDATA] = settings->getStringValue("DATAFILE", "GFXDATA");
-        m_transfertMap[eGameDirFileName::GFXINTER] = settings->getStringValue("DATAFILE", "GFXINTER");
-        m_transfertMap[eGameDirFileName::GFXWORLD] = settings->getStringValue("DATAFILE", "GFXWORLD");
-        m_transfertMap[eGameDirFileName::GFXMENTAT] = settings->getStringValue("DATAFILE", "GFXMENTAT");
+        m_transfertMap[eGameDirFileName::GFXDATA] =
+            m_graphicsDensity > 1
+                ? graphicsDataFileName(*settings, graphicsSection, "GFXDATA", m_graphicsDensity)
+                : settings->getStringValue(graphicsSection, "GFXDATA");
+        m_transfertMap[eGameDirFileName::GFXINTER] =
+            m_graphicsDensity > 1
+                ? graphicsDataFileName(*settings, graphicsSection, "GFXINTER", m_graphicsDensity)
+                : settings->getStringValue(graphicsSection, "GFXINTER");
+        m_transfertMap[eGameDirFileName::GFXWORLD] =
+            m_graphicsDensity > 1
+                ? graphicsDataFileName(*settings, graphicsSection, "GFXWORLD", m_graphicsDensity)
+                : settings->getStringValue(graphicsSection, "GFXWORLD");
+        m_transfertMap[eGameDirFileName::GFXMENTAT] =
+            m_graphicsDensity > 1
+                ? graphicsDataFileName(*settings, graphicsSection, "GFXMENTAT", m_graphicsDensity)
+                : settings->getStringValue(graphicsSection, "GFXMENTAT");
         m_transfertMap[eGameDirFileName::GFXAUDIO] = settings->getStringValue("DATAFILE", "GFXAUDIO");
         settingsValidator->addResources(std::move(m_transfertMap));
     }
@@ -829,18 +1147,28 @@ bool cGame::setupGame()
     m_keyboard = new cKeyboard();
     logger->log(LOG_INFO, COMP_INIT, "Initializing Keyboard", "install_keyboard()", OUTC_SUCCESS);
 
-    m_Screen = std::make_unique<cScreenInit>(m_screenW, m_screenH, title);
+    m_Screen = std::make_unique<cScreenInit>(
+        m_screenW,
+        m_screenH,
+        m_renderScalePercent,
+        title
+    );
     if (!m_windowed) {
         m_Screen->setFullScreenMode();
     }
 
     m_screenW = m_Screen->Width();
     m_screenH = m_Screen->Height();
+    cSideBar::configureLayout(m_graphicsDensity > 1, m_screenW);
     window = m_Screen->getWindows();
     renderer = m_Screen->getRenderer();
 
     // create ressources from scratch
-    context = std::make_unique<ContextCreator>(renderer, settingsValidator.get());
+    context = std::make_unique<ContextCreator>(
+        renderer,
+        settingsValidator.get(),
+        m_graphicsDensity
+    );
     // share Graphics to all class what use ctx !
     ctx->setGraphicsContext(context->createGraphicsContext());
     // share Text to all class what use ctx !
@@ -860,6 +1188,45 @@ bool cGame::setupGame()
         m_soundPlayer->setMusicEnabled(false);
     }
 
+    // main() switches the working directory to the executable directory before
+    // settings are loaded. GameDir points at the data pack directory, while
+    // user-owned music lives next to d2tm.exe.
+    const std::filesystem::path resolvedGameDirectory = std::filesystem::current_path();
+    const std::array<std::filesystem::path, 8> musicDirectories{
+        "music/gameplay",
+        "music/menu",
+        "music/conquest",
+        "music/briefing/atreides",
+        "music/briefing/harkonnen",
+        "music/briefing/ordos",
+        "music/victory",
+        "music/defeat"
+    };
+    for (const auto &directory : musicDirectories) {
+        std::error_code createError;
+        std::filesystem::create_directories(resolvedGameDirectory / directory, createError);
+        if (createError) {
+            logger->log(
+                LOG_WARN,
+                COMP_SOUND,
+                "Music directory",
+                std::format("Could not create {}: {}", (resolvedGameDirectory / directory).string(), createError.message()));
+        }
+    }
+    m_musicController = std::make_unique<MusicController>(m_soundPlayer, resolvedGameDirectory);
+    m_musicController->configure(
+        MusicCategory::Gameplay,
+        "music/gameplay",
+        {MIDI_BUILDING01, MIDI_BUILDING02, MIDI_BUILDING03, MIDI_BUILDING04, MIDI_BUILDING05,
+         MIDI_BUILDING06, MIDI_BUILDING07, MIDI_BUILDING08, MIDI_BUILDING09});
+    m_musicController->configure(MusicCategory::Menu, "music/menu", {MIDI_MENU});
+    m_musicController->configure(MusicCategory::Conquest, "music/conquest", {MIDI_SCENARIO});
+    m_musicController->configure(MusicCategory::BriefingAtreides, "music/briefing/atreides", {MIDI_MENTAT_ATR});
+    m_musicController->configure(MusicCategory::BriefingHarkonnen, "music/briefing/harkonnen", {MIDI_MENTAT_HAR});
+    m_musicController->configure(MusicCategory::BriefingOrdos, "music/briefing/ordos", {MIDI_MENTAT_ORD});
+    m_musicController->configure(MusicCategory::Victory, "music/victory", {MIDI_WIN01, MIDI_WIN02, MIDI_WIN03});
+    m_musicController->configure(MusicCategory::Defeat, "music/defeat", {MIDI_LOSE01, MIDI_LOSE02, MIDI_LOSE03});
+
     // do it here, because it depends on fonts to be loaded
     m_mouse = new cMouse(ctx.get());
 
@@ -877,7 +1244,11 @@ bool cGame::setupGame()
     /*** Data files ***/
 
     // load datafiles
-    gfxdata = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXDATA));
+    gfxdata = std::make_shared<Graphics>(
+        renderer,
+        settingsValidator->getFullName(eGameDirFileName::GFXDATA),
+        getGraphicsDensity()
+    );
     if (gfxdata == nullptr) {
         logger->log(LOG_ERROR, COMP_INIT, "Load data", "Could not hook/load datafile:" + settingsValidator->getName(eGameDirFileName::GFXDATA), OUTC_FAILED);
         return false;
@@ -1145,6 +1516,7 @@ void cGame::setState(int newState)
                 newStatePtr = new cOptionsState(*this, ctx.get(), m_state);
             }
             else if (newState == GAME_PLAYING) {
+                playMusicByTypeForStateTransition(MUSIC_PEACE);
                 if (m_state == GAME_OPTIONS) {
                     m_timeManager->restartTimer();
                     takeBackGroundScreen();
@@ -1663,7 +2035,7 @@ void cGame::saveBmpScreenToDisk()
     // shows a message in-game, would be even better to have this 'globally' (not depending on state), kind of like
     // a Quake console perhaps?
     cPlayer &humanPlayer = players[HUMAN];
-    humanPlayer.addNotification(std::format("Screenshot saved {}.", filename), eNotificationType::NEUTRAL);
+    humanPlayer.addNotification(localization::format("Screenshot saved: {}.", "Снимок экрана сохранён: {}.", filename), eNotificationType::NEUTRAL);
 
     m_screenshot++;
 }
@@ -1742,6 +2114,34 @@ void cGame::onKeyPressedGamePlaying(const cKeyboardEvent &event)
 {
     cPlayer &humanPlayer = players[HUMAN];
 
+    if (event.hasKey(SDL_SCANCODE_F5) &&
+            !event.hasKey(SDL_SCANCODE_LSHIFT) &&
+            !event.hasKey(SDL_SCANCODE_RSHIFT)) {
+        std::string error;
+        if (saveQuickGame(error)) {
+            humanPlayer.addNotification(
+                localization::text("Game saved.", "Игра сохранена."),
+                eNotificationType::NEUTRAL
+            );
+        }
+        else {
+            humanPlayer.addNotification(error, eNotificationType::BAD);
+        }
+    }
+
+    if (event.hasKey(SDL_SCANCODE_F9)) {
+        std::string error;
+        if (loadQuickGame(error)) {
+            players[HUMAN].addNotification(
+                localization::text("Game loaded.", "Игра загружена."),
+                eNotificationType::NEUTRAL
+            );
+        }
+        else {
+            humanPlayer.addNotification(error, eNotificationType::BAD);
+        }
+    }
+
     if (event.hasKey(SDL_SCANCODE_F)) {
         m_drawFps = false;
     }
@@ -1750,7 +2150,7 @@ void cGame::onKeyPressedGamePlaying(const cKeyboardEvent &event)
         m_drawTime = ! m_drawTime;
     }
 
-    if (event.hasKey(SDL_SCANCODE_D)) {
+    if (event.hasAssignedKey(m_commandBindings.deploy)) {
         for (int i = 0; i < MAX_UNITS; i++) {
             cUnit &u = unit[i];
             if (u.bSelected && u.iType == MCV && u.getPlayer()->isHuman()) {
@@ -1766,14 +2166,23 @@ void cGame::onKeyPressedGamePlaying(const cKeyboardEvent &event)
 
     if (event.hasKey(SDL_SCANCODE_M) || event.hasKey(SDL_SCANCODE_MUTE)) {
         game.m_playMusic = !game.m_playMusic;
+        m_soundPlayer->setMusicEnabled(game.m_playMusic);
         if (!game.m_playMusic) {
-            m_soundPlayer->stopMusic();
-            humanPlayer.addNotification("Music muted", eNotificationType::NEUTRAL);
+            if (m_musicController) m_musicController->stop();
+            humanPlayer.addNotification(localization::text("Music off", "Музыка выключена"), eNotificationType::NEUTRAL);
         }
         else {
-            m_soundPlayer->playMusic(m_newMusicSample);
-            humanPlayer.addNotification("Music enabled", eNotificationType::NEUTRAL);
+            if (m_musicController) m_musicController->replayCurrent();
+            humanPlayer.addNotification(localization::text("Music on", "Музыка включена"), eNotificationType::NEUTRAL);
         }
+    }
+
+    if (event.hasKey(SDL_SCANCODE_LEFTBRACKET)) {
+        playPreviousGameplayTrack();
+    }
+
+    if (event.hasKey(SDL_SCANCODE_RIGHTBRACKET)) {
+        playNextGameplayTrack();
     }
 
     if (event.hasKey(SDL_SCANCODE_O) || event.hasKey(SDL_SCANCODE_VOLUMEDOWN)) {
@@ -1820,7 +2229,7 @@ void cGame::onKeyPressedGamePlaying(const cKeyboardEvent &event)
         // depending on type of structure, a key could mean a different thing?
         // so, kind of like event.hasKey(selectedStructure->KeyForDeploying()) ?
         // and then perform?
-        if (event.hasKey(SDL_SCANCODE_D)) {
+        if (event.hasAssignedKey(m_commandBindings.release)) {
             if (selectedStructure->getType() == REPAIR) { // this should be done differently?
                 s_GameEvent e{
                     .eventType = eGameEventType::GAME_EVENT_DEPLOY_UNIT,
@@ -1880,10 +2289,7 @@ void cGame::playVoice(int sampleId, int playerId)
 
 void cGame::playMusicByTypeForStateTransition(int iType)
 {
-    if (m_musicType != iType) {
-        m_newMusicCountdown = 0;
-        playMusicByType(iType, HUMAN, false);
-    }
+    playMusicByType(iType, HUMAN, false);
 }
 
 bool cGame::playMusicByType(int iType, int playerId, bool triggerWithVoice)
@@ -1895,13 +2301,12 @@ bool cGame::playMusicByType(int iType, int playerId, bool triggerWithVoice)
 
     logbook(std::format("cGame::playMusicByType - iType = {}. playerId = {}, triggerWithVoice = {}", iType, playerId, triggerWithVoice));
 
-    if (triggerWithVoice) {
-        if (iType == m_musicType) {
-            logbook(std::format("m_musicType = {}, iType is {}, so bailing", m_musicType, iType));
-            return false;
-        }
+    // Attack detection no longer owns the music state. Legacy callers are folded
+    // into the gameplay pool and cannot interrupt the current composition.
+    if (iType == MUSIC_ATTACK) {
+        iType = MUSIC_PEACE;
     }
-
+    const bool repeatedCategory = m_musicType == iType;
     m_musicType = iType;
     logbook(std::format("m_musicType = {}", m_musicType));
 
@@ -1909,67 +2314,37 @@ bool cGame::playMusicByType(int iType, int playerId, bool triggerWithVoice)
         return false; // todo: have a 'no-sound soundplayer' instead of doing this :/
     }
 
-    if (m_newMusicCountdown > 0) {
-        // do not interfere with previous 'change to music' thing?
-        return false;
+    if (m_musicController) {
+        const MusicCategory category = musicCategoryFor(iType, players[HUMAN].getHouse());
+        // Keep the current track when adjacent screens use the same category.
+        m_musicController->activate(
+            category,
+            shouldAdvanceRepeatedMusicCategory(
+                repeatedCategory,
+                isState(GAME_PLAYING)
+            )
+        );
     }
-
-
-    int sampleId = MIDI_MENU;
-    if (iType == MUSIC_WIN) {
-        sampleId = MIDI_WIN01 + RNG::rnd(3);
-    }
-    else if (iType == MUSIC_LOSE) {
-        sampleId = MIDI_LOSE01 + RNG::rnd(6);
-    }
-    else if (iType == MUSIC_ATTACK) {
-        sampleId = MIDI_ATTACK01 + RNG::rnd(6);
-    }
-    else if (iType == MUSIC_PEACE) {
-        sampleId = MIDI_BUILDING01 + RNG::rnd(9);
-    }
-    else if (iType == MUSIC_MENU) {
-        sampleId = MIDI_MENU;
-    }
-    else if (iType == MUSIC_CONQUEST) {
-        sampleId = MIDI_SCENARIO;
-    }
-    else if (iType == MUSIC_BRIEFING) {
-        int houseIndex = players[HUMAN].getHouse();
-        if (houseIndex == ATREIDES) {
-            sampleId = MIDI_MENTAT_ATR;
-        }
-        else if (houseIndex == HARKONNEN) {
-            sampleId = MIDI_MENTAT_HAR;
-        }
-        else if (houseIndex == ORDOS) {
-            sampleId = MIDI_MENTAT_ORD;
-        }
-        else {
-            assert(false && "Undefined house.");
-        }
-    }
-    else {
-        assert(false && "Undefined music type.");
-    }
-
-    if (triggerWithVoice) {
-        // voice triggered music (ie "Enemy unit approaching"), so have music stop a bit
-        if (isState(GAME_PLAYING)) {
-            m_newMusicCountdown = 400; // wait a bit longer
-        }
-        else {
-            m_newMusicCountdown = 0;
-        }
-        m_soundPlayer->stopMusic();
-    }
-    else {
-        // instant switch
-        m_newMusicCountdown = 0;
-    }
-
-    m_newMusicSample = sampleId;
     return true;
+}
+
+void cGame::playPreviousGameplayTrack()
+{
+    if (m_playMusic && isState(GAME_PLAYING) && m_musicController) {
+        m_musicController->previous();
+    }
+}
+
+void cGame::playNextGameplayTrack()
+{
+    if (m_playMusic && isState(GAME_PLAYING) && m_musicController) {
+        m_musicController->next();
+    }
+}
+
+std::string cGame::getCurrentMusicTrackName() const
+{
+    return m_musicController ? m_musicController->currentDisplayName() : std::string{};
 }
 
 int cGame::getMaxVolume()
@@ -2136,7 +2511,7 @@ void cGame::onKeyDownDebugMode(const cKeyboardEvent &event)
     }
     else {
         // REVEAL MAP
-        if (event.hasKey(SDL_SCANCODE_F5)) {
+        if (event.hasKey(SDL_SCANCODE_F7)) {
             for (int i = 0; i < AI_WORM; i++) {
                 global_map.clear_all(i);
             }
@@ -2227,9 +2602,7 @@ void cGame::initiateFadingOut()
     m_fadeAction = eFadeAction::FADE_OUT; // fade out
     m_fadeAlpha = 250;
 
-    renderDrawer->beginDrawingToTexture(screenTexture);
-    SDL_RenderCopy(renderer, actualRenderer->tex,nullptr, nullptr);
-    renderDrawer->endDrawingToTexture();
+    captureCurrentFrameForFade();
 }
 
 // this shows the you have lost bmp at screen, after mouse press the mentat debriefing state will begin
@@ -2242,6 +2615,22 @@ void cGame::drawStateLosing()
     int posW = (m_screenW-tex->w)/2;
     int posH = (m_screenH-tex->h)/2;
     renderDrawer->renderSprite(tex,posW, posH);
+    if (isHdGraphicsActive()) {
+        auto *textDrawer = ctx->getTextContext()->getMenuTextDrawer();
+        const Color textColor{255, 224, 164, 255};
+        textDrawer->drawTextScaledCenteredInBox(
+            localization::text("MISSION FAILED", "ЗАДАНИЕ ПРОВАЛЕНО"),
+            cRectangle{posW + 20, posH + 18, tex->w - 40, 30},
+            0.9F,
+            textColor
+        );
+        textDrawer->drawTextScaledCenteredInBox(
+            localization::text("CLICK TO CONTINUE", "НАЖМИТЕ, ЧТОБЫ ПРОДОЛЖИТЬ"),
+            cRectangle{posW + 20, posH + 72, tex->w - 40, 26},
+            0.72F,
+            textColor
+        );
+    }
     renderDrawer->renderSprite(gfxdata->getTexture(MOUSE_NORMAL), m_mouse->getX(), m_mouse->getY());
 
     if (m_mouse->isLeftButtonClicked()) {
@@ -2264,6 +2653,22 @@ void cGame::drawStateWinning()
     int posW = (m_screenW-tex->w)/2;
     int posH = (m_screenH-tex->h)/2;
     renderDrawer->renderSprite(tex,posW, posH);
+    if (isHdGraphicsActive()) {
+        auto *textDrawer = ctx->getTextContext()->getMenuTextDrawer();
+        const Color textColor{255, 224, 164, 255};
+        textDrawer->drawTextScaledCenteredInBox(
+            localization::text("MISSION COMPLETE", "ЗАДАНИЕ ВЫПОЛНЕНО"),
+            cRectangle{posW + 20, posH + 18, tex->w - 40, 30},
+            0.9F,
+            textColor
+        );
+        textDrawer->drawTextScaledCenteredInBox(
+            localization::text("CLICK TO CONTINUE", "НАЖМИТЕ, ЧТОБЫ ПРОДОЛЖИТЬ"),
+            cRectangle{posW + 20, posH + 72, tex->w - 40, 26},
+            0.72F,
+            textColor
+        );
+    }
     renderDrawer->renderSprite(gfxdata->getTexture(MOUSE_NORMAL), m_mouse->getX(), m_mouse->getY());
 
     if (m_mouse->isLeftButtonClicked()) {
@@ -2279,9 +2684,22 @@ void cGame::drawStateWinning()
 
 void cGame::takeBackGroundScreen()
 {
-    renderDrawer->beginDrawingToTexture(screenTexture);
-    SDL_RenderCopy(renderer, actualRenderer->tex,nullptr, nullptr);
-    renderDrawer->endDrawingToTexture();
+    captureCurrentFrameForFade();
+}
+
+bool cGame::saveQuickGame(std::string &errorMessage)
+{
+    return SaveGameManager::saveQuickGame(*this, errorMessage);
+}
+
+bool cGame::loadQuickGame(std::string &errorMessage)
+{
+    return SaveGameManager::loadQuickGame(*this, errorMessage);
+}
+
+bool cGame::hasQuickSave() const
+{
+    return SaveGameManager::hasQuickSave();
 }
 
 std::shared_ptr<s_TerrainInfo> cGame::getTerrainInfo() const

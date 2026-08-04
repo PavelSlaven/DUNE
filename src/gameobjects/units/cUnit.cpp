@@ -25,6 +25,8 @@
 #include "utils/cSoundPlayer.h"
 #include "utils/Graphics.hpp"
 #include "utils/RNG.hpp"
+#include "utils/WorldObjectScale.hpp"
+#include "utils/Localization.hpp"
 #include <SDL2/SDL.h>
 #include <format>
 #include "drawers/cTextDrawer.h"
@@ -527,6 +529,33 @@ int cUnit::draw_y(int bmpHeight)
     return mapCamera->getWindowYPositionWithOffset(pos_y(), bmpOffset);
 }
 
+cRectangle cUnit::getVisualRectangle()
+{
+    const int originalWidth = static_cast<int>(std::lround(
+        mapCamera->factorZoomLevel(getBmpWidth())
+    ));
+    const int originalHeight = static_cast<int>(std::lround(
+        mapCamera->factorZoomLevel(getBmpHeight())
+    ));
+    const float visualScale = unitWorldScaleFactor(
+        game.getWorldScaleFactor(),
+        gfxdata && gfxdata->getDensity() > 1,
+        iType == TANK || iType == SIEGETANK
+    );
+    const int visualWidth = static_cast<int>(std::lround(
+        originalWidth * visualScale
+    ));
+    const int visualHeight = static_cast<int>(std::lround(
+        originalHeight * visualScale
+    ));
+    return {
+        draw_x() - (visualWidth - originalWidth) / 2,
+        draw_y() - (visualHeight - originalHeight) / 2,
+        visualWidth,
+        visualHeight
+    };
+}
+
 int cUnit::center_draw_x()
 {
     return mapCamera->getWindowXPosition(pos_x_centered());
@@ -544,10 +573,13 @@ int cUnit::getBmpHeight() const
 
 void cUnit::draw_spice()
 {
-    float width_x = mapCamera->factorZoomLevel(getBmpWidth());
-    int height_y = mapCamera->factorZoomLevel(4);
-    int drawx = draw_x();
-    int drawy = draw_y() - ((height_y * 2) + 2);
+    const cRectangle visual = getVisualRectangle();
+    float width_x = visual.getWidth();
+    int height_y = std::max(1, static_cast<int>(std::lround(
+        mapCamera->factorZoomLevel(4) * game.getWorldScaleFactor()
+    )));
+    int drawx = visual.getX();
+    int drawy = visual.getY() - ((height_y * 2) + 2);
 
     int max = getUnitInfo().credit_capacity;
     int w = healthBar(width_x, iCredits, max);
@@ -586,10 +618,13 @@ void cUnit::draw_health()
     if (iHitPoints < 0) return;
 
     // draw units health
-    float width_x = mapCamera->factorZoomLevel(getBmpWidth());
-    int height_y = mapCamera->factorZoomLevel(4);
-    int drawx = draw_x();
-    int drawy = draw_y() - (height_y + 2);
+    const cRectangle visual = getVisualRectangle();
+    float width_x = visual.getWidth();
+    int height_y = std::max(1, static_cast<int>(std::lround(
+        mapCamera->factorZoomLevel(4) * game.getWorldScaleFactor()
+    )));
+    int drawx = visual.getX();
+    int drawy = visual.getY() - (height_y + 2);
 
     float healthNormalized = getHealthNormalized();
 
@@ -613,15 +648,19 @@ void cUnit::draw_group(cTextDrawer* textDrawer)
 {
     if (iHitPoints < 0) return;
 
-    int height_y = mapCamera->factorZoomLevel(4);
-    int drawx = draw_x();
-    int drawy = draw_y() - (height_y + 2);
+    const cRectangle visual = getVisualRectangle();
+    int height_y = std::max(1, static_cast<int>(std::lround(
+        mapCamera->factorZoomLevel(4) * game.getWorldScaleFactor()
+    )));
+    int drawx = visual.getX();
+    int drawy = visual.getY() - (height_y + 2);
     // draw group
     // TODO: make text smaller depending on zoom factor?
     if (iGroup > 0 && iPlayer == HUMAN) {
         // @mira I don't fix group name without acces to textDrawer: fixed on ctx branch
-        textDrawer->drawText(drawx + 26, drawy - 11, Color::black(),std::format("{}",iGroup));
-        textDrawer->drawText(drawx + 26, drawy - 12, Color::white(),std::format("{}",iGroup));
+        const int groupX = drawx + std::max(3, visual.getWidth() - 8);
+        textDrawer->drawText(groupX, drawy - 11, Color::black(),std::format("{}",iGroup));
+        textDrawer->drawText(groupX, drawy - 12, Color::white(),std::format("{}",iGroup));
     }
 }
 
@@ -670,8 +709,9 @@ void cUnit::draw_experience()
     }
 
 
-    int drawx = draw_x() + 3;
-    int drawy = draw_y() - 19;
+    const cRectangle visual = getVisualRectangle();
+    int drawx = visual.getX() + 3;
+    int drawy = visual.getY() - 19;
 
     // 1 star = 1 experience
     for (int i = 0; i < iStars; i++) {
@@ -723,10 +763,6 @@ void cUnit::draw()
         return;
     }
 
-    // Selection box x, y position. Depends on unit size
-    const int ux = draw_x();
-    const int uy = draw_y();
-
     if (isSandworm()) {
         return;
     }
@@ -745,17 +781,27 @@ void cUnit::draw()
 
     cPlayer &cPlayer = players[this->iPlayer];
 
-    const float scaledWidth = mapCamera->factorZoomLevel(bmp_width);
-    const float scaledHeight = mapCamera->factorZoomLevel(bmp_height);
-
     Texture *shadow = cPlayer.getUnitShadowBitmap(iType);
-    int roundedScaledWidth = static_cast<int>(round(scaledWidth));
-    int roundedScaledHeight = static_cast<int>(round(scaledHeight));
+    const cRectangle visual = getVisualRectangle();
+    const int roundedScaledWidth = visual.getWidth();
+    const int roundedScaledHeight = visual.getHeight();
+    const int visualX = visual.getX();
+    const int visualY = visual.getY();
     if (shadow) {
         cRectangle src = {start_x, start_y, bmp_width, bmp_height};
-        cRectangle dest = {ux, uy, roundedScaledWidth, roundedScaledHeight};
+        cRectangle dest = {
+            visualX,
+            visualY,
+            roundedScaledWidth,
+            roundedScaledHeight
+        };
         if (iType == CARRYALL) {
-            dest = {ux, uy+24, roundedScaledWidth, roundedScaledHeight};
+            dest = {
+                visualX,
+                visualY + 24,
+                roundedScaledWidth,
+                roundedScaledHeight
+            };
         }
         renderDrawer->renderStrechSprite(shadow,src, dest, ShadowTrans);
     }
@@ -764,7 +810,12 @@ void cUnit::draw()
     Texture *bitmap = cPlayer.getUnitBitmap(iType);
     if (bitmap) {
         cRectangle src = {start_x, start_y, bmp_width, bmp_height};
-        cRectangle dest = {ux, uy, roundedScaledWidth, roundedScaledHeight};
+        cRectangle dest = {
+            visualX,
+            visualY,
+            roundedScaledWidth,
+            roundedScaledHeight
+        };
         renderDrawer->renderStrechSprite(bitmap,src, dest);
     }
     else {
@@ -779,25 +830,29 @@ void cUnit::draw()
         start_x = bmp_head * bmp_width;
         start_y = bmp_height * iFrame;
         cRectangle src = {start_x, start_y, bmp_width, bmp_height};
-        cRectangle dest = {ux, uy, static_cast<int>(round(mapCamera->factorZoomLevel(bmp_width))), static_cast<int>(round(mapCamera->factorZoomLevel(bmp_height)))};
+        cRectangle dest = {
+            visualX,
+            visualY,
+            roundedScaledWidth,
+            roundedScaledHeight
+        };
         renderDrawer->renderStrechSprite(top,src, dest);
     }
 
     // when we want to be picked up..
     if (bCarryMe) {
-        renderDrawer->renderSprite(gfxdata->getTexture(SYMB_PICKMEUP), ux, uy - 7);
+        renderDrawer->renderSprite(
+            gfxdata->getTexture(SYMB_PICKMEUP),
+            visualX,
+            visualY - 7
+        );
     }
 
     if (bSelected) {
-        SDL_Surface *focusBitmap = gfxdata->getSurface(FOCUS);
-        int bmp_width = focusBitmap->w;
-        int bmp_height = focusBitmap->h;
-
-        int x = draw_x(bmp_width);
-        int y = draw_y(bmp_height);
-
-        cRectangle dest = {x,y, static_cast<int>(round(mapCamera->factorZoomLevel(bmp_width))),static_cast<int>(round(mapCamera->factorZoomLevel(bmp_height)))};
-        renderDrawer->renderStrechFullSprite(gfxdata->getTexture(FOCUS), dest);
+        renderDrawer->renderStrechFullSprite(
+            gfxdata->getTexture(FOCUS),
+            visual
+        );
     }
 
     if (game.m_drawUnitDebug) {
@@ -3042,11 +3097,8 @@ cUnit::~cUnit()
  */
 void cUnit::thinkFast_position()
 {
-    // keep updating dimensions
-    dimensions.move(draw_x(), draw_y());
     if (mapCamera) {
-        dimensions.resize(mapCamera->factorZoomLevel(getBmpWidth()),
-                          mapCamera->factorZoomLevel(getBmpHeight()));
+        dimensions = getVisualRectangle();
     }
 }
 
@@ -3811,7 +3863,7 @@ std::string cUnit::getHarvesterStatusForMessageBar()
 {
     s_UnitInfo &info = getUnitInfo();
     int harvested = ((float)iCredits/info.credit_capacity)*100;
-    return std::format("{} at {} percent health and {} percent harvested", info.name, getHealthNormalized()*100, harvested);
+    return localization::format("{}: health {}%, cargo {}%", "{}: здоровье {}%, груз {}%", info.name, getHealthNormalized()*100, harvested);
 }
 
 std::string cUnit::getUnitStatusForMessageBar()
@@ -3821,7 +3873,7 @@ std::string cUnit::getUnitStatusForMessageBar()
         case HARVESTER:
             return getHarvesterStatusForMessageBar();
         default:
-            return std::format("{} at {} percent health", info.name, getHealthNormalized()*100);
+            return localization::format("{}: health {}%", "{}: здоровье {}%", info.name, getHealthNormalized()*100);
     }
 
 }

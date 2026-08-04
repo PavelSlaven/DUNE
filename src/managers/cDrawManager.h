@@ -2,6 +2,7 @@
 
 #include "controls/cKeyboardEvent.h"
 #include "drawers/cBuildingListDrawer.h"
+#include "drawers/cCommandBarDrawer.h"
 #include "drawers/cMapDrawer.h"
 #include "drawers/cMessageDrawer.h"
 #include "drawers/cMiniMapDrawer.h"
@@ -45,6 +46,10 @@ public:
         return &m_orderDrawer;
     }
 
+    cCommandBarDrawer *getCommandBarDrawer() {
+        return &m_commandBarDrawer;
+    }
+
     cMouseDrawer *getMouseDrawer() {
         return m_mouseDrawer;
     }
@@ -76,6 +81,7 @@ public:
     void drawMessageBar();
 
     void setMessage(std::string msg, bool keepMessage = false);
+    [[nodiscard]] std::string getMessage() const;
 
     void setKeepMessage(bool value);
 
@@ -95,6 +101,8 @@ protected:
     void drawRallyPoint();
 
     void drawTopBarBackground();
+    void drawTopBarMusicControls();
+    void drawMusicControls(int left, int right, bool hd);
 
 private:
     void drawOptionBar();
@@ -105,6 +113,7 @@ private:
 
     // Properties:
     cSideBarDrawer m_sidebarDrawer;
+    cCommandBarDrawer m_commandBarDrawer;
     CreditsDrawer m_creditsDrawer;
     cOrderDrawer m_orderDrawer;
     cMapDrawer m_mapDrawer;
@@ -119,6 +128,7 @@ private:
     // TODO: bullet/projectile drawer
     cPlayer *m_player;
     cTextDrawer *m_textDrawer = nullptr;
+    cTextDrawer *m_smallTextDrawer = nullptr;
     Graphics* m_gfxinter;
     cMouseDrawer* m_mouseDrawer = nullptr;
 

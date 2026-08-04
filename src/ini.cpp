@@ -29,6 +29,7 @@
 #include "utils/cSeedMapGenerator.h"
 #include "gameobjects/units/cReinforcements.h"
 #include "utils/RNG.hpp"
+#include "utils/Localization.hpp"
 
 #include <format>
 #include <filesystem>
@@ -416,7 +417,12 @@ std::string INI_GetHouseDirectoryName(int iHouse)
 
 void cIni::loadRegionfile(int iHouse, int iMission, cSelectYourNextConquestState *selectYourNextConquestState)
 {
-    auto filename = std::format("campaign/{}/mission{}.ini", INI_GetHouseDirectoryName(iHouse), iMission);
+    auto filename = std::format("{}/{}/mission{}.ini", localization::campaignRoot(),
+                                INI_GetHouseDirectoryName(iHouse), iMission);
+    if (!fs::exists(filename) && localization::isEnglish()) {
+        filename = std::format("campaign/{}/mission{}.ini", INI_GetHouseDirectoryName(iHouse), iMission);
+        logbook("[CAMPAIGN] English region text is missing; using Russian fallback");
+    }
     cLogger::getInstance()->log(LOG_INFO, COMP_REGIONINI, "Opening mission file", filename);
 
     std::ifstream file(filename);
@@ -1273,7 +1279,11 @@ void cIni::loadBriefing(int iHouse, int iScenarioFind, int iSectionFind, Abstrac
 
     // clear mentat
     pMentat->initSentences();
-    auto path = std::string("campaign/briefings/") + filename;
+    auto path = std::string(localization::campaignRoot()) + "/briefings/" + filename;
+    if (!fs::exists(path) && localization::isEnglish()) {
+        path = std::string("campaign/briefings/") + filename;
+        logbook("[BRIEFING] English briefing is missing; using Russian fallback");
+    }
 
     logbook(path);
     logbook(std::format("Going to find SCEN ID #{} and SectionID {}", iScenarioFind, iSectionFind));

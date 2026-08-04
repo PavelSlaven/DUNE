@@ -59,6 +59,17 @@ cSoundPlayer::cSoundPlayer(const std::string &datafile)
 
     auto logger = cLogger::getInstance();
 
+    constexpr int requestedCodecs = MIX_INIT_FLAC | MIX_INIT_MP3 | MIX_INIT_OGG;
+    const int initializedCodecs = Mix_Init(requestedCodecs);
+    m_initializedMusicCodecs = true;
+    if ((initializedCodecs & requestedCodecs) != requestedCodecs) {
+        logger->log(
+            LOG_WARN,
+            COMP_SOUND,
+            "Music decoders",
+            std::format("Not every optional decoder is available: {}", Mix_GetError()));
+    }
+
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
         logger->log(LOG_ERROR, COMP_SOUND, "SDL2_mixer initialization", Mix_GetError(), OUTC_FAILED);
         m_isMusicEnabled = false;
@@ -90,6 +101,11 @@ cSoundPlayer::cSoundPlayer(const std::string &datafile)
 
 cSoundPlayer::~cSoundPlayer()
 {
+    Mix_HaltMusic();
+    releaseExternalMusic();
+    if (m_initializedMusicCodecs) {
+        Mix_Quit();
+    }
 }
 
 int cSoundPlayer::getMaxVolume()
@@ -137,7 +153,36 @@ void cSoundPlayer::playMusic(int sampleId)
     if (!m_isMusicEnabled) {
         return;
     }
+    Mix_HaltMusic();
+    releaseExternalMusic();
     Mix_PlayMusic(soundData->getMusic(sampleId), kNoLoop);
+}
+
+bool cSoundPlayer::playMusicFile(const std::filesystem::path &file, std::string &error)
+{
+    if (!m_isMusicEnabled) {
+        error = "music is disabled";
+        return false;
+    }
+
+    const auto utf8Path = file.u8string();
+    const std::string filename(utf8Path.begin(), utf8Path.end());
+    Mix_Music *loaded = Mix_LoadMUS(filename.c_str());
+    if (!loaded) {
+        error = Mix_GetError();
+        return false;
+    }
+
+    Mix_HaltMusic();
+    releaseExternalMusic();
+    if (Mix_PlayMusic(loaded, kNoLoop) != 0) {
+        error = Mix_GetError();
+        Mix_FreeMusic(loaded);
+        return false;
+    }
+    m_externalMusic = loaded;
+    error.clear();
+    return true;
 }
 
 bool cSoundPlayer::isMusicPlaying() const
@@ -148,6 +193,14 @@ bool cSoundPlayer::isMusicPlaying() const
 void cSoundPlayer::stopMusic()
 {
     Mix_HaltMusic();
+}
+
+void cSoundPlayer::releaseExternalMusic()
+{
+    if (m_externalMusic) {
+        Mix_FreeMusic(m_externalMusic);
+        m_externalMusic = nullptr;
+    }
 }
 
 void cSoundPlayer::setMusicVolume(int _vol)

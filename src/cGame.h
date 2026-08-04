@@ -13,12 +13,14 @@
 
 #include "controls/cMouse.h"
 #include "controls/cKeyboard.h"
+#include "controls/CommandBindings.hpp"
 #include "definitions.h"
 #include "mentat/AbstractMentat.h"
 #include "observers/cScenarioObserver.h"
 #include "utils/cRectangle.h"
 #include "utils/cTimeManager.h"
 #include "utils/cIniFile.h"
+#include "utils/GraphicsMode.hpp"
 
 #include <memory>
 #include <string>
@@ -41,6 +43,8 @@ class ContextCreator;
 class GameContext;
 class cScreenShake;
 class cFocusManager;
+class SaveGameManager;
+class MusicController;
 
 struct s_TerrainInfo;
 // Naming thoughts:
@@ -75,6 +79,11 @@ public:
     // resolution of the game
     int m_screenW;
     int m_screenH;
+    int m_renderScalePercent;
+    int m_worldScalePercent;
+    int m_effectiveWorldScalePercent;
+    GraphicsMode m_graphicsMode;
+    CommandBindings m_commandBindings;
 
     bool m_playSound;                       // play sound?
     bool m_disableAI;                       // disable AI thinking?
@@ -147,6 +156,9 @@ public:
     void playVoice(int sampleId, int playerId);
     void playMusicByTypeForStateTransition(int iType);
     bool playMusicByType(int iType, int playerId = HUMAN, bool triggerWithVoice = false);
+    void playPreviousGameplayTrack();
+    void playNextGameplayTrack();
+    [[nodiscard]] std::string getCurrentMusicTrackName() const;
 
     int getMaxVolume();
 
@@ -270,6 +282,24 @@ public:
         return m_debugMode;
     }
 
+    [[nodiscard]] bool isHdGraphicsActive() const {
+        return m_graphicsDensity > 1;
+    }
+
+    [[nodiscard]] int getGraphicsDensity() const {
+        return m_graphicsDensity;
+    }
+
+    [[nodiscard]] float getWorldScaleFactor() const {
+        return isHdGraphicsActive()
+            ? static_cast<float>(m_effectiveWorldScalePercent) / 100.0F
+            : 1.0F;
+    }
+
+    [[nodiscard]] int getWorldScalePercent() const {
+        return isHdGraphicsActive() ? m_effectiveWorldScalePercent : 100;
+    }
+
     void applySettings(GameSettings *gs);
     void execute(AbstractMentat &mentat);
 
@@ -278,12 +308,18 @@ public:
     }
     void takeBackGroundScreen();
 
+    bool saveQuickGame(std::string &errorMessage);
+    bool loadQuickGame(std::string &errorMessage);
+    [[nodiscard]] bool hasQuickSave() const;
+
     std::shared_ptr<s_TerrainInfo> getTerrainInfo() const;
 private:
+    friend class SaveGameManager;
     /**
      * Variables start here
      */
     bool m_debugMode;               // ...
+    int m_graphicsDensity = 1;
 
     // if true, then turrets won't do anything on low power (both gun and rocket turrets)
     bool m_turretsDownOnLowPower;
@@ -299,6 +335,7 @@ private:
     std::unique_ptr<cFocusManager> m_focusManager;
 
     cSoundPlayer* m_soundPlayer;
+    std::unique_ptr<MusicController> m_musicController;
 
     std::shared_ptr<cPreviewMaps> m_PreviewMaps;
 
@@ -310,6 +347,11 @@ private:
     SDL_Renderer *renderer;
     Texture *screenTexture=nullptr;
     Texture *actualRenderer= nullptr;
+    Texture *m_hdPresentationRenderer = nullptr;
+    Texture *m_hdPresentationScreenTexture = nullptr;
+    int m_hdPresentationRendererWidth = 0;
+    int m_hdPresentationRendererHeight = 0;
+    bool m_hdPresentationFadeCaptureActive = false;
     cTextDrawer* m_textDrawer = nullptr;
     cTimeManager* m_timeManager;
 
@@ -360,6 +402,10 @@ private:
     void drawStateMentat(AbstractMentat *mentat);  // state mentat talking and interaction
 
     void shakeScreenAndBlitBuffer();
+    [[nodiscard]] bool useHdPresentation() const;
+    Texture *ensureHdPresentationRenderTarget(bool fadeTarget);
+    void presentFrame(Texture *frameTarget, bool hdPresentationFrame);
+    void captureCurrentFrameForFade();
 
     void initPlayers(bool rememberHouse) const;
 

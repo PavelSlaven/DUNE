@@ -10,6 +10,7 @@
 #include "utils/Graphics.hpp"
 #include <SDL2/SDL.h>
 #include "map/MapGeometry.hpp"
+#include "sidebar/HudLayout.hpp"
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
 #include <cassert>
@@ -31,25 +32,39 @@ cMiniMapDrawer::cMiniMapDrawer(GameContext *ctx, cMap *map, cPlayer *player, cMa
     assert(player);
     assert(mapCamera);
 
-    int reportX = cSideBar::WidthOfMinimap / getMapWidthInPixels();
-    int reportY = cSideBar::HeightOfMinimap / getMapHeightInPixels();
-    factorZoom = std::min(reportX, reportY);
+    const HudLayout hud = HudLayout::create(
+        game.isHdGraphicsActive(),
+        game.m_screenW,
+        game.m_screenH
+    );
+    const cRectangle minimapArea = game.isHdGraphicsActive()
+        ? hud.radarViewport
+        : cRectangle(
+            game.m_screenW - cSideBar::WidthOfMinimap,
+            cSideBar::TopBarHeight,
+            cSideBar::WidthOfMinimap,
+            cSideBar::HeightOfMinimap
+        );
 
-    int halfWidthOfMinimap = cSideBar::WidthOfMinimap / 2;
+    int reportX = minimapArea.getWidth() / getMapWidthInPixels();
+    int reportY = minimapArea.getHeight() / getMapHeightInPixels();
+    factorZoom = std::max(1, std::min(reportX, reportY));
+
+    int halfWidthOfMinimap = minimapArea.getWidth() / 2;
     int halfWidthOfMap = getMapWidthInPixels() / 2;
-    int topLeftX = game.m_screenW - cSideBar::WidthOfMinimap;
+    int topLeftX = minimapArea.getX();
     drawX = topLeftX + (halfWidthOfMinimap - factorZoom*halfWidthOfMap);
 
-    int halfHeightOfMinimap = cSideBar::HeightOfMinimap / 2;
+    int halfHeightOfMinimap = minimapArea.getHeight() / 2;
     int halfHeightOfMap = getMapHeightInPixels() / 2;
-    int topLeftY = cSideBar::TopBarHeight;
+    int topLeftY = minimapArea.getY();
     drawY = topLeftY + (halfHeightOfMinimap - factorZoom*halfHeightOfMap);
 
     centerX = topLeftX + (halfWidthOfMinimap - halfWidthOfMap);
     centerY = topLeftY + (halfHeightOfMinimap - halfHeightOfMap);
 
     m_RectMinimap = cRectangle(drawX, drawY, factorZoom*getMapWidthInPixels(), factorZoom * getMapHeightInPixels());
-    m_RectFullMinimap = cRectangle(topLeftX, topLeftY, cSideBar::WidthOfMinimap, cSideBar::HeightOfMinimap);
+    m_RectFullMinimap = minimapArea;
     mipMapTex = renderDrawer->createRenderTargetTexture(getMapWidthInPixels(), getMapHeightInPixels());
 }
 
@@ -90,6 +105,9 @@ void cMiniMapDrawer::draw()
 
 void cMiniMapDrawer::drawStaticFrame()
 {
+    if (game.isHdGraphicsActive()) {
+        return;
+    }
     if (m_status == eMinimapStatus::NOTAVAILABLE) return;
     if (m_status == eMinimapStatus::RENDERMAP) return;
     if (m_status == eMinimapStatus::LOWPOWER) return;

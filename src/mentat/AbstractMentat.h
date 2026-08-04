@@ -43,7 +43,7 @@ enum eMentatState {
 
 class AbstractMentat : public cInputObserver {
 public:
-    AbstractMentat(GameContext* ctx, bool canMissionSelect);
+    AbstractMentat(GameContext* ctx, bool canMissionSelect, bool adaptiveHdLayout = false);
     virtual ~AbstractMentat();
 
     void onNotifyMouseEvent(const s_MouseEvent &event) override;
@@ -77,6 +77,12 @@ protected:
     virtual void draw_other() = 0;
 
     void draw_movie();
+    void drawHdMissionSelectFrame() const;
+
+    [[nodiscard]] int baseX(int value) const;
+    [[nodiscard]] int baseY(int value) const;
+    [[nodiscard]] cRectangle baseRect(int x, int y, int width, int height) const;
+    void drawMentatTexture(Texture *texture, int x, int y);
 
     // Timed animation
     int TIMER_Mouth;
@@ -118,6 +124,12 @@ protected:
     int offsetY;
     int movieTopleftX;
     int movieTopleftY;
+    int m_movieWidth = 368;
+    int m_movieHeight = 224;
+    bool m_adaptiveHdLayout = false;
+    float m_uiScale = 1.0F;
+    int m_panelWidth = 640;
+    int m_panelHeight = 480;
 
     GuiButton *m_guiBtnToMissionSelect;
     Graphics* gfxmentat;

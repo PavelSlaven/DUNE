@@ -78,6 +78,8 @@ private:
     int widthOfRightColumn;
     int mapItemButtonHeight;
     int mapItemButtonWidth;
+    int m_playerRowHeight = 22;
+    bool m_hdLayout = false;
 
     // screen
     int screen_x, screen_y;

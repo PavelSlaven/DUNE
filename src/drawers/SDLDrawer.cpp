@@ -43,9 +43,15 @@ void SDLDrawer::renderTexture(SDL_Texture *tex, int x, int y, int w, int h, Uint
     SDL_RenderCopy(renderer, tex, NULL, &tmp);
 }
 
-void SDLDrawer::renderFromSurface(SDL_Surface *src, int x, int y,Uint8 opacity)
+void SDLDrawer::renderFromSurface(
+    SDL_Surface *src,
+    int x,
+    int y,
+    Uint8 opacity,
+    int density)
 {
-    SDL_Rect tmp = {x,y,src->w, src->h};
+    const int safeDensity = std::max(1, density);
+    SDL_Rect tmp = {x,y,src->w / safeDensity, src->h / safeDensity};
     transparentColorKey = SDL_MapRGB(src->format, 255, 0, 255);
     SDL_SetColorKey(src, SDL_TRUE, transparentColorKey);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, src);
@@ -53,19 +59,33 @@ void SDLDrawer::renderFromSurface(SDL_Surface *src, int x, int y,Uint8 opacity)
         std::cerr << "error drawSprite : " << SDL_GetError();
         return;
     }
+    SDL_SetTextureScaleMode(
+        texture,
+        safeDensity > 1 ? SDL_ScaleModeLinear : SDL_ScaleModeNearest
+    );
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(texture, opacity);
     SDL_RenderCopy(renderer, texture, NULL, &tmp);
     SDL_DestroyTexture(texture);
 }
 
-void SDLDrawer::renderStrechSprite(Texture *src, cRectangle src_pos, cRectangle dest_pos, Uint8 opacity)
+void SDLDrawer::renderStrechSprite(
+    Texture *src,
+    cRectangle src_pos,
+    cRectangle dest_pos,
+    Uint8 opacity,
+    SDL_BlendMode blendMode)
 {
-    if (SDL_SetTextureBlendMode(src->tex, SDL_BLENDMODE_BLEND) < 0) {
+    if (src == nullptr) return;
+    if (SDL_SetTextureBlendMode(src->tex, blendMode) < 0) {
         std::cerr << "Error SDL_SetTextureBlendMode : " << SDL_GetError() << std::endl;
     }
     SDL_SetTextureAlphaMod(src->tex, opacity);
     SDL_Rect srcRect = src_pos.toSDL();
+    srcRect.x *= src->density;
+    srcRect.y *= src->density;
+    srcRect.w *= src->density;
+    srcRect.h *= src->density;
     SDL_Rect destRect = dest_pos.toSDL();
     SDL_RenderCopy(renderer, src->tex, &srcRect, &destRect);
 }
@@ -409,13 +429,33 @@ Texture* SDLDrawer::createRenderTargetTexture(int width, int height)
 void SDLDrawer::beginDrawingToTexture(Texture* targetTexture)
 {
     assert(targetTexture && targetTexture->isRenderTarget == true);
-    SDL_Texture* currentTarget = SDL_GetRenderTarget(renderer);
-    renderTargetStack.push(currentTarget);
+    RenderTargetState state;
+    state.target = SDL_GetRenderTarget(renderer);
+    SDL_RenderGetLogicalSize(
+        renderer,
+        &state.logicalWidth,
+        &state.logicalHeight
+    );
+    SDL_RenderGetViewport(renderer, &state.viewport);
+    state.clippingEnabled = SDL_RenderIsClipEnabled(renderer);
+    if (state.clippingEnabled == SDL_TRUE) {
+        SDL_RenderGetClipRect(renderer, &state.clipRect);
+    }
+    SDL_RenderGetScale(renderer, &state.scaleX, &state.scaleY);
+    renderTargetStack.push(state);
 
     if (SDL_SetRenderTarget(renderer, targetTexture->tex) < 0) {
         renderTargetStack.pop();
         throw std::runtime_error("Error changing render target: " + std::string(SDL_GetError()));
     }
+
+    // Off-screen buffers use their own pixel coordinate system. SDL otherwise
+    // carries the outer logical size into the new target and, on return, leaves
+    // the outer viewport and scale reset to the target's physical dimensions.
+    SDL_RenderSetLogicalSize(renderer, 0, 0);
+    SDL_RenderSetScale(renderer, 1.0F, 1.0F);
+    SDL_RenderSetViewport(renderer, nullptr);
+    SDL_RenderSetClipRect(renderer, nullptr);
 }
 
 void SDLDrawer::endDrawingToTexture()
@@ -423,9 +463,21 @@ void SDLDrawer::endDrawingToTexture()
     if (renderTargetStack.empty()) {
         throw std::runtime_error("endDrawingToTexture without beginDrawingToTexture !");
     }
-    SDL_Texture* previousTarget = renderTargetStack.top();
-    renderTargetStack.pop();
-    if (SDL_SetRenderTarget(renderer, previousTarget) < 0) {
+    const RenderTargetState state = renderTargetStack.top();
+    if (SDL_SetRenderTarget(renderer, state.target) < 0) {
         throw std::runtime_error("Error restoring default render target: " + std::string(SDL_GetError()));
     }
+    renderTargetStack.pop();
+
+    SDL_RenderSetLogicalSize(
+        renderer,
+        state.logicalWidth,
+        state.logicalHeight
+    );
+    SDL_RenderSetViewport(renderer, &state.viewport);
+    SDL_RenderSetScale(renderer, state.scaleX, state.scaleY);
+    SDL_RenderSetClipRect(
+        renderer,
+        state.clippingEnabled == SDL_TRUE ? &state.clipRect : nullptr
+    );
 }

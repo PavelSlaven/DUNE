@@ -29,6 +29,7 @@ void GuiLabel::draw() const
         case TRANSPARENT_WITHOUT_BORDER:
             drawText();
             break;
+        case REMASTER_BUTTON:
         case OPAQUE_WITH_BORDER:
             renderDrawer->renderRectFillColor(m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight(), m_theme.fillColor);
             drawRectBorder(m_theme.borderLight, m_theme.borderDark);
@@ -47,6 +48,11 @@ void GuiLabel::draw() const
 void GuiLabel::setTextAlignHorizontal(GuiTextAlignHorizontal value)
 {
     m_textAlignHorizontal = value;
+}
+
+void GuiLabel::setText(const std::string &value)
+{
+    m_buttonText = value;
 }
 
 void GuiLabel::setRenderKind(GuiRenderKind value)

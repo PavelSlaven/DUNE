@@ -85,7 +85,8 @@ void cMouseRepairState::onStateSet()
 
 void cMouseRepairState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 {
-    if (event.isType(eKeyEventType::PRESSED) && event.hasKey(SDL_SCANCODE_R)) {
+    if (event.isType(eKeyEventType::PRESSED) &&
+        event.hasAssignedKey(game.m_commandBindings.repair)) {
         m_context->toPreviousState();
     }
 }

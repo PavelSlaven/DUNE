@@ -1,0 +1,49 @@
+D2TM v0.8.0-ru4 — ИСТОЧНИКИ ВИЗУАЛЬНЫХ РЕФЕРЕНСОВ
+========================================================
+
+Эта сборка является локальной, неопубликованной и некоммерческой.
+Все модели игрового мира в HD-пакетах используют оригинальные спрайты
+Dune II: The Battle for Arrakis для Sega Genesis: здания, техника,
+авиация, пехота, песчаный червь и корабль космопорта. Они адаптированы
+к направлениям, кадрам и размерам атласов D2TM.
+
+Dune 2000
+Источник оригинальной графики всей доступной техники и авиации
+(16 отдельных листов, включая три варианта боевого танка), а также
+11 листов зданий:
+https://www.spriters-resource.com/pc_computer/dune2000/
+
+Dune II: The Building of a Dynasty
+Референсы пехоты, анимаций и взрывов:
+https://www.spriters-resource.com/ms_dos/duneiithebuildingofadynasty/
+
+Dune II: Battle for Arrakis — полный каталог
+Источник всех 14 листов юнитов и общего модульного листа зданий:
+https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/
+
+Здания:
+https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/239094/
+
+Sega Retro — Dune II: Battle for Arrakis sprites
+Дополнительный справочный каталог графики версии для Sega Mega Drive:
+https://segaretro.org/Category:Dune_II:_Battle_for_Arrakis_sprites
+
+Изменены масштаб, порядок направлений, прозрачность служебного фона,
+компоновка атласов и недостающие диагональные ракурсы. Исходные силуэты
+и палитры Домов сохранены. Пехота заметно меньше техники.
+
+Страницы The Spriters Resource используются с учётом их условий:
+https://www.spriters-resource.com/page/tou/
+
+Dune, Dune II и Dune 2000, их персонажи, названия и оригинальная
+графика принадлежат соответствующим правообладателям, включая
+Westwood Studios и Virgin Interactive. The Spriters Resource и
+Sega Retro указаны как источники справочных листов.
+
+Материалы этой локальной сборки не предназначены для продажи,
+коммерческой публикации или размещения в магазинах.
+
+Russo One
+Шрифт заголовков и экранов советника. Автор: Jovanny Lemonad.
+Источник: https://github.com/google/fonts/tree/main/ofl/russoone
+Лицензия: SIL Open Font License 1.1 (OFL_RUSSO_ONE.txt).

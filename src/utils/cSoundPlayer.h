@@ -1,9 +1,12 @@
 #pragma once
 
+#include <filesystem>
 #include <memory>
+#include <string>
 #include <vector>
 
 class cSoundData;
+struct Mix_Music;
 
 class cSoundPlayer {
 public:
@@ -19,6 +22,7 @@ public:
     // Pass the sample ID of the Atreides voice
     void playVoice(int sampleId, int house);
     void playMusic(int sampleId);
+    bool playMusicFile(const std::filesystem::path &file, std::string &error);
 
     void stopMusic();
     bool isMusicPlaying() const;
@@ -49,4 +53,8 @@ private:
     int m_soundVolume;
     bool m_isMusicEnabled;
     bool m_isSoundEnabled;
+    bool m_initializedMusicCodecs = false;
+    Mix_Music *m_externalMusic = nullptr;
+
+    void releaseExternalMusic();
 };

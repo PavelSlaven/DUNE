@@ -23,6 +23,7 @@
 #include "utils/cSoundPlayer.h"
 #include "include/Texture.hpp"
 #include "utils/RNG.hpp"
+#include <algorithm>
 #include <format>
 #include <cmath>
 
@@ -83,11 +84,25 @@ void cBullet::draw()
 {
     int x = draw_x();
     int y = draw_y();
+    const int originalSize = std::max(
+        1,
+        static_cast<int>(std::lround(
+            mapCamera->factorZoomLevel(getBulletBmpWidth())
+        ))
+    );
+    const int visualSize = std::max(
+        1,
+        static_cast<int>(std::lround(
+            originalSize * game.getWorldScaleFactor()
+        ))
+    );
+    x -= (visualSize - originalSize) / 2;
+    y -= (visualSize - originalSize) / 2;
 
-    if (x < -getBulletBmpWidth() || x > (game.m_screenW + getBulletBmpWidth()))
+    if (x < -visualSize || x > (game.m_screenW + visualSize))
         return;
 
-    if (y < getBulletBmpHeight() || y > game.m_screenH + getBulletBmpHeight())
+    if (y < -visualSize || y > game.m_screenH + visualSize)
         return;
 
     int ba = bullet_face_angle(fDegrees(posX, posY, targetX, targetY));
@@ -132,7 +147,7 @@ void cBullet::draw()
 
     if (sBulletInfo[iType].bmp != nullptr) {
         cRectangle src = {sx,sy, bmp_width, bmp_width};
-        cRectangle dest = {x,y, static_cast<int>(round(mapCamera->factorZoomLevel(bmp_width))), static_cast<int>(round(mapCamera->factorZoomLevel(bmp_width)))};
+        cRectangle dest = {x, y, visualSize, visualSize};
         renderDrawer->renderStrechSprite(sBulletInfo[iType].bmp, src, dest);
     }
 }

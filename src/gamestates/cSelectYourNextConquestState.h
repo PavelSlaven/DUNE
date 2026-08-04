@@ -4,6 +4,7 @@
 #include "cGameState.h"
 #include "definitions.h"
 #include "drawers/cTextDrawer.h"
+#include "gamestates/CampaignMapLayout.hpp"
 
 class cGame;
 class GuiButton;
@@ -117,6 +118,14 @@ private:
 
     void drawLogoInFourCorners(int iHouse) const;
 
+    void drawHdBackground() const;
+    void drawHdChrome() const;
+    void drawHdMapBase(Uint8 opacity = 255) const;
+    void drawHdMapBorders(Uint8 opacity = 255) const;
+    void drawHdMessage() const;
+    Texture* createHdRegionTintTexture(int regionIndex, int house) const;
+    Texture* createHdRegionBordersTexture() const;
+
     void transitionToNextRegionSceneState(eRegionSceneState newSceneState);
 
     void drawRegion(cRegion &regionPiece) const;
@@ -134,4 +143,10 @@ private:
     cTextDrawer* m_textDrawer = nullptr;
     Graphics* m_gfxworld;
     Graphics* m_gfxinter;
+    bool m_hdLayout = false;
+    CampaignMapLayout m_hdCampaignLayout;
+    Texture* m_hdBackground = nullptr;
+    Texture* m_hdCampaignMap = nullptr;
+    Texture* m_hdRegionBorders = nullptr;
+    Texture* m_hdHouseCrest = nullptr;
 };

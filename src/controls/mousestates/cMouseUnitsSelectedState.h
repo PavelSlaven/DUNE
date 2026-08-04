@@ -46,6 +46,9 @@ public:
     void onFocus() override;
     void onBlur() override;
 
+    void setCommandState(eMouseUnitsSelectedState newState);
+    [[nodiscard]] eMouseUnitsSelectedState getCommandState() const { return m_state; }
+
 private:
     // A list of unit id's that we have selected
     std::vector<int> m_selectedUnits;
