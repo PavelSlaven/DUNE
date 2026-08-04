@@ -1,3 +1,19 @@
+# Dune II — The Maker RU/HD Remaster
+
+Hi everyone! I made a small remaster of the game. I did not change any of the mechanics; I simply updated the visuals, added support for high-resolution displays, refreshed the music while avoiding copyright infringement, and redesigned the interface.
+
+The entire project was created with the help of Codex and Suno. I made it for my father, who has been playing Dune for almost his entire life. I originally had no plans to release it online, but a friend of mine, after seeing the results, strongly encouraged me to do so. And here we are.
+
+---
+
+Dune II - The Maker
+===================
+A.k.a. D2TM. Is a [Dune 2](http://en.wikipedia.org/wiki/Dune_II) remake.
+
+> **AI agents and maintainers of the local RU/HD build:** start with
+> [`README_AI.md`](README_AI.md). It documents the actual architecture,
+> toolchain, runtime layout, tests, resources, and safe change workflow.
+
 [![Latest](https://img.shields.io/github/downloads/stefanhendriks/Dune-II---The-Maker/latest/total)]()
 [![All](https://img.shields.io/github/downloads/stefanhendriks/Dune-II---The-Maker/total.svg)]()
 [![Build & Release](https://github.com/stefanhendriks/Dune-II---The-Maker/actions/workflows/build_master.yml/badge.svg)](https://github.com/stefanhendriks/Dune-II---The-Maker/actions/workflows/build_master.yml)
@@ -11,14 +27,6 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/stefanhendriks/Dune-II---The-Maker?color=red&style=plastic)
 
 This project uses [Deleaker](https://www.deleaker.com/) to find memory leaks and more.
-
-Dune II - The Maker
-===================
-A.k.a. D2TM. Is a [Dune 2](http://en.wikipedia.org/wiki/Dune_II) remake.
-
-> **AI agents and maintainers of the local RU/HD build:** start with
-> [`README_AI.md`](README_AI.md). It documents the actual architecture,
-> toolchain, runtime layout, tests, resources, and safe change workflow.
 
 - Website: [https://dune2themaker.fundynamic.com](https://dune2themaker.fundynamic.com)
 - Discord: [https://dune2themaker.fundynamic.com/discord](https://dune2themaker.fundynamic.com/discord)
