@@ -475,7 +475,9 @@ void SDLDrawer::endDrawingToTexture()
         state.logicalHeight
     );
     SDL_RenderSetViewport(renderer, &state.viewport);
-    SDL_RenderSetScale(renderer, state.scaleX, state.scaleY);
+    if (state.logicalWidth == 0 || state.logicalHeight == 0) {
+        SDL_RenderSetScale(renderer, state.scaleX, state.scaleY);
+    }
     SDL_RenderSetClipRect(
         renderer,
         state.clippingEnabled == SDL_TRUE ? &state.clipRect : nullptr
