@@ -375,4 +375,9 @@ if(BUILD_TESTING)
             ${CMAKE_CURRENT_SOURCE_DIR}/src/include
     )
     add_test(NAME music_controls_layout_geometry COMMAND music_controls_layout_tests)
+
+    if(APPLE)
+        target_link_libraries(command_bindings_tests PRIVATE ${SDL2_LIBRARIES})
+        target_link_libraries(render_target_state_tests PRIVATE ${SDL2_LIBRARIES})
+    endif()
 endif()

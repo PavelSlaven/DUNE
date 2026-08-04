@@ -86,9 +86,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git lfs fsck
-          test -s resources/bin/data/sdl_world_hd4.dat
-          test -s "resources/bin/music/menu/21_MENU.wav"
+          test "$(stat -c%s resources/bin/data/sdl_world_hd4.dat)" -gt 1048576
+          test "$(stat -c%s resources/bin/music/menu/21_MENU.wav)" -gt 1048576
 
       - name: Build common archive
         shell: bash
@@ -209,7 +208,7 @@ jobs:
             -DCMAKE_C_COMPILER=gcc-14 \
             -DCMAKE_CXX_COMPILER=g++-14
           cmake --build build --parallel 4
-          ctest --test-dir build --output-on-failure
+          SDL_VIDEODRIVER=dummy ctest --test-dir build --output-on-failure
 
       - name: Package Linux binary
         shell: bash

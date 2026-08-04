@@ -198,7 +198,7 @@ void cSoundPlayer::stopMusic()
 void cSoundPlayer::releaseExternalMusic()
 {
     if (m_externalMusic) {
-        Mix_FreeMusic(m_externalMusic);
+        Mix_FreeMusic(static_cast<Mix_Music *>(m_externalMusic));
         m_externalMusic = nullptr;
     }
 }

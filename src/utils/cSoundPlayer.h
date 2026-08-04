@@ -6,7 +6,6 @@
 #include <vector>
 
 class cSoundData;
-struct Mix_Music;
 
 class cSoundPlayer {
 public:
@@ -54,7 +53,7 @@ private:
     bool m_isMusicEnabled;
     bool m_isSoundEnabled;
     bool m_initializedMusicCodecs = false;
-    Mix_Music *m_externalMusic = nullptr;
+    void *m_externalMusic = nullptr;
 
     void releaseExternalMusic();
 };
