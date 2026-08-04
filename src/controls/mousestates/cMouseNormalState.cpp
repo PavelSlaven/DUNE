@@ -71,7 +71,7 @@ void cMouseNormalState::onMouseLeftButtonClicked()
 
         if (!ids.empty()) {
             if (ids.size() > 1) {
-                drawManager->setMessage(localization::format("Units selected: {}", "Выбрано бойцов: {}", ids.size()));
+                drawManager->setMessage(localization::format("Units selected: {}", "Выбрано юнитов: {}", ids.size()));
             }
             else {
                 cUnit &pUnit = unit[ids[0]];

@@ -224,7 +224,7 @@ void SaveSlotsDialog::loadSelected()
     if (!info || !info->exists || !info->valid) {
         m_status = localization::text(
             "The selected slot has no valid save.",
-            "В выбранном слоте нет корректного сохранения");
+            "В выбранном слоте нет корректного сохранения.");
         return;
     }
     std::string error;

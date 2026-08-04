@@ -3863,7 +3863,7 @@ std::string cUnit::getHarvesterStatusForMessageBar()
 {
     s_UnitInfo &info = getUnitInfo();
     int harvested = ((float)iCredits/info.credit_capacity)*100;
-    return localization::format("{}: health {}%, cargo {}%", "{}: здоровье {}%, груз {}%", info.name, getHealthNormalized()*100, harvested);
+    return localization::format("{}: health {}%, cargo {}%", "{}: состояние {}%, груз {}%", info.name, getHealthNormalized()*100, harvested);
 }
 
 std::string cUnit::getUnitStatusForMessageBar()
@@ -3873,7 +3873,7 @@ std::string cUnit::getUnitStatusForMessageBar()
         case HARVESTER:
             return getHarvesterStatusForMessageBar();
         default:
-            return localization::format("{}: health {}%", "{}: здоровье {}%", info.name, getHealthNormalized()*100);
+            return localization::format("{}: health {}%", "{}: состояние {}%", info.name, getHealthNormalized()*100);
     }
 
 }

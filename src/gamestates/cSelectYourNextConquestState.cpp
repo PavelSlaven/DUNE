@@ -216,13 +216,13 @@ void cSelectYourNextConquestState::thinkFast()
         }
         else if (regionSceneState == SCENE_THREE_HOUSES_COME_FOR_DUNE) {
             if (!hasMessage && iRegionSceneAlpha >= 255) {
-                drawManager->setMessage(localization::text("To take control of the land.", "Чтобы завладеть этой землёй."));
+                drawManager->setMessage(localization::text("To take control of the land.", "Чтобы покорить её земли."));
                 transitionToNextRegionSceneState(SCENE_TO_TAKE_CONTROL_OF_THE_LAND);
             }
         }
         else if (regionSceneState == SCENE_TO_TAKE_CONTROL_OF_THE_LAND) {
             if (!hasMessage && iRegionSceneAlpha >= 255) {
-                drawManager->setMessage(localization::text("It has now become divided.", "Теперь она разделена."));
+                drawManager->setMessage(localization::text("It has now become divided.", "Теперь Дюна разделена."));
                 transitionToNextRegionSceneState(SCENE_THAT_HAS_BECOME_DIVIDED);
             }
         }

@@ -50,11 +50,11 @@ std::string compactCardName(const std::string &name)
 {
     // Keep canonical names in status messages and save-independent game data,
     // but use familiar short forms in the narrow construction cards.
-    if (name == localization::text("Hi-Tech", "Высокотехнологичный завод")) return localization::text("Hi-Tech", "Высокотех. завод");
-    if (name == localization::text("Spice Refinery", "Перерабатывающий завод")) return localization::text("Refinery", "Переработчик");
-    if (name == localization::text("MCV", "Мобильный стройкомплекс")) return localization::text("MCV", "Стройкомплекс");
-    if (name == localization::text("Light Infantry", "Отряд автоматчиков")) return localization::text("Infantry", "Автоматчики");
-    if (name == localization::text("Troopers", "Отряд гранатомётчиков")) return localization::text("Troopers", "Гранатомётчики");
+    if (name == localization::text("Hi-Tech", "Авиазавод")) return localization::text("Hi-Tech", "Авиазавод");
+    if (name == localization::text("Spice Refinery", "Переработчик пряности")) return localization::text("Refinery", "Переработчик");
+    if (name == localization::text("MCV", "Мобильная база")) return localization::text("MCV", "Мобильная база");
+    if (name == localization::text("Light Infantry", "Отряд пехоты")) return localization::text("Infantry", "Пехота");
+    if (name == localization::text("Troopers", "Отряд ракетчиков")) return localization::text("Troopers", "Ракетчики");
     return name;
 }
 }

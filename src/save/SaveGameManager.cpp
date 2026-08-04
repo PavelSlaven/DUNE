@@ -364,7 +364,7 @@ bool deserializeBody(
     if (firstTag == "INFO") {
         if (!(input >> std::quoted(save.saveName)) ||
             !expectTag(input, "META")) {
-            error = localization::text("Save name is corrupted", "Повреждено название сохранения");
+            error = localization::text("Save name is corrupted", "Имя сохранения повреждено");
             return false;
         }
     }
@@ -456,13 +456,13 @@ bool deserializeBody(
             !readBool(input, cell.passable) ||
             !readBool(input, cell.passableFoot) ||
             !readValue(input, cell.visibilityMask)) {
-            error = localization::text("Map cells are corrupted", "Повреждены клетки карты");
+            error = localization::text("Map cells are corrupted", "Ячейки карты повреждены");
             return false;
         }
         if (cell.type < TERRAIN_BLOOM || cell.type > TERRAIN_WALL ||
             cell.smudgeType < -1 ||
             cell.smudgeType >= static_cast<int>(SmudgeType::MAX)) {
-            error = localization::text("Invalid terrain type", "Некорректный тип поверхности");
+            error = localization::text("Invalid terrain type", "Некорректный тип местности");
             return false;
         }
     }
@@ -610,7 +610,7 @@ bool deserializeBody(
         }
     }
     if (!expectTag(input, "END")) {
-        error = localization::text("Save data is incomplete", "Сохранение не завершено");
+        error = localization::text("Save data is incomplete", "Данные сохранения неполны");
         return false;
     }
     return true;
@@ -959,7 +959,7 @@ bool SaveGameManager::restoreSnapshot(
         if (!target) {
             error = localization::format(
                 "Could not restore structure type {} at cell {}",
-                "Не удалось восстановить здание типа {} в клетке {}",
+                "Не удалось восстановить здание типа {} в ячейке {}",
                 source.type,
                 source.cell
             );

@@ -982,5 +982,5 @@ std::string cAbstractStructure::getDefaultStatusMessageBar() const
 {
     s_StructureInfo info = getStructureInfo();
     int health = getHealthNormalized() * 100;
-    return localization::format("{}: health {}%", "{}: здоровье {}%", info.name, health);
+    return localization::format("{}: health {}%", "{}: состояние {}%", info.name, health);
 }

@@ -172,7 +172,7 @@ void IniGameRessources::install_units()
     sUnitInfo[TANK].smokeHpFactor = 0.5f;
     sUnitInfo[TANK].canGuard = true;
     sUnitInfo[TANK].canAttackUnits = true;
-    strcpy(sUnitInfo[TANK].name, localization::text("Tank", "Боевой танк"));
+    strcpy(sUnitInfo[TANK].name, localization::text("Tank", "Танк"));
 
 
     // Unit        : Siege Tank
@@ -208,7 +208,7 @@ void IniGameRessources::install_units()
     sUnitInfo[MCV].subListId = SUBLIST_HEAVYFCTRY;
     sUnitInfo[MCV].renderSmokeOnUnitWhenThresholdMet = true;
     sUnitInfo[MCV].smokeHpFactor = 0.5f;
-    strcpy(sUnitInfo[MCV].name, localization::text("MCV", "Мобильный стройкомплекс"));
+    strcpy(sUnitInfo[MCV].name, localization::text("MCV", "Мобильная база"));
 
 
     // Unit        : Deviator
@@ -398,7 +398,7 @@ void IniGameRessources::install_units()
     sUnitInfo[INFANTRY].damageOnEnterStructure = 25.0f;
     sUnitInfo[INFANTRY].canGuard = true;
     sUnitInfo[INFANTRY].canAttackUnits = true;
-    strcpy(sUnitInfo[INFANTRY].name, localization::text("Light Infantry", "Отряд автоматчиков"));
+    strcpy(sUnitInfo[INFANTRY].name, localization::text("Light Infantry", "Отряд пехоты"));
 
     // Unit        : Single Trooper
     // Description : 1 trooper
@@ -407,7 +407,7 @@ void IniGameRessources::install_units()
     sUnitInfo[TROOPER].bmp_height = 16 * 2;
     sUnitInfo[TROOPER].bmp_startpixel = 0;
     sUnitInfo[TROOPER].bmp_frames = 3; // 2 extra frames
-    strcpy(sUnitInfo[TROOPER].name, localization::text("Trooper", "Гранатомётчик"));
+    strcpy(sUnitInfo[TROOPER].name, localization::text("Trooper", "Ракетчик"));
     sUnitInfo[TROOPER].infantry = true;
     sUnitInfo[TROOPER].bulletType = ROCKET_SMALL;
     sUnitInfo[TROOPER].icon = ICON_UNIT_TROOPER;
@@ -431,7 +431,7 @@ void IniGameRessources::install_units()
     sUnitInfo[TROOPERS].bmp_height = 16 * 2;
     sUnitInfo[TROOPERS].bmp_startpixel = 0;
     sUnitInfo[TROOPERS].bmp_frames = 3; // 2 extra frames
-    strcpy(sUnitInfo[TROOPERS].name, localization::text("Troopers", "Отряд гранатомётчиков"));
+    strcpy(sUnitInfo[TROOPERS].name, localization::text("Troopers", "Отряд ракетчиков"));
     sUnitInfo[TROOPERS].icon = ICON_UNIT_TROOPERS;
     sUnitInfo[TROOPERS].bulletType = ROCKET_SMALL;
     sUnitInfo[TROOPERS].fireTwice = true;
@@ -1049,7 +1049,7 @@ void IniGameRessources::install_upgrades()
     sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].providesTypeList = eListType::LIST_CONSTYARD;
     sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].providesTypeSubList = SUBLIST_CONSTYARD;
     sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].buildTime = 50;
-    strcpy(sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].description, localization::text("Build 4 concrete slabs at once", "Бетонные плиты 2×2"));
+    strcpy(sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].description, localization::text("Build 4 concrete slabs at once", "Укладка плит 2×2"));
 
     // Second upgrade Constyard: Rturret
     sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].enabled = true;
@@ -1066,7 +1066,7 @@ void IniGameRessources::install_upgrades()
     sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].providesTypeSubList = SUBLIST_CONSTYARD;
     sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].buildTime = 150;
 
-    strcpy(sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].description, localization::text("Build Rocket Turret", "Ракетная башня"));
+    strcpy(sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].description, localization::text("Build Rocket Turret", "Ракетные башни"));
 
     // LIGHTFACTORY UPGRADES, only for ATREIDES and ORDOS
     sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].enabled = true;
@@ -1083,7 +1083,7 @@ void IniGameRessources::install_upgrades()
     sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].providesTypeSubList =  SUBLIST_LIGHTFCTRY;
     sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].buildTime = 150;
 
-    strcpy(sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].description, localization::text("Build Quad at Light Factory", "Квад: лёгкий завод"));
+    strcpy(sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].description, localization::text("Build Quad at Light Factory", "Квады на лёгком заводе"));
 
     // HEAVYFACTORY UPGRADES:
 
@@ -1102,7 +1102,7 @@ void IniGameRessources::install_upgrades()
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].providesTypeSubList = SUBLIST_HEAVYFCTRY;
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].buildTime = 150;
 
-    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].description, localization::text("Build MCV at Heavy Factory", "Стройкомплекс: тяжёлый завод"));
+    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].description, localization::text("Build MCV at Heavy Factory", "Мобильные базы на тяжёлом заводе"));
 
     // Harkonnen/Atreides only
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].enabled = true;
@@ -1119,7 +1119,7 @@ void IniGameRessources::install_upgrades()
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].providesTypeSubList = SUBLIST_HEAVYFCTRY;
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].buildTime = 150;
 
-    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].description, localization::text("Build Rocket Launcher at Heavy Factory", "Ракетная установка"));
+    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].description, localization::text("Build Rocket Launcher at Heavy Factory", "Ракетные установки на тяжёлом заводе"));
 
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].enabled = true;
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].house = Atreides | Harkonnen | Sardaukar;
@@ -1135,7 +1135,7 @@ void IniGameRessources::install_upgrades()
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].providesTypeSubList = SUBLIST_HEAVYFCTRY;
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].buildTime = 150;
 
-    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].description, localization::text("Build Siege Tank at Heavy Factory", "Осадный танк: тяжёлый завод"));
+    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].description, localization::text("Build Siege Tank at Heavy Factory", "Осадные танки на тяжёлом заводе"));
 
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].enabled = true;
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].house = Ordos;
@@ -1151,7 +1151,7 @@ void IniGameRessources::install_upgrades()
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].providesTypeSubList = SUBLIST_HEAVYFCTRY;
     sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].buildTime = 150;
 
-    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].description, localization::text("Build Siege Tank at Heavy Factory", "Осадный танк: тяжёлый завод"));
+    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].description, localization::text("Build Siege Tank at Heavy Factory", "Осадные танки на тяжёлом заводе"));
 
     // HI-TECH UPGRADES (Ordos/Atreides only)
     sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].enabled = true;
@@ -1166,7 +1166,7 @@ void IniGameRessources::install_upgrades()
     sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].providesTypeList = eListType::LIST_UNITS;
     sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].providesTypeSubList = SUBLIST_HIGHTECH;
     sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].buildTime = 150;
-    strcpy(sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].description, localization::text("Build Ornithopter at Hi-Tech", "Орнитоптер: высокотех. завод"));
+    strcpy(sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].description, localization::text("Build Ornithopter at Hi-Tech", "Орнитоптеры на авиазаводе"));
 
     // WOR (Harkonnen & Ordos)
     sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].enabled = true;
@@ -1183,7 +1183,7 @@ void IniGameRessources::install_upgrades()
     if (!game.isDebugMode()) {
         sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].buildTime = 150;
     }
-    strcpy(sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].description, localization::text("Build Troopers at WOR", "Гранатомётчики: ВОР"));
+    strcpy(sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].description, localization::text("Build Troopers at WOR", "Ракетчики в военной академии"));
 
     // BARRACKS (Atreides & Ordos)
     sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].enabled = true;
@@ -1200,7 +1200,7 @@ void IniGameRessources::install_upgrades()
     if (!game.isDebugMode()) {
         sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].buildTime = 150;
     }
-    strcpy(sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].description, localization::text("Build Infantry at Barracks", "Автоматчики: казармы"));
+    strcpy(sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].description, localization::text("Build Infantry at Barracks", "Пехота в казармах"));
 
 }
 
@@ -1256,7 +1256,7 @@ void IniGameRessources::install_structures()
     sStructureInfo[SLAB4].bmp_height = 32 * 2;
     sStructureInfo[SLAB4].configured = true;
     sStructureInfo[SLAB4].queuable = true;
-    strcpy(sStructureInfo[SLAB4].name, localization::text("4 Concrete Slabs", "Бетонные плиты 2×2"));
+    strcpy(sStructureInfo[SLAB4].name, localization::text("4 Concrete Slabs", "Бетонная площадка 2×2"));
 
 
     // Concrete Wall
@@ -1282,7 +1282,7 @@ void IniGameRessources::install_structures()
         .relX = 53,
         .relY = 37
     });
-    strcpy(sStructureInfo[WINDTRAP].name, localization::text("Windtrap", "Ветряная ловушка"));
+    strcpy(sStructureInfo[WINDTRAP].name, localization::text("Windtrap", "Ветроловушка"));
 
     // Structure    : Heavy Factory
     // Description  : <none>
@@ -1315,7 +1315,7 @@ void IniGameRessources::install_structures()
         .relX = 19,
         .relY = 36
     });
-    strcpy(sStructureInfo[HIGHTECH].name, localization::text("Hi-Tech", "Высокотехнологичный завод"));
+    strcpy(sStructureInfo[HIGHTECH].name, localization::text("Hi-Tech", "Авиазавод"));
 
     // Structure    : Repair
     // Description  : <none>
@@ -1331,7 +1331,7 @@ void IniGameRessources::install_structures()
         .relX = 41,
         .relY = 3
     });
-    strcpy(sStructureInfo[REPAIR].name, localization::text("Repair Facility", "Ремонтный завод"));
+    strcpy(sStructureInfo[REPAIR].name, localization::text("Repair Facility", "Ремонтный центр"));
 
     // Structure    : Palace
     // Description  : <none>
@@ -1386,7 +1386,7 @@ void IniGameRessources::install_structures()
         .relX = 12,
         .relY = 46
     });
-    strcpy(sStructureInfo[RADAR].name, localization::text("Outpost", "Радар"));
+    strcpy(sStructureInfo[RADAR].name, localization::text("Outpost", "Командный пост"));
 
     // Structure    : Barracks
     // Description  : <none>
@@ -1423,7 +1423,7 @@ void IniGameRessources::install_structures()
         .relX = 21,
         .relY = 31
     });
-    strcpy(sStructureInfo[WOR].name, localization::text("WOR", "Казармы ВОР"));
+    strcpy(sStructureInfo[WOR].name, localization::text("WOR", "Военная академия"));
 
 
     // Structure    : Silo
@@ -1457,7 +1457,7 @@ void IniGameRessources::install_structures()
         .relX = 45,
         .relY = 12
     });
-    strcpy(sStructureInfo[REFINERY].name, localization::text("Spice Refinery", "Перерабатывающий завод"));
+    strcpy(sStructureInfo[REFINERY].name, localization::text("Spice Refinery", "Переработчик пряности"));
 
     // Structure    : Construction Yard
     // Description  : <none>
@@ -1475,7 +1475,7 @@ void IniGameRessources::install_structures()
     sStructureInfo[CONSTYARD].fadecol = -1;
     sStructureInfo[CONSTYARD].icon = ICON_STR_CONSTYARD;
     sStructureInfo[CONSTYARD].configured = true;
-    strcpy(sStructureInfo[CONSTYARD].name, localization::text("Construction Yard", "Строительный двор"));
+    strcpy(sStructureInfo[CONSTYARD].name, localization::text("Construction Yard", "Стройбаза"));
 
     // Structure    : Starport
     // Description  : You can order units from this structure
@@ -1507,7 +1507,7 @@ void IniGameRessources::install_structures()
         .relX = 60, // 60
         .relY = 40  // 40
     });
-    strcpy(sStructureInfo[IX].name, localization::text("House of IX", "Центр ИКС"));
+    strcpy(sStructureInfo[IX].name, localization::text("House of IX", "Техноцентр Икс"));
 
     // Structure    : Normal Turret
     // Description  : defence
@@ -1521,7 +1521,7 @@ void IniGameRessources::install_structures()
     sStructureInfo[TURRET].configured = true;
     sStructureInfo[TURRET].canAttackGroundUnits = true;
     sStructureInfo[TURRET].fireRate = 275;
-    strcpy(sStructureInfo[TURRET].name, localization::text("Gun Turret", "Орудийная башня"));
+    strcpy(sStructureInfo[TURRET].name, localization::text("Gun Turret", "Пушечная башня"));
 
     // Structure    : Rocket Turret
     // Description  : defence

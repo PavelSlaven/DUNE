@@ -366,10 +366,10 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
 
     if (m_optionsPage == OptionsPage::Gameplay) {
         addToggle(optionText(m_selectedSettings,
-            "Edge scrolling — move camera at screen edge", "Прокрутка краем — камера у границы экрана"),
+            "Edge scrolling — move camera at screen edge", "Прокрутка у края экрана"),
             &GameSettings::cameraEdgeMove);
         addSpeed(optionText(m_selectedSettings,
-            "Keyboard/edge camera speed", "Скорость камеры клавишами и у края"),
+            "Keyboard/edge camera speed", "Скорость камеры с клавиатуры и у края"),
             &GameSettings::cameraBorderOrKeyMoveSpeed);
         addSpeed(optionText(m_selectedSettings,
             "Camera drag speed", "Скорость перетаскивания камеры"),
@@ -381,10 +381,10 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
             "Repeat reinforcements", "Повторять подкрепления"),
             &GameSettings::allowRepeatingReinforcements);
         addToggle(optionText(m_selectedSettings,
-            "All turrets stop on low power", "Все башни отключать при нехватке энергии"),
+            "All turrets stop on low power", "Отключать все башни при нехватке энергии"),
             &GameSettings::turretsDownOnLowPower);
         addToggle(optionText(m_selectedSettings,
-            "Rocket turrets stop on low power", "Ракетные башни отключать при нехватке энергии"),
+            "Rocket turrets stop on low power", "Отключать ракетные башни при нехватке энергии"),
             &GameSettings::rocketTurretsDownOnLowPower);
         GuiLabel *rules = GuiLabelBuilder()
                 .withLabel(optionText(m_selectedSettings,
@@ -418,7 +418,7 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
             std::string value = optionText(m_selectedSettings, "LMB", "ЛКМ");
             if (action) {
                 value = m_bindingCapture == action
-                    ? optionText(m_selectedSettings, "Press key...", "Клавиша...")
+                    ? optionText(m_selectedSettings, "Press key...", "Нажмите клавишу…")
                     : commandBindingDisplayName(
                         commandBinding(m_selectedSettings.commandBindings, *action),
                         isEnglishLanguage(m_selectedSettings));
@@ -440,23 +440,23 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
             m_guiWindow->addGuiObject(builder.build());
         };
 
-        addBinding(optionText(m_selectedSettings, "Move", "Идти"), std::nullopt);
-        addBinding(optionText(m_selectedSettings, "Attack", "Атака"), CommandBindingAction::Attack);
+        addBinding(optionText(m_selectedSettings, "Move", "Переместить"), std::nullopt);
+        addBinding(optionText(m_selectedSettings, "Attack", "Атаковать"), CommandBindingAction::Attack);
         addBinding(optionText(m_selectedSettings, "Repair", "Ремонт"), CommandBindingAction::Repair);
-        addBinding(optionText(m_selectedSettings, "Unload", "Разгрузка"), CommandBindingAction::Unload);
+        addBinding(optionText(m_selectedSettings, "Unload", "Разгрузить"), CommandBindingAction::Unload);
         addBinding(optionText(m_selectedSettings, "Deploy", "Развернуть"), CommandBindingAction::Deploy);
-        addBinding(optionText(m_selectedSettings, "Rally", "Сбор"), CommandBindingAction::Rally);
+        addBinding(optionText(m_selectedSettings, "Rally", "Точка сбора"), CommandBindingAction::Rally);
         addBinding(optionText(m_selectedSettings, "Release", "Выпустить"), CommandBindingAction::Release);
     }
     else {
         addToggle(optionText(m_selectedSettings, "Debug mode", "Режим отладки"), &GameSettings::debugMode);
-        addToggle(optionText(m_selectedSettings, "Disable all AI", "Отключить весь ИИ"), &GameSettings::disableAI);
-        addToggle(optionText(m_selectedSettings, "Use one AI player", "Оставить одного ИИ-игрока"), &GameSettings::oneAi);
+        addToggle(optionText(m_selectedSettings, "Disable all AI", "Отключить ИИ"), &GameSettings::disableAI);
+        addToggle(optionText(m_selectedSettings, "Use one AI player", "Оставить одного ИИ"), &GameSettings::oneAi);
         addToggle(optionText(m_selectedSettings, "Disable worm AI", "Отключить ИИ червя"), &GameSettings::disableWormAi);
         addToggle(optionText(m_selectedSettings, "Disable reinforcements", "Отключить подкрепления"), &GameSettings::disableReinforcements);
-        addToggle(optionText(m_selectedSettings, "Disable remaining AI", "Отключить оставшийся ИИ"), &GameSettings::noAiRest);
-        addToggle(optionText(m_selectedSettings, "Show unit debug data", "Показывать отладку юнитов"), &GameSettings::drawUnitDebug);
-        addToggle(optionText(m_selectedSettings, "Show resource usage", "Показывать использование ресурсов"), &GameSettings::drawUsages);
+        addToggle(optionText(m_selectedSettings, "Disable remaining AI", "Отключить остальных ИИ"), &GameSettings::noAiRest);
+        addToggle(optionText(m_selectedSettings, "Show unit debug data", "Показывать отладочные данные юнитов"), &GameSettings::drawUnitDebug);
+        addToggle(optionText(m_selectedSettings, "Show resource usage", "Показывать расход ресурсов"), &GameSettings::drawUsages);
     }
 
     const int footerY = mainMenuHeight - buttonHeight - margin;
@@ -1045,7 +1045,7 @@ void cOptionsState::constructWindow(int prevState)
         buttonHeight
     );
     GuiLabel *gui_DifficultyLabel = GuiLabelBuilder()
-            .withLabel(optionText(m_selectedSettings, "Game speed", "Скорость"))
+            .withLabel(optionText(m_selectedSettings, "Game speed", "Скорость игры"))
             .withTextDrawer(m_textDrawer)
             .withTheme(controlTheme)
             .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)

@@ -147,7 +147,7 @@ void cDrawManager::drawDebugInfoUsages() const
     m_textDrawer->drawText(0, startY + 2*height,
                            localization::format("Projectiles {}/{}", "Снаряды {}/{}", bulletsUsed, MAX_BULLETS));
     m_textDrawer->drawText(0, startY + 3*height,
-                           localization::format("Particles {}/{}", "Эффекты {}/{}", particlesUsed, MAX_PARTICLES));
+                           localization::format("Particles {}/{}", "Частицы {}/{}", particlesUsed, MAX_PARTICLES));
 }
 
 void cDrawManager::drawCredits()

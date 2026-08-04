@@ -1549,7 +1549,7 @@ void cPlayer::onNotifyGameEvent(const s_GameEvent &event)
 {
     // notify building list updater if it was a structure of mine. So it gets removed from the building list.
     if (event.eventType == eGameEventType::GAME_EVENT_PLAYER_DEFEATED) {
-        auto msg = localization::format("Player {} ({}) defeated.", "Игрок {} ({}) побеждён.", event.player->getId(), event.player->getHouseName());
+        auto msg = localization::format("Player {} ({}) defeated.", "Игрок {} ({}) разгромлен.", event.player->getId(), event.player->getHouseName());
         addNotification(msg, eNotificationType::BAD);
     }
 
@@ -2025,7 +2025,7 @@ void cPlayer::onMyUnitDestroyed(const s_GameEvent &event)
         }
         else {
             if (harvesters < 1) {
-                addNotification(localization::text("No harvesters or refineries left!", "Не осталось харвестеров и перерабатывающих заводов!"), eNotificationType::BAD);
+                addNotification(localization::text("No harvesters or refineries left!", "Не осталось харвестеров и переработчиков!"), eNotificationType::BAD);
             }
         }
     }

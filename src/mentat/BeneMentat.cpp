@@ -89,7 +89,7 @@ void BeneMentat::draw()
         }
         std::string msg = localization::format(
             "Do you wish to join House {}?",
-            "Вы желаете вступить в Дом {}?",
+            "Желаете вступить в Дом {}?",
             houseName);
         if (m_adaptiveHdLayout) {
             const float textScale = std::clamp(m_uiScale, 1.0F, 1.5F);

@@ -143,7 +143,7 @@ void cChooseHouseState::draw() const
         drawHdBackground();
 
         const std::string title = localization::text(
-            "CHOOSE YOUR HOUSE", "ВЫБЕРИТЕ СВОЙ ДОМ");
+            "CHOOSE YOUR HOUSE", "ВЫБЕРИТЕ ДОМ");
         const int titleWidth = m_textDrawer->getTextLength(title);
         m_textDrawer->drawText(
             (m_game.m_screenW - titleWidth) / 2,

@@ -462,7 +462,7 @@ void cSetupSkirmishState::draw() const
     );
     drawPanel(previewMapTitle, colorDarkishBackground, colorDarkishBorder);
     m_textDrawer->drawTextCentered(
-        localization::text("Preview", "Просмотр"),
+        localization::text("Preview", "Предпросмотр"),
         previewMapTitle.getX(),
         previewMapTitle.getWidth(),
         previewMapTitle.getY() + 4,
@@ -636,7 +636,7 @@ void cSetupSkirmishState::drawStartPoints(int iStartingPoints, const cRectangle 
     }
 
     m_textDrawer->drawText(startPoints.getX(), startPoints.getY(), textColor,
-        localization::format("Start points: {}", "Точки старта: {}", iStartingPoints));
+        localization::format("Start points: {}", "Стартовые позиции: {}", iStartingPoints));
 }
 
 void cSetupSkirmishState::drawPreviewMapAndMore(const cRectangle &previewMapRect) const
@@ -696,12 +696,12 @@ void cSetupSkirmishState::drawDetonateBlooms(const cRectangle &detonateBloomsRec
     if (spawnBlooms) {
         Color textColor = detonateBloomsRect.isPointWithin(mouse->getX(), mouse->getY()) ? Color::red() : Color::white();
         m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), textColor,
-                            localization::format("Auto-detonate: {}", "Автовзрыв: {}",
+                            localization::format("Auto-detonate: {}", "Автоподрыв: {}",
                                 detonateBlooms ? localization::text("YES", "ДА") : localization::text("NO", "НЕТ")));
     }
     else {
         m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), colorDisabled,
-            localization::text("Auto-detonate: -", "Автовзрыв: -"));
+            localization::text("Auto-detonate: -", "Автоподрыв: -"));
     }
 }
 
