@@ -246,6 +246,19 @@ if(BUILD_TESTING)
     add_test(NAME command_bar_layout_geometry COMMAND command_bar_layout_tests)
 
     add_executable(
+        interaction_regression_tests
+        tests/InteractionRegressionTests.cpp
+        src/utils/cRectangle.cpp
+    )
+    target_include_directories(
+        interaction_regression_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+    )
+    add_test(NAME interaction_regressions COMMAND interaction_regression_tests)
+
+    add_executable(
         terrain_variation_tests
         tests/TerrainVariationTests.cpp
     )

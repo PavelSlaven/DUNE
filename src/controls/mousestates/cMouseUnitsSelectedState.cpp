@@ -2,6 +2,7 @@
 
 #include "d2tmc.h"
 #include "data/gfxdata.h"
+#include "controls/CommandModePolicy.hpp"
 #include "controls/cGameControlsContext.h"
 #include "gameobjects/particles/cParticle.h"
 #include "map/cMapCamera.h"
@@ -225,6 +226,16 @@ void cMouseUnitsSelectedState::onMouseRightButtonPressed()
 
 void cMouseUnitsSelectedState::onMouseRightButtonClicked()
 {
+    if (rightClickCommandPolicy(
+            m_state == SELECTED_STATE_FORCE_ATTACK
+                ? ActiveCommandMode::ForceAttack
+                : ActiveCommandMode::Normal
+        ) == RightClickCommandPolicy::CancelCommand) {
+        setState(SELECTED_STATE_MOVE);
+        mouseTile = MOUSE_MOVE;
+        m_mouse->resetDragViewportInteraction();
+        return;
+    }
     // if we were dragging the viewport, keep the units and this state.
     if (!m_mouse->isMapScrolling()) {
         m_player->deselectAllUnits();
@@ -248,7 +259,11 @@ void cMouseUnitsSelectedState::onMouseMovedTo()
             mouseTile = MOUSE_PICK;
         }
     }
-    else {
+    else if (pointerMoveCommandPolicy(
+                 m_state == SELECTED_STATE_FORCE_ATTACK
+                     ? ActiveCommandMode::ForceAttack
+                     : ActiveCommandMode::Normal
+             ) == PointerMoveCommandPolicy::Reevaluate) {
         evaluateMouseMoveState();
     }
 }

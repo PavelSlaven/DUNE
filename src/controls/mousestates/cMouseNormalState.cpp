@@ -1,5 +1,6 @@
 #include "cMouseNormalState.h"
 
+#include "controls/CommandModePolicy.hpp"
 #include "controls/cGameControlsContext.h"
 
 #include "utils/cRectangle.h"
@@ -153,6 +154,14 @@ void cMouseNormalState::onMouseRightButtonPressed()
 
 void cMouseNormalState::onMouseRightButtonClicked()
 {
+    if (rightClickCommandPolicy(
+            m_state == SELECT_STATE_RALLY
+                ? ActiveCommandMode::Rally
+                : ActiveCommandMode::Normal
+        ) == RightClickCommandPolicy::CancelCommand) {
+        setState(SELECT_STATE_NORMAL);
+        mouseTile = MOUSE_NORMAL;
+    }
     m_mouse->resetDragViewportInteraction();
 }
 

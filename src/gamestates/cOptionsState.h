@@ -77,6 +77,7 @@ private:
     std::string m_savedLanguage = "ru";
     OptionsPage m_optionsPage = OptionsPage::Main;
     std::optional<CommandBindingAction> m_bindingCapture;
+    std::optional<OptionsPage> m_pendingOptionsPage;
     GuiLabel *m_languageValueLabel = nullptr;
     GuiLabel *m_resolutionValueLabel = nullptr;
     GuiLabel *m_renderScaleValueLabel = nullptr;
@@ -99,6 +100,7 @@ private:
     void selectNextWorldScale();
     void toggleGraphicsMode();
     void toggleLanguage();
+    void requestOptionsPage(OptionsPage page);
     void switchOptionsPage(OptionsPage page);
     void updateDisplayControls();
     void updateDisplaySettingsDirtyState();

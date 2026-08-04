@@ -9,6 +9,7 @@
 #include "gui/GuiCheckBox.hpp"
 #include "gui/GuiSlider.hpp"
 #include "context/GameContext.hpp"
+#include "gamestates/AdvancedOptionsHeaderLayout.hpp"
 #include "gamestates/OptionsMenuLayout.hpp"
 #include "save/SaveGameManager.hpp"
 #include "save/SaveSlotsDialog.hpp"
@@ -280,23 +281,38 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
         optionText(m_selectedSettings, "Dune II - Settings", "Dune II — Настройки")
     );
 
-    const auto addTab = [this, theme, buttonKind, buttonHeight, margin](
-                            int x, int width, std::string_view label, OptionsPage page) {
+    const auto addTab = [this, theme, buttonKind, buttonHeight](
+                            int x, int y, int width, std::string_view label, OptionsPage page) {
         GuiButton *button = GuiButtonBuilder()
-                .withRect(m_guiWindow->getRelativeRect(x, margin, width, buttonHeight))
+                .withRect(m_guiWindow->getRelativeRect(x, y, width, buttonHeight))
                 .withLabel(std::string(label))
                 .withTextDrawer(m_textDrawer)
                 .withTheme(theme)
                 .withKind(buttonKind)
-                .onClick([this, page]() { switchOptionsPage(page); })
+                .onClick([this, page]() { requestOptionsPage(page); })
                 .build();
         m_guiWindow->addGuiObject(button);
     };
-    const int tabWidth = (mainMenuWidth - margin * 5) / 4;
-    addTab(margin, tabWidth, optionText(m_selectedSettings, "Main", "Основные"), OptionsPage::Main);
-    addTab(margin * 2 + tabWidth, tabWidth, optionText(m_selectedSettings, "Gameplay", "Игра"), OptionsPage::Gameplay);
-    addTab(margin * 3 + tabWidth * 2, tabWidth, optionText(m_selectedSettings, "Controls", "Управление"), OptionsPage::Controls);
-    addTab(margin * 4 + tabWidth * 3, tabWidth, optionText(m_selectedSettings, "Diagnostics", "Диагностика"), OptionsPage::Diagnostics);
+    const AdvancedOptionsHeaderLayout headerLayout =
+        AdvancedOptionsHeaderLayout::create(
+            mainMenuWidth,
+            margin,
+            buttonHeight,
+            m_textDrawer->getFontHeight()
+        );
+    addTab(headerLayout.tabs[0].getX(), headerLayout.tabs[0].getY(),
+           headerLayout.tabs[0].getWidth(),
+           optionText(m_selectedSettings, "Main", "Основные"), OptionsPage::Main);
+    addTab(headerLayout.tabs[1].getX(), headerLayout.tabs[1].getY(),
+           headerLayout.tabs[1].getWidth(),
+           optionText(m_selectedSettings, "Gameplay", "Игра"), OptionsPage::Gameplay);
+    addTab(headerLayout.tabs[2].getX(), headerLayout.tabs[2].getY(),
+           headerLayout.tabs[2].getWidth(),
+           optionText(m_selectedSettings, "Controls", "Управление"), OptionsPage::Controls);
+    addTab(headerLayout.tabs[3].getX(), headerLayout.tabs[3].getY(),
+           headerLayout.tabs[3].getWidth(),
+           optionText(m_selectedSettings, "Diagnostics", "Диагностика"),
+           OptionsPage::Diagnostics);
 
     int row = 2;
     const auto addToggle = [this, &row, theme, labelWidth, checkX, buttonHeight](
@@ -467,7 +483,7 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
             ))
             .withLabel(optionText(m_selectedSettings, "Back", "Назад"))
             .withTextDrawer(m_textDrawer).withTheme(theme).withKind(buttonKind)
-            .onClick([this]() { switchOptionsPage(OptionsPage::Main); })
+            .onClick([this]() { requestOptionsPage(OptionsPage::Main); })
             .build();
     m_guiWindow->addGuiObject(back);
 }
@@ -634,6 +650,11 @@ void cOptionsState::switchOptionsPage(OptionsPage page)
     m_bindingCapture.reset();
     m_optionsPage = page;
     refresh();
+}
+
+void cOptionsState::requestOptionsPage(OptionsPage page)
+{
+    m_pendingOptionsPage = page;
 }
 
 void cOptionsState::updateDisplaySettingsDirtyState()
@@ -1449,7 +1470,7 @@ void cOptionsState::constructWindow(int prevState)
             .withTextDrawer(m_textDrawer)
             .withTheme(controlTheme)
             .withKind(buttonKind)
-            .onClick([this]() { switchOptionsPage(OptionsPage::Gameplay); })
+            .onClick([this]() { requestOptionsPage(OptionsPage::Gameplay); })
             .build();
     m_guiWindow->addGuiObject(advancedButton);
 
@@ -1464,7 +1485,13 @@ cOptionsState::~cOptionsState()
 
 void cOptionsState::thinkFast()
 {
+    if (!m_pendingOptionsPage) {
+        return;
+    }
 
+    const OptionsPage page = *m_pendingOptionsPage;
+    m_pendingOptionsPage.reset();
+    switchOptionsPage(page);
 }
 
 void cOptionsState::draw() const
