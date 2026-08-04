@@ -304,11 +304,5 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          release_id=$(gh api \
-            "repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}" \
-            --jq .id)
-          gh api --method PATCH \
-            "repos/${GITHUB_REPOSITORY}/releases/${release_id}" \
-            -F draft=false \
-            -f make_latest=true >/dev/null
+          gh release edit "$RELEASE_TAG" --draft=false --latest
           echo "Published $RELEASE_TAG"
