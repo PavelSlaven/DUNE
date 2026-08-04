@@ -2,6 +2,7 @@
 
 #include "d2tmc.h"
 #include "data/gfxdata.h"
+#include "controls/CommandModePolicy.hpp"
 #include "controls/cGameControlsContext.h"
 #include "player/cPlayer.h"
 
@@ -64,7 +65,9 @@ void cMouseRepairState::onMouseRightButtonPressed()
 
 void cMouseRepairState::onMouseRightButtonClicked()
 {
-    if (!m_mouse->isMapScrolling()) {
+    if (!m_mouse->isMapScrolling() &&
+        rightClickCommandPolicy(ActiveCommandMode::Repair) ==
+            RightClickCommandPolicy::CancelCommand) {
         m_context->toPreviousState();
     }
 

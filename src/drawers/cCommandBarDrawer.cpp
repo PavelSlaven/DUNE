@@ -1,6 +1,7 @@
 #include "cCommandBarDrawer.h"
 
 #include "drawers/CommandBarLayout.hpp"
+#include "drawers/CommandBarPolicy.hpp"
 #include "context/GameContext.hpp"
 #include "context/TextContext.hpp"
 #include "controls/cGameControlsContext.h"
@@ -75,13 +76,13 @@ void cCommandBarDrawer::rebuildLayout()
     cAbstractStructure *selectedStructure = m_player->getSelectedStructure();
     const bool ownsSelectedStructure = selectedStructure && selectedStructure->belongsTo(m_player);
     const std::array<Button, CommandBarLayout::ActionCount> actions{{
-        {Command::Move, layout.actions[0], localization::text("Move", "Идти"), localization::text("LMB", "ЛКМ"), !selectedUnits.empty(), false},
-        {Command::Attack, layout.actions[1], localization::text("Attack", "Атака"), commandBindingDisplayName(game.m_commandBindings.attack, localization::isEnglish()), hasAttackCapableUnit(), false},
-        {Command::Repair, layout.actions[2], localization::text("Repair", "Ремонт"), commandBindingDisplayName(game.m_commandBindings.repair, localization::isEnglish()), hasRepairableUnit(), false},
-        {Command::Unload, layout.actions[3], localization::text("Unload", "Разгрузка"), commandBindingDisplayName(game.m_commandBindings.unload, localization::isEnglish()), hasUnloadableHarvester(), false},
-        {Command::Deploy, layout.actions[4], localization::text("Deploy", "Развернуть"), commandBindingDisplayName(game.m_commandBindings.deploy, localization::isEnglish()), hasSelectedMcv(), false},
-        {Command::Rally, layout.actions[5], localization::text("Rally", "Сбор"), commandBindingDisplayName(game.m_commandBindings.rally, localization::isEnglish()), ownsSelectedStructure && selectedStructure->canSpawnUnits(), false},
-        {Command::Release, layout.actions[6], localization::text("Release", "Выпустить"), commandBindingDisplayName(game.m_commandBindings.release, localization::isEnglish()), ownsSelectedStructure && selectedStructure->getType() == REPAIR, false}
+        {Command::Move, layout.actions[0], localization::text("Move", "Идти"), localization::text("LMB", "ЛКМ"), isMoveCommandEnabled(!selectedUnits.empty()), false},
+        {Command::Attack, layout.actions[1], localization::text("Attack", "Атака"), commandBindingDisplayName(game.m_commandBindings.attack, localization::isEnglish()), isAttackCommandEnabled(hasAttackCapableUnit()), false},
+        {Command::Repair, layout.actions[2], localization::text("Repair", "Ремонт"), commandBindingDisplayName(game.m_commandBindings.repair, localization::isEnglish()), isRepairCommandEnabled(), false},
+        {Command::Unload, layout.actions[3], localization::text("Unload", "Разгрузка"), commandBindingDisplayName(game.m_commandBindings.unload, localization::isEnglish()), isUnloadCommandEnabled(hasUnloadableHarvester()), false},
+        {Command::Deploy, layout.actions[4], localization::text("Deploy", "Развернуть"), commandBindingDisplayName(game.m_commandBindings.deploy, localization::isEnglish()), isDeployCommandEnabled(hasSelectedMcv()), false},
+        {Command::Rally, layout.actions[5], localization::text("Rally", "Сбор"), commandBindingDisplayName(game.m_commandBindings.rally, localization::isEnglish()), isRallyCommandEnabled(ownsSelectedStructure, ownsSelectedStructure && selectedStructure->canSpawnUnits()), false},
+        {Command::Release, layout.actions[6], localization::text("Release", "Выпустить"), commandBindingDisplayName(game.m_commandBindings.release, localization::isEnglish()), isReleaseCommandEnabled(ownsSelectedStructure, ownsSelectedStructure && selectedStructure->getType() == REPAIR), false}
     }};
     m_buttons.assign(actions.begin(), actions.end());
 }
@@ -326,13 +327,6 @@ bool cCommandBarDrawer::hasAttackCapableUnit() const
         const cUnit &selected = unit[id];
         const s_UnitInfo &info = selected.getUnitInfo();
         return !selected.isHarvester() && (info.canAttackUnits || info.canAttackAirUnits || info.canEnterAndDamageStructure);
-    });
-}
-
-bool cCommandBarDrawer::hasRepairableUnit() const
-{
-    return std::ranges::any_of(m_player->getSelectedUnits(), [](int id) {
-        return unit[id].isEligibleForRepair();
     });
 }
 

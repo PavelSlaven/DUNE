@@ -53,7 +53,6 @@ private:
     void executeRelease();
 
     [[nodiscard]] bool hasAttackCapableUnit() const;
-    [[nodiscard]] bool hasRepairableUnit() const;
     [[nodiscard]] bool hasUnloadableHarvester() const;
     [[nodiscard]] bool hasSelectedMcv() const;
 

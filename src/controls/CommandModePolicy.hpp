@@ -3,7 +3,8 @@
 enum class ActiveCommandMode {
     Normal,
     ForceAttack,
-    Rally
+    Rally,
+    Repair
 };
 
 enum class PointerMoveCommandPolicy {
@@ -28,7 +29,8 @@ enum class RightClickCommandPolicy {
     ActiveCommandMode mode
 ) {
     return mode == ActiveCommandMode::ForceAttack ||
-           mode == ActiveCommandMode::Rally
+           mode == ActiveCommandMode::Rally ||
+           mode == ActiveCommandMode::Repair
         ? RightClickCommandPolicy::CancelCommand
         : RightClickCommandPolicy::DefaultAction;
 }
