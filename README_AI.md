@@ -442,6 +442,23 @@ Copy-Item -LiteralPath "$d2tmSource\resources\bin\music" `
 
 DLL копируются только если изменился toolchain/runtime или отсутствует нужная библиотека. После установки полезно сравнить SHA-256 исходного `build-ru\d2tm.exe` и установленного `d2tm.exe`.
 
+### GitHub Release
+
+Workflow `.github/workflows/release.yml` запускается тегом `v*` и публикует:
+
+- один общий ZIP с `resources/bin` и `game.ini`;
+- Windows x64 ZIP с EXE и всеми найденными MinGW/SDL DLL;
+- Linux x64 `tar.gz`;
+- macOS Apple Silicon `tar.gz`;
+- macOS Intel `tar.gz`.
+
+Платформенный архив и `common-assets` распаковываются в один каталог. Linux
+и macOS используют системные SDL2-библиотеки, перечисленные в находящемся
+внутри `INSTALL.txt`. macOS-бинарники не подписаны и не нотарифицированы.
+
+Релиз сначала создаётся как draft, платформы собираются параллельно, а
+публикация выполняется только после успешной сборки и тестов всех вариантов.
+
 ## 14. Диагностика
 
 | Симптом | Куда смотреть сначала |

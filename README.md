@@ -4,6 +4,12 @@ Hi everyone! I made a small remaster of the game. I did not change any of the me
 
 The entire project was created with the help of Codex and Suno. I made it for my father, who has been playing Dune for almost his entire life. I originally had no plans to release it online, but a friend of mine, after seeing the results, strongly encouraged me to do so. And here we are.
 
+## Downloads
+
+Ready-to-run builds are published on the [GitHub Releases page](https://github.com/PavelSlaven/DUNE/releases) for Windows x64, Linux x64, macOS Apple Silicon and macOS Intel.
+
+Download the `common-assets` archive and one archive for your operating system, then extract both into the same folder. Platform-specific requirements are included in each archive.
+
 ---
 
 Dune II - The Maker

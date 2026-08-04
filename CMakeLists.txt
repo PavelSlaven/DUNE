@@ -60,21 +60,12 @@ if(APPLE)
 
     if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64")
         message(STATUS "Apple Silicon (arm64)")
-        set(CMAKE_C_COMPILER "${HOMEBREW_PREFIX}/bin/gcc-15")
-        set(CMAKE_CXX_COMPILER "${HOMEBREW_PREFIX}/bin/g++-15")
     elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
         message(STATUS "Apple Intel X64")
-        set(CMAKE_C_COMPILER "clang")
-        set(CMAKE_CXX_COMPILER "clang++")
     endif()
 
     message(STATUS "Mac GCC C compiler: ${CMAKE_C_COMPILER}")
     message(STATUS "Mac GCC C++ compiler: ${CMAKE_CXX_COMPILER}")
-
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        add_compile_options(-stdlib=libstdc++)
-        add_link_options(-stdlib=libstdc++)
-    endif()
 
     include_directories(
       ${SDL2_INCLUDE_DIRS}
@@ -115,8 +106,7 @@ target_include_directories(${PROJECT_NAME}
 
 if (APPLE)
 
-    if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64")
-    elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         target_compile_definitions(${PROJECT_NAME} PRIVATE D2TM_CLANG=1)
     endif()
 

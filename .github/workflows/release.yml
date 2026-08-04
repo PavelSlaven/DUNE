@@ -1,0 +1,315 @@
+name: Cross-platform release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag (for example v0.8.0-ru-hd.1)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+
+jobs:
+  prepare-release:
+    name: Prepare draft release
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+
+      - name: Validate tag
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9A-Za-z._-]+$ ]]; then
+            echo "Invalid release tag: $RELEASE_TAG" >&2
+            exit 1
+          fi
+          if ! git rev-parse "$RELEASE_TAG^{commit}" >/dev/null 2>&1; then
+            echo "Tag does not exist in Git: $RELEASE_TAG" >&2
+            exit 1
+          fi
+          echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            is_draft=$(gh release view "$RELEASE_TAG" --json isDraft --jq .isDraft)
+            if [[ "$is_draft" != "true" ]]; then
+              echo "Release $RELEASE_TAG is already published; refusing to replace it." >&2
+              exit 1
+            fi
+            gh release edit "$RELEASE_TAG" \
+              --title "DUNE $RELEASE_TAG" \
+              --notes-file packaging/RELEASE_NOTES.md
+          else
+            gh release create "$RELEASE_TAG" \
+              --draft \
+              --verify-tag \
+              --title "DUNE $RELEASE_TAG" \
+              --notes-file packaging/RELEASE_NOTES.md
+          fi
+
+  common-assets:
+    name: Package common HD assets
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare-release.outputs.tag }}
+          fetch-depth: 1
+          lfs: true
+
+      - name: Verify LFS checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs fsck
+          test -s resources/bin/data/sdl_world_hd4.dat
+          test -s "resources/bin/music/menu/21_MENU.wav"
+
+      - name: Build common archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="DUNE-${RELEASE_TAG}-common-assets.zip"
+          mkdir -p package
+          cp -a resources/bin/. package/
+          rm -f package/d2tm.exe
+          cp resources/game.ini.org package/game.ini
+          (
+            cd package
+            zip -q -r -1 "../${archive}" .
+          )
+          test -s "$archive"
+
+      - name: Upload common archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            "DUNE-${RELEASE_TAG}-common-assets.zip" \
+            --clobber
+
+  windows:
+    name: Windows x64
+    needs: prepare-release
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Install MSYS2 toolchain
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            git zip
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-SDL2
+            mingw-w64-x86_64-SDL2_image
+            mingw-w64-x86_64-SDL2_ttf
+            mingw-w64-x86_64-SDL2_mixer
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare-release.outputs.tag }}
+          fetch-depth: 1
+          lfs: false
+
+      - name: Configure, build and test
+        run: |
+          set -euo pipefail
+          export ENV_D2TM_VERSION="$RELEASE_TAG"
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --parallel 3
+          ctest --test-dir build --output-on-failure
+
+      - name: Package Windows binary and DLLs
+        run: |
+          set -euo pipefail
+          archive="DUNE-${RELEASE_TAG}-windows-x64.zip"
+          mkdir -p package
+          cp build/d2tm.exe package/
+          cp resources/dll/*.dll package/
+          ldd build/d2tm.exe | awk '
+            $2 == "=>" && $3 ~ /^\/mingw64\/bin\// { print $3 }
+            $1 ~ /^\/mingw64\/bin\// { print $1 }
+          ' | sort -u | while read -r dll; do
+            cp "$dll" package/
+          done
+          cp packaging/WINDOWS_README.txt package/INSTALL.txt
+          (
+            cd package
+            zip -q -r -9 "../${archive}" .
+          )
+          test -s "$archive"
+
+      - name: Upload Windows archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          gh release upload $env:RELEASE_TAG `
+            "DUNE-$env:RELEASE_TAG-windows-x64.zip" `
+            --clobber
+
+  linux:
+    name: Linux x64
+    needs: prepare-release
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare-release.outputs.tag }}
+          fetch-depth: 1
+          lfs: false
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential gcc-14 g++-14 cmake ninja-build pkg-config \
+            libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+
+      - name: Configure, build and test
+        shell: bash
+        run: |
+          set -euo pipefail
+          export ENV_D2TM_VERSION="$RELEASE_TAG"
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER=gcc-14 \
+            -DCMAKE_CXX_COMPILER=g++-14
+          cmake --build build --parallel 4
+          ctest --test-dir build --output-on-failure
+
+      - name: Package Linux binary
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="DUNE-${RELEASE_TAG}-linux-x64.tar.gz"
+          mkdir -p package
+          cp build/d2tm package/
+          chmod +x package/d2tm
+          cp packaging/LINUX_README.txt package/INSTALL.txt
+          tar -C package -czf "$archive" .
+          test -s "$archive"
+
+      - name: Upload Linux archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            "DUNE-${RELEASE_TAG}-linux-x64.tar.gz" \
+            --clobber
+
+  macos:
+    name: macOS ${{ matrix.arch }}
+    needs: prepare-release
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            arch: arm64
+          - runner: macos-15-intel
+            arch: x64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare-release.outputs.tag }}
+          fetch-depth: 1
+          lfs: false
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          brew install cmake ninja pkg-config sdl2 sdl2_image sdl2_ttf sdl2_mixer
+
+      - name: Configure, build and test
+        shell: bash
+        run: |
+          set -euo pipefail
+          export ENV_D2TM_VERSION="$RELEASE_TAG"
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER=clang \
+            -DCMAKE_CXX_COMPILER=clang++
+          cmake --build build --parallel 4
+          ctest --test-dir build --output-on-failure
+
+      - name: Package macOS binary
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="DUNE-${RELEASE_TAG}-macos-${{ matrix.arch }}.tar.gz"
+          mkdir -p package
+          cp build/d2tm package/
+          chmod +x package/d2tm
+          cp packaging/MACOS_README.txt package/INSTALL.txt
+          tar -C package -czf "$archive" .
+          test -s "$archive"
+
+      - name: Upload macOS archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            "DUNE-${RELEASE_TAG}-macos-${{ matrix.arch }}.tar.gz" \
+            --clobber
+
+  publish-release:
+    name: Publish verified release
+    needs:
+      - prepare-release
+      - common-assets
+      - windows
+      - linux
+      - macos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_id=$(gh api \
+            "repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}" \
+            --jq .id)
+          gh api --method PATCH \
+            "repos/${GITHUB_REPOSITORY}/releases/${release_id}" \
+            -F draft=false \
+            -f make_latest=true >/dev/null
+          echo "Published $RELEASE_TAG"
