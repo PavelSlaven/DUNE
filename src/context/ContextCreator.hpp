@@ -34,5 +34,10 @@ private:
     TTF_Font *small_font = nullptr;	// small font.
     TTF_Font *menu_font = nullptr;   // larger menu and adaptive UI font.
     TTF_Font *mentat_hd_font = nullptr; // dedicated Cyrillic remaster font.
+    TTF_Font *game_fallback_font = nullptr;
+    TTF_Font *bene_fallback_font = nullptr;
+    TTF_Font *small_fallback_font = nullptr;
+    TTF_Font *menu_fallback_font = nullptr;
+    TTF_Font *mentat_hd_fallback_font = nullptr;
     int density = 1;
 };

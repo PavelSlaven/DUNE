@@ -23,7 +23,6 @@ cOrderProcesser::cOrderProcesser(cPlayer *thePlayer)
     frigateSent = false;
     secondsUntilArrival = -1;
     secondsUntilNewPricesWillBeCalculated = 1; // initially randomize prices immediately
-    memset(pricePaidForItem, -1, sizeof(pricePaidForItem));
     removeAllItems();
     updatePricesForStarport();
     unitIdOfFrigateSent = -1;
@@ -35,37 +34,19 @@ cOrderProcesser::~cOrderProcesser()
     player = nullptr;
 }
 
-cBuildingListItem *cOrderProcesser::getItemToDeploy()
+std::optional<StarportOrder> cOrderProcesser::takeNextOrderToDeploy()
 {
-    for (int i = 0; i < kMaxItemsToOrder; i++) {
-        if (orderedItems[i] != nullptr) {
-            return orderedItems[i];
-        }
-    }
-    return nullptr;
+    return orderedItems.takeNext();
 }
 
 bool cOrderProcesser::hasOrderedAnything()
 {
-    // the id is either > 0 (meaning slot 0 is taken, or more)
-    // or the id is lower than 0, (meaning, all slots are taken)
-    return getFreeSlot() > 0 || getFreeSlot() < 0;
-}
-
-void cOrderProcesser::markOrderAsDeployed(cBuildingListItem *item)
-{
-    assert(item);
-    int slot = getSlotForItem(item);
-    assert(slot > -1);
-    // remove item from the ordered items
-    orderedItems[slot] = nullptr;
-    pricePaidForItem[slot] = -1;
+    return !orderedItems.empty();
 }
 
 bool cOrderProcesser::acceptsOrders()
 {
-    int freeSlot = getFreeSlot();
-    bool result = frigateSent == false && orderPlaced == false && freeSlot > -1;
+    bool result = frigateSent == false && orderPlaced == false && orderedItems.hasFreeSlot();
     return result;
 }
 
@@ -150,61 +131,28 @@ void cOrderProcesser::updatePricesForStarport()
 void cOrderProcesser::addOrder(cBuildingListItem *item)
 {
     assert(item);
-    int freeSlot = getFreeSlot();
-    if (freeSlot > -1) {
-        orderedItems[freeSlot] = item;
-        // store the original paid price, so in case the player decides
-        // to undo an order, he gets the same amount of money back that he paid for
-        // (since the prices can still fluctuate during the order process)
-        pricePaidForItem[freeSlot] = item->getBuildCost();
-    }
+    // Catalog entries are UI-owned and may disappear while the frigate is in
+    // flight, so the order must retain only stable value data.
+    orderedItems.add(item->getBuildId(), item->getBuildCost());
 }
 
 void cOrderProcesser::removeOrder(cBuildingListItem *item)
 {
     assert(item);
-    int slot = getSlotForItem(item);
-    removeItem(slot);
-}
-
-int cOrderProcesser::getFreeSlot()
-{
-    for (int i = 0; i < kMaxItemsToOrder; i++) {
-        if (orderedItems[i] == nullptr) {
-            return i;
-        }
+    const std::optional<StarportOrder> removedOrder = orderedItems.removeFirst(item->getBuildId());
+    assert(removedOrder.has_value());
+    if (removedOrder && removedOrder->paidPrice > 0) {
+        player->giveCredits(removedOrder->paidPrice);
     }
-    return -1;
-}
-
-int cOrderProcesser::getSlotForItem(cBuildingListItem *item)
-{
-    for (int i = 0; i < kMaxItemsToOrder; i++) {
-        if (orderedItems[i] == item) {
-            return i;
-        }
-    }
-    return -1;
 }
 
 void cOrderProcesser::removeAllItems()
 {
-    for (int i = 0; i < kMaxItemsToOrder; i++) {
-        removeItem(i);
+    while (const std::optional<StarportOrder> removedOrder = orderedItems.takeNext()) {
+        if (removedOrder->paidPrice > 0) {
+            player->giveCredits(removedOrder->paidPrice);
+        }
     }
-}
-
-void cOrderProcesser::removeItem(int slot)
-{
-    assert(slot >= 0);
-    assert(slot < kMaxItemsToOrder);
-    orderedItems[slot] = nullptr;
-    // give money back to player
-    if (pricePaidForItem[slot] > 0) {
-        player->giveCredits(pricePaidForItem[slot]);
-    }
-    // and reset the amount
-    pricePaidForItem[slot] = -1;
 }
 
 void cOrderProcesser::placeOrder()

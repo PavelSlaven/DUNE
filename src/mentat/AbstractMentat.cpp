@@ -12,6 +12,7 @@
 
 #include "AbstractMentat.h"
 #include "d2tmc.h"
+#include "data/gfxmentat.h"
 #include "definitions.h"
 #include "drawers/SDLDrawer.hpp"
 #include "utils/RNG.hpp"
@@ -33,7 +34,19 @@
 
 namespace {
 constexpr float HD_MENTAT_TEXT_SCALE = 0.85F;
-constexpr float HD_MENTAT_BUTTON_TEXT_SCALE = 0.85F;
+constexpr float HD_MENTAT_TEXT_MIN_SCALE = 1.20F;
+constexpr float HD_MENTAT_TEXT_MAX_SCALE = 1.55F;
+constexpr int HD_MENTAT_TEXT_HEADER_HEIGHT = 90;
+constexpr int HD_STANDARD_MOVIE_X = 211;
+constexpr int HD_STANDARD_MOVIE_Y = 93;
+constexpr int HD_STANDARD_MOVIE_WIDTH = 400;
+constexpr int HD_STANDARD_MOVIE_HEIGHT = 243;
+constexpr int HD_MISSION_SELECT_FRAME_Y = 345;
+constexpr int HD_MISSION_SELECT_FRAME_WIDTH = 114;
+constexpr int HD_MISSION_SELECT_FRAME_HEIGHT = 29;
+constexpr int HD_MISSION_SELECT_BUTTON_Y = HD_MISSION_SELECT_FRAME_Y + 3;
+constexpr int HD_MISSION_SELECT_BUTTON_WIDTH = HD_MISSION_SELECT_FRAME_WIDTH - 8;
+constexpr int HD_MISSION_SELECT_BUTTON_HEIGHT = HD_MISSION_SELECT_FRAME_HEIGHT - 5;
 
 int utf8CharacterCount(const char *text)
 {
@@ -110,10 +123,16 @@ MentatTextLayout wrapMentatText(
 }
 }
 
-AbstractMentat::AbstractMentat(GameContext* ctx, bool canMissionSelect, bool adaptiveHdLayout)
+AbstractMentat::AbstractMentat(
+    GameContext* ctx,
+    bool canMissionSelect,
+    bool adaptiveHdLayout,
+    int hdMissionSelectCenterX,
+    float hdMissionTextOffsetY)
 {
     gfxmentat = ctx->getGraphicsContext()->gfxmentat.get();
     m_adaptiveHdLayout = adaptiveHdLayout && game.isHdGraphicsActive();
+    m_hdMissionSelectCenterX = hdMissionSelectCenterX;
     m_textDrawer = m_adaptiveHdLayout
         ? ctx->getTextContext()->getMentatHdTextDrawer()
         : ctx->getTextContext()->getBeneTextDrawer();
@@ -155,13 +174,14 @@ AbstractMentat::AbstractMentat(GameContext* ctx, bool canMissionSelect, bool ada
     m_panelHeight = static_cast<int>(std::lround(480.0F * m_uiScale));
     offsetX = (game.m_screenW - m_panelWidth) / 2;
     offsetY = (game.m_screenH - m_panelHeight) / 2;
-    const int movieBaseX = m_adaptiveHdLayout ? 205 : 256;
-    const int movieBaseY = m_adaptiveHdLayout ? 96 : 120;
+    const int movieBaseX = m_adaptiveHdLayout ? HD_STANDARD_MOVIE_X : 256;
+    const int movieBaseY = m_adaptiveHdLayout ? HD_STANDARD_MOVIE_Y : 120;
     if (m_adaptiveHdLayout) {
-        // Preserve the source scene's 23:14 aspect ratio.  The old 385x210
-        // destination stretched every campaign animation horizontally.
-        m_movieWidth = 400;
-        m_movieHeight = 243;
+        // Keep the source scene at its full 23:14 presentation size.  It is
+        // covered outside the glass opening by the foreground pass, which
+        // keeps the opaque remastered frame above the unscaled scene.
+        m_movieWidth = HD_STANDARD_MOVIE_WIDTH;
+        m_movieHeight = HD_STANDARD_MOVIE_HEIGHT;
     }
     movieTopleftX = baseX(movieBaseX);
     movieTopleftY = baseY(movieBaseY);
@@ -172,11 +192,14 @@ AbstractMentat::AbstractMentat(GameContext* ctx, bool canMissionSelect, bool ada
             : localization::text("Mission select", "Выбор миссии");
         cRectangle toMissionSelectRect;
         if (m_adaptiveHdLayout) {
-            // Keep campaign navigation inside the remastered 640x480 panel.
-            // The previous absolute screen-space placement was calculated
-            // before the panel scale and offset and ended up clipped at the
-            // physical bottom-right corner on wide displays.
-            toMissionSelectRect = baseRect(514, 451, 110, 24);
+            // Center campaign navigation above the right response button.
+            const int frameX = m_hdMissionSelectCenterX - HD_MISSION_SELECT_FRAME_WIDTH / 2;
+            toMissionSelectRect = baseRect(
+                frameX + 4,
+                HD_MISSION_SELECT_BUTTON_Y,
+                HD_MISSION_SELECT_BUTTON_WIDTH,
+                HD_MISSION_SELECT_BUTTON_HEIGHT
+            );
         }
         else {
             const int length = m_textDrawer->getTextLength(label);
@@ -192,7 +215,10 @@ AbstractMentat::AbstractMentat(GameContext* ctx, bool canMissionSelect, bool ada
             .withRect(toMissionSelectRect)
             .withLabel(label)
             .withTextDrawer(m_textDrawer)
-            .withTextScale(m_adaptiveHdLayout ? HD_MENTAT_BUTTON_TEXT_SCALE : 1.0F)
+            .withTextScale(m_adaptiveHdLayout ? HD_BUTTON_TEXT_SCALE : 1.0F)
+            .withTextOffsetY(m_adaptiveHdLayout
+                ? static_cast<int>(std::lround(hdMissionTextOffsetY * m_uiScale))
+                : 0)
             .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
             .withKind(m_adaptiveHdLayout
                 ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER
@@ -213,6 +239,7 @@ AbstractMentat::~AbstractMentat()
     leftButtonBmp = nullptr;
     rightButtonBmp = nullptr;
     delete m_guiBtnToMissionSelect;
+    delete m_hdForegroundLayer;
 
     logbook("cAbstractMentat::~cAbstractMentat()");
 }
@@ -376,16 +403,28 @@ void AbstractMentat::draw()
     renderDrawer->renderRectColor(offsetX-2, offsetY-2, m_panelWidth+2, m_panelHeight+2, Color{40,40,60,255});
     renderDrawer->renderRectColor(offsetX-3, offsetY-3, m_panelWidth+3, m_panelHeight+3, Color{0,0,0,255});
 
-    // Classic mentat backgrounds use transparent cut-outs, so the movie stays
-    // behind them.  The remastered Bene Gesserit background is deliberately
-    // opaque and its viewport is composited afterwards at native HD quality.
-    if (!m_adaptiveHdLayout) draw_movie();
+    Texture *background = getBackgroundBitmap();
+    const cRectangle panelDestination = {offsetX, offsetY, m_panelWidth, m_panelHeight};
+    const bool hasMovie = gfxmovie != nullptr && iMovieFrame >= 0;
 
-    Texture *tmp = getBackgroundBitmap();
-    cRectangle dest = {offsetX, offsetY, m_panelWidth, m_panelHeight};
-    renderDrawer->renderStrechFullSprite(tmp, dest);
+    if (m_adaptiveHdLayout && hasMovie) {
+        // HD composition, back to front: an oversized scene, one continuous
+        // foreground texture with an alpha opening, then mentat animations and
+        // text below.  The scene never draws over the frame or portrait.
+        draw_movie();
+        renderDrawer->renderStrechFullSprite(
+            getHdForegroundLayer(background),
+            panelDestination
+        );
+    }
+    else {
+        // Classic backgrounds already contain transparent openings.  HD Bene
+        // Gesserit screens have no separate movie and stay fully opaque.
+        if (!m_adaptiveHdLayout) draw_movie();
+        renderDrawer->renderStrechFullSprite(background, panelDestination);
+    }
 
-    if (m_adaptiveHdLayout) draw_movie();
+    drawHdTextHeader();
 
     draw_eyes();
     draw_mouth();
@@ -395,14 +434,19 @@ void AbstractMentat::draw()
         // draw text that is being spoken
         if (iMentatSentence >= 0) {
             if (m_adaptiveHdLayout) {
-                const cRectangle textBox = baseRect(24, 10, 592, 61);
+                const cRectangle textBox = baseRect(20, 6, 600, 78);
                 const int gap = static_cast<int>(std::lround(2.0F * m_uiScale));
+                const float textScale = std::clamp(
+                    HD_MENTAT_TEXT_SCALE * m_uiScale,
+                    HD_MENTAT_TEXT_MIN_SCALE,
+                    HD_MENTAT_TEXT_MAX_SCALE
+                );
                 const auto layout = wrapMentatText(
                     m_textDrawer,
                     sentence[iMentatSentence],
                     sentence[iMentatSentence + 1],
                     textBox.getWidth(),
-                    HD_MENTAT_TEXT_SCALE
+                    textScale
                 );
                 const int lineHeight = static_cast<int>(
                     std::lround(m_textDrawer->getFontHeight() * layout.scale)
@@ -452,50 +496,57 @@ void AbstractMentat::draw()
     }
 
     if (m_guiBtnToMissionSelect) {
-        if (m_adaptiveHdLayout) drawHdMissionSelectFrame();
         m_guiBtnToMissionSelect->draw();
     }
 }
 
-void AbstractMentat::drawHdMissionSelectFrame() const
+void AbstractMentat::drawHdTextHeader() const
 {
-    // The two response-button frames are part of the remastered background.
-    // Mission selection has no painted recess in the source artwork, so build
-    // a compact matching inset from layered steel and aged-brass strokes.
-    const cRectangle outer = baseRect(510, 448, 118, 29);
-    const cRectangle middle(
-        outer.getX() + std::max(1, static_cast<int>(std::lround(2.0F * m_uiScale))),
-        outer.getY() + std::max(1, static_cast<int>(std::lround(2.0F * m_uiScale))),
-        outer.getWidth() - std::max(2, static_cast<int>(std::lround(4.0F * m_uiScale))),
-        outer.getHeight() - std::max(2, static_cast<int>(std::lround(4.0F * m_uiScale)))
-    );
-    const cRectangle inner(
-        middle.getX() + std::max(1, static_cast<int>(std::lround(2.0F * m_uiScale))),
-        middle.getY() + std::max(1, static_cast<int>(std::lround(2.0F * m_uiScale))),
-        middle.getWidth() - std::max(2, static_cast<int>(std::lround(4.0F * m_uiScale))),
-        middle.getHeight() - std::max(2, static_cast<int>(std::lround(4.0F * m_uiScale)))
-    );
+    if (!m_adaptiveHdLayout) return;
 
-    renderDrawer->renderRectFillColor(
-        outer.getX() + std::max(1, static_cast<int>(std::lround(2.0F * m_uiScale))),
-        outer.getY() + std::max(1, static_cast<int>(std::lround(2.0F * m_uiScale))),
-        outer.getWidth(),
-        outer.getHeight(),
-        Color{0, 0, 0, 190}
+    Texture *atreidesHeader = gfxmentat->getTexture(MENTATA);
+    renderDrawer->renderStrechSprite(
+        atreidesHeader,
+        cRectangle(0, 0, 640, HD_MENTAT_TEXT_HEADER_HEIGHT),
+        baseRect(0, 0, 640, HD_MENTAT_TEXT_HEADER_HEIGHT)
     );
-    renderDrawer->renderRectFillColor(outer, Color{8, 12, 18, 255});
-    renderDrawer->renderRectColor(outer, Color{74, 56, 29, 255});
-    renderDrawer->renderRectFillColor(middle, Color{27, 29, 30, 255});
-    renderDrawer->renderRectColor(middle, Color{163, 116, 38, 255});
-    renderDrawer->renderRectFillColor(inner, Color{18, 24, 29, 255});
-    renderDrawer->renderRectColor(inner, Color{45, 38, 27, 255});
-    renderDrawer->renderLine(
-        inner.getX() + std::max(1, static_cast<int>(std::lround(3.0F * m_uiScale))),
-        inner.getY() + 1,
-        inner.getX() + inner.getWidth() - std::max(2, static_cast<int>(std::lround(3.0F * m_uiScale))),
-        inner.getY() + 1,
-        Color{113, 82, 36, 255}
-    );
+}
+
+void AbstractMentat::harmonizeHdButtonTextScale()
+{
+    if (!m_adaptiveHdLayout || !leftGuiButton || !rightGuiButton) return;
+
+    float sharedScale = HD_BUTTON_TEXT_SCALE;
+    const int fontHeight = std::max(1, m_textDrawer->getFontHeight());
+    const auto include = [this, fontHeight, &sharedScale](
+        const cRectangle &rect,
+        const std::string &label) {
+        const float widthScale = static_cast<float>(std::max(1, rect.getWidth() - 16)) /
+            std::max(1, m_textDrawer->getTextLength(label));
+        const float heightScale = static_cast<float>(std::max(1, rect.getHeight() - 8)) /
+            fontHeight;
+        sharedScale = std::min({sharedScale, widthScale, heightScale});
+    };
+
+    include(*leftButton, localization::text("Repeat", "Повторить"));
+    include(*rightButton, localization::text("Next", "Далее"));
+    if (m_guiBtnToMissionSelect) {
+        const int frameX = m_hdMissionSelectCenterX - HD_MISSION_SELECT_FRAME_WIDTH / 2;
+        include(
+            baseRect(
+                frameX + 4,
+                HD_MISSION_SELECT_BUTTON_Y,
+                HD_MISSION_SELECT_BUTTON_WIDTH,
+                HD_MISSION_SELECT_BUTTON_HEIGHT
+            ),
+            localization::text("Missions", "Миссии")
+        );
+    }
+
+    sharedScale = std::max(0.65F, sharedScale);
+    leftGuiButton->setTextScale(sharedScale);
+    rightGuiButton->setTextScale(sharedScale);
+    if (m_guiBtnToMissionSelect) m_guiBtnToMissionSelect->setTextScale(sharedScale);
 }
 
 Texture *AbstractMentat::getBackgroundBitmap() const
@@ -518,6 +569,75 @@ void AbstractMentat::draw_movie()
         static_cast<int>(std::lround((m_adaptiveHdLayout ? m_movieHeight : tmp->h) * m_uiScale))
     };
     renderDrawer->renderStrechFullSprite(tmp, dest);
+}
+
+Texture *AbstractMentat::getHdForegroundLayer(Texture *background)
+{
+    if (!background) return nullptr;
+    if (m_hdForegroundLayer) return m_hdForegroundLayer;
+
+    m_hdForegroundLayer = renderDrawer->createRenderTargetTexture(
+        background->pixelW,
+        background->pixelH
+    );
+    renderDrawer->beginDrawingToTexture(m_hdForegroundLayer);
+    renderDrawer->renderClearToColor(Color{0, 0, 0, 0});
+    renderDrawer->renderStrechFullSprite(
+        background,
+        cRectangle(0, 0, background->pixelW, background->pixelH)
+    );
+    clearHdMovieOpening(background);
+    renderDrawer->endDrawingToTexture();
+    SDL_SetTextureBlendMode(m_hdForegroundLayer->tex, SDL_BLENDMODE_BLEND);
+    return m_hdForegroundLayer;
+}
+
+void AbstractMentat::clearHdMovieOpening(Texture *background)
+{
+    constexpr int cornerHeight = 14;
+    const int bottom = m_movieClipY + m_movieClipHeight;
+    for (int y = m_movieClipY; y < bottom; ++y) {
+        int inset = 0;
+        if (y < m_movieClipY + cornerHeight) {
+            inset = m_movieClipY + cornerHeight - y;
+        }
+        else if (y >= bottom - cornerHeight) {
+            inset = y - (bottom - cornerHeight) + 1;
+        }
+        clearHdForegroundLayerRegion(
+            background,
+            m_movieClipX + inset,
+            y,
+            m_movieClipWidth - inset * 2,
+            1
+        );
+    }
+}
+
+void AbstractMentat::clearHdForegroundLayerRegion(
+    Texture *background,
+    int x,
+    int y,
+    int width,
+    int height) const
+{
+    if (!background || width <= 0 || height <= 0) return;
+
+    const int left = static_cast<int>(std::lround(
+        static_cast<double>(x) * background->pixelW / 640.0
+    ));
+    const int top = static_cast<int>(std::lround(
+        static_cast<double>(y) * background->pixelH / 480.0
+    ));
+    const int right = static_cast<int>(std::lround(
+        static_cast<double>(x + width) * background->pixelW / 640.0
+    ));
+    const int bottom = static_cast<int>(std::lround(
+        static_cast<double>(y + height) * background->pixelH / 480.0
+    ));
+    renderDrawer->clearRectToTransparent(
+        cRectangle(left, top, right - left, bottom - top)
+    );
 }
 
 int AbstractMentat::baseX(int value) const
@@ -568,22 +688,13 @@ void AbstractMentat::loadScene(const std::string &scene)
     );
     int sceneDensity = 1;
     if (game.isHdGraphicsActive()) {
-        const int preferredDensity = game.getGraphicsDensity();
-        const std::array<int, 2> densities{
-            preferredDensity,
-            preferredDensity == 4 ? 2 : 4
-        };
-        for (const int density : densities) {
-            const std::string candidate = std::format(
-                "data/scenes/hd{}/sdl_{}.dat",
-                density,
-                scene
-            );
-            if (std::filesystem::exists(candidate)) {
-                filename = candidate;
-                sceneDensity = density;
-                break;
-            }
+        const std::string candidate = std::format(
+            "data/scenes/hd4/sdl_{}.dat",
+            scene
+        );
+        if (std::filesystem::exists(candidate)) {
+            filename = candidate;
+            sceneDensity = 4;
         }
     }
 

@@ -2,6 +2,7 @@
 
 #include "building/cItemBuilder.h"
 #include "d2tmc.h"
+#include "gameobjects/structures/StarportOrderQueue.hpp"
 #include "player/cPlayer.h"
 #include "utils/cLog.h"
 
@@ -435,12 +436,15 @@ void cBuildingListUpdater::onStructureDestroyed(int structureType)
     cBuildingList *listConstYard = sideBar->getList(eListType::LIST_CONSTYARD);
 
     if (structureType == STARPORT) {
-        if (!player->hasAtleastOneStructure(STARPORT)) {
+        if (!isStarportCatalogAvailable(player->hasAtleastOneStructure(STARPORT))) {
             listConstYard->removeItemFromListByBuildId(IX);
             cOrderProcesser *pProcesser = player->getOrderProcesser();
             pProcesser->clear();
             cBuildingList *listStarport = sideBar->getList(eListType::LIST_STARPORT);
-            listStarport->resetTimesOrderedForAllItems();
+            while (listStarport->removeItemFromList(0)) {
+                // Removing the final entry emits the unavailable-list event,
+                // which also moves selection away from the Starport tab.
+            }
         }
     }
 

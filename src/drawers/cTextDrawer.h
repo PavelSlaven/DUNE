@@ -5,13 +5,14 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 #include <memory>
+#include <unordered_map>
 
 class cTextTextureCache;
 
 class cTextDrawer {
 public:
     // Constructor, initializes the drawer with a TTF font
-    explicit cTextDrawer(TTF_Font *theFont, int density = 1);
+    explicit cTextDrawer(TTF_Font *theFont, int density = 1, TTF_Font *fallbackFont = nullptr);
     ~cTextDrawer();
 
     // Draws text at (x, y) in white, with optional shadow
@@ -38,6 +39,7 @@ public:
     // Draws centered text inside a rectangle, with color and offset
     void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const;
     void drawTextScaledCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;
+    void drawTextScaledOpticallyCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;
     // Draws text at the bottom right of the screen, in white, with margin
     void drawTextBottomRight(const std::string &msg, int margin=0) const;
     // Draws text at the bottom left of the screen, in white, with margin
@@ -59,7 +61,14 @@ public:
 protected:
 
 private:
+    [[nodiscard]] bool shouldUseFallback(const std::string &msg) const;
+    [[nodiscard]] TTF_Font *fontFor(const std::string &msg) const;
+    [[nodiscard]] cTextTextureCache *cacheFor(const std::string &msg) const;
+
     TTF_Font *m_font;
+    TTF_Font *m_fallbackFont;
     int m_density;
     std::unique_ptr<cTextTextureCache> m_textCache;
+    std::unique_ptr<cTextTextureCache> m_fallbackTextCache;
+    mutable std::unordered_map<std::string, bool> m_fallbackByText;
 };

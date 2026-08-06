@@ -11,12 +11,15 @@
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
 #include <SDL2/SDL.h>
+#include <algorithm>
 #include <iostream>
 
 cCreditsState::cCreditsState(cGame &theGame, GameContext* ctx) :
     cGameState(theGame, ctx),
     m_moveSpeed(0.15f),
-    m_textDrawer(ctx->getTextContext()->getBeneTextDrawer())
+    m_textDrawer(m_game.isHdGraphicsActive()
+        ? ctx->getTextContext()->getMenuTextDrawer()
+        : ctx->getTextContext()->getBeneTextDrawer())
 {
     auto *gfxinter = ctx->getGraphicsContext()->gfxinter.get();
     if (m_game.isHdGraphicsActive()) {
@@ -51,18 +54,26 @@ cCreditsState::cCreditsState(cGame &theGame, GameContext* ctx) :
     m_titleX = centerOfScreen - (titleWidth / 2);
     resetCrawler();
 
-    int backButtonWidth = m_textDrawer->getTextLength(
-        localization::text(" BACK", " НАЗАД"));
-    int backButtonHeight = 21;
-    int backButtonY = m_game.m_screenH - 21;
-    int backButtonX = 0;
+    const bool hdLayout = m_game.isHdGraphicsActive();
+    const int backButtonWidth = hdLayout
+        ? std::max(140, m_textDrawer->getTextLength(
+            localization::text("BACK", "НАЗАД")) + 24)
+        : m_textDrawer->getTextLength(
+            localization::text(" BACK", " НАЗАД"));
+    const int backButtonHeight = hdLayout
+        ? std::max(36, m_textDrawer->getFontHeight() + 10)
+        : 21;
+    const int backButtonY = m_game.m_screenH - backButtonHeight;
+    const int backButtonX = 0;
     cRectangle backButtonRect(backButtonX, backButtonY, backButtonWidth, backButtonHeight);
     backButton = GuiButtonBuilder()
             .withRect(backButtonRect)
             .withLabel(localization::text("BACK", "НАЗАД"))
             .withTextDrawer(m_textDrawer)
-            .withTheme(GuiTheme::Light())
-            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTheme(hdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
+            .withKind(hdLayout
+                ? GuiRenderKind::REMASTER_BUTTON
+                : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([this]() {
                 m_game.setNextStateToTransitionTo(GAME_MENU);
                 m_game.initiateFadingOut();

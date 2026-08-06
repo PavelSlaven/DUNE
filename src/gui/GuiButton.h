@@ -15,6 +15,7 @@ struct GuiButtonParams {
     GuiTheme theme = GuiTheme::Light();
     GuiTextAlignHorizontal align = GuiTextAlignHorizontal::CENTER;
     float textScale = 1.0F;
+    int textOffsetY = 0;
     std::function<void()> onLeftClick = nullptr;
     std::function<void()> onRightClick = nullptr;
     Texture *tex = nullptr;
@@ -39,6 +40,7 @@ public:
     void setRenderKind(GuiRenderKind value);
     void setTexture(Texture *tex);
     void setTextScale(float scale);
+    void setTextOffsetY(int offset);
 
     void nextRenderKind();
 
@@ -64,6 +66,7 @@ private:
     bool m_pressed;
     bool m_enabled;
     float m_textScale = 1.0F;
+    int m_textOffsetY = 0;
 
     // Functions
     void drawText() const;
@@ -114,6 +117,11 @@ public:
         return *this;
     }
 
+    GuiButtonBuilder& withTextOffsetY(int offset) {
+        params.textOffsetY = offset;
+        return *this;
+    }
+
     GuiButtonBuilder& onClick(std::function<void()> callback) {
         params.onLeftClick = std::move(callback);
         return *this;
@@ -141,6 +149,7 @@ public:
         btn->setTheme(params.theme);
         btn->setTextAlignHorizontal(params.align);
         btn->setTextScale(params.textScale);
+        btn->setTextOffsetY(params.textOffsetY);
         btn->setTexture(params.tex);
         btn->setEnabled(params.enabled);
         if (params.onLeftClick) {

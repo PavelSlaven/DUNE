@@ -32,7 +32,7 @@ BeneMentat::BeneMentat(GameContext* ctx) : AbstractMentat(ctx, false, true)
             .withRect(*leftButton)        
             .withLabel(localization::text("No", "Нет"))
             .withTextDrawer(m_textDrawer)
-            .withTextScale(m_adaptiveHdLayout ? 0.85F : 1.0F)
+            .withTextScale(m_adaptiveHdLayout ? HD_BUTTON_TEXT_SCALE : 1.0F)
             .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
             .withKind(m_adaptiveHdLayout ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER : GuiRenderKind::WITH_TEXTURE)
             .onClick([]() {
@@ -51,7 +51,7 @@ BeneMentat::BeneMentat(GameContext* ctx) : AbstractMentat(ctx, false, true)
             .withRect(*rightButton)        
             .withLabel(localization::text("Yes", "Да"))
             .withTextDrawer(m_textDrawer)
-            .withTextScale(m_adaptiveHdLayout ? 0.85F : 1.0F)
+            .withTextScale(m_adaptiveHdLayout ? HD_BUTTON_TEXT_SCALE : 1.0F)
             .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
             .withKind(m_adaptiveHdLayout ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER : GuiRenderKind::WITH_TEXTURE)
             .onClick([this]() {
@@ -92,7 +92,7 @@ void BeneMentat::draw()
             "Желаете вступить в Дом {}?",
             houseName);
         if (m_adaptiveHdLayout) {
-            const float textScale = std::clamp(m_uiScale, 1.0F, 1.5F);
+            const float textScale = std::clamp(m_uiScale, 1.35F, 1.90F);
             const int horizontalMargin = static_cast<int>(std::lround(18.0F * m_uiScale));
             m_textDrawer->drawTextScaledCenteredInBox(
                 msg,

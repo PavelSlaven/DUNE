@@ -1,6 +1,8 @@
 #include "controls/CommandModePolicy.hpp"
 #include "drawers/CommandBarPolicy.hpp"
+#include "drawers/OrderButtonPolicy.hpp"
 #include "gamestates/AdvancedOptionsHeaderLayout.hpp"
+#include "gameobjects/structures/StarportOrderQueue.hpp"
 
 #include <iostream>
 
@@ -83,6 +85,26 @@ int main()
             !isReleaseCommandEnabled(true, false) &&
             isReleaseCommandEnabled(true, true),
         "release command availability does not require an owned repair facility"
+    );
+    valid &= require(
+        !shouldDrawOrderLabelShadow(),
+        "starport order label shadow looks like a duplicate label"
+    );
+    int catalogBuildId = 7;
+    StarportOrderQueue<8> starportOrders;
+    valid &= require(
+        starportOrders.add(catalogBuildId, 400),
+        "starport order queue rejected an available slot"
+    );
+    catalogBuildId = 8;
+    const std::optional<StarportOrder> deployedOrder = starportOrders.takeNext();
+    valid &= require(
+        deployedOrder.has_value() && deployedOrder->getBuildId() == 7,
+        "starport order retained a reference to mutable catalog data"
+    );
+    valid &= require(
+        !isStarportCatalogAvailable(0) && isStarportCatalogAvailable(1),
+        "starport catalog remains available after the last starport is destroyed"
     );
     return valid ? 0 : 1;
 }

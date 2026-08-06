@@ -21,6 +21,7 @@
 #include "utils/cTimeManager.h"
 #include "utils/cIniFile.h"
 #include "utils/GraphicsMode.hpp"
+#include "utils/HdPresentation.hpp"
 
 #include <memory>
 #include <string>
@@ -347,11 +348,12 @@ private:
     SDL_Renderer *renderer;
     Texture *screenTexture=nullptr;
     Texture *actualRenderer= nullptr;
-    Texture *m_hdPresentationRenderer = nullptr;
-    Texture *m_hdPresentationScreenTexture = nullptr;
-    int m_hdPresentationRendererWidth = 0;
-    int m_hdPresentationRendererHeight = 0;
+    HdPresentationRenderTargets<Texture> m_hdPresentationTargets;
     bool m_hdPresentationFadeCaptureActive = false;
+    Texture *m_hdVictoryRu = nullptr;
+    Texture *m_hdVictoryEn = nullptr;
+    Texture *m_hdDefeatRu = nullptr;
+    Texture *m_hdDefeatEn = nullptr;
     cTextDrawer* m_textDrawer = nullptr;
     cTimeManager* m_timeManager;
 
@@ -397,6 +399,8 @@ private:
 
     void drawStateLosing();     // drawStateLosing (during combat you get the window "you have lost"),
     // after clicking you get to debrief
+    void drawOutcomeScreen(bool victory);
+    Texture *getHdOutcomeTexture(bool victory);
 
 
     void drawStateMentat(AbstractMentat *mentat);  // state mentat talking and interaction

@@ -34,6 +34,13 @@ bool verify(int width, int height)
         std::cerr << "music label overlaps buttons\n";
         return false;
     }
+    if (music.musicPanel.isOverlapping(music.speedPanel) ||
+        music.speedLabel.isOverlapping(music.speedSlider) ||
+        music.speedSlider.getWidth() < 50 ||
+        std::abs(music.musicPanel.getWidth() - music.speedPanel.getWidth()) > 1) {
+        std::cerr << "invalid speed controls geometry\n";
+        return false;
+    }
     return true;
 }
 }

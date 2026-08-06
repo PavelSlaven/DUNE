@@ -8,7 +8,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include <array>
 #include <filesystem>
 #include <format>
 
@@ -17,44 +16,33 @@ Texture *loadHdUiTexture(
     int preferredDensity,
     const std::string &logContext)
 {
-    const std::array<int, 2> candidates{
-        preferredDensity,
-        preferredDensity == 4 ? 2 : 4
-    };
-
-    for (const int density : candidates) {
-        const std::filesystem::path path =
-            std::filesystem::path("data") /
-            std::format("hd{}", density) /
-            fileName;
-        if (!std::filesystem::exists(path)) {
-            continue;
-        }
+    static_cast<void>(preferredDensity);
+    constexpr int density = 4;
+    const std::filesystem::path path =
+        std::filesystem::path("data") / "hd4" / fileName;
+    if (std::filesystem::exists(path)) {
 
         SDL_Surface *surface = IMG_Load(path.string().c_str());
-        if (!surface) {
-            continue;
-        }
-        SDL_Texture *texture = SDL_CreateTextureFromSurface(
-            renderDrawer->getRenderer(),
-            surface
-        );
-        if (!texture) {
+        if (surface) {
+            SDL_Texture *texture = SDL_CreateTextureFromSurface(
+                renderDrawer->getRenderer(),
+                surface
+            );
+            if (texture) {
+                SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+                SDL_SetTextureScaleMode(texture, SDL_ScaleModeLinear);
+                Texture *result = new Texture(
+                    texture,
+                    surface->w,
+                    surface->h,
+                    false,
+                    density
+                );
+                SDL_FreeSurface(surface);
+                return result;
+            }
             SDL_FreeSurface(surface);
-            continue;
         }
-
-        SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
-        SDL_SetTextureScaleMode(texture, SDL_ScaleModeLinear);
-        Texture *result = new Texture(
-            texture,
-            surface->w,
-            surface->h,
-            false,
-            density
-        );
-        SDL_FreeSurface(surface);
-        return result;
     }
 
     cLogger::getInstance()->log(

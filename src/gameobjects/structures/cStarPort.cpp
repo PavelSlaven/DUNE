@@ -73,15 +73,19 @@ void cStarPort::think_deploy()
             TIMER_deploy = 1;
             // deploy unit
             cOrderProcesser *orderProcesser = players[iPlayer].getOrderProcesser();
-            cBuildingListItem *item = orderProcesser->getItemToDeploy();
-            if (item) {
+            const std::optional<StarportOrder> order = orderProcesser->takeNextOrderToDeploy();
+            if (order) {
                 int cellToDeployTo = getNonOccupiedCellAroundStructure();
-                orderProcesser->markOrderAsDeployed(item);
-                item->decreaseTimesOrdered();
+                const int buildId = order->getBuildId();
+                cBuildingList *starportList = players[iPlayer].getSideBar()->getList(eListType::LIST_STARPORT);
+                cBuildingListItem *catalogItem = starportList->getItemByBuildId(buildId);
+                if (catalogItem && catalogItem->getTimesOrdered() > 0) {
+                    catalogItem->decreaseTimesOrdered();
+                }
                 int rallyPoint = getRallyPoint();
 
                 if (cellToDeployTo >= 0) {
-                    int id = UNIT_CREATE(cellToDeployTo, item->getBuildId(), iPlayer, true);
+                    int id = UNIT_CREATE(cellToDeployTo, buildId, iPlayer, true);
                     if (rallyPoint > -1) {
                         unit[id].move_to(rallyPoint, -1, -1);
                     }
@@ -99,7 +103,7 @@ void cStarPort::think_deploy()
                         cellToDeployTo = getCell();
                     }
                     int cellAtBorderOfMap = global_map.findCloseMapBorderCellRelativelyToDestinationCel(cellToDeployTo);
-                    REINFORCE(iPlayer, item->getBuildId(), cellToDeployTo, cellAtBorderOfMap);
+                    REINFORCE(iPlayer, buildId, cellToDeployTo, cellAtBorderOfMap);
                 }
             }
             else {

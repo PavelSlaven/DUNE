@@ -136,8 +136,15 @@ def source_frames() -> dict[str, Image.Image]:
                 DIRECTION_SOURCES / f"{direction}_alpha.png"
             ).convert("RGBA")
         )
-        for direction in ("NE", "N", "S", "SE")
+        for direction in ("NE", "S", "SE")
     }
+    # The launcher is bilaterally symmetric in the top-down game view.  The
+    # north-facing frame must therefore be the exact vertical reflection of
+    # south; an independently rendered N perspective makes it visibly tilt
+    # when the unit starts moving upward.
+    extracted["N"] = extracted["S"].transpose(
+        Image.Transpose.FLIP_TOP_BOTTOM
+    )
     # The central vehicle in the supplied reference is the true west-facing
     # side profile.  Keep it in the W slot and derive E by symmetry.  Reversing
     # these two slots makes the launcher drive tail-first at 3 and 9 o'clock.

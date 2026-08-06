@@ -13,8 +13,8 @@ struct CommandBarLayout {
 
     [[nodiscard]] static CommandBarLayout create(int screenWidth, int screenHeight, int sidebarWidth)
     {
-        constexpr int idealPanelWidth = 700;
-        constexpr int idealPanelHeight = 86;
+        constexpr int idealPanelWidth = 350;
+        constexpr int idealPanelHeight = 52;
         constexpr int bottomScrollClearance = 8;
         constexpr int outerMargin = 8;
 
@@ -32,7 +32,7 @@ struct CommandBarLayout {
             .panel = cRectangle(panelX, panelY, panelWidth, panelHeight)
         };
         constexpr std::array<int, ActionCount + 1> referenceBoundaries{
-            0, 448, 858, 1240, 1634, 2035, 2413, 2800
+            0, 400, 800, 1200, 1600, 2000, 2400, 2800
         };
         for (int index = 0; index < ActionCount; ++index) {
             const int x0 = panelX + panelWidth * referenceBoundaries[index] / 2800;

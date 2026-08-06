@@ -14,6 +14,7 @@
 #include "sidebar/MusicControlsLayout.hpp"
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
+#include "utils/cTimeManager.h"
 
 #include <SDL2/SDL.h>
 #include <cassert>
@@ -33,7 +34,8 @@ cDrawManager::cDrawManager(GameContext *ctx, cPlayer *thePlayer) :
     m_player(thePlayer),
     m_textDrawer(ctx->getTextContext()->getGameTextDrawer()),
     m_smallTextDrawer(ctx->getTextContext()->getSmallTextDrawer()),
-    m_gfxinter(ctx->getGraphicsContext()->gfxinter.get())
+    m_gfxinter(ctx->getGraphicsContext()->gfxinter.get()),
+    m_timeManager(ctx->getTimeManager())
 {
     assert(thePlayer);
     btnOptions = thePlayer->createTextureFromIndexedSurfaceWithPalette(
@@ -319,6 +321,7 @@ void cDrawManager::drawMusicControls(int left, int right, bool hd)
 
     const Color panel = hd ? Color{35, 32, 25, 255} : Color{16, 16, 16, 225};
     const Color border = hd ? Color{188, 139, 47, 255} : Color{214, 149, 20, 255};
+    const Color borderDark = hd ? Color{71, 50, 24, 255} : Color{92, 62, 12, 255};
     const Color text{232, 222, 188, 255};
 
     for (const cRectangle *rect : {&layout.previous, &layout.next}) {
@@ -359,12 +362,65 @@ void cDrawManager::drawMusicControls(int left, int right, bool hd)
         m_smallTextDrawer->drawTextCenteredInBox(name, layout.label, text);
     }
 
-    if (game.getMouse()->isLeftButtonClicked()) {
-        if (game.getMouse()->isOverRectangle(
+    renderDrawer->renderRectFillColor(layout.speedLabel, panel);
+    renderDrawer->gui_DrawRectBorder(layout.speedLabel, border, borderDark);
+    m_smallTextDrawer->drawTextCenteredInBox(
+        localization::text("SPEED", "СКОРОСТЬ"),
+        layout.speedLabel,
+        text
+    );
+
+    renderDrawer->renderRectFillColor(layout.speedSlider, panel);
+    renderDrawer->gui_DrawRectBorder(layout.speedSlider, border, borderDark);
+
+    constexpr int MinSliderValue = 2;
+    constexpr int MaxSliderValue = 10;
+    constexpr int SliderKnobWidth = 12;
+    const int globalSpeed = std::clamp<int>(m_timeManager->getGlobalSpeed(), 2, 10);
+    int sliderValue = 12 - globalSpeed;
+
+    cMouse *mouse = game.getMouse();
+    const bool mouseOverSlider = mouse->isOverRectangle(
+        layout.speedSlider.getX(),
+        layout.speedSlider.getY(),
+        layout.speedSlider.getWidth(),
+        layout.speedSlider.getHeight()
+    );
+    if ((mouse->isLeftButtonPressed() || mouse->isLeftButtonClicked()) && mouseOverSlider) {
+        m_speedSliderDragging = true;
+    }
+    if (!mouse->isLeftButtonPressed() && !mouse->isLeftButtonClicked()) {
+        m_speedSliderDragging = false;
+    }
+    if (m_speedSliderDragging) {
+        const int position = std::clamp(
+            mouse->getX() - layout.speedSlider.getX(),
+            0,
+            layout.speedSlider.getWidth()
+        );
+        sliderValue = MinSliderValue +
+            position * (MaxSliderValue - MinSliderValue) /
+            std::max(1, layout.speedSlider.getWidth());
+        const int requestedGlobalSpeed = 12 - sliderValue;
+        if (requestedGlobalSpeed != globalSpeed) {
+            m_timeManager->setGlobalSpeed(requestedGlobalSpeed);
+        }
+    }
+
+    const int knobTravel = std::max(0, layout.speedSlider.getWidth() - SliderKnobWidth);
+    const int knobX = layout.speedSlider.getX() +
+        (sliderValue - MinSliderValue) * knobTravel /
+        (MaxSliderValue - MinSliderValue);
+    const cRectangle knob(knobX, layout.speedSlider.getY(), SliderKnobWidth, layout.speedSlider.getHeight());
+    renderDrawer->renderRectFillColor(knob, borderDark);
+    renderDrawer->gui_DrawRectBorder(knob, border, borderDark);
+
+    if (mouse->isLeftButtonClicked()) {
+        if (mouse->isOverRectangle(
                 layout.previous.getX(), layout.previous.getY(), layout.previous.getWidth(), layout.previous.getHeight())) {
             game.playPreviousGameplayTrack();
         }
-        else if (game.getMouse()->isOverRectangle(
+        else if (mouse->isOverRectangle(
                      layout.next.getX(), layout.next.getY(), layout.next.getWidth(), layout.next.getHeight())) {
             game.playNextGameplayTrack();
         }

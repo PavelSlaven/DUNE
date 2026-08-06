@@ -21,10 +21,35 @@
 #include "context/TextContext.hpp"
 
 #include <format>
+#include <array>
 #include <algorithm>
 #include <utility>
 
 #include "config.h"
+
+namespace {
+struct SkirmishPlayerTableLayout {
+    explicit SkirmishPlayerTableLayout(int y, int height = 16)
+        : player(4, y, 68, height),
+          house(72, y, 94, height),
+          credits(166, y, 89, height),
+          units(255, y, 70, height),
+          team(325, y, 75, height)
+    {
+    }
+
+    std::array<cRectangle, 5> columns() const
+    {
+        return {player, house, credits, units, team};
+    }
+
+    cRectangle player;
+    cRectangle house;
+    cRectangle credits;
+    cRectangle units;
+    cRectangle team;
+};
+}
 
 static bool mouse_within_rect(int x, int y, int width, int height)
 {
@@ -488,54 +513,39 @@ void cSetupSkirmishState::draw() const
     drawTechLevel(techLevelRect);
     drawMapList(selectArea);
 
-    // Header text for players
-    m_textDrawer->drawText(
-        4,
-        playerTitleBar.getY() + 3,
-        m_hdLayout ? Color{231, 190, 91, 255} : Color::white(),
-        localization::text(
-            "Player    House    Credits  Units   Team",
-            "Игрок    Дом       Кр.       Войска  Ком.")
-    );
+    // Headers and rows share the same column geometry so localization cannot
+    // shift one independently from the other.
+    const SkirmishPlayerTableLayout headerLayout(playerTitleBar.getY() + 3);
+    const std::array<const char *, 5> headerLabels = {
+        localization::text("Player", "Игрок"),
+        localization::text("House", "Дом"),
+        localization::text("Credits", "Кредиты"),
+        localization::text("Units", "Войска"),
+        localization::text("Team", "Команда")
+    };
+    const Color headerColor = m_hdLayout ? Color{231, 190, 91, 255} : Color::white();
+    const auto headerColumns = headerLayout.columns();
+    for (std::size_t column = 0; column < headerColumns.size(); ++column) {
+        const cRectangle &rect = headerColumns[column];
+        m_textDrawer->drawTextCentered(
+            headerLabels[column], rect.getX(), rect.getWidth(), rect.getY(), headerColor);
+    }
 
     // draw players who will be playing ;)
     for (int p = 0; p < (AI_WORM - 1); p++) {
         const int iDrawY =
             playerList.getY() + 4 + (p * m_playerRowHeight);
-        const int iDrawX = 4;
+        const SkirmishPlayerTableLayout rowLayout(iDrawY);
 
         const s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[p];
 
         if (p < startingPoints) {
             // player playing or not
-            cRectangle brainRect = cRectangle(iDrawX, iDrawY, 73, 16);
-            drawPlayerBrain(sSkirmishPlayer, brainRect);
-
-            // HOUSE
-            const int houseX = 74;
-            const int houseY = iDrawY;
-            cRectangle houseRec = cRectangle(houseX, houseY, 76, 16);
-
-            drawHouse(sSkirmishPlayer, houseRec);
-
-            // Credits
-            const int creditsX = 174;
-            const int creditsY = iDrawY;
-            cRectangle creditsRect = cRectangle(creditsX, creditsY, 56, 16);
-
-            drawCredits(sSkirmishPlayer, creditsRect);
-
-            // Units
-            const int startingUnitsX = 272;
-            const int startingUnitsY = iDrawY;
-            cRectangle startingUnitsRect = cRectangle(startingUnitsX, startingUnitsY, 21, 16);
-            drawStartingUnits(sSkirmishPlayer, startingUnitsRect);
-
-            // Credits
-            const int teamsX = 340;
-            const int teamsY = iDrawY;
-            cRectangle teamsRect = cRectangle(teamsX, teamsY, 21, 16);
-            drawTeams(sSkirmishPlayer, teamsRect);
+            drawPlayerBrain(sSkirmishPlayer, rowLayout.player);
+            drawHouse(sSkirmishPlayer, rowLayout.house);
+            drawCredits(sSkirmishPlayer, rowLayout.credits);
+            drawStartingUnits(sSkirmishPlayer, rowLayout.units);
+            drawTeams(sSkirmishPlayer, rowLayout.team);
         }
     }
 
@@ -566,7 +576,9 @@ void cSetupSkirmishState::draw() const
 void cSetupSkirmishState::drawTeams(const s_SkirmishPlayer &sSkirmishPlayer, const cRectangle &teamsRect) const
 {
     Color textColor = getTextColorForRect(sSkirmishPlayer, teamsRect);
-    m_textDrawer->drawText(teamsRect.getX(), teamsRect.getY(), textColor, std::format("{}", sSkirmishPlayer.team));
+    m_textDrawer->drawTextCentered(
+        std::format("{}", sSkirmishPlayer.team),
+        teamsRect.getX(), teamsRect.getWidth(), teamsRect.getY(), textColor);
 }
 
 void cSetupSkirmishState::drawStartingUnits(const s_SkirmishPlayer &sSkirmishPlayer,
@@ -574,14 +586,17 @@ void cSetupSkirmishState::drawStartingUnits(const s_SkirmishPlayer &sSkirmishPla
 {
 
     Color textColor = getTextColorForRect(sSkirmishPlayer, startingUnitsRect);
-    m_textDrawer->drawText(startingUnitsRect.getX(), startingUnitsRect.getY(), textColor,
-                        std::format("{}", sSkirmishPlayer.startingUnits));
+    m_textDrawer->drawTextCentered(
+        std::format("{}", sSkirmishPlayer.startingUnits),
+        startingUnitsRect.getX(), startingUnitsRect.getWidth(), startingUnitsRect.getY(), textColor);
 }
 
 void cSetupSkirmishState::drawCredits(const s_SkirmishPlayer &sSkirmishPlayer, const cRectangle &creditsRect) const
 {
     Color textColor = getTextColorForRect(sSkirmishPlayer, creditsRect);
-    m_textDrawer->drawText(creditsRect.getX(), creditsRect.getY(), textColor, std::format("{}", sSkirmishPlayer.iCredits));
+    m_textDrawer->drawTextCentered(
+        std::format("{}", sSkirmishPlayer.iCredits),
+        creditsRect.getX(), creditsRect.getWidth(), creditsRect.getY(), textColor);
 }
 
 Color cSetupSkirmishState::getTextColorForRect(const s_SkirmishPlayer &sSkirmishPlayer, const cRectangle &rect) const
@@ -606,20 +621,22 @@ void cSetupSkirmishState::drawHouse(const s_SkirmishPlayer &sSkirmishPlayer, con
     const char *cHouse = sSkirmishPlayer.iHouse > 0
         ? cPlayerHouseString.c_str()
         : localization::text("Random", "Случайно");
-    m_textDrawer->drawText(houseRec.getX(), houseRec.getY(), textColor, cHouse);
+    m_textDrawer->drawTextCentered(
+        cHouse, houseRec.getX(), houseRec.getWidth(), houseRec.getY(), textColor);
 }
 
 void cSetupSkirmishState::drawPlayerBrain(const s_SkirmishPlayer &sSkirmishPlayer, const cRectangle &brainRect) const
 {
     if (sSkirmishPlayer.bHuman) {
-        m_textDrawer->drawText(
-            brainRect.getX(), brainRect.getY(), localization::text("Player", "Игрок"));
+        m_textDrawer->drawTextCentered(
+            localization::text("Player", "Игрок"),
+            brainRect.getX(), brainRect.getWidth(), brainRect.getY(), Color::white());
     }
     else {
         Color textColor = getTextColorForRect(sSkirmishPlayer, brainRect);
-        m_textDrawer->drawText(
-            brainRect.getX(), brainRect.getY(), textColor,
-            localization::text("  AI", "  ИИ"));
+        m_textDrawer->drawTextCentered(
+            localization::text("AI", "ИИ"),
+            brainRect.getX(), brainRect.getWidth(), brainRect.getY(), textColor);
     }
 }
 

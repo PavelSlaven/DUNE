@@ -366,10 +366,10 @@
       "resource": "User-provided main menu background",
       "url": "local-user-attachment",
       "page": "local-user-request",
-      "width": 2752,
+      "width": 2724,
       "height": 1536,
       "mode": "RGBA",
-      "sha256": "c8e8a71a8ac853888b5adf6675e67a8d16ca20ac98ec3bf72479528fc0c51006"
+      "sha256": "1236428221433b55e2be8f05f68429ecf633e53b6c7121540d5b957a55afe8e5"
     },
     {
       "file": "main_menu_logo_red_alpha.png",

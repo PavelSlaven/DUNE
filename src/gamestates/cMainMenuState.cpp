@@ -25,7 +25,9 @@ cMainMenuState::cMainMenuState(cGame &theGame, GameContext* ctx) :
     cGameState(theGame, ctx)
 {
     m_hdLayout = m_game.isHdGraphicsActive();
-    m_metaTextDrawer = ctx->getTextContext()->getBeneTextDrawer();
+    m_metaTextDrawer = m_hdLayout
+        ? ctx->getTextContext()->getMenuTextDrawer()
+        : ctx->getTextContext()->getBeneTextDrawer();
     m_textDrawer = m_hdLayout
         ? ctx->getTextContext()->getMenuTextDrawer()
         : m_metaTextDrawer;

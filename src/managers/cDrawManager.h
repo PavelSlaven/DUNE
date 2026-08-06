@@ -22,6 +22,7 @@ struct SDL_Surface;
 class Texture;
 class GameContext;
 class Graphics;
+class cTimeManager;
 
 /**
  * Candidate class for PlayingMissionState (draw function?), but also for SelectYourNextConquestState (drawing
@@ -131,6 +132,8 @@ private:
     cTextDrawer *m_smallTextDrawer = nullptr;
     Graphics* m_gfxinter;
     cMouseDrawer* m_mouseDrawer = nullptr;
+    cTimeManager *m_timeManager = nullptr;
+    bool m_speedSliderDragging = false;
 
     void onKeyDown(const cKeyboardEvent &event);
 

@@ -62,6 +62,8 @@
 #include "utils/GameSettings.hpp"
 #include "utils/Localization.hpp"
 #include "utils/HdPresentation.hpp"
+#include "utils/HdUiTextureLoader.hpp"
+#include "utils/OutcomeScreenLayout.hpp"
 #include "utils/RenderScale.hpp"
 #include "utils/WorldScale.hpp"
 #include "save/SaveGameManager.hpp"
@@ -116,7 +118,8 @@ std::string defaultHdDataFileName(
     std::string_view key,
     int density)
 {
-    const std::string suffix = density >= 4 ? "_hd4.dat" : "_hd2.dat";
+    static_cast<void>(density);
+    const std::string suffix = "_hd4.dat";
     if (key == "GFXDATA") return "sdl_data" + suffix;
     if (key == "GFXINTER") return "sdl_inter" + suffix;
     if (key == "GFXWORLD") return "sdl_world" + suffix;
@@ -679,7 +682,7 @@ void cGame::drawState()
 {
     if (m_fadeAction == eFadeAction::FADE_OUT) {
         Texture *fadeTexture = m_hdPresentationFadeCaptureActive
-            ? m_hdPresentationScreenTexture
+            ? m_hdPresentationTargets.fade.texture
             : screenTexture;
         if (fadeTexture) {
             if (m_hdPresentationFadeCaptureActive) {
@@ -841,14 +844,11 @@ Texture *cGame::ensureHdPresentationRenderTarget(bool fadeTarget)
     outputWidth = std::max(1, outputWidth);
     outputHeight = std::max(1, outputHeight);
 
-    if (outputWidth != m_hdPresentationRendererWidth ||
-        outputHeight != m_hdPresentationRendererHeight) {
-        delete m_hdPresentationRenderer;
-        m_hdPresentationRenderer = nullptr;
-        delete m_hdPresentationScreenTexture;
-        m_hdPresentationScreenTexture = nullptr;
-        m_hdPresentationRendererWidth = outputWidth;
-        m_hdPresentationRendererHeight = outputHeight;
+    auto &targetSlot = m_hdPresentationTargets.select(fadeTarget);
+    if (targetSlot.needsResize(outputWidth, outputHeight)) {
+        delete targetSlot.texture;
+        targetSlot.texture = nullptr;
+        targetSlot.setSize(outputWidth, outputHeight);
         cLogger::getInstance()->log(
             LOG_INFO,
             COMP_SDL2,
@@ -861,17 +861,17 @@ Texture *cGame::ensureHdPresentationRenderTarget(bool fadeTarget)
         );
     }
 
-    Texture *&target = fadeTarget
-        ? m_hdPresentationScreenTexture
-        : m_hdPresentationRenderer;
-    if (!target) {
-        target = renderDrawer->createRenderTargetTexture(
+    if (!targetSlot.texture) {
+        targetSlot.texture = renderDrawer->createRenderTargetTexture(
             outputWidth,
             outputHeight
         );
-        SDL_SetTextureScaleMode(target->tex, SDL_ScaleModeLinear);
+        SDL_SetTextureScaleMode(
+            targetSlot.texture->tex,
+            SDL_ScaleModeLinear
+        );
     }
-    return target;
+    return targetSlot.texture;
 }
 
 void cGame::presentFrame(Texture *frameTarget, bool hdPresentationFrame)
@@ -908,13 +908,14 @@ void cGame::presentFrame(Texture *frameTarget, bool hdPresentationFrame)
 
 void cGame::captureCurrentFrameForFade()
 {
-    if (useHdPresentation() && m_hdPresentationRenderer) {
+    Texture *frameTarget = m_hdPresentationTargets.frame.texture;
+    if (useHdPresentation() && frameTarget) {
         Texture *fadeTarget = ensureHdPresentationRenderTarget(true);
         renderDrawer->beginDrawingToTexture(fadeTarget);
         SDL_RenderSetLogicalSize(renderer, 0, 0);
         SDL_RenderCopy(
             renderer,
-            m_hdPresentationRenderer->tex,
+            frameTarget->tex,
             nullptr,
             nullptr
         );
@@ -993,10 +994,18 @@ void cGame::shutdown()
         players[i].destroyAllegroBitmaps();
     }
 
-    delete m_hdPresentationScreenTexture;
-    m_hdPresentationScreenTexture = nullptr;
-    delete m_hdPresentationRenderer;
-    m_hdPresentationRenderer = nullptr;
+    delete m_hdPresentationTargets.fade.texture;
+    m_hdPresentationTargets.fade.texture = nullptr;
+    delete m_hdPresentationTargets.frame.texture;
+    m_hdPresentationTargets.frame.texture = nullptr;
+    delete m_hdVictoryRu;
+    m_hdVictoryRu = nullptr;
+    delete m_hdVictoryEn;
+    m_hdVictoryEn = nullptr;
+    delete m_hdDefeatRu;
+    m_hdDefeatRu = nullptr;
+    delete m_hdDefeatEn;
+    m_hdDefeatEn = nullptr;
     delete screenTexture;
     screenTexture = nullptr;
     delete actualRenderer;
@@ -1044,51 +1053,22 @@ bool cGame::setupGame()
     std::string graphicsSection = "DATAFILE";
     m_graphicsDensity = 1;
     if (m_graphicsMode == GraphicsMode::Hd) {
-        const RenderCanvasSize canvas = calculateRenderCanvasSize(
-            m_screenW,
-            m_screenH,
-            m_renderScalePercent
-        );
-        const int preferredDensity =
-            selectHdAssetDensityForDisplay(
-                m_screenW,
-                m_screenH,
-                canvas.width,
-                canvas.height,
-                m_worldScalePercent
-            );
-        const std::array<int, 2> densities{
-            preferredDensity,
-            preferredDensity == 4 ? 2 : 4
-        };
-        for (const int density : densities) {
-            const std::string candidateSection =
-                hdDataFileSection(density);
-            if (dataFileSectionExists(
-                    *settings,
-                    candidateSection,
-                    gameDir,
-                    density)) {
-                graphicsSection = candidateSection;
-                m_graphicsDensity = density;
-                break;
-            }
-            logger->log(
-                LOG_WARN,
-                COMP_INIT,
-                "HD graphics",
-                std::format(
-                    "{} is unavailable; trying fallback",
-                    candidateSection
-                )
-            );
+        constexpr int density = 4;
+        const std::string candidateSection = hdDataFileSection(density);
+        if (dataFileSectionExists(
+                *settings,
+                candidateSection,
+                gameDir,
+                density)) {
+            graphicsSection = candidateSection;
+            m_graphicsDensity = density;
         }
         if (m_graphicsDensity == 1) {
             logger->log(
                 LOG_WARN,
                 COMP_INIT,
                 "HD graphics",
-                "No complete HD pack found; using Classic"
+                "The complete HD4 pack is unavailable; using Classic"
             );
         }
     }
@@ -2605,33 +2585,77 @@ void cGame::initiateFadingOut()
     captureCurrentFrameForFade();
 }
 
-// this shows the you have lost bmp at screen, after mouse press the mentat debriefing state will begin
-void cGame::drawStateLosing()
+Texture *cGame::getHdOutcomeTexture(bool victory)
 {
-    if (screenTexture)
-        renderDrawer->renderSprite(screenTexture,0,0);
+    const bool english = localization::isEnglish();
+    Texture *&texture = victory
+        ? (english ? m_hdVictoryEn : m_hdVictoryRu)
+        : (english ? m_hdDefeatEn : m_hdDefeatRu);
+    if (!texture) {
+        const char *fileName = victory
+            ? localization::text(
+                "outcome_victory_en.png",
+                "outcome_victory_ru.png"
+            )
+            : localization::text(
+                "outcome_defeat_en.png",
+                "outcome_defeat_ru.png"
+            );
+        texture = loadHdUiTexture(
+            fileName,
+            getGraphicsDensity(),
+            victory ? "Victory screen" : "Defeat screen"
+        );
+    }
+    return texture;
+}
 
-    auto tex = ctx->getGraphicsContext()->gfxinter->getTexture(BMP_LOSING);
-    int posW = (m_screenW-tex->w)/2;
-    int posH = (m_screenH-tex->h)/2;
-    renderDrawer->renderSprite(tex,posW, posH);
+void cGame::drawOutcomeScreen(bool victory)
+{
+    Texture *texture = nullptr;
     if (isHdGraphicsActive()) {
+        texture = getHdOutcomeTexture(victory);
+    }
+
+    if (texture) {
+        const OutcomeScreenLayout layout = calculateOutcomeScreenLayout(
+            m_screenW,
+            m_screenH,
+            texture->pixelW,
+            texture->pixelH
+        );
+        renderDrawer->renderStrechFullSprite(texture, layout.image);
         auto *textDrawer = ctx->getTextContext()->getMenuTextDrawer();
         const Color textColor{255, 224, 164, 255};
         textDrawer->drawTextScaledCenteredInBox(
-            localization::text("MISSION FAILED", "ЗАДАНИЕ ПРОВАЛЕНО"),
-            cRectangle{posW + 20, posH + 18, tex->w - 40, 30},
-            0.9F,
-            textColor
-        );
-        textDrawer->drawTextScaledCenteredInBox(
-            localization::text("CLICK TO CONTINUE", "НАЖМИТЕ, ЧТОБЫ ПРОДОЛЖИТЬ"),
-            cRectangle{posW + 20, posH + 72, tex->w - 40, 26},
-            0.72F,
+            localization::text(
+                "Click to continue",
+                "Нажмите, чтобы продолжить"
+            ),
+            layout.prompt,
+            50.0F / 18.0F,
             textColor
         );
     }
+    else {
+        if (screenTexture) {
+            renderDrawer->renderSprite(screenTexture, 0, 0);
+        }
+        Texture *fallback = ctx->getGraphicsContext()->gfxinter->getTexture(
+            victory ? BMP_WINNING : BMP_LOSING
+        );
+        const int x = (m_screenW - fallback->w) / 2;
+        const int y = (m_screenH - fallback->h) / 2;
+        renderDrawer->renderSprite(fallback, x, y);
+    }
+
     renderDrawer->renderSprite(gfxdata->getTexture(MOUSE_NORMAL), m_mouse->getX(), m_mouse->getY());
+}
+
+// this shows the you have lost bmp at screen, after mouse press the mentat debriefing state will begin
+void cGame::drawStateLosing()
+{
+    drawOutcomeScreen(false);
 
     if (m_mouse->isLeftButtonClicked()) {
         m_state = GAME_LOSEBRIEF;
@@ -2646,30 +2670,7 @@ void cGame::drawStateLosing()
 // this shows the you have won bmp at screen, after mouse press the mentat debriefing state will begin
 void cGame::drawStateWinning()
 {
-    if (screenTexture)
-        renderDrawer->renderSprite(screenTexture,0,0);
-        
-    auto tex = ctx->getGraphicsContext()->gfxinter->getTexture(BMP_WINNING);
-    int posW = (m_screenW-tex->w)/2;
-    int posH = (m_screenH-tex->h)/2;
-    renderDrawer->renderSprite(tex,posW, posH);
-    if (isHdGraphicsActive()) {
-        auto *textDrawer = ctx->getTextContext()->getMenuTextDrawer();
-        const Color textColor{255, 224, 164, 255};
-        textDrawer->drawTextScaledCenteredInBox(
-            localization::text("MISSION COMPLETE", "ЗАДАНИЕ ВЫПОЛНЕНО"),
-            cRectangle{posW + 20, posH + 18, tex->w - 40, 30},
-            0.9F,
-            textColor
-        );
-        textDrawer->drawTextScaledCenteredInBox(
-            localization::text("CLICK TO CONTINUE", "НАЖМИТЕ, ЧТОБЫ ПРОДОЛЖИТЬ"),
-            cRectangle{posW + 20, posH + 72, tex->w - 40, 26},
-            0.72F,
-            textColor
-        );
-    }
-    renderDrawer->renderSprite(gfxdata->getTexture(MOUSE_NORMAL), m_mouse->getX(), m_mouse->getY());
+    drawOutcomeScreen(true);
 
     if (m_mouse->isLeftButtonClicked()) {
         // Mentat will be happy, after that enter "Select your next Conquest"

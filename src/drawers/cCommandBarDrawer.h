@@ -59,7 +59,9 @@ private:
     GameContext *m_ctx;
     cPlayer *m_player;
     cTextDrawer *m_smallTextDrawer;
+    cTextDrawer *m_keyTextDrawer;
     Texture *m_commandBarTexture;
+    Texture *m_disabledCommandBarTexture;
     cRectangle m_panelRect;
     std::vector<Button> m_buttons;
     int m_hoveredButton;

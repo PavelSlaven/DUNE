@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sidebar/cBuildingListItem.h"
+#include "StarportOrderQueue.hpp"
 
 class cPlayer;
 
@@ -45,12 +46,10 @@ public:
     bool hasOrderedAnything();
 
     bool hasFreeSlot() {
-        return getFreeSlot() >= 0;
+        return orderedItems.hasFreeSlot();
     }
 
-    cBuildingListItem *getItemToDeploy();
-
-    void markOrderAsDeployed(cBuildingListItem *item);
+    std::optional<StarportOrder> takeNextOrderToDeploy();
 
     void setOrderHasBeenProcessed();
 
@@ -61,17 +60,10 @@ public:
 protected:
     void removeAllItems();
 
-    void removeItem(int slot);
-
-    int getFreeSlot();
-
-    int getSlotForItem(cBuildingListItem *item);
-
     int getRandomizedSecondsToWait();
 
 private:
-    cBuildingListItem *orderedItems[kMaxItemsToOrder];
-    int pricePaidForItem[kMaxItemsToOrder];
+    StarportOrderQueue<kMaxItemsToOrder> orderedItems;
 
     cPlayer *player;
 

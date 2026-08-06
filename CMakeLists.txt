@@ -304,6 +304,22 @@ if(BUILD_TESTING)
     add_test(NAME hd_presentation_selection COMMAND hd_presentation_tests)
 
     add_executable(
+        font_coverage_tests
+        tests/FontCoverageTests.cpp
+    )
+    target_compile_definitions(
+        font_coverage_tests
+        PRIVATE
+            D2TM_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
+    )
+    target_include_directories(
+        font_coverage_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME russian_font_coverage COMMAND font_coverage_tests)
+
+    add_executable(
         campaign_map_layout_tests
         tests/CampaignMapLayoutTests.cpp
         src/utils/cRectangle.cpp
@@ -389,8 +405,25 @@ if(BUILD_TESTING)
     )
     add_test(NAME music_controls_layout_geometry COMMAND music_controls_layout_tests)
 
+    add_executable(
+        faction_tint_tests
+        tests/FactionTintTests.cpp
+    )
+    target_include_directories(
+        faction_tint_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME faction_tint_uniformity COMMAND faction_tint_tests)
+
     if(APPLE)
         target_link_libraries(command_bindings_tests PRIVATE ${SDL2_LIBRARIES})
         target_link_libraries(render_target_state_tests PRIVATE ${SDL2_LIBRARIES})
+        target_link_libraries(
+            font_coverage_tests
+            PRIVATE
+                ${SDL2_LIBRARIES}
+                ${SDL2_TTF_LIBRARIES}
+        )
     endif()
 endif()

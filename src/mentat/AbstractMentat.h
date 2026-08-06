@@ -43,7 +43,13 @@ enum eMentatState {
 
 class AbstractMentat : public cInputObserver {
 public:
-    AbstractMentat(GameContext* ctx, bool canMissionSelect, bool adaptiveHdLayout = false);
+    AbstractMentat(
+        GameContext* ctx,
+        bool canMissionSelect,
+        bool adaptiveHdLayout = false,
+        int hdMissionSelectCenterX = 548,
+        float hdMissionTextOffsetY = 1.0F
+    );
     virtual ~AbstractMentat();
 
     void onNotifyMouseEvent(const s_MouseEvent &event) override;
@@ -70,19 +76,26 @@ public:
     }
     void resetSpeak();
 protected:
+    static constexpr float HD_BUTTON_TEXT_SCALE = 2.0F;
+
     virtual void draw_mouth() = 0;
 
     virtual void draw_eyes() = 0;
 
     virtual void draw_other() = 0;
 
+    virtual void clearHdMovieOpening(Texture *background);
+
     void draw_movie();
-    void drawHdMissionSelectFrame() const;
+    void drawHdTextHeader() const;
+    Texture *getHdForegroundLayer(Texture *background);
+    void clearHdForegroundLayerRegion(Texture *background, int x, int y, int width, int height) const;
 
     [[nodiscard]] int baseX(int value) const;
     [[nodiscard]] int baseY(int value) const;
     [[nodiscard]] cRectangle baseRect(int x, int y, int width, int height) const;
     void drawMentatTexture(Texture *texture, int x, int y);
+    void harmonizeHdButtonTextScale();
 
     // Timed animation
     int TIMER_Mouth;
@@ -126,10 +139,16 @@ protected:
     int movieTopleftY;
     int m_movieWidth = 368;
     int m_movieHeight = 224;
+    int m_movieClipX = 215;
+    int m_movieClipY = 104;
+    int m_movieClipWidth = 398;
+    int m_movieClipHeight = 215;
+    Texture *m_hdForegroundLayer = nullptr;
     bool m_adaptiveHdLayout = false;
     float m_uiScale = 1.0F;
     int m_panelWidth = 640;
     int m_panelHeight = 480;
+    int m_hdMissionSelectCenterX = 548;
 
     GuiButton *m_guiBtnToMissionSelect;
     Graphics* gfxmentat;

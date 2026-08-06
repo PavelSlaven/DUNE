@@ -26,9 +26,9 @@ int main()
     passed &= expectEqual("Invalid uses Auto", resolveWorldScalePercent(133, 1440), 125);
 
     passed &= expectEqual(
-        "1920x1080 Auto canvas and Auto objects use HD2",
+        "1920x1080 Auto canvas and Auto objects use HD4",
         selectHdAssetDensityForDisplay(1920, 1080, 1067, 600, 0),
-        2
+        4
     );
     passed &= expectEqual(
         "2560x1440 Auto canvas and Auto objects use HD4",

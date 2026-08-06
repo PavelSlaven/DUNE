@@ -21,15 +21,17 @@ namespace {
 Color panelColor() { return Color{13, 17, 19, 242}; }
 Color panelBorder() { return Color{105, 80, 39, 255}; }
 Color brass() { return Color{188, 139, 47, 255}; }
-Color textColor() { return Color{235, 226, 196, 255}; }
 Color disabledText() { return Color{105, 105, 100, 255}; }
+Color blueFilter() { return Color{5, 24, 48, 38}; }
 }
 
 cCommandBarDrawer::cCommandBarDrawer(GameContext *ctx, cPlayer *player) :
     m_ctx(ctx),
     m_player(player),
     m_smallTextDrawer(ctx->getTextContext()->getSmallTextDrawer()),
+    m_keyTextDrawer(ctx->getTextContext()->getCommandKeyTextDrawer()),
     m_commandBarTexture(nullptr),
+    m_disabledCommandBarTexture(nullptr),
     m_panelRect(),
     m_buttons(),
     m_hoveredButton(-1)
@@ -40,6 +42,11 @@ cCommandBarDrawer::cCommandBarDrawer(GameContext *ctx, cPlayer *player) :
             game.getGraphicsDensity(),
             "HD command bar"
         );
+        m_disabledCommandBarTexture = loadHdUiTexture(
+            "command_bar_disabled.png",
+            game.getGraphicsDensity(),
+            "disabled HD command bar"
+        );
     }
     rebuildLayout();
 }
@@ -47,6 +54,7 @@ cCommandBarDrawer::cCommandBarDrawer(GameContext *ctx, cPlayer *player) :
 cCommandBarDrawer::~cCommandBarDrawer()
 {
     delete m_commandBarTexture;
+    delete m_disabledCommandBarTexture;
 }
 
 void cCommandBarDrawer::setPlayer(cPlayer *player)
@@ -92,7 +100,10 @@ void cCommandBarDrawer::draw()
     if (!game.isHdGraphicsActive()) return;
     rebuildLayout();
 
-    if (m_commandBarTexture) {
+    if (m_disabledCommandBarTexture) {
+        renderDrawer->renderStrechFullSprite(m_disabledCommandBarTexture, m_panelRect);
+    }
+    else if (m_commandBarTexture) {
         renderDrawer->renderStrechFullSprite(m_commandBarTexture, m_panelRect);
     }
     else {
@@ -104,32 +115,42 @@ void cCommandBarDrawer::draw()
     for (const Button &button : m_buttons) {
         drawButton(button);
     }
+
+    // A restrained cool overlay keeps the bright supplied artwork readable
+    // against the battlefield without baking another set of source images.
+    renderDrawer->renderRectFillColor(m_panelRect, blueFilter());
 }
 
 void cCommandBarDrawer::drawButton(const Button &button) const
 {
     const int index = static_cast<int>(&button - m_buttons.data());
-    const bool hovered = index == m_hoveredButton;
-    const Color background = button.active ? Color{69, 54, 27, 255} :
-                             hovered && button.enabled ? Color{39, 43, 42, 255} : Color{25, 30, 32, 255};
-    const Color border = button.enabled ? (hovered || button.active ? brass() : panelBorder()) : Color{57, 59, 58, 255};
-    const Color foreground = button.enabled ? textColor() : disabledText();
 
     if (m_commandBarTexture) {
-        if (!button.enabled) {
-            renderDrawer->renderRectFillColor(button.rect, Color{2, 3, 3, 118});
-        }
-        else if (hovered || button.active) {
-            renderDrawer->renderRectFillColor(
-                button.rect,
-                Color{188, 139, 47, static_cast<Uint8>(button.active ? 72 : 35)}
+        if (button.enabled && m_disabledCommandBarTexture) {
+            const int sourceWidth = m_commandBarTexture->w / CommandBarLayout::ActionCount;
+            const cRectangle sourceRect(
+                index * sourceWidth,
+                0,
+                index == CommandBarLayout::ActionCount - 1
+                    ? m_commandBarTexture->w - index * sourceWidth
+                    : sourceWidth,
+                m_commandBarTexture->h
             );
-            renderDrawer->renderRectColor(button.rect, border);
+            renderDrawer->renderStrechSprite(m_commandBarTexture, sourceRect, button.rect);
+        }
+        else if (!button.enabled && !m_disabledCommandBarTexture) {
+            renderDrawer->renderRectFillColor(button.rect, Color{2, 3, 3, 118});
         }
     }
     else {
-        renderDrawer->renderRectFillColor(button.rect, background);
-        renderDrawer->renderRectColor(button.rect, border);
+        renderDrawer->renderRectFillColor(
+            button.rect,
+            button.active ? Color{69, 54, 27, 255} : Color{25, 30, 32, 255}
+        );
+        renderDrawer->renderRectColor(
+            button.rect,
+            button.enabled ? panelBorder() : Color{57, 59, 58, 255}
+        );
     }
 
     if (!m_commandBarTexture) {
@@ -142,37 +163,33 @@ void cCommandBarDrawer::drawButton(const Button &button) const
         drawIcon(button.command, iconRect, button.enabled ? Color{210, 170, 82, 255} : disabledText());
     }
 
-    const cRectangle labelRect(
-        button.rect.getX() + 4,
-        button.rect.getY() + button.rect.getHeight() * 73 / 100,
-        button.rect.getWidth() - 8,
-        std::max(1, button.rect.getHeight() * 20 / 100)
-    );
-    const float widthScale = static_cast<float>(labelRect.getWidth()) /
-        std::max(1, m_smallTextDrawer->getTextLength(button.label));
-    float scale = std::clamp(widthScale, 0.66F, 0.92F);
-    m_smallTextDrawer->drawTextScaledCenteredInBox(button.label, labelRect, scale, foreground);
-
-    if (!button.hotkey.empty()) {
-        const int badgePercent = button.hotkey.size() > 1 ? 42 : 24;
-        const int badgeWidth = std::max(18, button.rect.getWidth() * badgePercent / 100);
-        const int badgeHeight = std::max(11, button.rect.getHeight() * 18 / 100);
-        const int badgeMargin = std::max(2, button.rect.getWidth() * 3 / 100);
-        const cRectangle badge(
-            button.rect.getEndX() - badgeWidth - badgeMargin,
-            button.rect.getY() + std::max(2, button.rect.getHeight() * 8 / 100),
-            badgeWidth,
-            badgeHeight
+    if (button.enabled && !button.hotkey.empty()) {
+        const int keyWidth = std::max(9, button.rect.getWidth() * 30 / 100);
+        const int keyHeight = std::max(9, button.rect.getHeight() * 30 / 100);
+        const bool circleAtBottomLeft = index % 2 == 0;
+        const cRectangle keyRect(
+            button.rect.getX() + button.rect.getWidth() * (circleAtBottomLeft ? 6 : 65) / 100,
+            button.rect.getY() + button.rect.getHeight() * (circleAtBottomLeft ? 67 : 4) / 100,
+            keyWidth,
+            keyHeight
         );
-        renderDrawer->renderRectFillColor(badge, Color{7, 8, 8, 252});
-        renderDrawer->renderRectColor(badge, Color{125, 89, 35, 255});
+        const float widthScale = static_cast<float>(keyRect.getWidth() - 4) /
+            std::max(1, m_keyTextDrawer->getTextLength(button.hotkey));
+        const float heightScale = static_cast<float>(keyRect.getHeight() - 4) /
+            std::max(1, m_keyTextDrawer->getFontHeight());
+        const float maximumKeyScale = button.hotkey.size() == 1 ? 1.45F : 1.15F;
         const float keyScale = std::clamp(
-            static_cast<float>(badge.getWidth() - 4) /
-                std::max(1, m_smallTextDrawer->getTextLength(button.hotkey)),
-            0.52F,
-            0.72F
+            std::min(widthScale, heightScale),
+            0.50F,
+            maximumKeyScale
         );
-        m_smallTextDrawer->drawTextScaledCenteredInBox(button.hotkey, badge, keyScale, foreground, false);
+        m_keyTextDrawer->drawTextScaledCenteredInBox(
+            button.hotkey,
+            keyRect,
+            keyScale,
+            Color{83, 50, 19, 255},
+            false
+        );
     }
 }
 

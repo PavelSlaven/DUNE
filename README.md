@@ -10,6 +10,10 @@ Ready-to-run builds are published on the [GitHub Releases page](https://github.c
 
 Download the `common-assets` archive and one archive for your operating system, then extract both into the same folder. Platform-specific requirements are included in each archive.
 
+The Russian interface uses **Sangyo Regular** by GGBotNet. The font is
+distributed under the SIL Open Font License 1.1; its supplied copyright and
+license notices are included in [`resources/bin/data/licenses`](resources/bin/data/licenses).
+
 ---
 
 Dune II - The Maker

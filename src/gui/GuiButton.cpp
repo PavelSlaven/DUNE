@@ -136,6 +136,11 @@ void GuiButton::setTextScale(float scale)
     m_textScale = std::max(0.65F, scale);
 }
 
+void GuiButton::setTextOffsetY(int offset)
+{
+    m_textOffsetY = offset;
+}
+
 void GuiButton::drawText() const
 {
     Color textColor = m_focus ? m_theme.textColorHover : m_theme.textColor;
@@ -155,10 +160,14 @@ void GuiButton::drawText() const
                     0.65F,
                     m_textScale
                 );
-                const cRectangle textRect = m_pressed
-                    ? cRectangle(m_rect.getX() + 1, m_rect.getY() + 1, m_rect.getWidth(), m_rect.getHeight())
-                    : m_rect;
-                m_textDrawer->drawTextScaledCenteredInBox(
+                const int pressedOffset = m_pressed ? 1 : 0;
+                const cRectangle textRect(
+                    m_rect.getX() + pressedOffset,
+                    m_rect.getY() + pressedOffset + m_textOffsetY,
+                    m_rect.getWidth(),
+                    m_rect.getHeight()
+                );
+                m_textDrawer->drawTextScaledOpticallyCenteredInBox(
                     m_buttonText,
                     textRect,
                     fittedScale,

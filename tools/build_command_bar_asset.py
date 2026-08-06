@@ -1,56 +1,99 @@
+from collections import deque
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "resources" / "hd" / "source_references" / "command_bar_bronze_reference.png"
-MASTER = ROOT / "resources" / "hd" / "master4" / "command_bar.png"
-HD4 = ROOT / "resources" / "bin" / "data" / "hd4" / "command_bar.png"
-HD2 = ROOT / "resources" / "bin" / "data" / "hd2" / "command_bar.png"
+SOURCE = ROOT / "resources" / "hd" / "source_references" / "command_bar_color_reference.png"
 
-EXPECTED_SOURCE_SIZE = (2804, 561)
-MASTER_SIZE = (2800, 344)
+MASTER_DIR = ROOT / "resources" / "hd" / "master4"
+HD4_DIR = ROOT / "resources" / "bin" / "data" / "hd4"
 
+EXPECTED_SOURCE_SIZE = (2172, 1294)
+MASTER_SIZE = (2800, 414)
+CELL_SIZE = (400, 414)
 
-def fill_from_nearby_dark_rows(
-    image: Image.Image,
-    target: tuple[int, int, int, int],
-    sample_x_ranges: tuple[tuple[int, int], ...],
-) -> None:
-    pixels = image.load()
-    x0, y0, x1, y1 = target
-    for y in range(y0, y1):
-        samples = []
-        for sample_x0, sample_x1 in sample_x_ranges:
-            for x in range(max(0, sample_x0), min(image.width, sample_x1)):
-                color = pixels[x, y]
-                if sum(color[:3]) < 135:
-                    samples.append(color)
-        if not samples:
-            samples = [(10, 11, 10, 255)]
-        samples.sort(key=lambda color: sum(color[:3]))
-        color = samples[len(samples) // 2]
-        for x in range(x0, x1):
-            pixels[x, y] = color
+# The supplied sheet contains a bright row and a disabled reference row.
+BRIGHT_CROP = (2, 205, 2169, 526)
+BRIGHT_CELL_BOUNDARIES = (0, 339, 651, 949, 1244, 1552, 1851, 2167)
 
 
-def clean_label(image: Image.Image, slot_x: int) -> None:
-    fill_from_nearby_dark_rows(
-        image,
-        (slot_x + 35, 370, slot_x + 365, 430),
-        ((slot_x + 28, slot_x + 35), (slot_x + 365, slot_x + 372)),
-    )
+def remove_connected_white_background(image: Image.Image) -> Image.Image:
+    """Remove only the near-white background connected to the crop boundary."""
+    result = image.convert("RGBA")
+    pixels = result.load()
+    width, height = result.size
+    background = bytearray(width * height)
+    pending: deque[tuple[int, int]] = deque()
+
+    def is_background(x: int, y: int) -> bool:
+        red, green, blue, _ = pixels[x, y]
+        return min(red, green, blue) >= 220 and max(red, green, blue) - min(red, green, blue) <= 28
+
+    def enqueue(x: int, y: int) -> None:
+        offset = y * width + x
+        if not background[offset] and is_background(x, y):
+            background[offset] = 1
+            pending.append((x, y))
+
+    for x in range(width):
+        enqueue(x, 0)
+        enqueue(x, height - 1)
+    for y in range(height):
+        enqueue(0, y)
+        enqueue(width - 1, y)
+
+    while pending:
+        x, y = pending.popleft()
+        if x > 0:
+            enqueue(x - 1, y)
+        if x + 1 < width:
+            enqueue(x + 1, y)
+        if y > 0:
+            enqueue(x, y - 1)
+        if y + 1 < height:
+            enqueue(x, y + 1)
+
+    for y in range(height):
+        for x in range(width):
+            if background[y * width + x]:
+                red, green, blue, _ = pixels[x, y]
+                pixels[x, y] = (red, green, blue, 0)
+    return result
 
 
-def clean_hotkey(image: Image.Image, box: tuple[int, int, int, int]) -> None:
-    x0, y0, x1, y1 = box
-    width = x1 - x0
-    fill_from_nearby_dark_rows(
-        image,
-        box,
-        ((max(0, x0 - width), max(0, x0 - 8)), (min(image.width, x1 + 8), min(image.width, x1 + width))),
-    )
+def prepare_row(
+    source: Image.Image,
+    crop: tuple[int, int, int, int],
+    boundaries: tuple[int, ...],
+) -> Image.Image:
+    row = remove_connected_white_background(source.crop(crop))
+    normalized = Image.new("RGBA", MASTER_SIZE, (0, 0, 0, 0))
+    for index, (left, right) in enumerate(zip(boundaries, boundaries[1:])):
+        cell = row.crop((left, 0, right, row.height)).resize(
+            CELL_SIZE,
+            Image.Resampling.LANCZOS,
+        )
+        normalized.alpha_composite(cell, (index * CELL_SIZE[0], 0))
+    return normalized
+
+
+def save_asset(image: Image.Image, filename: str) -> None:
+    for directory, size in (
+        (MASTER_DIR, MASTER_SIZE),
+        (HD4_DIR, MASTER_SIZE),
+    ):
+        directory.mkdir(parents=True, exist_ok=True)
+        output = image if image.size == size else image.resize(size, Image.Resampling.LANCZOS)
+        output.save(directory / filename, optimize=True)
+
+
+def make_disabled(bright: Image.Image) -> Image.Image:
+    disabled = ImageEnhance.Color(bright).enhance(0.72)
+    disabled = ImageEnhance.Brightness(disabled).enhance(0.58)
+    disabled.putalpha(bright.getchannel("A"))
+    return disabled
 
 
 def main() -> None:
@@ -58,27 +101,11 @@ def main() -> None:
     if source.size != EXPECTED_SOURCE_SIZE:
         raise ValueError(f"Unexpected command bar reference size: {source.size}")
 
-    for slot_x in range(0, 2800, 400):
-        clean_label(source, slot_x)
+    bright = prepare_row(source, BRIGHT_CROP, BRIGHT_CELL_BOUNDARIES)
+    disabled = make_disabled(bright)
 
-    for box in (
-        (312, 140, 442, 214),
-        (713, 140, 854, 214),
-        (1155, 140, 1234, 214),
-        (1553, 140, 1630, 214),
-        (1951, 140, 2031, 214),
-        (2242, 140, 2401, 214),
-        (2715, 140, 2800, 214),
-    ):
-        clean_hotkey(source, box)
-
-    master = source.crop((2, 115, 2802, 459)).resize(MASTER_SIZE, Image.Resampling.LANCZOS)
-    for path in (MASTER, HD4):
-        path.parent.mkdir(parents=True, exist_ok=True)
-        master.save(path, optimize=True)
-
-    HD2.parent.mkdir(parents=True, exist_ok=True)
-    master.resize((1400, 172), Image.Resampling.LANCZOS).save(HD2, optimize=True)
+    save_asset(bright, "command_bar.png")
+    save_asset(disabled, "command_bar_disabled.png")
 
 
 if __name__ == "__main__":

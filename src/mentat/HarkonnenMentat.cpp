@@ -23,7 +23,7 @@ HarkonnenMentat::HarkonnenMentat(GameContext* ctx, bool allowMissionSelect) : Ab
             .withRect(*leftButton)        
             .withLabel(localization::text("Repeat", "Повторить"))
             .withTextDrawer(m_textDrawer)
-            .withTextScale(m_adaptiveHdLayout ? 0.85F : 1.0F)
+            .withTextScale(m_adaptiveHdLayout ? HD_BUTTON_TEXT_SCALE : 1.0F)
             .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
             .withKind(m_adaptiveHdLayout ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER : GuiRenderKind::WITH_TEXTURE)
             .onClick([this]() {this->resetSpeak();});
@@ -34,7 +34,7 @@ HarkonnenMentat::HarkonnenMentat(GameContext* ctx, bool allowMissionSelect) : Ab
             .withRect(*rightButton)        
             .withLabel(localization::text("Next", "Далее"))
             .withTextDrawer(m_textDrawer)
-            .withTextScale(m_adaptiveHdLayout ? 0.85F : 1.0F)
+            .withTextScale(m_adaptiveHdLayout ? HD_BUTTON_TEXT_SCALE : 1.0F)
             .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
             .withKind(m_adaptiveHdLayout ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER : GuiRenderKind::WITH_TEXTURE)
             .onClick([this]() {
@@ -42,6 +42,7 @@ HarkonnenMentat::HarkonnenMentat(GameContext* ctx, bool allowMissionSelect) : Ab
                 game.execute(*this);});
     if (!m_adaptiveHdLayout) rightBuilder.withTexture(gfxmentat->getTexture(BTN_YES));
     rightGuiButton = rightBuilder.build();
+    harmonizeHdButtonTextScale();
 }
 
 void HarkonnenMentat::think()

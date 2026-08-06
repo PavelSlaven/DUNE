@@ -25,10 +25,13 @@ inline GraphicsMode graphicsModeFromString(std::string value)
 
 inline int selectHdAssetDensity(int outputWidth, int outputHeight)
 {
-    return outputWidth >= 3840 || outputHeight >= 2160 ? 4 : 2;
+    static_cast<void>(outputWidth);
+    static_cast<void>(outputHeight);
+    return 4;
 }
 
 inline std::string hdDataFileSection(int density)
 {
-    return density >= 4 ? "HD4_DATAFILE" : "HD2_DATAFILE";
+    static_cast<void>(density);
+    return "HD4_DATAFILE";
 }

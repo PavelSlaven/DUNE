@@ -257,7 +257,7 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
         ? std::min(m_game.m_screenW - 32, 760)
         : m_game.m_screenW / 2;
     const int mainMenuHeight = m_hdLayout
-        ? std::min(m_game.m_screenH - 32, 560)
+        ? std::min(m_game.m_screenH - 32, 640)
         : m_game.m_screenH / 2;
     const int frameX = (m_game.m_screenW - mainMenuWidth) / 2;
     const int frameY = (m_game.m_screenH - mainMenuHeight) / 2;
@@ -762,7 +762,7 @@ void cOptionsState::constructWindow(int prevState)
         ? std::min(m_game.m_screenW - 32, 680)
         : m_game.m_screenW / 2;
     int mainMenuHeight = m_hdLayout
-        ? std::min(m_game.m_screenH - 32, 560)
+        ? std::min(m_game.m_screenH - 32, 680)
         : m_game.m_screenH / 2;
     int mainMenuFrameX = (m_game.m_screenW - mainMenuWidth) / 2;
     int mainMenuFrameY = (m_game.m_screenH - mainMenuHeight) / 2;

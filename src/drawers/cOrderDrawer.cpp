@@ -1,5 +1,7 @@
 #include "cOrderDrawer.h"
 
+#include "OrderButtonPolicy.hpp"
+
 #include "d2tmc.h"
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
@@ -60,7 +62,7 @@ void cOrderDrawer::drawOrderButton(cPlayer *thePlayer)
         m_buttonRect,
         0.92F,
         labelColor,
-        true
+        shouldDrawOrderLabelShadow()
     );
 
     if (m_isMouseOverOrderButton) {

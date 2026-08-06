@@ -16,8 +16,8 @@ int main()
         std::cerr << "Unknown values must safely default to HD\n";
         return 1;
     }
-    if (selectHdAssetDensity(2560, 1440) != 2) {
-        std::cerr << "1440p must select HD2\n";
+    if (selectHdAssetDensity(2560, 1440) != 4) {
+        std::cerr << "1440p HD mode must select HD4\n";
         return 1;
     }
     if (selectHdAssetDensity(3840, 1080) != 4) {
@@ -28,9 +28,9 @@ int main()
         std::cerr << "2160-high output must select HD4\n";
         return 1;
     }
-    if (hdDataFileSection(2) != "HD2_DATAFILE" ||
+    if (hdDataFileSection(2) != "HD4_DATAFILE" ||
         hdDataFileSection(4) != "HD4_DATAFILE") {
-        std::cerr << "HD section selection failed\n";
+        std::cerr << "HD mode must always use the HD4 section\n";
         return 1;
     }
     return 0;

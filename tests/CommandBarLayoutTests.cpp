@@ -18,5 +18,11 @@ int main()
         if (!layout.panel.isPointWithin(button.getX(), button.getY())) return 5;
         if (!layout.panel.isPointWithin(button.getEndX() - 1, button.getEndY() - 1)) return 6;
     }
+
+    const CommandBarLayout fullSizeLayout = CommandBarLayout::create(1920, 1080, sidebarWidth);
+    if (fullSizeLayout.panel.getWidth() != 350 || fullSizeLayout.panel.getHeight() != 52) return 7;
+    for (const cRectangle &button : fullSizeLayout.actions) {
+        if (button.getWidth() != 50 || button.getHeight() != 52) return 8;
+    }
     return 0;
 }
