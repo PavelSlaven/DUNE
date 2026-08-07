@@ -4,6 +4,31 @@ Hi everyone! I made a small remaster of the game. I did not change any of the me
 
 The entire project was created with the help of Codex and Suno. I made it for my father, who has been playing Dune for almost his entire life. I originally had no plans to release it online, but a friend of mine, after seeing the results, strongly encouraged me to do so. And here we are.
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/main-menu.png" alt="Remastered main menu" width="100%">
+</p>
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/house-selection.png" alt="House selection screen"></td>
+    <td width="50%"><img src="docs/screenshots/ordos-briefing.png" alt="Ordos campaign briefing"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Choose your House</sub></td>
+    <td align="center"><sub>Remastered campaign briefing</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/skirmish-gameplay.png" alt="HD skirmish gameplay"></td>
+    <td width="50%"><img src="docs/screenshots/victory-screen.png" alt="Victory screen"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>HD gameplay and redesigned interface</sub></td>
+    <td align="center"><sub>Victory screen</sub></td>
+  </tr>
+</table>
+
 ## Downloads
 
 Ready-to-run builds are published on the [GitHub Releases page](https://github.com/PavelSlaven/DUNE/releases) for Windows x64, Linux x64, macOS Apple Silicon and macOS Intel.
