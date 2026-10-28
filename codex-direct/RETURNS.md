@@ -43,3 +43,7 @@
 | B0 | answer-02 | нет узких функций у инструментов и мастеров | исполнитель | `tools/*`, `resources/hd/*` | — |
 | B0 | answer-02 | «какой набор сцен читает движок — не проверено» | исполнитель | `docs/upstream/PORT_MAP.md:738` | — |
 | B0 | answer-02 | нет теста «карта = JSON» | задание | `codex-direct/B0/TASK.md` (вторая версия), раздел «Тест» | Производный документ без сверки с данными |
+| B0 | answer-03 | снята `localization` у `src/cGame.h` при коде текстур исхода RU/EN в диффе | исполнитель | `docs/upstream/port_inventory.json` → `src/cGame.h` | — |
+| B0 | answer-03 | маркеры `music-pools` из кода апстрима (`m_playMusic`, `"playMusic"`) дали двух ложных владельцев | исполнитель | `tools/upstream/port_features.json:732–733` | — |
+| B0 | answer-03 | тень надписи «ЗАКАЗ» Starport отнесена к `command-bar` | исполнитель | `tools/upstream/port_features.json:792`, `:794` | — |
+| B0 | answer-03 | тест 6 ловит недостающих владельцев, но не лишних | задание | `codex-direct/B0/TASK.md` (третья версия), тест 6 | Отнесение проверено в одну сторону |
