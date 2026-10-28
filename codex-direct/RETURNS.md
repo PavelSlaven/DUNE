@@ -47,3 +47,6 @@
 | B0 | answer-03 | маркеры `music-pools` из кода апстрима (`m_playMusic`, `"playMusic"`) дали двух ложных владельцев | исполнитель | `tools/upstream/port_features.json:732–733` | — |
 | B0 | answer-03 | тень надписи «ЗАКАЗ» Starport отнесена к `command-bar` | исполнитель | `tools/upstream/port_features.json:792`, `:794` | — |
 | B0 | answer-03 | тест 6 ловит недостающих владельцев, но не лишних | задание | `codex-direct/B0/TASK.md` (третья версия), тест 6 | Отнесение проверено в одну сторону |
+| B1 | answer-04 | проверка `HEAD == UP0` ломает скрипт после его коммита | исполнитель | `tools/upstream/build_up0_linux.sh:177–178` | — |
+| B1 | answer-04 | скрипт пишет `TMPDIR` в неигнорируемый `.tmp/` репозитория | исполнитель | `tools/upstream/build_up0_linux.sh:8`, `:11` | — |
+| B1 | answer-04 | маркер протокола `## Q-B1` в выводе скрипта | исполнитель | `tools/upstream/build_up0_linux.sh:16` | — |
