@@ -15,7 +15,8 @@
       {"type": "box", "min": [-0.31, -0.15, 0.225], "max": [0.18, 0.15, 0.45]},
       {"type": "box", "min": [0.1, -0.06, 0.24], "max": [0.5, 0.06, 0.36]}
     ],
-    "cap_z": 0.225
+    "cap_z": 0.225,
+    "cap_color": [133, 112, 85]
   },
   "house_paint": {"hue_deg": 30, "hue_width_deg": 18, "min_saturation": 0.18, "min_value": 0.27},
   "mask_share": [0.05, 0.9],

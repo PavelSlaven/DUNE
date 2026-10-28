@@ -21,7 +21,7 @@ from mathutils import Matrix, Vector
 FORWARD_YAW = {'+X': 0.0, '-Y': 90.0, '-X': 180.0, '+Y': -90.0}
 DIRECTION_YAW = [0, 45, 90, 135, 180, 225, 270, 315]
 MARKER_COLORS = {'nose': (1.0, 0.0, 0.0), 'axis': (0.0, 1.0, 0.0), 'ring': (0.0, 0.0, 1.0)}
-CAP_COLOR = (0.09, 0.085, 0.08, 1.0)
+HOUSE_CAP = 2
 # The barrel belongs to the turret but must not widen the hull cap, so the cap
 # follows only turret vertices close to the ring height (model units).
 RING_BAND = 0.03
@@ -121,10 +121,15 @@ def convex_hull(points):
     return lower[:-1] + upper[:-1]
 
 
-def add_cap(obj, polygon, z, facing_up):
+def srgb_to_linear(value):
+    c = value / 255.0
+    return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
+
+def add_cap(obj, polygon, z, facing_up, color):
     material = bpy.data.materials.new('cap')
     material.use_nodes = True
-    material.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = CAP_COLOR
+    material.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = (*map(srgb_to_linear, color), 1.0)
     material.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value = 0.8
     obj.data.materials.append(material)
     bm = bmesh.new()
@@ -132,11 +137,13 @@ def add_cap(obj, polygon, z, facing_up):
     ordered = polygon if facing_up else list(reversed(polygon))
     face = bm.faces.new([bm.verts.new((x, y, z)) for x, y in ordered])
     face.material_index = len(obj.data.materials) - 1
+    # The cap shows wherever the turret turns away from the hull, so it carries the house colour like the paint around it.
+    face[bm.faces.layers.int['house']] = HOUSE_CAP
     bm.to_mesh(obj.data)
     bm.free()
 
 
-def split_turret(obj, cap_z):
+def split_turret(obj, cap_z, cap_color):
     turret = obj.copy()
     turret.data = obj.data.copy()
     bpy.context.scene.collection.objects.link(turret)
@@ -144,8 +151,8 @@ def split_turret(obj, cap_z):
     keep_faces(turret, 1)
     base_band = cap_z + RING_BAND
     footprint = convex_hull([(round(v.co.x, 4), round(v.co.y, 4)) for v in turret.data.vertices if v.co.z <= base_band])
-    add_cap(obj, footprint, cap_z, facing_up=True)
-    add_cap(turret, footprint, cap_z, facing_up=False)
+    add_cap(obj, footprint, cap_z, True, cap_color)
+    add_cap(turret, footprint, cap_z, False, cap_color)
     obj.name, turret.name = 'body', 'top'
     return turret
 
@@ -324,7 +331,7 @@ def main():
     cap_z = None
     if 'split' in unit:
         cap_z = unit['split']['cap_z']
-        parts['top'] = split_turret(body, cap_z)
+        parts['top'] = split_turret(body, cap_z, unit['split']['cap_color'])
 
     pts = vertices(parts.values())
     scale = unit['length_m'] / (pts[:, 0].max() - pts[:, 0].min())
@@ -371,6 +378,7 @@ def main():
     else:
         mask_white = emission_material('mask', (1.0, 1.0, 1.0))
     mask_holdout = holdout_material()
+    mask_cap = emission_material('mask_cap', (1.0, 1.0, 1.0))
     out = args.out
     tmp = out / '_tmp'
 
@@ -398,10 +406,12 @@ def main():
                 base = len(obj.data.materials)
                 obj.data.materials.append(mask_holdout)
                 obj.data.materials.append(mask_white)
+                obj.data.materials.append(mask_cap)
                 obj.data.polygons.foreach_set('material_index', (base + house).astype(np.int32))
                 obj.data.update()
                 render_to(scene, out / part_name / f'mask_{k}.png', render_cfg['mask_samples'], False)
                 obj.data.polygons.foreach_set('material_index', indices)
+                obj.data.materials.pop()
                 obj.data.materials.pop()
                 obj.data.materials.pop()
                 obj.data.update()
