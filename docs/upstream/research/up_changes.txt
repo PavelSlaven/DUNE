@@ -1,0 +1,799 @@
+A	.claude/review.md
+A	.claude/rules/architecture-direction.md
+A	.claude/rules/build-workflow.md
+A	.claude/rules/coding-conventions.md
+A	.claude/rules/key-bindings.md
+A	.claude/rules/naming-conventions.md
+A	.claude/rules/pr-conventions.md
+A	.github/CODEOWNERS
+A	.github/wiki/_Sidebar.header.md
+M	.github/workflows/build_manual.yml
+M	.github/workflows/build_master.yml
+M	.github/workflows/build_pr.yml
+A	.github/workflows/claude-code-review.yml
+D	.github/workflows/release-notes.yml
+M	.gitignore
+A	CLAUDE.md
+M	CMakeLists.txt
+A	LICENSE.md
+M	README.md
+M	create_release.bat
+M	create_release.sh
+A	docs/agents/domain.md
+A	docs/agents/issue-tracker.md
+A	docs/agents/triage-labels.md
+M	install_dependencies_macosx.sh
+M	install_dependencies_ubuntu.sh
+A	keys.md
+A	rebuildlinux.sh
+M	rebuildmacos.sh
+M	rebuildwin.bat
+M	rebuildwinrelease.bat
+A	resources/bin/campaign/briefings/mentats.ini
+M	resources/bin/campaign/maps/scena004.ini
+M	resources/bin/campaign/maps/scenh002.ini
+A	resources/bin/campaign/maps/scens001.ini
+A	resources/bin/campaign/maps/scens002.ini
+A	resources/bin/campaign/maps/scens003.ini
+A	resources/bin/campaign/maps/scens004.ini
+A	resources/bin/campaign/maps/scens005.ini
+A	resources/bin/campaign/maps/scens006.ini
+A	resources/bin/campaign/maps/scens007.ini
+A	resources/bin/campaign/maps/scens008.ini
+A	resources/bin/campaign/maps/scens009.ini
+A	resources/bin/campaign/maps/scens010.ini
+A	resources/bin/campaign/maps/scens011.ini
+A	resources/bin/campaign/maps/scens012.ini
+A	resources/bin/campaign/maps/scens013.ini
+A	resources/bin/campaign/maps/scens014.ini
+A	resources/bin/campaign/maps/scens015.ini
+A	resources/bin/campaign/maps/scens016.ini
+A	resources/bin/campaign/maps/scens017.ini
+A	resources/bin/campaign/maps/scens018.ini
+A	resources/bin/campaign/maps/scens019.ini
+A	resources/bin/campaign/maps/scens020.ini
+A	resources/bin/campaign/maps/scens021.ini
+A	resources/bin/campaign/maps/scens022.ini
+D	resources/bin/campaign/maps/seed/1000.map
+D	resources/bin/campaign/maps/seed/103.map
+D	resources/bin/campaign/maps/seed/106.map
+D	resources/bin/campaign/maps/seed/113.map
+D	resources/bin/campaign/maps/seed/117.map
+D	resources/bin/campaign/maps/seed/12.map
+D	resources/bin/campaign/maps/seed/122.map
+D	resources/bin/campaign/maps/seed/123.map
+D	resources/bin/campaign/maps/seed/1498.map
+D	resources/bin/campaign/maps/seed/150.map
+D	resources/bin/campaign/maps/seed/157.map
+D	resources/bin/campaign/maps/seed/16.map
+D	resources/bin/campaign/maps/seed/173.map
+D	resources/bin/campaign/maps/seed/175.map
+D	resources/bin/campaign/maps/seed/182.map
+D	resources/bin/campaign/maps/seed/200.map
+D	resources/bin/campaign/maps/seed/203.map
+D	resources/bin/campaign/maps/seed/207.map
+D	resources/bin/campaign/maps/seed/2106.map
+D	resources/bin/campaign/maps/seed/223.map
+D	resources/bin/campaign/maps/seed/233.map
+D	resources/bin/campaign/maps/seed/24.map
+D	resources/bin/campaign/maps/seed/2437.map
+D	resources/bin/campaign/maps/seed/250.map
+D	resources/bin/campaign/maps/seed/2620.map
+D	resources/bin/campaign/maps/seed/2674.map
+D	resources/bin/campaign/maps/seed/268.map
+D	resources/bin/campaign/maps/seed/269.map
+D	resources/bin/campaign/maps/seed/27.map
+D	resources/bin/campaign/maps/seed/275.map
+D	resources/bin/campaign/maps/seed/298.map
+D	resources/bin/campaign/maps/seed/300.map
+D	resources/bin/campaign/maps/seed/305.map
+D	resources/bin/campaign/maps/seed/3161.map
+D	resources/bin/campaign/maps/seed/33.map
+D	resources/bin/campaign/maps/seed/332.map
+D	resources/bin/campaign/maps/seed/353.map
+D	resources/bin/campaign/maps/seed/355.map
+D	resources/bin/campaign/maps/seed/367.map
+D	resources/bin/campaign/maps/seed/392.map
+D	resources/bin/campaign/maps/seed/5.map
+D	resources/bin/campaign/maps/seed/50.map
+D	resources/bin/campaign/maps/seed/500.map
+D	resources/bin/campaign/maps/seed/501.map
+D	resources/bin/campaign/maps/seed/504.map
+D	resources/bin/campaign/maps/seed/53.map
+D	resources/bin/campaign/maps/seed/552.map
+D	resources/bin/campaign/maps/seed/563.map
+D	resources/bin/campaign/maps/seed/57.map
+D	resources/bin/campaign/maps/seed/582.map
+D	resources/bin/campaign/maps/seed/59.map
+D	resources/bin/campaign/maps/seed/604.map
+D	resources/bin/campaign/maps/seed/62.map
+D	resources/bin/campaign/maps/seed/717.map
+D	resources/bin/campaign/maps/seed/723.map
+D	resources/bin/campaign/maps/seed/76198347.map
+D	resources/bin/campaign/maps/seed/89.map
+D	resources/bin/campaign/maps/seed/999.map
+A	resources/bin/campaign/sardaukar/mission1.ini
+A	resources/bin/campaign/sardaukar/mission2.ini
+A	resources/bin/campaign/sardaukar/mission3.ini
+A	resources/bin/campaign/sardaukar/mission4.ini
+A	resources/bin/campaign/sardaukar/mission5.ini
+A	resources/bin/campaign/sardaukar/mission6.ini
+A	resources/bin/campaign/sardaukar/mission7.ini
+A	resources/bin/campaign/sardaukar/mission8.ini
+D	resources/bin/d2tm.cfg
+M	resources/bin/data/sdl_audio.dat
+M	resources/bin/data/sdl_data.dat
+A	resources/bin/data/sdl_gfxeditor.dat
+M	resources/bin/data/sdl_inter.dat
+M	resources/bin/data/sdl_mentat.dat
+M	resources/bin/settings.ini
+A	resources/bin/skirmish/2PL_Division.ini
+D	resources/dev.ini
+D	resources/dll/SDL2.dll
+D	resources/dll/SDL2_image.dll
+D	resources/dll/SDL2_mixer.dll
+D	resources/dll/SDL2_net.dll
+D	resources/dll/SDL2_ttf.dll
+A	resources/dll/SDL3.dll
+A	resources/dll/SDL3_image.dll
+A	resources/dll/SDL3_mixer.dll
+A	resources/dll/SDL3_ttf.dll
+A	resources/dll/libavif-16.dll
+A	resources/dll/libgme.dll
+A	resources/dll/libogg-0.dll
+A	resources/dll/libopus-0.dll
+A	resources/dll/libopusfile-0.dll
+A	resources/dll/libpng16-16.dll
+A	resources/dll/libtiff-6.dll
+A	resources/dll/libwavpack-1.dll
+A	resources/dll/libwebp-7.dll
+A	resources/dll/libwebpdemux-2.dll
+A	resources/dll/libwebpmux-3.dll
+A	resources/dll/libxmp.dll
+R100	resources/tools/d2tm.gpl	resources/doc/d2tm.gpl
+R100	resources/tools/d2tm.pal	resources/doc/d2tm.pal
+M	resources/doc/versionhistory.txt
+M	resources/game.ini
+M	resources/game.ini.org
+D	resources/graphics/game/terrain/rock-new2.bmp
+D	resources/graphics/game/terrain/sand-new.bmp
+D	resources/graphics/ui/d2tm-title.bmp
+D	resources/graphics/ui/gerald-new-12a-new2.bmp
+D	resources/graphics/ui/gerald_candybar_bottom.bmp
+D	resources/graphics/ui/gerald_candybar_circle.bmp
+D	resources/graphics/ui/gerald_candybar_piece.bmp
+D	resources/graphics/ui/gerald_candybar_top.bmp
+D	resources/graphics/ui/gerald_minimap_bottomright.bmp
+D	resources/graphics/ui/gerald_sidebar_icons_list_bottom.bmp
+D	resources/graphics/ui/gerald_sidebar_icons_list_piece.bmp
+D	resources/graphics/ui/gerald_sidebar_icons_list_top.bmp
+D	resources/graphics/ui/gerald_sidebar_piece.bmp
+D	resources/graphics/ui/gerald_topbar_bar.bmp
+D	resources/graphics/ui/gerald_topbar_credits.bmp
+D	resources/graphics/ui/sidebar_barracks_button_unpressed.bmp
+D	resources/graphics/ui/sidebar_button_down_pressed.bmp
+D	resources/graphics/ui/sidebar_button_down_unpressed.bmp
+D	resources/graphics/ui/sidebar_button_empty.bmp
+D	resources/graphics/ui/sidebar_button_up_pressed.bmp
+D	resources/graphics/ui/sidebar_button_up_unpressed.bmp
+D	resources/graphics/ui/sidebar_constyard_button_unpressed.bmp
+D	resources/graphics/ui/sidebar_heavyfc_button_unpressed.bmp
+D	resources/graphics/ui/sidebar_hightech_button_unpressed.bmp
+D	resources/graphics/ui/sidebar_lightfc_button_unpressed.bmp
+D	resources/graphics/ui/sidebar_palace_button_unpressed.bmp
+D	resources/graphics/ui/sidebar_starport_button_unpressed.bmp
+D	resources/graphics/ui/ui_logo_atreides.bmp
+D	resources/tools/Picture_DeathHand.bmp
+D	resources/tools/Picture_Fremen.bmp
+D	resources/tools/Picture_Sabatour.bmp
+D	resources/tools/Unit_3Fremen.bmp
+D	resources/tools/Unit_Fremen.bmp
+D	resources/tools/allegro.cfg
+A	resources/tools/analys_code.py
+A	resources/tools/count_game_ref.py
+D	resources/tools/credits_bar.bmp
+D	resources/tools/d2tm_herald.bmp
+A	resources/tools/datapack/sprite_editor.py
+D	resources/tools/dune2_book.jpg
+A	resources/tools/gameDotOccurencesNumber.py
+D	resources/tools/gerald-new-12a-new2.bmp
+D	resources/tools/gerald-new-12a.bmp
+D	resources/tools/gerald_minimap_bottomright.bmp
+D	resources/tools/grabber.bat
+D	resources/tools/grabber.exe
+D	resources/tools/grabber.txt
+D	resources/tools/horizontal-candybar-8bit.bmp
+D	resources/tools/horizontal-candybar.bmp
+A	resources/tools/keybindings_audit.py
+A	resources/tools/log_viewer/log_viewer.py
+D	resources/tools/messageBarLeft.bmp
+D	resources/tools/messageBarRight.bmp
+D	resources/tools/old_sprites/bmp/icon_power_sidebar1.bmp
+D	resources/tools/old_sprites/bmp/icon_power_sidebar2.bmp
+D	resources/tools/old_sprites/bmp/icon_power_sidebar3.bmp
+D	resources/tools/old_sprites/gfxaudio.dat
+D	resources/tools/old_sprites/gfxdata.dat
+D	resources/tools/old_sprites/gfxinter.dat
+D	resources/tools/old_sprites/gfxmentat.dat
+D	resources/tools/old_sprites/gfxworld.dat
+D	resources/tools/original_dune2_core_team.bmp
+D	resources/tools/seedgen/MAIN.C
+D	resources/tools/seedgen/MAPIO_PROTOS.H
+A	resources/tools/seedgen/Makefile
+D	resources/tools/seedgen/SEED.H
+D	resources/tools/seedgen/SEED2MAP.exe
+D	resources/tools/seedgen/SEED_PROTOS.H
+A	resources/tools/seedgen/compat.h
+A	resources/tools/seedgen/expected/seed_0.txt
+A	resources/tools/seedgen/expected/seed_1.txt
+A	resources/tools/seedgen/expected/seed_103.txt
+A	resources/tools/seedgen/expected/seed_106.txt
+A	resources/tools/seedgen/expected/seed_113.txt
+A	resources/tools/seedgen/expected/seed_117.txt
+A	resources/tools/seedgen/expected/seed_12.txt
+A	resources/tools/seedgen/expected/seed_122.txt
+A	resources/tools/seedgen/expected/seed_123.txt
+A	resources/tools/seedgen/expected/seed_1498.txt
+A	resources/tools/seedgen/expected/seed_157.txt
+A	resources/tools/seedgen/expected/seed_16.txt
+A	resources/tools/seedgen/expected/seed_173.txt
+A	resources/tools/seedgen/expected/seed_182.txt
+A	resources/tools/seedgen/expected/seed_203.txt
+A	resources/tools/seedgen/expected/seed_207.txt
+A	resources/tools/seedgen/expected/seed_2106.txt
+A	resources/tools/seedgen/expected/seed_223.txt
+A	resources/tools/seedgen/expected/seed_233.txt
+A	resources/tools/seedgen/expected/seed_24.txt
+A	resources/tools/seedgen/expected/seed_2437.txt
+A	resources/tools/seedgen/expected/seed_2620.txt
+A	resources/tools/seedgen/expected/seed_2674.txt
+A	resources/tools/seedgen/expected/seed_268.txt
+A	resources/tools/seedgen/expected/seed_269.txt
+A	resources/tools/seedgen/expected/seed_27.txt
+A	resources/tools/seedgen/expected/seed_298.txt
+A	resources/tools/seedgen/expected/seed_305.txt
+A	resources/tools/seedgen/expected/seed_3161.txt
+A	resources/tools/seedgen/expected/seed_33.txt
+A	resources/tools/seedgen/expected/seed_332.txt
+A	resources/tools/seedgen/expected/seed_353.txt
+A	resources/tools/seedgen/expected/seed_355.txt
+A	resources/tools/seedgen/expected/seed_367.txt
+A	resources/tools/seedgen/expected/seed_392.txt
+A	resources/tools/seedgen/expected/seed_42.txt
+A	resources/tools/seedgen/expected/seed_4242.txt
+A	resources/tools/seedgen/expected/seed_5.txt
+A	resources/tools/seedgen/expected/seed_500.txt
+A	resources/tools/seedgen/expected/seed_501.txt
+A	resources/tools/seedgen/expected/seed_504.txt
+A	resources/tools/seedgen/expected/seed_53.txt
+A	resources/tools/seedgen/expected/seed_552.txt
+A	resources/tools/seedgen/expected/seed_563.txt
+A	resources/tools/seedgen/expected/seed_57.txt
+A	resources/tools/seedgen/expected/seed_582.txt
+A	resources/tools/seedgen/expected/seed_59.txt
+A	resources/tools/seedgen/expected/seed_604.txt
+A	resources/tools/seedgen/expected/seed_62.txt
+A	resources/tools/seedgen/expected/seed_65535.txt
+A	resources/tools/seedgen/expected/seed_717.txt
+A	resources/tools/seedgen/expected/seed_723.txt
+A	resources/tools/seedgen/expected/seed_89.txt
+A	resources/tools/seedgen/expected_large/seed_12.txt
+A	resources/tools/seedgen/expected_large/seed_3161.txt
+A	resources/tools/seedgen/expected_large/seed_42.txt
+A	resources/tools/seedgen/expected_large/seed_500.txt
+A	resources/tools/seedgen/main.c
+R064	resources/tools/seedgen/MAPIO.C	resources/tools/seedgen/mapio.c
+A	resources/tools/seedgen/mapio_protos.h
+R100	resources/tools/seedgen/RAND.C	resources/tools/seedgen/rand.c
+R077	resources/tools/seedgen/SEED.C	resources/tools/seedgen/seed.c
+A	resources/tools/seedgen/seed.h
+A	resources/tools/seedgen/seed_protos.h
+D	resources/tools/select_house_atreides.bmp
+D	resources/tools/select_house_harkonnen.bmp
+D	resources/tools/select_house_ordos.bmp
+D	resources/tools/sidebar_button_down_pressed.bmp
+D	resources/tools/sidebar_button_down_unpressed.bmp
+D	resources/tools/sidebar_button_up_pressed.bmp
+D	resources/tools/sidebar_button_up_unpressed.bmp
+D	resources/tools/skirmish editor/D2TMEditor.jar
+D	resources/tools/skirmish editor/README.txt
+D	resources/tools/skirmish editor/Source/D2TMEditor/D2TMEditor.zip
+D	resources/tools/skirmish editor/Source/D2TMEditor/README.txt
+D	resources/tools/skirmish editor/Source/D2TMEditor/build.xml
+D	resources/tools/skirmish editor/Source/D2TMEditor/dist/README.TXT
+D	resources/tools/skirmish editor/Source/D2TMEditor/manifest.mf
+D	resources/tools/skirmish editor/Source/D2TMEditor/nbproject/build-impl.xml
+D	resources/tools/skirmish editor/Source/D2TMEditor/nbproject/genfiles.properties
+D	resources/tools/skirmish editor/Source/D2TMEditor/nbproject/private/config.properties
+D	resources/tools/skirmish editor/Source/D2TMEditor/nbproject/private/private.properties
+D	resources/tools/skirmish editor/Source/D2TMEditor/nbproject/private/private.xml
+D	resources/tools/skirmish editor/Source/D2TMEditor/nbproject/project.properties
+D	resources/tools/skirmish editor/Source/D2TMEditor/nbproject/project.xml
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/d2tmeditor/Editor.form
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/d2tmeditor/Editor.java
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/d2tmeditor/ExceptionFrame.form
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/d2tmeditor/ExceptionFrame.java
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/d2tmeditor/FlipFrame.form
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/d2tmeditor/FlipFrame.java
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/d2tmeditor/Map.java
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/d2tmeditor/MapEditor.java
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/d2tmeditor/MapGenerator.java
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/images/mirrorBottomLeftTopRight.png
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/images/mirrorBottomRightTopLeft.png
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/images/mirrorBottomTop.png
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/images/mirrorLeftRight.png
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/images/mirrorRightLeft.png
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/images/mirrorTopBottom.png
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/images/mirrorTopLeftBottomRight.png
+D	resources/tools/skirmish editor/Source/D2TMEditor/src/images/mirrorTopRightBottomLeft.png
+D	resources/tools/ui_logo_atreides.bmp
+A	scripts/license_headers.py
+M	src/CMakeLists.txt
+M	src/building/cItemBuilder.cpp
+M	src/building/cItemBuilder.h
+D	src/cGame.h
+D	src/cGame_logic.cpp
+A	src/context/AudioContext.cpp
+A	src/context/AudioContext.hpp
+M	src/context/ContextCreator.cpp
+M	src/context/ContextCreator.hpp
+M	src/context/GameContext.cpp
+M	src/context/GameContext.hpp
+M	src/context/GraphicsContext.hpp
+M	src/context/TextContext.cpp
+M	src/context/TextContext.hpp
+A	src/context/cGameObjectContext.cpp
+A	src/context/cGameObjectContext.h
+A	src/context/cGameObjectContextCreator.cpp
+A	src/context/cGameObjectContextCreator.h
+A	src/context/cInfoContext.cpp
+A	src/context/cInfoContext.h
+A	src/context/cInfoContextCreator.cpp
+A	src/context/cInfoContextCreator.h
+M	src/controls/cGameControlsContext.cpp
+M	src/controls/cGameControlsContext.h
+A	src/controls/cKeyBindings.cpp
+A	src/controls/cKeyBindings.h
+M	src/controls/cKeyboard.cpp
+M	src/controls/cKeyboard.h
+M	src/controls/cKeyboardEvent.cpp
+M	src/controls/cKeyboardEvent.h
+M	src/controls/cMouse.cpp
+M	src/controls/cMouse.h
+D	src/controls/controlsh.h
+A	src/controls/eKeyAction.h
+A	src/controls/eKeyboardEnum.h
+M	src/controls/mousestates/cMouseDeployState.cpp
+M	src/controls/mousestates/cMouseDeployState.h
+M	src/controls/mousestates/cMouseNormalState.cpp
+M	src/controls/mousestates/cMouseNormalState.h
+M	src/controls/mousestates/cMousePlaceState.cpp
+M	src/controls/mousestates/cMousePlaceState.h
+M	src/controls/mousestates/cMouseRepairState.cpp
+M	src/controls/mousestates/cMouseRepairState.h
+M	src/controls/mousestates/cMouseState.cpp
+M	src/controls/mousestates/cMouseState.h
+M	src/controls/mousestates/cMouseUnitsSelectedState.cpp
+M	src/controls/mousestates/cMouseUnitsSelectedState.h
+M	src/controls/mousestates/eMouseStates.h
+R053	src/include/sMouseEvent.h	src/controls/sMouseEvent.h
+M	src/data/gfxaudio.h
+M	src/data/gfxdata.h
+A	src/data/gfxeditor.h
+M	src/data/gfxinter.h
+M	src/data/gfxmentat.h
+M	src/data/gfxworld.h
+M	src/drawers/CreditsDrawer.cpp
+M	src/drawers/CreditsDrawer.h
+M	src/drawers/SDLDrawer.cpp
+M	src/drawers/SDLDrawer.hpp
+M	src/drawers/cBuildingListDrawer.cpp
+M	src/drawers/cBuildingListDrawer.h
+M	src/drawers/cMapDrawer.cpp
+M	src/drawers/cMapDrawer.h
+M	src/drawers/cMessageDrawer.cpp
+M	src/drawers/cMessageDrawer.h
+M	src/drawers/cMiniMapDrawer.cpp
+M	src/drawers/cMiniMapDrawer.h
+M	src/drawers/cMouseDrawer.cpp
+M	src/drawers/cMouseDrawer.h
+M	src/drawers/cOrderDrawer.cpp
+M	src/drawers/cOrderDrawer.h
+M	src/drawers/cParticleDrawer.cpp
+M	src/drawers/cParticleDrawer.h
+M	src/drawers/cPlaceItDrawer.cpp
+M	src/drawers/cPlaceItDrawer.h
+M	src/drawers/cSideBarDrawer.cpp
+M	src/drawers/cSideBarDrawer.h
+M	src/drawers/cStructureDrawer.cpp
+M	src/drawers/cStructureDrawer.h
+M	src/drawers/cTextDrawer.cpp
+M	src/drawers/cTextDrawer.h
+M	src/drawers/cTextTextureCache.cpp
+M	src/drawers/cTextTextureCache.h
+A	src/drawers/cUnitDrawer.cpp
+A	src/drawers/cUnitDrawer.h
+A	src/game/CampaignProgress.cpp
+A	src/game/CampaignProgress.hpp
+A	src/game/GameStateTransition.hpp
+A	src/game/MentatFlow.hpp
+A	src/game/MissionFlow.hpp
+A	src/game/MissionStats.h
+A	src/game/ScenarioFlow.hpp
+A	src/game/cEventEmitter.h
+A	src/game/cGame.h
+A	src/game/cGameConditionChecker.cpp
+A	src/game/cGameConditionChecker.h
+A	src/game/cGameSettings.h
+A	src/game/cGame_logic.cpp
+A	src/game/cMissionStatsCollector.cpp
+A	src/game/cMissionStatsCollector.h
+A	src/game/cNotificationArea.cpp
+A	src/game/cNotificationArea.h
+A	src/game/cSDLSystem.cpp
+A	src/game/cSDLSystem.h
+A	src/game/cScreenFader.cpp
+A	src/game/cScreenFader.h
+R070	src/utils/cScreenShake.cpp	src/game/cScreenShake.cpp
+R064	src/utils/cScreenShake.h	src/game/cScreenShake.h
+A	src/game/cScreenShotSaver.cpp
+A	src/game/cScreenShotSaver.h
+A	src/game/cTimeCounter.cpp
+A	src/game/cTimeCounter.h
+R077	src/utils/cTimeManager.cpp	src/game/cTimeManager.cpp
+R068	src/utils/cTimeManager.h	src/game/cTimeManager.h
+A	src/game/eScalingMode.h
+M	src/gameobjects/cFlag.cpp
+M	src/gameobjects/cFlag.h
+A	src/gameobjects/cSpecialInfos.h
+A	src/gameobjects/cUpgradeInfo.h
+R054	src/map/MapGeometry.cpp	src/gameobjects/map/MapGeometry.cpp
+R066	src/map/MapGeometry.hpp	src/gameobjects/map/MapGeometry.hpp
+A	src/gameobjects/map/PreviewMap.hpp
+A	src/gameobjects/map/SeedMapLoader.cpp
+A	src/gameobjects/map/SeedMapLoader.hpp
+R061	src/map/cCell.h	src/gameobjects/map/cCell.h
+R058	src/map/cMap.cpp	src/gameobjects/map/cMap.cpp
+R058	src/map/cMap.h	src/gameobjects/map/cMap.h
+R061	src/map/cMapCamera.cpp	src/gameobjects/map/cMapCamera.cpp
+R077	src/map/cMapCamera.h	src/gameobjects/map/cMapCamera.h
+R081	src/map/cMapEditor.cpp	src/gameobjects/map/cMapEditor.cpp
+R075	src/map/cMapEditor.h	src/gameobjects/map/cMapEditor.h
+A	src/gameobjects/map/cPreviewMaps.cpp
+A	src/gameobjects/map/cPreviewMaps.h
+R056	src/map/cRandomMapGenerator.cpp	src/gameobjects/map/cRandomMapGenerator.cpp
+A	src/gameobjects/map/cRandomMapGenerator.h
+R053	src/utils/cSeedMap.cpp	src/gameobjects/map/cSeedMap.cpp
+R056	src/utils/cSeedMap.h	src/gameobjects/map/cSeedMap.h
+R097	src/utils/cSeedMapGenerator.cpp	src/gameobjects/map/cSeedMapGenerator.cpp
+R077	src/utils/cSeedMapGenerator.h	src/gameobjects/map/cSeedMapGenerator.h
+R068	src/mentat/AbstractMentat.cpp	src/gameobjects/mentat/AbstractMentat.cpp
+R070	src/mentat/AbstractMentat.h	src/gameobjects/mentat/AbstractMentat.h
+A	src/gameobjects/mentat/AtreidesMentat.cpp
+A	src/gameobjects/mentat/AtreidesMentat.h
+A	src/gameobjects/mentat/BeneMentat.cpp
+A	src/gameobjects/mentat/BeneMentat.h
+A	src/gameobjects/mentat/HarkonnenMentat.cpp
+A	src/gameobjects/mentat/HarkonnenMentat.h
+A	src/gameobjects/mentat/OrdosMentat.cpp
+A	src/gameobjects/mentat/OrdosMentat.h
+A	src/gameobjects/mentat/SardaukarMentat.cpp
+A	src/gameobjects/mentat/SardaukarMentat.h
+M	src/gameobjects/particles/cParticle.cpp
+M	src/gameobjects/particles/cParticle.h
+A	src/gameobjects/particles/cParticleInfos.h
+A	src/gameobjects/particles/cParticles.h
+R057	src/player/brains/actions/cRespondToThreatAction.cpp	src/gameobjects/players/brains/actions/cRespondToThreatAction.cpp
+R077	src/player/brains/actions/cRespondToThreatAction.h	src/gameobjects/players/brains/actions/cRespondToThreatAction.h
+A	src/gameobjects/players/brains/cPlayerBrain.cpp
+A	src/gameobjects/players/brains/cPlayerBrain.h
+R078	src/player/brains/cPlayerBrainCampaign.cpp	src/gameobjects/players/brains/cPlayerBrainCampaign.cpp
+R072	src/player/brains/cPlayerBrainCampaign.h	src/gameobjects/players/brains/cPlayerBrainCampaign.h
+R084	src/player/brains/cPlayerBrainData.h	src/gameobjects/players/brains/cPlayerBrainData.h
+A	src/gameobjects/players/brains/cPlayerBrainEmpty.cpp
+A	src/gameobjects/players/brains/cPlayerBrainEmpty.h
+A	src/gameobjects/players/brains/cPlayerBrainSandworm.cpp
+A	src/gameobjects/players/brains/cPlayerBrainSandworm.h
+R081	src/player/brains/cPlayerBrainSkirmish.cpp	src/gameobjects/players/brains/cPlayerBrainSkirmish.cpp
+R081	src/player/brains/cPlayerBrainSkirmish.h	src/gameobjects/players/brains/cPlayerBrainSkirmish.h
+R084	src/player/brains/missions/cPlayerBrainMission.cpp	src/gameobjects/players/brains/missions/cPlayerBrainMission.cpp
+R083	src/player/brains/missions/cPlayerBrainMission.h	src/gameobjects/players/brains/missions/cPlayerBrainMission.h
+R056	src/player/brains/missions/cPlayerBrainMissionKind.cpp	src/gameobjects/players/brains/missions/cPlayerBrainMissionKind.cpp
+R082	src/player/brains/missions/cPlayerBrainMissionKind.h	src/gameobjects/players/brains/missions/cPlayerBrainMissionKind.h
+R061	src/player/brains/missions/cPlayerBrainMissionKindAttack.cpp	src/gameobjects/players/brains/missions/cPlayerBrainMissionKindAttack.cpp
+R055	src/player/brains/missions/cPlayerBrainMissionKindAttack.h	src/gameobjects/players/brains/missions/cPlayerBrainMissionKindAttack.h
+R062	src/player/brains/missions/cPlayerBrainMissionKindDeathHand.cpp	src/gameobjects/players/brains/missions/cPlayerBrainMissionKindDeathHand.cpp
+R061	src/player/brains/missions/cPlayerBrainMissionKindDeathHand.h	src/gameobjects/players/brains/missions/cPlayerBrainMissionKindDeathHand.h
+R062	src/player/brains/missions/cPlayerBrainMissionKindExplore.cpp	src/gameobjects/players/brains/missions/cPlayerBrainMissionKindExplore.cpp
+R057	src/player/brains/missions/cPlayerBrainMissionKindExplore.h	src/gameobjects/players/brains/missions/cPlayerBrainMissionKindExplore.h
+R057	src/player/brains/missions/cPlayerBrainMissionKindFremen.cpp	src/gameobjects/players/brains/missions/cPlayerBrainMissionKindFremen.cpp
+R056	src/player/brains/missions/cPlayerBrainMissionKindFremen.h	src/gameobjects/players/brains/missions/cPlayerBrainMissionKindFremen.h
+R058	src/player/brains/missions/cPlayerBrainMissionKindSaboteur.cpp	src/gameobjects/players/brains/missions/cPlayerBrainMissionKindSaboteur.cpp
+R053	src/player/brains/missions/cPlayerBrainMissionKindSaboteur.h	src/gameobjects/players/brains/missions/cPlayerBrainMissionKindSaboteur.h
+R056	src/player/brains/superweapon/cPlayerBrainFremenSuperWeapon.cpp	src/gameobjects/players/brains/superweapon/cPlayerBrainFremenSuperWeapon.cpp
+A	src/gameobjects/players/brains/superweapon/cPlayerBrainFremenSuperWeapon.h
+A	src/gameobjects/players/cHousesInfo.cpp
+A	src/gameobjects/players/cHousesInfo.h
+R059	src/player/cPlayer.cpp	src/gameobjects/players/cPlayer.cpp
+R066	src/player/cPlayer.h	src/gameobjects/players/cPlayer.h
+R082	src/player/cPlayerDifficultySettings.cpp	src/gameobjects/players/cPlayerDifficultySettings.cpp
+R071	src/player/cPlayerDifficultySettings.h	src/gameobjects/players/cPlayerDifficultySettings.h
+A	src/gameobjects/players/cPlayerNotification.cpp
+A	src/gameobjects/players/cPlayerNotification.h
+A	src/gameobjects/players/cPlayerStatistics.cpp
+A	src/gameobjects/players/cPlayerStatistics.h
+A	src/gameobjects/players/cPlayers.cpp
+A	src/gameobjects/players/cPlayers.h
+M	src/gameobjects/projectiles/bullet.cpp
+M	src/gameobjects/projectiles/bullet.h
+A	src/gameobjects/projectiles/cBulletInfos.h
+A	src/gameobjects/projectiles/cBullets.cpp
+A	src/gameobjects/projectiles/cBullets.h
+A	src/gameobjects/sTerrainInfo.h
+M	src/gameobjects/structures/cAbstractStructure.cpp
+M	src/gameobjects/structures/cAbstractStructure.h
+M	src/gameobjects/structures/cBarracks.cpp
+M	src/gameobjects/structures/cBarracks.h
+M	src/gameobjects/structures/cConstYard.cpp
+M	src/gameobjects/structures/cConstYard.h
+M	src/gameobjects/structures/cGunTurret.cpp
+M	src/gameobjects/structures/cGunTurret.h
+M	src/gameobjects/structures/cHeavyFactory.cpp
+M	src/gameobjects/structures/cHeavyFactory.h
+M	src/gameobjects/structures/cHighTech.cpp
+M	src/gameobjects/structures/cHighTech.h
+M	src/gameobjects/structures/cIx.cpp
+M	src/gameobjects/structures/cIx.h
+M	src/gameobjects/structures/cLightFactory.cpp
+M	src/gameobjects/structures/cLightFactory.h
+M	src/gameobjects/structures/cOrderProcesser.cpp
+M	src/gameobjects/structures/cOrderProcesser.h
+M	src/gameobjects/structures/cOutPost.cpp
+M	src/gameobjects/structures/cOutPost.h
+M	src/gameobjects/structures/cPalace.cpp
+M	src/gameobjects/structures/cPalace.h
+M	src/gameobjects/structures/cRefinery.cpp
+M	src/gameobjects/structures/cRefinery.h
+M	src/gameobjects/structures/cRepairFacility.cpp
+M	src/gameobjects/structures/cRepairFacility.h
+M	src/gameobjects/structures/cRocketTurret.cpp
+M	src/gameobjects/structures/cRocketTurret.h
+M	src/gameobjects/structures/cSpiceSilo.cpp
+M	src/gameobjects/structures/cSpiceSilo.h
+M	src/gameobjects/structures/cStarPort.cpp
+M	src/gameobjects/structures/cStarPort.h
+M	src/gameobjects/structures/cStructureFactory.cpp
+M	src/gameobjects/structures/cStructureFactory.h
+A	src/gameobjects/structures/cStructureInfo.h
+A	src/gameobjects/structures/cStructures.h
+M	src/gameobjects/structures/cWindTrap.cpp
+M	src/gameobjects/structures/cWindTrap.h
+M	src/gameobjects/structures/cWor.cpp
+M	src/gameobjects/structures/cWor.h
+A	src/gameobjects/units/cPathFinder.cpp
+A	src/gameobjects/units/cPathFinder.h
+M	src/gameobjects/units/cReinforcements.cpp
+M	src/gameobjects/units/cReinforcements.h
+A	src/gameobjects/units/cTimer.h
+M	src/gameobjects/units/cUnit.cpp
+M	src/gameobjects/units/cUnit.h
+A	src/gameobjects/units/cUnitInfos.h
+D	src/gameobjects/units/cUnitUtils.cpp
+D	src/gameobjects/units/cUnitUtils.h
+A	src/gameobjects/units/cUnits.cpp
+A	src/gameobjects/units/cUnits.h
+M	src/gamestates/cChooseHouseState.cpp
+M	src/gamestates/cChooseHouseState.h
+A	src/gamestates/cCreatorState.cpp
+A	src/gamestates/cCreatorState.h
+M	src/gamestates/cCreditsState.cpp
+M	src/gamestates/cCreditsState.h
+A	src/gamestates/cEditorState.cpp
+A	src/gamestates/cEditorState.h
+A	src/gamestates/cEditorState/cEditorCam.cpp
+A	src/gamestates/cEditorState/cEditorCam.h
+A	src/gamestates/cEditorState/cEditorUndoRedoHistory.cpp
+A	src/gamestates/cEditorState/cEditorUndoRedoHistory.h
+A	src/gamestates/cGamePlaying.cpp
+A	src/gamestates/cGamePlaying.h
+M	src/gamestates/cGameState.cpp
+M	src/gamestates/cGameState.h
+M	src/gamestates/cMainMenuState.cpp
+M	src/gamestates/cMainMenuState.h
+A	src/gamestates/cMentatState.cpp
+A	src/gamestates/cMentatState.h
+A	src/gamestates/cNewMapEditorState.h
+A	src/gamestates/cNewmapEditorState.cpp
+M	src/gamestates/cOptionsState.cpp
+M	src/gamestates/cOptionsState.h
+A	src/gamestates/cScoringState.cpp
+A	src/gamestates/cScoringState.h
+M	src/gamestates/cSelectMissionState.cpp
+M	src/gamestates/cSelectMissionState.h
+M	src/gamestates/cSelectYourNextConquestState.cpp
+M	src/gamestates/cSelectYourNextConquestState.h
+M	src/gamestates/cSetupSkirmishState.cpp
+M	src/gamestates/cSetupSkirmishState.h
+A	src/gamestates/cTellHouseState.cpp
+A	src/gamestates/cTellHouseState.h
+A	src/gamestates/cWinLoseState.cpp
+A	src/gamestates/cWinLoseState.h
+A	src/gui/GuiBar.cpp
+A	src/gui/GuiBar.h
+M	src/gui/GuiButton.cpp
+M	src/gui/GuiButton.h
+A	src/gui/GuiButtonGroup.cpp
+A	src/gui/GuiButtonGroup.h
+M	src/gui/GuiCheckBox.cpp
+M	src/gui/GuiCheckBox.hpp
+A	src/gui/GuiConsole.cpp
+A	src/gui/GuiConsole.h
+A	src/gui/GuiConsole/GuiConsoleMessageParser.cpp
+A	src/gui/GuiConsole/GuiConsoleMessageParser.h
+A	src/gui/GuiCycleButton.cpp
+A	src/gui/GuiCycleButton.h
+M	src/gui/GuiLabel.cpp
+M	src/gui/GuiLabel.hpp
+M	src/gui/GuiObject.cpp
+M	src/gui/GuiObject.h
+M	src/gui/GuiSlider.cpp
+M	src/gui/GuiSlider.hpp
+A	src/gui/GuiStateButton.cpp
+A	src/gui/GuiStateButton.h
+A	src/gui/GuiTextInput.cpp
+A	src/gui/GuiTextInput.h
+M	src/gui/GuiTheme.hpp
+A	src/gui/GuiValueButton.cpp
+A	src/gui/GuiValueButton.h
+M	src/gui/GuiWindow.cpp
+M	src/gui/GuiWindow.h
+D	src/gui/MouseToolTip.cpp
+D	src/gui/MouseToolTip.h
+M	src/gui/cTextWriter.cpp
+M	src/gui/cTextWriter.h
+A	src/include/Facing.h
+M	src/include/Texture.hpp
+A	src/include/cAssert.h
+A	src/include/cMyChrono.h
+M	src/include/config.h.in
+D	src/include/d2tmc.h
+M	src/include/definitions.h
+A	src/include/eGameEventType.h
+A	src/include/eGameState.cpp
+A	src/include/eGameState.h
+A	src/include/eNotificationType.h
+D	src/include/enums.h
+A	src/include/enums/BuildEnums.h
+A	src/include/enums/CombatEnums.h
+A	src/include/enums/HouseFlags.h
+A	src/include/enums/ListEnums.h
+A	src/include/enums/MapEnums.h
+D	src/include/iniDefine.h
+A	src/include/iniSections.h
+A	src/include/iniUnitsParts.h
+A	src/include/iniWords.h
+A	src/include/sDataCampaign.h
+A	src/include/sGameEvent.cpp
+M	src/include/sGameEvent.h
+A	src/include/sGameServices.h
+M	src/include/structs.h
+D	src/ini.cpp
+D	src/ini.h
+M	src/main.cpp
+M	src/managers/cDrawManager.cpp
+M	src/managers/cDrawManager.h
+D	src/managers/cInteractionManager.cpp
+D	src/managers/cInteractionManager.h
+D	src/map/cPreviewMaps.cpp
+D	src/map/cPreviewMaps.h
+D	src/map/cRandomMapGenerator.h
+D	src/mentat/AtreidesMentat.cpp
+D	src/mentat/AtreidesMentat.h
+D	src/mentat/BeneMentat.cpp
+D	src/mentat/BeneMentat.h
+D	src/mentat/HarkonnenMentat.cpp
+D	src/mentat/HarkonnenMentat.h
+D	src/mentat/OrdosMentat.cpp
+D	src/mentat/OrdosMentat.h
+M	src/observers/cInputObserver.h
+M	src/observers/cScenarioObserver.h
+M	src/platform.h
+D	src/player/brains/cPlayerBrain.cpp
+D	src/player/brains/cPlayerBrain.h
+D	src/player/brains/cPlayerBrainEmpty.cpp
+D	src/player/brains/cPlayerBrainEmpty.h
+D	src/player/brains/cPlayerBrainSandworm.cpp
+D	src/player/brains/cPlayerBrainSandworm.h
+D	src/player/brains/superweapon/cPlayerBrainFremenSuperWeapon.h
+D	src/player/cHousesInfo.cpp
+D	src/player/cHousesInfo.h
+D	src/player/cPlayerNotification.cpp
+D	src/player/cPlayerNotification.h
+D	src/player/cPlayerStatistics.cpp
+D	src/player/cPlayerStatistics.h
+M	src/sidebar/cBuildingList.cpp
+M	src/sidebar/cBuildingList.h
+M	src/sidebar/cBuildingListFactory.cpp
+M	src/sidebar/cBuildingListFactory.h
+M	src/sidebar/cBuildingListItem.cpp
+M	src/sidebar/cBuildingListItem.h
+M	src/sidebar/cBuildingListUpdater.cpp
+M	src/sidebar/cBuildingListUpdater.h
+M	src/sidebar/cSideBar.cpp
+M	src/sidebar/cSideBar.h
+M	src/sidebar/cSideBarFactory.cpp
+M	src/sidebar/cSideBarFactory.h
+M	src/utils/Color.hpp
+M	src/utils/Graphics.cpp
+M	src/utils/Graphics.hpp
+A	src/utils/HouseColors.h
+A	src/utils/IniParsing.cpp
+A	src/utils/IniParsing.hpp
+R055	src/utils/GameSettings.hpp	src/utils/InitialGameSettings.hpp
+A	src/utils/Log.cpp
+A	src/utils/Log.h
+M	src/utils/RNG.cpp
+M	src/utils/RNG.hpp
+A	src/utils/ScenarioData.hpp
+A	src/utils/SfxTrackAllocator.cpp
+A	src/utils/SfxTrackAllocator.h
+M	src/utils/cDataPack.cpp
+M	src/utils/cDataPack.hpp
+A	src/utils/cEnumArray.h
+A	src/utils/cExpandingRectangle.cpp
+A	src/utils/cExpandingRectangle.h
+M	src/utils/cFileValidator.cpp
+M	src/utils/cFileValidator.h
+M	src/utils/cFocusManager.cpp
+M	src/utils/cFocusManager.h
+M	src/utils/cHandleArgument.cpp
+M	src/utils/cHandleArgument.h
+M	src/utils/cIniFile.cpp
+M	src/utils/cIniFile.h
+D	src/utils/cIniGameRessouces.cpp
+D	src/utils/cIniGameRessouces.h
+R068	src/utils/cIniUTils.cpp	src/utils/cIniUtils.cpp
+M	src/utils/cIniUtils.h
+D	src/utils/cLog.cpp
+D	src/utils/cLog.h
+A	src/utils/cMatrix.h
+M	src/utils/cPack.cpp
+M	src/utils/cPack.h
+D	src/utils/cPlatformLayerInit.cpp
+D	src/utils/cPlatformLayerInit.h
+M	src/utils/cPoint.cpp
+M	src/utils/cPoint.h
+M	src/utils/cRectangle.cpp
+M	src/utils/cRectangle.h
+D	src/utils/cScreenInit.cpp
+D	src/utils/cScreenInit.h
+M	src/utils/cSoundPlayer.cpp
+M	src/utils/cSoundPlayer.h
+M	src/utils/cStructureUtils.cpp
+M	src/utils/cStructureUtils.h
+D	src/utils/cTimeCounter.cpp
+D	src/utils/cTimeCounter.h
+M	src/utils/common.cpp
+M	src/utils/common.h
+M	src/utils/d2tm_math.cpp
+M	src/utils/d2tm_math.h
+A	src/utils/ini.cpp
+A	src/utils/ini.h
+A	src/utils/texture_utils.cpp
+A	src/utils/texture_utils.h
+A	tests/CMakeLists.txt
+A	tests/controls/test_cKeyBindings.cpp
+A	tests/map/test_MapGeometry.cpp
+A	tests/map/test_cPreviewMapsSave.cpp
+A	tests/seedgen/test_seedgen.cpp
+A	tests/utils/test_CampaignProgress.cpp
+A	tests/utils/test_IniParsing.cpp
+A	tests/utils/test_IniScenarioParsing.cpp
+A	tests/utils/test_SfxTrackAllocator.cpp
+A	tests/utils/test_cExpandingRectangle.cpp
+A	tests/utils/test_cHandleArgument.cpp
+A	tests/utils/test_cIniFile.cpp
+A	tests/utils/test_cIniUtils.cpp
+A	tests/utils/test_cPoint.cpp
+A	tests/utils/test_cRectangle.cpp
+A	tests/utils/test_d2tm_math.cpp
