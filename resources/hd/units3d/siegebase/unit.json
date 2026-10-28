@@ -19,6 +19,6 @@
     "cap_color": [133, 112, 85]
   },
   "house_paint": {"hue_deg": 30, "hue_width_deg": 18, "min_saturation": 0.18, "min_value": 0.27},
-  "mask_share": [0.05, 0.9],
+  "mask_share": [0.79, 0.99],
   "max_holes": 0
 }
