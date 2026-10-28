@@ -43,6 +43,8 @@ def clean(pixels):
 
 def shadow_frames(frames):
     peak = max(int(f[..., 3].max()) for f in frames)
+    if not peak:
+        raise SystemExit('shadow frames are empty')
     result = []
     for f in frames:
         out = np.zeros_like(f)
