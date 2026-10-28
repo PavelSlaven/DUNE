@@ -50,3 +50,6 @@
 | B1 | answer-04 | проверка `HEAD == UP0` ломает скрипт после его коммита | исполнитель | `tools/upstream/build_up0_linux.sh:177–178` | — |
 | B1 | answer-04 | скрипт пишет `TMPDIR` в неигнорируемый `.tmp/` репозитория | исполнитель | `tools/upstream/build_up0_linux.sh:8`, `:11` | — |
 | B1 | answer-04 | маркер протокола `## Q-B1` в выводе скрипта | исполнитель | `tools/upstream/build_up0_linux.sh:16` | — |
+| A2b | answer-03 | случаи проверки 5 для атласа башни двигают к краю и корпус — `top` не проверяется | исполнитель | `tools/units3d/tests/test_check_unit.py:1302–1373` | — |
+| A2b | answer-03 | случаи проверки 5 для масок не проверяют маску; изоляция невозможна, `Q` не задан | исполнитель | `tools/units3d/tests/test_check_unit.py:1302–1373` | — |
+| A2b | answer-03 | «α = 17 у края» у атласов и масок: остальная кромка с α = 255 | исполнитель | `tools/units3d/tests/test_check_unit.py:1376–1397` | — |
