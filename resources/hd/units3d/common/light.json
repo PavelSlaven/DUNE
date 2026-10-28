@@ -1,0 +1,9 @@
+{
+  "sun_azimuth_deg": 130,
+  "sun_elevation_deg": 76,
+  "sun_strength": 4.0,
+  "sun_color": [1.0, 0.95, 0.88],
+  "sun_angle_deg": 3.0,
+  "ambient_color": [0.8, 0.78, 0.75],
+  "ambient_strength": 0.6
+}

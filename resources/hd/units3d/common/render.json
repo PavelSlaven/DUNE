@@ -1,0 +1,9 @@
+{
+  "blender": "5.2.3",
+  "engine": "CYCLES",
+  "device": "CPU",
+  "samples": 64,
+  "mask_samples": 16,
+  "seed": 7,
+  "denoise": true
+}

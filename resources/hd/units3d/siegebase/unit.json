@@ -1,0 +1,23 @@
+{
+  "parts": {
+    "body": {"atlas": "UNIT_SIEGEBASE", "shadow": "UNIT_SIEGEBASE_SHADOW", "mask": "HM_UNIT_SIEGEBASE"},
+    "top": {"atlas": "UNIT_SIEGETOP", "mask": "HM_UNIT_SIEGETOP"}
+  },
+  "model": "source/desert_tank.glb",
+  "forward": "-Y",
+  "frame_hd4": [144, 144],
+  "atlas_hd4": [1152, 152],
+  "length_m": 7.0,
+  "pivot_xy": [-0.07, 0.0],
+  "pivot_height_ratio": 0.5,
+  "split": {
+    "turret": [
+      {"type": "box", "min": [-0.31, -0.15, 0.225], "max": [0.18, 0.15, 0.45]},
+      {"type": "box", "min": [0.1, -0.06, 0.24], "max": [0.5, 0.06, 0.36]}
+    ],
+    "cap_z": 0.225
+  },
+  "house_paint": {"hue_deg": 30, "hue_width_deg": 18, "min_saturation": 0.18, "min_value": 0.27},
+  "mask_share": [0.05, 0.9],
+  "max_holes": 0
+}

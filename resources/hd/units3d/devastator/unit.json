@@ -1,0 +1,16 @@
+{
+  "parts": {
+    "body": {"atlas": "UNIT_DEVASTATOR", "shadow": "UNIT_DEVASTATOR_SHADOW", "mask": "HM_UNIT_DEVASTATOR"}
+  },
+  "model": "source/red_tank.glb",
+  "forward": "-X",
+  "decimate": 0.05,
+  "frame_hd4": [152, 184],
+  "atlas_hd4": [1216, 192],
+  "length_m": 8.2,
+  "pivot_xy": [0.0, 0.0],
+  "pivot_height_ratio": 0.5,
+  "house_paint": {"hue_deg": 0, "hue_width_deg": 25, "min_saturation": 0.35, "min_value": 0.14},
+  "mask_share": [0.05, 0.9],
+  "max_holes": 0
+}
