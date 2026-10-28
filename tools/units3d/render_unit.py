@@ -161,6 +161,16 @@ def vertices(objs):
     return np.array([v.co[:] for o in objs for v in o.data.vertices])
 
 
+def screen_bbox(points, yaw_deg, theta_deg, pivot_height, frame, px_per_m):
+    yaw, theta = math.radians(yaw_deg), math.radians(theta_deg)
+    x = points[:, 0] * math.cos(yaw) - points[:, 1] * math.sin(yaw)
+    y = points[:, 0] * math.sin(yaw) + points[:, 1] * math.cos(yaw)
+    up = y * math.sin(theta) + (points[:, 2] - pivot_height) * math.cos(theta)
+    px = frame[0] / 2 + x * px_per_m
+    py = frame[1] / 2 - up * px_per_m
+    return [round(float(v), 2) for v in (px.min(), py.min(), px.max(), py.max())]
+
+
 def setup_scene(render_cfg, light_cfg, frame, supersample):
     scene = bpy.context.scene
     scene.render.engine = 'CYCLES'
@@ -456,6 +466,10 @@ def main():
         'hull_screen_length_px': float((hull[:, 0].max() - hull[:, 0].min()) * px_per_m),
         'parts': sorted(parts),
         'directions': directions,
+        'bbox_hd4': {
+            name: {str(k): screen_bbox(vertices([obj]), DIRECTION_YAW[k], theta, pivot_height, frame, px_per_m) for k in directions}
+            for name, obj in parts.items()
+        },
         'hashes': {
             **{f'{name}.json': sha256(path) for name, path in model_files.items()},
             'unit.json': sha256(unit_dir / 'unit.json'),
