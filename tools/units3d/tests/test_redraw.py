@@ -695,5 +695,79 @@ class RedrawAcceptanceTests(unittest.TestCase):
         self.assertIn("r0k7", result.stderr, transcript)
 
 
+    def enlarge_on_canvas(self, source, target, factor=1.4):
+        with Image.open(source) as image:
+            if "A" in image.getbands():
+                rgba = image.convert("RGBA")
+                background = Image.new("RGBA", rgba.size, (255, 0, 255, 255))
+                rgb = Image.alpha_composite(background, rgba).convert("RGB")
+            else:
+                rgb = image.convert("RGB")
+            canvas = rgb.resize((1024, 1024), Image.Resampling.LANCZOS)
+        size = round(1024 * factor)
+        enlarged = canvas.resize((size, size), Image.Resampling.LANCZOS)
+        cropped = Image.new("RGB", (1024, 1024), (255, 0, 255))
+        cropped.paste(enlarged, ((1024 - size) // 2, (1024 - size) // 2))
+        cropped.save(target)
+        return str(target.resolve())
+
+    def test_21_fit_scale_removes_clipping(self):
+        unit_dir, data = self.copy_unit()
+        record = self.frame(data, 0)
+        record["attempts"][record["pick"]] = self.enlarge_on_canvas(
+            ROOT / record["attempts"][record["pick"]], self.root / "attempt_k0_enlarged.png"
+        )
+        record["recolour"] = self.enlarge_on_canvas(
+            ROOT / record["recolour"], self.root / "recolour_k0_enlarged.png"
+        )
+        data["scale"] = "fit"
+        self.save_unit(unit_dir, data)
+
+        output = self.root / "build_fit"
+        result = self.run_tool("build", output, unit=unit_dir)
+        transcript = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, transcript)
+        self.assertTrue((output / "atlases.json").is_file(), transcript)
+        params = json.loads((output / "params.json").read_text(encoding="utf-8"))
+        self.assertLess(params["scale"], params["scale_median"])
+        self.assertAlmostEqual(params["scale_median"], 1.0714527591528187, places=9)
+        self.assertIn("all frames pass", (output / "metrics.txt").read_text(encoding="utf-8").splitlines())
+
+    def test_22_explicit_scale_is_used(self):
+        unit_dir, data = self.copy_unit()
+        data["scale"] = 1.0
+        self.save_unit(unit_dir, data)
+
+        output = self.root / "build_explicit_scale"
+        result = self.run_tool("build", output, unit=unit_dir)
+        transcript = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, transcript)
+        params = json.loads((output / "params.json").read_text(encoding="utf-8"))
+        self.assertEqual(params["scale"], 1.0)
+        self.assertAlmostEqual(params["scale_median"], 1.0714527591528187, places=9)
+
+    def test_23_share_corridor_from_unit(self):
+        unit_dir, data = self.copy_unit()
+        record = self.frame(data, 5)
+        with Image.open(ROOT / record["recolour"]) as image:
+            pixels = np.asarray(image.convert("RGB").resize((1024, 1024), Image.Resampling.LANCZOS)).copy()
+        distance = np.linalg.norm(pixels.astype(np.int16) - np.array((255, 0, 255), dtype=np.int16), axis=2)
+        pixels[distance > 60] = (0, 255, 0)
+        modified = self.root / "recolour_k5_all_green.png"
+        Image.fromarray(pixels, "RGB").save(modified)
+        record["recolour"] = str(modified.resolve())
+        data["share_corridor"] = [0.0, 1.0]
+        self.save_unit(unit_dir, data)
+
+        output = self.root / "build_share_corridor"
+        result = self.run_tool("build", output, unit=unit_dir)
+        transcript = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, transcript)
+        self.assertIn(
+            "corridor	0.00000	1.00000	set",
+            (output / "metrics.txt").read_text(encoding="utf-8").splitlines(),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
