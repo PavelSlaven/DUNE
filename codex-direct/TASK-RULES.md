@@ -5,8 +5,8 @@ stop caveman. Пиши полным литературным языком.
 ## Среда servak
 
 - Рабочая копия задания — папка, из которой тебя запустили (`/srv/dune/worktrees/<id>`). Писать можно только в неё. Временные файлы — только в `<рабочая копия>/.tmp/` (папка исключена из git через `.git/info/exclude`).
-- Файлы Git LFS в этой копии — текстовые указатели, а не данные. Настоящие паки лежат вне репозитория, только для чтения: `/srv/dune/inputs/packs/` (`sdl_data.dat`, `sdl_data_hd4.dat`). Модели пилота — `/srv/dune/inputs/glb/`.
-- Python с Pillow и numpy: `/srv/dune/venv/bin/python`. Blender 5.2.3 LTS: `/srv/dune/tools/blender-5.2.3-linux-x64/blender` (запускать с `-b --factory-startup`). Видеокарт нет: рендер только на CPU.
+- Файлы Git LFS в рабочих копиях `/srv/dune/worktrees/u*` — настоящие данные; в остальных рабочих копиях — текстовые указатели, а настоящие паки лежат вне репозитория, только для чтения: `/srv/dune/inputs/packs/` (`sdl_data.dat`, `sdl_data_hd4.dat`).
+- Python с Pillow, numpy и scipy (pytest нет, тесты — `unittest`): `/srv/dune/venv/bin/python`. Blender 5.2.3 LTS: `/srv/dune/tools/blender-5.2.3-linux-x64/blender` (запускать с `-b --factory-startup`). Видеокарт нет: рендер только на CPU.
 - Сети нет. Ничего не устанавливать и не скачивать. Чужие сервисы и папки вне рабочей копии не трогать, секреты не печатать.
 - Без фоновых команд: после твоей остановки тебя никто не разбудит. Длинные прогоны — в переднем плане, с таймаутом не больше 30 минут.
 
