@@ -227,7 +227,17 @@ def _manifest_schema(data: Any, unit: dict[str, Any]) -> dict[str, Any]:
     manifest = _mapping(data, "render_manifest.json")
     _string(manifest.get("blender"), "render_manifest.json.blender")
     for field in ("elevation_deg", "hd4_px_per_m", "model_scale", "pivot_height_m", "cap_height_m", "hull_screen_length_px"):
-        _number(manifest.get(field), f"render_manifest.json.{field}")
+        if field == "cap_height_m":
+            if "cap_height_m" not in manifest:
+                raise CheckError("render_manifest.json.cap_height_m: нет ключа")
+            if "top" in unit["parts"]:
+                _number(manifest["cap_height_m"], "render_manifest.json.cap_height_m")
+            elif manifest["cap_height_m"] is not None:
+                raise CheckError(
+                    "render_manifest.json.cap_height_m: у юнита без top ожидается null"
+                )
+        else:
+            _number(manifest.get(field), f"render_manifest.json.{field}")
     _positive_int(manifest.get("supersample"), "render_manifest.json.supersample")
     _dimensions(manifest.get("frame_hd4"), "render_manifest.json.frame_hd4")
     _require(isinstance(manifest.get("parts"), list), "render_manifest.json.parts: ожидается список")
