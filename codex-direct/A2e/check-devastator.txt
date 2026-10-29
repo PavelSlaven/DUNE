@@ -1,11 +1,11 @@
-1	composition	FAIL	render_manifest.json.cap_height_m: ожидается число
+1	composition	PASS	записей=3, деталей=1, кадров=8
 2	pack	PASS	записей=241, заменено=3
-3	direction	FAIL	render_manifest.json.cap_height_m: ожидается число
+3	direction	PASS	векторов=8, допуск=3°
 4	pivot	PASS	зелёных=8, синих=0
 5	margin	PASS	проверено пикселей=217804, отступ=2 px
-6	size	FAIL	render_manifest.json.cap_height_m: ожидается число
+6	size	PASS	Lref=131.200000 px, размеров=16
 7	alpha	PASS	канонизация, связность и отверстия проверены; max_holes=1
 8	mask	PASS	кадров маски=8, доля=[0.62, 0.76]
 9	shadow	FAIL	медианный угол тени -67.002238° отличается от -45.805221° более чем на 10°
-10	provenance	FAIL	render_manifest.json.cap_height_m: ожидается число
+10	provenance	PASS	хэшей и кадров проверено=37
 exit=1
