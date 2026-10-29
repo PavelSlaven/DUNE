@@ -166,9 +166,9 @@
 
 ## Организация работы
 
-- Порядок: `create_goal` → PLAN → `PLAN-OK-U1` → `redraw_common.py` с `redraw.py` → модули команд → прогон всех тестов и ручной прогон → коммиты → DONE.
+- Порядок: `create_goal` → PLAN → `PLAN-OK-U1` → `redraw_common.py` с `redraw.py` → модули команд → прогон всех тестов и ручной прогон → список коммитов → DONE.
 - Параллельно: после `redraw_common.py` семь модулей команд независимы друг от друга: каждый в своём файле со своим файлом тестов.
-- Помощники: субагенты `gpt-6-luna` `xhigh` пишут модули `redraw_inputs.py` с `guide_blender.py`, `redraw_recolour.py`, `redraw_score.py`, `redraw_shadow.py`, `redraw_pack.py`, `redraw_sheets.py` и их тесты сразу, по 4 одновременно, пока модули не кончатся; сам — PLAN, `redraw_common.py`, `redraw.py`, `redraw_build.py`, итоговые прогоны и коммиты. Субагенты не коммитят.
+- Помощники: субагенты `gpt-6-luna` `xhigh` пишут модули `redraw_inputs.py` с `guide_blender.py`, `redraw_recolour.py`, `redraw_score.py`, `redraw_shadow.py`, `redraw_pack.py`, `redraw_sheets.py` и их тесты сразу, по 4 одновременно, пока модули не кончатся; сам — PLAN, `redraw_common.py`, `redraw.py`, `redraw_build.py`, итоговые прогоны и список коммитов в сдаче. Коммиты делает ведущий по этому списку.
 - Остановки — блок `## Q-U1-NN` и стоп:
   - к началу работы в ветке нет `tools/units3d/tests/test_redraw.py` или его строки в `ACCEPTANCE.sha256`;
   - приёмочный тест краснеет, а ты считаешь тест неверным;
