@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from tools.units3d.redraw_common import DEFAULT_PACK, InputError, load_unit
+from tools.units3d.redraw_common import REPO_PACK, InputError, load_unit
 
 
 def parser():
@@ -23,9 +23,9 @@ def parser():
         if name == 'pack':
             command.add_argument('atlases', type=Path)
             command.add_argument('output', type=Path)
-            command.add_argument('--source', type=Path, default=DEFAULT_PACK)
+            command.add_argument('--source', type=Path, default=REPO_PACK)
         else:
-            command.add_argument('--pack', type=Path, default=DEFAULT_PACK)
+            command.add_argument('--pack', type=Path)
             if name in ('inputs', 'recolour-inputs', 'build'):
                 command.add_argument('output', type=Path)
             elif name == 'score':
@@ -49,7 +49,7 @@ def main(argv=None):
         unit = load_unit(args.unit, args.command, args.source if args.command == 'pack' else args.pack)
         module = importlib.import_module(f'tools.units3d.redraw_{args.module}')
         return module.run(unit, args)
-    except (InputError, OSError, ValueError, KeyError, TypeError) as exc:
+    except (InputError, OSError) as exc:
         print(str(exc), file=sys.stderr)
         return 2
 

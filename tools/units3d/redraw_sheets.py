@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from tools.units3d.redraw_common import ROOT, InputError, flat, frame_name, keyed
+from tools.units3d.redraw_common import ROOT, InputError, frame_input, frame_name
 
 
 TILE = 300
@@ -59,7 +59,7 @@ def _tint(frame, mask, color):
 
 def _attenuate_shadow(shadow):
     shadow = shadow.copy()
-    shadow[..., 3] = np.round(shadow[..., 3] * 160 / 255).astype(np.uint8)
+    shadow[..., 3] = np.round(shadow[..., 3].astype(np.float32) * 160 / 255).astype(np.uint8)
     return shadow
 
 
@@ -120,12 +120,8 @@ def contact(unit, args):
             if column < 2:
                 image = _image(path, 'RGB')
             else:
-                if not path.is_file():
-                    raise InputError(f'{path}: image not found')
-                try:
-                    image = flat(keyed(path))
-                except OSError as exc:
-                    raise InputError(f'{path}: {exc}') from exc
+                with frame_input(record, path):
+                    image = _image(path, 'RGB')
             sheet.paste(image.resize((TILE, TILE), Image.Resampling.LANCZOS),
                         (column * TILE, y + CAPTION))
     output = Path(args.output)

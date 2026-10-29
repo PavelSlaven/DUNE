@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from tools.units3d.redraw_common import bbox, keyed
+from tools.units3d.redraw_common import bbox, frame_input, keyed
 
 
 CANVAS = 1024
@@ -33,16 +33,19 @@ def _mirror_iou(first, second):
 
 def _frame_data(unit, record):
     k = record['k']
-    old = unit.old_frame('body', record)[..., 3]
-    x0, y0, x1, y1 = bbox(old)
+    with frame_input(record, unit.pack_path):
+        old = unit.old_frame('body', record)[..., 3]
+        x0, y0, x1, y1 = bbox(old)
     old_width, old_height = x1 - x0, y1 - y0
     estimate = unit.data['height_estimate']
     depth = (old_height - estimate * math.cos(T0)) / math.sin(T0)
     predicted = (depth * math.sin(T1) + estimate * math.cos(T1)) / old_width
     attempts = {}
     for key_name, value in record['attempts'].items():
-        rgba = keyed(unit.path(value))
-        cx0, cy0, cx1, cy1 = bbox(rgba[..., 3])
+        path = unit.path(value)
+        with frame_input(record, path):
+            rgba = keyed(path)
+            cx0, cy0, cx1, cy1 = bbox(rgba[..., 3])
         width, height = cx1 - cx0, cy1 - cy0
         attempts[key_name] = {
             'width': width,
@@ -63,6 +66,7 @@ def _frame_data(unit, record):
 
 def _report_row(row, records, frame_data):
     lines = [f'## row {row}', RATIO_HEADER]
+    mirror_cache = {}
     for record in records:
         k = record['k']
         info = frame_data[k]
@@ -81,10 +85,13 @@ def _report_row(row, records, frame_data):
         )
 
     def candidate_iou(p, p_key, q, q_key):
-        return _mirror_iou(
-            frame_data[p]['attempts'][p_key]['silhouette'],
-            frame_data[q]['attempts'][q_key]['silhouette'],
-        )
+        key = (p, p_key, q, q_key)
+        if key not in mirror_cache:
+            mirror_cache[key] = _mirror_iou(
+                frame_data[p]['attempts'][p_key]['silhouette'],
+                frame_data[q]['attempts'][q_key]['silhouette'],
+            )
+        return mirror_cache[key]
 
     lines.append(
         'old mirror IoU '

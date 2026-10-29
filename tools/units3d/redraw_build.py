@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image
 
 from tools.hd_assets import encode_png
-from tools.units3d.redraw_common import CANVAS, InputError, bbox, frame_name, key, keyed, place, prepare
+from tools.units3d.redraw_common import CANVAS, InputError, bbox, clean_keyed, frame_input, frame_name, key, keyed, place, prepare
 
 
 def run(unit, args):
@@ -16,12 +16,26 @@ def run(unit, args):
     if output.exists() and (not output.is_dir() or any(output.iterdir())):
         raise InputError(f'{output}: output must be absent or empty')
     records = unit.frames
-    boxes = {frame_name(f): bbox(unit.old_frame('body', f)[..., 3]) for f in records}
-    raw = {frame_name(f): keyed(unit.path(f['attempts'][f['pick']])) for f in records}
+    boxes = {}
+    for record in records:
+        name = frame_name(record)
+        with frame_input(record, unit.pack_path):
+            boxes[name] = bbox(unit.old_frame('body', record)[..., 3])
+    prepared = {}
+    raw = {}
+    for record in records:
+        name = frame_name(record)
+        attempt_path = unit.path(record['attempts'][record['pick']])
+        with frame_input(record, attempt_path):
+            prepared[name] = keyed(attempt_path, return_stray=True)
+            bbox(prepared[name][0][..., 3])
+        raw[name] = prepared[name][0]
     ratios = []
     for record in records:
         name = frame_name(record)
-        x0, _, x1, _ = bbox(raw[name][..., 3])
+        attempt_path = unit.path(record['attempts'][record['pick']])
+        with frame_input(record, attempt_path):
+            x0, _, x1, _ = bbox(raw[name][..., 3])
         box = boxes[name]
         ratios.append((box[2] - box[0]) / ((x1 - x0) * unit.maximum / CANVAS))
     scale = float(np.median(ratios))
@@ -40,19 +54,25 @@ def run(unit, args):
     atlases = {role: np.zeros_like(unit.image(unit.atlases['body']))
                for role, name in unit.atlases.items() if name is not None}
     params = {'scale': scale, 'frames': {}}
-    metrics = ['row\tk\tpick\tiou\tshare\told_share\tok']
+    metrics = ['row\tk\tpick\tiou\tshare\told_share\tstray\tok']
     failed = []
     fw, fh = unit.frame
     for record in records:
         name = frame_name(record)
-        body, clipped, offset, moved = place(raw[name], unit.frame, scale, boxes[name])
+        attempt_path = unit.path(record['attempts'][record['pick']])
+        with frame_input(record, attempt_path):
+            body, clipped, offset, moved = place(raw[name], unit.frame, scale, boxes[name])
         (output / 'frames' / f'{name}.png').write_bytes(encode_png(Image.fromarray(body)))
         params['frames'][name] = {'offset': list(offset), 'moved': list(moved)}
         reasons = []
         images = {'body': body}
         if has_mask:
-            edit = prepare(unit.path(record['recolour']))
-            edit_frame, edit_clipped, _, _ = place(key(edit), unit.frame, scale, boxes[name], offset)
+            recolour_path = unit.path(record['recolour'])
+            with frame_input(record, recolour_path):
+                edit = prepare(recolour_path)
+                cleaned_edit, _ = clean_keyed(key(edit))
+                bbox(cleaned_edit[..., 3])
+                edit_frame, edit_clipped, _, _ = place(cleaned_edit, unit.frame, scale, boxes[name], offset)
             clipped = clipped or edit_clipped
             on, edit_on = body[..., 3] > 127, edit_frame[..., 3] > 127
             union = (on | edit_on).sum()
@@ -89,7 +109,7 @@ def run(unit, args):
             x, y = record['k'] * fw, record['row'] * fh
             atlases[role][y:y + fh, x:x + fw] = image
         ok = not reasons
-        metrics.append(f"{record['row']}\t{record['k']}\t{record['pick']}\t{values}\t{ok}")
+        metrics.append(f"{record['row']}\t{record['k']}\t{record['pick']}\t{values}\t{prepared[name][1]}\t{ok}")
         if reasons:
             failed.append(name)
             print(f"{name}: {', '.join(reasons)}", file=sys.stderr)

@@ -10,6 +10,7 @@ import numpy as np
 from PIL import Image
 
 from tools.hd_assets import PackEntry, encode_png, write_pack
+from tools.units3d.redraw import main
 from tools.units3d.redraw_build import run
 from tools.units3d.redraw_common import ROOT, load_unit
 
@@ -35,19 +36,30 @@ class BuildTests(unittest.TestCase):
                      'frames': [{'row': row, 'k': k, 'attempts': {'chosen': str(self.attempt)},
                                  'pick': 'chosen'} for row in range(2) for k in range(8)]}
 
-    def build(self):
+    def _write_inputs(self):
         entries = [PackEntry(0, 'BODY', 'png', encode_png(Image.fromarray(self.body))),
                    PackEntry(1, 'SHADOW', 'png', encode_png(Image.fromarray(np.zeros_like(self.body))))]
         if self.data['atlases']['house_mask'] is not None:
             entries.append(PackEntry(2, 'MASK', 'png', encode_png(Image.fromarray(self.body))))
         write_pack(self.pack, entries)
         (self.root / 'unit.json').write_text(json.dumps(self.data), encoding='utf-8')
+
+    def build(self):
+        self._write_inputs()
         unit = load_unit(self.root, 'build', self.pack)
         output = self.root / 'out'
         stdout, stderr = io.StringIO(), io.StringIO()
         with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
             code = run(unit, SimpleNamespace(output=output))
         return code, output, stderr.getvalue()
+
+    def build_cli(self):
+        self._write_inputs()
+        output = self.root / 'cli-out'
+        stdout, stderr = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+            code = main(['build', str(self.root), str(output), '--pack', str(self.pack)])
+        return code, output, stdout.getvalue(), stderr.getvalue()
 
     def test_multiple_rows_wide_frame_zero_shift_and_no_mask(self):
         code, output, stderr = self.build()
@@ -63,7 +75,7 @@ class BuildTests(unittest.TestCase):
             for k in range(8):
                 self.assertTrue((output / 'frames' / f'r{row}k{k}.png').is_file())
         metrics = (output / 'metrics.txt').read_text(encoding='utf-8')
-        self.assertIn('1\t7\tchosen\t-\t-\t-\tTrue', metrics)
+        self.assertIn('1\t7\tchosen\t-\t-\t-\t0\tTrue', metrics)
         self.assertTrue(metrics.endswith('corridor\t-\t-\nall frames pass\n'))
         self.assertEqual(len(json.loads((output / 'params.json').read_text())['frames']), 16)
 
@@ -87,6 +99,39 @@ class BuildTests(unittest.TestCase):
         entries = json.loads((output / 'atlases.json').read_text())['entries']
         self.assertEqual(set(entries), {'BODY'})
         self.assertFalse((output / 'SHADOW.png').exists())
+
+    def test_r3_metrics_count_selected_attempt_stray_pixels(self):
+        pixels = np.array(Image.open(self.attempt))
+        pixels[20, 20] = (255, 80, 255)
+        Image.fromarray(pixels).save(self.attempt)
+        code, output, stderr = self.build()
+        self.assertEqual(code, 0, stderr)
+        lines = (output / 'metrics.txt').read_text().splitlines()
+        self.assertEqual(lines[0], 'row\tk\tpick\tiou\tshare\told_share\tstray\tok')
+        for line in lines[1:17]:
+            self.assertEqual(line.split('\t')[6:], ['1', 'True'])
+
+    def test_r6_blank_selected_attempt_reports_frame_and_path_as_input_error(self):
+        Image.new('RGB', (1024, 1024), (255, 0, 255)).save(self.attempt)
+
+        code, output, stdout, stderr = self.build_cli()
+
+        self.assertEqual(code, 2, stdout + stderr)
+        self.assertIn('r0k0', stderr)
+        self.assertIn(str(self.attempt), stderr)
+
+    def test_r6_blank_recolour_reports_frame_and_path_but_no_green_body_stays_share_failure(self):
+        self.data['atlases']['house_mask'] = 'MASK'
+        recolour = self.root / 'blank-recolour.png'
+        Image.new('RGB', (1024, 1024), (255, 0, 255)).save(recolour)
+        for record in self.data['frames']:
+            record['recolour'] = str(recolour)
+
+        code, output, stdout, stderr = self.build_cli()
+
+        self.assertEqual(code, 2, stdout + stderr)
+        self.assertIn('r0k0', stderr)
+        self.assertIn(str(recolour), stderr)
 
 
 if __name__ == '__main__':

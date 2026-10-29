@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import hashlib
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -13,7 +15,9 @@ from scipy import ndimage
 from tools.hd_assets import decode_image, read_pack
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_PACK = ROOT / 'resources/bin/data/sdl_data_hd4.dat'
+DEFAULT_PACK = ROOT / 'tools/units3d/data/sdl_data_hd4_source.dat'
+SOURCE_PACK_SHA256 = 'e2a87ce8cf9143f9d11ee0a54dcf10b7a57d109b49e713dadf4133c12d882045'
+REPO_PACK = ROOT / 'resources/bin/data/sdl_data_hd4.dat'
 CANVAS = 1024
 MAGENTA = np.array([255, 0, 255], np.float32)
 
@@ -24,6 +28,14 @@ class InputError(ValueError):
 
 def frame_name(record):
     return f"r{record['row']}k{record['k']}"
+
+
+@contextmanager
+def frame_input(record, path):
+    try:
+        yield
+    except (InputError, OSError) as exc:
+        raise InputError(f'{frame_name(record)}: {path}: {exc}') from exc
 
 
 def required(data, name, context='unit.json'):
@@ -88,7 +100,7 @@ class Unit:
         return self.image(self.atlases[role])[y:y + fh, x:x + fw].copy()
 
 
-def load_unit(directory, command, pack_path=DEFAULT_PACK):
+def load_unit(directory, command, pack_path=None):
     source = Path(directory) / 'unit.json'
     try:
         data = json.loads(source.read_text(encoding='utf-8'))
@@ -141,6 +153,7 @@ def load_unit(directory, command, pack_path=DEFAULT_PACK):
                 for value in attempts.values():
                     if not isinstance(value, str) or not value or not (ROOT / value).is_file():
                         raise InputError(f'{name}: attempts file {value}')
+                    validate_square(ROOT / value, record)
                 if command in ('build', 'recolour-inputs'):
                     pick = required(record, 'pick', name)
                     if not isinstance(pick, str) or pick not in attempts:
@@ -149,6 +162,7 @@ def load_unit(directory, command, pack_path=DEFAULT_PACK):
                     value = required(record, 'recolour', name)
                     if not isinstance(value, str) or not value or not (ROOT / value).is_file():
                         raise InputError(f'{name}: recolour file {value}')
+                    validate_square(ROOT / value, record)
         if command == 'inputs':
             vector(data, 'block', 3, positive=True)
             vector(data, 'arrow', 3)
@@ -180,6 +194,12 @@ def load_unit(directory, command, pack_path=DEFAULT_PACK):
             size = vector(building, 'size', 2, positive=True)
             if any(not isinstance(x, int) for x in size):
                 raise InputError('sheet_building.size: expected integer dimensions')
+    if pack_path is None:
+        pack_path = REPO_PACK if command == 'pack' else DEFAULT_PACK
+        if command != 'pack':
+            digest = hashlib.sha256(pack_path.read_bytes()).hexdigest()
+            if digest != SOURCE_PACK_SHA256:
+                raise InputError(f'{pack_path}: SHA-256 differs from the pinned source pack')
     pack_path = Path(pack_path)
     try:
         entries = read_pack(pack_path)
@@ -201,7 +221,18 @@ def load_unit(directory, command, pack_path=DEFAULT_PACK):
     return unit
 
 
+def validate_square(path, record=None):
+    prefix = f'{frame_name(record)}: ' if record is not None else ''
+    try:
+        with Image.open(path) as image:
+            if image.width != image.height:
+                raise InputError(f'{prefix}{path}: image must be square')
+    except OSError as exc:
+        raise InputError(f'{prefix}{path}: {exc}') from exc
+
+
 def prepare(path):
+    validate_square(path)
     with Image.open(path) as image:
         return image.convert('RGB').resize((CANVAS, CANVAS), Image.Resampling.LANCZOS)
 
@@ -225,9 +256,24 @@ def key(img):
     return np.dstack([color, a * 255]).round().astype(np.uint8)
 
 
-def keyed(path):
+def clean_keyed(rgba):
+    labels, count = ndimage.label(rgba[..., 3] > 127)
+    if count:
+        largest = 1 + int(np.argmax(np.bincount(labels.ravel())[1:]))
+        allowed = ndimage.binary_dilation(labels == largest, structure=np.ones((3, 3), bool), iterations=6)
+    else:
+        allowed = np.zeros(labels.shape, bool)
+    stray = (rgba[..., 3] > 0) & ~allowed
+    result = rgba.copy()
+    result[stray, 3] = 0
+    return result, int(stray.sum())
+
+
+def keyed(path, *, return_stray=False):
+    validate_square(path)
     with Image.open(path) as image:
-        return key(image.resize((CANVAS, CANVAS), Image.Resampling.LANCZOS))
+        result = clean_keyed(key(image.resize((CANVAS, CANVAS), Image.Resampling.LANCZOS)))
+        return result if return_stray else result[0]
 
 
 def bbox(alpha):
