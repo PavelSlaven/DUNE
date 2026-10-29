@@ -11,7 +11,7 @@ from PIL import Image
 
 from tools.hd_assets import PackEntry, encode_png, write_pack
 from tools.units3d.redraw import main
-from tools.units3d.redraw_build import run
+from tools.units3d.redraw_build import _fit_scale, run
 from tools.units3d.redraw_common import ROOT, load_unit
 
 
@@ -53,9 +53,9 @@ class BuildTests(unittest.TestCase):
             code = run(unit, SimpleNamespace(output=output))
         return code, output, stderr.getvalue()
 
-    def build_cli(self):
+    def build_cli(self, output=None):
         self._write_inputs()
-        output = self.root / 'cli-out'
+        output = output or self.root / 'cli-out'
         stdout, stderr = io.StringIO(), io.StringIO()
         with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
             code = main(['build', str(self.root), str(output), '--pack', str(self.pack)])
@@ -132,6 +132,56 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(code, 2, stdout + stderr)
         self.assertIn('r0k0', stderr)
         self.assertIn(str(recolour), stderr)
+
+    def test_r8_fit_scale_uses_binary_search_for_largest_valid_grid_point(self):
+        median = 1.173
+        threshold = 0.9052
+        calls = []
+
+        def fits(candidate):
+            calls.append(candidate)
+            return candidate <= threshold
+
+        scale = _fit_scale(median, fits)
+        expected = median - 0.001 * int(np.ceil((median - threshold) / 0.001))
+        search_budget = int(np.ceil(np.log2(np.ceil((median - 0.5) / 0.001) + 1))) + 1
+
+        self.assertAlmostEqual(scale, expected)
+        self.assertLessEqual(len(calls), search_budget)
+        self.assertTrue(scale <= threshold)
+        self.assertGreater(scale + 0.001, threshold)
+
+        calls.clear()
+        self.assertEqual(_fit_scale(median, lambda candidate: calls.append(candidate) or False), 0.5)
+        self.assertLessEqual(len(calls), search_budget)
+
+    def test_r8_positive_explicit_scale_below_fit_floor_is_valid(self):
+        self.data['scale'] = 0.4
+        code, output, stdout, stderr = self.build_cli()
+
+        self.assertEqual(code, 0, stdout + stderr)
+        params = json.loads((output / 'params.json').read_text(encoding='utf-8'))
+        self.assertEqual(params['scale'], 0.4)
+
+    def test_r8_invalid_optional_unit_scale_is_rejected_by_cli(self):
+        invalid_values = (
+            ('null', None),
+            ('true', True),
+            ('false', False),
+            ('zero', 0),
+            ('negative', -1),
+            ('string', 'automatic'),
+            ('list', ['fit']),
+            ('infinity', float('inf')),
+            ('nan', float('nan')),
+        )
+        for label, value in invalid_values:
+            with self.subTest(value=label):
+                self.data['scale'] = value
+                output = self.root / f'cli-scale-{label}'
+                code, _, stdout, stderr = self.build_cli(output)
+                self.assertEqual(code, 2, stdout + stderr)
+                self.assertIn('scale', stderr)
 
 
 if __name__ == '__main__':

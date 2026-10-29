@@ -174,6 +174,17 @@ def load_unit(directory, command, pack_path=None):
             raise InputError('atlases.house_mask: recolour-inputs requires a mask')
         if command == 'shadow-rule' and atlases['shadow'] is None:
             raise InputError('atlases.shadow: shadow-rule requires a shadow')
+        if command == 'build':
+            if 'scale' in data:
+                scale = data['scale']
+                if scale != 'fit' and (
+                        isinstance(scale, bool) or not isinstance(scale, (int, float))
+                        or not np.isfinite(scale) or scale <= 0):
+                    raise InputError('scale: expected a positive finite number or "fit"')
+            if 'share_corridor' in data:
+                corridor = vector(data, 'share_corridor', 2)
+                if any(isinstance(x, bool) for x in corridor) or corridor[0] > corridor[1]:
+                    raise InputError('share_corridor: expected ordered numeric bounds')
         if command == 'build' and atlases['shadow'] is not None:
             rule = required(data, 'shadow_rule')
             if not isinstance(rule, dict):

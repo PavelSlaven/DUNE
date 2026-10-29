@@ -11,6 +11,18 @@ from tools.hd_assets import encode_png
 from tools.units3d.redraw_common import CANVAS, InputError, bbox, clean_keyed, frame_input, frame_name, key, keyed, place, prepare
 
 
+def _fit_scale(scale_median, fits):
+    low, high = 0, max(0, int(np.ceil((scale_median - 0.5) / 0.001)))
+    while low < high:
+        middle = (low + high) // 2
+        candidate = max(0.5, scale_median - 0.001 * middle)
+        if fits(candidate):
+            high = middle
+        else:
+            low = middle + 1
+    return max(0.5, scale_median - 0.001 * low)
+
+
 def run(unit, args):
     output = args.output
     if output.exists() and (not output.is_dir() or any(output.iterdir())):
@@ -38,22 +50,52 @@ def run(unit, args):
             x0, _, x1, _ = bbox(raw[name][..., 3])
         box = boxes[name]
         ratios.append((box[2] - box[0]) / ((x1 - x0) * unit.maximum / CANVAS))
-    scale = float(np.median(ratios))
+    scale_median = float(np.median(ratios))
     has_mask = unit.atlases['house_mask'] is not None
+    recolours = {}
+    if has_mask:
+        for record in records:
+            recolour_path = unit.path(record['recolour'])
+            with frame_input(record, recolour_path):
+                edit = prepare(recolour_path)
+                cleaned_edit, _ = clean_keyed(key(edit))
+                bbox(cleaned_edit[..., 3])
+            recolours[frame_name(record)] = edit, cleaned_edit
+
+    def fits(candidate):
+        for record in records:
+            name = frame_name(record)
+            attempt_path = unit.path(record['attempts'][record['pick']])
+            with frame_input(record, attempt_path):
+                _, clipped, offset, _ = place(raw[name], unit.frame, candidate, boxes[name])
+            if clipped:
+                return False
+            if has_mask:
+                with frame_input(record, unit.path(record['recolour'])):
+                    _, clipped, _, _ = place(recolours[name][1], unit.frame, candidate, boxes[name], offset)
+                if clipped:
+                    return False
+        return True
+
+    scale = unit.data.get('scale', scale_median)
+    if scale == 'fit':
+        scale = _fit_scale(scale_median, fits)
     old_shares = {}
     if has_mask:
         for record in records:
             body = unit.old_frame('body', record)[..., 3] > 127
             mask = unit.old_frame('house_mask', record)[..., 3] > 127
             old_shares[frame_name(record)] = float(mask.sum() / body.sum())
-        corridor = (min(old_shares.values()) - 0.05, max(old_shares.values()) + 0.05)
+        corridor = unit.data.get('share_corridor',
+                                 (min(old_shares.values()) - 0.05, max(old_shares.values()) + 0.05))
+        corridor_source = 'set' if 'share_corridor' in unit.data else 'old'
     else:
         corridor = None
     output.mkdir(parents=True, exist_ok=True)
     (output / 'frames').mkdir()
     atlases = {role: np.zeros_like(unit.image(unit.atlases['body']))
                for role, name in unit.atlases.items() if name is not None}
-    params = {'scale': scale, 'frames': {}}
+    params = {'scale': scale, 'scale_median': scale_median, 'frames': {}}
     metrics = ['row\tk\tpick\tiou\tshare\told_share\tstray\tok']
     failed = []
     fw, fh = unit.frame
@@ -69,9 +111,7 @@ def run(unit, args):
         if has_mask:
             recolour_path = unit.path(record['recolour'])
             with frame_input(record, recolour_path):
-                edit = prepare(recolour_path)
-                cleaned_edit, _ = clean_keyed(key(edit))
-                bbox(cleaned_edit[..., 3])
+                edit, cleaned_edit = recolours[name]
                 edit_frame, edit_clipped, _, _ = place(cleaned_edit, unit.frame, scale, boxes[name], offset)
             clipped = clipped or edit_clipped
             on, edit_on = body[..., 3] > 127, edit_frame[..., 3] > 127
@@ -116,7 +156,7 @@ def run(unit, args):
     if corridor is None:
         metrics.append('corridor\t-\t-')
     else:
-        metrics.append(f'corridor\t{corridor[0]:.5f}\t{corridor[1]:.5f}')
+        metrics.append(f'corridor\t{corridor[0]:.5f}\t{corridor[1]:.5f}\t{corridor_source}')
     metrics.append(f"failed: {', '.join(failed)}" if failed else 'all frames pass')
     text = '\n'.join(metrics) + '\n'
     (output / 'params.json').write_text(json.dumps(params, indent=2) + '\n', encoding='utf-8')
