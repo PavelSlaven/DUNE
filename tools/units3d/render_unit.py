@@ -19,6 +19,9 @@ import bpy
 import numpy as np
 from mathutils import Matrix, Vector
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import house_plates  # noqa: E402
+
 FORWARD_YAW = {'+X': 0.0, '-Y': 90.0, '-X': 180.0, '+Y': -90.0}
 DIRECTION_YAW = [0, 45, 90, 135, 180, 225, 270, 315]
 MARKER_COLORS = {'nose': (1.0, 0.0, 0.0), 'axis': (0.0, 1.0, 0.0), 'ring': (0.0, 0.0, 1.0)}
@@ -303,6 +306,83 @@ def paint_material(source, rule):
     return material
 
 
+def _texture_pixels(node):
+    w, h = node.image.size
+    pixels = np.empty(w * h * 4, dtype=np.float32)
+    node.image.pixels.foreach_get(pixels)
+    return pixels.reshape(-1, 4)
+
+
+def _replace_texture(node, pixels, name):
+    image = node.image.copy()
+    image.name = name
+    image.pixels.foreach_set(pixels.ravel())
+    image.update()
+    node.image = image
+
+
+def _paint_textures(material):
+    bsdf = next(n for n in material.node_tree.nodes if n.type == 'BSDF_PRINCIPLED')
+    base = bsdf.inputs['Base Color'].links[0].from_node
+    rm = bsdf.inputs['Roughness'].links[0].from_node.inputs['Color'].links[0].from_node
+    return base, rm
+
+
+def repaint(obj, unit):
+    rule = unit.get('repaint')
+    if rule is None:
+        return
+    if len(obj.data.materials) != 1:
+        raise SystemExit('repaint needs a model with one material')
+    if paint_texels(np.rint(np.array([rule['detail_rgb']]) * 255), unit['house_paint'])[0]:
+        raise SystemExit('repaint.detail_rgb is paint by house_paint, so details would stay in the House zone')
+    material = obj.data.materials[0]
+    base_node, rm_node = _paint_textures(material)
+    base, rm = _texture_pixels(base_node), _texture_pixels(rm_node)
+    paint = paint_texels(np.rint(base[:, :3] * 255), unit['house_paint'])
+    rm[:, 1] = np.maximum(rm[:, 1], rule['roughness_floor'])
+    rm[paint, 1] = rule['paint_roughness']
+    rm[paint, 2] = rule['paint_metallic']
+    median = np.median(base[paint, :3], axis=0)
+    base[paint, :3] = base[paint, :3] * (1 - rule['flatten']) + median * rule['flatten']
+    _replace_texture(base_node, base, 'base_repaint')
+    _replace_texture(rm_node, rm, 'rm_repaint')
+
+    mesh = obj.data
+    faces, loops = len(mesh.polygons), len(mesh.loops)
+    starts = np.empty(faces, dtype=np.int64)
+    totals = np.empty(faces, dtype=np.int64)
+    mesh.polygons.foreach_get('loop_start', starts)
+    mesh.polygons.foreach_get('loop_total', totals)
+    loop_uv = np.empty(loops * 2, dtype=np.float64)
+    mesh.uv_layers.active.data.foreach_get('uv', loop_uv)
+    w, h = base_node.image.size
+    painted = house_plates.face_paint(loop_uv.reshape(-1, 2), starts, totals, paint.reshape(h, w))
+    positions = np.empty(len(mesh.vertices) * 3)
+    mesh.vertices.foreach_get('co', positions)
+    positions = positions.reshape(-1, 3)
+    welded = house_plates.weld_ids(positions, (positions.max(0) - positions.min(0)).max() * 1e-5)
+    loop_vertices = np.empty(loops, dtype=np.int64)
+    mesh.loops.foreach_get('vertex_index', loop_vertices)
+    pairs = house_plates.face_pairs(welded[loop_vertices], starts, totals)
+    normals = np.empty(faces * 3)
+    mesh.polygons.foreach_get('normal', normals)
+    areas = np.empty(faces)
+    mesh.polygons.foreach_get('area', areas)
+    plate = house_plates.select_plates(painted, pairs, normals.reshape(-1, 3), areas, rule)
+
+    detail = material.copy()
+    mesh.materials.append(detail)
+    detail_base_node, detail_rm_node = _paint_textures(detail)
+    base[paint, :3] = rule['detail_rgb']
+    rm[paint, 1] = rule['detail_roughness']
+    rm[paint, 2] = rule['detail_metallic']
+    _replace_texture(detail_base_node, base, 'base_detail')
+    _replace_texture(detail_rm_node, rm, 'rm_detail')
+    mesh.polygons.foreach_set('material_index', np.where(plate, 0, 1).astype(np.int32))
+    mesh.update()
+
+
 def render_to(scene, path, samples, denoise):
     scene.cycles.samples = samples
     scene.cycles.use_denoising = denoise
@@ -350,6 +430,7 @@ def main():
     model_path = unit_dir / unit['model']
     body = load_model(model_path, unit['forward'], unit.get('decimate', 1.0))
     tag_faces(body, unit)
+    repaint(body, unit)
     parts = {'body': body}
     cap_z = None
     if 'split' in unit:
