@@ -1,0 +1,28 @@
+{
+  "entries": {
+    "UNIT_DEVASTATOR": {
+      "file": "UNIT_DEVASTATOR.png",
+      "sha256": "c570f4af76e5d50da5253d9b4469378471b2da2ed88038fb7c2e785a3c1571aa",
+      "size": [
+        1216,
+        192
+      ]
+    },
+    "HM_UNIT_DEVASTATOR": {
+      "file": "HM_UNIT_DEVASTATOR.png",
+      "sha256": "cb81867a7de4ef2030e10d47f1a863e8eee3079e75d5e8a3b89c0a5caa746e09",
+      "size": [
+        1216,
+        192
+      ]
+    },
+    "UNIT_DEVASTATOR_SHADOW": {
+      "file": "UNIT_DEVASTATOR_SHADOW.png",
+      "sha256": "431ae1c8923ed47a76dc4be1d378276cbdf160ddc139aec8c2453b760f7fb071",
+      "size": [
+        1216,
+        192
+      ]
+    }
+  }
+}
