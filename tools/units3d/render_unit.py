@@ -419,7 +419,12 @@ def main():
                 obj.data.materials.append(mask_cap)
                 obj.data.polygons.foreach_set('material_index', (base + house).astype(np.int32))
                 obj.data.update()
-                render_to(scene, out / part_name / f'mask_{k}.png', render_cfg['mask_samples'], False)
+                mask_path = out / part_name / f'mask_{k}.png'
+                render_to(scene, mask_path, render_cfg['mask_samples'], False)
+                # Writing partial coverage to 8-bit PNG unpremultiplies white emission to 254; mask strength is max(RGB) · α.
+                pixels = load_pixels(mask_path)
+                pixels[..., :3] = (pixels[..., 3:] > 0).astype(np.float32)
+                save_pixels(pixels, mask_path)
                 obj.data.polygons.foreach_set('material_index', indices)
                 obj.data.materials.pop()
                 obj.data.materials.pop()
