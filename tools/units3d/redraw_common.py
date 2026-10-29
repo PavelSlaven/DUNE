@@ -185,6 +185,12 @@ def load_unit(directory, command, pack_path=None):
                 corridor = vector(data, 'share_corridor', 2)
                 if any(isinstance(x, bool) for x in corridor) or corridor[0] > corridor[1]:
                     raise InputError('share_corridor: expected ordered numeric bounds')
+            if 'red_fill' in data:
+                threshold = data['red_fill']
+                if isinstance(threshold, bool) or not isinstance(threshold, int) or not 1 <= threshold <= 255:
+                    raise InputError('red_fill: expected an integer from 1 to 255')
+                if atlases['house_mask'] is None:
+                    raise InputError('red_fill: requires atlases.house_mask')
         if command == 'build' and atlases['shadow'] is not None:
             rule = required(data, 'shadow_rule')
             if not isinstance(rule, dict):

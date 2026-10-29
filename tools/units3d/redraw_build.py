@@ -124,6 +124,10 @@ def run(unit, args):
             mask, _, _, _ = place(white, unit.frame, scale, boxes[name], offset)
             mask[..., :3] = 255
             mask[..., 3] = np.round(mask[..., 3].astype(np.float32) * body[..., 3] / 255).astype(np.uint8)
+            if 'red_fill' in unit.data:
+                body_rgb = body[..., :3].astype(np.int16)
+                red = body_rgb[..., 0] - np.maximum(body_rgb[..., 1], body_rgb[..., 2]) >= unit.data['red_fill']
+                mask[red, 3] = body[red, 3]
             share = float((mask[..., 3] > 127).sum() / on.sum()) if on.any() else 0.0
             if iou < 0.97:
                 reasons.append('iou')
