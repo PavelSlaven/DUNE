@@ -1,0 +1,22 @@
+# G3: House mask, shadow, atlases and pack
+
+## per direction (iou = recolour silhouette vs frame; share = House mask share of the body, corridor 0.29-0.58)
+k	pick	iou	share	old_share	ok
+0	b	0.997	0.362	0.343	True
+1	b	0.998	0.414	0.526	True
+2	a	0.998	0.307	0.381	True
+3	b	0.997	0.415	0.526	True
+4	a	0.997	0.294	0.359	True
+5	b	0.997	0.350	0.405	True
+6	a	0.995	0.399	0.389	True
+7	a	0.996	0.353	0.405	True
+all directions pass
+
+scale 1.0715 (old width / new width, median of 8 directions)
+shadow: body alpha shifted (+4,+4), alpha x46/255, RGB 5,4,3 (old pack rule: corr 0.989, alpha sum ratio 1.001)
+
+## pack (copy of resources/bin/data/sdl_data_hd4.dat, outside the repository)
+241 entries, 238 byte-identical, replaced: HM_UNIT_DEVASTATOR, UNIT_DEVASTATOR, UNIT_DEVASTATOR_SHADOW
+sha256 repo pack     e2a87ce8cf9143f9d11ee0a54dcf10b7a57d109b49e713dadf4133c12d882045
+sha256 G3 pack       3f64475ad748568d6007ac91893c66971cdc0dcc26afecb3db2800448710692e
+installed: C:/Users/Slaven/Projects/DUNE-pilot-test/data/sdl_data_hd4.dat (previous Tripo pack moved to _archive/sdl_data_hd4.tripo.dat)
