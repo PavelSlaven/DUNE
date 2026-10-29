@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[3]
 UNIT_DIR = ROOT / "tools/units3d/units/UNIT_DEVASTATOR"
 REFERENCE_ATLASES = ROOT / "codex-direct/G3/atlas"
 REPO_PACK = ROOT / "resources/bin/data/sdl_data_hd4.dat"
+SOURCE_PACK = ROOT / "tools/units3d/data/sdl_data_hd4_source.dat"
 
 
 class RedrawAcceptanceTests(unittest.TestCase):
@@ -137,14 +138,15 @@ class RedrawAcceptanceTests(unittest.TestCase):
         atlas_dir = self.build_atlases()
         copy_path = self.root / "devastator-pack.dat"
         repo_sha_before = hashlib.sha256(REPO_PACK.read_bytes()).hexdigest()
-        result = self.run_tool("pack", atlas_dir, copy_path)
+        source_sha_before = hashlib.sha256(SOURCE_PACK.read_bytes()).hexdigest()
+        result = self.run_tool("pack", atlas_dir, copy_path, "--source", SOURCE_PACK)
         self.assertEqual(
             result.returncode,
             0,
             msg=f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}",
         )
 
-        before = read_pack(REPO_PACK)
+        before = read_pack(SOURCE_PACK)
         after = read_pack(copy_path)
         self.assertEqual(
             [(entry.index, entry.name, entry.extension) for entry in before],
@@ -171,6 +173,10 @@ class RedrawAcceptanceTests(unittest.TestCase):
         self.assertEqual(
             hashlib.sha256(REPO_PACK.read_bytes()).hexdigest(),
             repo_sha_before,
+        )
+        self.assertEqual(
+            hashlib.sha256(SOURCE_PACK.read_bytes()).hexdigest(),
+            source_sha_before,
         )
 
     def test_04_recolour_shift_fails_iou(self):
@@ -396,7 +402,7 @@ class RedrawAcceptanceTests(unittest.TestCase):
         )
 
         unit_data = json.loads((UNIT_DIR / "unit.json").read_text(encoding="utf-8"))
-        packed = {entry.name: entry for entry in read_pack(REPO_PACK)}
+        packed = {entry.name: entry for entry in read_pack(SOURCE_PACK)}
         body = decode_image(packed[unit_data["atlases"]["body"]].payload).convert("RGBA")
         old_mask = decode_image(packed[unit_data["atlases"]["house_mask"]].payload).convert("RGBA")
         frame_width, frame_height = unit_data["frame"]
