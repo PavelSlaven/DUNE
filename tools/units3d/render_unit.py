@@ -11,6 +11,7 @@ import hashlib
 import json
 import math
 import sys
+from fractions import Fraction
 from pathlib import Path
 
 import bmesh
@@ -243,50 +244,53 @@ def holdout_material():
     return material
 
 
+def paint_texels(rgb, rule):
+    # 8-bit texels hit the thresholds exactly (hue 12°, saturation 0.18), so the test runs in integers:
+    # float rounding would decide those ties differently from machine to machine.
+    r, g, b = (rgb[:, i].astype(np.int64) for i in range(3))
+    cmax, cmin = np.maximum(np.maximum(r, g), b), np.minimum(np.minimum(r, g), b)
+    delta = cmax - cmin
+    scale = np.maximum(delta, 1)
+    hue = np.where(r == cmax, 60 * (g - b), np.where(g == cmax, 60 * (2 * delta + b - r), 60 * (4 * delta + r - g))) % (360 * scale)
+    centre, width, saturation, value = (Fraction(str(rule[key])) for key in ('hue_deg', 'hue_width_deg', 'min_saturation', 'min_value'))
+    q = centre.denominator * width.denominator
+    offset = np.abs(hue * q - centre.numerator * width.denominator * scale)
+    distance = np.minimum(offset, 360 * scale * q - offset)
+    return ((distance < width.numerator * centre.denominator * scale)
+            & (delta * saturation.denominator > saturation.numerator * cmax)
+            & (cmax * value.denominator > value.numerator * 255))
+
+
 def paint_material(source, rule):
     bsdf = next(n for n in source.node_tree.nodes if n.type == 'BSDF_PRINCIPLED')
     texture = bsdf.inputs['Base Color'].links[0].from_node
-    # Thresholds are stated on the sRGB texels of the file, so sample them without the linear conversion.
-    image = texture.image.copy()
+    if texture.inputs['Vector'].links or texture.image.is_float:
+        raise SystemExit(f'{source.name}: house_paint needs an 8-bit base colour texture on the default UV map')
+    w, h = texture.image.size
+    texels = np.empty(w * h * 4, dtype=np.float32)
+    texture.image.pixels.foreach_get(texels)
+    paint = paint_texels(np.rint(texels.reshape(-1, 4)[:, :3] * 255), rule).astype(np.float32)
+    # Texels are classified before filtering: blending two non-paint colours can land on the paint hue,
+    # while filtering the 0/1 classification gives the paint share the mask coverage stands for.
+    image = bpy.data.images.new(f'{source.name}_paint', w, h)
     image.colorspace_settings.name = 'Non-Color'
+    image.pixels.foreach_set(np.column_stack([paint, paint, paint, np.ones_like(paint)]).ravel())
 
     material = bpy.data.materials.new('mask_paint')
     material.use_nodes = True
     tree = material.node_tree
     tree.nodes.clear()
-
-    def node(kind, **inputs):
-        n = tree.nodes.new(kind)
-        for key, value in inputs.items():
-            setattr(n, key, value)
-        return n
-
-    def math_node(operation, a, b):
-        n = node('ShaderNodeMath', operation=operation)
-        for socket, value in zip(n.inputs, (a, b)):
-            if isinstance(value, float):
-                socket.default_value = value
-            else:
-                tree.links.new(value, socket)
-        return n.outputs[0]
-
-    tex = node('ShaderNodeTexImage', image=image, interpolation=texture.interpolation)
-    hsv = node('ShaderNodeSeparateColor', mode='HSV')
-    tree.links.new(tex.outputs['Color'], hsv.inputs['Color'])
-    offset = math_node('ABSOLUTE', math_node('SUBTRACT', hsv.outputs[0], rule['hue_deg'] / 360.0), 0.0)
-    distance = math_node('MINIMUM', offset, math_node('SUBTRACT', 1.0, offset))
-    in_hue = math_node('LESS_THAN', distance, rule['hue_width_deg'] / 360.0)
-    saturated = math_node('GREATER_THAN', hsv.outputs[1], rule['min_saturation'])
-    bright = math_node('GREATER_THAN', hsv.outputs[2], rule['min_value'])
-    factor = math_node('MULTIPLY', math_node('MULTIPLY', in_hue, saturated), bright)
-
-    emission = node('ShaderNodeEmission')
+    tex = tree.nodes.new('ShaderNodeTexImage')
+    tex.image = image
+    tex.interpolation = texture.interpolation
+    tex.extension = texture.extension
+    emission = tree.nodes.new('ShaderNodeEmission')
     emission.inputs['Color'].default_value = (1.0, 1.0, 1.0, 1.0)
-    mix = node('ShaderNodeMixShader')
-    tree.links.new(factor, mix.inputs['Fac'])
-    tree.links.new(node('ShaderNodeHoldout').outputs['Holdout'], mix.inputs[1])
+    mix = tree.nodes.new('ShaderNodeMixShader')
+    tree.links.new(tex.outputs['Color'], mix.inputs['Fac'])
+    tree.links.new(tree.nodes.new('ShaderNodeHoldout').outputs['Holdout'], mix.inputs[1])
     tree.links.new(emission.outputs['Emission'], mix.inputs[2])
-    tree.links.new(mix.outputs['Shader'], node('ShaderNodeOutputMaterial').inputs['Surface'])
+    tree.links.new(mix.outputs['Shader'], tree.nodes.new('ShaderNodeOutputMaterial').inputs['Surface'])
     return material
 
 
@@ -383,10 +387,16 @@ def main():
         catcher.is_shadow_catcher = True
         catcher.hide_render = True
 
-    if 'house_paint' in unit:
-        mask_white = paint_material(parts['body'].data.materials[0], unit['house_paint'])
-    else:
-        mask_white = emission_material('mask', (1.0, 1.0, 1.0))
+    mask_white = emission_material('mask', (1.0, 1.0, 1.0))
+    mask_paint = {}
+
+    def zone_material(source):
+        if 'house_paint' not in unit:
+            return mask_white
+        if source.name not in mask_paint:
+            mask_paint[source.name] = paint_material(source, unit['house_paint'])
+        return mask_paint[source.name]
+
     mask_holdout = holdout_material()
     mask_cap = emission_material('mask_cap', (1.0, 1.0, 1.0))
     out = args.out
@@ -413,11 +423,16 @@ def main():
                 obj.data.polygons.foreach_get('material_index', indices)
                 house = np.zeros(len(obj.data.polygons), dtype=np.int32)
                 obj.data.attributes['house'].data.foreach_get('value', house)
-                base = len(obj.data.materials)
-                obj.data.materials.append(mask_holdout)
-                obj.data.materials.append(mask_white)
-                obj.data.materials.append(mask_cap)
-                obj.data.polygons.foreach_set('material_index', (base + house).astype(np.int32))
+                slots = list(obj.data.materials)
+                zone_slots = np.unique(indices[house == 1])
+                extra = [mask_holdout, mask_cap] + [zone_material(slots[i]) for i in zone_slots]
+                base = len(slots)
+                for material in extra:
+                    obj.data.materials.append(material)
+                zone_index = np.zeros(len(slots), dtype=np.int32)
+                zone_index[zone_slots] = base + 2 + np.arange(len(zone_slots))
+                assigned = np.where(house == 0, base, np.where(house == HOUSE_CAP, base + 1, zone_index[indices]))
+                obj.data.polygons.foreach_set('material_index', assigned.astype(np.int32))
                 obj.data.update()
                 mask_path = out / part_name / f'mask_{k}.png'
                 render_to(scene, mask_path, render_cfg['mask_samples'], False)
@@ -426,9 +441,8 @@ def main():
                 pixels[..., :3] = (pixels[..., 3:] > 0).astype(np.float32)
                 save_pixels(pixels, mask_path)
                 obj.data.polygons.foreach_set('material_index', indices)
-                obj.data.materials.pop()
-                obj.data.materials.pop()
-                obj.data.materials.pop()
+                for _ in extra:
+                    obj.data.materials.pop()
                 obj.data.update()
             if 'markers' in passes:
                 show_only([])

@@ -1,0 +1,98 @@
+3|INFO|GAMERULES|Load file settings.ini|(cIniFile)
+\\-------------------
+\\Dune II - The Maker
+\\-------------------
+\\
+\\-------------------
+\\Version information
+\\-------------------
+5|INFO|VERSION|Version 0.8.0-ru-hd-units3d, Compiled at Oct 28 2026 , 19:20:31|Initializing
+5|INFO|GAMERULES|Load file settings.ini|(cIniFile)
+8|INFO|GAMERULES|Load file game.ini|(cIniFile)
+10|WARN|NONE|Setting state from 0(=GAME_OVER) to -1(=GAME_INITIALIZE)|(logbook)
+10|WARN|NONE|[GameRules] Opening file|(logbook)
+10|WARN|NONE|Opening game settings from : game.ini|(logbook)
+13|WARN|NONE|[GAME.INI] -> [UNITS]|(logbook)
+13|WARN|NONE|getUnitTypeFromString could not determine what unit type 'FREMEN' is. Returning -1.|(logbook)
+13|WARN|NONE|Could not find word-type for [Unit: Triple fremen (Atreides)]|(logbook)
+13|WARN|NONE|getUnitTypeFromString could not determine what unit type 'MISSILE' is. Returning -1.|(logbook)
+13|WARN|NONE|Could not find word-type for [  ]|(logbook)
+13|WARN|NONE|[GAME.INI] -> [STRUCTURES]|(logbook)
+14|WARN|NONE|[GAME.INI] Done|(logbook)
+31|INFO|INIT|HD (4x assets, section [HD4_DATAFILE])|Graphics mode
+\\---
+\\SDL
+\\---
+1999|INFO|SDL2|Initialized successfully|SUCCESS|SDL2 init
+2035|INFO|SDL2|Initialized successfully|SUCCESS|SDL2_mixer
+2039|INFO|SDL2|Initialized successfully|SUCCESS|SDL2_ttf
+2039|INFO|INIT|install_keyboard()|SUCCESS|Initializing Keyboard
+2039|INFO|SDL2|Resolution screen : 5120x1440|desktop
+2039|INFO|SDL2|Desired output : 1600x1000|Resolution
+2039|INFO|SDL2|Auto (167%)|Render scale
+2039|INFO|SDL2|Adopted logical canvas : 960x600|Resolution
+2093|INFO|SDL2|Successfully initialized screen with resolution 960x600.|SUCCESS|Screen init
+2830|INFO|SDL2|Successfully initialized renderer|SUCCESS|Renderer init
+2846|INFO|INIT|Hooked datafile: sdl_mentat_hd4.dat|SUCCESS|Load data
+2852|INFO|INIT|Hooked datafile: sdl_world_hd4.dat|SUCCESS|Load data
+2859|INFO|INIT|Hooked datafile: sdl_inter_hd4.dat|SUCCESS|Load data
+2876|INFO|INIT|Hooked datafile: sdl_data_hd4.dat|SUCCESS|Load data
+2884|INFO|INIT|Hooked game font: Sangyo-Regular.otf|SUCCESS|Load data
+2887|INFO|INIT|Hooked dialog font: Sangyo-Regular.otf|SUCCESS|Load data
+2888|INFO|INIT|Hooked small UI font: Sangyo-Regular.otf|SUCCESS|Load data
+2892|INFO|INIT|Hooked HD menu font: Sangyo-Regular.otf|SUCCESS|Load data
+2894|INFO|INIT|Hooked remastered Mentat font: Sangyo-Regular.otf|SUCCESS|Load data
+2897|INFO|SOUND|Hooked audiofile: data/sdl_audio.dat|SUCCESS|Initialization
+2897|INFO|SOUND|SDL2_mixer succes|SUCCESS|Initialization
+2897|INFO|SOUND|AllocateChannels: 64 voices reserved|SUCCESS|Initialization
+2925|INFO|SOUND|C:\Users\Slaven\Projects\DUNE-pilot-test\music/gameplay: 0 custom track(s); using built-in fallback|Music pool
+2929|INFO|SOUND|C:\Users\Slaven\Projects\DUNE-pilot-test\music/menu: 0 custom track(s); using built-in fallback|Music pool
+2936|INFO|SOUND|C:\Users\Slaven\Projects\DUNE-pilot-test\music/conquest: 0 custom track(s); using built-in fallback|Music pool
+2945|INFO|SOUND|C:\Users\Slaven\Projects\DUNE-pilot-test\music/briefing/atreides: 0 custom track(s); using built-in fallback|Music pool
+2948|INFO|SOUND|C:\Users\Slaven\Projects\DUNE-pilot-test\music/briefing/harkonnen: 0 custom track(s); using built-in fallback|Music pool
+2952|INFO|SOUND|C:\Users\Slaven\Projects\DUNE-pilot-test\music/briefing/ordos: 0 custom track(s); using built-in fallback|Music pool
+2960|INFO|SOUND|C:\Users\Slaven\Projects\DUNE-pilot-test\music/victory: 0 custom track(s); using built-in fallback|Music pool
+2967|INFO|SOUND|C:\Users\Slaven\Projects\DUNE-pilot-test\music/defeat: 0 custom track(s); using built-in fallback|Music pool
+2968|WARN|NONE|Color conversion method set|(logbook)
+2968|WARN|NONE|MOUSE: Mouse speed set|(logbook)
+\\----
+\\GAME
+\\----
+2990|INFO|INIT|Hooked datafile: sdl_data_hd4.dat|SUCCESS|Load data
+2990|WARN|NONE|Seed is 1793259684|(logbook)
+2990|WARN|NONE|Setup:  HOUSES|(logbook)
+2990|WARN|NONE|Initializing:  PLAYERS|(logbook)
+2990|WARN|NONE|Setup:  STRUCTURES|(logbook)
+2990|WARN|NONE|Installing:  STRUCTURES|(logbook)
+3173|WARN|NONE|Setup:  PROJECTILES|(logbook)
+3173|WARN|NONE|Installing:  BULLET TYPES|(logbook)
+3196|WARN|NONE|Setup:  UNITS|(logbook)
+3196|WARN|NONE|Installing:  UNITS|(logbook)
+3372|WARN|NONE|Setup:  SPECIALS|(logbook)
+3372|WARN|NONE|Setup:  PARTICLES|(logbook)
+3372|WARN|NONE|Setup:  TERRAINS|(logbook)
+3372|WARN|NONE|[GameRules] Opening file|(logbook)
+3372|WARN|NONE|Opening game settings from : game.ini|(logbook)
+3373|WARN|NONE|[GAME.INI] -> [UNITS]|(logbook)
+3373|WARN|NONE|getUnitTypeFromString could not determine what unit type 'FREMEN' is. Returning -1.|(logbook)
+3373|WARN|NONE|Could not find word-type for [Unit: Triple fremen (Atreides)]|(logbook)
+3373|WARN|NONE|getUnitTypeFromString could not determine what unit type 'MISSILE' is. Returning -1.|(logbook)
+3373|WARN|NONE|Could not find word-type for [  ]|(logbook)
+3373|WARN|NONE|[GAME.INI] -> [STRUCTURES]|(logbook)
+3373|WARN|NONE|[GAME.INI] Done|(logbook)
+3373|WARN|NONE|Setting state from -1(=GAME_INITIALIZE) to 1(=GAME_MENU)|(logbook)
+3520|WARN|NONE|cGame::playMusicByType - iType = 4. playerId = 0, triggerWithVoice = false|(logbook)
+3520|WARN|NONE|m_musicType = 4|(logbook)
+3520|WARN|NONE|Installing:  UPGRADES|(logbook)
+3594|WARN|NONE|cInteractionManager constructor|(logbook)
+3594|WARN|NONE|cInteractionManager::setPlayerToInteractFor for player [0] [Без Дома]|(logbook)
+3594|WARN|NONE|cGame::playMusicByType - iType = 4. playerId = 0, triggerWithVoice = false|(logbook)
+3594|WARN|NONE|m_musicType = 4|(logbook)
+3595|WARN|NONE|WARNING: Exeptional high unit timer (35); capped at 10|Timer
+3595|WARN|NONE|WARNING: Exeptional high global timer (710); capped at 40|Timer
+3595|INFO|SDL2|Presentation target : 1600x1000|HD presentation renderer
+\\--------
+\\SHUTDOWN
+\\--------
+19727|WARN|NONE|Allegro FONT library shut down.|(logbook)
+19727|INFO|NONE|Thanks for playing.|Logger shut down
