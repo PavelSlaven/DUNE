@@ -304,6 +304,17 @@ if(BUILD_TESTING)
     add_test(NAME hd_presentation_selection COMMAND hd_presentation_tests)
 
     add_executable(
+        unit_frame_layout_tests
+        tests/UnitFrameLayoutTests.cpp
+    )
+    target_include_directories(
+        unit_frame_layout_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME unit_frame_layout COMMAND unit_frame_layout_tests)
+
+    add_executable(
         font_coverage_tests
         tests/FontCoverageTests.cpp
     )

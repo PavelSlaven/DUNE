@@ -14,6 +14,16 @@ ROOT = Path(__file__).resolve().parents[3]
 PACK_DIR = os.environ.get("D2TM_PACK_DIR")
 TOOLS_DIR = ROOT / "tools"
 sys.path.insert(0, str(TOOLS_DIR))
+sys.path.insert(0, str(TOOLS_DIR / "units3d"))
+import unit_contract
+
+SIEGE_ATLASES = {
+    "UNIT_SIEGEBASE",
+    "UNIT_SIEGEBASE_SHADOW",
+    "UNIT_SIEGETOP",
+    "HM_UNIT_SIEGEBASE",
+    "HM_UNIT_SIEGETOP",
+}
 BACKTICK = chr(96)
 RAW_CPP_STRING_RE = re.compile(r'(?:u8|u|U|L)?R"([^ ()\\\t\r\n]{0,16})\(')
 
@@ -203,9 +213,10 @@ def check_grid_and_size_exceptions(contract, markdown):
         assert all(_is_integer(value) and value > 0 for value in frame_classic), (
             f"{name}: frame_classic dimensions must be positive integers"
         )
-        assert frame_hd4 == [dimension * 4 for dimension in frame_classic], (
-            f"{name}: frame_hd4 must be four times frame_classic"
-        )
+        if name not in SIEGE_ATLASES:
+            assert frame_hd4 == [dimension * 4 for dimension in frame_classic], (
+                f"{name}: frame_hd4 must be four times frame_classic"
+            )
         assert isinstance(hd4_size, list) and len(hd4_size) == 2, (
             f"{name}: hd4_size must have two dimensions"
         )
@@ -269,9 +280,9 @@ def check_grid_and_size_exceptions(contract, markdown):
     by_name = {entry["name"]: entry for entry in entries}
     fixed_sizes = {
         "UNIT_SIEGEBASE": {
-            "hd4_size": [1152, 152],
-            "frame_hd4": [144, 144],
-            "remainder_px": [0, 8],
+            "hd4_size": [1408, 176],
+            "frame_hd4": [176, 176],
+            "remainder_px": [0, 0],
             "columns": 8,
         },
         "UNIT_DEVASTATOR": {
@@ -820,6 +831,64 @@ def check_markdown_contract(contract, markdown):
     )
 
 
+class FrameHd4Tests(unittest.TestCase):
+    @staticmethod
+    def record(unit_type, **hd_sizes):
+        return {
+            "type": unit_type,
+            "sizes": {"bmp_width": 36, "bmp_height": 36, **hd_sizes},
+        }
+
+    def test_t1_unset_frames(self):
+        records = [
+            self.record("A"),
+            self.record("B", hd_bmp_width=0, hd_bmp_height=0),
+        ]
+        self.assertEqual(
+            unit_contract.resolve_frame_hd4("TEST_ATLAS", records, 4, [1152, 152]),
+            [144, 144],
+        )
+
+    def test_t2_matching_hd_frames(self):
+        records = [
+            self.record("A", hd_bmp_width=176, hd_bmp_height=176),
+            self.record("B", hd_bmp_width=176, hd_bmp_height=176),
+        ]
+        self.assertEqual(
+            unit_contract.resolve_frame_hd4("TEST_ATLAS", records, 4, [1408, 176]),
+            [176, 176],
+        )
+
+    def test_t3_mixed_frame_states(self):
+        records = [
+            self.record("A", hd_bmp_width=176, hd_bmp_height=176),
+            self.record("B"),
+        ]
+        with self.assertRaisesRegex(ValueError, "TEST_ATLAS"):
+            unit_contract.resolve_frame_hd4("TEST_ATLAS", records, 4, [1408, 176])
+
+    def test_t4_different_hd_frames(self):
+        records = [
+            self.record("A", hd_bmp_width=176, hd_bmp_height=176),
+            self.record("B", hd_bmp_width=176, hd_bmp_height=180),
+        ]
+        with self.assertRaisesRegex(ValueError, "TEST_ATLAS"):
+            unit_contract.resolve_frame_hd4("TEST_ATLAS", records, 4, [1408, 176])
+
+    def test_t5_incomplete_hd_frame(self):
+        records = [self.record("A", hd_bmp_width=176, hd_bmp_height=0)]
+        with self.assertRaisesRegex(ValueError, "A"):
+            unit_contract.resolve_frame_hd4("TEST_ATLAS", records, 4, [1408, 176])
+
+    def test_t6_wrong_atlas_width(self):
+        records = [
+            self.record("A", hd_bmp_width=176, hd_bmp_height=176),
+            self.record("B", hd_bmp_width=176, hd_bmp_height=176),
+        ]
+        with self.assertRaisesRegex(ValueError, "TEST_ATLAS"):
+            unit_contract.resolve_frame_hd4("TEST_ATLAS", records, 4, [1152, 152])
+
+
 @unittest.skipUnless(PACK_DIR, "D2TM_PACK_DIR is not set")
 class UnitContractTests(unittest.TestCase):
     @classmethod
@@ -908,6 +977,13 @@ class UnitContractTests(unittest.TestCase):
 
     def test_grid_and_size_exception_contract(self):
         check_grid_and_size_exceptions(self.contract, self.markdown)
+
+    def test_siege_classic_and_hd_frames(self):
+        by_name = {entry["name"]: entry for entry in self.contract["entries"]}
+        for name in sorted(SIEGE_ATLASES):
+            with self.subTest(name=name):
+                self.assertEqual(by_name[name]["frame_classic"], [36, 36])
+                self.assertEqual(by_name[name]["frame_hd4"], [176, 176])
 
     def test_house_masks_and_rules_match_painted_entries(self):
         check_house_masks(self.contract, self.markdown)
