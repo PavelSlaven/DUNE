@@ -2,7 +2,7 @@
 2	pack	PASS	записей=241, заменено=3
 3	direction	FAIL	render_manifest.json.cap_height_m: ожидается число
 4	pivot	PASS	зелёных=8, синих=0
-5	margin	PASS	проверено пикселей=217817, отступ=2 px
+5	margin	PASS	проверено пикселей=217804, отступ=2 px
 6	size	FAIL	render_manifest.json.cap_height_m: ожидается число
 7	alpha	PASS	канонизация, связность и отверстия проверены; max_holes=1
 8	mask	PASS	кадров маски=8, доля=[0.62, 0.76]
