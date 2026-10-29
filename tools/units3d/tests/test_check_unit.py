@@ -17,6 +17,7 @@ from PIL import Image
 
 from tools import hd_assets
 from tools.hd_assets import PackEntry, read_pack, write_pack
+from tools.units3d.check_unit import CheckError, _manifest_schema
 
 
 CHECK_NAMES = (
@@ -306,7 +307,7 @@ class Fixture:
             "frame_hd4": list(FRAME_SIZE),
             "model_scale": 1,
             "pivot_height_m": 0,
-            "cap_height_m": 0,
+            "cap_height_m": 0 if with_top else None,
             "hull_screen_length_px": 100,
             "parts": ["body", "top"] if with_top else ["body"],
             "directions": list(range(8)),
@@ -2482,6 +2483,77 @@ class ShadowCheckTests(DirectionMarkerHelpers, unittest.TestCase):
                     atlas = np.asarray(image)
                 for (x, y), alpha in expected_alpha.items():
                     self.assertEqual(int(atlas[y, x, 3]), alpha)
+
+
+class CapHeightManifestTests(unittest.TestCase):
+    def test_invalid_cap_height_fails_manifest_readers(self) -> None:
+        missing = object()
+        cases = (
+            ("К1", True, None),
+            ("К2", True, missing),
+            ("К3", True, "0.5"),
+            ("К4", True, True),
+            ("К5", True, [0.5]),
+            ("К6", False, 0),
+            ("К7", False, 0.5),
+            ("К8", False, missing),
+            ("К9", False, "null"),
+            ("К10", False, False),
+        )
+        for case, with_top, value in cases:
+            with self.subTest(case=case), Fixture(with_top=with_top, case=f"invalid cap height {case}") as fixture:
+                if value is missing:
+                    fixture.manifest_data.pop("cap_height_m")
+                else:
+                    fixture.manifest_data["cap_height_m"] = value
+                fixture.commit()
+                result = assert_run(fixture, expected_fail_set={1, 3, 6, 10})
+                self.assertNotEqual(result.exit_code, 0)
+                for line in result.lines:
+                    columns = line.split("\t")
+                    if columns[2] == "FAIL":
+                        self.assertIn("cap_height_m", columns[3], line)
+
+    def test_schema_values_follow_unit_parts(self) -> None:
+        missing = object()
+        cases = (
+            (
+                "Г1",
+                True,
+                ["body", "top"],
+                (0, 0.0, -0.0, 0.5, -1, 1e-3, 1e308),
+                (None, missing, "0.5", "0", "", True, False, [], {}, [0], {"value": 0}),
+            ),
+            (
+                "Г2",
+                False,
+                ["body"],
+                (None,),
+                (missing, 0, 0.0, -0.0, 0.5, -1, True, False, "null", "", [], {}),
+            ),
+            ("Г3", True, ["body"], (0.5,), (None,)),
+            ("Г4", False, ["body", "top"], (None,), (0.5,)),
+        )
+        for group, with_top, manifest_parts, accepted, rejected in cases:
+            fixture = Fixture(with_top=with_top, case=f"manifest schema cap height {group}")
+            try:
+                for is_accepted, values in ((True, accepted), (False, rejected)):
+                    for value in values:
+                        label = "нет ключа" if value is missing else repr(value)
+                        with self.subTest(group=group, accepted=is_accepted, value=label):
+                            manifest = dict(fixture.manifest_data)
+                            manifest["parts"] = manifest_parts
+                            if value is missing:
+                                manifest.pop("cap_height_m")
+                            else:
+                                manifest["cap_height_m"] = value
+                            if is_accepted:
+                                _manifest_schema(manifest, fixture.unit_data)
+                            else:
+                                with self.assertRaisesRegex(CheckError, "cap_height_m"):
+                                    _manifest_schema(manifest, fixture.unit_data)
+            finally:
+                fixture.close()
 
 
 class InputReadFailureTests(unittest.TestCase):
