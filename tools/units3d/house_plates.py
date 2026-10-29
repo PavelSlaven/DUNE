@@ -14,7 +14,7 @@ def weld_ids(positions, tolerance):
 
 
 def face_pairs(loop_vertices, loop_starts, loop_totals):
-    """Pairs of faces that share an edge, by vertex id; an edge of n faces gives all n·(n − 1)/2 pairs."""
+    """Distinct pairs of different faces that share an edge, by vertex id; an edge of n faces gives all n·(n − 1)/2 pairs."""
     face_of_loop = np.repeat(np.arange(len(loop_starts)), loop_totals)
     following = np.arange(len(loop_vertices)) + 1
     following[loop_starts + loop_totals - 1] = loop_starts
@@ -29,7 +29,11 @@ def face_pairs(loop_vertices, loop_starts, loop_totals):
             break
         first.append(faces[:-step][shared])
         second.append(faces[step:][shared])
-    return np.concatenate(first), np.concatenate(second)
+    first, second = np.concatenate(first), np.concatenate(second)
+    # Welding can make one face pass an edge twice, and two faces can share more than one edge.
+    pairs = np.unique(np.column_stack([np.minimum(first, second), np.maximum(first, second)]), axis=0)
+    pairs = pairs[pairs[:, 0] != pairs[:, 1]]
+    return pairs[:, 0], pairs[:, 1]
 
 
 def face_paint(loop_uv, loop_starts, loop_totals, paint):

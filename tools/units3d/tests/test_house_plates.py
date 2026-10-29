@@ -53,6 +53,11 @@ class FacePairsTest(unittest.TestCase):
         self.assertEqual(ids[0], ids[1])
         self.assertNotEqual(ids[0], ids[2])
 
+    def test_pairs_are_distinct_and_never_one_face(self):
+        loops = np.array([0, 1, 0, 1, 1, 0, 2], dtype=np.int64)
+        first, second = house_plates.face_pairs(loops, np.array([0, 4]), np.array([4, 3]))
+        self.assertEqual(list(zip(first.tolist(), second.tolist())), [(0, 1)])
+
     def test_edge_of_three_faces_gives_all_pairs(self):
         loops = np.array([0, 1, 2, 1, 0, 3, 0, 1, 4], dtype=np.int64)
         first, second = house_plates.face_pairs(loops, np.array([0, 3, 6]), np.array([3, 3, 3]))
