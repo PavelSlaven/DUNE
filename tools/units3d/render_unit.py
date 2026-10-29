@@ -347,6 +347,9 @@ def repaint(obj, unit):
     base[paint, :3] = base[paint, :3] * (1 - rule['flatten']) + median * rule['flatten']
     _replace_texture(base_node, base, 'base_repaint')
     _replace_texture(rm_node, rm, 'rm_repaint')
+    # The mask pass classifies the written 8-bit texture, so faces and details must use the same classification.
+    base = _texture_pixels(base_node)
+    paint = paint_texels(np.rint(base[:, :3] * 255), unit['house_paint'])
 
     mesh = obj.data
     faces, loops = len(mesh.polygons), len(mesh.loops)

@@ -48,6 +48,16 @@ class FacePairsTest(unittest.TestCase):
         first, second = house_plates.face_pairs(welded[loops], starts, totals)
         self.assertEqual(sorted([first.tolist()[0], second.tolist()[0]]), [0, 1])
 
+    def test_weld_joins_one_rounding_cell_only(self):
+        ids = house_plates.weld_ids(np.array([[0, 0, 0], [0.0002, 0, 0], [0.002, 0, 0]], float), 1e-3).tolist()
+        self.assertEqual(ids[0], ids[1])
+        self.assertNotEqual(ids[0], ids[2])
+
+    def test_edge_of_three_faces_gives_all_pairs(self):
+        loops = np.array([0, 1, 2, 1, 0, 3, 0, 1, 4], dtype=np.int64)
+        first, second = house_plates.face_pairs(loops, np.array([0, 3, 6]), np.array([3, 3, 3]))
+        self.assertEqual(sorted(map(sorted, zip(first.tolist(), second.tolist()))), [[0, 1], [0, 2], [1, 2]])
+
 
 class FacePaintTest(unittest.TestCase):
     def test_mean_uv_picks_texel_with_row_zero_at_v_zero(self):
@@ -78,6 +88,11 @@ class SelectPlatesTest(unittest.TestCase):
         normals = [tilted(0)] * 3 + [tilted(60)] + [tilted(0)] * 3
         self.assertEqual(plates(normals, angle=35, share=0.3, passes=0), [True] * 3 + [False] + [True] * 3)
         self.assertEqual(plates(normals, angle=35, share=0.3, passes=1), [True] * 7)
+
+    def test_smoothing_votes_by_area(self):
+        normals = [tilted(0)] * 3 + [tilted(60)] + [tilted(0)] * 3
+        areas = [1, 1, 1, 2.5, 1, 1, 1]
+        self.assertEqual(plates(normals, areas=areas, angle=35, share=0.3, passes=1), [True, True, False, False, False, True, True])
 
     def test_unpainted_face_never_becomes_a_plate(self):
         normals = [tilted(0)] * 5
