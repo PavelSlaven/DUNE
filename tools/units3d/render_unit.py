@@ -245,20 +245,29 @@ def holdout_material():
 
 
 def paint_texels(rgb, rule):
-    # 8-bit texels hit the thresholds exactly (hue 12°, saturation 0.18), so the test runs in integers:
-    # float rounding would decide those ties differently from machine to machine.
+    # 8-bit texels hit the thresholds exactly (hue 12°, saturation 0.18), and float rounding would decide
+    # those ties differently from machine to machine. Each threshold therefore becomes an integer bound per
+    # channel value, computed with exact fractions; a threshold like 0.18000000000000002 has a denominator
+    # that would overflow int64 if multiplied into the texel arrays.
+    centre, width, saturation, value = (Fraction(str(rule[key])) for key in ('hue_deg', 'hue_width_deg', 'min_saturation', 'min_value'))
     r, g, b = (rgb[:, i].astype(np.int64) for i in range(3))
     cmax, cmin = np.maximum(np.maximum(r, g), b), np.minimum(np.minimum(r, g), b)
     delta = cmax - cmin
     scale = np.maximum(delta, 1)
+    # Hue in degrees times scale, in [0, 360 · scale).
     hue = np.where(r == cmax, 60 * (g - b), np.where(g == cmax, 60 * (2 * delta + b - r), 60 * (4 * delta + r - g))) % (360 * scale)
-    centre, width, saturation, value = (Fraction(str(rule[key])) for key in ('hue_deg', 'hue_width_deg', 'min_saturation', 'min_value'))
-    q = centre.denominator * width.denominator
-    offset = np.abs(hue * q - centre.numerator * width.denominator * scale)
-    distance = np.minimum(offset, 360 * scale * q - offset)
-    return ((distance < width.numerator * centre.denominator * scale)
-            & (delta * saturation.denominator > saturation.numerator * cmax)
-            & (cmax * value.denominator > value.numerator * 255))
+    # Paint hues form the open arc (centre − width, centre + width); per scale, its integer points start at lo and span span.
+    lo, span = np.zeros(256, dtype=np.int64), np.zeros(256, dtype=np.int64)
+    for s in range(1, 256):
+        if width > 180:
+            lo[s], span[s] = 0, 360 * s
+        else:
+            lo[s] = math.floor((centre - width) * s) + 1
+            span[s] = math.ceil((centre + width) * s) - 1 - lo[s]
+    in_hue = (hue - lo[scale]) % (360 * scale) <= span[scale]
+    # delta / cmax > saturation ⇔ delta > ⌊saturation · cmax⌋; black has saturation 0.
+    min_delta = np.array([math.floor(saturation * m) if m else (0 if saturation >= 0 else -1) for m in range(256)], dtype=np.int64)
+    return in_hue & (delta > min_delta[cmax]) & (cmax > math.floor(value * 255))
 
 
 def paint_material(source, rule):
