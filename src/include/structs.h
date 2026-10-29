@@ -20,6 +20,8 @@ struct s_UnitInfo {
 
     int    bmp_width;     // width of each unit frame (in pixels).
     int    bmp_height;    // Height of the unit, for each animating frame.
+    int    hd_bmp_width;
+    int    hd_bmp_height;
 
     int    bmp_frames;
 

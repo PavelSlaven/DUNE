@@ -35,6 +35,8 @@ void IniGameRessources::install_units()
         unitInfo.shadow = nullptr;  // no shadow (deliverd with picture itself)
         unitInfo.bmp_width = 0;
         unitInfo.bmp_height = 0;
+        unitInfo.hd_bmp_width = 0;
+        unitInfo.hd_bmp_height = 0;
         unitInfo.turnspeed = 0;
         unitInfo.speed = 0;
         unitInfo.icon = -1;
@@ -183,6 +185,8 @@ void IniGameRessources::install_units()
     sUnitInfo[SIEGETANK].bmp_width = 18 * 2;
     sUnitInfo[SIEGETANK].bmp_startpixel = 1;
     sUnitInfo[SIEGETANK].bmp_height = 18 * 2;
+    sUnitInfo[SIEGETANK].hd_bmp_width = 176;
+    sUnitInfo[SIEGETANK].hd_bmp_height = 176;
     sUnitInfo[SIEGETANK].bmp_frames = 0;
     sUnitInfo[SIEGETANK].bulletType = BULLET_SIEGE;
     sUnitInfo[SIEGETANK].fireTwice = true;

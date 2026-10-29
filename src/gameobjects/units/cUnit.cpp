@@ -26,6 +26,7 @@
 #include "utils/Graphics.hpp"
 #include "utils/RNG.hpp"
 #include "utils/WorldObjectScale.hpp"
+#include "utils/UnitFrameLayout.hpp"
 #include "utils/Localization.hpp"
 #include <SDL2/SDL.h>
 #include <format>
@@ -775,46 +776,77 @@ void cUnit::draw()
     const int bmp_head = convertAngleToDrawIndex(iHeadFacing);
     const int bmp_body = convertAngleToDrawIndex(iBodyFacing);
 
-    // draw body first
-    int start_x = bmp_body * bmp_width;
-    int start_y = bmp_height * iFrame;
-
     cPlayer &cPlayer = players[this->iPlayer];
 
     Texture *shadow = cPlayer.getUnitShadowBitmap(iType);
     const cRectangle visual = getVisualRectangle();
-    const int roundedScaledWidth = visual.getWidth();
-    const int roundedScaledHeight = visual.getHeight();
     const int visualX = visual.getX();
     const int visualY = visual.getY();
+    const UnitFrameRectangle frameVisual{
+        visualX,
+        visualY,
+        visual.getWidth(),
+        visual.getHeight()
+    };
+    const float zoom = mapCamera->getZoomLevel();
+    const float visualScale = unitWorldScaleFactor(
+        game.getWorldScaleFactor(),
+        gfxdata && gfxdata->getDensity() > 1,
+        iType == TANK || iType == SIEGETANK
+    );
     if (shadow) {
-        cRectangle src = {start_x, start_y, bmp_width, bmp_height};
-        cRectangle dest = {
-            visualX,
-            visualY,
-            roundedScaledWidth,
-            roundedScaledHeight
-        };
+        UnitFrameLayout shadowLayout = calculateUnitFrameLayout(
+            bmp_width,
+            bmp_height,
+            unitType.hd_bmp_width,
+            unitType.hd_bmp_height,
+            shadow->pixelW,
+            shadow->density,
+            bmp_body,
+            iFrame, frameVisual, zoom, visualScale
+        );
         if (iType == CARRYALL) {
-            dest = {
-                visualX,
-                visualY + 24,
-                roundedScaledWidth,
-                roundedScaledHeight
-            };
+            shadowLayout.dest.y += 24;
         }
+        cRectangle src{
+            shadowLayout.src.x,
+            shadowLayout.src.y,
+            shadowLayout.src.width,
+            shadowLayout.src.height
+        };
+        cRectangle dest{
+            shadowLayout.dest.x,
+            shadowLayout.dest.y,
+            shadowLayout.dest.width,
+            shadowLayout.dest.height
+        };
         renderDrawer->renderStrechSprite(shadow,src, dest, ShadowTrans);
     }
 
     // Draw BODY
     Texture *bitmap = cPlayer.getUnitBitmap(iType);
     if (bitmap) {
-        cRectangle src = {start_x, start_y, bmp_width, bmp_height};
-        cRectangle dest = {
-            visualX,
-            visualY,
-            roundedScaledWidth,
-            roundedScaledHeight
+        const UnitFrameLayout bodyLayout = calculateUnitFrameLayout(
+            bmp_width,
+            bmp_height,
+            unitType.hd_bmp_width,
+            unitType.hd_bmp_height,
+            bitmap->pixelW,
+            bitmap->density,
+            bmp_body,
+            iFrame, frameVisual, zoom, visualScale
+        );
+        cRectangle src{
+            bodyLayout.src.x,
+            bodyLayout.src.y,
+            bodyLayout.src.width,
+            bodyLayout.src.height
+        };
+        cRectangle dest{
+            bodyLayout.dest.x,
+            bodyLayout.dest.y,
+            bodyLayout.dest.width,
+            bodyLayout.dest.height
         };
         renderDrawer->renderStrechSprite(bitmap,src, dest);
     }
@@ -826,15 +858,27 @@ void cUnit::draw()
     // Draw TOP
     Texture *top = cPlayer.getUnitTopBitmap(iType);
     if (top && iHitPoints > -1) {
-        // recalculate start_x using head instead of body
-        start_x = bmp_head * bmp_width;
-        start_y = bmp_height * iFrame;
-        cRectangle src = {start_x, start_y, bmp_width, bmp_height};
-        cRectangle dest = {
-            visualX,
-            visualY,
-            roundedScaledWidth,
-            roundedScaledHeight
+        const UnitFrameLayout topLayout = calculateUnitFrameLayout(
+            bmp_width,
+            bmp_height,
+            unitType.hd_bmp_width,
+            unitType.hd_bmp_height,
+            top->pixelW,
+            top->density,
+            bmp_head,
+            iFrame, frameVisual, zoom, visualScale
+        );
+        cRectangle src{
+            topLayout.src.x,
+            topLayout.src.y,
+            topLayout.src.width,
+            topLayout.src.height
+        };
+        cRectangle dest{
+            topLayout.dest.x,
+            topLayout.dest.y,
+            topLayout.dest.width,
+            topLayout.dest.height
         };
         renderDrawer->renderStrechSprite(top,src, dest);
     }

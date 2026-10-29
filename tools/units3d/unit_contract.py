@@ -26,7 +26,7 @@ from hd_assets import decode_image, read_pack
 
 UNIT_TYPE_RE = re.compile(r"#define\s+(\w+)\s+(\d+)\b")
 UNIT_ASSIGNMENT_RE = re.compile(
-    r"sUnitInfo\[(?P<type>\w+)\]\.(?P<field>bmp|top|shadow|bmp_width|bmp_height)\s*=\s*(?P<value>.*?);"
+    r"sUnitInfo\[(?P<type>\w+)\]\.(?P<field>bmp|top|shadow|bmp_width|bmp_height|hd_bmp_width|hd_bmp_height)\s*=\s*(?P<value>.*?);"
 )
 RESOURCE_REF_RE = re.compile(r"get(?:Surface|Texture)\((\w+)\)")
 RAW_CPP_STRING_RE = re.compile(r'(?:u8|u|U|L)?R"([^ ()\\\t\r\n]{0,16})\(')
@@ -282,7 +282,63 @@ def parse_unit_records(source: SourceIndex) -> dict[str, dict[str, Any]]:
             "ref": f"{relative_path}:{line_number}",
             "identifier": identifier,
         }
+    for record in records.values():
+        _hd_frame_state(record)
     return records
+
+
+def _hd_frame_state(record: dict[str, Any]) -> tuple[str, tuple[int, int] | None]:
+    unit_type = record["type"]
+    sizes = record.get("sizes", {})
+    width_field = "hd_bmp_width"
+    height_field = "hd_bmp_height"
+    has_width = width_field in sizes
+    has_height = height_field in sizes
+    if not has_width and not has_height:
+        return "unset", None
+    if not has_width or not has_height:
+        raise ValueError(f"{unit_type}: incomplete HD frame dimensions")
+
+    width = sizes[width_field]
+    height = sizes[height_field]
+    if not isinstance(width, int) or not isinstance(height, int):
+        raise ValueError(f"{unit_type}: invalid HD frame dimensions")
+    if width == 0 and height == 0:
+        return "unset", None
+    if width > 0 and height > 0:
+        return "set", (width, height)
+    raise ValueError(f"{unit_type}: invalid HD frame dimensions")
+
+
+def resolve_frame_hd4(
+    atlas_name: str,
+    mapped_records: list[dict[str, Any]],
+    density: int,
+    hd4_size: list[int] | None,
+) -> list[int]:
+    classic_sizes = {
+        (record["sizes"].get("bmp_width"), record["sizes"].get("bmp_height"))
+        for record in mapped_records
+    }
+    classic_sizes.discard((None, None))
+    if len(classic_sizes) != 1:
+        raise ValueError(f"ambiguous frame dimensions for atlas {atlas_name}: {classic_sizes}")
+    classic_width, classic_height = next(iter(classic_sizes))
+
+    hd_states = [_hd_frame_state(record) for record in mapped_records]
+    state_names = {state for state, _ in hd_states}
+    if state_names == {"unset"}:
+        return [classic_width * density, classic_height * density]
+    if state_names != {"set"}:
+        raise ValueError(f"inconsistent HD frame dimensions for atlas {atlas_name}")
+
+    hd_sizes = {dimensions for _, dimensions in hd_states}
+    if len(hd_sizes) != 1:
+        raise ValueError(f"inconsistent HD frame dimensions for atlas {atlas_name}")
+    hd_width, hd_height = next(iter(hd_sizes))
+    if hd4_size is None or hd4_size[0] == 8 * hd_width:
+        return [hd_width, hd_height]
+    raise ValueError(f"HD frame width does not match atlas {atlas_name}")
 
 
 def build_unit_resource_index(
@@ -607,7 +663,7 @@ def unit_row_usage(
         ]
     return "В обычной логике этот тип остаётся на строке 0, установленной при создании cUnit.", [
         source.ref(cpp, "iFrame = 0;"),
-        source.function_ref(cpp, "void cUnit::draw()", "int start_y = bmp_height * iFrame;"),
+        source.function_ref(cpp, "void cUnit::draw()", "iFrame, frameVisual, zoom, visualScale"),
     ]
 
 
@@ -717,18 +773,23 @@ def parse_carryall_offset(source: SourceIndex) -> tuple[int, dict[str, Any]]:
         if opened and depth == 0:
             break
     match = next(
-        (match for _, line in branch if (match := re.search(r"visualY\s*\+\s*(\d+)", line))),
+        (
+            match
+            for _, line in branch
+            if (match := re.search(r"shadowLayout\.dest\.y\s*\+=\s*(\d+)\s*;", line))
+        ),
         None,
     )
     if match is None:
-        raise ValueError("CARRYALL visualY offset was not found in its branch")
+        raise ValueError("CARRYALL shadow destination offset was not found in its branch")
     offset = int(match.group(1))
     line_number, line = next(
         (line_number, line)
         for line_number, line in branch
-        if "visualY" in line and re.search(r"visualY\s*\+\s*\d+", line)
+        if re.search(r"shadowLayout\.dest\.y\s*\+=\s*\d+\s*;", line)
     )
-    return offset, {"ref": f"{path}:{line_number}", "identifier": "visualY + " + str(offset)}
+    identifier = re.search(r"shadowLayout\.dest\.y\s*\+=\s*\d+\s*;", line).group(0)
+    return offset, {"ref": f"{path}:{line_number}", "identifier": identifier}
 
 
 def parse_draw_geometry(
@@ -741,15 +802,54 @@ def parse_draw_geometry(
 ) -> dict[str, Any]:
     cpp = "src/gameobjects/units/cUnit.cpp"
     draw_func = "void cUnit::draw()"
+    frame_layout_path = "src/utils/UnitFrameLayout.hpp"
+    frame_layout_func = "inline UnitFrameLayout calculateUnitFrameLayout("
     body_index_ref = source.function_ref(
         cpp, draw_func, "const int bmp_body = convertAngleToDrawIndex(iBodyFacing);"
     )
     head_index_ref = source.function_ref(
         cpp, draw_func, "const int bmp_head = convertAngleToDrawIndex(iHeadFacing);"
     )
-    start_x_body = source.function_ref(cpp, draw_func, "int start_x = bmp_body * bmp_width;")
-    start_y = source.function_ref(cpp, draw_func, "int start_y = bmp_height * iFrame;")
-    start_x_top = source.function_ref(cpp, draw_func, "start_x = bmp_head * bmp_width;")
+    frame_layout_condition = source.function_ref(
+        frame_layout_path,
+        frame_layout_func,
+        "if (hdWidth > 0 && hdHeight > 0 && texturePixelWidth == 8 * hdWidth)",
+    )
+    hd_source_rectangle_ref = source.function_ref(
+        frame_layout_path, frame_layout_func, "{column * fw, row * fh, fw, fh},"
+    )
+    classic_source_rectangle_ref = source.function_ref(
+        frame_layout_path,
+        frame_layout_func,
+        "{column * classicWidth, row * classicHeight, classicWidth, classicHeight},",
+    )
+    frame_layout_call_refs = [
+        source.function_ref(cpp, draw_func, "UnitFrameLayout shadowLayout = calculateUnitFrameLayout("),
+        source.function_ref(cpp, draw_func, "const UnitFrameLayout bodyLayout = calculateUnitFrameLayout("),
+        source.function_ref(cpp, draw_func, "const UnitFrameLayout topLayout = calculateUnitFrameLayout("),
+    ]
+    frame_layout_source_refs = unique_refs([
+        frame_layout_condition,
+        source.function_ref(frame_layout_path, frame_layout_func, "int fw = hdWidth / textureDensity;"),
+        source.function_ref(frame_layout_path, frame_layout_func, "int fh = hdHeight / textureDensity;"),
+        hd_source_rectangle_ref,
+        classic_source_rectangle_ref,
+        *frame_layout_call_refs,
+    ])
+    frame_layout_destination_refs = unique_refs([
+        frame_layout_condition,
+        source.function_ref(frame_layout_path, frame_layout_func, "int originalWidth ="),
+        source.function_ref(frame_layout_path, frame_layout_func, "int W ="),
+        source.function_ref(frame_layout_path, frame_layout_func, "int originalHeight ="),
+        source.function_ref(frame_layout_path, frame_layout_func, "int H ="),
+        source.function_ref(frame_layout_path, frame_layout_func, "visual.x - (W - visual.width) / 2"),
+        source.function_ref(frame_layout_path, frame_layout_func, "visual.y - (H - visual.height) / 2"),
+        source.ref_matching(frame_layout_path, "visual", lambda line: line.strip() == "visual"),
+        *frame_layout_call_refs,
+    ])
+    row_layout_ref = source.function_ref(
+        cpp, draw_func, "iFrame, frameVisual, zoom, visualScale"
+    )
     shadow_render = source.function_ref(cpp, draw_func, "renderStrechSprite(shadow,src, dest, ShadowTrans);")
     body_render = source.function_ref(cpp, draw_func, "renderStrechSprite(bitmap,src, dest);")
     top_render = source.function_ref(cpp, draw_func, "renderStrechSprite(top,src, dest);")
@@ -900,40 +1000,43 @@ def parse_draw_geometry(
         },
         "source_rectangle": {
             "value": {
-                "body_shadow_start_x": "bmp_body * bmp_width",
-                "body_shadow_start_y": "bmp_height * iFrame",
-                "top_start_x": "bmp_head * bmp_width",
-                "top_start_y": "bmp_height * iFrame",
-                "remainder_px": "Прямоугольник чтения имеет размер bmp_width × bmp_height; неполные полосы справа и снизу из remainder_px движок не читает.",
+                "hd_condition": "При hdWidth > 0 && hdHeight > 0 && texturePixelWidth == 8 * hdWidth helper вычисляет fw = hdWidth / textureDensity и fh = hdHeight / textureDensity целочисленным делением, затем читает {column * fw, row * fh, fw, fh}.",
+                "classic_fallback": "Если HD-условие ложно, helper читает {column * classicWidth, row * classicHeight, classicWidth, classicHeight}.",
+                "remainder_px": "Размер source rectangle равен размеру выбранного HD или classic кадра; полосы атласа за пределами выбранных кадров не читаются.",
             },
-            "sources": unique_refs([
-                source.function_ref(cpp, draw_func, "cRectangle src = {start_x, start_y, bmp_width, bmp_height};"),
-                start_x_body, start_y, start_x_top,
-                body_index_ref, head_index_ref,
-            ]),
+            "sources": unique_refs(frame_layout_source_refs + [body_index_ref, head_index_ref]),
         },
         "draw_order": {
             "value": {
                 "order": ["shadow", "body", "top"],
-                "destination": "Тень, корпус и верх используют один visual rectangle; в ветви CARRYALL к y тени добавляется считанное смещение.",
+                "destination": f"Для тени, корпуса и верха destination вычисляется calculateUnitFrameLayout; y тени CARRYALL дополнительно увеличивается на {carryall_offset} пикселя.",
             },
-            "sources": unique_refs([shadow_render, body_render, top_render]),
+            "sources": unique_refs([
+                shadow_render, body_render, top_render,
+                *frame_layout_call_refs, carryall_ref,
+            ]),
         },
         "draw_destination": {
             "value": {
-                "visual_rectangle": "cUnit::draw берёт visual из getVisualRectangle().",
-                "destination": "cRectangle dest = {visualX, visualY, roundedScaledWidth, roundedScaledHeight}; размер берётся из visual.getWidth() и visual.getHeight().",
+                "visual_rectangle": "cUnit::draw получает visual из getVisualRectangle() и передаёт его координаты и размеры в frameVisual.",
+                "destination": f"При hdWidth > 0 && hdHeight > 0 && texturePixelWidth == 8 * hdWidth helper вычисляет fw = hdWidth / textureDensity и fh = hdHeight / textureDensity; originalWidth = int(lround(fw * zoom)), W = int(lround(originalWidth * visualScale)), originalHeight = int(lround(fh * zoom)), H = int(lround(originalHeight * visualScale)). HD destination равен {{visual.x - (W - visual.width) / 2, visual.y - (H - visual.height) / 2, W, H}}; деление смещений на 2 целочисленное и усекается к нулю. Иначе destination = visual. Затем для тени CARRYALL destination.y увеличивается на {carryall_offset} пикселя.",
             },
             "sources": unique_refs([
                 source.function_ref(cpp, draw_func, "const cRectangle visual = getVisualRectangle();"),
-                source.function_ref(cpp, draw_func, "cRectangle dest = {"),
-                source.function_ref(cpp, draw_func, "roundedScaledWidth,"),
+                source.function_ref(cpp, draw_func, "const UnitFrameRectangle frameVisual{"),
+                *frame_layout_destination_refs,
+                source.function_ref(frame_layout_path, frame_layout_func, "std::lround(fw * zoom)"),
+                source.function_ref(frame_layout_path, frame_layout_func, "std::lround(originalWidth * visualScale)"),
+                source.function_ref(frame_layout_path, frame_layout_func, "std::lround(fh * zoom)"),
+                source.function_ref(frame_layout_path, frame_layout_func, "std::lround(originalHeight * visualScale)"),
+                carryall_ref,
             ]),
         },
         "start_pixel_fields": {
-            "value": "draw() формирует source rectangle через facing и iFrame; bmp_startpixel не читается.",
+            "value": "calculateUnitFrameLayout формирует source rectangle через facing и iFrame; bmp_startpixel не читается.",
             "sources": unique_refs([
-                start_x_body, start_y,
+                *frame_layout_source_refs,
+                row_layout_ref,
                 source.ref("src/utils/cIniGameRessouces.cpp", "sUnitInfo[HARVESTER].bmp_startpixel = 24;"),
             ]),
         },
@@ -1038,16 +1141,18 @@ def build_entries(
         mapped_records = by_resource.get(base_name, [])
         if not mapped_records:
             raise ValueError(f"no unit frame dimensions for atlas {pack_entry.name}")
-        sizes = {
+        classic_size_values = {
             (record["sizes"].get("bmp_width"), record["sizes"].get("bmp_height"))
             for record in mapped_records
         }
-        sizes.discard((None, None))
-        if len(sizes) != 1:
-            raise ValueError(f"ambiguous frame dimensions for atlas {pack_entry.name}: {sizes}")
-        width, height = next(iter(sizes))
+        classic_size_values.discard((None, None))
+        if len(classic_size_values) != 1:
+            raise ValueError(
+                f"ambiguous frame dimensions for atlas {pack_entry.name}: {classic_size_values}"
+            )
+        width, height = next(iter(classic_size_values))
         frame_classic = [width, height]
-        frame_hd4 = [width * density, height * density]
+        frame_hd4 = resolve_frame_hd4(pack_entry.name, mapped_records, density, hd4_size)
         if hd4_size is None:
             columns = rows = None
             remainder = None
@@ -1110,7 +1215,14 @@ def build_entries(
         assignment_refs = [
             ref
             for record in mapped_records
-            for ref in record["source_refs"].values()
+            for field, ref in record["source_refs"].items()
+            if field not in {"hd_bmp_width", "hd_bmp_height"}
+        ]
+        hd_assignment_refs = [
+            record["source_refs"][field]
+            for record in mapped_records
+            for field in ("hd_bmp_width", "hd_bmp_height")
+            if field in record["source_refs"]
         ]
         site_refs = [site["source"] for site in sites]
         draw_site_entries = [
@@ -1150,12 +1262,13 @@ def build_entries(
             if is_mask
             else source.ref("src/data/gfxdata.h", pack_entry.name)
         )
-        entry_sources = unique_refs(
+        common_entry_sources = unique_refs(
             [pack_ref]
             + assignment_refs + type_refs + row_refs + site_refs + directional_refs
             + direction_rule["sources"] + density_rule["sources"] + mask_refs + sega_refs
             + draw_rules["draw_x"]["sources"] + draw_rules["draw_y"]["sources"]
         )
+        entry_sources = unique_refs(common_entry_sources + hd_assignment_refs)
         record = {
             "index": pack_entry.index,
             "name": pack_entry.name,
@@ -1198,7 +1311,7 @@ def build_entries(
                 "columns": columns,
                 "rows": rows,
                 "remainder_px": remainder,
-                "sources": entry_sources,
+                "sources": common_entry_sources,
             })
 
     bodies_by_unit_types: dict[tuple[str, ...], list[dict[str, Any]]] = {}
