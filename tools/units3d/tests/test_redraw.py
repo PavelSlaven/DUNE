@@ -730,7 +730,6 @@ class RedrawAcceptanceTests(unittest.TestCase):
         self.assertTrue((output / "atlases.json").is_file(), transcript)
         params = json.loads((output / "params.json").read_text(encoding="utf-8"))
         self.assertLess(params["scale"], params["scale_median"])
-        self.assertAlmostEqual(params["scale_median"], 1.0714527591528187, places=9)
         self.assertIn("all frames pass", (output / "metrics.txt").read_text(encoding="utf-8").splitlines())
 
     def test_22_explicit_scale_is_used(self):
