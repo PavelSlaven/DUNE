@@ -1,0 +1,121 @@
+{
+  "atlases": {
+    "body": "UNIT_DEVASTATOR",
+    "house_mask": "HM_UNIT_DEVASTATOR",
+    "shadow": "UNIT_DEVASTATOR_SHADOW"
+  },
+  "frame": [
+    152,
+    184
+  ],
+  "rows": 1,
+  "block": [
+    115.0,
+    88.0,
+    48.0
+  ],
+  "arrow": [
+    6.0,
+    46.0,
+    26.0
+  ],
+  "height_estimate": 49.0,
+  "shadow_rule": {
+    "shift": 4,
+    "alpha": 46,
+    "rgb": [
+      5,
+      4,
+      3
+    ]
+  },
+  "sheet_building": {
+    "name": "BUILD_HEAVYFACTORY",
+    "size": [
+      384,
+      256
+    ]
+  },
+  "frames": [
+    {
+      "row": 0,
+      "k": 0,
+      "attempts": {
+        "a": "codex-direct/G3/out/g3_k0_a.png",
+        "b": "codex-direct/G3/out/g3_k0_b.png"
+      },
+      "pick": "b",
+      "recolour": "codex-direct/G3/out/g3b_k0.png"
+    },
+    {
+      "row": 0,
+      "k": 1,
+      "attempts": {
+        "a": "codex-direct/G2/out/g2_v2_k1_a.png",
+        "b": "codex-direct/G2/out/g2_v2_k1_b.png"
+      },
+      "pick": "b",
+      "recolour": "codex-direct/G3/out/g3b_k1.png"
+    },
+    {
+      "row": 0,
+      "k": 2,
+      "attempts": {
+        "a": "codex-direct/G3/out/g3_k2_a.png",
+        "b": "codex-direct/G3/out/g3_k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "codex-direct/G3/out/g3b_k2.png"
+    },
+    {
+      "row": 0,
+      "k": 3,
+      "attempts": {
+        "a": "codex-direct/G3/out/g3_k3_a.png",
+        "b": "codex-direct/G3/out/g3_k3_b.png"
+      },
+      "pick": "b",
+      "recolour": "codex-direct/G3/out/g3b_k3.png"
+    },
+    {
+      "row": 0,
+      "k": 4,
+      "attempts": {
+        "a": "codex-direct/G3/out/g3_k4_a.png",
+        "b": "codex-direct/G3/out/g3_k4_b.png"
+      },
+      "pick": "a",
+      "recolour": "codex-direct/G3/out/g3b_k4.png"
+    },
+    {
+      "row": 0,
+      "k": 5,
+      "attempts": {
+        "a": "codex-direct/G3/out/g3_k5_a.png",
+        "b": "codex-direct/G3/out/g3_k5_b.png"
+      },
+      "pick": "b",
+      "recolour": "codex-direct/G3/out/g3b_k5.png"
+    },
+    {
+      "row": 0,
+      "k": 6,
+      "attempts": {
+        "a": "codex-direct/G2/out/g2_v2_k6_a.png",
+        "b": "codex-direct/G2/out/g2_v2_k6_b.png"
+      },
+      "pick": "a",
+      "recolour": "codex-direct/G3/out/g3b_k6.png"
+    },
+    {
+      "row": 0,
+      "k": 7,
+      "attempts": {
+        "a": "codex-direct/G3/out/g3_k7_a.png",
+        "b": "codex-direct/G3/out/g3_k7_b.png"
+      },
+      "pick": "a",
+      "recolour": "codex-direct/G3/out/g3b_k7.png"
+    }
+  ]
+}
