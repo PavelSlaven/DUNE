@@ -455,8 +455,13 @@ def main():
             sky = scene.world.node_tree.nodes['Background'].inputs['Strength']
             sky_strength = sky.default_value
             sky.default_value = 0.0
-            render_to(scene, out / 'body' / f'shadow_{k}.png', render_cfg['samples'], render_cfg['denoise'])
+            shadow_path = out / 'body' / f'shadow_{k}.png'
+            render_to(scene, shadow_path, render_cfg['samples'], render_cfg['denoise'])
             sky.default_value = sky_strength
+            # Partial coverage rounds the near-black catcher to RGB 1/255; the shadow pass carries alpha only.
+            pixels = load_pixels(shadow_path)
+            pixels[..., :3] = 0.0
+            save_pixels(pixels, shadow_path)
 
     model_files = {name: unit_dir.parent / 'common' / f'{name}.json' for name in ('camera', 'light', 'render')}
     manifest = {
@@ -482,7 +487,7 @@ def main():
         },
     }
     out.mkdir(parents=True, exist_ok=True)
-    (out / 'render_manifest.json').write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+    (out / 'render_manifest.json').write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n', encoding='utf-8', newline='\n')
 
 
 main()
