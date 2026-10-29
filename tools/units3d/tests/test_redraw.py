@@ -767,6 +767,41 @@ class RedrawAcceptanceTests(unittest.TestCase):
             (output / "metrics.txt").read_text(encoding="utf-8").splitlines(),
         )
 
+    def test_24_red_fill_adds_red_body_pixels_to_mask(self):
+        base = self.build_atlases()
+        unit_dir, data = self.copy_unit()
+        data["red_fill"] = 40
+        self.save_unit(unit_dir, data)
+
+        output = self.root / "build_red_fill"
+        result = self.run_tool("build", output, unit=unit_dir)
+        transcript = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, transcript)
+        self.assert_rgba_equal(output / "UNIT_DEVASTATOR.png", base / "UNIT_DEVASTATOR.png")
+        with Image.open(output / "UNIT_DEVASTATOR.png") as image:
+            body = np.asarray(image.convert("RGBA")).astype(np.int16)
+        with Image.open(output / "HM_UNIT_DEVASTATOR.png") as image:
+            filled = np.asarray(image.convert("RGBA"))[..., 3]
+        with Image.open(base / "HM_UNIT_DEVASTATOR.png") as image:
+            plain = np.asarray(image.convert("RGBA"))[..., 3]
+        red = body[..., 0] - np.maximum(body[..., 1], body[..., 2]) >= 40
+        self.assertTrue(np.array_equal(filled[red], body[..., 3][red].astype(np.uint8)))
+        self.assertTrue(np.array_equal(filled[~red], plain[~red]))
+        self.assertGreater(int((filled != plain).sum()), 0)
+
+    def test_25_invalid_red_fill_is_rejected(self):
+        unit_dir, data = self.copy_unit()
+        for index, value in enumerate((True, 0, 256, 40.5, "40", None)):
+            with self.subTest(value=value):
+                changed = json.loads(json.dumps(data))
+                changed["red_fill"] = 40 if value is None else value
+                if value is None:
+                    changed["atlases"]["house_mask"] = None
+                self.save_unit(unit_dir, changed)
+                result = self.run_tool("build", self.root / f"build_bad_red_fill_{index}", unit=unit_dir)
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertIn("red_fill", result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
