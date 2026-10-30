@@ -147,6 +147,16 @@ def load_unit(directory, command, pack_path=None):
             for k in range(8):
                 if (row, k) not in seen:
                     raise InputError(f'r{row}k{k}: missing frame')
+        frames_by_position = {(record['row'], record['k']): record for record in records}
+        for record in records:
+            if 'offset_from' not in record:
+                continue
+            source_row = record['offset_from']
+            if (isinstance(source_row, bool) or not isinstance(source_row, int)
+                    or not 0 <= source_row < rows or source_row == record['row']):
+                raise InputError(f'{frame_name(record)}: offset_from must name a different valid row')
+            if 'offset_from' in frames_by_position[source_row, record['k']]:
+                raise InputError(f'{frame_name(record)}: offset_from source must have no offset_from')
         if command in ('score', 'contact', 'recolour-inputs', 'build'):
             for record in records:
                 name = frame_name(record)
