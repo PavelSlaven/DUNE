@@ -2,15 +2,17 @@
 
 Ведёт ведущий. Генерации — Codex sol на servak (`TASK-gen.md`, перекраски — `TASK-rc.md`); изображения лежат вне git в `/srv/dune/gen/<юнит>/` с `SHA256SUMS` (копии — в `codex-direct/U3/gen/`), в репозитории на них ссылаются пути `units-gen/…` (`units-gen` — ссылка на `/srv/dune/gen`, в `.gitignore`). Повторы перекрасок — `TASK-rc2.md` (Девиатор, Ракетная установка) и `TASK-rc3.md` (другие попытки Звукового танка и Ракетной установки). Перекраска Ракетной установки по решению владельца — `TASK-rc4.md` (k1, k2, k7), затем `TASK-rc5.md` (все восемь направлений).
 
-## Итог сборки (ветка `codex/u3-pack`, инструмент из `main` после #12)
+## Итог сборки
+
+Масштаб — по решению владельца Р24 (вариант D сверки размеров): масштаб сборки «fit» × коэффициент D из `codex-direct/U7/scale-D.tsv` (Квадроцикл 0,7096, Трайк 0,7581, Рейдер 0,7789, Ракетная установка 0,9058, Девиатор 0,9094); у Звукового танка и MCV коэффициент D от 0,98 до 1,02 — масштаб прежний. Пересборка — задание `codex-direct/U8/TASK.md`. (ветка `codex/u3-pack`, инструмент из `main` после #12)
 
 | Юнит | Выбор k0…k7 | Масштаб | Медиана | Поля сверх умолчания |
 |---|---|---|---|---|
-| `UNIT_QUAD` | `bbabaaab` | 1,0664 | 1,1384 | `scale: "fit"`, `red_fill: 40` |
-| `UNIT_TRIKE` | `ababbbab` | 1,0035 | 1,1775 | `scale: "fit"` |
-| `UNIT_RAIDER` | `ababbbab` | 1,0035 | 1,1775 | `scale: "fit"`; попытки и перекраски Трайка |
-| `UNIT_LAUNCHER` | `baababaa` | 1,0740 | 1,1390 | `scale: "fit"`, `share_corridor: [0.8, 0.97]` |
-| `UNIT_DEVIATOR` | `bbaaabaa` | 1,1125 | 1,1215 | `scale: "fit"` |
+| `UNIT_QUAD` | `bbabaaab` | 0,7567 | 1,1384 | `scale` числом по Р24, `red_fill: 40` |
+| `UNIT_TRIKE` | `ababbbab` | 0,7608 | 1,1775 | `scale` числом по Р24 |
+| `UNIT_RAIDER` | `ababbbab` | 0,7816 | 1,1775 | `scale` числом по Р24; попытки и перекраски Трайка |
+| `UNIT_LAUNCHER` | `baababaa` | 0,9728 | 1,1390 | `scale` числом по Р24, `share_corridor: [0.8, 0.97]` |
+| `UNIT_DEVIATOR` | `bbaaabaa` | 1,0117 | 1,1215 | `scale` числом по Р24 |
 | `UNIT_SONICTANK` | `aaabaaab` | 1,1104 | 1,1104 | `scale: "fit"` |
 | `UNIT_MCV` | `bbaaaaab` | 1,0871 | 1,1051 | `scale: "fit"` |
 
