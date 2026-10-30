@@ -15,7 +15,7 @@ def run(unit, args):
         name = frame_name(record)
         attempt_path = unit.path(record['attempts'][record['pick']])
         with frame_input(record, attempt_path):
-            candidate = keyed(attempt_path)
+            candidate = keyed(attempt_path, figures=unit.data.get('figures', 1))
             bbox(candidate[..., 3])
         flat(candidate).save(output / f"pick_{name}.png")
 

@@ -12,15 +12,18 @@ from tools.units3d.redraw_common import CANVAS, InputError, bbox, clean_keyed, f
 
 
 def _fit_scale(scale_median, fits):
-    low, high = 0, max(0, int(np.ceil((scale_median - 0.5) / 0.001)))
+    minimum = 0.8 * scale_median
+    low, high = 0, int(np.ceil((scale_median - minimum) / 0.001))
+    if scale_median - 0.001 * high < minimum:
+        high -= 1
     while low < high:
         middle = (low + high) // 2
-        candidate = max(0.5, scale_median - 0.001 * middle)
+        candidate = scale_median - 0.001 * middle
         if fits(candidate):
             high = middle
         else:
             low = middle + 1
-    return max(0.5, scale_median - 0.001 * low)
+    return scale_median - 0.001 * low
 
 
 def run(unit, args):
@@ -28,6 +31,7 @@ def run(unit, args):
     if output.exists() and (not output.is_dir() or any(output.iterdir())):
         raise InputError(f'{output}: output must be absent or empty')
     records = unit.frames
+    figures = unit.data.get('figures', 1)
     boxes = {}
     for record in records:
         name = frame_name(record)
@@ -39,7 +43,7 @@ def run(unit, args):
         name = frame_name(record)
         attempt_path = unit.path(record['attempts'][record['pick']])
         with frame_input(record, attempt_path):
-            prepared[name] = keyed(attempt_path, return_stray=True)
+            prepared[name] = keyed(attempt_path, figures=figures, return_stray=True)
             bbox(prepared[name][0][..., 3])
         raw[name] = prepared[name][0]
     ratios = []
@@ -58,7 +62,7 @@ def run(unit, args):
             recolour_path = unit.path(record['recolour'])
             with frame_input(record, recolour_path):
                 edit = prepare(recolour_path)
-                cleaned_edit, _ = clean_keyed(key(edit))
+                cleaned_edit, _ = clean_keyed(key(edit, figures), figures)
                 bbox(cleaned_edit[..., 3])
             recolours[frame_name(record)] = edit, cleaned_edit
 

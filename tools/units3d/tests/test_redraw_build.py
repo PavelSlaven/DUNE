@@ -133,9 +133,9 @@ class BuildTests(unittest.TestCase):
         self.assertIn('r0k0', stderr)
         self.assertIn(str(recolour), stderr)
 
-    def test_r8_fit_scale_uses_binary_search_for_largest_valid_grid_point(self):
+    def test_fit_scale_uses_relative_floor_and_binary_search(self):
         median = 1.173
-        threshold = 0.9052
+        threshold = 0.9752
         calls = []
 
         def fits(candidate):
@@ -144,7 +144,7 @@ class BuildTests(unittest.TestCase):
 
         scale = _fit_scale(median, fits)
         expected = median - 0.001 * int(np.ceil((median - threshold) / 0.001))
-        search_budget = int(np.ceil(np.log2(np.ceil((median - 0.5) / 0.001) + 1))) + 1
+        search_budget = int(np.ceil(np.log2(np.ceil(0.2 * median / 0.001) + 1))) + 1
 
         self.assertAlmostEqual(scale, expected)
         self.assertLessEqual(len(calls), search_budget)
@@ -152,8 +152,22 @@ class BuildTests(unittest.TestCase):
         self.assertGreater(scale + 0.001, threshold)
 
         calls.clear()
-        self.assertEqual(_fit_scale(median, lambda candidate: calls.append(candidate) or False), 0.5)
+        lowest = _fit_scale(median, lambda candidate: calls.append(candidate) or False)
+        self.assertAlmostEqual(lowest, 0.939)
+        self.assertGreaterEqual(lowest, 0.8 * median)
+        self.assertLess(lowest - 0.001, 0.8 * median)
         self.assertLessEqual(len(calls), search_budget)
+
+    def test_fit_scale_includes_exact_floor_and_supports_medians_below_half(self):
+        self.assertEqual(_fit_scale(1.0, lambda candidate: False), 0.8)
+        for median in (1.0, 0.4, 0.004):
+            with self.subTest(median=median):
+                lowest = _fit_scale(median, lambda candidate: False)
+                self.assertGreaterEqual(lowest, 0.8 * median)
+                self.assertLess(lowest - 0.001, 0.8 * median)
+                steps = (median - lowest) / 0.001
+                self.assertAlmostEqual(steps, round(steps))
+                self.assertEqual(_fit_scale(median, lambda candidate: True), median)
 
     def test_r8_positive_explicit_scale_below_fit_floor_is_valid(self):
         self.data['scale'] = 0.4

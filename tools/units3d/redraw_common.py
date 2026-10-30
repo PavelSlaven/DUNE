@@ -117,6 +117,9 @@ def load_unit(directory, command, pack_path=None):
         if (role == 'body' or atlases[role] is not None) and (
                 not isinstance(atlases[role], str) or not atlases[role]):
             raise InputError(f'atlases.{role}: expected nonempty name')
+    figures = data.get('figures', 1)
+    if isinstance(figures, bool) or not isinstance(figures, int) or not 1 <= figures <= 8:
+        raise InputError('figures: expected an integer from 1 to 8')
     if command != 'pack':
         frame = vector(data, 'frame', 2, positive=True)
         if any(not isinstance(x, int) for x in frame):
@@ -254,7 +257,16 @@ def prepare(path):
         return image.convert('RGB').resize((CANVAS, CANVAS), Image.Resampling.LANCZOS)
 
 
-def key(img):
+def _kept_regions(labels, figures):
+    sizes = np.bincount(labels.ravel())[1:]
+    if not sizes.size:
+        return np.zeros(labels.shape, bool)
+    largest = np.argsort(-sizes, kind='stable')[:figures]
+    kept = largest[sizes[largest] * 10 >= sizes.max()] + 1
+    return np.isin(labels, kept)
+
+
+def key(img, figures=1):
     rgb = np.asarray(img.convert('RGB'), np.float32)
     corners = rgb[[0, 0, -1, -1], [0, -1, 0, -1]]
     if corners.max() < 16:
@@ -266,30 +278,26 @@ def key(img):
     a = np.clip((np.linalg.norm(rgb - MAGENTA, axis=-1) - 60) / 70, 0, 1)
     labels, n = ndimage.label(a > 0.5)
     if n > 1:
-        sizes = ndimage.sum(np.ones_like(a), labels, range(1, n + 1))
-        a[(labels > 0) & (labels != 1 + int(np.argmax(sizes)))] = 0
+        a[(labels > 0) & ~_kept_regions(labels, figures)] = 0
     safe = np.maximum(a, 1e-3)[..., None]
     color = np.clip((rgb - (1 - a[..., None]) * MAGENTA) / safe, 0, 255)
     return np.dstack([color, a * 255]).round().astype(np.uint8)
 
 
-def clean_keyed(rgba):
-    labels, count = ndimage.label(rgba[..., 3] > 127)
-    if count:
-        largest = 1 + int(np.argmax(np.bincount(labels.ravel())[1:]))
-        allowed = ndimage.binary_dilation(labels == largest, structure=np.ones((3, 3), bool), iterations=6)
-    else:
-        allowed = np.zeros(labels.shape, bool)
+def clean_keyed(rgba, figures=1):
+    labels, _ = ndimage.label(rgba[..., 3] > 127)
+    kept = _kept_regions(labels, figures)
+    allowed = ndimage.binary_dilation(kept, structure=np.ones((3, 3), bool), iterations=6)
     stray = (rgba[..., 3] > 0) & ~allowed
     result = rgba.copy()
     result[stray, 3] = 0
     return result, int(stray.sum())
 
 
-def keyed(path, *, return_stray=False):
+def keyed(path, *, figures=1, return_stray=False):
     validate_square(path)
     with Image.open(path) as image:
-        result = clean_keyed(key(image.resize((CANVAS, CANVAS), Image.Resampling.LANCZOS)))
+        result = clean_keyed(key(image.resize((CANVAS, CANVAS), Image.Resampling.LANCZOS), figures), figures)
         return result if return_stray else result[0]
 
 
