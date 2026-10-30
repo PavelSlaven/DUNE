@@ -65,7 +65,7 @@
         "a": "units-gen/UNIT_LAUNCHER/launcher_k3_a.png",
         "b": "units-gen/UNIT_LAUNCHER/launcher_k3_b.png"
       },
-      "pick": "a",
+      "pick": "b",
       "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k3.png"
     },
     {
@@ -121,6 +121,6 @@
   "scale": "fit",
   "share_corridor": [
     0.35,
-    0.75
+    0.65
   ]
 }

@@ -75,7 +75,7 @@
         "a": "units-gen/UNIT_SONICTANK/sonic_k4_a.png",
         "b": "units-gen/UNIT_SONICTANK/sonic_k4_b.png"
       },
-      "pick": "b",
+      "pick": "a",
       "recolour": "units-gen/UNIT_SONICTANK/sonic_recolour_k4.png"
     },
     {
@@ -105,7 +105,7 @@
         "a": "units-gen/UNIT_SONICTANK/sonic_k7_a.png",
         "b": "units-gen/UNIT_SONICTANK/sonic_k7_b.png"
       },
-      "pick": "a",
+      "pick": "b",
       "recolour": "units-gen/UNIT_SONICTANK/sonic_recolour_k7.png"
     }
   ],
