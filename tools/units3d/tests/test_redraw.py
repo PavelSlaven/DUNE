@@ -717,12 +717,12 @@ class RedrawAcceptanceTests(unittest.TestCase):
         record["attempts"][record["pick"]] = self.enlarge_on_canvas(
             ROOT / record["attempts"][record["pick"]],
             self.root / "attempt_k0_enlarged.png",
-            factor=1.05,
+            factor=1.25,
         )
         record["recolour"] = self.enlarge_on_canvas(
             ROOT / record["recolour"],
             self.root / "recolour_k0_enlarged.png",
-            factor=1.05,
+            factor=1.25,
         )
         data["scale"] = "fit"
         self.save_unit(unit_dir, data)
@@ -760,7 +760,7 @@ class RedrawAcceptanceTests(unittest.TestCase):
         record["recolour"] = self.enlarge_on_canvas(
             ROOT / record["recolour"],
             self.root / "recolour_k0_enlarged.png",
-            factor=1.01,
+            factor=1.014,
         )
         data["scale"] = "fit"
         self.save_unit(unit_dir, data)
