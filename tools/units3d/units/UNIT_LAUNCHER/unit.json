@@ -1,0 +1,126 @@
+{
+  "atlases": {
+    "body": "UNIT_LAUNCHER",
+    "house_mask": "HM_UNIT_LAUNCHER",
+    "shadow": "UNIT_LAUNCHER_SHADOW"
+  },
+  "frame": [
+    128,
+    128
+  ],
+  "rows": 1,
+  "block": [
+    105.0,
+    82.0,
+    34.0
+  ],
+  "arrow": [
+    5.5,
+    42.0,
+    24.0
+  ],
+  "height_estimate": 34.0,
+  "sheet_building": {
+    "name": "BUILD_HEAVYFACTORY",
+    "size": [
+      384,
+      256
+    ]
+  },
+  "frames": [
+    {
+      "row": 0,
+      "k": 0,
+      "attempts": {
+        "a": "units-gen/UNIT_LAUNCHER/launcher_k0_a.png",
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k0_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k0.png"
+    },
+    {
+      "row": 0,
+      "k": 1,
+      "attempts": {
+        "a": "units-gen/UNIT_LAUNCHER/launcher_k1_a.png",
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k1_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k1.png"
+    },
+    {
+      "row": 0,
+      "k": 2,
+      "attempts": {
+        "a": "units-gen/UNIT_LAUNCHER/launcher_k2_a.png",
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k2.png"
+    },
+    {
+      "row": 0,
+      "k": 3,
+      "attempts": {
+        "a": "units-gen/UNIT_LAUNCHER/launcher_k3_a.png",
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k3_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k3.png"
+    },
+    {
+      "row": 0,
+      "k": 4,
+      "attempts": {
+        "a": "units-gen/UNIT_LAUNCHER/launcher_k4_a.png",
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k4_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k4.png"
+    },
+    {
+      "row": 0,
+      "k": 5,
+      "attempts": {
+        "a": "units-gen/UNIT_LAUNCHER/launcher_k5_a.png",
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k5_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k5.png"
+    },
+    {
+      "row": 0,
+      "k": 6,
+      "attempts": {
+        "a": "units-gen/UNIT_LAUNCHER/launcher_k6_a.png",
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k6_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k6.png"
+    },
+    {
+      "row": 0,
+      "k": 7,
+      "attempts": {
+        "a": "units-gen/UNIT_LAUNCHER/launcher_k7_a.png",
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k7_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k7.png"
+    }
+  ],
+  "shadow_rule": {
+    "shift": 3,
+    "alpha": 56,
+    "rgb": [
+      7,
+      6,
+      5
+    ]
+  },
+  "scale": "fit",
+  "share_corridor": [
+    0.35,
+    0.75
+  ]
+}

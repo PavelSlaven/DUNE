@@ -1,0 +1,122 @@
+{
+  "atlases": {
+    "body": "UNIT_MCV",
+    "house_mask": "HM_UNIT_MCV",
+    "shadow": "UNIT_MCV_SHADOW"
+  },
+  "frame": [
+    192,
+    200
+  ],
+  "rows": 1,
+  "block": [
+    156.0,
+    75.0,
+    60.0
+  ],
+  "arrow": [
+    5.1,
+    39.1,
+    22.1
+  ],
+  "height_estimate": 60.0,
+  "sheet_building": {
+    "name": "BUILD_HEAVYFACTORY",
+    "size": [
+      384,
+      256
+    ]
+  },
+  "frames": [
+    {
+      "row": 0,
+      "k": 0,
+      "attempts": {
+        "a": "units-gen/UNIT_MCV/mcv_k0_a.png",
+        "b": "units-gen/UNIT_MCV/mcv_k0_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_MCV/mcv_recolour_k0.png"
+    },
+    {
+      "row": 0,
+      "k": 1,
+      "attempts": {
+        "a": "units-gen/UNIT_MCV/mcv_k1_a.png",
+        "b": "units-gen/UNIT_MCV/mcv_k1_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_MCV/mcv_recolour_k1.png"
+    },
+    {
+      "row": 0,
+      "k": 2,
+      "attempts": {
+        "a": "units-gen/UNIT_MCV/mcv_k2_a.png",
+        "b": "units-gen/UNIT_MCV/mcv_k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_MCV/mcv_recolour_k2.png"
+    },
+    {
+      "row": 0,
+      "k": 3,
+      "attempts": {
+        "a": "units-gen/UNIT_MCV/mcv_k3_a.png",
+        "b": "units-gen/UNIT_MCV/mcv_k3_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_MCV/mcv_recolour_k3.png"
+    },
+    {
+      "row": 0,
+      "k": 4,
+      "attempts": {
+        "a": "units-gen/UNIT_MCV/mcv_k4_a.png",
+        "b": "units-gen/UNIT_MCV/mcv_k4_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_MCV/mcv_recolour_k4.png"
+    },
+    {
+      "row": 0,
+      "k": 5,
+      "attempts": {
+        "a": "units-gen/UNIT_MCV/mcv_k5_a.png",
+        "b": "units-gen/UNIT_MCV/mcv_k5_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_MCV/mcv_recolour_k5.png"
+    },
+    {
+      "row": 0,
+      "k": 6,
+      "attempts": {
+        "a": "units-gen/UNIT_MCV/mcv_k6_a.png",
+        "b": "units-gen/UNIT_MCV/mcv_k6_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_MCV/mcv_recolour_k6.png"
+    },
+    {
+      "row": 0,
+      "k": 7,
+      "attempts": {
+        "a": "units-gen/UNIT_MCV/mcv_k7_a.png",
+        "b": "units-gen/UNIT_MCV/mcv_k7_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_MCV/mcv_recolour_k7.png"
+    }
+  ],
+  "shadow_rule": {
+    "shift": 5,
+    "alpha": 51,
+    "rgb": [
+      5,
+      4,
+      3
+    ]
+  },
+  "scale": "fit"
+}
