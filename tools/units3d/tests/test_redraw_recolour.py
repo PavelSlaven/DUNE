@@ -21,6 +21,7 @@ from tools.units3d.redraw_recolour import run
 class UnitFixture:
     def __init__(self, records, sources, bodies, masks):
         self._frames = records
+        self.data = {}
         self.sources = sources
         self.bodies = bodies
         self.masks = masks
@@ -48,6 +49,23 @@ class RedrawRecolourTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory(dir=self.temp_root)
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
+
+    def test_figures_preserves_three_separate_recolour_inputs(self):
+        source = self.root / 'three-figures.png'
+        pixels = np.full((1024, 1024, 3), (255, 0, 255), np.uint8)
+        for x in (100, 400, 700):
+            pixels[400:500, x:x + 100] = 180
+        Image.fromarray(pixels).save(source)
+        blank = np.zeros((2, 4, 4), np.uint8)
+        record = {'row': 0, 'k': 0, 'attempts': {'a': str(source)}, 'pick': 'a'}
+        unit = UnitFixture([record], {}, {(0, 0): blank}, {(0, 0): blank})
+        unit.data['figures'] = 3
+        output = self.root / 'three-out'
+        with redirect_stdout(StringIO()):
+            run(unit, SimpleNamespace(output=output))
+        with Image.open(output / 'pick_r0k0.png') as image:
+            for x in (150, 450, 750):
+                self.assertEqual(image.getpixel((x, 450)), (180, 180, 180))
 
     def test_alpha_candidate_is_resized_without_composition_before_keying(self):
         source = self.root / 'source.png'

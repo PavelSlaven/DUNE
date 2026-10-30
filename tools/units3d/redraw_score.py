@@ -44,7 +44,7 @@ def _frame_data(unit, record):
     for key_name, value in record['attempts'].items():
         path = unit.path(value)
         with frame_input(record, path):
-            rgba = keyed(path)
+            rgba = keyed(path, figures=unit.data.get('figures', 1))
             cx0, cy0, cx1, cy1 = bbox(rgba[..., 3])
         width, height = cx1 - cx0, cy1 - cy0
         attempts[key_name] = {

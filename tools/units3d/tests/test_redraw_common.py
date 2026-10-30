@@ -55,6 +55,53 @@ class CommonTests(unittest.TestCase):
         self.assertEqual(result[12, 12, 3], 255)
         self.assertEqual(result[34, 34, 3], 0)
 
+    def test_figures_cleanup_keeps_area_threshold_and_soft_margins(self):
+        pixels = np.zeros((1024, 1024, 4), np.uint8)
+        for rows, columns in ((slice(100, 200), slice(100, 200)),
+                              (slice(300, 350), slice(300, 400)),
+                              (slice(500, 510), slice(500, 600)),
+                              (slice(700, 709), slice(700, 800))):
+            pixels[rows, columns] = (180, 180, 180, 255)
+        pixels[505, 494] = (180, 180, 180, 50)
+        pixels[505, 493] = (180, 180, 180, 50)
+        pixels[20, 20] = (180, 180, 180, 50)
+        cleaned, stray = common.clean_keyed(pixels, figures=8)
+        self.assertEqual(stray, 902)
+        self.assertEqual(int((cleaned[..., 3] > 127).sum()), 16000)
+        self.assertEqual(cleaned[505, 494, 3], 50)
+        self.assertEqual(cleaned[505, 493, 3], 0)
+        limited, _ = common.clean_keyed(pixels, figures=2)
+        self.assertEqual(limited[505, 550, 3], 0)
+        self.assertEqual(limited[325, 350, 3], 255)
+
+    def test_figures_keyed_keeps_multiple_figures_for_both_backgrounds(self):
+        for background in ((255, 0, 255), (0, 0, 0)):
+            with self.subTest(background=background):
+                pixels = np.full((1024, 1024, 3), background, np.uint8)
+                pixels[100:200, 100:200] = 180
+                pixels[300:350, 300:400] = 180
+                pixels[500:512, 500:600] = 180
+                pixels[700:710, 700:710] = 180
+                path = self.directory / 'figures.png'
+                Image.fromarray(pixels).save(path)
+                result = keyed(path, figures=3)
+                for row, column in ((150, 150), (325, 350), (506, 550)):
+                    self.assertEqual(result[row, column, 3], 255)
+                self.assertEqual(result[705, 705, 3], 0)
+                single = keyed(path)
+                self.assertEqual(single[325, 350, 3], 0)
+                self.assertEqual(single[506, 550, 3], 0)
+
+    def test_figures_validation_applies_to_all_commands(self):
+        original = json.loads((ROOT / 'tools/units3d/units/UNIT_DEVASTATOR/unit.json').read_text())
+        for command in ('build', 'score', 'recolour-inputs', 'inputs', 'shadow-rule', 'contact', 'sheet', 'pack'):
+            for value in (None, False, -1, 8.0, []):
+                with self.subTest(command=command, figures=value):
+                    data = dict(original, figures=value)
+                    (self.directory / 'unit.json').write_text(json.dumps(data), encoding='utf-8')
+                    with self.assertRaisesRegex(InputError, 'figures'):
+                        load_unit(self.directory, command)
+
     def test_clipping_uses_supplied_offset_and_detects_soft_alpha(self):
         pixels = np.zeros((1024, 1024, 4), np.uint8)
         pixels[400:600, 400:600] = (120, 120, 120, 255)

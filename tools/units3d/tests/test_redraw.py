@@ -715,10 +715,14 @@ class RedrawAcceptanceTests(unittest.TestCase):
         unit_dir, data = self.copy_unit()
         record = self.frame(data, 0)
         record["attempts"][record["pick"]] = self.enlarge_on_canvas(
-            ROOT / record["attempts"][record["pick"]], self.root / "attempt_k0_enlarged.png"
+            ROOT / record["attempts"][record["pick"]],
+            self.root / "attempt_k0_enlarged.png",
+            factor=1.25,
         )
         record["recolour"] = self.enlarge_on_canvas(
-            ROOT / record["recolour"], self.root / "recolour_k0_enlarged.png"
+            ROOT / record["recolour"],
+            self.root / "recolour_k0_enlarged.png",
+            factor=1.25,
         )
         data["scale"] = "fit"
         self.save_unit(unit_dir, data)
@@ -728,9 +732,63 @@ class RedrawAcceptanceTests(unittest.TestCase):
         transcript = result.stdout + result.stderr
         self.assertEqual(result.returncode, 0, transcript)
         self.assertTrue((output / "atlases.json").is_file(), transcript)
+        metrics = (output / "metrics.txt").read_text(encoding="utf-8").splitlines()
+        self.assertIn("all frames pass", metrics)
         params = json.loads((output / "params.json").read_text(encoding="utf-8"))
-        self.assertLess(params["scale"], params["scale_median"])
-        self.assertIn("all frames pass", (output / "metrics.txt").read_text(encoding="utf-8").splitlines())
+        scale = params["scale"]
+        median = params["scale_median"]
+        self.assertLess(scale, median)
+        self.assertGreater(scale, 0.8 * median)
+        steps = (median - scale) / 0.001
+        self.assertLessEqual(abs(steps - round(steps)), 1e-6)
+
+        data["scale"] = scale + 0.001
+        self.save_unit(unit_dir, data)
+        next_output = self.root / "build_fit_next_step"
+        next_result = self.run_tool("build", next_output, unit=unit_dir)
+        next_transcript = next_result.stdout + next_result.stderr
+        self.assertEqual(next_result.returncode, 1, next_transcript)
+        failed = next(
+            line for line in (next_output / "metrics.txt").read_text(encoding="utf-8").splitlines()
+            if line.startswith("failed:")
+        )
+        self.assertIn("r0k0", failed)
+
+    def test_21b_fit_scale_accounts_for_recolour_clipping(self):
+        unit_dir, data = self.copy_unit()
+        record = self.frame(data, 0)
+        record["recolour"] = self.enlarge_on_canvas(
+            ROOT / record["recolour"],
+            self.root / "recolour_k0_enlarged.png",
+            factor=1.014,
+        )
+        data["scale"] = "fit"
+        self.save_unit(unit_dir, data)
+
+        output = self.root / "build_fit_recolour_only"
+        result = self.run_tool("build", output, unit=unit_dir)
+        transcript = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, transcript)
+        self.assertTrue((output / "atlases.json").is_file(), transcript)
+        self.assertIn(
+            "all frames pass",
+            (output / "metrics.txt").read_text(encoding="utf-8").splitlines(),
+        )
+        params = json.loads((output / "params.json").read_text(encoding="utf-8"))
+        scale = params["scale"]
+        self.assertLess(scale, params["scale_median"])
+
+        data["scale"] = scale + 0.001
+        self.save_unit(unit_dir, data)
+        next_output = self.root / "build_fit_recolour_next_step"
+        next_result = self.run_tool("build", next_output, unit=unit_dir)
+        next_transcript = next_result.stdout + next_result.stderr
+        self.assertEqual(next_result.returncode, 1, next_transcript)
+        failed = next(
+            line for line in (next_output / "metrics.txt").read_text(encoding="utf-8").splitlines()
+            if line.startswith("failed:")
+        )
+        self.assertIn("r0k0", failed)
 
     def test_22_explicit_scale_is_used(self):
         unit_dir, data = self.copy_unit()
@@ -744,6 +802,41 @@ class RedrawAcceptanceTests(unittest.TestCase):
         params = json.loads((output / "params.json").read_text(encoding="utf-8"))
         self.assertEqual(params["scale"], 1.0)
         self.assertAlmostEqual(params["scale_median"], 1.0714527591528187, places=9)
+
+        data.pop("scale")
+        self.save_unit(unit_dir, data)
+        default_output = self.root / "build_default_scale"
+        default_result = self.run_tool("build", default_output, unit=unit_dir)
+        default_transcript = default_result.stdout + default_result.stderr
+        self.assertEqual(default_result.returncode, 0, default_transcript)
+        default_params = json.loads(
+            (default_output / "params.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(default_params["scale"], default_params["scale_median"])
+
+        with Image.open(output / "UNIT_DEVASTATOR.png") as image:
+            explicit_body = np.asarray(image.convert("RGBA"))
+        with Image.open(default_output / "UNIT_DEVASTATOR.png") as image:
+            default_body = np.asarray(image.convert("RGBA"))
+        self.assertFalse(np.array_equal(explicit_body, default_body))
+
+        explicit_widths = {}
+        default_widths = {}
+        for record in data["frames"]:
+            key = (record["row"], record["k"])
+            frame_name = f"r{record['row']}k{record['k']}.png"
+            with Image.open(output / "frames" / frame_name) as image:
+                explicit_alpha = np.asarray(image.convert("RGBA"))[..., 3]
+            with Image.open(default_output / "frames" / frame_name) as image:
+                default_alpha = np.asarray(image.convert("RGBA"))[..., 3]
+            explicit_x = np.flatnonzero((explicit_alpha > 127).any(axis=0))
+            default_x = np.flatnonzero((default_alpha > 127).any(axis=0))
+            explicit_widths[key] = int(explicit_x[-1] - explicit_x[0] + 1) if explicit_x.size else 0
+            default_widths[key] = int(default_x[-1] - default_x[0] + 1) if default_x.size else 0
+            self.assertLessEqual(explicit_widths[key], default_widths[key], key)
+        self.assertTrue(
+            any(explicit_widths[key] < default_widths[key] for key in explicit_widths)
+        )
 
     def test_23_share_corridor_from_unit(self):
         unit_dir, data = self.copy_unit()
@@ -789,6 +882,50 @@ class RedrawAcceptanceTests(unittest.TestCase):
         self.assertTrue(np.array_equal(filled[~red], plain[~red]))
         self.assertGreater(int((filled != plain).sum()), 0)
 
+        def shares_from_atlases(atlas_dir):
+            with Image.open(atlas_dir / "UNIT_DEVASTATOR.png") as image:
+                body_pixels = np.asarray(image.convert("RGBA"))
+            with Image.open(atlas_dir / "HM_UNIT_DEVASTATOR.png") as image:
+                mask_pixels = np.asarray(image.convert("RGBA"))
+            metric_lines = (atlas_dir / "metrics.txt").read_text(
+                encoding="utf-8"
+            ).splitlines()
+            header = metric_lines[0].split("\t")
+            row_index = header.index("row")
+            k_index = header.index("k")
+            share_index = header.index("share")
+            reported = {}
+            for line in metric_lines[1:]:
+                fields = line.split("\t")
+                if len(fields) <= share_index or not fields[row_index].isdigit():
+                    continue
+                reported[(int(fields[row_index]), int(fields[k_index]))] = fields[share_index]
+
+            frame_width, frame_height = data["frame"]
+            actual = {}
+            for record in data["frames"]:
+                row, k = record["row"], record["k"]
+                x0, y0 = k * frame_width, row * frame_height
+                body_alpha = body_pixels[
+                    y0:y0 + frame_height, x0:x0 + frame_width, 3
+                ]
+                mask_alpha = mask_pixels[
+                    y0:y0 + frame_height, x0:x0 + frame_width, 3
+                ]
+                body_count = int((body_alpha > 127).sum())
+                mask_count = int((mask_alpha > 127).sum())
+                share = mask_count / body_count
+                key = (row, k)
+                self.assertEqual(f"{share:.3f}", reported[key], key)
+                actual[key] = share
+            return actual
+
+        plain_shares = shares_from_atlases(base)
+        filled_shares = shares_from_atlases(output)
+        self.assertTrue(
+            any(filled_shares[key] > plain_shares[key] for key in plain_shares)
+        )
+
     def test_25_invalid_red_fill_is_rejected(self):
         unit_dir, data = self.copy_unit()
         for index, value in enumerate((True, 0, 256, 40.5, "40", None)):
@@ -801,6 +938,122 @@ class RedrawAcceptanceTests(unittest.TestCase):
                 result = self.run_tool("build", self.root / f"build_bad_red_fill_{index}", unit=unit_dir)
                 self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
                 self.assertIn("red_fill", result.stderr)
+
+    def _troopers_unit(self, *, include_figures=True, scale=None):
+        entries = {entry.name: entry for entry in read_pack(SOURCE_PACK)}
+        body_image = decode_image(entries["UNIT_TROOPERS"].payload)
+        mask_image = decode_image(entries["HM_UNIT_TROOPERS"].payload)
+        self.assertIsNotNone(body_image, "В исходном паке не декодируется UNIT_TROOPERS")
+        self.assertIsNotNone(mask_image, "В исходном паке не декодируется HM_UNIT_TROOPERS")
+        self.assertEqual(body_image.size, (1024, 512))
+        self.assertEqual(mask_image.size, body_image.size)
+        body = np.asarray(body_image.convert("RGBA"))
+        house_mask = np.asarray(mask_image.convert("RGBA"))
+        frame_width, frame_height = 128, 128
+        self.assertEqual(body.shape[1] // frame_width, 8)
+        self.assertEqual(body.shape[0] // frame_height, 4)
+
+        unit_dir = self.root / "unit_troopers"
+        unit_dir.mkdir()
+        records = []
+        for row in range(4):
+            for k in range(8):
+                name = f"r{row}k{k}"
+                x, y = k * frame_width, row * frame_height
+                old_frame = body[y:y + frame_height, x:x + frame_width].copy()
+                old_mask = house_mask[y:y + frame_height, x:x + frame_width]
+                recolour_frame = old_frame.copy()
+                recolour_frame[old_mask[..., 3] > 127, :3] = (0, 255, 0)
+                attempt_path = self.root / f"troopers_attempt_{name}.png"
+                recolour_path = self.root / f"troopers_recolour_{name}.png"
+                self._save_old_canvas(old_frame, attempt_path)
+                self._save_old_canvas(recolour_frame, recolour_path)
+                records.append({
+                    "row": row,
+                    "k": k,
+                    "attempts": {"old": str(attempt_path.resolve())},
+                    "pick": "old",
+                    "recolour": str(recolour_path.resolve()),
+                })
+
+        data = {
+            "atlases": {
+                "body": "UNIT_TROOPERS",
+                "house_mask": "HM_UNIT_TROOPERS",
+                "shadow": None,
+            },
+            "frame": [frame_width, frame_height],
+            "rows": 4,
+            "frames": records,
+        }
+        if include_figures:
+            data["figures"] = 3
+        if scale is not None:
+            data["scale"] = scale
+        self.save_unit(unit_dir, data)
+        return unit_dir, body
+
+    def _save_old_canvas(self, frame, path):
+        height, width = frame.shape[:2]
+        maximum = max(width, height)
+        resized = Image.fromarray(frame).resize(
+            (round(width * 1024 / maximum), round(height * 1024 / maximum)),
+            Image.Resampling.LANCZOS,
+        )
+        canvas = Image.new("RGBA", (1024, 1024), (255, 0, 255, 255))
+        canvas.alpha_composite(resized, ((1024 - resized.width) // 2, (1024 - resized.height) // 2))
+        canvas.convert("RGB").save(path)
+
+    def _troopers_body_iou(self, output, old_body):
+        with Image.open(output / "UNIT_TROOPERS.png") as image:
+            assembled = np.asarray(image.convert("RGBA"))
+        values = {}
+        for row in range(4):
+            for k in range(8):
+                y, x = row * 128, k * 128
+                old_on = old_body[y:y + 128, x:x + 128, 3] > 127
+                new_on = assembled[y:y + 128, x:x + 128, 3] > 127
+                union = np.count_nonzero(old_on | new_on)
+                values[f"r{row}k{k}"] = (
+                    np.count_nonzero(old_on & new_on) / union if union else 1.0
+                )
+        return values
+
+    def test_26_troopers_keeps_all_three_figures(self):
+        unit_dir, old_body = self._troopers_unit()
+        output = self.root / "build_troopers_figures"
+        result = self.run_tool("build", output, "--pack", SOURCE_PACK, unit=unit_dir)
+        transcript = f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}"
+        self.assertEqual(result.returncode, 0, transcript)
+        metrics = (output / "metrics.txt").read_text(encoding="utf-8").splitlines()
+        self.assertIn("all frames pass", metrics, transcript)
+        ious = self._troopers_body_iou(output, old_body)
+        for name, iou in ious.items():
+            with self.subTest(frame=name):
+                self.assertGreaterEqual(iou, 0.80, f"{name}: IoU={iou:.5f}")
+
+    def test_27_troopers_without_figures_fails_at_fit_scale(self):
+        unit_dir, _ = self._troopers_unit(include_figures=False, scale="fit")
+        output = self.root / "build_troopers_one_figure_fit"
+        result = self.run_tool("build", output, "--pack", SOURCE_PACK, unit=unit_dir)
+        transcript = f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}"
+        self.assertEqual(result.returncode, 1, transcript)
+        metrics = (output / "metrics.txt").read_text(encoding="utf-8").splitlines()
+        self.assertTrue(any(line.startswith("failed: ") for line in metrics), transcript)
+        params = json.loads((output / "params.json").read_text(encoding="utf-8"))
+        self.assertGreaterEqual(params["scale"], 0.8 * params["scale_median"])
+
+    def test_28_invalid_figures_values_are_rejected(self):
+        unit_dir, data = self.copy_unit()
+        for index, value in enumerate((True, 0, 9, 2.5, "3")):
+            with self.subTest(value=value):
+                changed = json.loads(json.dumps(data))
+                changed["figures"] = value
+                self.save_unit(unit_dir, changed)
+                output = self.root / f"build_bad_figures_{index}"
+                result = self.run_tool("build", output, unit=unit_dir)
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertIn("figures", result.stderr)
 
 
 if __name__ == "__main__":

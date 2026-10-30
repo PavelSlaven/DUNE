@@ -9,6 +9,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import numpy as np
+from PIL import Image
 
 from tools.units3d import redraw_score
 from tools.units3d.redraw_common import ROOT, load_unit
@@ -17,6 +18,27 @@ from tools.units3d.redraw_common import ROOT, load_unit
 class RedrawScoreTests(unittest.TestCase):
     def setUp(self):
         (ROOT / '.tmp').mkdir(exist_ok=True)
+
+    def test_figures_scores_the_span_of_all_three_figures(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / '.tmp') as temporary:
+            path = Path(temporary) / 'figures.png'
+            pixels = np.full((1024, 1024, 3), (255, 0, 255), np.uint8)
+            for x in (100, 400, 700):
+                pixels[400:500, x:x + 100] = 180
+            Image.fromarray(pixels).save(path)
+            old = np.zeros((128, 128, 4), np.uint8)
+            old[30:90, 20:108, 3] = 255
+            unit = SimpleNamespace(
+                data={'height_estimate': 49.0, 'figures': 3},
+                pack_path=Path('synthetic-pack.dat'),
+                maximum=128,
+                path=lambda value: value,
+                old_frame=lambda role, record: old.copy(),
+            )
+            record = {'row': 0, 'k': 0, 'attempts': {'a': str(path)}}
+            candidate = redraw_score._frame_data(unit, record)['attempts']['a']
+            self.assertEqual(candidate['width'], 700)
+            self.assertEqual(candidate['height'], 100)
 
     def test_devastator_output_matches_g3_reference_and_out(self):
         unit_dir = ROOT / 'tools/units3d/units/UNIT_DEVASTATOR'
@@ -96,7 +118,7 @@ class RedrawScoreTests(unittest.TestCase):
 
         self_outer = self
         stdout = io.StringIO()
-        with patch.object(redraw_score, 'keyed', side_effect=lambda path: candidates[path]):
+        with patch.object(redraw_score, 'keyed', side_effect=lambda path, *, figures=1: candidates[path]):
             with contextlib.redirect_stdout(stdout):
                 result = redraw_score.run(SyntheticUnit(), SimpleNamespace(out=None))
 
@@ -135,7 +157,7 @@ class RedrawScoreTests(unittest.TestCase):
         )
 
         with patch.object(
-            redraw_score, 'keyed', side_effect=lambda path: candidates[path]
+            redraw_score, 'keyed', side_effect=lambda path, *, figures=1: candidates[path]
         ), patch.object(redraw_score, '_mirror_iou', wraps=redraw_score._mirror_iou) as iou:
             redraw_score.render(unit)
 
