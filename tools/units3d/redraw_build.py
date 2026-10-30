@@ -48,6 +48,8 @@ def run(unit, args):
         raw[name] = prepared[name][0]
     ratios = []
     for record in records:
+        if 'offset_from' in record:
+            continue
         name = frame_name(record)
         attempt_path = unit.path(record['attempts'][record['pick']])
         with frame_input(record, attempt_path):
@@ -66,12 +68,26 @@ def run(unit, args):
                 bbox(cleaned_edit[..., 3])
             recolours[frame_name(record)] = edit, cleaned_edit
 
-    def fits(candidate):
-        for record in records:
+    placement_records = sorted(records, key=lambda record: 'offset_from' in record)
+
+    def place_bodies(candidate):
+        placed = {}
+        for record in placement_records:
             name = frame_name(record)
+            offset = None
+            if 'offset_from' in record:
+                source_name = f"r{record['offset_from']}k{record['k']}"
+                offset = placed[source_name][2]
             attempt_path = unit.path(record['attempts'][record['pick']])
             with frame_input(record, attempt_path):
-                _, clipped, offset, _ = place(raw[name], unit.frame, candidate, boxes[name])
+                placed[name] = place(raw[name], unit.frame, candidate, boxes[name], offset)
+        return placed
+
+    def fits(candidate):
+        placed = place_bodies(candidate)
+        for record in records:
+            name = frame_name(record)
+            _, clipped, offset, _ = placed[name]
             if clipped:
                 return False
             if has_mask:
@@ -84,6 +100,7 @@ def run(unit, args):
     scale = unit.data.get('scale', scale_median)
     if scale == 'fit':
         scale = _fit_scale(scale_median, fits)
+    placed = place_bodies(scale)
     old_shares = {}
     if has_mask:
         for record in records:
@@ -105,9 +122,7 @@ def run(unit, args):
     fw, fh = unit.frame
     for record in records:
         name = frame_name(record)
-        attempt_path = unit.path(record['attempts'][record['pick']])
-        with frame_input(record, attempt_path):
-            body, clipped, offset, moved = place(raw[name], unit.frame, scale, boxes[name])
+        body, clipped, offset, moved = placed[name]
         (output / 'frames' / f'{name}.png').write_bytes(encode_png(Image.fromarray(body)))
         params['frames'][name] = {'offset': list(offset), 'moved': list(moved)}
         reasons = []
