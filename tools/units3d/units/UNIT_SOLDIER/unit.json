@@ -1,0 +1,355 @@
+{
+  "atlases": {
+    "body": "UNIT_SOLDIER",
+    "house_mask": "HM_UNIT_SOLDIER",
+    "shadow": null
+  },
+  "frame": [
+    128,
+    128
+  ],
+  "rows": 4,
+  "block": [
+    51.0,
+    36.0,
+    48.01
+  ],
+  "arrow": [
+    5.1,
+    30.6,
+    9.0
+  ],
+  "height_estimate": 48.01,
+  "scale": 0.473987,
+  "sheet_building": {
+    "name": "BUILD_HEAVYFACTORY",
+    "size": [
+      384,
+      256
+    ]
+  },
+  "frames": [
+    {
+      "row": 0,
+      "k": 0,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r0k0_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r0k0_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r0k0_a.png"
+    },
+    {
+      "row": 0,
+      "k": 1,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r0k1_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r0k1_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r0k1_a.png"
+    },
+    {
+      "row": 0,
+      "k": 2,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r0k2_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r0k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r0k2_b.png"
+    },
+    {
+      "row": 0,
+      "k": 3,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r0k3_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r0k3_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r0k3_a.png"
+    },
+    {
+      "row": 0,
+      "k": 4,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r0k4_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r0k4_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r0k4_a.png"
+    },
+    {
+      "row": 0,
+      "k": 5,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r0k5_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r0k5_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r0k5_a.png"
+    },
+    {
+      "row": 0,
+      "k": 6,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r0k6_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r0k6_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc2_r0k6_a.png"
+    },
+    {
+      "row": 0,
+      "k": 7,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r0k7_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r0k7_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r0k7_a.png"
+    },
+    {
+      "row": 1,
+      "k": 0,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r1k0_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r1k0_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r1k0_a.png"
+    },
+    {
+      "row": 1,
+      "k": 1,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r1k1_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r1k1_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r1k1_a.png"
+    },
+    {
+      "row": 1,
+      "k": 2,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r1k2_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r1k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r1k2_b.png"
+    },
+    {
+      "row": 1,
+      "k": 3,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r1k3_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r1k3_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r1k3_a.png"
+    },
+    {
+      "row": 1,
+      "k": 4,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r1k4_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r1k4_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r1k4_a.png"
+    },
+    {
+      "row": 1,
+      "k": 5,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r1k5_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r1k5_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r1k5_a.png"
+    },
+    {
+      "row": 1,
+      "k": 6,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r1k6_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r1k6_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc2_r1k6_a.png"
+    },
+    {
+      "row": 1,
+      "k": 7,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r1k7_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r1k7_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r1k7_a.png"
+    },
+    {
+      "row": 2,
+      "k": 0,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r2k0_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r2k0_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r2k0_a.png"
+    },
+    {
+      "row": 2,
+      "k": 1,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r2k1_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r2k1_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r2k1_a.png"
+    },
+    {
+      "row": 2,
+      "k": 2,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r2k2_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r2k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r2k2_b.png"
+    },
+    {
+      "row": 2,
+      "k": 3,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r2k3_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r2k3_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r2k3_a.png"
+    },
+    {
+      "row": 2,
+      "k": 4,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r2k4_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r2k4_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r2k4_a.png"
+    },
+    {
+      "row": 2,
+      "k": 5,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r2k5_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r2k5_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r2k5_a.png"
+    },
+    {
+      "row": 2,
+      "k": 6,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r2k6_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r2k6_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc2_r2k6_a.png"
+    },
+    {
+      "row": 2,
+      "k": 7,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r2k7_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r2k7_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r2k7_a.png"
+    },
+    {
+      "row": 3,
+      "k": 0,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r3k0_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r3k0_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r3k0_a.png"
+    },
+    {
+      "row": 3,
+      "k": 1,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r3k1_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r3k1_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r3k1_a.png"
+    },
+    {
+      "row": 3,
+      "k": 2,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r3k2_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r3k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r3k2_b.png"
+    },
+    {
+      "row": 3,
+      "k": 3,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r3k3_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r3k3_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r3k3_a.png"
+    },
+    {
+      "row": 3,
+      "k": 4,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r3k4_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r3k4_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r3k4_a.png"
+    },
+    {
+      "row": 3,
+      "k": 5,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r3k5_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r3k5_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r3k5_a.png"
+    },
+    {
+      "row": 3,
+      "k": 6,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r3k6_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r3k6_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SOLDIER/rc2_r3k6_a.png"
+    },
+    {
+      "row": 3,
+      "k": 7,
+      "attempts": {
+        "a": "units-gen/UNIT_SOLDIER/strip_r3k7_a.png",
+        "b": "units-gen/UNIT_SOLDIER/strip_r3k7_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SOLDIER/rc_r3k7_a.png"
+    }
+  ],
+  "share_corridor": [0.214, 0.615],
+  "red_fill": 100
+}
