@@ -1,0 +1,122 @@
+{
+  "atlases": {
+    "body": "UNIT_RAIDER",
+    "house_mask": "HM_UNIT_RAIDER",
+    "shadow": "UNIT_RAIDER_SHADOW"
+  },
+  "frame": [
+    112,
+    104
+  ],
+  "rows": 1,
+  "block": [
+    88.0,
+    66.0,
+    36.0
+  ],
+  "arrow": [
+    4.5,
+    34.5,
+    19.5
+  ],
+  "height_estimate": 36.0,
+  "sheet_building": {
+    "name": "BUILD_LIGHTFACTORY",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "frames": [
+    {
+      "row": 0,
+      "k": 0,
+      "attempts": {
+        "a": "units-gen/UNIT_TRIKE/trike_k0_a.png",
+        "b": "units-gen/UNIT_TRIKE/trike_k0_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k0.png"
+    },
+    {
+      "row": 0,
+      "k": 1,
+      "attempts": {
+        "a": "units-gen/UNIT_TRIKE/trike_k1_a.png",
+        "b": "units-gen/UNIT_TRIKE/trike_k1_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k1.png"
+    },
+    {
+      "row": 0,
+      "k": 2,
+      "attempts": {
+        "a": "units-gen/UNIT_TRIKE/trike_k2_a.png",
+        "b": "units-gen/UNIT_TRIKE/trike_k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k2.png"
+    },
+    {
+      "row": 0,
+      "k": 3,
+      "attempts": {
+        "a": "units-gen/UNIT_TRIKE/trike_k3_a.png",
+        "b": "units-gen/UNIT_TRIKE/trike_k3_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k3.png"
+    },
+    {
+      "row": 0,
+      "k": 4,
+      "attempts": {
+        "a": "units-gen/UNIT_TRIKE/trike_k4_a.png",
+        "b": "units-gen/UNIT_TRIKE/trike_k4_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k4.png"
+    },
+    {
+      "row": 0,
+      "k": 5,
+      "attempts": {
+        "a": "units-gen/UNIT_TRIKE/trike_k5_a.png",
+        "b": "units-gen/UNIT_TRIKE/trike_k5_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k5.png"
+    },
+    {
+      "row": 0,
+      "k": 6,
+      "attempts": {
+        "a": "units-gen/UNIT_TRIKE/trike_k6_a.png",
+        "b": "units-gen/UNIT_TRIKE/trike_k6_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k6.png"
+    },
+    {
+      "row": 0,
+      "k": 7,
+      "attempts": {
+        "a": "units-gen/UNIT_TRIKE/trike_k7_a.png",
+        "b": "units-gen/UNIT_TRIKE/trike_k7_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k7.png"
+    }
+  ],
+  "shadow_rule": {
+    "shift": 3,
+    "alpha": 56,
+    "rgb": [
+      5,
+      4,
+      3
+    ]
+  },
+  "scale": "fit"
+}

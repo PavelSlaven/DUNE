@@ -36,3 +36,4 @@ tmp/
 
 # Built runtime binary; reproduce it from build-ru instead of storing it in Git.
 resources/bin/d2tm.exe
+units-gen
