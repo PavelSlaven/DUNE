@@ -97,7 +97,7 @@
         "b": "units-gen/UNIT_SOLDIER/strip_r0k6_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_SOLDIER/rc_r0k6_b.png"
+      "recolour": "units-gen/UNIT_SOLDIER/rc2_r0k6_a.png"
     },
     {
       "row": 0,
@@ -177,7 +177,7 @@
         "b": "units-gen/UNIT_SOLDIER/strip_r1k6_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_SOLDIER/rc_r1k6_b.png"
+      "recolour": "units-gen/UNIT_SOLDIER/rc2_r1k6_a.png"
     },
     {
       "row": 1,
@@ -257,7 +257,7 @@
         "b": "units-gen/UNIT_SOLDIER/strip_r2k6_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_SOLDIER/rc_r2k6_b.png"
+      "recolour": "units-gen/UNIT_SOLDIER/rc2_r2k6_a.png"
     },
     {
       "row": 2,
@@ -337,7 +337,7 @@
         "b": "units-gen/UNIT_SOLDIER/strip_r3k6_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_SOLDIER/rc_r3k6_b.png"
+      "recolour": "units-gen/UNIT_SOLDIER/rc2_r3k6_a.png"
     },
     {
       "row": 3,
