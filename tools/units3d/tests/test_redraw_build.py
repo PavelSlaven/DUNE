@@ -197,6 +197,116 @@ class BuildTests(unittest.TestCase):
                 self.assertEqual(code, 2, stdout + stderr)
                 self.assertIn('scale', stderr)
 
+    def test_offset_from_later_row_preserves_body_and_recolour_alignment_and_median(self):
+        self.data['atlases']['house_mask'] = 'MASK'
+        self.data['share_corridor'] = [0, 1]
+        self.data['frames'].reverse()
+        extended = np.array(Image.open(self.attempt))
+        extended[448:576, 64:128] = (100, 110, 120)
+        extended_path = self.root / 'extended.png'
+        Image.fromarray(extended).save(extended_path)
+        recolours = {}
+        for row, pixels in ((0, extended), (1, np.array(Image.open(self.attempt)))):
+            green = pixels.copy()
+            green[np.all(green == (100, 110, 120), axis=-1)] = (0, 255, 0)
+            path = self.root / f'recolour-{row}.png'
+            Image.fromarray(green).save(path)
+            recolours[row] = path
+        self.body[:32] = 0
+        for k in range(8):
+            self.body[8:24, k * 64 + 20:k * 64 + 44] = (100, 110, 120, 255)
+        for record in self.data['frames']:
+            record['recolour'] = str(recolours[record['row']])
+            if record['row'] == 0:
+                record['offset_from'] = 1
+                record['attempts']['chosen'] = str(extended_path)
+
+        code, output, stderr = self.build()
+
+        self.assertEqual(code, 0, stderr)
+        params = json.loads((output / 'params.json').read_text())
+        self.assertEqual(params['scale_median'], 1.0)
+        self.assertEqual(params['scale'], 1.0)
+        mask = np.array(Image.open(output / 'MASK.png'))
+        for k in range(8):
+            source = params['frames'][f'r1k{k}']
+            dependent = params['frames'][f'r0k{k}']
+            self.assertEqual(dependent['offset'], source['offset'])
+            self.assertEqual(dependent['moved'], [0, 0])
+            base = np.array(Image.open(output / 'frames' / f'r1k{k}.png'))
+            frame = np.array(Image.open(output / 'frames' / f'r0k{k}.png'))
+            self.assertTrue(np.array_equal(base[:, 12:], frame[:, 12:]))
+            self.assertGreater(int(frame[:, :8, 3].sum()), int(base[:, :8, 3].sum()))
+            opaque = frame[..., 3] == 255
+            self.assertTrue(np.all(mask[:32, k * 64:(k + 1) * 64, 3][opaque] == 255))
+
+    def test_offset_from_inherits_final_moved_offset_and_reports_clipping(self):
+        self.data['scale'] = 1.0
+        self.body[:32] = 0
+        for k in range(8):
+            self.body[8:24, k * 64:k * 64 + 48] = (100, 110, 120, 255)
+        extended = np.array(Image.open(self.attempt))
+        extended[448:576, :128] = (100, 110, 120)
+        path = self.root / 'extended.png'
+        Image.fromarray(extended).save(path)
+        for record in self.data['frames']:
+            if record['row'] == 1:
+                record['offset_from'] = 0
+                record['attempts']['chosen'] = str(path)
+
+        code, output, stderr = self.build()
+
+        self.assertEqual(code, 1, stderr)
+        self.assertFalse((output / 'atlases.json').exists())
+        params = json.loads((output / 'params.json').read_text())
+        for k in range(8):
+            source = params['frames'][f'r0k{k}']
+            dependent = params['frames'][f'r1k{k}']
+            self.assertNotEqual(source['moved'], [0, 0])
+            self.assertEqual(dependent['offset'], source['offset'])
+            self.assertEqual(dependent['moved'], [0, 0])
+            self.assertIn(f'r1k{k}: clipped', stderr)
+            self.assertNotIn(f'r0k{k}:', stderr)
+
+    def test_offset_from_fit_checks_body_and_recolour_with_current_scale_offset(self):
+        self.data['scale'] = 'fit'
+        self.body[:] = 0
+        for row in range(2):
+            for k in range(8):
+                self.body[row * 32 + 8:row * 32 + 24, k * 64 + 4:k * 64 + 52] = (100, 110, 120, 255)
+        extended = np.array(Image.open(self.attempt))
+        extended[448:576, :128] = (100, 110, 120)
+        path = self.root / 'extended.png'
+        Image.fromarray(extended).save(path)
+        for record in self.data['frames']:
+            if record['row'] == 1:
+                record['offset_from'] = 0
+        for kind in ('body', 'recolour'):
+            with self.subTest(kind=kind):
+                self.data['scale'] = 'fit'
+                self.data['atlases']['house_mask'] = 'MASK' if kind == 'recolour' else None
+                self.data['share_corridor'] = [0, 1]
+                for record in self.data['frames']:
+                    record['attempts']['chosen'] = str(path if kind == 'body' and record['row'] == 1 else self.attempt)
+                    record['recolour'] = str(path if record['row'] == 1 else self.attempt)
+                code, output, stdout, stderr = self.build_cli(self.root / f'fit-{kind}')
+                self.assertEqual(code, 0 if kind == 'body' else 1, stdout + stderr)
+                if kind == 'recolour':
+                    self.assertIn('r1k0: iou', stderr)
+                self.assertNotIn('clipped', stderr)
+                params = json.loads((output / 'params.json').read_text())
+                self.assertEqual(params['scale_median'], 1.0)
+                self.assertGreaterEqual(params['scale'], 0.8)
+                self.assertLess(params['scale'], 1.0)
+                for k in range(8):
+                    self.assertEqual(params['frames'][f'r1k{k}']['offset'],
+                                     params['frames'][f'r0k{k}']['offset'])
+                self.data['scale'] = params['scale'] + 0.001
+                code, _, stdout, stderr = self.build_cli(self.root / f'larger-{kind}')
+                self.assertEqual(code, 1, stdout + stderr)
+                self.assertIn('r1k0:', stderr)
+                self.assertIn('clipped', stderr)
+
 
 if __name__ == '__main__':
     unittest.main()
