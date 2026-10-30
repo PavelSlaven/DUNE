@@ -1,0 +1,122 @@
+{
+  "atlases": {
+    "body": "UNIT_TANKBASE",
+    "house_mask": "HM_UNIT_TANKBASE",
+    "shadow": "UNIT_TANKBASE_SHADOW"
+  },
+  "frame": [
+    128,
+    128
+  ],
+  "rows": 1,
+  "block": [
+    80.0,
+    67.0,
+    31.0
+  ],
+  "arrow": [
+    4.6,
+    35.0,
+    19.8
+  ],
+  "height_estimate": 31.0,
+  "sheet_building": {
+    "name": "BUILD_HEAVYFACTORY",
+    "size": [
+      384,
+      256
+    ]
+  },
+  "frames": [
+    {
+      "row": 0,
+      "k": 0,
+      "attempts": {
+        "a": "units-gen/UNIT_TANKBASE/tankbase_k0_a.png",
+        "b": "units-gen/UNIT_TANKBASE/tankbase_k0_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_TANKBASE/tankbase_recolour_k0_pb_b.png"
+    },
+    {
+      "row": 0,
+      "k": 1,
+      "attempts": {
+        "a": "units-gen/UNIT_TANKBASE/tankbase_k1_a.png",
+        "b": "units-gen/UNIT_TANKBASE/tankbase_k1_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_TANKBASE/tankbase_recolour_k1.png"
+    },
+    {
+      "row": 0,
+      "k": 2,
+      "attempts": {
+        "a": "units-gen/UNIT_TANKBASE/tankbase_k2_a.png",
+        "b": "units-gen/UNIT_TANKBASE/tankbase_k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_TANKBASE/tankbase_recolour_k2.png"
+    },
+    {
+      "row": 0,
+      "k": 3,
+      "attempts": {
+        "a": "units-gen/UNIT_TANKBASE/tankbase_k3_a.png",
+        "b": "units-gen/UNIT_TANKBASE/tankbase_k3_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_TANKBASE/tankbase_recolour_k3_a.png"
+    },
+    {
+      "row": 0,
+      "k": 4,
+      "attempts": {
+        "a": "units-gen/UNIT_TANKBASE/tankbase_k4_a.png",
+        "b": "units-gen/UNIT_TANKBASE/tankbase_k4_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_TANKBASE/tankbase_recolour_k4.png"
+    },
+    {
+      "row": 0,
+      "k": 5,
+      "attempts": {
+        "a": "units-gen/UNIT_TANKBASE/tankbase_k5_a.png",
+        "b": "units-gen/UNIT_TANKBASE/tankbase_k5_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_TANKBASE/tankbase_recolour_k5.png"
+    },
+    {
+      "row": 0,
+      "k": 6,
+      "attempts": {
+        "a": "units-gen/UNIT_TANKBASE/tankbase_k6_a.png",
+        "b": "units-gen/UNIT_TANKBASE/tankbase_k6_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_TANKBASE/tankbase_recolour_k6.png"
+    },
+    {
+      "row": 0,
+      "k": 7,
+      "attempts": {
+        "a": "units-gen/UNIT_TANKBASE/tankbase_k7_a.png",
+        "b": "units-gen/UNIT_TANKBASE/tankbase_k7_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_TANKBASE/tankbase_recolour_k7.png"
+    }
+  ],
+  "shadow_rule": {
+    "shift": 4,
+    "alpha": 51,
+    "rgb": [
+      7,
+      5,
+      3
+    ]
+  },
+  "scale": "fit"
+}
