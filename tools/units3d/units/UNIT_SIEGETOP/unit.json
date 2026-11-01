@@ -1,0 +1,113 @@
+{
+  "atlases": {
+    "body": "UNIT_SIEGETOP",
+    "house_mask": "HM_UNIT_SIEGETOP",
+    "shadow": null
+  },
+  "frame": [
+    144,
+    152
+  ],
+  "rows": 1,
+  "block": [
+    72.0,
+    55.0,
+    20.0
+  ],
+  "arrow": [
+    3.8,
+    28.8,
+    16.3
+  ],
+  "height_estimate": 20.0,
+  "scale": 0.952726,
+  "sheet_building": {
+    "name": "BUILD_HEAVYFACTORY",
+    "size": [
+      384,
+      256
+    ]
+  },
+  "frames": [
+    {
+      "row": 0,
+      "k": 0,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGETOP/siegetop_k0_a.png",
+        "b": "units-gen/UNIT_SIEGETOP/siegetop_k0_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SIEGETOP/siegetop_recolour_k0.png"
+    },
+    {
+      "row": 0,
+      "k": 1,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGETOP/siegetop_k1_a.png",
+        "b": "units-gen/UNIT_SIEGETOP/siegetop_k1_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SIEGETOP/siegetop_recolour_k1.png"
+    },
+    {
+      "row": 0,
+      "k": 2,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGETOP/siegetop_k2_a.png",
+        "b": "units-gen/UNIT_SIEGETOP/siegetop_k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SIEGETOP/siegetop_recolour_k2.png"
+    },
+    {
+      "row": 0,
+      "k": 3,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGETOP/siegetop_k3_a.png",
+        "b": "units-gen/UNIT_SIEGETOP/siegetop_k3_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SIEGETOP/siegetop_recolour_k3.png"
+    },
+    {
+      "row": 0,
+      "k": 4,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGETOP/siegetop_k4_a.png",
+        "b": "units-gen/UNIT_SIEGETOP/siegetop_k4_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SIEGETOP/siegetop_recolour_k4.png"
+    },
+    {
+      "row": 0,
+      "k": 5,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGETOP/siegetop_k5_a.png",
+        "b": "units-gen/UNIT_SIEGETOP/siegetop_k5_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SIEGETOP/siegetop_recolour_k5.png"
+    },
+    {
+      "row": 0,
+      "k": 6,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGETOP/siegetop_k6_a.png",
+        "b": "units-gen/UNIT_SIEGETOP/siegetop_k6_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SIEGETOP/siegetop_recolour_k6.png"
+    },
+    {
+      "row": 0,
+      "k": 7,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGETOP/siegetop_k7_a.png",
+        "b": "units-gen/UNIT_SIEGETOP/siegetop_k7_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SIEGETOP/siegetop_recolour_k7.png"
+    }
+  ]
+}
