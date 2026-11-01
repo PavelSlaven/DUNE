@@ -1157,6 +1157,7 @@ class RedrawAcceptanceTests(unittest.TestCase):
             "frame": [frame_width, frame_height],
             "rows": rows,
             "frames": records,
+            "despill": False,
         }
         self.save_unit(unit_dir, data)
         return unit_dir, data
