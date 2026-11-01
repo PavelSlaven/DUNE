@@ -111,6 +111,55 @@ class CommonTests(unittest.TestCase):
         _, clipped, _, _ = place(pixels, (64, 64), 1, (20, 20, 40, 40), (-20, offset[1]))
         self.assertTrue(clipped)
 
+    def test_offset_from_invalid_values_are_input_errors_in_commands_reading_frames(self):
+        data = {'atlases': {'body': 'BODY', 'house_mask': None, 'shadow': None},
+                'frame': [16, 12], 'rows': 2,
+                'frames': [{'row': row, 'k': k} for row in range(2) for k in range(8)]}
+        commands = {
+            'inputs': ['out'], 'score': [], 'recolour-inputs': ['out'],
+            'shadow-rule': [], 'build': ['out'], 'contact': ['inputs', 'out.png'],
+            'sheet': ['atlases', 'out.png'],
+        }
+        for command, arguments in commands.items():
+            for value in (None, True, False, -1, 2, 0, '1', 1.0, [], {}):
+                with self.subTest(command=command, offset_from=value):
+                    data['frames'][3]['offset_from'] = value
+                    (self.directory / 'unit.json').write_text(json.dumps(data), encoding='utf-8')
+                    stderr = io.StringIO()
+                    with contextlib.redirect_stderr(stderr):
+                        code = main([command, str(self.directory), *arguments])
+                    self.assertEqual(code, 2)
+                    self.assertIn('offset_from', stderr.getvalue())
+                    self.assertIn('r0k3', stderr.getvalue())
+
+    def test_offset_from_rejects_chains_and_cycles(self):
+        for target_row in (0, 2):
+            with self.subTest(target_row=target_row):
+                data = {'atlases': {'body': 'BODY', 'house_mask': None, 'shadow': None},
+                        'frame': [16, 12], 'rows': 3,
+                        'frames': [{'row': row, 'k': k} for row in range(3) for k in range(8)]}
+                data['frames'][3]['offset_from'] = 1
+                data['frames'][11]['offset_from'] = target_row
+                (self.directory / 'unit.json').write_text(json.dumps(data), encoding='utf-8')
+                with self.assertRaisesRegex(InputError, 'r0k3.*offset_from'):
+                    load_unit(self.directory, 'inputs')
+
+    def test_offset_from_accepts_later_rows_and_checks_the_same_direction(self):
+        atlas = Image.new('RGBA', (128, 24), (1, 2, 3, 255))
+        pack = self.directory / 'pack.dat'
+        write_pack(pack, [PackEntry(0, 'BODY', 'png', encode_png(atlas)),
+                          PackEntry(1, 'SHADOW', 'png', encode_png(atlas))])
+        data = {'atlases': {'body': 'BODY', 'house_mask': None, 'shadow': 'SHADOW'},
+                'frame': [16, 12], 'rows': 2,
+                'frames': [{'row': row, 'k': k} for row in range(2) for k in range(8)]}
+        data['frames'][3]['offset_from'] = 1
+        data['frames'][15]['offset_from'] = 0
+        data['frames'].reverse()
+        (self.directory / 'unit.json').write_text(json.dumps(data), encoding='utf-8')
+        unit = load_unit(self.directory, 'shadow-rule', pack)
+        self.assertEqual(unit.frames[3]['offset_from'], 1)
+        self.assertEqual(unit.frames[15]['offset_from'], 0)
+
     def test_empty_mask_can_be_placed_with_body_offset(self):
         mask = np.zeros((1024, 1024, 4), np.uint8)
         frame, clipped, _, _ = place(mask, (64, 48), 1, (0, 0, 1, 1), (-8, -10))

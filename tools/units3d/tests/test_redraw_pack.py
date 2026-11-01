@@ -15,8 +15,8 @@ import numpy as np
 from PIL import Image
 
 from tools.hd_assets import PackEntry, encode_png, read_pack, write_pack
-from tools.units3d import redraw_pack
-from tools.units3d.redraw_common import ROOT
+from tools.units3d import redraw, redraw_pack
+from tools.units3d.redraw_common import InputError, ROOT
 
 
 class RedrawPackTests(unittest.TestCase):
@@ -72,6 +72,17 @@ class RedrawPackTests(unittest.TestCase):
             json.dumps(self.manifest, indent=2) + '\n', encoding='utf-8'
         )
 
+    def _write_cli_unit(self):
+        unit_dir = self.root / 'unit'
+        unit_dir.mkdir(exist_ok=True)
+        (unit_dir / 'unit.json').write_text(
+            json.dumps(
+                {'atlases': {'body': 'UNIT_TEST', 'house_mask': None, 'shadow': None}}
+            ) + '\n',
+            encoding='utf-8',
+        )
+        return unit_dir
+
     def test_invalid_decoded_size_returns_one_before_copy(self):
         self.manifest['entries']['UNIT_TEST']['size'] = [3, 4]
         self._save_manifest()
@@ -116,6 +127,203 @@ class RedrawPackTests(unittest.TestCase):
         self.assertEqual(command[4:6], ['--pack', str(self.output.resolve())])
         self.assertEqual(installer.call_args.kwargs['cwd'], ROOT)
         self.assertLessEqual(installer.call_args.kwargs['timeout'], 1800)
+
+    def test_install_launch_error_returns_one_on_stderr(self):
+        with patch(
+            'tools.units3d.redraw_pack.subprocess.run',
+            side_effect=FileNotFoundError('python not found'),
+        ):
+            stdout = io.StringIO()
+            stderr = io.StringIO()
+            with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                result = redraw_pack.run(self.unit, self.args)
+
+        self.assertEqual(result, 1)
+        self.assertEqual(stdout.getvalue(), '')
+        self.assertIn('python not found', stderr.getvalue())
+
+    def test_manifest_schema_errors_raise_input_error_before_copy(self):
+        valid_info = self.manifest['entries']['UNIT_TEST'].copy()
+        invalid_manifests = (
+            {},
+            {'entries': []},
+            {'entries': {'UNIT_TEST': {'sha256': valid_info['sha256'], 'size': [4, 3]}}},
+            {
+                'entries': {
+                    'UNIT_TEST': {
+                        'file': 7,
+                        'sha256': valid_info['sha256'],
+                        'size': [4, 3],
+                    }
+                }
+            },
+            {'entries': {'UNIT_TEST': {'file': 'UNIT_TEST.png', 'size': [4, 3]}}},
+            {'entries': {'UNIT_TEST': {'file': 'UNIT_TEST.png', 'sha256': 9, 'size': [4, 3]}}},
+            {
+                'entries': {
+                    'UNIT_TEST': {
+                        'file': 'UNIT_TEST.png',
+                        'sha256': valid_info['sha256'],
+                        'size': [4],
+                    }
+                }
+            },
+            {
+                'entries': {
+                    'UNIT_TEST': {
+                        'file': 'UNIT_TEST.png',
+                        'sha256': valid_info['sha256'],
+                        'size': [4, True],
+                    }
+                }
+            },
+        )
+
+        for manifest in invalid_manifests:
+            with self.subTest(manifest=manifest):
+                self.manifest = manifest
+                self._save_manifest()
+                with patch('tools.units3d.redraw_pack.subprocess.run') as installer:
+                    with self.assertRaises(InputError):
+                        redraw_pack.run(self.unit, self.args)
+
+                self.assertFalse(self.output.exists())
+                installer.assert_not_called()
+
+    def test_manifest_entry_name_mismatch_returns_one_before_copy(self):
+        info = self.manifest['entries'].pop('UNIT_TEST')
+        self.manifest['entries']['UNIT_OTHER'] = info
+        self._save_manifest()
+        stderr = io.StringIO()
+
+        with patch('tools.units3d.redraw_pack.subprocess.run') as installer:
+            with contextlib.redirect_stderr(stderr):
+                result = redraw_pack.run(self.unit, self.args)
+
+        self.assertEqual(result, 1)
+        self.assertTrue(stderr.getvalue())
+        self.assertFalse(self.output.exists())
+        installer.assert_not_called()
+
+    def test_source_output_collision_raises_input_error(self):
+        self.args.output = self.source
+
+        with patch('tools.units3d.redraw_pack.subprocess.run') as installer:
+            with self.assertRaises(InputError):
+                redraw_pack.run(self.unit, self.args)
+
+        installer.assert_not_called()
+
+    def test_missing_atlas_file_propagates_oserror_before_copy(self):
+        self.manifest['entries']['UNIT_TEST']['file'] = 'missing.png'
+        self._save_manifest()
+
+        with patch('tools.units3d.redraw_pack.subprocess.run') as installer:
+            with self.assertRaises(FileNotFoundError):
+                redraw_pack.run(self.unit, self.args)
+
+        self.assertFalse(self.output.exists())
+        installer.assert_not_called()
+
+    def test_cli_returns_two_for_invalid_manifest_and_missing_atlas_file(self):
+        unit_dir = self._write_cli_unit()
+        valid_info = self.manifest['entries']['UNIT_TEST'].copy()
+        mismatched_hash_info = valid_info.copy()
+        mismatched_hash_info['sha256'] = '0' * 64
+        cases = (
+            {},
+            {
+                'entries': {
+                    'UNIT_TEST': {
+                        'file': 'missing.png',
+                        'sha256': self.manifest['entries']['UNIT_TEST']['sha256'],
+                        'size': [4, 3],
+                    }
+                }
+            },
+            {
+                'entries': {
+                    'UNIT_TEST': mismatched_hash_info,
+                    'UNIT_EXTRA': {'sha256': valid_info['sha256'], 'size': [4, 3]},
+                }
+            },
+        )
+
+        for manifest in cases:
+            with self.subTest(manifest=manifest):
+                self.manifest = manifest
+                self._save_manifest()
+                stdout = io.StringIO()
+                stderr = io.StringIO()
+                argv = [
+                    'pack',
+                    str(unit_dir),
+                    str(self.atlases),
+                    str(self.output),
+                    '--source',
+                    str(self.source),
+                ]
+                with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                    result = redraw.main(argv)
+
+                self.assertEqual(result, 2)
+                self.assertEqual(stdout.getvalue(), '')
+                self.assertTrue(stderr.getvalue())
+                self.assertFalse(self.output.exists())
+
+    def test_atlas_hash_mismatch_returns_one_on_stderr(self):
+        self.manifest['entries']['UNIT_TEST']['sha256'] = '0' * 64
+        self._save_manifest()
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+
+        with patch('tools.units3d.redraw_pack.subprocess.run') as installer:
+            with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                result = redraw_pack.run(self.unit, self.args)
+
+        self.assertEqual(result, 1)
+        self.assertEqual(stdout.getvalue(), '')
+        self.assertIn('SHA-256', stderr.getvalue())
+        self.assertFalse(self.output.exists())
+        installer.assert_not_called()
+
+    def test_post_install_payload_mismatch_returns_one_on_stderr(self):
+        changed = list(self.unit.entries)
+        changed[0] = PackEntry(
+            index=changed[0].index,
+            name=changed[0].name,
+            extension=changed[0].extension,
+            payload=b'different payload',
+        )
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+
+        with (
+            patch(
+                'tools.units3d.redraw_pack.subprocess.run',
+                return_value=SimpleNamespace(returncode=0),
+            ),
+            patch('tools.units3d.redraw_pack.read_pack', return_value=changed),
+            contextlib.redirect_stdout(stdout),
+            contextlib.redirect_stderr(stderr),
+        ):
+            result = redraw_pack.run(self.unit, self.args)
+
+        self.assertEqual(result, 1)
+        self.assertEqual(stdout.getvalue(), '')
+        self.assertIn('payload', stderr.getvalue())
+
+    def test_unrelated_value_key_and_type_errors_propagate(self):
+        failures = (
+            ('tools.units3d.redraw_pack.decode_image', ValueError('decode bug')),
+            ('tools.units3d.redraw_pack.shutil.copyfile', KeyError('copy bug')),
+            ('tools.units3d.redraw_pack.subprocess.run', TypeError('launch bug')),
+        )
+
+        for target, error in failures:
+            with self.subTest(error=type(error).__name__), patch(target, side_effect=error):
+                with self.assertRaises(type(error)):
+                    redraw_pack.run(self.unit, self.args)
 
 
 if __name__ == '__main__':

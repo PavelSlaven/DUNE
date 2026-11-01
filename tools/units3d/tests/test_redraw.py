@@ -1055,6 +1055,315 @@ class RedrawAcceptanceTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
                 self.assertIn("figures", result.stderr)
 
+    def _harvester_unit(self, *, include_row1=True, width=0.10, shift=0, unit_name="unit_harvester"):
+        entries = {entry.name: entry for entry in read_pack(SOURCE_PACK)}
+        body_image = decode_image(entries["UNIT_HARVESTER"].payload)
+        self.assertIsNotNone(body_image, "В исходном паке не декодируется UNIT_HARVESTER")
+        self.assertEqual(body_image.size, (2560, 832))
+        body = np.asarray(body_image.convert("RGBA"), dtype=np.uint8)
+        frame_width, frame_height = 320, 208
+        rows = 2 if include_row1 else 1
+        unit_dir = self.root / unit_name
+        unit_dir.mkdir()
+        records = []
+        magenta = np.array((255, 0, 255), dtype=np.uint8)
+
+        for k in range(8):
+            x0 = k * frame_width
+            old_frame = body[:frame_height, x0:x0 + frame_width].copy()
+            base_path = self.root / f"harvester_{unit_name}_r0k{k}.png"
+            self._save_old_canvas(old_frame, base_path)
+            with Image.open(base_path) as image:
+                base_canvas = np.asarray(image.convert("RGB"), dtype=np.uint8).copy()
+
+            self.assertGreaterEqual(shift, 0)
+            self.assertLess(shift, 1024)
+            shifted_canvas = np.full_like(base_canvas, magenta)
+            shifted_canvas[:, shift:] = base_canvas[:, :1024 - shift]
+            base_body = np.any(base_canvas != magenta, axis=2)
+            shifted_body = np.any(shifted_canvas != magenta, axis=2)
+            self.assertEqual(
+                int(shifted_body.sum()), int(base_body.sum()),
+                f"Сдвиг {shift} обрезал не-пурпурные пиксели r0k{k}",
+            )
+            body_columns = np.flatnonzero(shifted_body.any(axis=0))
+            self.assertGreater(body_columns.size, 0, f"У r0k{k} нет RGB пикселей тела")
+            self.assertLess(
+                int(body_columns[-1]), 1023,
+                f"После сдвига {shift} справа от тела r0k{k} не осталось пурпурного столбца",
+            )
+            self.assertTrue(
+                np.all(shifted_canvas[:, int(body_columns[-1]) + 1:] == magenta),
+                f"После сдвига {shift} справа от тела r0k{k} нет пурпурного столбца",
+            )
+
+            row0_path = self.root / f"harvester_{unit_name}_shifted_r0k{k}.png"
+            Image.fromarray(shifted_canvas, "RGB").save(row0_path)
+            records.append({
+                "row": 0,
+                "k": k,
+                "attempts": {"old": str(row0_path.resolve())},
+                "pick": "old",
+            })
+
+            if include_row1:
+                resized = Image.fromarray(old_frame).resize(
+                    (round(frame_width * 1024 / max(frame_width, frame_height)),
+                     round(frame_height * 1024 / max(frame_width, frame_height))),
+                    Image.Resampling.LANCZOS,
+                )
+                resized_alpha = np.asarray(resized, dtype=np.uint8)[..., 3]
+                ys, xs = np.nonzero(resized_alpha > 127)
+                self.assertGreater(xs.size, 0, f"У UNIT_HARVESTER r0k{k} нет непрозрачной рамки")
+                x_offset = (1024 - resized.width) // 2
+                y_offset = (1024 - resized.height) // 2
+                bbox_left = x_offset + int(xs.min()) + shift
+                bbox_top = y_offset + int(ys.min())
+                bbox_width = int(xs.max() - xs.min() + 1)
+                bbox_height = int(ys.max() - ys.min() + 1)
+                block_width = round(width * bbox_width)
+                block_height = round(0.5 * bbox_height)
+                block_left = bbox_left - block_width
+                block_top = bbox_top + (bbox_height - block_height) // 2
+                self.assertGreater(block_width, 0, f"Ширина детали для r0k{k} округлилась в ноль")
+                self.assertGreater(block_height, 0, f"Высота детали для r0k{k} округлилась в ноль")
+                self.assertGreaterEqual(block_left, 0, f"Деталь для r0k{k} выходит за холст слева")
+                self.assertGreaterEqual(block_top, 0, f"Деталь для r0k{k} выходит за холст сверху")
+                self.assertLessEqual(block_top + block_height, 1024, f"Деталь для r0k{k} выходит за холст снизу")
+
+                row1_canvas = shifted_canvas.copy()
+                row1_canvas[block_top:block_top + block_height, block_left:bbox_left] = (128, 128, 128)
+                row1_path = self.root / f"harvester_{unit_name}_r1k{k}.png"
+                Image.fromarray(row1_canvas, "RGB").save(row1_path)
+                records.append({
+                    "row": 1,
+                    "k": k,
+                    "attempts": {"old": str(row1_path.resolve())},
+                    "pick": "old",
+                    "offset_from": 0,
+                })
+
+        data = {
+            "atlases": {
+                "body": "UNIT_HARVESTER",
+                "house_mask": None,
+                "shadow": None,
+            },
+            "frame": [frame_width, frame_height],
+            "rows": rows,
+            "frames": records,
+        }
+        self.save_unit(unit_dir, data)
+        return unit_dir, data
+
+    LANCZOS_INFLUENCE_WIDTH = 4
+
+    def test_29_harvester_offset_from_keeps_body_aligned(self):
+        unit_dir, _ = self._harvester_unit(width=0.10)
+        output = self.root / "build_harvester_offset"
+        result = self.run_tool("build", output, "--pack", SOURCE_PACK, unit=unit_dir)
+        transcript = f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}"
+        self.assertEqual(result.returncode, 0, transcript)
+        metrics = (output / "metrics.txt").read_text(encoding="utf-8").splitlines()
+        self.assertIn("all frames pass", metrics, transcript)
+        params = json.loads((output / "params.json").read_text(encoding="utf-8"))
+
+        for k in range(8):
+            with self.subTest(k=k):
+                row0 = params["frames"][f"r0k{k}"]
+                row1 = params["frames"][f"r1k{k}"]
+                self.assertEqual(row1["offset"], row0["offset"])
+                self.assertEqual(row1["moved"], [0, 0])
+                frame_paths = [
+                    output / "frames" / f"r0k{k}.png",
+                    output / "frames" / f"r1k{k}.png",
+                ]
+                with Image.open(frame_paths[0]) as image:
+                    frame0 = np.asarray(image.convert("RGBA"))
+                with Image.open(frame_paths[1]) as image:
+                    frame1 = np.asarray(image.convert("RGBA"))
+                self.assertEqual(frame0.shape, frame1.shape)
+                opaque_x = np.flatnonzero((frame0[..., 3] > 127).any(axis=0))
+                self.assertGreater(opaque_x.size, 0, f"r0k{k} не содержит непрозрачных пикселей")
+                left = int(opaque_x[0]) + self.LANCZOS_INFLUENCE_WIDTH
+                self.assertTrue(
+                    np.array_equal(frame1[:, left:], frame0[:, left:]),
+                    f"RGBA пиксели r1k{k} отличаются от r0k{k} справа от x={left}",
+                )
+
+    def test_30_harvester_offset_rows_do_not_change_scale_median(self):
+        full_unit, _ = self._harvester_unit(
+            include_row1=True, width=0.10, unit_name="unit_harvester_full"
+        )
+        first_row_unit, _ = self._harvester_unit(
+            include_row1=False, width=0.10, unit_name="unit_harvester_row0"
+        )
+        full_output = self.root / "build_harvester_full"
+        full_result = self.run_tool(
+            "build", full_output, "--pack", SOURCE_PACK, unit=full_unit
+        )
+        full_transcript = f"stdout:\n{full_result.stdout}\nstderr:\n{full_result.stderr}"
+        self.assertEqual(full_result.returncode, 0, full_transcript)
+
+        first_row_output = self.root / "build_harvester_row0"
+        first_row_result = self.run_tool(
+            "build", first_row_output, "--pack", SOURCE_PACK, unit=first_row_unit
+        )
+        first_row_transcript = (
+            f"stdout:\n{first_row_result.stdout}\nstderr:\n{first_row_result.stderr}"
+        )
+        self.assertEqual(first_row_result.returncode, 0, first_row_transcript)
+
+        full_params = json.loads((full_output / "params.json").read_text(encoding="utf-8"))
+        first_row_params = json.loads(
+            (first_row_output / "params.json").read_text(encoding="utf-8")
+        )
+        self.assertAlmostEqual(
+            full_params["scale_median"], first_row_params["scale_median"], delta=1e-9
+        )
+
+    def test_31_harvester_fit_scale_accounts_for_offset_row_clipping(self):
+        unit_dir, data = self._harvester_unit(width=0.55, shift=128)
+        default_output = self.root / "build_harvester_default"
+        default_result = self.run_tool(
+            "build", default_output, "--pack", SOURCE_PACK, unit=unit_dir
+        )
+        default_transcript = (
+            f"stdout:\n{default_result.stdout}\nstderr:\n{default_result.stderr}"
+        )
+        self.assertTrue((default_output / "params.json").is_file(), default_transcript)
+        default_params = json.loads(
+            (default_output / "params.json").read_text(encoding="utf-8")
+        )
+        median = default_params["scale_median"]
+        self.assertEqual(default_params["scale"], median, default_transcript)
+
+        data["scale"] = median
+        self.save_unit(unit_dir, data)
+        median_output = self.root / "build_harvester_median"
+        median_result = self.run_tool(
+            "build", median_output, "--pack", SOURCE_PACK, unit=unit_dir
+        )
+        median_transcript = (
+            f"stdout:\n{median_result.stdout}\nstderr:\n{median_result.stderr}"
+        )
+        self.assertEqual(median_result.returncode, 1, median_transcript)
+        failed = next(
+            line for line in (median_output / "metrics.txt").read_text(
+                encoding="utf-8"
+            ).splitlines() if line.startswith("failed: ")
+        )
+        self.assertIn("r1k0", failed, median_transcript)
+        self.assertTrue(
+            any(
+                line.startswith("r1k0: ") and "clipped" in line
+                for line in median_result.stderr.splitlines()
+            ),
+            median_transcript,
+        )
+
+        data["scale"] = "fit"
+        self.save_unit(unit_dir, data)
+        fit_output = self.root / "build_harvester_fit"
+        fit_result = self.run_tool("build", fit_output, "--pack", SOURCE_PACK, unit=unit_dir)
+        fit_transcript = f"stdout:\n{fit_result.stdout}\nstderr:\n{fit_result.stderr}"
+        self.assertEqual(fit_result.returncode, 0, fit_transcript)
+        fit_metrics = (fit_output / "metrics.txt").read_text(encoding="utf-8").splitlines()
+        self.assertIn("all frames pass", fit_metrics, fit_transcript)
+        fit_params = json.loads((fit_output / "params.json").read_text(encoding="utf-8"))
+        self.assertGreaterEqual(fit_params["scale"], 0.85 * fit_params["scale_median"])
+        self.assertLessEqual(fit_params["scale"], fit_params["scale_median"] - 0.010)
+        for k in range(8):
+            with self.subTest(k=k):
+                self.assertEqual(
+                    fit_params["frames"][f"r1k{k}"]["offset"],
+                    fit_params["frames"][f"r0k{k}"]["offset"],
+                )
+
+    def test_32_harvester_offset_from_values_and_chains_are_invalid(self):
+        unit_dir, original = self._harvester_unit(width=0.10)
+        invalid_values = (True, -1, 2, 1, "0", 0.5)
+        for index, value in enumerate(invalid_values):
+            with self.subTest(value=value):
+                data = json.loads(json.dumps(original))
+                record = next(
+                    frame for frame in data["frames"]
+                    if frame["row"] == 1 and frame["k"] == 0
+                )
+                record["offset_from"] = value
+                self.save_unit(unit_dir, data)
+                output = self.root / f"build_harvester_bad_offset_{index}"
+                result = self.run_tool(
+                    "build", output, "--pack", SOURCE_PACK, unit=unit_dir
+                )
+                transcript = f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}"
+                self.assertEqual(result.returncode, 2, transcript)
+                self.assertIn("offset_from", result.stderr, transcript)
+                self.assertIn("r1k0", result.stderr, transcript)
+
+        chained = json.loads(json.dumps(original))
+        chained["rows"] = 3
+        for k in range(8):
+            source = next(
+                frame for frame in original["frames"]
+                if frame["row"] == 0 and frame["k"] == k
+            )
+            chained_record = json.loads(json.dumps(source))
+            chained_record["row"] = 2
+            chained_record["offset_from"] = 1
+            chained["frames"].append(chained_record)
+        self.save_unit(unit_dir, chained)
+        chained_output = self.root / "build_harvester_bad_chain"
+        chained_result = self.run_tool(
+            "build", chained_output, "--pack", SOURCE_PACK, unit=unit_dir
+        )
+        chained_transcript = (
+            f"stdout:\n{chained_result.stdout}\nstderr:\n{chained_result.stderr}"
+        )
+        self.assertEqual(chained_result.returncode, 2, chained_transcript)
+        self.assertIn("offset_from", chained_result.stderr, chained_transcript)
+        self.assertIn("r2k0", chained_result.stderr, chained_transcript)
+
+    def test_33_pack_rejects_invalid_manifests_with_expected_exit_codes(self):
+        built_atlas_dir = self.build_atlases()
+        baseline = json.loads(
+            (built_atlas_dir / "atlases.json").read_text(encoding="utf-8")
+        )
+        cases = []
+
+        entries_list = json.loads(json.dumps(baseline))
+        entries_list["entries"] = list(entries_list["entries"].values())
+        cases.append(("entries-list", entries_list, 2))
+
+        missing_sha = json.loads(json.dumps(baseline))
+        missing_sha["entries"]["HM_UNIT_DEVASTATOR"].pop("sha256")
+        cases.append(("missing-sha256", missing_sha, 2))
+
+        string_size = json.loads(json.dumps(baseline))
+        string_size["entries"]["UNIT_DEVASTATOR_SHADOW"]["size"] = "x"
+        cases.append(("string-size", string_size, 2))
+
+        wrong_sha = json.loads(json.dumps(baseline))
+        wrong_sha["entries"]["UNIT_DEVASTATOR"]["sha256"] = "0" * 64
+        cases.append(("wrong-sha256", wrong_sha, 1))
+
+        for name, manifest, expected_code in cases:
+            case_atlas_dir = self.root / f"atlases-{name}"
+            shutil.copytree(built_atlas_dir, case_atlas_dir)
+            (case_atlas_dir / "atlases.json").write_text(
+                json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            copy_path = self.root / f"{name}-pack.dat"
+            result = self.run_tool("pack", case_atlas_dir, copy_path)
+            with self.subTest(case=name):
+                self.assertFalse(copy_path.exists())
+                self.assertEqual(
+                    result.returncode,
+                    expected_code,
+                    msg=f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}",
+                )
+
 
 if __name__ == "__main__":
     unittest.main()
