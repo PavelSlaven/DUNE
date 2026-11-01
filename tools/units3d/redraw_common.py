@@ -19,6 +19,7 @@ DEFAULT_PACK = ROOT / 'tools/units3d/data/sdl_data_hd4_source.dat'
 SOURCE_PACK_SHA256 = 'e2a87ce8cf9143f9d11ee0a54dcf10b7a57d109b49e713dadf4133c12d882045'
 REPO_PACK = ROOT / 'resources/bin/data/sdl_data_hd4.dat'
 CANVAS = 1024
+DESPILL_BAND = 6
 MAGENTA = np.array([255, 0, 255], np.float32)
 
 
@@ -120,6 +121,8 @@ def load_unit(directory, command, pack_path=None):
     figures = data.get('figures', 1)
     if isinstance(figures, bool) or not isinstance(figures, int) or not 1 <= figures <= 8:
         raise InputError('figures: expected an integer from 1 to 8')
+    if 'despill' in data and not isinstance(data['despill'], bool):
+        raise InputError('despill: expected true or false')
     if command != 'pack':
         frame = vector(data, 'frame', 2, positive=True)
         if any(not isinstance(x, int) for x in frame):
@@ -276,10 +279,13 @@ def _kept_regions(labels, figures):
     return np.isin(labels, kept)
 
 
+def black_background(rgb):
+    return rgb[[0, 0, -1, -1], [0, -1, 0, -1]].max() < 16
+
+
 def key(img, figures=1):
     rgb = np.asarray(img.convert('RGB'), np.float32)
-    corners = rgb[[0, 0, -1, -1], [0, -1, 0, -1]]
-    if corners.max() < 16:
+    if black_background(rgb):
         labels, _ = ndimage.label(rgb.max(-1) < 12)
         border = np.unique(np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]]))
         a = (~np.isin(labels, border[border > 0])).astype(np.float32)
@@ -304,11 +310,25 @@ def clean_keyed(rgba, figures=1):
     return result, int(stray.sum())
 
 
-def keyed(path, *, figures=1, return_stray=False):
+def despill_edge(rgba):
+    opaque = rgba[..., 3] > 0
+    band = opaque & (ndimage.distance_transform_edt(opaque) <= DESPILL_BAND)
+    rgb = rgba[..., :3].astype(np.int16)
+    spill = np.where(band, np.maximum(np.minimum(rgb[..., 0], rgb[..., 2]) - rgb[..., 1], 0), 0)
+    result = rgba.copy()
+    result[..., 0] = rgb[..., 0] - spill
+    result[..., 2] = rgb[..., 2] - spill
+    return result
+
+
+def keyed(path, *, figures=1, return_stray=False, despill=False):
     validate_square(path)
     with Image.open(path) as image:
-        result = clean_keyed(key(image.resize((CANVAS, CANVAS), Image.Resampling.LANCZOS), figures), figures)
-        return result if return_stray else result[0]
+        resized = image.resize((CANVAS, CANVAS), Image.Resampling.LANCZOS)
+        rgba, stray = clean_keyed(key(resized, figures), figures)
+        if despill and not black_background(np.asarray(resized.convert('RGB'), np.float32)):
+            rgba = despill_edge(rgba)
+        return (rgba, stray) if return_stray else rgba
 
 
 def bbox(alpha):
