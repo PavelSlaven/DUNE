@@ -68,14 +68,17 @@ class RedrawAcceptanceTests(unittest.TestCase):
         self.assertEqual(actual_pixels.shape, expected_pixels.shape)
         self.assertTrue(np.array_equal(actual_pixels, expected_pixels), f"Пиксели различаются: {actual}")
 
-    def build_atlases(self):
+    def build_atlases(self, *, unit=None):
         output = self.root / "atlases"
-        result = self.run_tool("build", output)
+        result = self.run_tool("build", output, unit=unit)
         self.assertEqual(result.returncode, 0, f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}")
         return output
 
     def test_01_build_atlases(self):
-        atlas_dir = self.build_atlases()
+        unit_dir, data = self.copy_unit()
+        data["despill"] = False
+        self.save_unit(unit_dir, data)
+        atlas_dir = self.build_atlases(unit=unit_dir)
         names = (
             "UNIT_DEVASTATOR",
             "HM_UNIT_DEVASTATOR",
@@ -861,8 +864,10 @@ class RedrawAcceptanceTests(unittest.TestCase):
         )
 
     def test_24_red_fill_adds_red_body_pixels_to_mask(self):
-        base = self.build_atlases()
         unit_dir, data = self.copy_unit()
+        data["despill"] = False
+        self.save_unit(unit_dir, data)
+        base = self.build_atlases(unit=unit_dir)
         data["red_fill"] = 40
         self.save_unit(unit_dir, data)
 
@@ -1363,6 +1368,363 @@ class RedrawAcceptanceTests(unittest.TestCase):
                     expected_code,
                     msg=f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}",
                 )
+
+
+    def _despill_unit(self):
+        entries = {entry.name: entry for entry in read_pack(SOURCE_PACK)}
+        for name in (
+            "UNIT_HARVESTER",
+            "HM_UNIT_HARVESTER",
+            "UNIT_HARVESTER_SHADOW",
+        ):
+            image = decode_image(entries[name].payload)
+            self.assertIsNotNone(image, f"Не декодируется атлас {name}")
+            self.assertEqual(image.size, (2560, 832), name)
+
+        attempt = np.full((1024, 1024, 3), (255, 0, 255), dtype=np.uint8)
+        attempt[384:640, 320:704] = (130, 30, 130)
+        attempt[390:634, 326:698] = (60, 60, 60)
+        attempt[464:560, 320:326] = (200, 30, 130)
+        attempt[492:532, 480:520] = (150, 40, 160)
+
+        recolour = np.full((1024, 1024, 3), (255, 0, 255), dtype=np.uint8)
+        recolour[384:640, 320:704] = (0, 255, 0)
+        recolour[492:532, 480:520] = (150, 40, 160)
+
+        attempt_path = self.root / "despill_attempt.png"
+        recolour_path = self.root / "despill_recolour.png"
+        Image.fromarray(attempt).save(attempt_path)
+        Image.fromarray(recolour).save(recolour_path)
+
+        unit_dir = self.root / "unit_despill"
+        unit_dir.mkdir()
+        records = [
+            {
+                "row": 0,
+                "k": k,
+                "attempts": {"synthetic": str(attempt_path.resolve())},
+                "pick": "synthetic",
+                "recolour": str(recolour_path.resolve()),
+            }
+            for k in range(8)
+        ]
+        data = {
+            "atlases": {
+                "body": "UNIT_HARVESTER",
+                "house_mask": "HM_UNIT_HARVESTER",
+                "shadow": "UNIT_HARVESTER_SHADOW",
+            },
+            "frame": [320, 208],
+            "rows": 1,
+            "block": [115.0, 88.0, 48.0],
+            "arrow": [6.0, 46.0, 26.0],
+            "height_estimate": 49.0,
+            "shadow_rule": {"shift": 4, "alpha": 46, "rgb": [5, 4, 3]},
+            "sheet_building": {"name": "BUILD_HEAVYFACTORY", "size": [384, 256]},
+            "scale": 1.6,
+            "share_corridor": [0.0, 1.0],
+            "red_fill": 60,
+            "frames": records,
+        }
+        self.save_unit(unit_dir, data)
+
+        contact_inputs = self.root / "contact_inputs"
+        contact_inputs.mkdir()
+        blank = Image.new("RGB", (1024, 1024), (255, 0, 255))
+        for k in range(8):
+            blank.save(contact_inputs / f"old_r0k{k}.png")
+            blank.save(contact_inputs / f"guide_r0k{k}.png")
+        return unit_dir, data, contact_inputs
+
+    def _despill_frame(self, output, k):
+        with Image.open(output / "frames" / f"r0k{k}.png") as image:
+            return np.asarray(image.convert("RGBA")).copy()
+
+    def _despill_source_coordinates(self, frame, params, frame_params):
+        dx, dy = frame_params["offset"]
+        scale = params["scale"]
+        size = round(320 * scale)
+        factor = size / 1024
+        ys, xs = np.indices(frame.shape[:2])
+        source_x = (xs - dx + 0.5) / factor
+        source_y = (ys - dy + 0.5) / factor
+        return source_x, source_y
+
+    def test_34_despill_default_and_false_preserve_alpha_and_masks(self):
+        unit_dir, data, _ = self._despill_unit()
+        default_dir = self.root / "build_despill_default"
+        default_result = self.run_tool("build", default_dir, unit=unit_dir)
+        self.assertEqual(
+            default_result.returncode,
+            0,
+            default_result.stdout + default_result.stderr,
+        )
+
+        changed = dict(data)
+        changed["despill"] = False
+        self.save_unit(unit_dir, changed)
+        false_dir = self.root / "build_despill_false"
+        false_result = self.run_tool("build", false_dir, unit=unit_dir)
+        self.assertEqual(
+            false_result.returncode,
+            0,
+            false_result.stdout + false_result.stderr,
+        )
+
+        for k in range(8):
+            default_frame = self._despill_frame(default_dir, k)
+            false_frame = self._despill_frame(false_dir, k)
+            self.assertTrue(
+                np.array_equal(default_frame[..., 3], false_frame[..., 3]),
+                f"Альфа кадра r0k{k} изменилась от очистки",
+            )
+
+        with Image.open(default_dir / "HM_UNIT_HARVESTER.png") as image:
+            default_mask = np.asarray(image.convert("RGBA")).copy()
+        with Image.open(false_dir / "HM_UNIT_HARVESTER.png") as image:
+            false_mask = np.asarray(image.convert("RGBA")).copy()
+        self.assertTrue(
+            np.array_equal(default_mask, false_mask),
+            "Атлас маски отличается между сборками без поля и с false",
+        )
+
+        params = json.loads((default_dir / "params.json").read_text(encoding="utf-8"))
+        default_frame = self._despill_frame(default_dir, 0)
+        false_frame = self._despill_frame(false_dir, 0)
+        source_x, source_y = self._despill_source_coordinates(
+            default_frame, params, params["frames"]["r0k0"]
+        )
+        rim = (
+            (source_x >= 360)
+            & (source_x < 664)
+            & (source_y >= 384)
+            & (source_y < 390)
+        )
+        visible_rim = rim & (default_frame[..., 3] > 0) & (false_frame[..., 3] > 0)
+        self.assertGreater(int(visible_rim.sum()), 0, "В выбранной части каймы нет пикселей")
+
+        clean_contrast = (
+            np.maximum(default_frame[..., 0], default_frame[..., 2]).astype(np.int16)
+            - default_frame[..., 1].astype(np.int16)
+        )
+        raw_contrast = (
+            np.minimum(false_frame[..., 0], false_frame[..., 2]).astype(np.int16)
+            - false_frame[..., 1].astype(np.int16)
+        )
+        self.assertLessEqual(
+            int(clean_contrast[visible_rim].max()),
+            2,
+            "Кайма в сборке без поля сохранила пурпурный оттенок",
+        )
+        contaminated = int(np.count_nonzero(raw_contrast[visible_rim] >= 40))
+        self.assertGreaterEqual(
+            contaminated,
+            (int(visible_rim.sum()) + 1) // 2,
+            "В сборке с despill=false пурпурная кайма сохранилась меньше чем на половине пикселей",
+        )
+
+    def test_35_despill_keeps_interior_spot_unchanged(self):
+        unit_dir, data, _ = self._despill_unit()
+        default_dir = self.root / "build_despill_default"
+        default_result = self.run_tool("build", default_dir, unit=unit_dir)
+        self.assertEqual(
+            default_result.returncode,
+            0,
+            default_result.stdout + default_result.stderr,
+        )
+
+        changed = dict(data)
+        changed["despill"] = False
+        self.save_unit(unit_dir, changed)
+        false_dir = self.root / "build_despill_false"
+        false_result = self.run_tool("build", false_dir, unit=unit_dir)
+        self.assertEqual(
+            false_result.returncode,
+            0,
+            false_result.stdout + false_result.stderr,
+        )
+
+        params = json.loads((default_dir / "params.json").read_text(encoding="utf-8"))
+        default_frame = self._despill_frame(default_dir, 0)
+        false_frame = self._despill_frame(false_dir, 0)
+        source_x, source_y = self._despill_source_coordinates(
+            default_frame, params, params["frames"]["r0k0"]
+        )
+        interior = (
+            (source_x >= 484)
+            & (source_x < 516)
+            & (source_y >= 496)
+            & (source_y < 528)
+        )
+        self.assertGreater(int(interior.sum()), 0, "Внутренняя часть пятна пуста")
+        self.assertTrue(
+            np.all(default_frame[..., 3][interior] > 0),
+            "Часть выбранного пятна оказалась прозрачной",
+        )
+        self.assertTrue(
+            np.array_equal(default_frame[interior], false_frame[interior]),
+            "Очистка изменила пятно внутри тела",
+        )
+
+    def test_36_devastator_default_despill_matches_atlas_alpha_and_cleans_purple_edges(self):
+        unit_dir, data = self.copy_unit()
+        data.pop("despill", None)
+        self.save_unit(unit_dir, data)
+
+        output = self.root / "build_devastator_default_despill"
+        result = self.run_tool("build", output, unit=unit_dir)
+        transcript = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, transcript)
+
+        names = (
+            "UNIT_DEVASTATOR",
+            "HM_UNIT_DEVASTATOR",
+            "UNIT_DEVASTATOR_SHADOW",
+        )
+        actual = {}
+        reference = {}
+        for name in names:
+            with Image.open(output / f"{name}.png") as image:
+                actual[name] = np.asarray(image.convert("RGBA"))
+            with Image.open(REFERENCE_ATLASES / f"{name}.png") as image:
+                reference[name] = np.asarray(image.convert("RGBA"))
+        self.assertTrue(
+            np.array_equal(
+                actual["UNIT_DEVASTATOR"][..., 3],
+                reference["UNIT_DEVASTATOR"][..., 3],
+            ),
+            "Альфа атласа тела отличается от эталона",
+        )
+        for name in ("HM_UNIT_DEVASTATOR", "UNIT_DEVASTATOR_SHADOW"):
+            self.assertTrue(
+                np.array_equal(actual[name], reference[name]),
+                f"RGBA отличается от эталона: {name}",
+            )
+
+        frame_width, frame_height = data["frame"]
+        x0, y0 = 6 * frame_width, 0
+        x1, y1 = x0 + frame_width, y0 + frame_height
+        self.assertTrue(
+            np.array_equal(
+                actual["UNIT_DEVASTATOR"][y0:y1, x0:x1],
+                reference["UNIT_DEVASTATOR"][y0:y1, x0:x1],
+            ),
+            "Клетка r0k6 с чёрным фоном отличается от эталона по RGBA",
+        )
+
+        body = actual["UNIT_DEVASTATOR"].astype(np.int16)
+        reference_body = reference["UNIT_DEVASTATOR"].astype(np.int16)
+        purple = (body[..., 3] > 0) & (
+            np.minimum(body[..., 0], body[..., 2]) - body[..., 1] > 15
+        )
+        reference_purple = (reference_body[..., 3] > 0) & (
+            np.minimum(reference_body[..., 0], reference_body[..., 2])
+            - reference_body[..., 1]
+            > 15
+        )
+        self.assertGreater(int(reference_purple.sum()), 0)
+        self.assertLessEqual(
+            int(purple.sum()),
+            int(reference_purple.sum()) * 0.20,
+            "Пурпурных пикселей осталось больше 20 % эталонного числа",
+        )
+
+    def test_37_despill_accepts_only_booleans_and_matches_true_default(self):
+        unit_dir, data, contact_inputs = self._despill_unit()
+        changed = dict(data)
+        changed["despill"] = False
+        self.save_unit(unit_dir, changed)
+        false_dir = self.root / "build_despill_false"
+        false_result = self.run_tool("build", false_dir, unit=unit_dir)
+        self.assertEqual(
+            false_result.returncode,
+            0,
+            false_result.stdout + false_result.stderr,
+        )
+
+        commands = (
+            "build",
+            "inputs",
+            "score",
+            "recolour-inputs",
+            "shadow-rule",
+            "contact",
+            "sheet",
+            "pack",
+        )
+        invalid_values = (1, 0, "true", None, [])
+        for command_index, command in enumerate(commands):
+            for value_index, value in enumerate(invalid_values):
+                with self.subTest(command=command, value=value):
+                    invalid_data = dict(data)
+                    invalid_data["despill"] = value
+                    self.save_unit(unit_dir, invalid_data)
+                    if command in ("build", "inputs", "recolour-inputs"):
+                        args = (self.root / f"{command}_{command_index}_{value_index}",)
+                    elif command in ("score", "shadow-rule"):
+                        args = ()
+                    elif command == "contact":
+                        args = (
+                            contact_inputs,
+                            self.root / f"contact_{value_index}.png",
+                        )
+                    elif command == "sheet":
+                        args = (
+                            false_dir,
+                            self.root / f"sheet_{value_index}.png",
+                        )
+                    else:
+                        args = (
+                            false_dir,
+                            self.root / f"pack_{value_index}.dat",
+                            "--source",
+                            SOURCE_PACK,
+                        )
+                    result = self.run_tool(command, *args, unit=unit_dir)
+                    self.assertEqual(
+                        result.returncode,
+                        2,
+                        result.stdout + result.stderr,
+                    )
+                    self.assertIn("despill", result.stderr.lower(), result.stderr)
+
+        absent_data = dict(data)
+        absent_data.pop("despill", None)
+        self.save_unit(unit_dir, absent_data)
+        absent_dir = self.root / "build_despill_absent"
+        absent_result = self.run_tool("build", absent_dir, unit=unit_dir)
+        self.assertEqual(
+            absent_result.returncode,
+            0,
+            absent_result.stdout + absent_result.stderr,
+        )
+
+        true_data = dict(data)
+        true_data["despill"] = True
+        self.save_unit(unit_dir, true_data)
+        true_dir = self.root / "build_despill_true"
+        true_result = self.run_tool("build", true_dir, unit=unit_dir)
+        self.assertEqual(
+            true_result.returncode,
+            0,
+            true_result.stdout + true_result.stderr,
+        )
+
+        absent_files = {
+            path.relative_to(absent_dir).as_posix(): path.read_bytes()
+            for path in absent_dir.rglob("*")
+            if path.is_file()
+        }
+        true_files = {
+            path.relative_to(true_dir).as_posix(): path.read_bytes()
+            for path in true_dir.rglob("*")
+            if path.is_file()
+        }
+        self.assertTrue(absent_files, "Сборка без поля не создала выходные файлы")
+        self.assertEqual(set(absent_files), set(true_files))
+        for relative_path in sorted(absent_files):
+            with self.subTest(output_file=relative_path):
+                self.assertEqual(absent_files[relative_path], true_files[relative_path])
 
 
 if __name__ == "__main__":
