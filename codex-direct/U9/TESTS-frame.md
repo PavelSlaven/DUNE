@@ -54,7 +54,7 @@
 ## Чем проверить
 
 - Python: `PYTHONDONTWRITEBYTECODE=1 /srv/dune/venv/bin/python -m unittest discover -s tools/units3d/tests -v` на коде `main` — новые тесты красные по заявленной причине, строки вывода в сдачу.
-- C++: копия рабочей копии в `.tmp/`, сборка по рецепту `/srv/dune/deps/sdl2/README.txt` (прочитай его целиком; SDL2, SDL2_image, SDL2_mixer и SDL2_ttf распакованы там без установки в систему) и прогон `ctest` с `SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software SDL_AUDIODRIVER=dummy` — новые тесты красные на коде `main`, прежние тесты CTest зелёные. Тест на программном рендерере инициализирует только `SDL_INIT_VIDEO`: `SDL_INIT_EVERYTHING` в песочнице servak падает на UDEV.
+- C++: копия рабочей копии в `.tmp/` без папки `resources/` (на её месте — символическая ссылка на `resources/` рабочей копии: полная копия занимает 2,1 ГБ, а запас диска servak — около 3 ГБ над порогом остановки), сборка по рецепту `/srv/dune/deps/sdl2/README.txt` (прочитай его целиком; SDL2, SDL2_image, SDL2_mixer и SDL2_ttf распакованы там без установки в систему) и прогон `ctest` с `SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software SDL_AUDIODRIVER=dummy` — новые тесты красные на коде `main`, прежние тесты CTest зелёные. Тест на программном рендерере инициализирует только `SDL_INIT_VIDEO`: `SDL_INIT_EVERYTHING` в песочнице servak падает на UDEV.
 - CI: ведущий пушит ветку; прогон CTest в CI — дополнительная проверка, а не замена прогона на servak.
 - `sha256sum` каждого нового и изменённого тестового файла — строки для `tools/units3d/tests/ACCEPTANCE.sha256` (Python) и отдельный список для C++.
 
