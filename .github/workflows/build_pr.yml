@@ -36,7 +36,7 @@ jobs:
       - name: Build
         run: |
           cd "${{ github.workspace }}\build"
-          cmake --build . --target all -- -j -l 3
+          cmake --build . --target all -- -j 4
   Ubuntu:
     name: Ubuntu (x86)
     runs-on: [ ubuntu-latest ]

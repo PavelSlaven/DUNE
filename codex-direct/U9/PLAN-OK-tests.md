@@ -1,0 +1,19 @@
+# PLAN-OK-U9-T1
+
+План `codex-direct/U9/PLAN-tests.md` (сдача задания `codex-direct/U9/TESTS-frame.md`) одобрен ведущим с поправками ниже. Поправки сильнее текста плана; задание `TESTS-frame.md` сильнее плана там, где поправки молчат.
+
+1. **Тест шрифтов остаётся, как есть.** Регистрацию `russian_font_coverage` не переносить под опцию. Тест читает `resources/bin/data/Sangyo-Regular.otf` и `resources/bin/data/PTMono-Regular.ttf`; оба файла вне LFS (`git check-attr filter` — `unspecified` и `unset`, `.gitattributes:76`), и `release.yml` уже запускает этот тест в CTest на копии с `lfs: false` (`.github/workflows/release.yml:143–151`). Новых C++-тестов с настоящими файлами `resources/` по плану нет — поэтому опцию `D2TM_UNIT_FRAME_RESOURCE_TESTS` не добавлять, и в команде `cmake` на servak флага `-DD2TM_UNIT_FRAME_RESOURCE_TESTS=ON` нет.
+2. **Окружение SDL у каждого нового CTest.** Каждому из пяти новых тестов CTest — `set_tests_properties(<имя> PROPERTIES ENVIRONMENT "SDL_VIDEODRIVER=dummy;SDL_RENDER_DRIVER=software;SDL_AUDIODRIVER=dummy")` в `CMakeLists.txt`. Причина: CTest запускает и `release.yml` (`release.yml:151`, `:211`, `:268`), в двух заданиях — без этих переменных; новые тесты обязаны проходить и там. Шаг CTest в `build_pr.yml` — как в плане.
+3. **Строку `Build` в `build_pr.yml` не трогать.** У задания Windows сборка идёт с `-- -j -l 3` (без предела числа процессов) и уже падала по памяти раннера (`cc1plus.exe: out of memory`, прогон 41401540148). Эту строку ведущий правит отдельным PR; в этом задании в `build_pr.yml` — только шаги CTest.
+4. **Библиотека движка — из списка игры.** Исходники `d2tm_unit_frame_engine` берутся из переменной `D2TM_SRC` (`src/CMakeLists.txt:3`): копия списка, из которой `list(REMOVE_ITEM ...)` убирает `src/main.cpp`, `src/drawers/SDLDrawer.cpp`, `src/drawers/cTextDrawer.cpp`. Второго списка исходников, написанного вручную, нет: новый исходник игры должен попадать в тесты сам.
+5. **Высота полосы и действующий масштаб.** В ожиданиях строки 3 `s` — действующий масштаб мира (в классике 1,0): высота полосы `max(1, lround(4 · z · s))` — это `factorZoomLevel(4) · getWorldScaleFactor()` (`cUnit.cpp:578–580` коммита `bb2f1b37`).
+6. **Договор для реализации** — записывается сейчас, исполняет следующий исполнитель. Интерфейс раздела 2 плана (`UnitSpriteFrame`, `UnitSpriteRectangle`, `UnitSpriteFloatRectangle`, `resolveUnitSpriteFrame`, `unitSpriteSourceRectangle`, `unitSpriteDestinationRectangle`) и метод `SDLDrawer::renderStrechSpriteF(Texture *, cRectangle, SDL_FRect, Uint8 = 255, SDL_BlendMode = SDL_BLENDMODE_BLEND)` — одобрены. У типов без HD-кадра и у Осадного в классике `cUnit::draw` вызывает `renderStrechSprite` с теми же аргументами, что и в `bb2f1b37`; `renderStrechSpriteF` — только у слоёв с HD-кадром. В сдаче `DONE-U9-T1` — список методов `SDLDrawer` и `cTextDrawer`, которые определяет регистратор: новый метод, который реализация вызовет вне `SDLDrawer.cpp`, требует строки в регистраторе.
+7. **Развилки плана** — линковочный регистратор без правки кода продукта и полностью синтетический пиксельный тест в CI — приняты.
+
+## Организация работы
+
+- Порядок: тесты → прогоны на коде `main` → таблица мутантов → суммы → сдача `## DONE-U9-T1` — как в разделе «Организация работы» задания `TESTS-frame.md`.
+- Параллельно: тесты Python (строки 6–9 и две старые проверки) и тесты C++ (строки 1–5) пишутся и прогоняются независимо.
+- Помощники: два субагента `gpt-6-luna` `xhigh` одновременно — Python и C++, как в разделе 7 плана.
+- Остановки — блок `## Q-U9-T1-NN` и стоп: случаи из задания; кроме того, цели с линковочным регистратором не собираются на servak без правки кода продукта.
+- Рамка правок — из задания `TESTS-frame.md`, с поправками 1–3 выше: опции CMake для ресурсных тестов нет, строка `Build` в `build_pr.yml` не меняется.
