@@ -83,6 +83,30 @@ class RedrawRotationTests(unittest.TestCase):
             self.assertAlmostEqual(value, 1.200, delta=0.001)
             self.assertNotAlmostEqual(value, 1.440, delta=0.001)
 
+    def test_uniform_deviation_is_normalised(self):
+        new_area = [1.0] * 8
+        reference_areas = [[1 / 1.10**2] * 8 for _ in range(3)]
+        results = size_measurements(new_area, reference_areas)
+        self.assertEqual(len(results), 8)
+        for result in results:
+            for key in ('classic', 'old', 'block', 'combined'):
+                self.assertAlmostEqual(result[key], 1.000, delta=0.001)
+            self.assertEqual(result['agree'], 0)
+            self.assertEqual(result['flag'], '-')
+
+    def test_opposite_support_does_not_agree(self):
+        results = size_case((1.40, 1.00, 0.94))
+        self.assertEqual(len(results), 8)
+        result = results[0]
+        for key, expected in zip(('classic', 'old', 'block'), (1.40, 1.00, 0.94), strict=True):
+            self.assertAlmostEqual(result[key], expected, delta=0.001)
+        self.assertAlmostEqual(result['combined'], 1.096, delta=0.001)
+        self.assertEqual(result['agree'], 1)
+        self.assertEqual(result['flag'], '-')
+        for row in results[1:]:
+            self.assertAlmostEqual(row['combined'], 1.000, delta=0.001)
+            self.assertEqual(row['flag'], '-')
+
     def test_middle_uses_median_of_32_bbox_centres(self):
         new, classic = classic_and_new([72] * 20 + [64] * 12)
         _, _, difference, flag = middle_measurement(new, classic)
@@ -132,6 +156,7 @@ class RedrawRotationTests(unittest.TestCase):
         self.assertEqual(flag, '-')
 
     def test_missing_pack_returns_input_error_code(self):
+        (ROOT / '.tmp').mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=ROOT / '.tmp') as temporary:
             missing = Path(temporary) / 'missing.dat'
             result = self.run_rotation(missing)
@@ -140,6 +165,7 @@ class RedrawRotationTests(unittest.TestCase):
         self.assertIn(str(missing), result.stderr)
 
     def test_missing_entry_returns_input_error_code(self):
+        (ROOT / '.tmp').mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=ROOT / '.tmp') as temporary:
             pack = Path(temporary) / 'missing-entry.dat'
             write_pack(pack, [PackEntry(0, 'UNRELATED', 'png', b'x')])

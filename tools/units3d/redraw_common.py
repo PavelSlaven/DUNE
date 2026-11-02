@@ -250,6 +250,8 @@ def load_unit(directory, command, pack_path=None):
                 if (not isinstance(offset_shift, list) or len(offset_shift) != 2
                         or any(type(value) is not int for value in offset_shift)):
                     raise InputError('offset_shift: expected two integer coordinates')
+                if data.get('scale') == 'fit':
+                    raise InputError('offset_shift: incompatible with scale="fit"')
             if 'scale' in data:
                 scale = data['scale']
                 if scale != 'fit' and (

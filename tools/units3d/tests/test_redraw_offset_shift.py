@@ -2,7 +2,6 @@ import contextlib
 import copy
 import io
 import json
-import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -71,19 +70,10 @@ class OffsetShiftTests(unittest.TestCase):
     def _build(self, label, data=None):
         current = copy.deepcopy(self.data if data is None else data)
         self._write_unit(current)
-        disk = subprocess.run(['df', '-BG', '/'], check=True, capture_output=True, text=True)
-        available = int(disk.stdout.splitlines()[-1].split()[3].removesuffix('G'))
-        if available < 5:
-            raise RuntimeError(f'df -BG / reports only {available}G available')
         output = self.root / label
         stdout, stderr = io.StringIO(), io.StringIO()
         with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
             code = main(['build', str(self.root), str(output), '--pack', str(self.pack)])
-        log_path = ROOT / '.tmp' / f'u12-offset-{self.root.name}-{label}.log'
-        log_path.write_text(
-            f'{disk.stdout}exit={code}\nstdout:\n{stdout.getvalue()}stderr:\n{stderr.getvalue()}',
-            encoding='utf-8',
-        )
         return code, output, stdout.getvalue(), stderr.getvalue()
 
     @staticmethod
@@ -230,6 +220,15 @@ class OffsetShiftTests(unittest.TestCase):
                 code, _, stdout, stderr = self._build(f'invalid-{index}', data)
                 self.assertEqual(code, 2, stdout + stderr)
                 self.assertTrue(stderr.startswith('offset_shift:'), stderr)
+
+    def test_fit_scale_rejects_offset_shift(self):
+        data = copy.deepcopy(self.data)
+        data['scale'] = 'fit'
+        data['offset_shift'] = [0, 5]
+        code, _, stdout, stderr = self._build('fit-scale-offset-shift', data)
+
+        self.assertEqual(code, 2, stdout + stderr)
+        self.assertTrue(stderr.startswith('offset_shift:'), stderr)
 
 
 if __name__ == '__main__':
