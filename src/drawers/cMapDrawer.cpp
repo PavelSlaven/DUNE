@@ -94,12 +94,6 @@ void cMapDrawer::drawShroud()
 
 void cMapDrawer::drawTerrain()
 {
-    float tileWidth = mapCamera->getZoomedTileWidth();
-    float tileHeight = mapCamera->getZoomedTileHeight();
-
-    int iTileHeight = (tileHeight + 1);
-    int iTileWidth = (tileWidth + 1);
-
     int iPl = m_player->getId();
     int mouseCell = m_player->getGameControlsContext()->getMouseCell();
 
@@ -140,6 +134,8 @@ void cMapDrawer::drawTerrain()
 
             int iDrawX = round(fDrawX);
             int iDrawY = round(fDrawY);
+            int iTileWidth = mapCamera->getTileDrawWidth(absoluteXCoordinateOnMap);
+            int iTileHeight = mapCamera->getTileDrawHeight(absoluteYCoordinateOnMap);
 
             // Draw terrain
             if (cell->type < TERRAIN_BLOOM || cell->type > TERRAIN_WALL) {

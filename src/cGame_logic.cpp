@@ -47,6 +47,7 @@
 #include "sidebar/cBuildingListFactory.h"
 #include "sidebar/cSideBarFactory.h"
 #include "utils/RNG.hpp"
+#include "utils/SoundDistance.hpp"
 #include "utils/cLog.h"
 #include "utils/cPlatformLayerInit.h"
 #include "utils/cSoundPlayer.h"
@@ -2191,13 +2192,13 @@ void cGame::playSoundWithDistance(int sampleId, int iDistance)
 
     // zoom factor influences distance we can 'hear'. The closer up, the less max distance. Unzoomed, this is half the map.
     // where when unit is at half map, we can hear it only a bit.
-    float maxDistance = mapCamera->divideByZoomLevel(global_map.getMaxDistanceInPixels() / 2);
+    float maxDistance = soundMaxDistance(global_map.getMaxDistanceInPixels(), mapCamera->getZoomLevel(), getWorldScaleFactor());
     float distanceNormalized = 1.0 - (iDistance / maxDistance);
 
     float volume = m_soundPlayer->getMaxVolume() * distanceNormalized;
 
     // zoom factor influences volume (more zoomed in means louder)
-    float volumeFactor = mapCamera->factorZoomLevel(0.7f);
+    float volumeFactor = soundVolumeFactor(mapCamera->getZoomLevel(), getWorldScaleFactor());
     int iVolFactored = volumeFactor * volume;
 
     if (game.isDebugMode()) {

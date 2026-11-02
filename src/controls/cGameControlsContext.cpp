@@ -197,7 +197,7 @@ void cGameControlsContext::refreshMouseHover()
     s_MouseEvent event;
     event.eventType = eMouseEventType::MOUSE_MOVED_TO;
     event.coords = cPoint(m_mouse->getX(), m_mouse->getY());
-    onMouseMovedTo(event);
+    onNotifyMouseEvent(event);
 }
 
 void cGameControlsContext::onNotifyMouseEvent(const s_MouseEvent &event)

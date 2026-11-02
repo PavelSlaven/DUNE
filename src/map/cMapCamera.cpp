@@ -169,11 +169,6 @@ void cMapCamera::centerAndJumpViewPortToCell(int cell)
     newViewPortY = (newViewPortY / 32) * 32;
 
     jumpTo(newViewPortX, newViewPortY);
-
-    calibrate();
-
-    keepViewportWithinReasonableBounds();
-    refreshMouseHover();
 }
 
 void cMapCamera::thinkFast()
@@ -197,14 +192,13 @@ void cMapCamera::jumpTo(int theX, int theY)
     m_viewportStartX = theX;
     m_viewportStartY = theY;
     calibrate();
+    keepViewportWithinReasonableBounds();
     refreshMouseHover();
 }
 
 void cMapCamera::setViewportPosition(int x, int y)
 {
     jumpTo(x, y);
-    keepViewportWithinReasonableBounds();
-    refreshMouseHover();
 }
 
 int cMapCamera::getCellFromAbsolutePosition(int x, int y)
