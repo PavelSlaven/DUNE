@@ -56,8 +56,7 @@ inline UnitSpriteRectangle unitSpriteSourceRectangle(
 inline UnitSpriteFloatRectangle unitSpriteDestinationRectangle(
     UnitSpriteFrame frame,
     UnitSpriteRectangle visual,
-    float cameraZoom,
-    float worldScale)
+    float cameraZoom)
 {
     if (!frame.usesHdFrame) {
         return {
@@ -70,13 +69,10 @@ inline UnitSpriteFloatRectangle unitSpriteDestinationRectangle(
 
     const int zoomedWidth = static_cast<int>(std::lround(frame.width * cameraZoom));
     const int zoomedHeight = static_cast<int>(std::lround(frame.height * cameraZoom));
-    const int destinationWidth = static_cast<int>(std::lround(zoomedWidth * worldScale));
-    const int destinationHeight = static_cast<int>(std::lround(zoomedHeight * worldScale));
-
     return {
-        static_cast<float>(visual.x) + static_cast<float>(visual.width - destinationWidth) / 2.0F,
-        static_cast<float>(visual.y) + static_cast<float>(visual.height - destinationHeight) / 2.0F,
-        static_cast<float>(destinationWidth),
-        static_cast<float>(destinationHeight)
+        static_cast<float>(visual.x) + static_cast<float>(visual.width - zoomedWidth) / 2.0F,
+        static_cast<float>(visual.y) + static_cast<float>(visual.height - zoomedHeight) / 2.0F,
+        static_cast<float>(zoomedWidth),
+        static_cast<float>(zoomedHeight)
     };
 }

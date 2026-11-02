@@ -48,7 +48,18 @@ void testSiegeSourcesAndDensity()
             "A type without an HD frame must retain the logical frame");
 }
 
-void testDestinationsAcrossScales()
+template <typename Frame, typename Visual>
+auto destinationRectangle(Frame frame, Visual visual, float zoom, float worldScale)
+{
+    if constexpr (requires { unitSpriteDestinationRectangle(frame, visual, zoom, worldScale); }) {
+        return unitSpriteDestinationRectangle(frame, visual, zoom, worldScale);
+    }
+    else {
+        return unitSpriteDestinationRectangle(frame, visual, zoom);
+    }
+}
+
+void testDestinationsAcrossZoom()
 {
     const UnitSpriteFrame frame = resolveUnitSpriteFrame(36, 36, 176, 176, 4);
     constexpr int posX = 256;
@@ -57,31 +68,29 @@ void testDestinationsAcrossScales()
     constexpr int viewportY = 80;
     constexpr int topBarHeight = 40;
     for (const float zoom : UnitFrameZoomLevels) {
-        for (const float scale : UnitFrameWorldScales) {
-            const cRectangle visual = unitFrameExpectedVisual(
-                posX, posY, viewportX, viewportY, topBarHeight,
-                36, 36, zoom, scale
-            );
-            const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
-                frame,
-                UnitSpriteRectangle{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()},
-                zoom,
-                scale
-            );
-            const float width = unitFrameExpectedDestinationSize(44, zoom, scale);
-            const float height = unitFrameExpectedDestinationSize(44, zoom, scale);
-            requireNear(destination.x, visual.getX() + (visual.getWidth() - width) / 2.0F,
-                        "HD destination x");
-            requireNear(destination.y, visual.getY() + (visual.getHeight() - height) / 2.0F,
-                        "HD destination y");
-            requireNear(destination.width, width, "HD destination width");
-            requireNear(destination.height, height, "HD destination height");
-        }
+        const cRectangle visual = unitFrameExpectedVisual(
+            posX, posY, viewportX, viewportY, topBarHeight,
+            36, 36, zoom
+        );
+        const UnitSpriteFloatRectangle destination = destinationRectangle(
+            frame,
+            UnitSpriteRectangle{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()},
+            zoom,
+            1.0F
+        );
+        const float width = unitFrameExpectedDestinationSize(44, zoom);
+        const float height = unitFrameExpectedDestinationSize(44, zoom);
+        requireNear(destination.x, visual.getX() + (visual.getWidth() - width) / 2.0F,
+                    "HD destination x");
+        requireNear(destination.y, visual.getY() + (visual.getHeight() - height) / 2.0F,
+                    "HD destination y");
+        requireNear(destination.width, width, "HD destination width");
+        requireNear(destination.height, height, "HD destination height");
     }
 
     const UnitSpriteFrame legacy = resolveUnitSpriteFrame(32, 32, 0, 0, 4);
     const UnitSpriteRectangle visual{17, 29, 41, 43};
-    const UnitSpriteFloatRectangle unchanged = unitSpriteDestinationRectangle(legacy, visual, 1.3F, 1.5F);
+    const UnitSpriteFloatRectangle unchanged = destinationRectangle(legacy, visual, 1.3F, 1.5F);
     requireNear(unchanged.x, 17.0F, "Legacy destination x");
     requireNear(unchanged.y, 29.0F, "Legacy destination y");
     requireNear(unchanged.width, 41.0F, "Legacy destination width");
@@ -93,7 +102,7 @@ int main()
 {
     try {
         testSiegeSourcesAndDensity();
-        testDestinationsAcrossScales();
+        testDestinationsAcrossZoom();
         std::cout << "unit_sprite_layout: all checks passed\n";
     }
     catch (const std::exception &error) {

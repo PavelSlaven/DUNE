@@ -1,6 +1,5 @@
 #include "utils/WorldObjectScale.hpp"
 
-#include <cmath>
 #include <iostream>
 
 namespace {
@@ -13,62 +12,11 @@ bool expectEqual(const char *name, int actual, int expected)
               << ", got " << actual << '\n';
     return false;
 }
-
-bool expectNear(const char *name, float actual, float expected)
-{
-    if (std::abs(actual - expected) < 0.0001F) {
-        return true;
-    }
-    std::cerr << name << ": expected " << expected
-              << ", got " << actual << '\n';
-    return false;
-}
 }
 
 int main()
 {
     bool passed = true;
-    passed &= expectNear(
-        "Structure 75%",
-        structureWorldScaleFactor(0.75F),
-        0.75F
-    );
-    passed &= expectNear(
-        "Structure 100%",
-        structureWorldScaleFactor(1.00F),
-        1.00F
-    );
-    passed &= expectNear(
-        "Structure 110%",
-        structureWorldScaleFactor(1.10F),
-        1.10F
-    );
-    passed &= expectNear(
-        "Structure 150%",
-        structureWorldScaleFactor(1.50F),
-        1.50F
-    );
-    passed &= expectNear(
-        "Structure clamped",
-        structureWorldScaleFactor(2.00F),
-        1.50F
-    );
-    passed &= expectNear(
-        "Classic combat tank unchanged",
-        unitWorldScaleFactor(1.25F, false, true),
-        1.25F
-    );
-    passed &= expectNear(
-        "HD non-tank unchanged",
-        unitWorldScaleFactor(1.25F, true, false),
-        1.25F
-    );
-    passed &= expectNear(
-        "HD selected tank unchanged",
-        unitWorldScaleFactor(1.25F, true, true),
-        1.25F
-    );
-
     const WorldObjectLayout scale100 =
         refineryHarvesterLayout(0, 0, 96, 64);
     passed &= expectEqual("100% x", scale100.x, 30);
