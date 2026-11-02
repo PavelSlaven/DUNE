@@ -351,5 +351,6 @@
     }
   ],
   "share_corridor": [0.151, 0.551],
-  "red_fill": 100
+  "red_fill": 100,
+  "offset_shift": [0, -27]
 }

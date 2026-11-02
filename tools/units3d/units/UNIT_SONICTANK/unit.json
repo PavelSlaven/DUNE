@@ -96,7 +96,8 @@
         "b": "units-gen/UNIT_SONICTANK/sonic_k6_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_SONICTANK/sonic_recolour_k6.png"
+      "recolour": "units-gen/UNIT_SONICTANK/sonic_recolour_k6.png",
+      "scale_factor": 0.933
     },
     {
       "row": 0,
@@ -118,5 +119,5 @@
       0
     ]
   },
-  "scale": "fit"
+  "scale": 1.1104386002301692
 }

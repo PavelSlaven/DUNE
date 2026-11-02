@@ -79,7 +79,8 @@
         "b": "units-gen/UNIT_SIEGEBASE/siegebase_k3_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k3.png"
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k3.png",
+      "scale_factor": 0.949
     },
     {
       "row": 0,
