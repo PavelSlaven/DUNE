@@ -377,6 +377,10 @@ def compose(args: argparse.Namespace) -> int:
     placements_doc = json.loads(placements_path.read_text(encoding="utf-8"))
     if placements_doc.get("squad") != squad or not placements_doc.get("complete"):
         raise ValueError(f"размещения неполны или относятся к другому отряду: {placements_path}")
+    offset = placements_doc.get("shift", [0, 0])
+    if not isinstance(offset, list) or len(offset) != 2 or any(type(value) is not int for value in offset):
+        raise ValueError("shift: ожидается список из двух целых чисел, тип int без bool")
+    shift_dx, shift_dy = offset
     rows = placements_doc.get("placements", [])
     by_cell: dict[tuple[int, int], list[dict[str, Any]]] = {}
     for item in rows:
@@ -403,7 +407,6 @@ def compose(args: argparse.Namespace) -> int:
                             "для смещения нужен body"
                         )
                     shift_x = shift_y = 0
-                    bottom = 0.0
                 else:
                     cx = (support_bbox[0] + support_bbox[2]) / 2
                     cy = (support_bbox[1] + support_bbox[3]) / 2
@@ -412,7 +415,9 @@ def compose(args: argparse.Namespace) -> int:
                     target_y = ANCHOR + float(placements_doc["scale_D"]) * (float(old_center["y"]) - ANCHOR)
                     shift_x = round_nearest(target_x - cx)
                     shift_y = round_nearest(target_y - cy)
-                    bottom = support_bbox[3] + shift_y
+                shift_x += shift_dx
+                shift_y += shift_dy
+                bottom = support_bbox[3] + shift_y if support_bbox is not None else 0.0
                 if actual_bbox is not None:
                     moved = (
                         actual_bbox[0] + shift_x,
