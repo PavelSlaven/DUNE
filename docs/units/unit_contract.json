@@ -199,8 +199,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -438,8 +438,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -685,8 +685,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -924,8 +924,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -1167,8 +1167,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -1406,8 +1406,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -1645,8 +1645,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -1793,7 +1793,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/drawers/cStructureDrawer.cpp:859",
+          "source": "src/drawers/cStructureDrawer.cpp:857",
           "identifier": "getUnitBitmap(HARVESTER)",
           "column": 6,
           "row": 0
@@ -1850,7 +1850,7 @@
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/drawers/cStructureDrawer.cpp:859",
+          "ref": "src/drawers/cStructureDrawer.cpp:857",
           "identifier": "getUnitBitmap(HARVESTER)"
         },
         {
@@ -1918,8 +1918,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -2173,8 +2173,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -2213,7 +2213,7 @@
           "identifier": "UNIT_HARVESTER"
         },
         {
-          "ref": "src/drawers/cStructureDrawer.cpp:859",
+          "ref": "src/drawers/cStructureDrawer.cpp:857",
           "identifier": "getUnitBitmap(HARVESTER)"
         },
         {
@@ -2424,8 +2424,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -2663,8 +2663,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -2910,8 +2910,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -3149,8 +3149,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -3396,8 +3396,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -3635,8 +3635,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -3882,8 +3882,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -4121,8 +4121,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -4368,8 +4368,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -4607,8 +4607,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -4882,8 +4882,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -5076,8 +5076,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -5327,8 +5327,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -5578,8 +5578,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -5837,8 +5837,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -6104,8 +6104,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -6371,8 +6371,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -6638,8 +6638,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -6877,8 +6877,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -7116,8 +7116,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -7367,8 +7367,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -7610,8 +7610,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -7861,8 +7861,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -8100,8 +8100,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -8339,8 +8339,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -8614,8 +8614,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -8881,8 +8881,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -9148,8 +9148,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -9285,7 +9285,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/drawers/cStructureDrawer.cpp:859",
+          "source": "src/drawers/cStructureDrawer.cpp:857",
           "identifier": "getUnitBitmap(HARVESTER)",
           "column": 6,
           "row": 0
@@ -9398,8 +9398,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -9438,7 +9438,7 @@
           "identifier": "UNIT_HARVESTER"
         },
         {
-          "ref": "src/drawers/cStructureDrawer.cpp:859",
+          "ref": "src/drawers/cStructureDrawer.cpp:857",
           "identifier": "getUnitBitmap(HARVESTER)"
         },
         {
@@ -9670,8 +9670,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -9938,8 +9938,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -10182,8 +10182,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -10426,8 +10426,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -10666,8 +10666,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -10906,8 +10906,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -11158,8 +11158,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -11410,8 +11410,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -11650,8 +11650,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -11918,8 +11918,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -12186,8 +12186,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -12426,8 +12426,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -12666,8 +12666,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -12906,8 +12906,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -13174,8 +13174,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -13442,8 +13442,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -13710,8 +13710,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -13950,8 +13950,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -14186,8 +14186,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -14426,8 +14426,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -14666,8 +14666,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -14851,8 +14851,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -15014,8 +15014,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -15185,8 +15185,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -15360,8 +15360,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -15543,8 +15543,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -15718,8 +15718,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -15875,8 +15875,8 @@
           "identifier": "#define FACE_UPLEFT"
         },
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
@@ -15993,19 +15993,15 @@
       ]
     },
     "world_scale_configuration": {
-      "value": "При активной HD-графике getWorldScaleFactor возвращает m_effectiveWorldScalePercent / 100; иначе возвращает 1.0F.",
+      "value": "getWorldScaleFactor возвращает m_effectiveWorldScalePercent / 100.",
       "sources": [
         {
-          "ref": "src/cGame.h:295",
-          "identifier": "return isHdGraphicsActive()"
+          "ref": "src/cGame.h:290",
+          "identifier": "float getWorldScaleFactor() const"
         },
         {
-          "ref": "src/cGame.h:296",
+          "ref": "src/cGame.h:291",
           "identifier": "static_cast<float>(m_effectiveWorldScalePercent) / 100.0F"
-        },
-        {
-          "ref": "src/cGame.h:297",
-          "identifier": ": 1.0F;"
         }
       ]
     },
@@ -16287,8 +16283,8 @@
       },
       "sources": [
         {
-          "ref": "src/cGame_logic.cpp:1056",
-          "identifier": "constexpr int density = 4;"
+          "ref": "src/cGame.h:284",
+          "identifier": "static constexpr int kHdAssetDensity = 4;"
         },
         {
           "ref": "src/drawers/SDLDrawer.cpp:87",
