@@ -77,6 +77,20 @@ def run(unit, args):
             recolours[frame_name(record)] = edit, cleaned_edit
 
     placement_records = sorted(records, key=lambda record: 'offset_from' in record)
+    offset_shift = unit.data.get('offset_shift', (0, 0))
+
+    def place_frame(rgba, scale, box, offset=None):
+        if offset is not None:
+            return place(rgba, unit.frame, scale, box, offset, source_maximum=unit.maximum)
+        frame = place(rgba, unit.frame, scale, box, source_maximum=unit.maximum)
+        base_offset = frame[2]
+        final_offset = (base_offset[0] + offset_shift[0], base_offset[1] + offset_shift[1])
+        if final_offset == base_offset:
+            return frame
+        shifted, clipped, _, _ = place(
+            rgba, unit.frame, scale, box, final_offset, source_maximum=unit.maximum,
+        )
+        return shifted, clipped, final_offset, frame[3]
 
     def place_bodies(candidate):
         placed = {}
@@ -88,9 +102,8 @@ def run(unit, args):
                 offset = placed[source_name][2]
             attempt_path = unit.path(record['attempts'][record['pick']])
             with frame_input(record, attempt_path):
-                placed[name] = place(
-                    raw[name], unit.frame, frame_scale(record, candidate), boxes[name], offset,
-                    source_maximum=unit.maximum,
+                placed[name] = place_frame(
+                    raw[name], frame_scale(record, candidate), boxes[name], offset,
                 )
         return placed
 

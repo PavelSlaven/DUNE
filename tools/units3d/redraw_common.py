@@ -245,6 +245,11 @@ def load_unit(directory, command, pack_path=None):
         if command == 'shadow-rule' and atlases['shadow'] is None:
             raise InputError('atlases.shadow: shadow-rule requires a shadow')
         if command == 'build':
+            if 'offset_shift' in data:
+                offset_shift = data['offset_shift']
+                if (not isinstance(offset_shift, list) or len(offset_shift) != 2
+                        or any(type(value) is not int for value in offset_shift)):
+                    raise InputError('offset_shift: expected two integer coordinates')
             if 'scale' in data:
                 scale = data['scale']
                 if scale != 'fit' and (

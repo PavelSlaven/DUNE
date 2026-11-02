@@ -16,6 +16,8 @@ def parser():
     modules = {'inputs': 'inputs', 'recolour-inputs': 'recolour', 'score': 'score',
                'shadow-rule': 'shadow', 'build': 'build', 'pack': 'pack',
                'contact': 'sheets', 'sheet': 'sheets'}
+    rotation = commands.add_parser('rotation')
+    rotation.add_argument('pack', type=Path)
     for name, module in modules.items():
         command = commands.add_parser(name)
         command.add_argument('unit', type=Path)
@@ -43,6 +45,9 @@ def parser():
 def main(argv=None):
     args = parser().parse_args(argv)
     try:
+        if args.command == 'rotation':
+            module = importlib.import_module('tools.units3d.redraw_rotation')
+            return module.run(args)
         if args.command == 'build' and args.output.exists():
             if not args.output.is_dir() or any(args.output.iterdir()):
                 raise InputError(f'{args.output}: output must be absent or empty')
