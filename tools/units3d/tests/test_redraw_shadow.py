@@ -19,6 +19,7 @@ class UnitFixture:
         self._images = {'body': body, 'shadow': shadow}
         self.atlases = {'body': 'body', 'house_mask': None, 'shadow': 'shadow'}
         self.frame = frame
+        self.reference_frame = frame
         self.rows = rows
         self.frames = [
             {'row': row, 'k': k}

@@ -70,6 +70,39 @@ class Unit:
         return tuple(self.data['frame'])
 
     @property
+    def reference_frame(self):
+        return tuple(self.data.get('reference_frame', self.data['frame']))
+
+    @property
+    def reference_anchor(self):
+        return tuple(self.data.get(
+            'reference_anchor',
+            (self.reference_frame[0] // 2, self.reference_frame[1] // 2),
+        ))
+
+    @property
+    def output_anchor(self):
+        return self.frame[0] // 2, self.frame[1] // 2
+
+    @property
+    def anchor_shift(self):
+        return tuple(output - reference for output, reference in zip(
+            self.output_anchor, self.reference_anchor, strict=True
+        ))
+
+    def output_box(self, box):
+        dx, dy = self.anchor_shift
+        x0, y0, x1, y1 = box
+        return x0 + dx, y0 + dy, x1 + dx, y1 + dy
+
+    @property
+    def atlas_size(self):
+        if 'atlas_size' in self.data:
+            return tuple(self.data['atlas_size'])
+        image = self.image(self.atlases['body'])
+        return image.shape[1], image.shape[0]
+
+    @property
     def rows(self):
         return self.data['rows']
 
@@ -79,7 +112,7 @@ class Unit:
 
     @property
     def maximum(self):
-        return max(self.frame)
+        return max(self.reference_frame)
 
     def path(self, value):
         return ROOT / value
@@ -96,7 +129,7 @@ class Unit:
         return self._images[name]
 
     def old_frame(self, role, record):
-        fw, fh = self.frame
+        fw, fh = self.reference_frame
         x, y = record['k'] * fw, record['row'] * fh
         return self.image(self.atlases[role])[y:y + fh, x:x + fw].copy()
 
@@ -125,11 +158,26 @@ def load_unit(directory, command, pack_path=None):
         raise InputError('despill: expected true or false')
     if command != 'pack':
         frame = vector(data, 'frame', 2, positive=True)
-        if any(not isinstance(x, int) for x in frame):
+        if any(isinstance(x, bool) or not isinstance(x, int) for x in frame):
             raise InputError('frame: expected integer dimensions')
+        reference_frame = vector(data, 'reference_frame', 2, positive=True) if 'reference_frame' in data else frame
+        if any(isinstance(x, bool) or not isinstance(x, int) for x in reference_frame):
+            raise InputError('reference_frame: expected integer dimensions')
+        if 'reference_anchor' in data:
+            anchor = vector(data, 'reference_anchor', 2)
+            if any(isinstance(x, bool) or not isinstance(x, int) for x in anchor):
+                raise InputError('reference_anchor: expected integer coordinates')
+            if any(not 0 <= anchor[axis] <= reference_frame[axis] for axis in range(2)):
+                raise InputError('reference_anchor: coordinates must be inside reference_frame')
         rows = required(data, 'rows')
-        if not isinstance(rows, int) or rows <= 0:
+        if isinstance(rows, bool) or not isinstance(rows, int) or rows <= 0:
             raise InputError('rows: expected positive integer')
+        if 'atlas_size' in data:
+            atlas_size = vector(data, 'atlas_size', 2, positive=True)
+            if any(isinstance(x, bool) or not isinstance(x, int) for x in atlas_size):
+                raise InputError('atlas_size: expected integer dimensions')
+            if atlas_size[0] < 8 * frame[0] or atlas_size[1] < rows * frame[1]:
+                raise InputError('atlas_size: too small for frame grid')
         records = required(data, 'frames')
         if not isinstance(records, list):
             raise InputError('frames: expected list')
@@ -244,8 +292,8 @@ def load_unit(directory, command, pack_path=None):
             unit.image(name)
     if command != 'pack':
         height, width = unit.image(atlases['body']).shape[:2]
-        if 8 * frame[0] > width or rows * frame[1] > height:
-            raise InputError('frame/rows: cells exceed body atlas')
+        if 8 * reference_frame[0] > width or rows * reference_frame[1] > height:
+            raise InputError('reference_frame/rows: cells exceed body atlas')
         for name in atlases.values():
             if name is not None and unit.image(name).shape[:2] != (height, width):
                 raise InputError(f'{name}: atlas size differs from body')
@@ -357,9 +405,10 @@ def flat(rgba):
     return Image.fromarray((rgba[..., :3] * alpha + MAGENTA.astype(np.int64) * (1 - alpha)).round().astype(np.uint8))
 
 
-def place(rgba, frame_size, scale, box, offset=None):
+def place(rgba, frame_size, scale, box, offset=None, source_maximum=None):
     fw, fh = frame_size
-    size = round(max(fw, fh) * scale)
+    source_maximum = max(fw, fh) if source_maximum is None else source_maximum
+    size = round(source_maximum * scale)
     if size <= 0:
         raise InputError('scale: resized canvas is empty')
     small = np.array(Image.fromarray(rgba).convert('RGBa').resize((size, size), Image.Resampling.LANCZOS))

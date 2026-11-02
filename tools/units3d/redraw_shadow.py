@@ -7,7 +7,7 @@ import numpy as np
 
 
 def _shifted_alpha(unit, shift):
-    fw, fh = unit.frame
+    fw, fh = unit.reference_frame
     atlas_height, atlas_width = unit.image(unit.atlases['body']).shape[:2]
     shifted = np.zeros((atlas_height, atlas_width), dtype=np.float64)
     if shift >= min(fw, fh):

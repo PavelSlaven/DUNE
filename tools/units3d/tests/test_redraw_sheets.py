@@ -16,6 +16,7 @@ class UnitFixture:
     def __init__(self, frames, frame, rows, atlases, images, data=None, entries=None):
         self._frames = frames
         self.frame = frame
+        self.anchor_shift = (0, 0)
         self.rows = rows
         self.atlases = atlases
         self.images = images
