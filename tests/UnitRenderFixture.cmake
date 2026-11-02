@@ -6,11 +6,20 @@ set(CMAKE_REQUIRED_INCLUDES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/include"
     ${SDL2_INCLUDE_DIRS}
 )
+set(CMAKE_REQUIRED_DEFINITIONS -DSDL_MAIN_HANDLED=1)
 check_cxx_source_compiles(
     "#include <type_traits>\n#include \"drawers/SDLDrawer.hpp\"\nstatic_assert(std::is_same_v<decltype(&SDLDrawer::renderStrechSpriteF), void (SDLDrawer::*)(Texture *, cRectangle, SDL_FRect, Uint8, SDL_BlendMode)>);\nint main() { return 0; }"
     D2TM_UNIT_FRAME_HAS_FRACTIONAL_DRAWER
 )
 unset(CMAKE_REQUIRED_INCLUDES)
+unset(CMAKE_REQUIRED_DEFINITIONS)
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/src/drawers/SDLDrawer.hpp" D2TM_UNIT_FRAME_DRAWER_HEADER)
+if(D2TM_UNIT_FRAME_DRAWER_HEADER MATCHES "renderStrechSpriteF" AND
+   NOT D2TM_UNIT_FRAME_HAS_FRACTIONAL_DRAWER)
+    message(FATAL_ERROR
+        "D2TM_UNIT_FRAME_HAS_FRACTIONAL_DRAWER failed for ${CMAKE_CURRENT_SOURCE_DIR}/src/drawers/SDLDrawer.hpp containing renderStrechSpriteF"
+    )
+endif()
 
 set(D2TM_UNIT_FRAME_ENGINE_SRC ${D2TM_SRC})
 list(REMOVE_ITEM D2TM_UNIT_FRAME_ENGINE_SRC
@@ -26,6 +35,9 @@ target_include_directories(d2tm_unit_frame_engine
         "${CMAKE_CURRENT_SOURCE_DIR}/src/include"
 )
 if(APPLE)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_definitions(d2tm_unit_frame_engine PRIVATE D2TM_CLANG=1)
+    endif()
     target_link_libraries(d2tm_unit_frame_engine
         PUBLIC
             ${SDL2_LIBRARIES}
@@ -74,7 +86,7 @@ function(add_unit_frame_test target test_name source_file mode)
     )
     target_compile_definitions(${target}
         PRIVATE
-            D2TM_UNIT_FRAME_FIXTURE_ROOT="${CMAKE_CURRENT_BINARY_DIR}/unit-frame-fixtures"
+            D2TM_UNIT_FRAME_FIXTURE_ROOT="${CMAKE_CURRENT_BINARY_DIR}/unit-frame-fixtures/${target}"
     )
     target_compile_definitions(${target} PRIVATE SDL_MAIN_HANDLED=1)
     add_test(NAME ${test_name} COMMAND ${target})
@@ -86,6 +98,7 @@ endfunction()
 add_executable(unit_sprite_layout_tests
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/UnitSpriteLayoutTests.cpp"
 )
+target_link_libraries(unit_sprite_layout_tests PRIVATE d2tm_unit_frame_engine)
 target_include_directories(unit_sprite_layout_tests
     PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
@@ -102,4 +115,3 @@ add_unit_frame_test(unit_hd_frame_draw_tests unit_hd_frame_draw UnitHdFrameDrawT
 add_unit_frame_test(unit_frame_interactions_tests unit_frame_interactions UnitFrameInteractionsTests.cpp recorded)
 add_unit_frame_test(unit_draw_regression_tests unit_draw_regression UnitDrawRegressionTests.cpp recorded)
 add_unit_frame_test(unit_render_pixels_tests unit_render_pixels UnitRenderPixelsTests.cpp real)
-

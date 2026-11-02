@@ -164,6 +164,7 @@ class SiegeFrameAcceptanceTests(unittest.TestCase):
             params = json.loads((output / "params.json").read_text(encoding="utf-8"))
             self.assertEqual(params["scale_median"], 1024 / 152)
             self.assertEqual(params["frames"]["r0k0"]["offset"], [-424, -424])
+            self.assertEqual(params["frames"]["r0k1"]["offset"], [-458, -441])
             self.assertEqual(_metrics_row(output / "metrics.txt", 0)["old_share"], "0.017")
             self.assertEqual(_alpha_bbox(output / "frames/r0k0.png"), [50, 50, 126, 126])
 

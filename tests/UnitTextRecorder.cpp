@@ -142,4 +142,3 @@ cRectangle *cTextDrawer::getAsRectangle(int x, int y, const std::string &msg) co
     rect = getRect(x, y, msg);
     return &rect;
 }
-

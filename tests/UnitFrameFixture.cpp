@@ -407,4 +407,3 @@ Texture *UnitFrameFixture::siegeHouseTexture() const
 {
     return players[HUMAN].bmp_unit[SIEGETANK];
 }
-

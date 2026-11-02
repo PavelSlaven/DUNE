@@ -113,4 +113,3 @@ inline float unitFrameExpectedDestinationSize(
         std::lround(logicalSize * zoom) * worldScale
     ));
 }
-

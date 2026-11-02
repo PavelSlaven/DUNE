@@ -51,4 +51,3 @@ private:
     bool ownsVideoSubsystem_ = false;
     bool ownsImageSubsystem_ = false;
 };
-

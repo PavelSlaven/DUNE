@@ -298,4 +298,3 @@ void SDLDrawer::endDrawingToTexture()
 {
     record("endDrawingToTexture");
 }
-

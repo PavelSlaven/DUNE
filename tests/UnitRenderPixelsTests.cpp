@@ -141,58 +141,62 @@ void renderSiegeAtScale(UnitFrameFixture &fixture, int worldScalePercent, std::v
         ));
     }
 
-    if (bboxMatches) {
-        const Pixel topEdge = pixelAt(pixels, outputWidth, expectedX + expectedSize / 2,
-                                      expectedY + 2, format.get());
-        const Pixel bottomEdge = pixelAt(pixels, outputWidth, expectedX + expectedSize / 2,
-                                         expectedBottom - 2, format.get());
-        const Pixel leftEdge = pixelAt(pixels, outputWidth, expectedX + 2,
-                                       expectedY + expectedSize / 2, format.get());
-        const Pixel rightEdge = pixelAt(pixels, outputWidth, expectedRight - 2,
-                                        expectedY + expectedSize / 2, format.get());
-        if (topEdge.a < 128 || topEdge.r < 180 || topEdge.g > 80 || topEdge.b > 80 ||
-            bottomEdge.a < 128 || bottomEdge.b < 180 || bottomEdge.r > 80 || bottomEdge.g > 80 ||
-            leftEdge.a < 128 || leftEdge.r < 180 || leftEdge.g < 180 || leftEdge.b > 80 ||
-            rightEdge.a < 128 || rightEdge.g < 180 || rightEdge.b < 180 || rightEdge.r > 80) {
-            failures.push_back(std::format(
-                "s={}: own-frame boundary markers are absent or crossed (top={},{},{},{} bottom={},{},{},{} left={},{},{},{} right={},{},{},{})",
-                scale,
-                topEdge.r, topEdge.g, topEdge.b, topEdge.a,
-                bottomEdge.r, bottomEdge.g, bottomEdge.b, bottomEdge.a,
-                leftEdge.r, leftEdge.g, leftEdge.b, leftEdge.a,
-                rightEdge.r, rightEdge.g, rightEdge.b, rightEdge.a
-            ));
-        }
+    const Pixel topEdge = pixelAt(pixels, outputWidth, expectedX + expectedSize / 2,
+                                  expectedY + 2, format.get());
+    const Pixel bottomEdge = pixelAt(pixels, outputWidth, expectedX + expectedSize / 2,
+                                     expectedBottom - 2, format.get());
+    const Pixel leftEdge = pixelAt(pixels, outputWidth, expectedX + 2,
+                                   expectedY + expectedSize / 2, format.get());
+    const Pixel rightEdge = pixelAt(pixels, outputWidth, expectedRight - 2,
+                                    expectedY + expectedSize / 2, format.get());
+    const bool boundaryMarkersMatch = !(topEdge.a < 128 || topEdge.r < 180 || topEdge.g > 80 || topEdge.b > 80 ||
+        bottomEdge.a < 128 || bottomEdge.b < 180 || bottomEdge.r > 80 || bottomEdge.g > 80 ||
+        leftEdge.a < 128 || leftEdge.r < 180 || leftEdge.g < 180 || leftEdge.b > 80 ||
+        rightEdge.a < 128 || rightEdge.g < 180 || rightEdge.b < 180 || rightEdge.r > 80);
+    std::cout << std::format("s={}: own-frame boundary markers: {}\n", scale, boundaryMarkersMatch ? "PASS" : "FAIL");
+    if (!boundaryMarkersMatch) {
+        failures.push_back(std::format(
+            "s={}: own-frame boundary markers are absent or crossed (top={},{},{},{} bottom={},{},{},{} left={},{},{},{} right={},{},{},{})",
+            scale,
+            topEdge.r, topEdge.g, topEdge.b, topEdge.a,
+            bottomEdge.r, bottomEdge.g, bottomEdge.b, bottomEdge.a,
+            leftEdge.r, leftEdge.g, leftEdge.b, leftEdge.a,
+            rightEdge.r, rightEdge.g, rightEdge.b, rightEdge.a
+        ));
+    }
 
-        bool neighborColorInsideDestination = false;
-        for (int y = std::max(0, expectedY); y <= std::min(outputHeight - 1, expectedBottom); ++y) {
-            for (int x = std::max(0, expectedX); x <= std::min(outputWidth - 1, expectedRight); ++x) {
-                const Pixel sample = pixelAt(pixels, outputWidth, x, y, format.get());
-                if (sample.a >= 128 && sample.g > 180 && sample.g > sample.r * 1.5F &&
-                    sample.g > sample.b * 1.5F) {
-                    neighborColorInsideDestination = true;
-                }
+    bool neighborColorInsideDestination = false;
+    for (int y = std::max(0, expectedY); y <= std::min(outputHeight - 1, expectedBottom); ++y) {
+        for (int x = std::max(0, expectedX); x <= std::min(outputWidth - 1, expectedRight); ++x) {
+            const Pixel sample = pixelAt(pixels, outputWidth, x, y, format.get());
+            if (sample.a >= 128 && sample.g > 180 && sample.g > sample.r * 1.5F &&
+                sample.g > sample.b * 1.5F) {
+                neighborColorInsideDestination = true;
             }
         }
-        if (neighborColorInsideDestination) {
-            failures.push_back(std::format("s={}: neighboring frame's green marker entered the destination", scale));
-        }
+    }
+    std::cout << std::format("s={}: neighboring frame marker: {}\n", scale, neighborColorInsideDestination ? "FAIL" : "PASS");
+    if (neighborColorInsideDestination) {
+        failures.push_back(std::format("s={}: neighboring frame's green marker entered the destination", scale));
+    }
 
-        const int outsideX = std::min(outputWidth - 1, expectedRight + 2);
-        const Pixel outside = pixelAt(pixels, outputWidth, outsideX, expectedY + expectedSize / 2, format.get());
-        if (outside.a >= 128) {
-            failures.push_back(std::format("s={}: a neighboring atlas marker leaked beyond the destination", scale));
-        }
+    const int outsideX = std::min(outputWidth - 1, expectedRight + 2);
+    const Pixel outside = pixelAt(pixels, outputWidth, outsideX, expectedY + expectedSize / 2, format.get());
+    std::cout << std::format("s={}: leakage beyond destination: {}\n", scale, outside.a >= 128 ? "FAIL" : "PASS");
+    if (outside.a >= 128) {
+        failures.push_back(std::format("s={}: a neighboring atlas marker leaked beyond the destination", scale));
+    }
 
-        const int markerX = expectedX + static_cast<int>(std::lround(32.0F / 4.0F * scale));
-        const int markerY = expectedY + static_cast<int>(std::lround(32.0F / 4.0F * scale));
-        const Pixel houseMarker = pixelAt(pixels, outputWidth, markerX, markerY, format.get());
-        if (houseMarker.a < 128 || houseMarker.r <= houseMarker.g || houseMarker.r <= houseMarker.b) {
-            failures.push_back(std::format(
-                "s={}: masked marker is not tinted with the House color (rgba={},{},{},{})",
-                scale, houseMarker.r, houseMarker.g, houseMarker.b, houseMarker.a
-            ));
-        }
+    const int markerX = expectedX + static_cast<int>(std::lround(32.0F / 4.0F * scale));
+    const int markerY = expectedY + static_cast<int>(std::lround(32.0F / 4.0F * scale));
+    const Pixel houseMarker = pixelAt(pixels, outputWidth, markerX, markerY, format.get());
+    const bool houseColorMatches = houseMarker.a >= 128 && houseMarker.r > houseMarker.g && houseMarker.r > houseMarker.b;
+    std::cout << std::format("s={}: House color marker: {}\n", scale, houseColorMatches ? "PASS" : "FAIL");
+    if (!houseColorMatches) {
+        failures.push_back(std::format(
+            "s={}: masked marker is not tinted with the House color (rgba={},{},{},{})",
+            scale, houseMarker.r, houseMarker.g, houseMarker.b, houseMarker.a
+        ));
     }
 }
 
@@ -224,4 +228,3 @@ int main()
     }
     return 0;
 }
-

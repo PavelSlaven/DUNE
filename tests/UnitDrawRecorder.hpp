@@ -36,4 +36,3 @@ std::vector<UnitDrawCall> &unitDrawCalls();
 void clearUnitDrawCalls();
 std::vector<UnitRecordedText> &unitRecordedText();
 void clearUnitRecordedText();
-
