@@ -32,6 +32,7 @@ def run(unit, args):
         raise InputError(f'{output}: output must be absent or empty')
     records = unit.frames
     figures = unit.data.get('figures', 1)
+    despill = unit.data.get('despill', True)
     boxes = {}
     for record in records:
         name = frame_name(record)
@@ -39,12 +40,15 @@ def run(unit, args):
             boxes[name] = bbox(unit.old_frame('body', record)[..., 3])
     prepared = {}
     raw = {}
+    cleaned = {}
     for record in records:
         name = frame_name(record)
         attempt_path = unit.path(record['attempts'][record['pick']])
         with frame_input(record, attempt_path):
             prepared[name] = keyed(attempt_path, figures=figures, return_stray=True)
             bbox(prepared[name][0][..., 3])
+            if despill:
+                cleaned[name] = keyed(attempt_path, figures=figures, despill=True)
         raw[name] = prepared[name][0]
     ratios = []
     for record in records:
@@ -123,10 +127,14 @@ def run(unit, args):
     for record in records:
         name = frame_name(record)
         body, clipped, offset, moved = placed[name]
-        (output / 'frames' / f'{name}.png').write_bytes(encode_png(Image.fromarray(body)))
+        colour = body
+        if despill:
+            with frame_input(record, unit.path(record['attempts'][record['pick']])):
+                colour = place(cleaned[name], unit.frame, scale, boxes[name], offset)[0]
+        (output / 'frames' / f'{name}.png').write_bytes(encode_png(Image.fromarray(colour)))
         params['frames'][name] = {'offset': list(offset), 'moved': list(moved)}
         reasons = []
-        images = {'body': body}
+        images = {'body': colour}
         if has_mask:
             recolour_path = unit.path(record['recolour'])
             with frame_input(record, recolour_path):
