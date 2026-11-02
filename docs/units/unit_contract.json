@@ -38,11 +38,11 @@
         "value": "Строка 0 используется без груза, строка 1 — при переноске или передаче груза.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1340",
+            "ref": "src/gameobjects/units/cUnit.cpp:1344",
             "identifier": "iFrame = 1;"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1347",
+            "ref": "src/gameobjects/units/cUnit.cpp:1351",
             "identifier": "iFrame = 0;"
           }
         ]
@@ -92,7 +92,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -107,19 +107,19 @@
           "identifier": "UNIT_CARRYALL"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:90",
+          "ref": "src/utils/cIniGameRessouces.cpp:92",
           "identifier": "sUnitInfo[CARRYALL].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:91",
+          "ref": "src/utils/cIniGameRessouces.cpp:93",
           "identifier": "sUnitInfo[CARRYALL].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:92",
+          "ref": "src/utils/cIniGameRessouces.cpp:94",
           "identifier": "sUnitInfo[CARRYALL].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:93",
+          "ref": "src/utils/cIniGameRessouces.cpp:95",
           "identifier": "sUnitInfo[CARRYALL].bmp_height"
         },
         {
@@ -127,15 +127,15 @@
           "identifier": "#define CARRYALL"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1340",
+          "ref": "src/gameobjects/units/cUnit.cpp:1344",
           "identifier": "iFrame = 1;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1347",
+          "ref": "src/gameobjects/units/cUnit.cpp:1351",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -277,11 +277,11 @@
         "value": "Строка 0 используется без груза, строка 1 — при переноске или передаче груза.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1340",
+            "ref": "src/gameobjects/units/cUnit.cpp:1344",
             "identifier": "iFrame = 1;"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1347",
+            "ref": "src/gameobjects/units/cUnit.cpp:1351",
             "identifier": "iFrame = 0;"
           }
         ]
@@ -346,19 +346,19 @@
           "identifier": "UNIT_CARRYALL_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:90",
+          "ref": "src/utils/cIniGameRessouces.cpp:92",
           "identifier": "sUnitInfo[CARRYALL].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:91",
+          "ref": "src/utils/cIniGameRessouces.cpp:93",
           "identifier": "sUnitInfo[CARRYALL].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:92",
+          "ref": "src/utils/cIniGameRessouces.cpp:94",
           "identifier": "sUnitInfo[CARRYALL].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:93",
+          "ref": "src/utils/cIniGameRessouces.cpp:95",
           "identifier": "sUnitInfo[CARRYALL].bmp_height"
         },
         {
@@ -366,11 +366,11 @@
           "identifier": "#define CARRYALL"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1340",
+          "ref": "src/gameobjects/units/cUnit.cpp:1344",
           "identifier": "iFrame = 1;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1347",
+          "ref": "src/gameobjects/units/cUnit.cpp:1351",
           "identifier": "iFrame = 0;"
         },
         {
@@ -478,7 +478,7 @@
           "identifier": "UNIT_CARRYALL"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -578,7 +578,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -593,19 +593,19 @@
           "identifier": "UNIT_DEVASTATOR"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:124",
+          "ref": "src/utils/cIniGameRessouces.cpp:126",
           "identifier": "sUnitInfo[DEVASTATOR].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:125",
+          "ref": "src/utils/cIniGameRessouces.cpp:127",
           "identifier": "sUnitInfo[DEVASTATOR].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:126",
+          "ref": "src/utils/cIniGameRessouces.cpp:128",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:128",
+          "ref": "src/utils/cIniGameRessouces.cpp:130",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_height"
         },
         {
@@ -621,7 +621,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -832,19 +832,19 @@
           "identifier": "UNIT_DEVASTATOR_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:124",
+          "ref": "src/utils/cIniGameRessouces.cpp:126",
           "identifier": "sUnitInfo[DEVASTATOR].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:125",
+          "ref": "src/utils/cIniGameRessouces.cpp:127",
           "identifier": "sUnitInfo[DEVASTATOR].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:126",
+          "ref": "src/utils/cIniGameRessouces.cpp:128",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:128",
+          "ref": "src/utils/cIniGameRessouces.cpp:130",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_height"
         },
         {
@@ -964,7 +964,7 @@
           "identifier": "UNIT_DEVASTATOR"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -1064,7 +1064,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -1079,15 +1079,15 @@
           "identifier": "UNIT_DEVIATOR"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:218",
+          "ref": "src/utils/cIniGameRessouces.cpp:220",
           "identifier": "sUnitInfo[DEVIATOR].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:219",
+          "ref": "src/utils/cIniGameRessouces.cpp:221",
           "identifier": "sUnitInfo[DEVIATOR].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:220",
+          "ref": "src/utils/cIniGameRessouces.cpp:222",
           "identifier": "sUnitInfo[DEVIATOR].bmp_height"
         },
         {
@@ -1103,7 +1103,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -1299,7 +1299,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -1314,19 +1314,19 @@
           "identifier": "UNIT_FRIGATE"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:315",
+          "ref": "src/utils/cIniGameRessouces.cpp:317",
           "identifier": "sUnitInfo[FRIGATE].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:316",
+          "ref": "src/utils/cIniGameRessouces.cpp:318",
           "identifier": "sUnitInfo[FRIGATE].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:317",
+          "ref": "src/utils/cIniGameRessouces.cpp:319",
           "identifier": "sUnitInfo[FRIGATE].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:318",
+          "ref": "src/utils/cIniGameRessouces.cpp:320",
           "identifier": "sUnitInfo[FRIGATE].bmp_height"
         },
         {
@@ -1342,7 +1342,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -1553,19 +1553,19 @@
           "identifier": "UNIT_FRIGATE_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:315",
+          "ref": "src/utils/cIniGameRessouces.cpp:317",
           "identifier": "sUnitInfo[FRIGATE].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:316",
+          "ref": "src/utils/cIniGameRessouces.cpp:318",
           "identifier": "sUnitInfo[FRIGATE].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:317",
+          "ref": "src/utils/cIniGameRessouces.cpp:319",
           "identifier": "sUnitInfo[FRIGATE].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:318",
+          "ref": "src/utils/cIniGameRessouces.cpp:320",
           "identifier": "sUnitInfo[FRIGATE].bmp_height"
         },
         {
@@ -1685,7 +1685,7 @@
           "identifier": "UNIT_FRIGATE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -1731,19 +1731,19 @@
         "value": "При сборе используются строки 1–3; код возвращает кадр к 1 и сбрасывает его в 0 вне цикла сбора.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3872",
+            "ref": "src/gameobjects/units/cUnit.cpp:3876",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3874",
+            "ref": "src/gameobjects/units/cUnit.cpp:3878",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3875",
+            "ref": "src/gameobjects/units/cUnit.cpp:3879",
             "identifier": "iFrame = 1;"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3857",
+            "ref": "src/gameobjects/units/cUnit.cpp:3861",
             "identifier": "iFrame = 0;"
           }
         ]
@@ -1799,7 +1799,7 @@
           "row": 0
         },
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -1814,19 +1814,19 @@
           "identifier": "UNIT_HARVESTER"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:143",
+          "ref": "src/utils/cIniGameRessouces.cpp:145",
           "identifier": "sUnitInfo[HARVESTER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:144",
+          "ref": "src/utils/cIniGameRessouces.cpp:146",
           "identifier": "sUnitInfo[HARVESTER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:145",
+          "ref": "src/utils/cIniGameRessouces.cpp:147",
           "identifier": "sUnitInfo[HARVESTER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:147",
+          "ref": "src/utils/cIniGameRessouces.cpp:149",
           "identifier": "sUnitInfo[HARVESTER].bmp_height"
         },
         {
@@ -1834,19 +1834,19 @@
           "identifier": "#define HARVESTER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3872",
+          "ref": "src/gameobjects/units/cUnit.cpp:3876",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3874",
+          "ref": "src/gameobjects/units/cUnit.cpp:3878",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3875",
+          "ref": "src/gameobjects/units/cUnit.cpp:3879",
           "identifier": "iFrame = 1;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3857",
+          "ref": "src/gameobjects/units/cUnit.cpp:3861",
           "identifier": "iFrame = 0;"
         },
         {
@@ -1854,7 +1854,7 @@
           "identifier": "getUnitBitmap(HARVESTER)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -1996,19 +1996,19 @@
         "value": "При сборе используются строки 1–3; код возвращает кадр к 1 и сбрасывает его в 0 вне цикла сбора.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3872",
+            "ref": "src/gameobjects/units/cUnit.cpp:3876",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3874",
+            "ref": "src/gameobjects/units/cUnit.cpp:3878",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3875",
+            "ref": "src/gameobjects/units/cUnit.cpp:3879",
             "identifier": "iFrame = 1;"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3857",
+            "ref": "src/gameobjects/units/cUnit.cpp:3861",
             "identifier": "iFrame = 0;"
           }
         ]
@@ -2073,19 +2073,19 @@
           "identifier": "UNIT_HARVESTER_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:143",
+          "ref": "src/utils/cIniGameRessouces.cpp:145",
           "identifier": "sUnitInfo[HARVESTER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:144",
+          "ref": "src/utils/cIniGameRessouces.cpp:146",
           "identifier": "sUnitInfo[HARVESTER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:145",
+          "ref": "src/utils/cIniGameRessouces.cpp:147",
           "identifier": "sUnitInfo[HARVESTER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:147",
+          "ref": "src/utils/cIniGameRessouces.cpp:149",
           "identifier": "sUnitInfo[HARVESTER].bmp_height"
         },
         {
@@ -2093,19 +2093,19 @@
           "identifier": "#define HARVESTER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3872",
+          "ref": "src/gameobjects/units/cUnit.cpp:3876",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3874",
+          "ref": "src/gameobjects/units/cUnit.cpp:3878",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3875",
+          "ref": "src/gameobjects/units/cUnit.cpp:3879",
           "identifier": "iFrame = 1;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3857",
+          "ref": "src/gameobjects/units/cUnit.cpp:3861",
           "identifier": "iFrame = 0;"
         },
         {
@@ -2217,7 +2217,7 @@
           "identifier": "getUnitBitmap(HARVESTER)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -2317,7 +2317,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -2332,19 +2332,19 @@
           "identifier": "UNIT_LAUNCHER"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:235",
+          "ref": "src/utils/cIniGameRessouces.cpp:237",
           "identifier": "sUnitInfo[LAUNCHER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:236",
+          "ref": "src/utils/cIniGameRessouces.cpp:238",
           "identifier": "sUnitInfo[LAUNCHER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:237",
+          "ref": "src/utils/cIniGameRessouces.cpp:239",
           "identifier": "sUnitInfo[LAUNCHER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:238",
+          "ref": "src/utils/cIniGameRessouces.cpp:240",
           "identifier": "sUnitInfo[LAUNCHER].bmp_height"
         },
         {
@@ -2360,7 +2360,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -2571,19 +2571,19 @@
           "identifier": "UNIT_LAUNCHER_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:235",
+          "ref": "src/utils/cIniGameRessouces.cpp:237",
           "identifier": "sUnitInfo[LAUNCHER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:236",
+          "ref": "src/utils/cIniGameRessouces.cpp:238",
           "identifier": "sUnitInfo[LAUNCHER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:237",
+          "ref": "src/utils/cIniGameRessouces.cpp:239",
           "identifier": "sUnitInfo[LAUNCHER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:238",
+          "ref": "src/utils/cIniGameRessouces.cpp:240",
           "identifier": "sUnitInfo[LAUNCHER].bmp_height"
         },
         {
@@ -2703,7 +2703,7 @@
           "identifier": "UNIT_LAUNCHER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -2803,7 +2803,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -2818,19 +2818,19 @@
           "identifier": "UNIT_MCV"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:202",
+          "ref": "src/utils/cIniGameRessouces.cpp:204",
           "identifier": "sUnitInfo[MCV].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:203",
+          "ref": "src/utils/cIniGameRessouces.cpp:205",
           "identifier": "sUnitInfo[MCV].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:204",
+          "ref": "src/utils/cIniGameRessouces.cpp:206",
           "identifier": "sUnitInfo[MCV].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:206",
+          "ref": "src/utils/cIniGameRessouces.cpp:208",
           "identifier": "sUnitInfo[MCV].bmp_height"
         },
         {
@@ -2846,7 +2846,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -3057,19 +3057,19 @@
           "identifier": "UNIT_MCV_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:202",
+          "ref": "src/utils/cIniGameRessouces.cpp:204",
           "identifier": "sUnitInfo[MCV].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:203",
+          "ref": "src/utils/cIniGameRessouces.cpp:205",
           "identifier": "sUnitInfo[MCV].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:204",
+          "ref": "src/utils/cIniGameRessouces.cpp:206",
           "identifier": "sUnitInfo[MCV].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:206",
+          "ref": "src/utils/cIniGameRessouces.cpp:208",
           "identifier": "sUnitInfo[MCV].bmp_height"
         },
         {
@@ -3189,7 +3189,7 @@
           "identifier": "UNIT_MCV"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -3235,11 +3235,11 @@
         "value": "Кадры полёта циклически проходят строки 0–3.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1354",
+            "ref": "src/gameobjects/units/cUnit.cpp:1358",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1356",
+            "ref": "src/gameobjects/units/cUnit.cpp:1360",
             "identifier": "if (iFrame > 3)"
           }
         ]
@@ -3289,7 +3289,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -3304,19 +3304,19 @@
           "identifier": "UNIT_ORNITHOPTER"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:105",
+          "ref": "src/utils/cIniGameRessouces.cpp:107",
           "identifier": "sUnitInfo[ORNITHOPTER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:106",
+          "ref": "src/utils/cIniGameRessouces.cpp:108",
           "identifier": "sUnitInfo[ORNITHOPTER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:107",
+          "ref": "src/utils/cIniGameRessouces.cpp:109",
           "identifier": "sUnitInfo[ORNITHOPTER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:108",
+          "ref": "src/utils/cIniGameRessouces.cpp:110",
           "identifier": "sUnitInfo[ORNITHOPTER].bmp_height"
         },
         {
@@ -3324,15 +3324,15 @@
           "identifier": "#define ORNITHOPTER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1354",
+          "ref": "src/gameobjects/units/cUnit.cpp:1358",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1356",
+          "ref": "src/gameobjects/units/cUnit.cpp:1360",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -3474,11 +3474,11 @@
         "value": "Кадры полёта циклически проходят строки 0–3.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1354",
+            "ref": "src/gameobjects/units/cUnit.cpp:1358",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1356",
+            "ref": "src/gameobjects/units/cUnit.cpp:1360",
             "identifier": "if (iFrame > 3)"
           }
         ]
@@ -3543,19 +3543,19 @@
           "identifier": "UNIT_ORNITHOPTER_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:105",
+          "ref": "src/utils/cIniGameRessouces.cpp:107",
           "identifier": "sUnitInfo[ORNITHOPTER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:106",
+          "ref": "src/utils/cIniGameRessouces.cpp:108",
           "identifier": "sUnitInfo[ORNITHOPTER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:107",
+          "ref": "src/utils/cIniGameRessouces.cpp:109",
           "identifier": "sUnitInfo[ORNITHOPTER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:108",
+          "ref": "src/utils/cIniGameRessouces.cpp:110",
           "identifier": "sUnitInfo[ORNITHOPTER].bmp_height"
         },
         {
@@ -3563,11 +3563,11 @@
           "identifier": "#define ORNITHOPTER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1354",
+          "ref": "src/gameobjects/units/cUnit.cpp:1358",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1356",
+          "ref": "src/gameobjects/units/cUnit.cpp:1360",
           "identifier": "if (iFrame > 3)"
         },
         {
@@ -3675,7 +3675,7 @@
           "identifier": "UNIT_ORNITHOPTER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -3775,7 +3775,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -3790,19 +3790,19 @@
           "identifier": "UNIT_QUAD"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:256",
+          "ref": "src/utils/cIniGameRessouces.cpp:258",
           "identifier": "sUnitInfo[QUAD].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:257",
+          "ref": "src/utils/cIniGameRessouces.cpp:259",
           "identifier": "sUnitInfo[QUAD].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:258",
+          "ref": "src/utils/cIniGameRessouces.cpp:260",
           "identifier": "sUnitInfo[QUAD].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:259",
+          "ref": "src/utils/cIniGameRessouces.cpp:261",
           "identifier": "sUnitInfo[QUAD].bmp_height"
         },
         {
@@ -3818,7 +3818,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -4029,19 +4029,19 @@
           "identifier": "UNIT_QUAD_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:256",
+          "ref": "src/utils/cIniGameRessouces.cpp:258",
           "identifier": "sUnitInfo[QUAD].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:257",
+          "ref": "src/utils/cIniGameRessouces.cpp:259",
           "identifier": "sUnitInfo[QUAD].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:258",
+          "ref": "src/utils/cIniGameRessouces.cpp:260",
           "identifier": "sUnitInfo[QUAD].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:259",
+          "ref": "src/utils/cIniGameRessouces.cpp:261",
           "identifier": "sUnitInfo[QUAD].bmp_height"
         },
         {
@@ -4161,7 +4161,7 @@
           "identifier": "UNIT_QUAD"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -4261,7 +4261,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -4276,19 +4276,19 @@
           "identifier": "UNIT_RAIDER"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:296",
+          "ref": "src/utils/cIniGameRessouces.cpp:298",
           "identifier": "sUnitInfo[RAIDER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:297",
+          "ref": "src/utils/cIniGameRessouces.cpp:299",
           "identifier": "sUnitInfo[RAIDER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:298",
+          "ref": "src/utils/cIniGameRessouces.cpp:300",
           "identifier": "sUnitInfo[RAIDER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:299",
+          "ref": "src/utils/cIniGameRessouces.cpp:301",
           "identifier": "sUnitInfo[RAIDER].bmp_height"
         },
         {
@@ -4304,7 +4304,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -4515,19 +4515,19 @@
           "identifier": "UNIT_RAIDER_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:296",
+          "ref": "src/utils/cIniGameRessouces.cpp:298",
           "identifier": "sUnitInfo[RAIDER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:297",
+          "ref": "src/utils/cIniGameRessouces.cpp:299",
           "identifier": "sUnitInfo[RAIDER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:298",
+          "ref": "src/utils/cIniGameRessouces.cpp:300",
           "identifier": "sUnitInfo[RAIDER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:299",
+          "ref": "src/utils/cIniGameRessouces.cpp:301",
           "identifier": "sUnitInfo[RAIDER].bmp_height"
         },
         {
@@ -4647,7 +4647,7 @@
           "identifier": "UNIT_RAIDER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -4693,27 +4693,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:514",
+            "ref": "src/utils/cIniGameRessouces.cpp:516",
             "identifier": "sUnitInfo[SABOTEUR].infantry = true;"
           }
         ]
@@ -4763,7 +4763,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -4778,15 +4778,15 @@
           "identifier": "UNIT_SABOTEUR"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:497",
+          "ref": "src/utils/cIniGameRessouces.cpp:499",
           "identifier": "sUnitInfo[SABOTEUR].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:499",
+          "ref": "src/utils/cIniGameRessouces.cpp:501",
           "identifier": "sUnitInfo[SABOTEUR].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:500",
+          "ref": "src/utils/cIniGameRessouces.cpp:502",
           "identifier": "sUnitInfo[SABOTEUR].bmp_height"
         },
         {
@@ -4794,31 +4794,31 @@
           "identifier": "#define SABOTEUR"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:514",
+          "ref": "src/utils/cIniGameRessouces.cpp:516",
           "identifier": "sUnitInfo[SABOTEUR].infantry = true;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -4968,7 +4968,7 @@
             "identifier": "return;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:523",
+            "ref": "src/utils/cIniGameRessouces.cpp:525",
             "identifier": "sUnitInfo[SANDWORM].bmp ="
           }
         ]
@@ -4992,15 +4992,15 @@
           "identifier": "UNIT_SANDWORM"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:523",
+          "ref": "src/utils/cIniGameRessouces.cpp:525",
           "identifier": "sUnitInfo[SANDWORM].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:527",
+          "ref": "src/utils/cIniGameRessouces.cpp:529",
           "identifier": "sUnitInfo[SANDWORM].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:528",
+          "ref": "src/utils/cIniGameRessouces.cpp:530",
           "identifier": "sUnitInfo[SANDWORM].bmp_height"
         },
         {
@@ -5016,7 +5016,7 @@
           "identifier": "return;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:523",
+          "ref": "src/utils/cIniGameRessouces.cpp:525",
           "identifier": "sUnitInfo[SANDWORM].bmp ="
         },
         {
@@ -5208,7 +5208,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -5223,31 +5223,31 @@
           "identifier": "UNIT_SIEGEBASE"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:180",
+          "ref": "src/utils/cIniGameRessouces.cpp:182",
           "identifier": "sUnitInfo[SIEGETANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:181",
+          "ref": "src/utils/cIniGameRessouces.cpp:183",
           "identifier": "sUnitInfo[SIEGETANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:182",
+          "ref": "src/utils/cIniGameRessouces.cpp:184",
           "identifier": "sUnitInfo[SIEGETANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:183",
+          "ref": "src/utils/cIniGameRessouces.cpp:185",
           "identifier": "sUnitInfo[SIEGETANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:185",
+          "ref": "src/utils/cIniGameRessouces.cpp:187",
           "identifier": "sUnitInfo[SIEGETANK].bmp_height"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:186",
+          "ref": "src/utils/cIniGameRessouces.cpp:188",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:187",
+          "ref": "src/utils/cIniGameRessouces.cpp:189",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_height"
         },
         {
@@ -5263,7 +5263,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -5474,31 +5474,31 @@
           "identifier": "UNIT_SIEGEBASE_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:180",
+          "ref": "src/utils/cIniGameRessouces.cpp:182",
           "identifier": "sUnitInfo[SIEGETANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:181",
+          "ref": "src/utils/cIniGameRessouces.cpp:183",
           "identifier": "sUnitInfo[SIEGETANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:182",
+          "ref": "src/utils/cIniGameRessouces.cpp:184",
           "identifier": "sUnitInfo[SIEGETANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:183",
+          "ref": "src/utils/cIniGameRessouces.cpp:185",
           "identifier": "sUnitInfo[SIEGETANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:185",
+          "ref": "src/utils/cIniGameRessouces.cpp:187",
           "identifier": "sUnitInfo[SIEGETANK].bmp_height"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:186",
+          "ref": "src/utils/cIniGameRessouces.cpp:188",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:187",
+          "ref": "src/utils/cIniGameRessouces.cpp:189",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_height"
         },
         {
@@ -5618,7 +5618,7 @@
           "identifier": "UNIT_SIEGEBASE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -5718,7 +5718,7 @@
       "facing_source": "iHeadFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:884",
+          "source": "src/gameobjects/units/cUnit.cpp:888",
           "identifier": "getUnitTopBitmap(iType)",
           "column": "convertAngleToDrawIndex(iHeadFacing)",
           "row": "iFrame"
@@ -5733,31 +5733,31 @@
           "identifier": "UNIT_SIEGETOP"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:180",
+          "ref": "src/utils/cIniGameRessouces.cpp:182",
           "identifier": "sUnitInfo[SIEGETANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:181",
+          "ref": "src/utils/cIniGameRessouces.cpp:183",
           "identifier": "sUnitInfo[SIEGETANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:182",
+          "ref": "src/utils/cIniGameRessouces.cpp:184",
           "identifier": "sUnitInfo[SIEGETANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:183",
+          "ref": "src/utils/cIniGameRessouces.cpp:185",
           "identifier": "sUnitInfo[SIEGETANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:185",
+          "ref": "src/utils/cIniGameRessouces.cpp:187",
           "identifier": "sUnitInfo[SIEGETANK].bmp_height"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:186",
+          "ref": "src/utils/cIniGameRessouces.cpp:188",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:187",
+          "ref": "src/utils/cIniGameRessouces.cpp:189",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_height"
         },
         {
@@ -5773,7 +5773,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:884",
+          "ref": "src/gameobjects/units/cUnit.cpp:888",
           "identifier": "getUnitTopBitmap(iType)"
         },
         {
@@ -5915,27 +5915,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:465",
+            "ref": "src/utils/cIniGameRessouces.cpp:467",
             "identifier": "sUnitInfo[UNIT_FREMEN_ONE].infantry = true;"
           }
         ]
@@ -5985,7 +5985,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -6000,15 +6000,15 @@
           "identifier": "UNIT_SINGLEFREMEN"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:456",
+          "ref": "src/utils/cIniGameRessouces.cpp:458",
           "identifier": "sUnitInfo[UNIT_FREMEN_ONE].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:457",
+          "ref": "src/utils/cIniGameRessouces.cpp:459",
           "identifier": "sUnitInfo[UNIT_FREMEN_ONE].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:458",
+          "ref": "src/utils/cIniGameRessouces.cpp:460",
           "identifier": "sUnitInfo[UNIT_FREMEN_ONE].bmp_height"
         },
         {
@@ -6016,31 +6016,31 @@
           "identifier": "#define UNIT_FREMEN_ONE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:465",
+          "ref": "src/utils/cIniGameRessouces.cpp:467",
           "identifier": "sUnitInfo[UNIT_FREMEN_ONE].infantry = true;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -6182,27 +6182,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:367",
+            "ref": "src/utils/cIniGameRessouces.cpp:369",
             "identifier": "sUnitInfo[SOLDIER].infantry = true;"
           }
         ]
@@ -6252,7 +6252,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -6267,15 +6267,15 @@
           "identifier": "UNIT_SOLDIER"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:362",
+          "ref": "src/utils/cIniGameRessouces.cpp:364",
           "identifier": "sUnitInfo[SOLDIER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:363",
+          "ref": "src/utils/cIniGameRessouces.cpp:365",
           "identifier": "sUnitInfo[SOLDIER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:364",
+          "ref": "src/utils/cIniGameRessouces.cpp:366",
           "identifier": "sUnitInfo[SOLDIER].bmp_height"
         },
         {
@@ -6283,31 +6283,31 @@
           "identifier": "#define SOLDIER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:367",
+          "ref": "src/utils/cIniGameRessouces.cpp:369",
           "identifier": "sUnitInfo[SOLDIER].infantry = true;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -6449,27 +6449,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:390",
+            "ref": "src/utils/cIniGameRessouces.cpp:392",
             "identifier": "sUnitInfo[INFANTRY].infantry = true;"
           }
         ]
@@ -6519,7 +6519,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -6534,15 +6534,15 @@
           "identifier": "UNIT_SOLDIERS"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:384",
+          "ref": "src/utils/cIniGameRessouces.cpp:386",
           "identifier": "sUnitInfo[INFANTRY].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:385",
+          "ref": "src/utils/cIniGameRessouces.cpp:387",
           "identifier": "sUnitInfo[INFANTRY].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:386",
+          "ref": "src/utils/cIniGameRessouces.cpp:388",
           "identifier": "sUnitInfo[INFANTRY].bmp_height"
         },
         {
@@ -6550,31 +6550,31 @@
           "identifier": "#define INFANTRY"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:390",
+          "ref": "src/utils/cIniGameRessouces.cpp:392",
           "identifier": "sUnitInfo[INFANTRY].infantry = true;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -6770,7 +6770,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -6785,19 +6785,19 @@
           "identifier": "UNIT_SONICTANK"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:342",
+          "ref": "src/utils/cIniGameRessouces.cpp:344",
           "identifier": "sUnitInfo[SONICTANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:343",
+          "ref": "src/utils/cIniGameRessouces.cpp:345",
           "identifier": "sUnitInfo[SONICTANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:344",
+          "ref": "src/utils/cIniGameRessouces.cpp:346",
           "identifier": "sUnitInfo[SONICTANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:345",
+          "ref": "src/utils/cIniGameRessouces.cpp:347",
           "identifier": "sUnitInfo[SONICTANK].bmp_height"
         },
         {
@@ -6813,7 +6813,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -7024,19 +7024,19 @@
           "identifier": "UNIT_SONICTANK_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:342",
+          "ref": "src/utils/cIniGameRessouces.cpp:344",
           "identifier": "sUnitInfo[SONICTANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:343",
+          "ref": "src/utils/cIniGameRessouces.cpp:345",
           "identifier": "sUnitInfo[SONICTANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:344",
+          "ref": "src/utils/cIniGameRessouces.cpp:346",
           "identifier": "sUnitInfo[SONICTANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:345",
+          "ref": "src/utils/cIniGameRessouces.cpp:347",
           "identifier": "sUnitInfo[SONICTANK].bmp_height"
         },
         {
@@ -7156,7 +7156,7 @@
           "identifier": "UNIT_SONICTANK"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -7256,7 +7256,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -7271,23 +7271,23 @@
           "identifier": "UNIT_TANKBASE"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:160",
+          "ref": "src/utils/cIniGameRessouces.cpp:162",
           "identifier": "sUnitInfo[TANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:161",
+          "ref": "src/utils/cIniGameRessouces.cpp:163",
           "identifier": "sUnitInfo[TANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:162",
+          "ref": "src/utils/cIniGameRessouces.cpp:164",
           "identifier": "sUnitInfo[TANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:163",
+          "ref": "src/utils/cIniGameRessouces.cpp:165",
           "identifier": "sUnitInfo[TANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:165",
+          "ref": "src/utils/cIniGameRessouces.cpp:167",
           "identifier": "sUnitInfo[TANK].bmp_height"
         },
         {
@@ -7303,7 +7303,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -7514,23 +7514,23 @@
           "identifier": "UNIT_TANKBASE_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:160",
+          "ref": "src/utils/cIniGameRessouces.cpp:162",
           "identifier": "sUnitInfo[TANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:161",
+          "ref": "src/utils/cIniGameRessouces.cpp:163",
           "identifier": "sUnitInfo[TANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:162",
+          "ref": "src/utils/cIniGameRessouces.cpp:164",
           "identifier": "sUnitInfo[TANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:163",
+          "ref": "src/utils/cIniGameRessouces.cpp:165",
           "identifier": "sUnitInfo[TANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:165",
+          "ref": "src/utils/cIniGameRessouces.cpp:167",
           "identifier": "sUnitInfo[TANK].bmp_height"
         },
         {
@@ -7650,7 +7650,7 @@
           "identifier": "UNIT_TANKBASE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -7750,7 +7750,7 @@
       "facing_source": "iHeadFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:884",
+          "source": "src/gameobjects/units/cUnit.cpp:888",
           "identifier": "getUnitTopBitmap(iType)",
           "column": "convertAngleToDrawIndex(iHeadFacing)",
           "row": "iFrame"
@@ -7765,23 +7765,23 @@
           "identifier": "UNIT_TANKTOP"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:160",
+          "ref": "src/utils/cIniGameRessouces.cpp:162",
           "identifier": "sUnitInfo[TANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:161",
+          "ref": "src/utils/cIniGameRessouces.cpp:163",
           "identifier": "sUnitInfo[TANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:162",
+          "ref": "src/utils/cIniGameRessouces.cpp:164",
           "identifier": "sUnitInfo[TANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:163",
+          "ref": "src/utils/cIniGameRessouces.cpp:165",
           "identifier": "sUnitInfo[TANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:165",
+          "ref": "src/utils/cIniGameRessouces.cpp:167",
           "identifier": "sUnitInfo[TANK].bmp_height"
         },
         {
@@ -7797,7 +7797,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:884",
+          "ref": "src/gameobjects/units/cUnit.cpp:888",
           "identifier": "getUnitTopBitmap(iType)"
         },
         {
@@ -7993,7 +7993,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -8008,19 +8008,19 @@
           "identifier": "UNIT_TRIKE"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:277",
+          "ref": "src/utils/cIniGameRessouces.cpp:279",
           "identifier": "sUnitInfo[TRIKE].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:278",
+          "ref": "src/utils/cIniGameRessouces.cpp:280",
           "identifier": "sUnitInfo[TRIKE].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:279",
+          "ref": "src/utils/cIniGameRessouces.cpp:281",
           "identifier": "sUnitInfo[TRIKE].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:280",
+          "ref": "src/utils/cIniGameRessouces.cpp:282",
           "identifier": "sUnitInfo[TRIKE].bmp_height"
         },
         {
@@ -8036,7 +8036,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -8247,19 +8247,19 @@
           "identifier": "UNIT_TRIKE_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:277",
+          "ref": "src/utils/cIniGameRessouces.cpp:279",
           "identifier": "sUnitInfo[TRIKE].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:278",
+          "ref": "src/utils/cIniGameRessouces.cpp:280",
           "identifier": "sUnitInfo[TRIKE].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:279",
+          "ref": "src/utils/cIniGameRessouces.cpp:281",
           "identifier": "sUnitInfo[TRIKE].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:280",
+          "ref": "src/utils/cIniGameRessouces.cpp:282",
           "identifier": "sUnitInfo[TRIKE].bmp_height"
         },
         {
@@ -8379,7 +8379,7 @@
           "identifier": "UNIT_TRIKE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -8425,27 +8425,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:486",
+            "ref": "src/utils/cIniGameRessouces.cpp:488",
             "identifier": "sUnitInfo[UNIT_FREMEN_THREE].infantry = true;"
           }
         ]
@@ -8495,7 +8495,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -8510,15 +8510,15 @@
           "identifier": "UNIT_TRIPLEFREMEN"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:477",
+          "ref": "src/utils/cIniGameRessouces.cpp:479",
           "identifier": "sUnitInfo[UNIT_FREMEN_THREE].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:478",
+          "ref": "src/utils/cIniGameRessouces.cpp:480",
           "identifier": "sUnitInfo[UNIT_FREMEN_THREE].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:479",
+          "ref": "src/utils/cIniGameRessouces.cpp:481",
           "identifier": "sUnitInfo[UNIT_FREMEN_THREE].bmp_height"
         },
         {
@@ -8526,31 +8526,31 @@
           "identifier": "#define UNIT_FREMEN_THREE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:486",
+          "ref": "src/utils/cIniGameRessouces.cpp:488",
           "identifier": "sUnitInfo[UNIT_FREMEN_THREE].infantry = true;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -8692,27 +8692,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:413",
+            "ref": "src/utils/cIniGameRessouces.cpp:415",
             "identifier": "sUnitInfo[TROOPER].infantry = true;"
           }
         ]
@@ -8762,7 +8762,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -8777,15 +8777,15 @@
           "identifier": "UNIT_TROOPER"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:407",
+          "ref": "src/utils/cIniGameRessouces.cpp:409",
           "identifier": "sUnitInfo[TROOPER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:408",
+          "ref": "src/utils/cIniGameRessouces.cpp:410",
           "identifier": "sUnitInfo[TROOPER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:409",
+          "ref": "src/utils/cIniGameRessouces.cpp:411",
           "identifier": "sUnitInfo[TROOPER].bmp_height"
         },
         {
@@ -8793,31 +8793,31 @@
           "identifier": "#define TROOPER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:413",
+          "ref": "src/utils/cIniGameRessouces.cpp:415",
           "identifier": "sUnitInfo[TROOPER].infantry = true;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -8959,27 +8959,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:440",
+            "ref": "src/utils/cIniGameRessouces.cpp:442",
             "identifier": "sUnitInfo[TROOPERS].infantry = true;"
           }
         ]
@@ -9029,7 +9029,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -9044,15 +9044,15 @@
           "identifier": "UNIT_TROOPERS"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:431",
+          "ref": "src/utils/cIniGameRessouces.cpp:433",
           "identifier": "sUnitInfo[TROOPERS].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:432",
+          "ref": "src/utils/cIniGameRessouces.cpp:434",
           "identifier": "sUnitInfo[TROOPERS].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:433",
+          "ref": "src/utils/cIniGameRessouces.cpp:435",
           "identifier": "sUnitInfo[TROOPERS].bmp_height"
         },
         {
@@ -9060,31 +9060,31 @@
           "identifier": "#define TROOPERS"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:440",
+          "ref": "src/utils/cIniGameRessouces.cpp:442",
           "identifier": "sUnitInfo[TROOPERS].infantry = true;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -9223,19 +9223,19 @@
         "value": "При сборе используются строки 1–3; код возвращает кадр к 1 и сбрасывает его в 0 вне цикла сбора.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3872",
+            "ref": "src/gameobjects/units/cUnit.cpp:3876",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3874",
+            "ref": "src/gameobjects/units/cUnit.cpp:3878",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3875",
+            "ref": "src/gameobjects/units/cUnit.cpp:3879",
             "identifier": "iFrame = 1;"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3857",
+            "ref": "src/gameobjects/units/cUnit.cpp:3861",
             "identifier": "iFrame = 0;"
           }
         ]
@@ -9291,7 +9291,7 @@
           "row": 0
         },
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -9306,19 +9306,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:143",
+          "ref": "src/utils/cIniGameRessouces.cpp:145",
           "identifier": "sUnitInfo[HARVESTER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:144",
+          "ref": "src/utils/cIniGameRessouces.cpp:146",
           "identifier": "sUnitInfo[HARVESTER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:145",
+          "ref": "src/utils/cIniGameRessouces.cpp:147",
           "identifier": "sUnitInfo[HARVESTER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:147",
+          "ref": "src/utils/cIniGameRessouces.cpp:149",
           "identifier": "sUnitInfo[HARVESTER].bmp_height"
         },
         {
@@ -9326,19 +9326,19 @@
           "identifier": "#define HARVESTER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3872",
+          "ref": "src/gameobjects/units/cUnit.cpp:3876",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3874",
+          "ref": "src/gameobjects/units/cUnit.cpp:3878",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3875",
+          "ref": "src/gameobjects/units/cUnit.cpp:3879",
           "identifier": "iFrame = 1;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3857",
+          "ref": "src/gameobjects/units/cUnit.cpp:3861",
           "identifier": "iFrame = 0;"
         },
         {
@@ -9442,7 +9442,7 @@
           "identifier": "getUnitBitmap(HARVESTER)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -9489,27 +9489,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:390",
+            "ref": "src/utils/cIniGameRessouces.cpp:392",
             "identifier": "sUnitInfo[INFANTRY].infantry = true;"
           }
         ]
@@ -9559,7 +9559,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -9574,15 +9574,15 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:384",
+          "ref": "src/utils/cIniGameRessouces.cpp:386",
           "identifier": "sUnitInfo[INFANTRY].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:385",
+          "ref": "src/utils/cIniGameRessouces.cpp:387",
           "identifier": "sUnitInfo[INFANTRY].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:386",
+          "ref": "src/utils/cIniGameRessouces.cpp:388",
           "identifier": "sUnitInfo[INFANTRY].bmp_height"
         },
         {
@@ -9590,27 +9590,27 @@
           "identifier": "#define INFANTRY"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:390",
+          "ref": "src/utils/cIniGameRessouces.cpp:392",
           "identifier": "sUnitInfo[INFANTRY].infantry = true;"
         },
         {
@@ -9710,7 +9710,7 @@
           "identifier": "UNIT_SOLDIERS"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -9757,27 +9757,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:367",
+            "ref": "src/utils/cIniGameRessouces.cpp:369",
             "identifier": "sUnitInfo[SOLDIER].infantry = true;"
           }
         ]
@@ -9827,7 +9827,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -9842,15 +9842,15 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:362",
+          "ref": "src/utils/cIniGameRessouces.cpp:364",
           "identifier": "sUnitInfo[SOLDIER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:363",
+          "ref": "src/utils/cIniGameRessouces.cpp:365",
           "identifier": "sUnitInfo[SOLDIER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:364",
+          "ref": "src/utils/cIniGameRessouces.cpp:366",
           "identifier": "sUnitInfo[SOLDIER].bmp_height"
         },
         {
@@ -9858,27 +9858,27 @@
           "identifier": "#define SOLDIER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:367",
+          "ref": "src/utils/cIniGameRessouces.cpp:369",
           "identifier": "sUnitInfo[SOLDIER].infantry = true;"
         },
         {
@@ -9978,7 +9978,7 @@
           "identifier": "UNIT_SOLDIER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -10079,7 +10079,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -10094,23 +10094,23 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:160",
+          "ref": "src/utils/cIniGameRessouces.cpp:162",
           "identifier": "sUnitInfo[TANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:161",
+          "ref": "src/utils/cIniGameRessouces.cpp:163",
           "identifier": "sUnitInfo[TANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:162",
+          "ref": "src/utils/cIniGameRessouces.cpp:164",
           "identifier": "sUnitInfo[TANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:163",
+          "ref": "src/utils/cIniGameRessouces.cpp:165",
           "identifier": "sUnitInfo[TANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:165",
+          "ref": "src/utils/cIniGameRessouces.cpp:167",
           "identifier": "sUnitInfo[TANK].bmp_height"
         },
         {
@@ -10222,7 +10222,7 @@
           "identifier": "UNIT_TANKBASE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -10323,7 +10323,7 @@
       "facing_source": "iHeadFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:884",
+          "source": "src/gameobjects/units/cUnit.cpp:888",
           "identifier": "getUnitTopBitmap(iType)",
           "column": "convertAngleToDrawIndex(iHeadFacing)",
           "row": "iFrame"
@@ -10338,23 +10338,23 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:160",
+          "ref": "src/utils/cIniGameRessouces.cpp:162",
           "identifier": "sUnitInfo[TANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:161",
+          "ref": "src/utils/cIniGameRessouces.cpp:163",
           "identifier": "sUnitInfo[TANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:162",
+          "ref": "src/utils/cIniGameRessouces.cpp:164",
           "identifier": "sUnitInfo[TANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:163",
+          "ref": "src/utils/cIniGameRessouces.cpp:165",
           "identifier": "sUnitInfo[TANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:165",
+          "ref": "src/utils/cIniGameRessouces.cpp:167",
           "identifier": "sUnitInfo[TANK].bmp_height"
         },
         {
@@ -10466,7 +10466,7 @@
           "identifier": "UNIT_TANKTOP"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:884",
+          "ref": "src/gameobjects/units/cUnit.cpp:888",
           "identifier": "getUnitTopBitmap(iType)"
         },
         {
@@ -10567,7 +10567,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -10582,19 +10582,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:235",
+          "ref": "src/utils/cIniGameRessouces.cpp:237",
           "identifier": "sUnitInfo[LAUNCHER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:236",
+          "ref": "src/utils/cIniGameRessouces.cpp:238",
           "identifier": "sUnitInfo[LAUNCHER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:237",
+          "ref": "src/utils/cIniGameRessouces.cpp:239",
           "identifier": "sUnitInfo[LAUNCHER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:238",
+          "ref": "src/utils/cIniGameRessouces.cpp:240",
           "identifier": "sUnitInfo[LAUNCHER].bmp_height"
         },
         {
@@ -10706,7 +10706,7 @@
           "identifier": "UNIT_LAUNCHER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -10807,7 +10807,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -10822,19 +10822,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:124",
+          "ref": "src/utils/cIniGameRessouces.cpp:126",
           "identifier": "sUnitInfo[DEVASTATOR].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:125",
+          "ref": "src/utils/cIniGameRessouces.cpp:127",
           "identifier": "sUnitInfo[DEVASTATOR].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:126",
+          "ref": "src/utils/cIniGameRessouces.cpp:128",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:128",
+          "ref": "src/utils/cIniGameRessouces.cpp:130",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_height"
         },
         {
@@ -10946,7 +10946,7 @@
           "identifier": "UNIT_DEVASTATOR"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -11047,7 +11047,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -11062,31 +11062,31 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:180",
+          "ref": "src/utils/cIniGameRessouces.cpp:182",
           "identifier": "sUnitInfo[SIEGETANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:181",
+          "ref": "src/utils/cIniGameRessouces.cpp:183",
           "identifier": "sUnitInfo[SIEGETANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:182",
+          "ref": "src/utils/cIniGameRessouces.cpp:184",
           "identifier": "sUnitInfo[SIEGETANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:183",
+          "ref": "src/utils/cIniGameRessouces.cpp:185",
           "identifier": "sUnitInfo[SIEGETANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:185",
+          "ref": "src/utils/cIniGameRessouces.cpp:187",
           "identifier": "sUnitInfo[SIEGETANK].bmp_height"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:186",
+          "ref": "src/utils/cIniGameRessouces.cpp:188",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:187",
+          "ref": "src/utils/cIniGameRessouces.cpp:189",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_height"
         },
         {
@@ -11198,7 +11198,7 @@
           "identifier": "UNIT_SIEGEBASE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -11299,7 +11299,7 @@
       "facing_source": "iHeadFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:884",
+          "source": "src/gameobjects/units/cUnit.cpp:888",
           "identifier": "getUnitTopBitmap(iType)",
           "column": "convertAngleToDrawIndex(iHeadFacing)",
           "row": "iFrame"
@@ -11314,31 +11314,31 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:180",
+          "ref": "src/utils/cIniGameRessouces.cpp:182",
           "identifier": "sUnitInfo[SIEGETANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:181",
+          "ref": "src/utils/cIniGameRessouces.cpp:183",
           "identifier": "sUnitInfo[SIEGETANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:182",
+          "ref": "src/utils/cIniGameRessouces.cpp:184",
           "identifier": "sUnitInfo[SIEGETANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:183",
+          "ref": "src/utils/cIniGameRessouces.cpp:185",
           "identifier": "sUnitInfo[SIEGETANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:185",
+          "ref": "src/utils/cIniGameRessouces.cpp:187",
           "identifier": "sUnitInfo[SIEGETANK].bmp_height"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:186",
+          "ref": "src/utils/cIniGameRessouces.cpp:188",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:187",
+          "ref": "src/utils/cIniGameRessouces.cpp:189",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_height"
         },
         {
@@ -11450,7 +11450,7 @@
           "identifier": "UNIT_SIEGETOP"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:884",
+          "ref": "src/gameobjects/units/cUnit.cpp:888",
           "identifier": "getUnitTopBitmap(iType)"
         },
         {
@@ -11497,11 +11497,11 @@
         "value": "Кадры полёта циклически проходят строки 0–3.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1354",
+            "ref": "src/gameobjects/units/cUnit.cpp:1358",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1356",
+            "ref": "src/gameobjects/units/cUnit.cpp:1360",
             "identifier": "if (iFrame > 3)"
           }
         ]
@@ -11551,7 +11551,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -11566,19 +11566,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:105",
+          "ref": "src/utils/cIniGameRessouces.cpp:107",
           "identifier": "sUnitInfo[ORNITHOPTER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:106",
+          "ref": "src/utils/cIniGameRessouces.cpp:108",
           "identifier": "sUnitInfo[ORNITHOPTER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:107",
+          "ref": "src/utils/cIniGameRessouces.cpp:109",
           "identifier": "sUnitInfo[ORNITHOPTER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:108",
+          "ref": "src/utils/cIniGameRessouces.cpp:110",
           "identifier": "sUnitInfo[ORNITHOPTER].bmp_height"
         },
         {
@@ -11586,11 +11586,11 @@
           "identifier": "#define ORNITHOPTER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1354",
+          "ref": "src/gameobjects/units/cUnit.cpp:1358",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1356",
+          "ref": "src/gameobjects/units/cUnit.cpp:1360",
           "identifier": "if (iFrame > 3)"
         },
         {
@@ -11690,7 +11690,7 @@
           "identifier": "UNIT_ORNITHOPTER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -11737,27 +11737,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:514",
+            "ref": "src/utils/cIniGameRessouces.cpp:516",
             "identifier": "sUnitInfo[SABOTEUR].infantry = true;"
           }
         ]
@@ -11807,7 +11807,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -11822,15 +11822,15 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:497",
+          "ref": "src/utils/cIniGameRessouces.cpp:499",
           "identifier": "sUnitInfo[SABOTEUR].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:499",
+          "ref": "src/utils/cIniGameRessouces.cpp:501",
           "identifier": "sUnitInfo[SABOTEUR].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:500",
+          "ref": "src/utils/cIniGameRessouces.cpp:502",
           "identifier": "sUnitInfo[SABOTEUR].bmp_height"
         },
         {
@@ -11838,27 +11838,27 @@
           "identifier": "#define SABOTEUR"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:514",
+          "ref": "src/utils/cIniGameRessouces.cpp:516",
           "identifier": "sUnitInfo[SABOTEUR].infantry = true;"
         },
         {
@@ -11958,7 +11958,7 @@
           "identifier": "UNIT_SABOTEUR"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -12005,27 +12005,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:413",
+            "ref": "src/utils/cIniGameRessouces.cpp:415",
             "identifier": "sUnitInfo[TROOPER].infantry = true;"
           }
         ]
@@ -12075,7 +12075,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -12090,15 +12090,15 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:407",
+          "ref": "src/utils/cIniGameRessouces.cpp:409",
           "identifier": "sUnitInfo[TROOPER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:408",
+          "ref": "src/utils/cIniGameRessouces.cpp:410",
           "identifier": "sUnitInfo[TROOPER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:409",
+          "ref": "src/utils/cIniGameRessouces.cpp:411",
           "identifier": "sUnitInfo[TROOPER].bmp_height"
         },
         {
@@ -12106,27 +12106,27 @@
           "identifier": "#define TROOPER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:413",
+          "ref": "src/utils/cIniGameRessouces.cpp:415",
           "identifier": "sUnitInfo[TROOPER].infantry = true;"
         },
         {
@@ -12226,7 +12226,7 @@
           "identifier": "UNIT_TROOPER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -12327,7 +12327,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -12342,19 +12342,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:277",
+          "ref": "src/utils/cIniGameRessouces.cpp:279",
           "identifier": "sUnitInfo[TRIKE].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:278",
+          "ref": "src/utils/cIniGameRessouces.cpp:280",
           "identifier": "sUnitInfo[TRIKE].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:279",
+          "ref": "src/utils/cIniGameRessouces.cpp:281",
           "identifier": "sUnitInfo[TRIKE].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:280",
+          "ref": "src/utils/cIniGameRessouces.cpp:282",
           "identifier": "sUnitInfo[TRIKE].bmp_height"
         },
         {
@@ -12466,7 +12466,7 @@
           "identifier": "UNIT_TRIKE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -12567,7 +12567,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -12582,19 +12582,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:202",
+          "ref": "src/utils/cIniGameRessouces.cpp:204",
           "identifier": "sUnitInfo[MCV].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:203",
+          "ref": "src/utils/cIniGameRessouces.cpp:205",
           "identifier": "sUnitInfo[MCV].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:204",
+          "ref": "src/utils/cIniGameRessouces.cpp:206",
           "identifier": "sUnitInfo[MCV].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:206",
+          "ref": "src/utils/cIniGameRessouces.cpp:208",
           "identifier": "sUnitInfo[MCV].bmp_height"
         },
         {
@@ -12706,7 +12706,7 @@
           "identifier": "UNIT_MCV"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -12753,11 +12753,11 @@
         "value": "Строка 0 используется без груза, строка 1 — при переноске или передаче груза.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1340",
+            "ref": "src/gameobjects/units/cUnit.cpp:1344",
             "identifier": "iFrame = 1;"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:1347",
+            "ref": "src/gameobjects/units/cUnit.cpp:1351",
             "identifier": "iFrame = 0;"
           }
         ]
@@ -12807,7 +12807,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -12822,19 +12822,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:90",
+          "ref": "src/utils/cIniGameRessouces.cpp:92",
           "identifier": "sUnitInfo[CARRYALL].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:91",
+          "ref": "src/utils/cIniGameRessouces.cpp:93",
           "identifier": "sUnitInfo[CARRYALL].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:92",
+          "ref": "src/utils/cIniGameRessouces.cpp:94",
           "identifier": "sUnitInfo[CARRYALL].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:93",
+          "ref": "src/utils/cIniGameRessouces.cpp:95",
           "identifier": "sUnitInfo[CARRYALL].bmp_height"
         },
         {
@@ -12842,11 +12842,11 @@
           "identifier": "#define CARRYALL"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1340",
+          "ref": "src/gameobjects/units/cUnit.cpp:1344",
           "identifier": "iFrame = 1;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1347",
+          "ref": "src/gameobjects/units/cUnit.cpp:1351",
           "identifier": "iFrame = 0;"
         },
         {
@@ -12946,7 +12946,7 @@
           "identifier": "UNIT_CARRYALL"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -12993,27 +12993,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:465",
+            "ref": "src/utils/cIniGameRessouces.cpp:467",
             "identifier": "sUnitInfo[UNIT_FREMEN_ONE].infantry = true;"
           }
         ]
@@ -13063,7 +13063,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -13078,15 +13078,15 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:456",
+          "ref": "src/utils/cIniGameRessouces.cpp:458",
           "identifier": "sUnitInfo[UNIT_FREMEN_ONE].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:457",
+          "ref": "src/utils/cIniGameRessouces.cpp:459",
           "identifier": "sUnitInfo[UNIT_FREMEN_ONE].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:458",
+          "ref": "src/utils/cIniGameRessouces.cpp:460",
           "identifier": "sUnitInfo[UNIT_FREMEN_ONE].bmp_height"
         },
         {
@@ -13094,27 +13094,27 @@
           "identifier": "#define UNIT_FREMEN_ONE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:465",
+          "ref": "src/utils/cIniGameRessouces.cpp:467",
           "identifier": "sUnitInfo[UNIT_FREMEN_ONE].infantry = true;"
         },
         {
@@ -13214,7 +13214,7 @@
           "identifier": "UNIT_SINGLEFREMEN"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -13261,27 +13261,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:486",
+            "ref": "src/utils/cIniGameRessouces.cpp:488",
             "identifier": "sUnitInfo[UNIT_FREMEN_THREE].infantry = true;"
           }
         ]
@@ -13331,7 +13331,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -13346,15 +13346,15 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:477",
+          "ref": "src/utils/cIniGameRessouces.cpp:479",
           "identifier": "sUnitInfo[UNIT_FREMEN_THREE].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:478",
+          "ref": "src/utils/cIniGameRessouces.cpp:480",
           "identifier": "sUnitInfo[UNIT_FREMEN_THREE].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:479",
+          "ref": "src/utils/cIniGameRessouces.cpp:481",
           "identifier": "sUnitInfo[UNIT_FREMEN_THREE].bmp_height"
         },
         {
@@ -13362,27 +13362,27 @@
           "identifier": "#define UNIT_FREMEN_THREE"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:486",
+          "ref": "src/utils/cIniGameRessouces.cpp:488",
           "identifier": "sUnitInfo[UNIT_FREMEN_THREE].infantry = true;"
         },
         {
@@ -13482,7 +13482,7 @@
           "identifier": "UNIT_TRIPLEFREMEN"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -13529,27 +13529,27 @@
         "value": "Строки соответствуют циклу кадров пехоты 0–3 при движении.",
         "sources": [
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3029",
+            "ref": "src/gameobjects/units/cUnit.cpp:3033",
             "identifier": "if (isInfantryUnit())"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3032",
+            "ref": "src/gameobjects/units/cUnit.cpp:3036",
             "identifier": "if (TIMER_frame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3034",
+            "ref": "src/gameobjects/units/cUnit.cpp:3038",
             "identifier": "iFrame++"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3035",
+            "ref": "src/gameobjects/units/cUnit.cpp:3039",
             "identifier": "if (iFrame > 3)"
           },
           {
-            "ref": "src/gameobjects/units/cUnit.cpp:3036",
+            "ref": "src/gameobjects/units/cUnit.cpp:3040",
             "identifier": "iFrame = 0;"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:440",
+            "ref": "src/utils/cIniGameRessouces.cpp:442",
             "identifier": "sUnitInfo[TROOPERS].infantry = true;"
           }
         ]
@@ -13599,7 +13599,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -13614,15 +13614,15 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:431",
+          "ref": "src/utils/cIniGameRessouces.cpp:433",
           "identifier": "sUnitInfo[TROOPERS].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:432",
+          "ref": "src/utils/cIniGameRessouces.cpp:434",
           "identifier": "sUnitInfo[TROOPERS].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:433",
+          "ref": "src/utils/cIniGameRessouces.cpp:435",
           "identifier": "sUnitInfo[TROOPERS].bmp_height"
         },
         {
@@ -13630,27 +13630,27 @@
           "identifier": "#define TROOPERS"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3029",
+          "ref": "src/gameobjects/units/cUnit.cpp:3033",
           "identifier": "if (isInfantryUnit())"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3032",
+          "ref": "src/gameobjects/units/cUnit.cpp:3036",
           "identifier": "if (TIMER_frame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3034",
+          "ref": "src/gameobjects/units/cUnit.cpp:3038",
           "identifier": "iFrame++"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3035",
+          "ref": "src/gameobjects/units/cUnit.cpp:3039",
           "identifier": "if (iFrame > 3)"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:3036",
+          "ref": "src/gameobjects/units/cUnit.cpp:3040",
           "identifier": "iFrame = 0;"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:440",
+          "ref": "src/utils/cIniGameRessouces.cpp:442",
           "identifier": "sUnitInfo[TROOPERS].infantry = true;"
         },
         {
@@ -13750,7 +13750,7 @@
           "identifier": "UNIT_TROOPERS"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -13851,7 +13851,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -13866,19 +13866,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:296",
+          "ref": "src/utils/cIniGameRessouces.cpp:298",
           "identifier": "sUnitInfo[RAIDER].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:297",
+          "ref": "src/utils/cIniGameRessouces.cpp:299",
           "identifier": "sUnitInfo[RAIDER].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:298",
+          "ref": "src/utils/cIniGameRessouces.cpp:300",
           "identifier": "sUnitInfo[RAIDER].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:299",
+          "ref": "src/utils/cIniGameRessouces.cpp:301",
           "identifier": "sUnitInfo[RAIDER].bmp_height"
         },
         {
@@ -13990,7 +13990,7 @@
           "identifier": "UNIT_RAIDER"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -14091,7 +14091,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -14106,15 +14106,15 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:218",
+          "ref": "src/utils/cIniGameRessouces.cpp:220",
           "identifier": "sUnitInfo[DEVIATOR].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:219",
+          "ref": "src/utils/cIniGameRessouces.cpp:221",
           "identifier": "sUnitInfo[DEVIATOR].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:220",
+          "ref": "src/utils/cIniGameRessouces.cpp:222",
           "identifier": "sUnitInfo[DEVIATOR].bmp_height"
         },
         {
@@ -14226,7 +14226,7 @@
           "identifier": "UNIT_DEVIATOR"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -14327,7 +14327,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -14342,19 +14342,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:342",
+          "ref": "src/utils/cIniGameRessouces.cpp:344",
           "identifier": "sUnitInfo[SONICTANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:343",
+          "ref": "src/utils/cIniGameRessouces.cpp:345",
           "identifier": "sUnitInfo[SONICTANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:344",
+          "ref": "src/utils/cIniGameRessouces.cpp:346",
           "identifier": "sUnitInfo[SONICTANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:345",
+          "ref": "src/utils/cIniGameRessouces.cpp:347",
           "identifier": "sUnitInfo[SONICTANK].bmp_height"
         },
         {
@@ -14466,7 +14466,7 @@
           "identifier": "UNIT_SONICTANK"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -14567,7 +14567,7 @@
       "facing_source": "iBodyFacing",
       "draw_sites": [
         {
-          "source": "src/gameobjects/units/cUnit.cpp:847",
+          "source": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)",
           "column": "convertAngleToDrawIndex(iBodyFacing)",
           "row": "iFrame"
@@ -14582,19 +14582,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:256",
+          "ref": "src/utils/cIniGameRessouces.cpp:258",
           "identifier": "sUnitInfo[QUAD].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:257",
+          "ref": "src/utils/cIniGameRessouces.cpp:259",
           "identifier": "sUnitInfo[QUAD].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:258",
+          "ref": "src/utils/cIniGameRessouces.cpp:260",
           "identifier": "sUnitInfo[QUAD].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:259",
+          "ref": "src/utils/cIniGameRessouces.cpp:261",
           "identifier": "sUnitInfo[QUAD].bmp_height"
         },
         {
@@ -14706,7 +14706,7 @@
           "identifier": "UNIT_QUAD"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -14759,19 +14759,19 @@
           "identifier": "UNIT_CARRYALL_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:90",
+          "ref": "src/utils/cIniGameRessouces.cpp:92",
           "identifier": "sUnitInfo[CARRYALL].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:91",
+          "ref": "src/utils/cIniGameRessouces.cpp:93",
           "identifier": "sUnitInfo[CARRYALL].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:92",
+          "ref": "src/utils/cIniGameRessouces.cpp:94",
           "identifier": "sUnitInfo[CARRYALL].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:93",
+          "ref": "src/utils/cIniGameRessouces.cpp:95",
           "identifier": "sUnitInfo[CARRYALL].bmp_height"
         },
         {
@@ -14779,11 +14779,11 @@
           "identifier": "#define CARRYALL"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1340",
+          "ref": "src/gameobjects/units/cUnit.cpp:1344",
           "identifier": "iFrame = 1;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:1347",
+          "ref": "src/gameobjects/units/cUnit.cpp:1351",
           "identifier": "iFrame = 0;"
         },
         {
@@ -14922,19 +14922,19 @@
           "identifier": "UNIT_DEVASTATOR"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:124",
+          "ref": "src/utils/cIniGameRessouces.cpp:126",
           "identifier": "sUnitInfo[DEVASTATOR].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:125",
+          "ref": "src/utils/cIniGameRessouces.cpp:127",
           "identifier": "sUnitInfo[DEVASTATOR].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:126",
+          "ref": "src/utils/cIniGameRessouces.cpp:128",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:128",
+          "ref": "src/utils/cIniGameRessouces.cpp:130",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_height"
         },
         {
@@ -14950,7 +14950,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -15093,19 +15093,19 @@
           "identifier": "UNIT_DEVASTATOR_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:124",
+          "ref": "src/utils/cIniGameRessouces.cpp:126",
           "identifier": "sUnitInfo[DEVASTATOR].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:125",
+          "ref": "src/utils/cIniGameRessouces.cpp:127",
           "identifier": "sUnitInfo[DEVASTATOR].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:126",
+          "ref": "src/utils/cIniGameRessouces.cpp:128",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:128",
+          "ref": "src/utils/cIniGameRessouces.cpp:130",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_height"
         },
         {
@@ -15256,31 +15256,31 @@
           "identifier": "UNIT_SIEGEBASE"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:180",
+          "ref": "src/utils/cIniGameRessouces.cpp:182",
           "identifier": "sUnitInfo[SIEGETANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:181",
+          "ref": "src/utils/cIniGameRessouces.cpp:183",
           "identifier": "sUnitInfo[SIEGETANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:182",
+          "ref": "src/utils/cIniGameRessouces.cpp:184",
           "identifier": "sUnitInfo[SIEGETANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:183",
+          "ref": "src/utils/cIniGameRessouces.cpp:185",
           "identifier": "sUnitInfo[SIEGETANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:185",
+          "ref": "src/utils/cIniGameRessouces.cpp:187",
           "identifier": "sUnitInfo[SIEGETANK].bmp_height"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:186",
+          "ref": "src/utils/cIniGameRessouces.cpp:188",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:187",
+          "ref": "src/utils/cIniGameRessouces.cpp:189",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_height"
         },
         {
@@ -15296,7 +15296,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:847",
+          "ref": "src/gameobjects/units/cUnit.cpp:851",
           "identifier": "getUnitBitmap(iType)"
         },
         {
@@ -15439,31 +15439,31 @@
           "identifier": "UNIT_SIEGEBASE_SHADOW"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:180",
+          "ref": "src/utils/cIniGameRessouces.cpp:182",
           "identifier": "sUnitInfo[SIEGETANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:181",
+          "ref": "src/utils/cIniGameRessouces.cpp:183",
           "identifier": "sUnitInfo[SIEGETANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:182",
+          "ref": "src/utils/cIniGameRessouces.cpp:184",
           "identifier": "sUnitInfo[SIEGETANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:183",
+          "ref": "src/utils/cIniGameRessouces.cpp:185",
           "identifier": "sUnitInfo[SIEGETANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:185",
+          "ref": "src/utils/cIniGameRessouces.cpp:187",
           "identifier": "sUnitInfo[SIEGETANK].bmp_height"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:186",
+          "ref": "src/utils/cIniGameRessouces.cpp:188",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:187",
+          "ref": "src/utils/cIniGameRessouces.cpp:189",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_height"
         },
         {
@@ -15614,31 +15614,31 @@
           "identifier": "UNIT_SIEGETOP"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:180",
+          "ref": "src/utils/cIniGameRessouces.cpp:182",
           "identifier": "sUnitInfo[SIEGETANK].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:181",
+          "ref": "src/utils/cIniGameRessouces.cpp:183",
           "identifier": "sUnitInfo[SIEGETANK].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:182",
+          "ref": "src/utils/cIniGameRessouces.cpp:184",
           "identifier": "sUnitInfo[SIEGETANK].top"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:183",
+          "ref": "src/utils/cIniGameRessouces.cpp:185",
           "identifier": "sUnitInfo[SIEGETANK].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:185",
+          "ref": "src/utils/cIniGameRessouces.cpp:187",
           "identifier": "sUnitInfo[SIEGETANK].bmp_height"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:186",
+          "ref": "src/utils/cIniGameRessouces.cpp:188",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:187",
+          "ref": "src/utils/cIniGameRessouces.cpp:189",
           "identifier": "sUnitInfo[SIEGETANK].hd_frame_height"
         },
         {
@@ -15654,7 +15654,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:884",
+          "ref": "src/gameobjects/units/cUnit.cpp:888",
           "identifier": "getUnitTopBitmap(iType)"
         },
         {
@@ -15791,19 +15791,19 @@
           "identifier": "dataPack->getIndexFromName(\"HM_\" + selectedName)"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:124",
+          "ref": "src/utils/cIniGameRessouces.cpp:126",
           "identifier": "sUnitInfo[DEVASTATOR].bmp"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:125",
+          "ref": "src/utils/cIniGameRessouces.cpp:127",
           "identifier": "sUnitInfo[DEVASTATOR].shadow"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:126",
+          "ref": "src/utils/cIniGameRessouces.cpp:128",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_width"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:128",
+          "ref": "src/utils/cIniGameRessouces.cpp:130",
           "identifier": "sUnitInfo[DEVASTATOR].bmp_height"
         },
         {
@@ -16058,11 +16058,11 @@
           "identifier": "srcRect.h *= src->density;"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:797",
+          "ref": "src/gameobjects/units/cUnit.cpp:801",
           "identifier": "resolveUnitSpriteFrame("
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:804",
+          "ref": "src/gameobjects/units/cUnit.cpp:808",
           "identifier": "unitSpriteSourceRectangle("
         },
         {
@@ -16086,16 +16086,28 @@
       },
       "sources": [
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:815",
+          "ref": "src/gameobjects/units/cUnit.cpp:819",
           "identifier": "renderStrechSpriteF("
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:864",
+          "ref": "src/gameobjects/units/cUnit.cpp:841",
+          "identifier": "renderStrechSprite("
+        },
+        {
+          "ref": "src/gameobjects/units/cUnit.cpp:868",
           "identifier": "renderStrechSpriteF("
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:901",
+          "ref": "src/gameobjects/units/cUnit.cpp:875",
+          "identifier": "renderStrechSprite("
+        },
+        {
+          "ref": "src/gameobjects/units/cUnit.cpp:905",
           "identifier": "renderStrechSpriteF("
+        },
+        {
+          "ref": "src/gameobjects/units/cUnit.cpp:912",
+          "identifier": "renderStrechSprite("
         }
       ]
     },
@@ -16126,7 +16138,7 @@
           "identifier": "static_cast<float>(visual.y) + static_cast<float>(visual.height - destinationHeight) / 2.0F"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:797",
+          "ref": "src/gameobjects/units/cUnit.cpp:801",
           "identifier": "resolveUnitSpriteFrame("
         }
       ]
@@ -16143,7 +16155,7 @@
           "identifier": "animationFrame * frame.height"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:146",
+          "ref": "src/utils/cIniGameRessouces.cpp:148",
           "identifier": "sUnitInfo[HARVESTER].bmp_startpixel = 24;"
         }
       ]
@@ -16296,7 +16308,7 @@
           "identifier": "constexpr int ShadowTrans"
         },
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:815",
+          "ref": "src/gameobjects/units/cUnit.cpp:819",
           "identifier": "renderStrechSpriteF("
         }
       ]
@@ -16308,8 +16320,8 @@
       },
       "sources": [
         {
-          "ref": "src/gameobjects/units/cUnit.cpp:813",
-          "identifier": "destination.y += 24.0F;"
+          "ref": "src/gameobjects/units/cUnit.cpp:836",
+          "identifier": "visualY + 24,"
         }
       ]
     },
@@ -16509,7 +16521,7 @@
           "identifier": "target * pixelLuminance * correction,"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:91",
+          "ref": "src/utils/cIniGameRessouces.cpp:93",
           "identifier": "gfxdata->getTexture(UNIT_CARRYALL_SHADOW)"
         },
         {
@@ -16525,7 +16537,7 @@
           "identifier": "bmp_unit_top[i] = createHouseTexture(unitType.top);"
         },
         {
-          "ref": "src/utils/cIniGameRessouces.cpp:1277",
+          "ref": "src/utils/cIniGameRessouces.cpp:1279",
           "identifier": "gfxdata->getTexture(BUILD_WINDTRAP_SHADOW)"
         },
         {
@@ -16621,11 +16633,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1276",
+            "ref": "src/utils/cIniGameRessouces.cpp:1278",
             "identifier": "sStructureInfo[WINDTRAP].bmp = gfxdata->getSurface(BUILD_WINDTRAP);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1277",
+            "ref": "src/utils/cIniGameRessouces.cpp:1279",
             "identifier": "sStructureInfo[WINDTRAP].shadow = gfxdata->getTexture(BUILD_WINDTRAP_SHADOW);"
           },
           {
@@ -16637,11 +16649,11 @@
             "identifier": "#define BUILD_WINDTRAP_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1224",
+            "ref": "src/utils/cIniGameRessouces.cpp:1226",
             "identifier": "structureInfo.bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1225",
+            "ref": "src/utils/cIniGameRessouces.cpp:1227",
             "identifier": "structureInfo.bmp_height ="
           },
           {
@@ -16706,11 +16718,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1293",
+            "ref": "src/utils/cIniGameRessouces.cpp:1295",
             "identifier": "sStructureInfo[HEAVYFACTORY].bmp = gfxdata->getSurface(BUILD_HEAVYFACTORY);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1294",
+            "ref": "src/utils/cIniGameRessouces.cpp:1296",
             "identifier": "sStructureInfo[HEAVYFACTORY].shadow = gfxdata->getTexture(BUILD_HEAVYFACTORY_SHADOW);"
           },
           {
@@ -16722,11 +16734,11 @@
             "identifier": "#define BUILD_HEAVYFACTORY_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1291",
+            "ref": "src/utils/cIniGameRessouces.cpp:1293",
             "identifier": "sStructureInfo[HEAVYFACTORY].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1292",
+            "ref": "src/utils/cIniGameRessouces.cpp:1294",
             "identifier": "sStructureInfo[HEAVYFACTORY].bmp_height ="
           },
           {
@@ -16791,11 +16803,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1310",
+            "ref": "src/utils/cIniGameRessouces.cpp:1312",
             "identifier": "sStructureInfo[HIGHTECH].bmp = gfxdata->getSurface(BUILD_HIGHTECH);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1311",
+            "ref": "src/utils/cIniGameRessouces.cpp:1313",
             "identifier": "sStructureInfo[HIGHTECH].shadow = gfxdata->getTexture(BUILD_HIGHTECH_SHADOW);"
           },
           {
@@ -16807,11 +16819,11 @@
             "identifier": "#define BUILD_HIGHTECH_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1308",
+            "ref": "src/utils/cIniGameRessouces.cpp:1310",
             "identifier": "sStructureInfo[HIGHTECH].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1309",
+            "ref": "src/utils/cIniGameRessouces.cpp:1311",
             "identifier": "sStructureInfo[HIGHTECH].bmp_height ="
           },
           {
@@ -16876,11 +16888,11 @@
         "outlier": true,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1326",
+            "ref": "src/utils/cIniGameRessouces.cpp:1328",
             "identifier": "sStructureInfo[REPAIR].bmp = gfxdata->getSurface(BUILD_REPAIR);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1327",
+            "ref": "src/utils/cIniGameRessouces.cpp:1329",
             "identifier": "sStructureInfo[REPAIR].shadow = gfxdata->getTexture(BUILD_REPAIR_SHADOW);"
           },
           {
@@ -16892,11 +16904,11 @@
             "identifier": "#define BUILD_REPAIR_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1324",
+            "ref": "src/utils/cIniGameRessouces.cpp:1326",
             "identifier": "sStructureInfo[REPAIR].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1325",
+            "ref": "src/utils/cIniGameRessouces.cpp:1327",
             "identifier": "sStructureInfo[REPAIR].bmp_height ="
           },
           {
@@ -16961,11 +16973,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1342",
+            "ref": "src/utils/cIniGameRessouces.cpp:1344",
             "identifier": "sStructureInfo[PALACE].bmp = gfxdata->getSurface(BUILD_PALACE);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1343",
+            "ref": "src/utils/cIniGameRessouces.cpp:1345",
             "identifier": "sStructureInfo[PALACE].shadow = gfxdata->getTexture(BUILD_PALACE_SHADOW);"
           },
           {
@@ -16977,11 +16989,11 @@
             "identifier": "#define BUILD_PALACE_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1340",
+            "ref": "src/utils/cIniGameRessouces.cpp:1342",
             "identifier": "sStructureInfo[PALACE].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1341",
+            "ref": "src/utils/cIniGameRessouces.cpp:1343",
             "identifier": "sStructureInfo[PALACE].bmp_height ="
           },
           {
@@ -17046,11 +17058,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1357",
+            "ref": "src/utils/cIniGameRessouces.cpp:1359",
             "identifier": "sStructureInfo[LIGHTFACTORY].bmp = gfxdata->getSurface(BUILD_LIGHTFACTORY);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1358",
+            "ref": "src/utils/cIniGameRessouces.cpp:1360",
             "identifier": "sStructureInfo[LIGHTFACTORY].shadow = gfxdata->getTexture(BUILD_LIGHTFACTORY_SHADOW);"
           },
           {
@@ -17062,11 +17074,11 @@
             "identifier": "#define BUILD_LIGHTFACTORY_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1355",
+            "ref": "src/utils/cIniGameRessouces.cpp:1357",
             "identifier": "sStructureInfo[LIGHTFACTORY].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1356",
+            "ref": "src/utils/cIniGameRessouces.cpp:1358",
             "identifier": "sStructureInfo[LIGHTFACTORY].bmp_height ="
           },
           {
@@ -17131,11 +17143,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1374",
+            "ref": "src/utils/cIniGameRessouces.cpp:1376",
             "identifier": "sStructureInfo[RADAR].bmp = gfxdata->getSurface(BUILD_RADAR);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1375",
+            "ref": "src/utils/cIniGameRessouces.cpp:1377",
             "identifier": "sStructureInfo[RADAR].shadow = gfxdata->getTexture(BUILD_RADAR_SHADOW);"
           },
           {
@@ -17147,11 +17159,11 @@
             "identifier": "#define BUILD_RADAR_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1372",
+            "ref": "src/utils/cIniGameRessouces.cpp:1374",
             "identifier": "sStructureInfo[RADAR].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1373",
+            "ref": "src/utils/cIniGameRessouces.cpp:1375",
             "identifier": "sStructureInfo[RADAR].bmp_height ="
           },
           {
@@ -17216,11 +17228,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1397",
+            "ref": "src/utils/cIniGameRessouces.cpp:1399",
             "identifier": "sStructureInfo[BARRACKS].bmp = gfxdata->getSurface(BUILD_BARRACKS);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1398",
+            "ref": "src/utils/cIniGameRessouces.cpp:1400",
             "identifier": "sStructureInfo[BARRACKS].shadow = gfxdata->getTexture(BUILD_BARRACKS_SHADOW);"
           },
           {
@@ -17232,11 +17244,11 @@
             "identifier": "#define BUILD_BARRACKS_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1395",
+            "ref": "src/utils/cIniGameRessouces.cpp:1397",
             "identifier": "sStructureInfo[BARRACKS].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1396",
+            "ref": "src/utils/cIniGameRessouces.cpp:1398",
             "identifier": "sStructureInfo[BARRACKS].bmp_height ="
           },
           {
@@ -17301,11 +17313,11 @@
         "outlier": true,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1418",
+            "ref": "src/utils/cIniGameRessouces.cpp:1420",
             "identifier": "sStructureInfo[WOR].bmp = gfxdata->getSurface(BUILD_WOR);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1419",
+            "ref": "src/utils/cIniGameRessouces.cpp:1421",
             "identifier": "sStructureInfo[WOR].shadow = gfxdata->getTexture(BUILD_WOR_SHADOW);"
           },
           {
@@ -17317,11 +17329,11 @@
             "identifier": "#define BUILD_WOR_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1416",
+            "ref": "src/utils/cIniGameRessouces.cpp:1418",
             "identifier": "sStructureInfo[WOR].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1417",
+            "ref": "src/utils/cIniGameRessouces.cpp:1419",
             "identifier": "sStructureInfo[WOR].bmp_height ="
           },
           {
@@ -17386,11 +17398,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1435",
+            "ref": "src/utils/cIniGameRessouces.cpp:1437",
             "identifier": "sStructureInfo[SILO].bmp = gfxdata->getSurface(BUILD_SILO);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1436",
+            "ref": "src/utils/cIniGameRessouces.cpp:1438",
             "identifier": "sStructureInfo[SILO].shadow = gfxdata->getTexture(BUILD_SILO_SHADOW);"
           },
           {
@@ -17402,11 +17414,11 @@
             "identifier": "#define BUILD_SILO_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1433",
+            "ref": "src/utils/cIniGameRessouces.cpp:1435",
             "identifier": "sStructureInfo[SILO].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1434",
+            "ref": "src/utils/cIniGameRessouces.cpp:1436",
             "identifier": "sStructureInfo[SILO].bmp_height ="
           },
           {
@@ -17471,11 +17483,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1452",
+            "ref": "src/utils/cIniGameRessouces.cpp:1454",
             "identifier": "sStructureInfo[REFINERY].bmp = gfxdata->getSurface(BUILD_REFINERY);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1453",
+            "ref": "src/utils/cIniGameRessouces.cpp:1455",
             "identifier": "sStructureInfo[REFINERY].shadow = gfxdata->getTexture(BUILD_REFINERY_SHADOW);"
           },
           {
@@ -17487,11 +17499,11 @@
             "identifier": "#define BUILD_REFINERY_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1450",
+            "ref": "src/utils/cIniGameRessouces.cpp:1452",
             "identifier": "sStructureInfo[REFINERY].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1451",
+            "ref": "src/utils/cIniGameRessouces.cpp:1453",
             "identifier": "sStructureInfo[REFINERY].bmp_height ="
           },
           {
@@ -17556,11 +17568,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1469",
+            "ref": "src/utils/cIniGameRessouces.cpp:1471",
             "identifier": "sStructureInfo[CONSTYARD].bmp = gfxdata->getSurface(BUILD_CONSTYARD);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1470",
+            "ref": "src/utils/cIniGameRessouces.cpp:1472",
             "identifier": "sStructureInfo[CONSTYARD].shadow = gfxdata->getTexture(BUILD_CONSTYARD_SHADOW);"
           },
           {
@@ -17572,11 +17584,11 @@
             "identifier": "#define BUILD_CONSTYARD_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1466",
+            "ref": "src/utils/cIniGameRessouces.cpp:1468",
             "identifier": "sStructureInfo[CONSTYARD].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1467",
+            "ref": "src/utils/cIniGameRessouces.cpp:1469",
             "identifier": "sStructureInfo[CONSTYARD].bmp_height ="
           },
           {
@@ -17641,11 +17653,11 @@
         "outlier": true,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1486",
+            "ref": "src/utils/cIniGameRessouces.cpp:1488",
             "identifier": "sStructureInfo[STARPORT].bmp = gfxdata->getSurface(BUILD_STARPORT);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1487",
+            "ref": "src/utils/cIniGameRessouces.cpp:1489",
             "identifier": "sStructureInfo[STARPORT].shadow = gfxdata->getTexture(BUILD_STARPORT_SHADOW);"
           },
           {
@@ -17657,11 +17669,11 @@
             "identifier": "#define BUILD_STARPORT_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1484",
+            "ref": "src/utils/cIniGameRessouces.cpp:1486",
             "identifier": "sStructureInfo[STARPORT].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1485",
+            "ref": "src/utils/cIniGameRessouces.cpp:1487",
             "identifier": "sStructureInfo[STARPORT].bmp_height ="
           },
           {
@@ -17726,11 +17738,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1502",
+            "ref": "src/utils/cIniGameRessouces.cpp:1504",
             "identifier": "sStructureInfo[IX].bmp = gfxdata->getSurface(BUILD_IX);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1503",
+            "ref": "src/utils/cIniGameRessouces.cpp:1505",
             "identifier": "sStructureInfo[IX].shadow = gfxdata->getTexture(BUILD_IX_SHADOW);"
           },
           {
@@ -17742,11 +17754,11 @@
             "identifier": "#define BUILD_IX_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1500",
+            "ref": "src/utils/cIniGameRessouces.cpp:1502",
             "identifier": "sStructureInfo[IX].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1501",
+            "ref": "src/utils/cIniGameRessouces.cpp:1503",
             "identifier": "sStructureInfo[IX].bmp_height ="
           },
           {
@@ -17811,11 +17823,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1518",
+            "ref": "src/utils/cIniGameRessouces.cpp:1520",
             "identifier": "sStructureInfo[TURRET].bmp = gfxdata->getSurface(BUILD_TURRET);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1519",
+            "ref": "src/utils/cIniGameRessouces.cpp:1521",
             "identifier": "sStructureInfo[TURRET].shadow = gfxdata->getTexture(BUILD_TURRET_SHADOW);"
           },
           {
@@ -17827,11 +17839,11 @@
             "identifier": "#define BUILD_TURRET_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1516",
+            "ref": "src/utils/cIniGameRessouces.cpp:1518",
             "identifier": "sStructureInfo[TURRET].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1517",
+            "ref": "src/utils/cIniGameRessouces.cpp:1519",
             "identifier": "sStructureInfo[TURRET].bmp_height ="
           },
           {
@@ -17896,11 +17908,11 @@
         "outlier": false,
         "sources": [
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1532",
+            "ref": "src/utils/cIniGameRessouces.cpp:1534",
             "identifier": "sStructureInfo[RTURRET].bmp = gfxdata->getSurface(BUILD_RTURRET);"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1533",
+            "ref": "src/utils/cIniGameRessouces.cpp:1535",
             "identifier": "sStructureInfo[RTURRET].shadow = gfxdata->getTexture(BUILD_RTURRET_SHADOW);"
           },
           {
@@ -17912,11 +17924,11 @@
             "identifier": "#define BUILD_RTURRET_SHADOW"
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1530",
+            "ref": "src/utils/cIniGameRessouces.cpp:1532",
             "identifier": "sStructureInfo[RTURRET].bmp_width ="
           },
           {
-            "ref": "src/utils/cIniGameRessouces.cpp:1531",
+            "ref": "src/utils/cIniGameRessouces.cpp:1533",
             "identifier": "sStructureInfo[RTURRET].bmp_height ="
           },
           {
@@ -18484,11 +18496,11 @@
     },
     "sources": [
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1276",
+        "ref": "src/utils/cIniGameRessouces.cpp:1278",
         "identifier": "sStructureInfo[WINDTRAP].bmp = gfxdata->getSurface(BUILD_WINDTRAP);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1277",
+        "ref": "src/utils/cIniGameRessouces.cpp:1279",
         "identifier": "sStructureInfo[WINDTRAP].shadow = gfxdata->getTexture(BUILD_WINDTRAP_SHADOW);"
       },
       {
@@ -18500,11 +18512,11 @@
         "identifier": "#define BUILD_WINDTRAP_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1224",
+        "ref": "src/utils/cIniGameRessouces.cpp:1226",
         "identifier": "structureInfo.bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1225",
+        "ref": "src/utils/cIniGameRessouces.cpp:1227",
         "identifier": "structureInfo.bmp_height ="
       },
       {
@@ -18532,11 +18544,11 @@
         "identifier": "srcRect.h *= src->density;"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1293",
+        "ref": "src/utils/cIniGameRessouces.cpp:1295",
         "identifier": "sStructureInfo[HEAVYFACTORY].bmp = gfxdata->getSurface(BUILD_HEAVYFACTORY);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1294",
+        "ref": "src/utils/cIniGameRessouces.cpp:1296",
         "identifier": "sStructureInfo[HEAVYFACTORY].shadow = gfxdata->getTexture(BUILD_HEAVYFACTORY_SHADOW);"
       },
       {
@@ -18548,19 +18560,19 @@
         "identifier": "#define BUILD_HEAVYFACTORY_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1291",
+        "ref": "src/utils/cIniGameRessouces.cpp:1293",
         "identifier": "sStructureInfo[HEAVYFACTORY].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1292",
+        "ref": "src/utils/cIniGameRessouces.cpp:1294",
         "identifier": "sStructureInfo[HEAVYFACTORY].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1310",
+        "ref": "src/utils/cIniGameRessouces.cpp:1312",
         "identifier": "sStructureInfo[HIGHTECH].bmp = gfxdata->getSurface(BUILD_HIGHTECH);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1311",
+        "ref": "src/utils/cIniGameRessouces.cpp:1313",
         "identifier": "sStructureInfo[HIGHTECH].shadow = gfxdata->getTexture(BUILD_HIGHTECH_SHADOW);"
       },
       {
@@ -18572,19 +18584,19 @@
         "identifier": "#define BUILD_HIGHTECH_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1308",
+        "ref": "src/utils/cIniGameRessouces.cpp:1310",
         "identifier": "sStructureInfo[HIGHTECH].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1309",
+        "ref": "src/utils/cIniGameRessouces.cpp:1311",
         "identifier": "sStructureInfo[HIGHTECH].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1326",
+        "ref": "src/utils/cIniGameRessouces.cpp:1328",
         "identifier": "sStructureInfo[REPAIR].bmp = gfxdata->getSurface(BUILD_REPAIR);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1327",
+        "ref": "src/utils/cIniGameRessouces.cpp:1329",
         "identifier": "sStructureInfo[REPAIR].shadow = gfxdata->getTexture(BUILD_REPAIR_SHADOW);"
       },
       {
@@ -18596,19 +18608,19 @@
         "identifier": "#define BUILD_REPAIR_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1324",
+        "ref": "src/utils/cIniGameRessouces.cpp:1326",
         "identifier": "sStructureInfo[REPAIR].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1325",
+        "ref": "src/utils/cIniGameRessouces.cpp:1327",
         "identifier": "sStructureInfo[REPAIR].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1342",
+        "ref": "src/utils/cIniGameRessouces.cpp:1344",
         "identifier": "sStructureInfo[PALACE].bmp = gfxdata->getSurface(BUILD_PALACE);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1343",
+        "ref": "src/utils/cIniGameRessouces.cpp:1345",
         "identifier": "sStructureInfo[PALACE].shadow = gfxdata->getTexture(BUILD_PALACE_SHADOW);"
       },
       {
@@ -18620,19 +18632,19 @@
         "identifier": "#define BUILD_PALACE_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1340",
+        "ref": "src/utils/cIniGameRessouces.cpp:1342",
         "identifier": "sStructureInfo[PALACE].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1341",
+        "ref": "src/utils/cIniGameRessouces.cpp:1343",
         "identifier": "sStructureInfo[PALACE].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1357",
+        "ref": "src/utils/cIniGameRessouces.cpp:1359",
         "identifier": "sStructureInfo[LIGHTFACTORY].bmp = gfxdata->getSurface(BUILD_LIGHTFACTORY);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1358",
+        "ref": "src/utils/cIniGameRessouces.cpp:1360",
         "identifier": "sStructureInfo[LIGHTFACTORY].shadow = gfxdata->getTexture(BUILD_LIGHTFACTORY_SHADOW);"
       },
       {
@@ -18644,19 +18656,19 @@
         "identifier": "#define BUILD_LIGHTFACTORY_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1355",
+        "ref": "src/utils/cIniGameRessouces.cpp:1357",
         "identifier": "sStructureInfo[LIGHTFACTORY].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1356",
+        "ref": "src/utils/cIniGameRessouces.cpp:1358",
         "identifier": "sStructureInfo[LIGHTFACTORY].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1374",
+        "ref": "src/utils/cIniGameRessouces.cpp:1376",
         "identifier": "sStructureInfo[RADAR].bmp = gfxdata->getSurface(BUILD_RADAR);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1375",
+        "ref": "src/utils/cIniGameRessouces.cpp:1377",
         "identifier": "sStructureInfo[RADAR].shadow = gfxdata->getTexture(BUILD_RADAR_SHADOW);"
       },
       {
@@ -18668,19 +18680,19 @@
         "identifier": "#define BUILD_RADAR_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1372",
+        "ref": "src/utils/cIniGameRessouces.cpp:1374",
         "identifier": "sStructureInfo[RADAR].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1373",
+        "ref": "src/utils/cIniGameRessouces.cpp:1375",
         "identifier": "sStructureInfo[RADAR].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1397",
+        "ref": "src/utils/cIniGameRessouces.cpp:1399",
         "identifier": "sStructureInfo[BARRACKS].bmp = gfxdata->getSurface(BUILD_BARRACKS);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1398",
+        "ref": "src/utils/cIniGameRessouces.cpp:1400",
         "identifier": "sStructureInfo[BARRACKS].shadow = gfxdata->getTexture(BUILD_BARRACKS_SHADOW);"
       },
       {
@@ -18692,19 +18704,19 @@
         "identifier": "#define BUILD_BARRACKS_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1395",
+        "ref": "src/utils/cIniGameRessouces.cpp:1397",
         "identifier": "sStructureInfo[BARRACKS].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1396",
+        "ref": "src/utils/cIniGameRessouces.cpp:1398",
         "identifier": "sStructureInfo[BARRACKS].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1418",
+        "ref": "src/utils/cIniGameRessouces.cpp:1420",
         "identifier": "sStructureInfo[WOR].bmp = gfxdata->getSurface(BUILD_WOR);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1419",
+        "ref": "src/utils/cIniGameRessouces.cpp:1421",
         "identifier": "sStructureInfo[WOR].shadow = gfxdata->getTexture(BUILD_WOR_SHADOW);"
       },
       {
@@ -18716,19 +18728,19 @@
         "identifier": "#define BUILD_WOR_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1416",
+        "ref": "src/utils/cIniGameRessouces.cpp:1418",
         "identifier": "sStructureInfo[WOR].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1417",
+        "ref": "src/utils/cIniGameRessouces.cpp:1419",
         "identifier": "sStructureInfo[WOR].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1435",
+        "ref": "src/utils/cIniGameRessouces.cpp:1437",
         "identifier": "sStructureInfo[SILO].bmp = gfxdata->getSurface(BUILD_SILO);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1436",
+        "ref": "src/utils/cIniGameRessouces.cpp:1438",
         "identifier": "sStructureInfo[SILO].shadow = gfxdata->getTexture(BUILD_SILO_SHADOW);"
       },
       {
@@ -18740,19 +18752,19 @@
         "identifier": "#define BUILD_SILO_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1433",
+        "ref": "src/utils/cIniGameRessouces.cpp:1435",
         "identifier": "sStructureInfo[SILO].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1434",
+        "ref": "src/utils/cIniGameRessouces.cpp:1436",
         "identifier": "sStructureInfo[SILO].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1452",
+        "ref": "src/utils/cIniGameRessouces.cpp:1454",
         "identifier": "sStructureInfo[REFINERY].bmp = gfxdata->getSurface(BUILD_REFINERY);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1453",
+        "ref": "src/utils/cIniGameRessouces.cpp:1455",
         "identifier": "sStructureInfo[REFINERY].shadow = gfxdata->getTexture(BUILD_REFINERY_SHADOW);"
       },
       {
@@ -18764,19 +18776,19 @@
         "identifier": "#define BUILD_REFINERY_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1450",
+        "ref": "src/utils/cIniGameRessouces.cpp:1452",
         "identifier": "sStructureInfo[REFINERY].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1451",
+        "ref": "src/utils/cIniGameRessouces.cpp:1453",
         "identifier": "sStructureInfo[REFINERY].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1469",
+        "ref": "src/utils/cIniGameRessouces.cpp:1471",
         "identifier": "sStructureInfo[CONSTYARD].bmp = gfxdata->getSurface(BUILD_CONSTYARD);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1470",
+        "ref": "src/utils/cIniGameRessouces.cpp:1472",
         "identifier": "sStructureInfo[CONSTYARD].shadow = gfxdata->getTexture(BUILD_CONSTYARD_SHADOW);"
       },
       {
@@ -18788,19 +18800,19 @@
         "identifier": "#define BUILD_CONSTYARD_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1466",
+        "ref": "src/utils/cIniGameRessouces.cpp:1468",
         "identifier": "sStructureInfo[CONSTYARD].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1467",
+        "ref": "src/utils/cIniGameRessouces.cpp:1469",
         "identifier": "sStructureInfo[CONSTYARD].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1486",
+        "ref": "src/utils/cIniGameRessouces.cpp:1488",
         "identifier": "sStructureInfo[STARPORT].bmp = gfxdata->getSurface(BUILD_STARPORT);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1487",
+        "ref": "src/utils/cIniGameRessouces.cpp:1489",
         "identifier": "sStructureInfo[STARPORT].shadow = gfxdata->getTexture(BUILD_STARPORT_SHADOW);"
       },
       {
@@ -18812,19 +18824,19 @@
         "identifier": "#define BUILD_STARPORT_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1484",
+        "ref": "src/utils/cIniGameRessouces.cpp:1486",
         "identifier": "sStructureInfo[STARPORT].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1485",
+        "ref": "src/utils/cIniGameRessouces.cpp:1487",
         "identifier": "sStructureInfo[STARPORT].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1502",
+        "ref": "src/utils/cIniGameRessouces.cpp:1504",
         "identifier": "sStructureInfo[IX].bmp = gfxdata->getSurface(BUILD_IX);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1503",
+        "ref": "src/utils/cIniGameRessouces.cpp:1505",
         "identifier": "sStructureInfo[IX].shadow = gfxdata->getTexture(BUILD_IX_SHADOW);"
       },
       {
@@ -18836,19 +18848,19 @@
         "identifier": "#define BUILD_IX_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1500",
+        "ref": "src/utils/cIniGameRessouces.cpp:1502",
         "identifier": "sStructureInfo[IX].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1501",
+        "ref": "src/utils/cIniGameRessouces.cpp:1503",
         "identifier": "sStructureInfo[IX].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1518",
+        "ref": "src/utils/cIniGameRessouces.cpp:1520",
         "identifier": "sStructureInfo[TURRET].bmp = gfxdata->getSurface(BUILD_TURRET);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1519",
+        "ref": "src/utils/cIniGameRessouces.cpp:1521",
         "identifier": "sStructureInfo[TURRET].shadow = gfxdata->getTexture(BUILD_TURRET_SHADOW);"
       },
       {
@@ -18860,19 +18872,19 @@
         "identifier": "#define BUILD_TURRET_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1516",
+        "ref": "src/utils/cIniGameRessouces.cpp:1518",
         "identifier": "sStructureInfo[TURRET].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1517",
+        "ref": "src/utils/cIniGameRessouces.cpp:1519",
         "identifier": "sStructureInfo[TURRET].bmp_height ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1532",
+        "ref": "src/utils/cIniGameRessouces.cpp:1534",
         "identifier": "sStructureInfo[RTURRET].bmp = gfxdata->getSurface(BUILD_RTURRET);"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1533",
+        "ref": "src/utils/cIniGameRessouces.cpp:1535",
         "identifier": "sStructureInfo[RTURRET].shadow = gfxdata->getTexture(BUILD_RTURRET_SHADOW);"
       },
       {
@@ -18884,11 +18896,11 @@
         "identifier": "#define BUILD_RTURRET_SHADOW"
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1530",
+        "ref": "src/utils/cIniGameRessouces.cpp:1532",
         "identifier": "sStructureInfo[RTURRET].bmp_width ="
       },
       {
-        "ref": "src/utils/cIniGameRessouces.cpp:1531",
+        "ref": "src/utils/cIniGameRessouces.cpp:1533",
         "identifier": "sStructureInfo[RTURRET].bmp_height ="
       },
       {

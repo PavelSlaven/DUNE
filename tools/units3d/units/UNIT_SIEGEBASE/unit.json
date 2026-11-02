@@ -68,7 +68,8 @@
         "b": "units-gen/UNIT_SIEGEBASE/siegebase_k2_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k2.png"
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k2.png",
+      "scale_factor": 0.84
     },
     {
       "row": 0,
@@ -108,7 +109,8 @@
         "b": "units-gen/UNIT_SIEGEBASE/siegebase_k6_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k6.png"
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k6.png",
+      "scale_factor": 0.89
     },
     {
       "row": 0,
