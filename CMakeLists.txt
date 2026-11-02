@@ -223,6 +223,7 @@ if(BUILD_TESTING)
         options_menu_layout_tests
         tests/OptionsMenuLayoutTests.cpp
         src/utils/cRectangle.cpp
+        src/utils/RenderScale.cpp
     )
     target_include_directories(
         options_menu_layout_tests
