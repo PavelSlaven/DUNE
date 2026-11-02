@@ -758,19 +758,18 @@ void cOptionsState::constructWindow(int prevState)
         constructAdvancedWindow(prevState);
         return;
     }
-    int mainMenuWidth = m_hdLayout
-        ? std::min(m_game.m_screenW - 32, 680)
-        : m_game.m_screenW / 2;
-    int mainMenuHeight = m_hdLayout
-        ? std::min(m_game.m_screenH - 32, 680)
-        : m_game.m_screenH / 2;
-    int mainMenuFrameX = (m_game.m_screenW - mainMenuWidth) / 2;
-    int mainMenuFrameY = (m_game.m_screenH - mainMenuHeight) / 2;
-
     int margin = m_hdLayout ? 8 : 4;
     int buttonHeight = m_hdLayout
         ? std::max(32, m_textDrawer->getFontHeight() + 10)
         : m_textDrawer->getFontHeight() + margin;
+    const OptionsMenuLayout menuLayout = OptionsMenuLayout::create(
+        m_game.m_screenW,
+        m_game.m_screenH,
+        buttonHeight,
+        m_hdLayout,
+        m_prevState == GAME_PLAYING
+    );
+    int mainMenuWidth = menuLayout.window.getWidth();
     int buttonWidth = mainMenuWidth - 8;
     const GuiTheme controlTheme = m_hdLayout
         ? GuiTheme::Remaster()
@@ -788,16 +787,6 @@ void cOptionsState::constructWindow(int prevState)
         : 5 + buttonWidth / 4 + 50 * 2;
     const int audioSliderWidth = m_hdLayout ? 250 : buttonHeight * 5;
     const int contentRowStride = buttonHeight + (m_hdLayout ? 2 : 5);
-    const OptionsMenuLayout menuLayout = OptionsMenuLayout::create(
-        mainMenuWidth,
-        mainMenuHeight,
-        buttonHeight,
-        margin,
-        contentX,
-        buttonWidth,
-        m_hdLayout,
-        m_prevState == GAME_PLAYING
-    );
     const auto relativeRect = [this](const cRectangle &rect) {
         return m_guiWindow->getRelativeRect(
             rect.getX(),
@@ -807,8 +796,7 @@ void cOptionsState::constructWindow(int prevState)
         );
     };
 
-    const cRectangle &window = cRectangle(mainMenuFrameX, mainMenuFrameY, mainMenuWidth, mainMenuHeight);
-    m_guiWindow = new GuiWindow(window, m_textDrawer);
+    m_guiWindow = new GuiWindow(menuLayout.window, m_textDrawer);
     m_guiWindow->setTheme(controlTheme);
     cSoundPlayer* soundPlayer = m_ctx->getSoundPlayer();
 
