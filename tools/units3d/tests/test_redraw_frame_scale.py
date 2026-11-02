@@ -1,6 +1,7 @@
 import contextlib
 import io
 import json
+import math
 import tempfile
 import unittest
 from pathlib import Path
@@ -10,7 +11,7 @@ from PIL import Image
 
 from tools.hd_assets import PackEntry, encode_png, write_pack
 from tools.units3d.redraw import main
-from tools.units3d.redraw_common import ROOT
+from tools.units3d.redraw_common import ROOT, clean_keyed, key, keyed, place, prepare
 
 
 class RedrawFrameScaleTests(unittest.TestCase):
@@ -254,6 +255,87 @@ class RedrawFrameScaleTests(unittest.TestCase):
         self.assertEqual(unscaled_fit_code, 0, unscaled_fit_stdout + unscaled_fit_stderr)
         unscaled_fit_params = json.loads((unscaled_fit_output / 'params.json').read_text())
         self.assertLess(unscaled_fit_params['scale'], unscaled_fit_params['scale_median'])
+
+    def test_fit_scale_is_limited_by_recolour_bounds(self):
+        frame_size = 512
+        source_size = 1024
+        body_width = 996
+        body_height = 256
+        body_y0 = 384
+        body_x0 = (source_size - body_width) // 2
+        reference_body_width = 512
+        scale_factor = 1.02
+        scale_step = 0.001
+        body_box = (0, 128, 512, 384)
+        body_attempt = self._image(
+            'fit-body.png', (255, 0, 255),
+            (body_x0, body_y0, body_x0 + body_width, body_y0 + body_height), (100, 110, 120),
+        )
+        recolour = self._recolour(
+            'fit-recolour.png', (0, body_y0, source_size, body_y0 + body_height), (0, 0, 0, 0),
+        )
+
+        self.body = np.zeros((frame_size, frame_size * 8, 4), np.uint8)
+        for k in range(8):
+            self.body[128:384, k * frame_size:(k + 1) * frame_size] = (100, 110, 120, 255)
+        self.pack = self.root / 'fit-source.dat'
+        self.data = {
+            'atlases': {'body': 'BODY', 'house_mask': 'MASK', 'shadow': None},
+            'frame': [frame_size, frame_size],
+            'rows': 1,
+            'scale': 'fit',
+            'share_corridor': [0, 1],
+            'frames': [
+                {
+                    'row': 0,
+                    'k': k,
+                    'attempts': {'chosen': str(body_attempt)},
+                    'pick': 'chosen',
+                    'recolour': str(recolour),
+                    **({'scale_factor': scale_factor} if k == 0 else {}),
+                }
+                for k in range(8)
+            ],
+        }
+        self._write_pack(self.data)
+
+        scale_median = reference_body_width / (body_width * frame_size / source_size)
+        clipping_limit = (frame_size + 0.5) / (frame_size * scale_factor)
+        scale_steps = math.ceil((scale_median - clipping_limit) / scale_step)
+        expected_scale = scale_median - scale_steps * scale_step
+        next_scale = expected_scale + scale_step
+
+        attempt_rgba = keyed(body_attempt)
+        recolour_rgba, _ = clean_keyed(key(prepare(recolour)), 1)
+        _, expected_body_clipped, expected_offset, _ = place(
+            attempt_rgba, (frame_size, frame_size), expected_scale * scale_factor,
+            body_box, source_maximum=frame_size,
+        )
+        _, expected_recolour_clipped, _, _ = place(
+            recolour_rgba, (frame_size, frame_size), expected_scale * scale_factor,
+            body_box, expected_offset, source_maximum=frame_size,
+        )
+        self.assertFalse(expected_body_clipped)
+        self.assertFalse(expected_recolour_clipped)
+        _, next_body_clipped, next_offset, _ = place(
+            attempt_rgba, (frame_size, frame_size), next_scale * scale_factor,
+            body_box, source_maximum=frame_size,
+        )
+        _, next_recolour_clipped, _, _ = place(
+            recolour_rgba, (frame_size, frame_size), next_scale * scale_factor,
+            body_box, next_offset, source_maximum=frame_size,
+        )
+        self.assertFalse(next_body_clipped, 'Тело должно помещаться на следующем шаге масштаба')
+        self.assertTrue(next_recolour_clipped, 'Перекраска должна обрезаться на следующем шаге масштаба')
+
+        code, output, stdout, stderr = self._build(self.data, 'fit-recolour-bounds')
+        params = json.loads((output / 'params.json').read_text())
+        self.assertTrue(
+            abs(params['scale'] - expected_scale) <= 1e-12,
+            'Подобранный масштаб должен ограничиваться перекраской',
+        )
+        self.assertEqual(code, 0, stdout + stderr)
+        self.assertIn('all frames pass', (output / 'metrics.txt').read_text())
 
     def test_missing_reference_frame_keeps_cells_error_prefix(self):
         data = json.loads(json.dumps(self.data))

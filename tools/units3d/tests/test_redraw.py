@@ -1165,7 +1165,7 @@ class RedrawAcceptanceTests(unittest.TestCase):
     LANCZOS_INFLUENCE_WIDTH = 4
 
     def test_29_harvester_offset_from_keeps_body_aligned(self):
-        unit_dir, _ = self._harvester_unit(width=0.10)
+        unit_dir, data = self._harvester_unit(width=0.10)
         output = self.root / "build_harvester_offset"
         result = self.run_tool("build", output, "--pack", SOURCE_PACK, unit=unit_dir)
         transcript = f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}"
@@ -1196,6 +1196,37 @@ class RedrawAcceptanceTests(unittest.TestCase):
                     np.array_equal(frame1[:, left:], frame0[:, left:]),
                     f"RGBA пиксели r1k{k} отличаются от r0k{k} справа от x={left}",
                 )
+
+        data.pop("despill")
+        self.save_unit(unit_dir, data)
+        default_output = self.root / "build_harvester_offset_default_despill"
+        default_result = self.run_tool(
+            "build", default_output, "--pack", SOURCE_PACK, unit=unit_dir
+        )
+        default_transcript = (
+            f"stdout:\n{default_result.stdout}\nstderr:\n{default_result.stderr}"
+        )
+        self.assertEqual(default_result.returncode, 0, default_transcript)
+        default_params = json.loads(
+            (default_output / "params.json").read_text(encoding="utf-8")
+        )
+
+        for k in range(8):
+            with self.subTest(k=k, comparison="despill alpha"):
+                row0 = default_params["frames"][f"r0k{k}"]
+                row1 = default_params["frames"][f"r1k{k}"]
+                self.assertEqual(row1["offset"], row0["offset"])
+                self.assertEqual(row1["moved"], [0, 0])
+                for row in range(2):
+                    frame_name = f"r{row}k{k}.png"
+                    with Image.open(output / "frames" / frame_name) as image:
+                        false_alpha = np.asarray(image.convert("RGBA"))[..., 3]
+                    with Image.open(default_output / "frames" / frame_name) as image:
+                        default_alpha = np.asarray(image.convert("RGBA"))[..., 3]
+                    self.assertTrue(
+                        np.array_equal(default_alpha, false_alpha),
+                        f"Альфа кадра {frame_name} отличается с despill по умолчанию",
+                    )
 
     def test_30_harvester_offset_rows_do_not_change_scale_median(self):
         full_unit, _ = self._harvester_unit(
@@ -1371,7 +1402,7 @@ class RedrawAcceptanceTests(unittest.TestCase):
                 )
 
 
-    def _despill_unit(self):
+    def _despill_unit(self, *, compact=False):
         entries = {entry.name: entry for entry in read_pack(SOURCE_PACK)}
         for name in (
             "UNIT_HARVESTER",
@@ -1383,14 +1414,25 @@ class RedrawAcceptanceTests(unittest.TestCase):
             self.assertEqual(image.size, (2560, 832), name)
 
         attempt = np.full((1024, 1024, 3), (255, 0, 255), dtype=np.uint8)
-        attempt[384:640, 320:704] = (130, 30, 130)
-        attempt[390:634, 326:698] = (60, 60, 60)
-        attempt[464:560, 320:326] = (200, 30, 130)
-        attempt[492:532, 480:520] = (150, 40, 160)
-
         recolour = np.full((1024, 1024, 3), (255, 0, 255), dtype=np.uint8)
-        recolour[384:640, 320:704] = (0, 255, 0)
-        recolour[492:532, 480:520] = (150, 40, 160)
+        if compact:
+            attempt[448:576, 400:624] = (60, 60, 60)
+            attempt[448:496, 560:624] = (255, 0, 255)
+            attempt[480:504, 406:412] = (130, 30, 130)
+            attempt[500, 555] = (130, 30, 130)
+            attempt[520:536, 400:406] = (160, 40, 120)
+            attempt[544:560, 400:406] = (100, 140, 100)
+            attempt[560:568, 400:406] = (120, 40, 160)
+
+            recolour[448:576, 400:624] = (0, 255, 0)
+            recolour[448:496, 560:624] = (255, 0, 255)
+        else:
+            attempt[384:640, 320:704] = (130, 30, 130)
+            attempt[390:634, 326:698] = (60, 60, 60)
+            attempt[464:560, 320:326] = (200, 30, 130)
+            attempt[492:532, 480:520] = (150, 40, 160)
+            recolour[384:640, 320:704] = (0, 255, 0)
+            recolour[492:532, 480:520] = (150, 40, 160)
 
         attempt_path = self.root / "despill_attempt.png"
         recolour_path = self.root / "despill_recolour.png"
@@ -1422,7 +1464,7 @@ class RedrawAcceptanceTests(unittest.TestCase):
             "height_estimate": 49.0,
             "shadow_rule": {"shift": 4, "alpha": 46, "rgb": [5, 4, 3]},
             "sheet_building": {"name": "BUILD_HEAVYFACTORY", "size": [384, 256]},
-            "scale": 1.6,
+            "scale": 3.2 if compact else 1.6,
             "share_corridor": [0.0, 1.0],
             "red_fill": 60,
             "frames": records,
@@ -1476,9 +1518,26 @@ class RedrawAcceptanceTests(unittest.TestCase):
             default_frame = self._despill_frame(default_dir, k)
             false_frame = self._despill_frame(false_dir, k)
             self.assertTrue(
+                np.array_equal(default_frame[..., 1], false_frame[..., 1]),
+                f"Канал G кадра r0k{k} изменился от очистки",
+            )
+            self.assertTrue(
                 np.array_equal(default_frame[..., 3], false_frame[..., 3]),
                 f"Альфа кадра r0k{k} изменилась от очистки",
             )
+
+        with Image.open(default_dir / "UNIT_HARVESTER.png") as image:
+            default_body = np.asarray(image.convert("RGBA")).copy()
+        with Image.open(false_dir / "UNIT_HARVESTER.png") as image:
+            false_body = np.asarray(image.convert("RGBA")).copy()
+        self.assertTrue(
+            np.array_equal(default_body[..., 1], false_body[..., 1]),
+            "Канал G атласа UNIT_HARVESTER изменился от очистки",
+        )
+        self.assertTrue(
+            np.array_equal(default_body[..., 3], false_body[..., 3]),
+            "Альфа атласа UNIT_HARVESTER изменилась от очистки",
+        )
 
         with Image.open(default_dir / "HM_UNIT_HARVESTER.png") as image:
             default_mask = np.asarray(image.convert("RGBA")).copy()
@@ -1495,34 +1554,100 @@ class RedrawAcceptanceTests(unittest.TestCase):
         source_x, source_y = self._despill_source_coordinates(
             default_frame, params, params["frames"]["r0k0"]
         )
-        rim = (
+        rim_sides = {
+            "верх": (
+                (source_x >= 320)
+                & (source_x < 704)
+                & (source_y >= 384)
+                & (source_y < 390)
+            ),
+            "низ": (
+                (source_x >= 320)
+                & (source_x < 704)
+                & (source_y >= 634)
+                & (source_y < 640)
+            ),
+            "лево": (
+                (source_x >= 320)
+                & (source_x < 326)
+                & (source_y >= 384)
+                & (source_y < 640)
+            ),
+            "право": (
+                (source_x >= 698)
+                & (source_x < 704)
+                & (source_y >= 384)
+                & (source_y < 640)
+            ),
+        }
+        red_section = (
+            (source_x >= 320)
+            & (source_x < 326)
+            & (source_y >= 464)
+            & (source_y < 560)
+        )
+        rim = np.logical_or.reduce(tuple(rim_sides.values())) & ~red_section
+        rim_sides["лево"] &= ~red_section
+        visible_rim = rim & (default_frame[..., 3] > 0) & (false_frame[..., 3] > 0)
+        self.assertGreater(int(visible_rim.sum()), 0, "В выбранной части каймы нет пикселей")
+        visible_sides = {
+            side: region & (default_frame[..., 3] > 0) & (false_frame[..., 3] > 0)
+            for side, region in rim_sides.items()
+        }
+        for side, visible_side in visible_sides.items():
+            with self.subTest(rim_side=side):
+                self.assertGreater(
+                    int(visible_side.sum()), 0, f"Кайма стороны {side} пуста"
+                )
+
+        original_top = (
             (source_x >= 360)
             & (source_x < 664)
             & (source_y >= 384)
             & (source_y < 390)
         )
-        visible_rim = rim & (default_frame[..., 3] > 0) & (false_frame[..., 3] > 0)
-        self.assertGreater(int(visible_rim.sum()), 0, "В выбранной части каймы нет пикселей")
+        visible_original_top = (
+            original_top & (default_frame[..., 3] > 0) & (false_frame[..., 3] > 0)
+        )
+        self.assertGreater(
+            int(visible_original_top.sum()),
+            0,
+            "В исходной верхней выборке каймы нет пикселей",
+        )
 
         clean_contrast = (
             np.maximum(default_frame[..., 0], default_frame[..., 2]).astype(np.int16)
+            - default_frame[..., 1].astype(np.int16)
+        )
+        clean_spill = (
+            np.minimum(default_frame[..., 0], default_frame[..., 2]).astype(np.int16)
             - default_frame[..., 1].astype(np.int16)
         )
         raw_contrast = (
             np.minimum(false_frame[..., 0], false_frame[..., 2]).astype(np.int16)
             - false_frame[..., 1].astype(np.int16)
         )
-        self.assertLessEqual(
-            int(clean_contrast[visible_rim].max()),
-            2,
-            "Кайма в сборке без поля сохранила пурпурный оттенок",
+
+        def assert_rim_contrast(mask, label, contrast):
+            self.assertLessEqual(
+                int(contrast[mask].max()),
+                2,
+                f"Кайма {label} в сборке без поля сохранила пурпурный оттенок",
+            )
+            contaminated = int(np.count_nonzero(raw_contrast[mask] >= 40))
+            self.assertGreaterEqual(
+                contaminated,
+                (int(mask.sum()) + 1) // 2,
+                f"В сборке с despill=false пурпурная кайма {label} сохранилась меньше чем на половине пикселей",
+            )
+
+        assert_rim_contrast(visible_rim, "по периметру", clean_spill)
+        assert_rim_contrast(
+            visible_original_top, "в исходной верхней выборке", clean_contrast
         )
-        contaminated = int(np.count_nonzero(raw_contrast[visible_rim] >= 40))
-        self.assertGreaterEqual(
-            contaminated,
-            (int(visible_rim.sum()) + 1) // 2,
-            "В сборке с despill=false пурпурная кайма сохранилась меньше чем на половине пикселей",
-        )
+        for side, visible_side in visible_sides.items():
+            with self.subTest(rim_side=side, expectation="contrast"):
+                assert_rim_contrast(visible_side, f"стороны {side}", clean_spill)
 
     def test_35_despill_keeps_interior_spot_unchanged(self):
         unit_dir, data, _ = self._despill_unit()
@@ -1596,6 +1721,13 @@ class RedrawAcceptanceTests(unittest.TestCase):
             ),
             "Альфа атласа тела отличается от эталона",
         )
+        self.assertTrue(
+            np.array_equal(
+                actual["UNIT_DEVASTATOR"][..., 1],
+                reference["UNIT_DEVASTATOR"][..., 1],
+            ),
+            "Канал G атласа тела отличается от эталона",
+        )
         for name in ("HM_UNIT_DEVASTATOR", "UNIT_DEVASTATOR_SHADOW"):
             self.assertTrue(
                 np.array_equal(actual[name], reference[name]),
@@ -1603,6 +1735,29 @@ class RedrawAcceptanceTests(unittest.TestCase):
             )
 
         frame_width, frame_height = data["frame"]
+        reference_body = reference["UNIT_DEVASTATOR"]
+        atlas_height, atlas_width = reference_body.shape[:2]
+        columns, rows = atlas_width // frame_width, atlas_height // frame_height
+        self.assertGreaterEqual(columns, 8)
+        self.assertGreaterEqual(rows, data["rows"])
+        for record in data["frames"]:
+            row, k = record["row"], record["k"]
+            with self.subTest(row=row, k=k, comparison="reference frame channels"):
+                x, y = k * frame_width, row * frame_height
+                expected_frame = reference_body[
+                    y:y + frame_height, x:x + frame_width
+                ]
+                with Image.open(output / "frames" / f"r{row}k{k}.png") as image:
+                    actual_frame = np.asarray(image.convert("RGBA"))
+                self.assertEqual(actual_frame.shape, expected_frame.shape)
+                for channel, label in ((1, "G"), (3, "альфа")):
+                    self.assertTrue(
+                        np.array_equal(
+                            actual_frame[..., channel], expected_frame[..., channel]
+                        ),
+                        f"Канал {label} кадра r{row}k{k} отличается от клетки эталона",
+                    )
+
         x0, y0 = 6 * frame_width, 0
         x1, y1 = x0 + frame_width, y0 + frame_height
         self.assertTrue(
@@ -1687,7 +1842,7 @@ class RedrawAcceptanceTests(unittest.TestCase):
                         2,
                         result.stdout + result.stderr,
                     )
-                    self.assertIn("despill", result.stderr.lower(), result.stderr)
+                    self.assertIn("despill:", result.stderr, result.stderr)
 
         absent_data = dict(data)
         absent_data.pop("despill", None)
@@ -1726,6 +1881,161 @@ class RedrawAcceptanceTests(unittest.TestCase):
         for relative_path in sorted(absent_files):
             with self.subTest(output_file=relative_path):
                 self.assertEqual(absent_files[relative_path], true_files[relative_path])
+
+    def test_38_despill_uses_canvas_distance_at_both_scales(self):
+        unit_dir, data, _ = self._despill_unit(compact=True)
+
+        for scale in (3.2, 1.6):
+            with self.subTest(scale=scale):
+                scale_data = dict(data)
+                scale_data["scale"] = scale
+                self.save_unit(unit_dir, scale_data)
+
+                default_dir = self.root / f"build_despill_default_{scale}"
+                default_result = self.run_tool("build", default_dir, unit=unit_dir)
+                self.assertEqual(
+                    default_result.returncode,
+                    0,
+                    default_result.stdout + default_result.stderr,
+                )
+
+                false_data = dict(scale_data)
+                false_data["despill"] = False
+                self.save_unit(unit_dir, false_data)
+                false_dir = self.root / f"build_despill_false_{scale}"
+                false_result = self.run_tool("build", false_dir, unit=unit_dir)
+                self.assertEqual(
+                    false_result.returncode,
+                    0,
+                    false_result.stdout + false_result.stderr,
+                )
+
+                params = json.loads(
+                    (default_dir / "params.json").read_text(encoding="utf-8")
+                )
+                self.assertEqual(
+                    round(max(data["frame"]) * params["scale"]),
+                    1024 if scale == 3.2 else 512,
+                )
+                for k in range(8):
+                    default_frame = self._despill_frame(default_dir, k)
+                    false_frame = self._despill_frame(false_dir, k)
+                    source_x, source_y = self._despill_source_coordinates(
+                        default_frame, params, params["frames"][f"r0k{k}"]
+                    )
+                    band = (
+                        (source_x >= 406)
+                        & (source_x < 412)
+                        & (source_y >= 480)
+                        & (source_y < 504)
+                    )
+                    self.assertGreater(
+                        int(band.sum()), 0, f"Пустая полоса 7–12 пикселей в кадре k={k}"
+                    )
+                    self.assertTrue(
+                        np.all((default_frame[..., 3][band] == 255))
+                        and np.all(false_frame[..., 3][band] == 255),
+                        f"Полоса 7–12 пикселей оказалась прозрачной в кадре k={k}",
+                    )
+                    self.assertTrue(
+                        np.array_equal(default_frame[band], false_frame[band]),
+                        f"Пиксели на расстоянии 7–12 изменились в кадре k={k}",
+                    )
+                    if scale == 3.2:
+                        distances = np.rint(source_x[band] - 399.5).astype(np.int16)
+                        self.assertEqual(
+                            set(distances.tolist()),
+                            set(range(7, 13)),
+                            f"Полоса не покрывает расстояния 7–12 в кадре k={k}",
+                        )
+
+    def test_39_despill_formula_and_positive_condition(self):
+        unit_dir, data, _ = self._despill_unit(compact=True)
+        default_dir = self.root / "build_despill_formula_default"
+        default_result = self.run_tool("build", default_dir, unit=unit_dir)
+        self.assertEqual(
+            default_result.returncode,
+            0,
+            default_result.stdout + default_result.stderr,
+        )
+
+        false_data = dict(data)
+        false_data["despill"] = False
+        self.save_unit(unit_dir, false_data)
+        false_dir = self.root / "build_despill_formula_false"
+        false_result = self.run_tool("build", false_dir, unit=unit_dir)
+        self.assertEqual(
+            false_result.returncode,
+            0,
+            false_result.stdout + false_result.stderr,
+        )
+
+        params = json.loads((default_dir / "params.json").read_text(encoding="utf-8"))
+        samples = (
+            ((400, 406, 520, 536), (80, 40, 40, 255), (160, 40, 120, 255)),
+            ((400, 406, 560, 568), (40, 40, 80, 255), (120, 40, 160, 255)),
+        )
+        for k in range(8):
+            default_frame = self._despill_frame(default_dir, k)
+            false_frame = self._despill_frame(false_dir, k)
+            source_x, source_y = self._despill_source_coordinates(
+                default_frame, params, params["frames"][f"r0k{k}"]
+            )
+
+            for region, cleaned_rgba, original_rgba in samples:
+                left, right, top, bottom = region
+                probe = (
+                    (source_x >= left)
+                    & (source_x < right)
+                    & (source_y >= top)
+                    & (source_y < bottom)
+                )
+                with self.subTest(k=k, probe=region):
+                    self.assertGreater(int(probe.sum()), 0, "Цветная проба пуста")
+                    self.assertTrue(
+                        np.all(default_frame[probe] == np.asarray(cleaned_rgba)),
+                        f"Очистка дала неверный RGBA в пробе {region}, кадр k={k}",
+                    )
+                    self.assertTrue(
+                        np.all(false_frame[probe] == np.asarray(original_rgba)),
+                        f"Сборка с despill=false изменила пробу {region}, кадр k={k}",
+                    )
+
+            negative = (
+                (source_x >= 400)
+                & (source_x < 406)
+                & (source_y >= 544)
+                & (source_y < 560)
+            )
+            with self.subTest(k=k, probe="s<0"):
+                self.assertGreater(int(negative.sum()), 0, "Проба s<0 пуста")
+                self.assertTrue(
+                    np.array_equal(default_frame[negative], false_frame[negative]),
+                    f"Пиксели с s<0 изменились в кадре k={k}",
+                )
+                self.assertTrue(
+                    np.all(false_frame[negative] == np.asarray((100, 140, 100, 255))),
+                    f"Исходный цвет пробы s<0 изменился в кадре k={k}",
+                )
+
+            diagonal = (
+                (source_x >= 555.5)
+                & (source_x < 556.5)
+                & (source_y >= 500.5)
+                & (source_y < 501.5)
+            )
+            with self.subTest(k=k, probe="diagonal"):
+                self.assertEqual(
+                    int(diagonal.sum()), 1, "Диагональная проба должна быть одним пикселем"
+                )
+                self.assertTrue(
+                    np.array_equal(default_frame[diagonal], false_frame[diagonal]),
+                    f"Пиксель на расстоянии sqrt(50) изменился в кадре k={k}",
+                )
+                self.assertTrue(
+                    np.all(false_frame[diagonal] == np.asarray((130, 30, 130, 255))),
+                    f"Исходный цвет диагональной пробы изменился в кадре k={k}",
+                )
 
 
 if __name__ == "__main__":

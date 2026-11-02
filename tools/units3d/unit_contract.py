@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+from decimal import Decimal
 import json
 import math
 import os
@@ -700,7 +701,7 @@ def _dedupe_sites(sites: list[dict[str, Any]]) -> list[dict[str, Any]]:
 def parse_carryall_offset(source: SourceIndex) -> tuple[int, dict[str, Any]]:
     path = "src/gameobjects/units/cUnit.cpp"
     lines = source.function_lines(path, "void cUnit::draw()")
-    branches: list[tuple[int, dict[str, Any]]] = []
+    branches: list[tuple[Decimal, dict[str, Any]]] = []
     for index, (_, line) in enumerate(lines):
         if "if (iType == CARRYALL)" not in line:
             continue
@@ -718,7 +719,7 @@ def parse_carryall_offset(source: SourceIndex) -> tuple[int, dict[str, Any]]:
                 (line_number, branch_line, match)
                 for line_number, branch_line in branch
                 if (match := re.search(
-                    r"(?:visualY\s*\+\s*|destination\.y\s*\+=\s*)(\d+)(?:\.0F)?",
+                    r"(?:visualY\s*\+\s*|destination\.y\s*\+=\s*)(\d+(?:\.\d+)?F?)(?![\w.])",
                     branch_line,
                 ))
             ),
@@ -727,7 +728,8 @@ def parse_carryall_offset(source: SourceIndex) -> tuple[int, dict[str, Any]]:
         if offset_line is None:
             raise ValueError("CARRYALL visualY offset was not found in its branch")
         line_number, branch_line, match = offset_line
-        branches.append((int(match.group(1)), {
+        offset_literal = match.group(1).removesuffix("F")
+        branches.append((Decimal(offset_literal), {
             "ref": f"{path}:{line_number}",
             "identifier": branch_line.strip(),
         }))
@@ -739,7 +741,9 @@ def parse_carryall_offset(source: SourceIndex) -> tuple[int, dict[str, Any]]:
             f"CARRYALL shadow offsets differ between HD and non-HD branches: "
             f"{hd_offset} and {non_hd_offset}"
         )
-    return non_hd_offset, branches[1][1]
+    if non_hd_offset != non_hd_offset.to_integral_value():
+        raise ValueError("CARRYALL visualY offset must be an integer")
+    return int(non_hd_offset), branches[1][1]
 
 
 def parse_draw_geometry(
@@ -1669,8 +1673,6 @@ def markdown_document(contract: dict[str, Any]) -> str:
             if not separator or not line_number.isdigit():
                 continue
             links.append(f"[{reference}](../../{source_path}#L{line_number})")
-            if len(links) == 3:
-                break
         return ", ".join(links) if links else "—"
 
     lines = [
