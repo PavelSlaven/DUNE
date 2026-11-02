@@ -96,6 +96,7 @@ public:
     void addDebugLine(std::string basicString);
 
 private:
+    friend class UiAuditAccess;
     cInputObserver *_mouseObserver;
     GameContext* m_ctx = nullptr;
     cTextDrawer* m_textDrawer = nullptr;

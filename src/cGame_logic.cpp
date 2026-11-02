@@ -9,6 +9,7 @@
   2001 - 2022 (c) code by Stefan Hendriks
 
 */
+#include "debug/UiAudit.hpp"
 #include "cGame.h"
 #include "audio/MusicController.h"
 #include "audio/MusicTransitionPolicy.hpp"
@@ -796,12 +797,18 @@ void cGame::run()
         renderDrawer->beginDrawingToTexture(frameTarget);
         SDL_RenderSetLogicalSize(renderer, m_screenW, m_screenH);
         renderDrawer->renderClearToColor();
+        if (uiaudit::isEnabled()) {
+            uiaudit::beginFrame(*this);
+        }
         drawState(); // run game state, includes interaction + drawing
         transitionStateIfRequired();
         shakeScreenAndBlitBuffer();
 
         renderDrawer->endDrawingToTexture();
         presentFrame(frameTarget, hdPresentationFrame);
+        if (uiaudit::isEnabled()) {
+            uiaudit::onFramePresented(*this);
+        }
         SDL_RenderPresent(renderer);
         m_timeManager->waitForCPU(); // wait for CPU to catch up, so we don't run too fast
     }

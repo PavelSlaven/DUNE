@@ -1,11 +1,22 @@
 #include "gui/GuiObject.h"
 #include "d2tmc.h"
 #include "drawers/SDLDrawer.hpp"
+#include "debug/UiAudit.hpp"
 #include <iostream>
 
 void GuiObject::setTheme(const GuiTheme& theme)
 {
     m_theme = theme;
+}
+
+void GuiObject::auditRecord(const char *type) const
+{
+    uiaudit::recordGui(type, m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight());
+}
+
+void GuiObject::auditClick(const std::string &name) const
+{
+    uiaudit::recordClick(name.c_str(), m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight());
 }
 
 void GuiObject::drawRectBorder(Color borderRect, Color borderBottomRight) const

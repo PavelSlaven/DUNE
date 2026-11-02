@@ -43,6 +43,7 @@ enum eMentatState {
 
 class AbstractMentat : public cInputObserver {
 public:
+    friend class UiAuditAccess;
     AbstractMentat(
         GameContext* ctx,
         bool canMissionSelect,

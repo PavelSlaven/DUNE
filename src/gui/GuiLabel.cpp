@@ -1,3 +1,4 @@
+#include "debug/UiAudit.hpp"
 #include "gui/GuiLabel.hpp"
 
 #include "d2tmc.h"
@@ -21,6 +22,9 @@ void GuiLabel::draw() const
 {
     if (!m_enabled)
         return;
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiLabel");
+    }
     switch (m_renderKind) {
         case OPAQUE_WITHOUT_BORDER:
             renderDrawer->renderRectFillColor(m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight(), m_theme.fillColor);

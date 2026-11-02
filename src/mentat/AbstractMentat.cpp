@@ -12,6 +12,7 @@
 
 #include "AbstractMentat.h"
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "data/gfxmentat.h"
 #include "definitions.h"
 #include "drawers/SDLDrawer.hpp"
@@ -431,6 +432,9 @@ void AbstractMentat::draw()
     draw_other();
 
     if (state == SPEAKING) {
+        if (uiaudit::isEnabled()) {
+            uiaudit::recordCanvasClick("mentat-skip");
+        }
         // draw text that is being spoken
         if (iMentatSentence >= 0) {
             if (m_adaptiveHdLayout) {

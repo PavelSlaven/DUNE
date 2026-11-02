@@ -1,3 +1,4 @@
+#include "debug/UiAudit.hpp"
 #include "gui/GuiCheckBox.hpp"
 
 #include "d2tmc.h"
@@ -22,6 +23,12 @@ GuiCheckBox::~GuiCheckBox()
 
 void GuiCheckBox::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiCheckBox");
+        if (m_enabled) {
+            auditClick("GuiCheckBox");
+        }
+    }
     switch (m_renderKind) {
         case OPAQUE_WITHOUT_BORDER:
             renderDrawer->renderRectFillColor(m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight(), m_theme.fillColor);

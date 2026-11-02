@@ -22,6 +22,8 @@ enum class MusicCategory : std::size_t {
 };
 
 class MusicController {
+    friend class UiAuditAccess;
+
 public:
     MusicController(cSoundPlayer *soundPlayer, const std::filesystem::path &gameDirectory);
 

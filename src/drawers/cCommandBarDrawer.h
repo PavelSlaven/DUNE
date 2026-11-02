@@ -13,6 +13,7 @@ class GameContext;
 class Texture;
 
 class cCommandBarDrawer {
+    friend class UiAuditAccess;
 public:
     explicit cCommandBarDrawer(GameContext *ctx, cPlayer *player);
     ~cCommandBarDrawer();

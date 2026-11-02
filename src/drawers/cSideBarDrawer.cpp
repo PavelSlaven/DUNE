@@ -1,6 +1,7 @@
 #include "cSideBarDrawer.h"
 
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
 #include "drawers/cOrderDrawer.h"
@@ -90,11 +91,17 @@ void cSideBarDrawer::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 // draws the sidebar on screen
 void cSideBarDrawer::draw()
 {
+    if (uiaudit::isEnabled()) {
+        UiAuditAccess::recordSidebarClicks(*this);
+    }
     if (game.isHdGraphicsActive()) {
         drawHdSidebar();
         return;
     }
 
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("sidebar", game.m_screenW - cSideBar::SidebarWidth, cSideBar::TopBarHeight, cSideBar::SidebarWidth, game.m_screenH - cSideBar::TopBarHeight);
+    }
     // black out sidebar
     renderDrawer->renderRectFillColor((game.m_screenW - cSideBar::SidebarWidth), 0, cSideBar::SidebarWidth, game.m_screenH, Color{0, 0, 0,255});
 
@@ -112,6 +119,9 @@ void cSideBarDrawer::drawHdSidebar()
         game.m_screenW,
         game.m_screenH
     );
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("sidebar", layout.sidebar.getX(), cSideBar::TopBarHeight, layout.sidebar.getWidth(), layout.sidebar.getHeight() - cSideBar::TopBarHeight);
+    }
     renderDrawer->renderRectFillColor(
         layout.sidebar.getX(),
         layout.sidebar.getY(),
@@ -397,6 +407,9 @@ void cSideBarDrawer::drawHdBuildingLists()
         );
     }
 
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("build-list", layout.catalog.getX(), layout.catalog.getY(), layout.catalog.getWidth(), layout.catalog.getHeight());
+    }
     renderDrawer->renderRectFillColor(
         layout.catalog.getX(),
         layout.catalog.getY(),
@@ -465,6 +478,10 @@ void cSideBarDrawer::drawBuildingLists()
 
     int startY = cSideBar::TopBarHeight + cSideBar::HeightOfMinimap + cSideBar::HorizontalCandyBarHeight +
                  cSideBar::HeightOfListButton;
+
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("build-list", drawX, startY, game.m_screenW - drawX, game.m_screenH - startY);
+    }
 
     for (; drawX < game.m_screenW; drawX += backgroundSprite->w) {
         for (int drawY=startY; drawY < game.m_screenH; drawY += backgroundSprite->h) {
