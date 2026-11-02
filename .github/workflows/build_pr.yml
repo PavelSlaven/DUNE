@@ -36,7 +36,7 @@ jobs:
       - name: Build
         run: |
           cd "${{ github.workspace }}\build"
-          cmake --build . --target all -- -j -l 3
+          cmake --build . --target all -- -j 4
       - name: Test
         run: |
           cd "${{ github.workspace }}\build"
