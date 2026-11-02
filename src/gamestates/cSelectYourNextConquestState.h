@@ -116,7 +116,6 @@ private:
 
     void drawStateIntroduction() const;
 
-    void drawLogoInFourCorners(int iHouse) const;
 
     void drawHdBackground() const;
     void drawHdChrome() const;
@@ -143,7 +142,6 @@ private:
     cTextDrawer* m_textDrawer = nullptr;
     Graphics* m_gfxworld;
     Graphics* m_gfxinter;
-    bool m_hdLayout = false;
     CampaignMapLayout m_hdCampaignLayout;
     Texture* m_hdBackground = nullptr;
     Texture* m_hdCampaignMap = nullptr;

@@ -29,5 +29,4 @@ private:
 
     GuiWindow *gui_window;
     Texture *m_hdBackground = nullptr;
-    bool m_hdLayout = false;
 };

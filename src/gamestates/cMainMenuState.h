@@ -29,7 +29,6 @@ public:
     eGameStateType getType() override;
 
 private:
-    void buildClassicMenu();
     void buildHdMenu();
     void drawHdBackground() const;
 
@@ -52,7 +51,5 @@ private:
     Texture *bmp_D2TM_Title;
     Texture *m_hdMenuBackground = nullptr;
     Texture *m_hdMenuLogo = nullptr;
-    Texture *backGroundDebug = nullptr;
     std::unique_ptr<SaveSlotsDialog> m_saveDialog;
-    bool m_hdLayout = false;
 };

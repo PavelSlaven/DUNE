@@ -35,18 +35,3 @@ int resolveWorldScalePercent(
         ? selectedWorldScalePercent
         : calculateAutomaticWorldScalePercent(outputHeight);
 }
-
-int selectHdAssetDensityForDisplay(
-    int outputWidth,
-    int outputHeight,
-    int logicalWidth,
-    int logicalHeight,
-    int worldScalePercent)
-{
-    static_cast<void>(outputWidth);
-    static_cast<void>(outputHeight);
-    static_cast<void>(logicalWidth);
-    static_cast<void>(logicalHeight);
-    static_cast<void>(worldScalePercent);
-    return 4;
-}

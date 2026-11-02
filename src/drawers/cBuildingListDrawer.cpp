@@ -97,10 +97,8 @@ void cBuildingListDrawer::drawButtonHoverRectangle(cBuildingList *list)
     int y = list->getButtonDrawY();
     int id = list->getButtonIconIdUnpressed();
 
-    int width = game.isHdGraphicsActive() ? list->getButtonWidth() : 33;
-    int height = game.isHdGraphicsActive()
-        ? list->getButtonHeight()
-        : m_gfxinter->getLogicalHeight(id);
+    int width = list->getButtonWidth();
+    int height = list->getButtonHeight();
 
     Color color = m_player->getSelectFadingColor();
 
@@ -127,117 +125,77 @@ void cBuildingListDrawer::drawButton(cBuildingList *list, bool pressed)
     }
 
 //	int width = (gfxinter->getSurface(id))->w;
-    int width = game.isHdGraphicsActive() ? list->getButtonWidth() : 33;
-    int height = game.isHdGraphicsActive()
-        ? list->getButtonHeight()
-        : m_gfxinter->getLogicalHeight(id);
+    int width = list->getButtonWidth();
+    int height = list->getButtonHeight();
 
-    if (game.isHdGraphicsActive()) {
-        const Color panel{18, 22, 25, 255};
-        const Color border{93, 78, 49, 255};
-        const Color active{217, 164, 54, 255};
-        renderDrawer->renderRectFillColor(x, y, width, height, panel);
+    const Color panel{18, 22, 25, 255};
+    const Color border{93, 78, 49, 255};
+    const Color active{217, 164, 54, 255};
+    renderDrawer->renderRectFillColor(x, y, width, height, panel);
 
-        Texture *icon = m_gfxinter->getTexture(id);
-        const int availableWidth = std::max(1, width - 8);
-        const int availableHeight = std::max(1, height - 6);
-        const float scale = std::min(
-            static_cast<float>(availableWidth) / icon->w,
-            static_cast<float>(availableHeight) / icon->h
-        );
-        const int iconWidth = std::max(1, static_cast<int>(icon->w * scale));
-        const int iconHeight = std::max(1, static_cast<int>(icon->h * scale));
-        const cRectangle iconRect(
-            x + (width - iconWidth) / 2,
-            y + (height - iconHeight) / 2,
-            iconWidth,
-            iconHeight
-        );
-        renderDrawer->renderStrechFullSprite(
-            icon,
-            iconRect,
-            list->isAvailable() ? 255 : 96
-        );
-        if (!list->isAvailable()) {
-            renderDrawer->renderRectFillColor(
-                iconRect,
-                Color{20, 22, 23, 255},
-                138
-            );
-        }
-        renderDrawer->renderRectColor(
-            x,
-            y,
-            width,
-            height,
-            pressed ? active : border
-        );
-        if (pressed) {
-            renderDrawer->renderRectFillColor(
-                x + 2,
-                y + height - 3,
-                width - 4,
-                2,
-                active
-            );
-            list->stopFlashing();
-        }
-        else if (list->isFlashing()) {
-            renderDrawer->renderRectColor(
-                x + 1,
-                y + 1,
-                width - 2,
-                height - 2,
-                list->getFlashingColor()
-            );
-        }
-        return;
-    }
-
-    // clear
-    renderDrawer->renderSprite(m_gfxinter->getTexture(list->getButtonIconIdUnpressed()), x, y);		// draw pressed button version (unpressed == default in gui)
-
-    // set blender
-    renderDrawer->renderSprite(m_gfxinter->getTexture(id), x, y,128);
-
+    Texture *icon = m_gfxinter->getTexture(id);
+    const int availableWidth = std::max(1, width - 8);
+    const int availableHeight = std::max(1, height - 6);
+    const float scale = std::min(
+        static_cast<float>(availableWidth) / icon->w,
+        static_cast<float>(availableHeight) / icon->h
+    );
+    const int iconWidth = std::max(1, static_cast<int>(icon->w * scale));
+    const int iconHeight = std::max(1, static_cast<int>(icon->h * scale));
+    const cRectangle iconRect(
+        x + (width - iconWidth) / 2,
+        y + (height - iconHeight) / 2,
+        iconWidth,
+        iconHeight
+    );
+    renderDrawer->renderStrechFullSprite(
+        icon,
+        iconRect,
+        list->isAvailable() ? 255 : 96
+    );
     if (!list->isAvailable()) {
-        renderDrawer->renderRectFillColor(x, y, width, height, 0,0,0,96);
+        renderDrawer->renderRectFillColor(
+            iconRect,
+            Color{20, 22, 23, 255},
+            138
+        );
     }
-
+    renderDrawer->renderRectColor(
+        x,
+        y,
+        width,
+        height,
+        pressed ? active : border
+    );
     if (pressed) {
+        renderDrawer->renderRectFillColor(
+            x + 2,
+            y + height - 3,
+            width - 4,
+            2,
+            active
+        );
         list->stopFlashing();
-
-        Color color = m_player->getHouseFadingColor();
-
-        renderDrawer->renderRectColor(x, y, width, height, color);
-        renderDrawer->renderRectColor(x + 1, y + 1, width - 2, height - 2, color);
     }
-    else {
-        if (list->isFlashing()) {
-            Color color = list->getFlashingColor();
-
-            renderDrawer->renderRectColor(x, y, width, height, color);
-            renderDrawer->renderRectColor(x + 1, y + 1, width - 2, height - 2, color);
-            renderDrawer->renderRectColor(x + 2, y + 2, width - 3, height - 3, color);
-        }
+    else if (list->isFlashing()) {
+        renderDrawer->renderRectColor(
+            x + 1,
+            y + 1,
+            width - 2,
+            height - 2,
+            list->getFlashingColor()
+        );
     }
 }
 
-
 int cBuildingListDrawer::getDrawX()
 {
-    if (game.isHdGraphicsActive()) {
-        return getLayout().cards.getX();
-    }
-    return (game.m_screenW - cSideBar::SidebarWidthWithoutCandyBar) + 2;
+    return getLayout().cards.getX();
 }
 
 int cBuildingListDrawer::getDrawY()
 {
-    if (game.isHdGraphicsActive()) {
-        return getLayout().cards.getY();
-    }
-    return cSideBar::TopBarHeight + 230 + 30;
+    return getLayout().cards.getY();
 }
 
 /**
@@ -247,7 +205,6 @@ int cBuildingListDrawer::getDrawY()
  */
 void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructureSize)
 {
-    const bool hdMode = game.isHdGraphicsActive();
     const HudLayout layout = getLayout(list);
     const int scrollRow = getScrollRow(list);
 
@@ -265,21 +222,16 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
     // Start drawing the 'icons grid'
     int withOfIcon = getCardWidth();
     int heightOfIcon = getCardHeight();
-    const int columns = getColumnCount();
-    const int cardGap = getCardGap();
 
-    if (hdMode) {
-        renderDrawer->setClippingFor(
-            layout.cards.getX(),
-            layout.cards.getY(),
-            layout.cards.getEndX(),
-            layout.cards.getEndY()
-        );
-    }
+    renderDrawer->setClippingFor(
+        layout.cards.getX(),
+        layout.cards.getY(),
+        layout.cards.getEndX(),
+        layout.cards.getEndY()
+    );
 
     // Draw the visible icon rows. HD positions come from HudLayout so drawing
     // and hit testing cannot drift apart.
-    int rowNr = 0;
     for (int i = 0; i < end; i++) {
         cBuildingListItem *item = list->getItem(i);
 
@@ -287,15 +239,13 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
             continue; // allow gaps in the list data structure (just not with rendering)
         }
 
-        if (hdMode) {
-            const cRectangle card = layout.cardRect(i, scrollRow);
-            if (card.getEndY() <= layout.cards.getY() ||
-                card.getY() >= layout.cards.getEndY()) {
-                continue;
-            }
-            iDrawX = card.getX();
-            iDrawY = card.getY();
+        const cRectangle card = layout.cardRect(i, scrollRow);
+        if (card.getEndY() <= layout.cards.getY() ||
+            card.getY() >= layout.cards.getEndY()) {
+            continue;
         }
+        iDrawX = card.getX();
+        iDrawY = card.getY();
 
         int iDrawXEnd = iDrawX + withOfIcon;
         int iDrawYEnd = iDrawY + heightOfIcon;
@@ -306,16 +256,7 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
         // icon id must be set , assert it.
         assert(item->getIconId() > -1);
 
-        if (hdMode) {
-            drawHdCard(item, iDrawX, iDrawY);
-        }
-        else {
-            renderDrawer->renderSprite(
-                m_gfxinter->getTexture(item->getIconId()),
-                iDrawX,
-                iDrawY
-            );
-        }
+        drawHdCard(item, iDrawX, iDrawY);
 
         if (shouldDrawStructureSize) {
             drawStructureSize(item->getBuildId(), iDrawX, iDrawY);
@@ -325,7 +266,7 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
         if (item->isBuilding()) {
             int iFrame = item->getBuildProgressFrame();
 
-            if (hdMode && (!item->isDoneBuilding() || iFrame < 31)) {
+            if (!item->isDoneBuilding() || iFrame < 31) {
                 const int progressWidth = std::clamp(
                     (withOfIcon - 4) * iFrame / 31,
                     0,
@@ -350,11 +291,6 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
                     selectFadingColor
                 );
             }
-            else if (!item->isDoneBuilding() || iFrame < 31) {
-                // draw the other progress stuff
-                renderDrawer->renderSprite(m_gfxinter->getTexture(PROGRESSFIX), iDrawX+2, iDrawY+2,128);
-                renderDrawer->renderSprite(m_gfxinter->getTexture(PROGRESS001+iFrame), iDrawX+2, iDrawY+2,128);
-            }
             else {
                 if (item->shouldPlaceIt()) {
                     const Color readyColor = m_player->isContextMouseState(
@@ -363,7 +299,7 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
                     m_smallTextDrawer->drawTextScaledCenteredInBox(
                         m_readyLabel,
                         cRectangle(iDrawX + 2, iDrawY + 2, withOfIcon - 4, heightOfIcon - 32),
-                        hdMode ? 1.0F : 0.85F,
+                        1.0F,
                         readyColor
                     );
                 }
@@ -374,7 +310,7 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
                     m_smallTextDrawer->drawTextScaledCenteredInBox(
                         m_readyLabel,
                         cRectangle(iDrawX + 2, iDrawY + 2, withOfIcon - 4, heightOfIcon - 32),
-                        hdMode ? 1.0F : 0.85F,
+                        1.0F,
                         readyColor
                     );
                 }
@@ -399,26 +335,16 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
             }
 
             if (!item->isAvailable() || isBuildingSameSubListItem) {
-                if (hdMode) {
-                    renderDrawer->renderRectFillColor(
-                        iDrawX,
-                        iDrawY,
-                        withOfIcon,
-                        heightOfIcon - 32,
-                        0,
-                        0,
-                        0,
-                        128
-                    );
-                }
-                else {
-                    renderDrawer->renderSprite(
-                        m_gfxinter->getTexture(PROGRESSNA),
-                        iDrawX,
-                        iDrawY,
-                        64
-                    );
-                }
+                renderDrawer->renderRectFillColor(
+                    iDrawX,
+                    iDrawY,
+                    withOfIcon,
+                    heightOfIcon - 32,
+                    0,
+                    0,
+                    0,
+                    128
+                );
 
                 // Pending upgrading (ie: an upgrade is progressing, blocking the construction of these items)
                 if (item->isPendingUpgrading()) {
@@ -454,26 +380,16 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
                 // only for starport show you can't pay it, as we allow building units when you cannot pay it (ie partial
                 // payment/progress)
                 if (cannotPayIt) {
-                    if (hdMode) {
-                        renderDrawer->renderRectFillColor(
-                            iDrawX,
-                            iDrawY,
-                            withOfIcon,
-                            heightOfIcon - 32,
-                            0,
-                            0,
-                            0,
-                            128
-                        );
-                    }
-                    else {
-                        renderDrawer->renderSprite(
-                            m_gfxinter->getTexture(PROGRESSNA),
-                            iDrawX,
-                            iDrawY,
-                            64
-                        );
-                    }
+                    renderDrawer->renderRectFillColor(
+                        iDrawX,
+                        iDrawY,
+                        withOfIcon,
+                        heightOfIcon - 32,
+                        0,
+                        0,
+                        0,
+                        128
+                    );
                     Color errorFadingColor = m_player->getErrorFadingColor();
                     renderDrawer->renderRectColor(iDrawX, iDrawY, iDrawXEnd-iDrawX, iDrawYEnd-iDrawY, errorFadingColor);
                     renderDrawer->renderLine( iDrawX, iDrawY, iDrawXEnd, iDrawYEnd, errorFadingColor);
@@ -501,29 +417,23 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
 
         if (showAmount) {
             // draw number of times to build this thing (queueing)
-            int textX = hdMode
-                ? iDrawX + withOfIcon - 20
-                : iDrawX + 41;
-            int textY = hdMode
-                ? iDrawY + heightOfIcon - 51
-                : iDrawY + 16;
+            int textX = iDrawX + withOfIcon - 20;
+            int textY = iDrawY + heightOfIcon - 51;
 
             if (amountToShow < 10) {
-                textX += hdMode ? 6 : 10;
+                textX += 6;
             }
 
-            if (hdMode) {
-                renderDrawer->renderRectFillColor(
-                    textX - 3,
-                    textY - 1,
-                    withOfIcon - (textX - iDrawX) - 1,
-                    16,
-                    8,
-                    10,
-                    12,
-                    220
-                );
-            }
+            renderDrawer->renderRectFillColor(
+                textX - 3,
+                textY - 1,
+                withOfIcon - (textX - iDrawX) - 1,
+                16,
+                8,
+                10,
+                12,
+                220
+            );
 
             // draw
             m_gameTextDrawer->drawText(textX, textY, std::format("{}",amountToShow));
@@ -551,23 +461,10 @@ void cBuildingListDrawer::drawList(cBuildingList *list, bool shouldDrawStructure
                 renderDrawer->renderRectColor(iDrawX, iDrawY, iDrawXEnd-iDrawX, iDrawYEnd-iDrawY, color);
             }
         }
-
-        // update coordinates
-        if (!hdMode && rowNr < columns - 1) {
-            iDrawX += withOfIcon + cardGap;
-            rowNr++;
-        }
-        else if (!hdMode) {
-            rowNr = 0;
-            iDrawX=getDrawX();
-            iDrawY += heightOfIcon + cardGap;
-        }
     }
 
-    if (hdMode) {
-        renderDrawer->resetClippingFor();
-        drawHdScrollbar(list, layout);
-    }
+    renderDrawer->resetClippingFor();
+    drawHdScrollbar(list, layout);
 }
 
 /**
@@ -597,10 +494,8 @@ void cBuildingListDrawer::drawStructureSize(int structureId, int x, int y)
         iTile = GRID_3X3;
     }
 
-    const int gridX = game.isHdGraphicsActive()
-        ? x + getCardWidth() - 22
-        : x + 43;
-    const int gridY = game.isHdGraphicsActive() ? y + 3 : y + 20;
+    const int gridX = x + getCardWidth() - 22;
+    const int gridY = y + 3;
     renderDrawer->renderRectFillColor(gridX, gridY,19,19,8,10,12,220);
     renderDrawer->renderSprite(m_gfxinter->getTexture(GRID_0X0), gridX, gridY);
     renderDrawer->renderSprite(m_gfxinter->getTexture(iTile), gridX, gridY);
@@ -621,82 +516,41 @@ cBuildingListItem *cBuildingListDrawer::isOverItemCoordinates(cBuildingList *lis
 {
     assert(list != nullptr);
 
-    if (game.isHdGraphicsActive()) {
-        const HudLayout layout = getLayout(list);
-        if (!layout.cards.isPointWithin(x, y)) {
-            return nullptr;
-        }
-        const int scrollRow = getScrollRow(list);
-        for (int i = 0; i < list->getItemCount(); ++i) {
-            cBuildingListItem *item = list->getItem(i);
-            if (item == nullptr) {
-                continue;
-            }
-            const cRectangle card = layout.cardRect(i, scrollRow);
-            if (card.getY() < layout.cards.getY() ||
-                card.getEndY() > layout.cards.getEndY()) {
-                continue;
-            }
-            if (card.isPointWithin(x, y)) {
-                return item;
-            }
-        }
+    const HudLayout layout = getLayout(list);
+    if (!layout.cards.isPointWithin(x, y)) {
         return nullptr;
     }
-
-    // starting draw coordinates
-    int iDrawX=getDrawX();
-    int iDrawY=getDrawY();
-
-    int end = MAX_ITEMS;
-
-    int rowNr = 0;
-    for (int i = 0; i < end; i++) {
+    const int scrollRow = getScrollRow(list);
+    for (int i = 0; i < list->getItemCount(); ++i) {
         cBuildingListItem *item = list->getItem(i);
-        if (item == nullptr) break;
-
-        if (isOverItemCoordinates_Boolean(x, y, iDrawX, iDrawY)) {
+        if (item == nullptr) {
+            continue;
+        }
+        const cRectangle card = layout.cardRect(i, scrollRow);
+        if (card.getY() < layout.cards.getY() ||
+            card.getEndY() > layout.cards.getEndY()) {
+            continue;
+        }
+        if (card.isPointWithin(x, y)) {
             return item;
         }
-
-        if (rowNr < getColumnCount() - 1) {
-            rowNr++;
-            iDrawX += getCardWidth() + getCardGap();
-        }
-        else {
-            iDrawY += getCardHeight() + getCardGap();
-            iDrawX=getDrawX();
-            rowNr = 0;
-        }
     }
-
     return nullptr;
-}
-
-int cBuildingListDrawer::getColumnCount() const
-{
-    if (!game.isHdGraphicsActive()) {
-        return 3;
-    }
-    return getLayout().columns;
 }
 
 int cBuildingListDrawer::getCardWidth() const
 {
-    if (!game.isHdGraphicsActive()) {
-        return 63;
-    }
     return getLayout().cardWidth;
 }
 
 int cBuildingListDrawer::getCardHeight() const
 {
-    return game.isHdGraphicsActive() ? getLayout().cardHeight : 47;
+    return getLayout().cardHeight;
 }
 
 int cBuildingListDrawer::getCardGap() const
 {
-    return game.isHdGraphicsActive() ? getLayout().cardGap : 3;
+    return getLayout().cardGap;
 }
 
 void cBuildingListDrawer::drawHdCard(
@@ -723,15 +577,9 @@ void cBuildingListDrawer::drawHdCard(
     );
 
     Texture *icon = m_gfxinter->getTexture(item->getIconId());
-    // Classic icons have a baked 10 px title strip. HD masters contain only
-    // clean artwork; the localized title is rendered in the separate label
-    // block below the image.
-    const int sourceHeight = game.isHdGraphicsActive()
-        ? icon->h
-        : std::max(1, icon->h - 10);
     renderDrawer->renderStrechSprite(
         icon,
-        cRectangle(0, 0, icon->w, sourceHeight),
+        cRectangle(0, 0, icon->w, icon->h),
         cRectangle(x + 3, y + 3, cardWidth - 6, imageHeight - 5)
     );
 
@@ -882,7 +730,7 @@ HudLayout cBuildingListDrawer::getLayout(cBuildingList *list) const
         list != nullptr &&
         list->getType() == eListType::LIST_STARPORT;
     return HudLayout::create(
-        game.isHdGraphicsActive(),
+        true,
         game.m_screenW,
         game.m_screenH,
         reserveOrderArea
@@ -975,8 +823,7 @@ void cBuildingListDrawer::drawHdScrollbar(
 
 void cBuildingListDrawer::onNotifyMouseEvent(const s_MouseEvent &event)
 {
-    if (!game.isHdGraphicsActive() ||
-        m_player == nullptr ||
+    if (m_player == nullptr ||
         m_player->getSideBar() == nullptr) {
         return;
     }

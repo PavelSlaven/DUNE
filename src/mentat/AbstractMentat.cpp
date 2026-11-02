@@ -27,7 +27,6 @@
 #include <array>
 #include <algorithm>
 #include <cmath>
-#include <filesystem>
 #include <limits>
 #include <sstream>
 #include <vector>
@@ -131,7 +130,7 @@ AbstractMentat::AbstractMentat(
     float hdMissionTextOffsetY)
 {
     gfxmentat = ctx->getGraphicsContext()->gfxmentat.get();
-    m_adaptiveHdLayout = adaptiveHdLayout && game.isHdGraphicsActive();
+    m_adaptiveHdLayout = adaptiveHdLayout;
     m_hdMissionSelectCenterX = hdMissionSelectCenterX;
     m_textDrawer = m_adaptiveHdLayout
         ? ctx->getTextContext()->getMentatHdTextDrawer()
@@ -682,21 +681,11 @@ void AbstractMentat::loadScene(const std::string &scene)
 {
     gfxmovie = nullptr;
 
-    std::string filename = std::format(
-        "data/scenes/sdl_{}.dat",
+    const std::string filename = std::format(
+        "data/scenes/hd4/sdl_{}.dat",
         scene
     );
-    int sceneDensity = 1;
-    if (game.isHdGraphicsActive()) {
-        const std::string candidate = std::format(
-            "data/scenes/hd4/sdl_{}.dat",
-            scene
-        );
-        if (std::filesystem::exists(candidate)) {
-            filename = candidate;
-            sceneDensity = 4;
-        }
-    }
+    const int sceneDensity = cGame::kHdAssetDensity;
 
     gfxmovie = std::make_shared<Graphics>(
         renderDrawer->getRenderer(),

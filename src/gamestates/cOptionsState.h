@@ -5,7 +5,6 @@
 #include "drawers/cTextDrawer.h"
 #include "gui/GuiWindow.h"
 #include "sMouseEvent.h"
-#include "utils/GraphicsMode.hpp"
 #include "utils/GameSettings.hpp"
 
 #include <cstddef>
@@ -55,7 +54,6 @@ private:
     };
 
     cTextDrawer* m_textDrawer = nullptr;
-    bool m_hdLayout = false;
 
     int m_prevState;
 
@@ -71,8 +69,6 @@ private:
     int m_savedWorldScalePercent = 0;
     bool m_selectedFullscreen = false;
     bool m_savedFullscreen = false;
-    GraphicsMode m_selectedGraphicsMode = GraphicsMode::Hd;
-    GraphicsMode m_savedGraphicsMode = GraphicsMode::Hd;
     GameSettings m_selectedSettings;
     std::string m_savedLanguage = "ru";
     OptionsPage m_optionsPage = OptionsPage::Main;
@@ -82,7 +78,6 @@ private:
     GuiLabel *m_resolutionValueLabel = nullptr;
     GuiLabel *m_renderScaleValueLabel = nullptr;
     GuiLabel *m_worldScaleValueLabel = nullptr;
-    GuiLabel *m_graphicsModeValueLabel = nullptr;
     GuiLabel *m_displayStatusLabel = nullptr;
     GuiButton *m_applyDisplayButton = nullptr;
     GuiButton *m_loadGameButton = nullptr;
@@ -98,7 +93,6 @@ private:
     void selectNextRenderScale();
     void selectPreviousWorldScale();
     void selectNextWorldScale();
-    void toggleGraphicsMode();
     void toggleLanguage();
     void requestOptionsPage(OptionsPage page);
     void switchOptionsPage(OptionsPage page);
@@ -108,7 +102,6 @@ private:
     [[nodiscard]] std::string selectedResolutionText() const;
     [[nodiscard]] std::string selectedRenderScaleText() const;
     [[nodiscard]] std::string selectedWorldScaleText() const;
-    [[nodiscard]] std::string selectedGraphicsModeText() const;
     [[nodiscard]] std::string selectedLanguageText() const;
     Texture *m_backgroundTexture = nullptr;
 };

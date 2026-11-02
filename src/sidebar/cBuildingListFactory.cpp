@@ -21,28 +21,20 @@ cBuildingListFactory *cBuildingListFactory::getInstance()
 
 int cBuildingListFactory::getButtonDrawY()
 {
-    if (game.isHdGraphicsActive()) {
-        return HudLayout::create(
-            true,
-            game.m_screenW,
-            game.m_screenH
-        ).tabs.getY();
-    }
-    // 6 pixels margin below horizontal candybar, so it lines up nice horizontally with the sphere
-    // of the vertical candybar at the left of the building list icons
-    return cSideBar::TopBarHeight + cSideBar::HeightOfMinimap + cSideBar::HorizontalCandyBarHeight + 6;
+    return HudLayout::create(
+        true,
+        game.m_screenW,
+        game.m_screenH
+    ).tabs.getY();
 }
 
 int cBuildingListFactory::getButtonDrawXStart()
 {
-    if (game.isHdGraphicsActive()) {
-        return HudLayout::create(
-            true,
-            game.m_screenW,
-            game.m_screenH
-        ).tabs.getX();
-    }
-    return (game.m_screenW - 200) + 2;
+    return HudLayout::create(
+        true,
+        game.m_screenW,
+        game.m_screenH
+    ).tabs.getX();
 }
 
 
@@ -56,17 +48,13 @@ void cBuildingListFactory::initializeList(cBuildingList *list, eListType listTyp
     // Y is the same for all list buttons
     list->setButtonDrawY(getButtonDrawY());
 
-    int widthOfButtonIncludingMargin = 33;
-    int buttonHeight = 27;
-    if (game.isHdGraphicsActive()) {
-        const HudLayout layout = HudLayout::create(
-            true,
-            game.m_screenW,
-            game.m_screenH
-        );
-        widthOfButtonIncludingMargin = layout.tabs.getWidth() / 6;
-        buttonHeight = layout.tabs.getHeight();
-    }
+    const HudLayout layout = HudLayout::create(
+        true,
+        game.m_screenW,
+        game.m_screenH
+    );
+    const int widthOfButtonIncludingMargin = layout.tabs.getWidth() / 6;
+    const int buttonHeight = layout.tabs.getHeight();
     list->setButtonWidth(widthOfButtonIncludingMargin);
     list->setButtonHeight(buttonHeight);
 

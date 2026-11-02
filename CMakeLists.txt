@@ -196,17 +196,6 @@ if(BUILD_TESTING)
     add_test(NAME render_scale_calculations COMMAND render_scale_tests)
 
     add_executable(
-        graphics_mode_tests
-        tests/GraphicsModeTests.cpp
-    )
-    target_include_directories(
-        graphics_mode_tests
-        PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/src
-    )
-    add_test(NAME graphics_mode_selection COMMAND graphics_mode_tests)
-
-    add_executable(
         hud_layout_tests
         tests/HudLayoutTests.cpp
         src/utils/cRectangle.cpp

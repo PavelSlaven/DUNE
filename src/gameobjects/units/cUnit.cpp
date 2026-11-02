@@ -540,7 +540,7 @@ cRectangle cUnit::getVisualRectangle()
     ));
     const float visualScale = unitWorldScaleFactor(
         game.getWorldScaleFactor(),
-        gfxdata && gfxdata->getDensity() > 1,
+        true,
         iType == TANK || iType == SIEGETANK
     );
     const int visualWidth = static_cast<int>(std::lround(
@@ -794,7 +794,7 @@ void cUnit::draw()
     const float cameraZoom = mapCamera->factorZoomLevel(1.0F);
     const float worldScale = unitWorldScaleFactor(
         game.getWorldScaleFactor(),
-        gfxdata && gfxdata->getDensity() > 1,
+        true,
         iType == TANK || iType == SIEGETANK
     );
     if (shadow) {

@@ -103,11 +103,9 @@ protected:
 
     void drawTopBarBackground();
     void drawTopBarMusicControls();
-    void drawMusicControls(int left, int right, bool hd);
+    void drawMusicControls(int left, int right);
 
 private:
-    void drawOptionBar();
-
     void drawDebugInfoUsages() const;
 
     void drawNotifications();
@@ -124,7 +122,6 @@ private:
     cPlaceItDrawer m_placeitDrawer;
     cStructureDrawer m_structureDrawer;
     Color m_sidebarColor;
-    Texture *btnOptions;
 
     // TODO: bullet/projectile drawer
     cPlayer *m_player;

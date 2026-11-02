@@ -51,7 +51,6 @@ private:
     void drawListWithUnitsOrAbilities(cBuildingList *list); // used for units or palace / starport
 
     bool isOverItemCoordinates_Boolean(int x, int y, int drawX, int drawY);
-    [[nodiscard]] int getColumnCount() const;
     [[nodiscard]] int getCardWidth() const;
     [[nodiscard]] int getCardHeight() const;
     [[nodiscard]] int getCardGap() const;

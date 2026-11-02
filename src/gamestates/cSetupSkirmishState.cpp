@@ -63,23 +63,17 @@ static bool gui_draw_frame(
     int x,
     int y,
     int width,
-    int height,
-    bool hdLayout)
+    int height)
 {
     cRectangle rect = cRectangle(x, y, width, height);
-    if (hdLayout) {
-        renderDrawer->renderRectFillColor(
-            rect,
-            Color{25, 31, 35, 255}
-        );
-        renderDrawer->renderRectColor(
-            rect,
-            Color{173, 125, 39, 255}
-        );
-    }
-    else {
-        renderDrawer->gui_DrawRect(rect);
-    }
+    renderDrawer->renderRectFillColor(
+        rect,
+        Color{25, 31, 35, 255}
+    );
+    renderDrawer->renderRectColor(
+        rect,
+        Color{173, 125, 39, 255}
+    );
     // auto m_mouse = game.getMouse();
     return mouse_within_rect(x, y, width, height);
     // return rect.isPointWithin(m_mouse->getMouseCoords());
@@ -94,52 +88,34 @@ static bool gui_draw_frame_pressed(
     int x1,
     int y1,
     int width,
-    int height,
-    bool hdLayout)
+    int height)
 {
-    if (hdLayout) {
-        const cRectangle rect(x1, y1, width, height);
-        renderDrawer->renderRectFillColor(
-            rect,
-            Color{43, 49, 53, 255}
-        );
-        renderDrawer->renderRectColor(
-            rect,
-            Color{235, 185, 77, 255}
-        );
-        renderDrawer->renderRectColor(
-            x1 + 3,
-            y1 + 3,
-            width - 6,
-            height - 6,
-            Color{102, 78, 35, 255}
-        );
-        return mouse_within_rect(x1, y1, width, height);
-    }
-
-    renderDrawer->renderRectFillColor(x1, y1, width, height, 176,176,196,255);
-    renderDrawer->renderRectColor(x1, y1, width, height, 84,84,120,255);
-
-    // lines to darken the right sides
-    renderDrawer->renderLine(x1+width, y1, x1+width, y1+height, Color{252,252,252,255});
-    renderDrawer->renderLine(x1, y1+height, x1+width, y1+height, Color{252,252,252,255});
-
-    // if ((mouse_x >= x1 && mouse_x < (x1+width)) && (mouse_y >= y1 && mouse_y <= (y1+height)))
+    const cRectangle rect(x1, y1, width, height);
+    renderDrawer->renderRectFillColor(
+        rect,
+        Color{43, 49, 53, 255}
+    );
+    renderDrawer->renderRectColor(
+        rect,
+        Color{235, 185, 77, 255}
+    );
+    renderDrawer->renderRectColor(
+        x1 + 3,
+        y1 + 3,
+        width - 6,
+        height - 6,
+        Color{102, 78, 35, 255}
+    );
     return mouse_within_rect(x1, y1, width, height);
 }
 
 
 cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::shared_ptr<cPreviewMaps> previewMaps) :
     cGameState(game, ctx),
-    m_textDrawer(
-        game.isHdGraphicsActive()
-            ? ctx->getTextContext()->getMenuTextDrawer()
-            : ctx->getTextContext()->getBeneTextDrawer()
-    ),
+    m_textDrawer(ctx->getTextContext()->getMenuTextDrawer()),
     m_previewMaps(std::move(previewMaps)),
     m_gfxinter(ctx->getGraphicsContext()->gfxinter.get())
 {
-    m_hdLayout = game.isHdGraphicsActive();
     for (int i = 0; i < MAX_PLAYERS; i++) {
         s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[i];
         // index 0 == human player, but to keep our lives sane we don't change the index.
@@ -172,27 +148,19 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
     detonateBlooms = true;
 
     // Colors
-    colorDarkishBackground = m_hdLayout
-        ? Color{21, 27, 31, 255}
-        : Color{32, 32, 32,255};
-    colorDarkishBorder = m_hdLayout
-        ? Color{173, 125, 39, 255}
-        : Color{227, 229, 211,255};
-    colorDarkerYellow = m_hdLayout
-        ? Color{255, 224, 139, 255}
-        : Color{225, 177, 21,255};
-    colorDisabled = m_hdLayout
-        ? Color{92, 96, 98, 255}
-        : Color{128, 128, 128,255};
+    colorDarkishBackground = Color{21, 27, 31, 255};
+    colorDarkishBorder = Color{173, 125, 39, 255};
+    colorDarkerYellow = Color{255, 224, 139, 255};
+    colorDisabled = Color{92, 96, 98, 255};
 
     // Basic coordinates
-    topBarHeight = m_hdLayout ? 28 : 21;
+    topBarHeight = 28;
     previewMapHeight = 129;
     previewMapWidth = 129;
     widthOfRightColumn = 300;
-    mapItemButtonHeight = m_hdLayout ? 150 : 175;
+    mapItemButtonHeight = 150;
     mapItemButtonWidth = 145;
-    m_playerRowHeight = m_hdLayout ? 26 : 22;
+    m_playerRowHeight = 26;
 
     // Screen
     screen_x = m_game.m_screenW;
@@ -257,12 +225,10 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
         widthOfRightColumn,
         previewAreaHeight
     );
-    const int previewSize = m_hdLayout
-        ? std::min(widthOfRightColumn - 50, previewAreaHeight - 92)
-        : widthOfRightColumn - 50;
+    const int previewSize = std::min(widthOfRightColumn - 50, previewAreaHeight - 92);
     previewMapRect = cRectangle(
         previewMapX + (widthOfRightColumn - previewSize) / 2,
-        previewMapY + (m_hdLayout ? 18 : 25),
+        previewMapY + (18),
         previewSize,
         previewSize
     );
@@ -301,12 +267,10 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
         .withLabel(localization::text("Next", "Далее"))
         .withTextDrawer(m_textDrawer)
         .withTheme(
-            m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light()
+            GuiTheme::Remaster()
         )
         .withKind(
-            m_hdLayout
-                ? GuiRenderKind::REMASTER_BUTTON
-                : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER
+            GuiRenderKind::REMASTER_BUTTON
         )
         .onClick(nextFunction)
         .build();
@@ -316,12 +280,10 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
             .withLabel(localization::text("Back", "Назад"))
             .withTextDrawer(m_textDrawer)
             .withTheme(
-                m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light()
+                GuiTheme::Remaster()
             )
             .withKind(
-                m_hdLayout
-                    ? GuiRenderKind::REMASTER_BUTTON
-                    : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER
+                GuiRenderKind::REMASTER_BUTTON
             )
             .onClick(previousFunction)
             .build();
@@ -331,10 +293,8 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
     // Starting positions
     int startPointsX = screen_x - widthOfRightColumn;
     int startPointsY = topBarHeight + 6;
-    int startPointHitBoxWidth = m_hdLayout ? 260 : 130;
-    int startPointHitBoxHeight = m_hdLayout
-        ? m_textDrawer->getFontHeight() + 4
-        : 16;
+    int startPointHitBoxWidth = 260;
+    int startPointHitBoxHeight = m_textDrawer->getFontHeight() + 4;
     startPointsRect = cRectangle(startPointsX, startPointsY, startPointHitBoxWidth, startPointHitBoxHeight);
 
     // Worms
@@ -365,9 +325,7 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
     techLevelRect = cRectangle(techLevelX, techLevelY, techLevelHitBoxWidth, techLevelHitBoxHeight);
 
     // Back button (bottom left)
-    int backButtonWidth = m_hdLayout
-        ? 150
-        : m_textDrawer->getTextLength(localization::text(" BACK", " НАЗАД"));
+    int backButtonWidth = 150;
     int backButtonHeight = topBarHeight;
     int backButtonY = screen_y - topBarHeight;
     int backButtonX = 0;
@@ -377,12 +335,10 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
             .withLabel(localization::text("BACK", "НАЗАД"))
             .withTextDrawer(m_textDrawer)
             .withTheme(
-                m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light()
+                GuiTheme::Remaster()
             )
             .withKind(
-                m_hdLayout
-                    ? GuiRenderKind::REMASTER_BUTTON
-                    : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER
+                GuiRenderKind::REMASTER_BUTTON
             )
             .onClick([this]() {
                 m_game.setNextStateToTransitionTo(GAME_MENU);
@@ -391,9 +347,7 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
             .build();
 
     // Start skirmish mission (bottom right)
-    int startButtonWidth = m_hdLayout
-        ? 150
-        : m_textDrawer->getTextLength(localization::text("START", "НАЧАТЬ"));
+    int startButtonWidth = 150;
     int startButtonHeight = topBarHeight;
     int startButtonY = screen_y - topBarHeight;
     int startButtonX = screen_x - startButtonWidth;
@@ -403,12 +357,10 @@ cSetupSkirmishState::cSetupSkirmishState(cGame &game, GameContext* ctx, std::sha
             .withLabel(localization::text("START", "НАЧАТЬ"))
             .withTextDrawer(m_textDrawer)
             .withTheme(
-                m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light()
+                GuiTheme::Remaster()
             )
             .withKind(
-                m_hdLayout
-                    ? GuiRenderKind::REMASTER_BUTTON
-                    : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER
+                GuiRenderKind::REMASTER_BUTTON
             )
             .onClick([this]() {
                 if (iSkirmishMap > -1) {
@@ -433,46 +385,29 @@ void cSetupSkirmishState::thinkFast()
 
 void cSetupSkirmishState::draw() const
 {
-    if (m_hdLayout) {
-        renderDrawer->renderClearToColor(Color{10, 13, 15, 255});
-    }
+    renderDrawer->renderClearToColor(Color{10, 13, 15, 255});
 
     const auto drawPanel = [this](
         const cRectangle &rect,
         Color fill,
         Color border)
     {
-        if (m_hdLayout) {
-            renderDrawer->renderRectFillColor(rect, fill);
-            renderDrawer->renderRectColor(rect, border);
-        }
-        else {
-            renderDrawer->gui_DrawRect(
-                rect,
-                fill,
-                border,
-                border
-            );
-        }
+        renderDrawer->renderRectFillColor(rect, fill);
+        renderDrawer->renderRectColor(rect, border);
     };
 
-    if (m_hdLayout) {
-        drawPanel(topBar, Color{25, 31, 35, 255}, colorDarkishBorder);
-    }
-    else {
-        renderDrawer->gui_DrawRect(topBar);
-    }
+    drawPanel(topBar, Color{25, 31, 35, 255}, colorDarkishBorder);
 
     m_textDrawer->drawTextCentered(
         localization::text("Skirmish", "Схватка"),
         (topBarHeight - m_textDrawer->getFontHeight()) / 2,
-        m_hdLayout ? Color{231, 190, 91, 255} : Color::white()
+        Color{231, 190, 91, 255}
     );
 
     drawPanel(playerTitleBar, colorDarkishBackground, colorDarkishBorder);
     drawPanel(
         topRightBox,
-        m_hdLayout ? Color{25, 31, 35, 255} : Color{176,176,196,255},
+        Color{25, 31, 35, 255},
         colorDarkishBorder
     );
     drawPanel(playerList, colorDarkishBackground, colorDarkishBorder);
@@ -483,7 +418,7 @@ void cSetupSkirmishState::draw() const
         mapListTitle.getX(),
         mapListTitle.getWidth(),
         mapListTitle.getY() + 4,
-        m_hdLayout ? Color{231, 190, 91, 255} : Color::yellow()
+        Color{231, 190, 91, 255}
     );
     drawPanel(previewMapTitle, colorDarkishBackground, colorDarkishBorder);
     m_textDrawer->drawTextCentered(
@@ -491,7 +426,7 @@ void cSetupSkirmishState::draw() const
         previewMapTitle.getX(),
         previewMapTitle.getWidth(),
         previewMapTitle.getY() + 4,
-        m_hdLayout ? Color{231, 190, 91, 255} : Color::yellow()
+        Color{231, 190, 91, 255}
     );
     drawPanel(previewMap, colorDarkishBackground, colorDarkishBorder);
     drawPanel(selectArea, colorDarkishBackground, colorDarkishBorder);
@@ -523,7 +458,7 @@ void cSetupSkirmishState::draw() const
         localization::text("Units", "Войска"),
         localization::text("Team", "Команда")
     };
-    const Color headerColor = m_hdLayout ? Color{231, 190, 91, 255} : Color::white();
+    const Color headerColor = Color{231, 190, 91, 255};
     const auto headerColumns = headerLayout.columns();
     for (std::size_t column = 0; column < headerColumns.size(); ++column) {
         const cRectangle &rect = headerColumns[column];
@@ -550,16 +485,11 @@ void cSetupSkirmishState::draw() const
     }
 
     cRectangle bottomBarRect = cRectangle(-1, screen_y - topBarHeight, screen_x + 2, topBarHeight + 2);
-    if (m_hdLayout) {
-        drawPanel(
-            bottomBarRect,
-            Color{25, 31, 35, 255},
-            colorDarkishBorder
-        );
-    }
-    else {
-        renderDrawer->gui_DrawRect(bottomBarRect);
-    }
+    drawPanel(
+        bottomBarRect,
+        Color{25, 31, 35, 255},
+        colorDarkishBorder
+    );
 
     // For now in draw function
     startButton->setEnabled(iSkirmishMap > -1);
@@ -689,7 +619,7 @@ void cSetupSkirmishState::drawPreviewMapAndMore(const cRectangle &previewMapRect
         }
         const int infoY =
             previewMapRect.getY() + previewMapRect.getHeight() +
-            (m_hdLayout ? 8 : 16);
+            (8);
         m_textDrawer->drawText(previewMapRect.getX() + 4, infoY,
                             Color::yellow(), localization::format(
                                 "Name: {}", "Название: {}", selectedMap.name));
@@ -1403,8 +1333,7 @@ void cSetupSkirmishState::drawMapList(const cRectangle &selectMapArea) const
             iDrawX,
             iDrawY,
             mapItemButtonWidth,
-            mapItemButtonHeight,
-            m_hdLayout
+            mapItemButtonHeight
         );
 
         Color textColor = bHover ? Color::red() : Color::white();
@@ -1415,8 +1344,7 @@ void cSetupSkirmishState::drawMapList(const cRectangle &selectMapArea) const
                 iDrawX,
                 iDrawY,
                 mapItemButtonWidth,
-                mapItemButtonHeight,
-                m_hdLayout
+                mapItemButtonHeight
             );
         }
 
@@ -1428,8 +1356,7 @@ void cSetupSkirmishState::drawMapList(const cRectangle &selectMapArea) const
                 iDrawX,
                 iDrawY,
                 mapItemButtonWidth,
-                mapItemButtonHeight,
-                m_hdLayout
+                mapItemButtonHeight
             );
         }
 

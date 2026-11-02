@@ -20,7 +20,6 @@
 #include "utils/cRectangle.h"
 #include "utils/cTimeManager.h"
 #include "utils/cIniFile.h"
-#include "utils/GraphicsMode.hpp"
 #include "utils/HdPresentation.hpp"
 
 #include <memory>
@@ -83,7 +82,6 @@ public:
     int m_renderScalePercent;
     int m_worldScalePercent;
     int m_effectiveWorldScalePercent;
-    GraphicsMode m_graphicsMode;
     CommandBindings m_commandBindings;
 
     bool m_playSound;                       // play sound?
@@ -283,22 +281,18 @@ public:
         return m_debugMode;
     }
 
-    [[nodiscard]] bool isHdGraphicsActive() const {
-        return m_graphicsDensity > 1;
-    }
+    static constexpr int kHdAssetDensity = 4;
 
     [[nodiscard]] int getGraphicsDensity() const {
-        return m_graphicsDensity;
+        return kHdAssetDensity;
     }
 
     [[nodiscard]] float getWorldScaleFactor() const {
-        return isHdGraphicsActive()
-            ? static_cast<float>(m_effectiveWorldScalePercent) / 100.0F
-            : 1.0F;
+        return static_cast<float>(m_effectiveWorldScalePercent) / 100.0F;
     }
 
     [[nodiscard]] int getWorldScalePercent() const {
-        return isHdGraphicsActive() ? m_effectiveWorldScalePercent : 100;
+        return m_effectiveWorldScalePercent;
     }
 
     void applySettings(GameSettings *gs);
@@ -320,7 +314,6 @@ private:
      * Variables start here
      */
     bool m_debugMode;               // ...
-    int m_graphicsDensity = 1;
 
     // if true, then turrets won't do anything on low power (both gun and rocket turrets)
     bool m_turretsDownOnLowPower;

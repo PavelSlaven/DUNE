@@ -34,8 +34,6 @@ public:
 
     void draw();
 
-    void drawStaticFrame();
-
     // in-between solution until we have a proper combat state object
     void init();
 

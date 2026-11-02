@@ -140,34 +140,6 @@ std::string graphicsDataFileName(
         : configured;
 }
 
-bool dataFileSectionExists(
-    const cIniFile &settings,
-    const std::string &section,
-    const std::string &gameDir,
-    int density)
-{
-    constexpr std::array<std::string_view, 4> graphicsKeys{
-        "GFXDATA",
-        "GFXINTER",
-        "GFXWORLD",
-        "GFXMENTAT"
-    };
-    for (const std::string_view key : graphicsKeys) {
-        const std::string fileName = graphicsDataFileName(
-            settings,
-            section,
-            key,
-            density
-        );
-        if (fileName.empty() ||
-            !std::filesystem::exists(
-                std::filesystem::path(gameDir) / fileName)) {
-            return false;
-        }
-    }
-    return true;
-}
-
 }
 
 cGame::cGame()
@@ -183,7 +155,6 @@ cGame::cGame()
     m_renderScalePercent = 0;
     m_worldScalePercent = 0;
     m_effectiveWorldScalePercent = 100;
-    m_graphicsMode = GraphicsMode::Hd;
     m_windowed = false;
     m_allowRepeatingReinforcements = false;
     m_playSound = true;
@@ -220,7 +191,6 @@ void cGame::applySettings(GameSettings *gs)
         m_worldScalePercent,
         gs->screenH
     );
-    m_graphicsMode = gs->graphicsMode;
     m_commandBindings = gs->commandBindings;
     m_cameraDragMoveSpeed = gs->cameraDragMoveSpeed;
     m_cameraBorderOrKeyMoveSpeed = gs->cameraBorderOrKeyMoveSpeed;
@@ -825,7 +795,7 @@ bool cGame::useHdPresentation() const
         scene = HdPresentationScene::Mentat;
     }
     return shouldUsePhysicalHdPresentation(
-        isHdGraphicsActive(),
+        true,
         scene
     );
 }
@@ -1050,36 +1020,14 @@ bool cGame::setupGame()
     game.init(); // Must be first! (loads game.ini file at the end, which is required before going on...)
 
     const std::string &gameDir = settings->getStringValue(SECTION_SETTINGS, "GameDir");
-    std::string graphicsSection = "DATAFILE";
-    m_graphicsDensity = 1;
-    if (m_graphicsMode == GraphicsMode::Hd) {
-        constexpr int density = 4;
-        const std::string candidateSection = hdDataFileSection(density);
-        if (dataFileSectionExists(
-                *settings,
-                candidateSection,
-                gameDir,
-                density)) {
-            graphicsSection = candidateSection;
-            m_graphicsDensity = density;
-        }
-        if (m_graphicsDensity == 1) {
-            logger->log(
-                LOG_WARN,
-                COMP_INIT,
-                "HD graphics",
-                "The complete HD4 pack is unavailable; using Classic"
-            );
-        }
-    }
+    const std::string graphicsSection = "HD4_DATAFILE";
     logger->log(
         LOG_INFO,
         COMP_INIT,
-        "Graphics mode",
+        "Graphics",
         std::format(
-            "{} ({}x assets, section [{}])",
-            m_graphicsDensity > 1 ? "HD" : "Classic",
-            m_graphicsDensity,
+            "{}x assets, section [{}]",
+            cGame::kHdAssetDensity,
             graphicsSection
         )
     );
@@ -1092,21 +1040,13 @@ bool cGame::setupGame()
         m_transfertMap[eGameDirFileName::SMALL] = settings->getStringValue("FONT", "SMALL");
 
         m_transfertMap[eGameDirFileName::GFXDATA] =
-            m_graphicsDensity > 1
-                ? graphicsDataFileName(*settings, graphicsSection, "GFXDATA", m_graphicsDensity)
-                : settings->getStringValue(graphicsSection, "GFXDATA");
+            graphicsDataFileName(*settings, graphicsSection, "GFXDATA", kHdAssetDensity);
         m_transfertMap[eGameDirFileName::GFXINTER] =
-            m_graphicsDensity > 1
-                ? graphicsDataFileName(*settings, graphicsSection, "GFXINTER", m_graphicsDensity)
-                : settings->getStringValue(graphicsSection, "GFXINTER");
+            graphicsDataFileName(*settings, graphicsSection, "GFXINTER", kHdAssetDensity);
         m_transfertMap[eGameDirFileName::GFXWORLD] =
-            m_graphicsDensity > 1
-                ? graphicsDataFileName(*settings, graphicsSection, "GFXWORLD", m_graphicsDensity)
-                : settings->getStringValue(graphicsSection, "GFXWORLD");
+            graphicsDataFileName(*settings, graphicsSection, "GFXWORLD", kHdAssetDensity);
         m_transfertMap[eGameDirFileName::GFXMENTAT] =
-            m_graphicsDensity > 1
-                ? graphicsDataFileName(*settings, graphicsSection, "GFXMENTAT", m_graphicsDensity)
-                : settings->getStringValue(graphicsSection, "GFXMENTAT");
+            graphicsDataFileName(*settings, graphicsSection, "GFXMENTAT", kHdAssetDensity);
         m_transfertMap[eGameDirFileName::GFXAUDIO] = settings->getStringValue("DATAFILE", "GFXAUDIO");
         settingsValidator->addResources(std::move(m_transfertMap));
     }
@@ -1139,7 +1079,7 @@ bool cGame::setupGame()
 
     m_screenW = m_Screen->Width();
     m_screenH = m_Screen->Height();
-    cSideBar::configureLayout(m_graphicsDensity > 1, m_screenW);
+    cSideBar::configureLayout(true, m_screenW);
     window = m_Screen->getWindows();
     renderer = m_Screen->getRenderer();
 
@@ -1147,7 +1087,7 @@ bool cGame::setupGame()
     context = std::make_unique<ContextCreator>(
         renderer,
         settingsValidator.get(),
-        m_graphicsDensity
+        kHdAssetDensity
     );
     // share Graphics to all class what use ctx !
     ctx->setGraphicsContext(context->createGraphicsContext());
@@ -2612,10 +2552,7 @@ Texture *cGame::getHdOutcomeTexture(bool victory)
 
 void cGame::drawOutcomeScreen(bool victory)
 {
-    Texture *texture = nullptr;
-    if (isHdGraphicsActive()) {
-        texture = getHdOutcomeTexture(victory);
-    }
+    Texture *texture = getHdOutcomeTexture(victory);
 
     if (texture) {
         const OutcomeScreenLayout layout = calculateOutcomeScreenLayout(

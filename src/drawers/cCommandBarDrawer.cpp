@@ -36,18 +36,16 @@ cCommandBarDrawer::cCommandBarDrawer(GameContext *ctx, cPlayer *player) :
     m_buttons(),
     m_hoveredButton(-1)
 {
-    if (game.isHdGraphicsActive()) {
-        m_commandBarTexture = loadHdUiTexture(
-            "command_bar.png",
-            game.getGraphicsDensity(),
-            "HD command bar"
-        );
-        m_disabledCommandBarTexture = loadHdUiTexture(
-            "command_bar_disabled.png",
-            game.getGraphicsDensity(),
-            "disabled HD command bar"
-        );
-    }
+    m_commandBarTexture = loadHdUiTexture(
+        "command_bar.png",
+        game.getGraphicsDensity(),
+        "HD command bar"
+    );
+    m_disabledCommandBarTexture = loadHdUiTexture(
+        "command_bar_disabled.png",
+        game.getGraphicsDensity(),
+        "disabled HD command bar"
+    );
     rebuildLayout();
 }
 
@@ -69,7 +67,7 @@ int cCommandBarDrawer::getTopY() const
 
 bool cCommandBarDrawer::isMouseOver(const cPoint &point) const
 {
-    return game.isHdGraphicsActive() && m_panelRect.isPointWithin(point.x, point.y);
+    return m_panelRect.isPointWithin(point.x, point.y);
 }
 
 void cCommandBarDrawer::rebuildLayout()
@@ -78,7 +76,7 @@ void cCommandBarDrawer::rebuildLayout()
     m_panelRect = layout.panel;
     m_buttons.clear();
 
-    if (!game.isHdGraphicsActive() || layout.panel.getWidth() <= 0) return;
+    if (layout.panel.getWidth() <= 0) return;
 
     const auto selectedUnits = m_player->getSelectedUnits();
     cAbstractStructure *selectedStructure = m_player->getSelectedStructure();
@@ -97,7 +95,6 @@ void cCommandBarDrawer::rebuildLayout()
 
 void cCommandBarDrawer::draw()
 {
-    if (!game.isHdGraphicsActive()) return;
     rebuildLayout();
 
     if (m_disabledCommandBarTexture) {
@@ -249,7 +246,6 @@ void cCommandBarDrawer::drawIcon(Command command, const cRectangle &rect, Color 
 
 void cCommandBarDrawer::onNotifyMouseEvent(const s_MouseEvent &event)
 {
-    if (!game.isHdGraphicsActive()) return;
     rebuildLayout();
 
     if (event.eventType == MOUSE_MOVED_TO) {

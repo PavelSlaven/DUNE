@@ -152,23 +152,21 @@ void cMapDrawer::drawTerrain()
                 cRectangle dest_pos = {iDrawX, iDrawY, iTileWidth, iTileHeight};
                 Texture *terrainTexture =
                     gfxdata->getFrameTexture(cell->type, src_pos);
-                if (game.isHdGraphicsActive()) {
-                    const int variant =
-                        hdTerrainVariantIndex(iCell, cell->type);
-                    const char *variantName =
-                        hdTerrainVariantName(
-                            cell->type,
-                            cell->tile,
-                            variant
-                        );
-                    if (variantName) {
-                        if (Texture *candidate =
-                                gfxdata->findFrameTexture(
-                                    variantName,
-                                    src_pos
-                                )) {
-                            terrainTexture = candidate;
-                        }
+                const int variant =
+                    hdTerrainVariantIndex(iCell, cell->type);
+                const char *variantName =
+                    hdTerrainVariantName(
+                        cell->type,
+                        cell->tile,
+                        variant
+                    );
+                if (variantName) {
+                    if (Texture *candidate =
+                            gfxdata->findFrameTexture(
+                                variantName,
+                                src_pos
+                            )) {
+                        terrainTexture = candidate;
                     }
                 }
                 renderDrawer->renderStrechFullSprite(

@@ -202,7 +202,7 @@ void cStructureDrawer::drawStructureAnimationRefinery(cAbstractStructure *struct
     assert(structure->getType() == REFINERY);
 
     drawStructureAnimation(structure);
-    if (game.isHdGraphicsActive() && structure->hasUnitWithin()) {
+    if (structure->hasUnitWithin()) {
         drawHarvesterOnRefineryPad(structure);
     }
 }
@@ -241,41 +241,39 @@ void cStructureDrawer::drawStructureForLayer(cAbstractStructure *structure, int 
                 drawStructureAnimation(structure);
             }
             bool drewHdHouseMarker = false;
-            if (game.isHdGraphicsActive()) {
-                drewHdHouseMarker = drawHdRefineryFlag(structure);
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdSiloFlag(structure);
-                }
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdWindTrapFlag(structure);
-                }
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdConstYardFlag(structure);
-                }
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdBarracksFlag(structure);
-                }
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdWorFlag(structure);
-                }
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdRadarFlag(structure);
-                }
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdStarportFlag(structure);
-                }
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdPalaceFlag(structure);
-                }
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdIxFlag(structure);
-                }
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdLightFactoryFlag(structure);
-                }
-                if (!drewHdHouseMarker) {
-                    drewHdHouseMarker = drawHdHighTechFlag(structure);
-                }
+            drewHdHouseMarker = drawHdRefineryFlag(structure);
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdSiloFlag(structure);
+            }
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdWindTrapFlag(structure);
+            }
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdConstYardFlag(structure);
+            }
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdBarracksFlag(structure);
+            }
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdWorFlag(structure);
+            }
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdRadarFlag(structure);
+            }
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdStarportFlag(structure);
+            }
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdPalaceFlag(structure);
+            }
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdIxFlag(structure);
+            }
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdLightFactoryFlag(structure);
+            }
+            if (!drewHdHouseMarker) {
+                drewHdHouseMarker = drawHdHighTechFlag(structure);
             }
             if (!drewHdHouseMarker) {
                 structure->drawFlags();
@@ -956,7 +954,7 @@ void cStructureDrawer::renderIconOfUnitBeingRepaired(cAbstractStructure *structu
 
 void cStructureDrawer::drawStructuresForLayer(int layer)
 {
-    if (layer == 0 && game.isHdGraphicsActive()) {
+    if (layer == 0) {
         // Foundations are a separate pass so a later structure's ground pad
         // can never cover an already drawn neighbouring building.
         for (int i = 0; i < MAX_STRUCTURES; ++i) {
@@ -979,7 +977,6 @@ void cStructureDrawer::drawStructuresForLayer(int layer)
 
             cPlayer &player = players[HUMAN]; // TODO: Pass it as variable? (instead of getting it from here)
             const bool skipHdHeavyFactoryOutline =
-                game.isHdGraphicsActive() &&
                 theStructure->getType() == HEAVYFACTORY;
             if (skipHdHeavyFactoryOutline) {
                 continue;

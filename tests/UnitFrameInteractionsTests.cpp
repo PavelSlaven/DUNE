@@ -38,21 +38,18 @@ void requireRect(const cRectangle &actual, const cRectangle &expected, const std
 void verifyVisualMatrix(UnitFrameFixture &fixture)
 {
     for (const UnitFrameBaseline &baseline : UnitFrameBaselines) {
-        for (const int density : {1, 4}) {
-            for (const float zoom : UnitFrameZoomLevels) {
-                for (const float selectedScale : UnitFrameWorldScales) {
-                    fixture.setDisplaySettings(density, static_cast<int>(std::lround(selectedScale * 100.0F)));
-                    fixture.setCamera(zoom, 32.0F, 48.0F);
-                    fixture.setUnit(0, baseline.type, 256, 288, 0, 0, 0);
-                    const float effectiveScale = density == 1 ? 1.0F : selectedScale;
-                    const cRectangle expected = unitFrameExpectedVisual(
-                        256, 288, 32, 48, 40,
-                        baseline.width, baseline.height, zoom, effectiveScale
-                    );
-                    requireRect(unit[0].getVisualRectangle(), expected,
-                                std::format("{} density={} zoom={} scale={}",
-                                            baseline.name, density, zoom, selectedScale));
-                }
+        for (const float zoom : UnitFrameZoomLevels) {
+            for (const float selectedScale : UnitFrameWorldScales) {
+                fixture.setDisplaySettings(cGame::kHdAssetDensity, static_cast<int>(std::lround(selectedScale * 100.0F)));
+                fixture.setCamera(zoom, 32.0F, 48.0F);
+                fixture.setUnit(0, baseline.type, 256, 288, 0, 0, 0);
+                const cRectangle expected = unitFrameExpectedVisual(
+                    256, 288, 32, 48, 40,
+                    baseline.width, baseline.height, zoom, selectedScale
+                );
+                requireRect(unit[0].getVisualRectangle(), expected,
+                            std::format("{} zoom={} scale={}",
+                                        baseline.name, zoom, selectedScale));
             }
         }
     }
@@ -68,143 +65,140 @@ void verifyHealthGroupAndExperience(UnitFrameFixture &fixture)
         if (baseline.type == HARVESTER) {
             sUnitInfo[HARVESTER].credit_capacity = fixtureCreditCapacity;
         }
-        for (const int density : {1, 4}) {
-            for (const float zoom : UnitFrameZoomLevels) {
-                for (const float selectedScale : UnitFrameWorldScales) {
-                    fixture.setDisplaySettings(
-                        density,
-                        static_cast<int>(std::lround(selectedScale * 100.0F))
-                    );
-                    fixture.setCamera(zoom, 32.0F, 48.0F);
-                    fixture.setUnit(0, baseline.type, 256, 288, 0, 0, 0);
-                    fixture.setUnitFlags(0, true, true);
-                    unit[0].iHitPoints = fixtureHitPoints;
-                    unit[0].iGroup = 3;
-                    unit[0].fExperience = 2.0F;
-                    if (baseline.type == HARVESTER) {
-                        unit[0].iCredits = fixtureCreditCapacity / 2;
-                    }
-                    const float effectiveScale = density == 1 ? 1.0F : selectedScale;
-                    const cRectangle visual = unitFrameExpectedVisual(
-                        256, 288, 32, 48, 40,
-                        baseline.width, baseline.height, zoom, effectiveScale
-                    );
-                    const int barHeight = std::max(
-                        1,
-                        static_cast<int>(std::lround(4.0F * zoom * effectiveScale))
-                    );
-                    const float healthRatio = static_cast<float>(fixtureHitPoints) /
-                        static_cast<float>(fixtureMaxHp);
-                    const int healthWidth = static_cast<int>(healthRatio * visual.getWidth());
-                    const int healthRed = static_cast<int>((1.1F - healthRatio) * 255.0F);
-                    const int healthGreen = static_cast<int>(healthRatio * 255.0F);
+        for (const float zoom : UnitFrameZoomLevels) {
+            for (const float selectedScale : UnitFrameWorldScales) {
+                fixture.setDisplaySettings(
+                    cGame::kHdAssetDensity,
+                    static_cast<int>(std::lround(selectedScale * 100.0F))
+                );
+                fixture.setCamera(zoom, 32.0F, 48.0F);
+                fixture.setUnit(0, baseline.type, 256, 288, 0, 0, 0);
+                fixture.setUnitFlags(0, true, true);
+                unit[0].iHitPoints = fixtureHitPoints;
+                unit[0].iGroup = 3;
+                unit[0].fExperience = 2.0F;
+                if (baseline.type == HARVESTER) {
+                    unit[0].iCredits = fixtureCreditCapacity / 2;
+                }
+                const cRectangle visual = unitFrameExpectedVisual(
+                    256, 288, 32, 48, 40,
+                    baseline.width, baseline.height, zoom, selectedScale
+                );
+                const int barHeight = std::max(
+                    1,
+                    static_cast<int>(std::lround(4.0F * zoom * selectedScale))
+                );
+                const float healthRatio = static_cast<float>(fixtureHitPoints) /
+                    static_cast<float>(fixtureMaxHp);
+                const int healthWidth = static_cast<int>(healthRatio * visual.getWidth());
+                const int healthRed = static_cast<int>((1.1F - healthRatio) * 255.0F);
+                const int healthGreen = static_cast<int>(healthRatio * 255.0F);
 
+                clearUnitDrawCalls();
+                unit[0].draw_health();
+                require(unitDrawCalls().size() == (barHeight > 2 ? 3U : 2U),
+                        std::format("{} health call count changed", baseline.name));
+                require(unitDrawCalls()[0].method == "renderRectFillColor" &&
+                            unitDrawCalls()[0].x == visual.getX() &&
+                            unitDrawCalls()[0].y == visual.getY() - (barHeight + 2) &&
+                            unitDrawCalls()[0].width == visual.getWidth() &&
+                            unitDrawCalls()[0].height == barHeight &&
+                            unitDrawCalls()[0].color.r == 0 && unitDrawCalls()[0].color.g == 0 &&
+                            unitDrawCalls()[0].opacity == UnitFrameShadowOpacity,
+                        std::format("{} health background moved from its visual rectangle", baseline.name));
+                require(unitDrawCalls()[1].method == "renderRectFillColor",
+                        std::format("{} health fill method changed", baseline.name));
+                requireRect(unitDrawCalls()[1].destination,
+                            {visual.getX(), visual.getY() - (barHeight + 2), healthWidth - 1, barHeight},
+                            std::format("{} health fill rectangle", baseline.name));
+                require(unitDrawCalls()[1].color.r == healthRed &&
+                            unitDrawCalls()[1].color.g == healthGreen &&
+                            unitDrawCalls()[1].color.b == 32 &&
+                            unitDrawCalls()[1].opacity == UnitFrameShadowOpacity,
+                        std::format("{} health fill changed from its baseline formula", baseline.name));
+                if (barHeight > 2) {
+                    require(unitDrawCalls()[2].method == "renderRectColor",
+                            std::format("{} health outline method changed", baseline.name));
+                    requireRect(unitDrawCalls()[2].destination,
+                                {visual.getX(), visual.getY() - (barHeight + 2),
+                                 visual.getWidth(), barHeight},
+                                std::format("{} health outline rectangle", baseline.name));
+                    require(unitDrawCalls()[2].color.r == 255 &&
+                                unitDrawCalls()[2].color.g == 255 &&
+                                unitDrawCalls()[2].color.b == 255 &&
+                                unitDrawCalls()[2].opacity == UnitFrameShadowOpacity,
+                            std::format("{} health outline color or opacity changed", baseline.name));
+                }
+
+                cTextDrawer textDrawer(nullptr);
+                clearUnitRecordedText();
+                unit[0].draw_group(&textDrawer);
+                require(unitRecordedText().size() == 2,
+                        std::format("{} group number must draw black and white text", baseline.name));
+                const int groupX = visual.getX() + std::max(3, visual.getWidth() - 8);
+                const int groupY = visual.getY() - (barHeight + 2) - 11;
+                require(unitRecordedText()[0].x == groupX && unitRecordedText()[0].y == groupY &&
+                            unitRecordedText()[0].text == "3" &&
+                            unitRecordedText()[0].color.r == 0 && unitRecordedText()[0].color.g == 0 &&
+                            unitRecordedText()[0].color.b == 0 && unitRecordedText()[0].color.a == 255 &&
+                            unitRecordedText()[1].x == groupX && unitRecordedText()[1].y == groupY - 1 &&
+                            unitRecordedText()[1].text == "3" &&
+                            unitRecordedText()[1].color.r == 255 && unitRecordedText()[1].color.g == 255 &&
+                            unitRecordedText()[1].color.b == 255 && unitRecordedText()[1].color.a == 255,
+                        std::format("{} group text moved from its visual rectangle", baseline.name));
+
+                clearUnitDrawCalls();
+                unit[0].draw_experience();
+                require(unitDrawCalls().size() == 2,
+                        std::format("{} must draw two experience stars", baseline.name));
+                require(unitDrawCalls()[0].texture == gfxdata->getTexture(OBJECT_STAR_01) &&
+                            unitDrawCalls()[0].method == "renderSprite" &&
+                            unitDrawCalls()[0].opacity == UnitFrameShadowOpacity &&
+                            unitDrawCalls()[0].x == visual.getX() + 3 &&
+                            unitDrawCalls()[0].y == visual.getY() - 19 &&
+                            unitDrawCalls()[1].texture == gfxdata->getTexture(OBJECT_STAR_01) &&
+                            unitDrawCalls()[1].method == "renderSprite" &&
+                            unitDrawCalls()[1].opacity == UnitFrameShadowOpacity &&
+                            unitDrawCalls()[1].x == visual.getX() + 12 &&
+                            unitDrawCalls()[1].y == visual.getY() - 19,
+                        std::format("{} experience stars moved from their baseline coordinates", baseline.name));
+
+                if (baseline.type == HARVESTER) {
+                    const int spiceWidth = static_cast<int>(
+                        (static_cast<float>(fixtureCreditCapacity / 2) /
+                         static_cast<float>(fixtureCreditCapacity)) * visual.getWidth()
+                    );
                     clearUnitDrawCalls();
-                    unit[0].draw_health();
+                    unit[0].draw_spice();
                     require(unitDrawCalls().size() == (barHeight > 2 ? 3U : 2U),
-                            std::format("{} health call count changed", baseline.name));
-                    require(unitDrawCalls()[0].method == "renderRectFillColor" &&
-                                unitDrawCalls()[0].x == visual.getX() &&
-                                unitDrawCalls()[0].y == visual.getY() - (barHeight + 2) &&
-                                unitDrawCalls()[0].width == visual.getWidth() &&
-                                unitDrawCalls()[0].height == barHeight &&
-                                unitDrawCalls()[0].color.r == 0 && unitDrawCalls()[0].color.g == 0 &&
-                                unitDrawCalls()[0].opacity == UnitFrameShadowOpacity,
-                            std::format("{} health background moved from its visual rectangle", baseline.name));
+                            "Harvester spice bar call count changed");
+                    const int spiceY = visual.getY() - ((barHeight * 2) + 2);
+                    require(unitDrawCalls()[0].method == "renderRectFillColor",
+                            "Harvester spice background method changed");
+                    requireRect(unitDrawCalls()[0].destination,
+                                {visual.getX(), spiceY, visual.getWidth(), barHeight},
+                                "Harvester spice background rectangle");
                     require(unitDrawCalls()[1].method == "renderRectFillColor",
-                            std::format("{} health fill method changed", baseline.name));
+                            "Harvester spice fill method changed");
                     requireRect(unitDrawCalls()[1].destination,
-                                {visual.getX(), visual.getY() - (barHeight + 2), healthWidth - 1, barHeight},
-                                std::format("{} health fill rectangle", baseline.name));
-                    require(unitDrawCalls()[1].color.r == healthRed &&
-                                unitDrawCalls()[1].color.g == healthGreen &&
-                                unitDrawCalls()[1].color.b == 32 &&
+                                {visual.getX(), spiceY, spiceWidth, barHeight},
+                                "Harvester spice fill rectangle");
+                    require(unitDrawCalls()[1].color.r == 255 &&
+                                unitDrawCalls()[1].color.g == 91 &&
+                                unitDrawCalls()[1].color.b == 1 &&
                                 unitDrawCalls()[1].opacity == UnitFrameShadowOpacity,
-                            std::format("{} health fill changed from its baseline formula", baseline.name));
+                            "Harvester spice bar no longer follows the visual rectangle");
                     if (barHeight > 2) {
                         require(unitDrawCalls()[2].method == "renderRectColor",
-                                std::format("{} health outline method changed", baseline.name));
+                                "Harvester spice outline method changed");
                         requireRect(unitDrawCalls()[2].destination,
-                                    {visual.getX(), visual.getY() - (barHeight + 2),
-                                     visual.getWidth(), barHeight},
-                                    std::format("{} health outline rectangle", baseline.name));
+                                    {visual.getX(), spiceY, visual.getWidth(), barHeight},
+                                    "Harvester spice outline rectangle");
                         require(unitDrawCalls()[2].color.r == 255 &&
                                     unitDrawCalls()[2].color.g == 255 &&
                                     unitDrawCalls()[2].color.b == 255 &&
                                     unitDrawCalls()[2].opacity == UnitFrameShadowOpacity,
-                                std::format("{} health outline color or opacity changed", baseline.name));
-                    }
-
-                    cTextDrawer textDrawer(nullptr);
-                    clearUnitRecordedText();
-                    unit[0].draw_group(&textDrawer);
-                    require(unitRecordedText().size() == 2,
-                            std::format("{} group number must draw black and white text", baseline.name));
-                    const int groupX = visual.getX() + std::max(3, visual.getWidth() - 8);
-                    const int groupY = visual.getY() - (barHeight + 2) - 11;
-                    require(unitRecordedText()[0].x == groupX && unitRecordedText()[0].y == groupY &&
-                                unitRecordedText()[0].text == "3" &&
-                                unitRecordedText()[0].color.r == 0 && unitRecordedText()[0].color.g == 0 &&
-                                unitRecordedText()[0].color.b == 0 && unitRecordedText()[0].color.a == 255 &&
-                                unitRecordedText()[1].x == groupX && unitRecordedText()[1].y == groupY - 1 &&
-                                unitRecordedText()[1].text == "3" &&
-                                unitRecordedText()[1].color.r == 255 && unitRecordedText()[1].color.g == 255 &&
-                                unitRecordedText()[1].color.b == 255 && unitRecordedText()[1].color.a == 255,
-                            std::format("{} group text moved from its visual rectangle", baseline.name));
-
-                    clearUnitDrawCalls();
-                    unit[0].draw_experience();
-                    require(unitDrawCalls().size() == 2,
-                            std::format("{} must draw two experience stars", baseline.name));
-                    require(unitDrawCalls()[0].texture == gfxdata->getTexture(OBJECT_STAR_01) &&
-                                unitDrawCalls()[0].method == "renderSprite" &&
-                                unitDrawCalls()[0].opacity == UnitFrameShadowOpacity &&
-                                unitDrawCalls()[0].x == visual.getX() + 3 &&
-                                unitDrawCalls()[0].y == visual.getY() - 19 &&
-                                unitDrawCalls()[1].texture == gfxdata->getTexture(OBJECT_STAR_01) &&
-                                unitDrawCalls()[1].method == "renderSprite" &&
-                                unitDrawCalls()[1].opacity == UnitFrameShadowOpacity &&
-                                unitDrawCalls()[1].x == visual.getX() + 12 &&
-                                unitDrawCalls()[1].y == visual.getY() - 19,
-                            std::format("{} experience stars moved from their baseline coordinates", baseline.name));
-
-                    if (baseline.type == HARVESTER) {
-                        const int spiceWidth = static_cast<int>(
-                            (static_cast<float>(fixtureCreditCapacity / 2) /
-                             static_cast<float>(fixtureCreditCapacity)) * visual.getWidth()
-                        );
-                        clearUnitDrawCalls();
-                        unit[0].draw_spice();
-                        require(unitDrawCalls().size() == (barHeight > 2 ? 3U : 2U),
-                                "Harvester spice bar call count changed");
-                        const int spiceY = visual.getY() - ((barHeight * 2) + 2);
-                        require(unitDrawCalls()[0].method == "renderRectFillColor",
-                                "Harvester spice background method changed");
-                        requireRect(unitDrawCalls()[0].destination,
-                                    {visual.getX(), spiceY, visual.getWidth(), barHeight},
-                                    "Harvester spice background rectangle");
-                        require(unitDrawCalls()[1].method == "renderRectFillColor",
-                                "Harvester spice fill method changed");
-                        requireRect(unitDrawCalls()[1].destination,
-                                    {visual.getX(), spiceY, spiceWidth, barHeight},
-                                    "Harvester spice fill rectangle");
-                        require(unitDrawCalls()[1].color.r == 255 &&
-                                    unitDrawCalls()[1].color.g == 91 &&
-                                    unitDrawCalls()[1].color.b == 1 &&
-                                    unitDrawCalls()[1].opacity == UnitFrameShadowOpacity,
-                                "Harvester spice bar no longer follows the visual rectangle");
-                        if (barHeight > 2) {
-                            require(unitDrawCalls()[2].method == "renderRectColor",
-                                    "Harvester spice outline method changed");
-                            requireRect(unitDrawCalls()[2].destination,
-                                        {visual.getX(), spiceY, visual.getWidth(), barHeight},
-                                        "Harvester spice outline rectangle");
-                            require(unitDrawCalls()[2].color.r == 255 &&
-                                        unitDrawCalls()[2].color.g == 255 &&
-                                        unitDrawCalls()[2].color.b == 255 &&
-                                        unitDrawCalls()[2].opacity == UnitFrameShadowOpacity,
-                                    "Harvester spice outline color or opacity changed");
-                        }
+                                "Harvester spice outline color or opacity changed");
                     }
                 }
             }
@@ -292,40 +286,38 @@ void verifyClickAndBandSelection(UnitFrameFixture &fixture)
 
 void verifyDebugPath(UnitFrameFixture &fixture)
 {
-    for (const int density : {1, 4}) {
-        for (const float zoom : UnitFrameZoomLevels) {
-            for (const float selectedScale : UnitFrameWorldScales) {
-                fixture.setDisplaySettings(density, static_cast<int>(std::lround(selectedScale * 100.0F)));
-                fixture.setCamera(zoom, 16.0F, 24.0F);
-                fixture.setUnit(0, SIEGETANK, 256, 256);
-                unit[0].iCell = 5;
-                unit[0].iGoalCell = 11 * 64 + 11;
-                unit[0].iPath[0] = 10 * 64 + 10;
-                unit[0].iPath[1] = 10 * 64 + 11;
-                unit[0].iPath[2] = 11 * 64 + 11;
-                unit[0].iPathIndex = 1;
-                clearUnitDrawCalls();
-                unit[0].draw_path();
-                require(unitDrawCalls().size() == 2, "Debug path must draw the two configured segments");
+    for (const float zoom : UnitFrameZoomLevels) {
+        for (const float selectedScale : UnitFrameWorldScales) {
+            fixture.setDisplaySettings(cGame::kHdAssetDensity, static_cast<int>(std::lround(selectedScale * 100.0F)));
+            fixture.setCamera(zoom, 16.0F, 24.0F);
+            fixture.setUnit(0, SIEGETANK, 256, 256);
+            unit[0].iCell = 5;
+            unit[0].iGoalCell = 11 * 64 + 11;
+            unit[0].iPath[0] = 10 * 64 + 10;
+            unit[0].iPath[1] = 10 * 64 + 11;
+            unit[0].iPath[2] = 11 * 64 + 11;
+            unit[0].iPathIndex = 1;
+            clearUnitDrawCalls();
+            unit[0].draw_path();
+            require(unitDrawCalls().size() == 2, "Debug path must draw the two configured segments");
 
-                const auto screenPoint = [zoom](int cellX, int cellY) {
-                    return std::pair{
-                        static_cast<int>(std::round(zoom * (cellX * 32 + 16 - 16))),
-                        static_cast<int>(std::round(zoom * (cellY * 32 + 16 - 24) + 40))
-                    };
+            const auto screenPoint = [zoom](int cellX, int cellY) {
+                return std::pair{
+                    static_cast<int>(std::round(zoom * (cellX * 32 + 16 - 16))),
+                    static_cast<int>(std::round(zoom * (cellY * 32 + 16 - 24) + 40))
                 };
-                const auto [x0, y0] = screenPoint(10, 10);
-                const auto [x1, y1] = screenPoint(11, 10);
-                const auto [x2, y2] = screenPoint(11, 11);
-                require(unitDrawCalls()[0].x == x0 && unitDrawCalls()[0].y == y0 &&
-                            unitDrawCalls()[0].width == x1 && unitDrawCalls()[0].height == y1 &&
-                            unitDrawCalls()[0].color.r == 255 && unitDrawCalls()[0].color.g == 255,
-                        "Debug path's current segment must retain its cell-center coordinates");
-                require(unitDrawCalls()[1].x == x1 && unitDrawCalls()[1].y == y1 &&
-                            unitDrawCalls()[1].width == x2 && unitDrawCalls()[1].height == y2 &&
-                            unitDrawCalls()[1].color.r == 255 && unitDrawCalls()[1].color.g == 0,
-                        "Debug path's goal segment must retain its cell-center coordinates");
-            }
+            };
+            const auto [x0, y0] = screenPoint(10, 10);
+            const auto [x1, y1] = screenPoint(11, 10);
+            const auto [x2, y2] = screenPoint(11, 11);
+            require(unitDrawCalls()[0].x == x0 && unitDrawCalls()[0].y == y0 &&
+                        unitDrawCalls()[0].width == x1 && unitDrawCalls()[0].height == y1 &&
+                        unitDrawCalls()[0].color.r == 255 && unitDrawCalls()[0].color.g == 255,
+                    "Debug path's current segment must retain its cell-center coordinates");
+            require(unitDrawCalls()[1].x == x1 && unitDrawCalls()[1].y == y1 &&
+                        unitDrawCalls()[1].width == x2 && unitDrawCalls()[1].height == y2 &&
+                        unitDrawCalls()[1].color.r == 255 && unitDrawCalls()[1].color.g == 0,
+                    "Debug path's goal segment must retain its cell-center coordinates");
         }
     }
 }
