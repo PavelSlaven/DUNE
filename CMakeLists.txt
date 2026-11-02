@@ -416,6 +416,8 @@ if(BUILD_TESTING)
     )
     add_test(NAME faction_tint_uniformity COMMAND faction_tint_tests)
 
+    include(tests/UnitRenderFixture.cmake)
+
     if(APPLE)
         target_link_libraries(command_bindings_tests PRIVATE ${SDL2_LIBRARIES})
         target_link_libraries(render_target_state_tests PRIVATE ${SDL2_LIBRARIES})
