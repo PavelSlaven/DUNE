@@ -203,9 +203,18 @@ def check_grid_and_size_exceptions(contract, markdown):
         assert all(_is_integer(value) and value > 0 for value in frame_classic), (
             f"{name}: frame_classic dimensions must be positive integers"
         )
-        assert frame_hd4 == [dimension * 4 for dimension in frame_classic], (
-            f"{name}: frame_hd4 must be four times frame_classic"
+        expected_frame_hd4 = (
+            [176, 176]
+            if name in {
+                "UNIT_SIEGEBASE",
+                "UNIT_SIEGEBASE_SHADOW",
+                "UNIT_SIEGETOP",
+                "HM_UNIT_SIEGEBASE",
+                "HM_UNIT_SIEGETOP",
+            }
+            else [dimension * 4 for dimension in frame_classic]
         )
+        assert frame_hd4 == expected_frame_hd4, f"{name}: unexpected frame_hd4"
         assert isinstance(hd4_size, list) and len(hd4_size) == 2, (
             f"{name}: hd4_size must have two dimensions"
         )
@@ -269,10 +278,39 @@ def check_grid_and_size_exceptions(contract, markdown):
     by_name = {entry["name"]: entry for entry in entries}
     fixed_sizes = {
         "UNIT_SIEGEBASE": {
-            "hd4_size": [1152, 152],
-            "frame_hd4": [144, 144],
-            "remainder_px": [0, 8],
+            "hd4_size": [1408, 176],
+            "frame_hd4": [176, 176],
+            "remainder_px": [0, 0],
             "columns": 8,
+            "rows": 1,
+        },
+        "UNIT_SIEGEBASE_SHADOW": {
+            "hd4_size": [1408, 176],
+            "frame_hd4": [176, 176],
+            "remainder_px": [0, 0],
+            "columns": 8,
+            "rows": 1,
+        },
+        "UNIT_SIEGETOP": {
+            "hd4_size": [1408, 176],
+            "frame_hd4": [176, 176],
+            "remainder_px": [0, 0],
+            "columns": 8,
+            "rows": 1,
+        },
+        "HM_UNIT_SIEGEBASE": {
+            "hd4_size": [1408, 176],
+            "frame_hd4": [176, 176],
+            "remainder_px": [0, 0],
+            "columns": 8,
+            "rows": 1,
+        },
+        "HM_UNIT_SIEGETOP": {
+            "hd4_size": [1408, 176],
+            "frame_hd4": [176, 176],
+            "remainder_px": [0, 0],
+            "columns": 8,
+            "rows": 1,
         },
         "UNIT_DEVASTATOR": {
             "hd4_size": [1216, 192],

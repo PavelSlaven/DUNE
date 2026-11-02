@@ -36,7 +36,8 @@
         "b": "units-gen/UNIT_TRIKE/trike_k0_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k0.png"
+      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k0.png",
+      "scale_factor": 1.056
     },
     {
       "row": 0,
@@ -96,7 +97,8 @@
         "b": "units-gen/UNIT_TRIKE/trike_k6_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k6.png"
+      "recolour": "units-gen/UNIT_TRIKE/trike_recolour_k6.png",
+      "scale_factor": 1.063
     },
     {
       "row": 0,

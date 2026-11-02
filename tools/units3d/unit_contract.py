@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+from decimal import Decimal
 import json
 import math
 import os
@@ -26,7 +27,7 @@ from hd_assets import decode_image, read_pack
 
 UNIT_TYPE_RE = re.compile(r"#define\s+(\w+)\s+(\d+)\b")
 UNIT_ASSIGNMENT_RE = re.compile(
-    r"sUnitInfo\[(?P<type>\w+)\]\.(?P<field>bmp|top|shadow|bmp_width|bmp_height)\s*=\s*(?P<value>.*?);"
+    r"sUnitInfo\[(?P<type>\w+)\]\.(?P<field>bmp|top|shadow|bmp_width|bmp_height|hd_frame_width|hd_frame_height)\s*=\s*(?P<value>.*?);"
 )
 RESOURCE_REF_RE = re.compile(r"get(?:Surface|Texture)\((\w+)\)")
 RAW_CPP_STRING_RE = re.compile(r'(?:u8|u|U|L)?R"([^ ()\\\t\r\n]{0,16})\(')
@@ -607,7 +608,7 @@ def unit_row_usage(
         ]
     return "В обычной логике этот тип остаётся на строке 0, установленной при создании cUnit.", [
         source.ref(cpp, "iFrame = 0;"),
-        source.function_ref(cpp, "void cUnit::draw()", "int start_y = bmp_height * iFrame;"),
+        source.ref("src/utils/UnitSpriteLayout.hpp", "animationFrame * frame.height"),
     ]
 
 
@@ -700,35 +701,49 @@ def _dedupe_sites(sites: list[dict[str, Any]]) -> list[dict[str, Any]]:
 def parse_carryall_offset(source: SourceIndex) -> tuple[int, dict[str, Any]]:
     path = "src/gameobjects/units/cUnit.cpp"
     lines = source.function_lines(path, "void cUnit::draw()")
-    branch_start = next(
-        (index for index, (_, line) in enumerate(lines) if "if (iType == CARRYALL)" in line),
-        None,
-    )
-    if branch_start is None:
-        raise ValueError("CARRYALL shadow branch was not found in cUnit::draw")
-    depth = 0
-    opened = False
-    branch: list[tuple[int, str]] = []
-    for line_number, line in lines[branch_start:]:
-        clean = re.sub(r"//.*$", "", line)
-        branch.append((line_number, line))
-        depth += clean.count("{") - clean.count("}")
-        opened = opened or "{" in clean
-        if opened and depth == 0:
-            break
-    match = next(
-        (match for _, line in branch if (match := re.search(r"visualY\s*\+\s*(\d+)", line))),
-        None,
-    )
-    if match is None:
-        raise ValueError("CARRYALL visualY offset was not found in its branch")
-    offset = int(match.group(1))
-    line_number, line = next(
-        (line_number, line)
-        for line_number, line in branch
-        if "visualY" in line and re.search(r"visualY\s*\+\s*\d+", line)
-    )
-    return offset, {"ref": f"{path}:{line_number}", "identifier": "visualY + " + str(offset)}
+    branches: list[tuple[Decimal, dict[str, Any]]] = []
+    for index, (_, line) in enumerate(lines):
+        if "if (iType == CARRYALL)" not in line:
+            continue
+        depth = 0
+        opened = False
+        branch: list[tuple[int, str]] = []
+        for line_number, branch_line in lines[index:]:
+            branch.append((line_number, branch_line))
+            depth += branch_line.count("{") - branch_line.count("}")
+            opened = opened or "{" in branch_line
+            if opened and depth == 0:
+                break
+        offset_line = next(
+            (
+                (line_number, branch_line, match)
+                for line_number, branch_line in branch
+                if (match := re.search(
+                    r"(?:visualY\s*\+\s*|destination\.y\s*\+=\s*)(\d+(?:\.\d+)?F?)(?![\w.])",
+                    branch_line,
+                ))
+            ),
+            None,
+        )
+        if offset_line is None:
+            raise ValueError("CARRYALL visualY offset was not found in its branch")
+        line_number, branch_line, match = offset_line
+        offset_literal = match.group(1).removesuffix("F")
+        branches.append((Decimal(offset_literal), {
+            "ref": f"{path}:{line_number}",
+            "identifier": branch_line.strip(),
+        }))
+    if len(branches) != 2:
+        raise ValueError("CARRYALL shadow HD and non-HD branches were not both found")
+    hd_offset, non_hd_offset = branches[0][0], branches[1][0]
+    if hd_offset != non_hd_offset:
+        raise ValueError(
+            f"CARRYALL shadow offsets differ between HD and non-HD branches: "
+            f"{hd_offset} and {non_hd_offset}"
+        )
+    if non_hd_offset != non_hd_offset.to_integral_value():
+        raise ValueError("CARRYALL visualY offset must be an integer")
+    return int(non_hd_offset), branches[1][1]
 
 
 def parse_draw_geometry(
@@ -741,18 +756,21 @@ def parse_draw_geometry(
 ) -> dict[str, Any]:
     cpp = "src/gameobjects/units/cUnit.cpp"
     draw_func = "void cUnit::draw()"
+    layout = "src/utils/UnitSpriteLayout.hpp"
     body_index_ref = source.function_ref(
         cpp, draw_func, "const int bmp_body = convertAngleToDrawIndex(iBodyFacing);"
     )
     head_index_ref = source.function_ref(
         cpp, draw_func, "const int bmp_head = convertAngleToDrawIndex(iHeadFacing);"
     )
-    start_x_body = source.function_ref(cpp, draw_func, "int start_x = bmp_body * bmp_width;")
-    start_y = source.function_ref(cpp, draw_func, "int start_y = bmp_height * iFrame;")
-    start_x_top = source.function_ref(cpp, draw_func, "start_x = bmp_head * bmp_width;")
-    shadow_render = source.function_ref(cpp, draw_func, "renderStrechSprite(shadow,src, dest, ShadowTrans);")
-    body_render = source.function_ref(cpp, draw_func, "renderStrechSprite(bitmap,src, dest);")
-    top_render = source.function_ref(cpp, draw_func, "renderStrechSprite(top,src, dest);")
+    resolved_frame_ref = source.function_ref(cpp, draw_func, "resolveUnitSpriteFrame(")
+    source_rectangle_ref = source.function_ref(cpp, draw_func, "unitSpriteSourceRectangle(")
+    shadow_render = source.function_ref(cpp, draw_func, "renderStrechSpriteF(")
+    body_render = source.function_ref(cpp, draw_func, "renderStrechSpriteF(", occurrence=1)
+    top_render = source.function_ref(cpp, draw_func, "renderStrechSpriteF(", occurrence=2)
+    shadow_render_classic = source.function_ref(cpp, draw_func, "renderStrechSprite(")
+    body_render_classic = source.function_ref(cpp, draw_func, "renderStrechSprite(", occurrence=1)
+    top_render_classic = source.function_ref(cpp, draw_func, "renderStrechSprite(", occurrence=2)
 
     draw_x_func = "int cUnit::draw_x(int bmpWidth)"
     draw_y_func = "int cUnit::draw_y(int bmpHeight)"
@@ -900,40 +918,56 @@ def parse_draw_geometry(
         },
         "source_rectangle": {
             "value": {
-                "body_shadow_start_x": "bmp_body * bmp_width",
-                "body_shadow_start_y": "bmp_height * iFrame",
-                "top_start_x": "bmp_head * bmp_width",
-                "top_start_y": "bmp_height * iFrame",
-                "remainder_px": "Прямоугольник чтения имеет размер bmp_width × bmp_height; неполные полосы справа и снизу из remainder_px движок не читает.",
+                "frame_resolution": "При density > 1 и положительных hd_frame_width/height используется hd_frame / density; иначе используется bmp_width/height.",
+                "body_shadow_start_x": "bodyFacingIndex * resolvedFrame.width",
+                "body_shadow_start_y": "animationFrame * resolvedFrame.height",
+                "top_start_x": "headFacingIndex * resolvedFrame.width",
+                "top_start_y": "animationFrame * resolvedFrame.height",
+                "api_rectangle_scaled_by_texture_density": "SDLDrawer умножает ширину и высоту исходного прямоугольника на плотность текстуры.",
+                "remainder_px": "Движок читает один полный resolved frame; остаточные полосы атласа не читаются.",
             },
             "sources": unique_refs([
-                source.function_ref(cpp, draw_func, "cRectangle src = {start_x, start_y, bmp_width, bmp_height};"),
-                start_x_body, start_y, start_x_top,
+                source.ref(layout, "if (textureDensity > 1 && hdFrameWidth > 0 && hdFrameHeight > 0)"),
+                source.ref(layout, "hdFrameWidth / textureDensity"),
+                source.ref(layout, "facingIndex * frame.width"),
+                source.ref(layout, "animationFrame * frame.height"),
+                source.ref("src/drawers/SDLDrawer.cpp", "srcRect.w *= src->density;"),
+                source.ref("src/drawers/SDLDrawer.cpp", "srcRect.h *= src->density;"),
+                resolved_frame_ref,
+                source_rectangle_ref,
                 body_index_ref, head_index_ref,
             ]),
         },
         "draw_order": {
             "value": {
                 "order": ["shadow", "body", "top"],
-                "destination": "Тень, корпус и верх используют один visual rectangle; в ветви CARRYALL к y тени добавляется считанное смещение.",
+                "destination": "Кадры без отдельного HD frame используют прежний visual rectangle; кадры с HD frame центрируются в нём. Тень, корпус и верх рисуются в этом порядке; к тени CARRYALL добавляется считанное смещение.",
             },
-            "sources": unique_refs([shadow_render, body_render, top_render]),
+            "sources": unique_refs([
+                shadow_render, shadow_render_classic,
+                body_render, body_render_classic,
+                top_render, top_render_classic,
+            ]),
         },
         "draw_destination": {
             "value": {
                 "visual_rectangle": "cUnit::draw берёт visual из getVisualRectangle().",
-                "destination": "cRectangle dest = {visualX, visualY, roundedScaledWidth, roundedScaledHeight}; размер берётся из visual.getWidth() и visual.getHeight().",
+                "destination": "Без отдельного HD frame destination совпадает с visual. HD frame масштабируется с округлением по camera zoom и world scale, затем центрируется в visual.",
             },
             "sources": unique_refs([
                 source.function_ref(cpp, draw_func, "const cRectangle visual = getVisualRectangle();"),
-                source.function_ref(cpp, draw_func, "cRectangle dest = {"),
-                source.function_ref(cpp, draw_func, "roundedScaledWidth,"),
+                source.ref(layout, "const int zoomedWidth = static_cast<int>(std::lround(frame.width * cameraZoom));"),
+                source.ref(layout, "const int destinationWidth = static_cast<int>(std::lround(zoomedWidth * worldScale));"),
+                source.ref(layout, "static_cast<float>(visual.x) + static_cast<float>(visual.width - destinationWidth) / 2.0F"),
+                source.ref(layout, "static_cast<float>(visual.y) + static_cast<float>(visual.height - destinationHeight) / 2.0F"),
+                resolved_frame_ref,
             ]),
         },
         "start_pixel_fields": {
             "value": "draw() формирует source rectangle через facing и iFrame; bmp_startpixel не читается.",
             "sources": unique_refs([
-                start_x_body, start_y,
+                source.ref(layout, "facingIndex * frame.width"),
+                source.ref(layout, "animationFrame * frame.height"),
                 source.ref("src/utils/cIniGameRessouces.cpp", "sUnitInfo[HARVESTER].bmp_startpixel = 24;"),
             ]),
         },
@@ -1047,7 +1081,22 @@ def build_entries(
             raise ValueError(f"ambiguous frame dimensions for atlas {pack_entry.name}: {sizes}")
         width, height = next(iter(sizes))
         frame_classic = [width, height]
-        frame_hd4 = [width * density, height * density]
+        hd_sizes = {
+            (record["sizes"].get("hd_frame_width"), record["sizes"].get("hd_frame_height"))
+            for record in mapped_records
+        }
+        if any((hd_width is None) != (hd_height is None) for hd_width, hd_height in hd_sizes):
+            raise ValueError(f"incomplete HD frame dimensions for atlas {pack_entry.name}")
+        hd_sizes.discard((None, None))
+        if len(hd_sizes) > 1:
+            raise ValueError(f"ambiguous HD frame dimensions for atlas {pack_entry.name}: {hd_sizes}")
+        if hd_sizes:
+            hd_width, hd_height = next(iter(hd_sizes))
+            if hd_width <= 0 or hd_height <= 0:
+                raise ValueError(f"invalid HD frame dimensions for atlas {pack_entry.name}: {hd_width}x{hd_height}")
+            frame_hd4 = [hd_width, hd_height]
+        else:
+            frame_hd4 = [width * density, height * density]
         if hd4_size is None:
             columns = rows = None
             remainder = None
@@ -1624,8 +1673,6 @@ def markdown_document(contract: dict[str, Any]) -> str:
             if not separator or not line_number.isdigit():
                 continue
             links.append(f"[{reference}](../../{source_path}#L{line_number})")
-            if len(links) == 3:
-                break
         return ", ".join(links) if links else "—"
 
     lines = [

@@ -27,6 +27,7 @@
 #include "utils/cSoundPlayer.h"
 #include "utils/Graphics.hpp"
 #include "utils/RNG.hpp"
+#include "utils/UnitSpriteLayout.hpp"
 #include "utils/WorldObjectScale.hpp"
 #include "utils/Localization.hpp"
 #include <SDL2/SDL.h>
@@ -799,9 +800,6 @@ void cUnit::draw()
     const int bmp_body = convertAngleToDrawIndex(iBodyFacing);
 
     // draw body first
-    int start_x = bmp_body * bmp_width;
-    int start_y = bmp_height * iFrame;
-
     cPlayer &cPlayer = players[this->iPlayer];
 
     Texture *shadow = cPlayer.getUnitShadowBitmap(iType);
@@ -810,36 +808,99 @@ void cUnit::draw()
     const int roundedScaledHeight = visual.getHeight();
     const int visualX = visual.getX();
     const int visualY = visual.getY();
+    const UnitSpriteRectangle visualLayout{
+        visualX,
+        visualY,
+        roundedScaledWidth,
+        roundedScaledHeight
+    };
+    const float cameraZoom = mapCamera->factorZoomLevel(1.0F);
+    const float worldScale = unitWorldScaleFactor(
+        game.getWorldScaleFactor(),
+        gfxdata && gfxdata->getDensity() > 1,
+        iType == TANK || iType == SIEGETANK
+    );
     if (shadow) {
-        cRectangle src = {start_x, start_y, bmp_width, bmp_height};
-        cRectangle dest = {
-            visualX,
-            visualY,
-            roundedScaledWidth,
-            roundedScaledHeight
-        };
-        if (iType == CARRYALL) {
-            dest = {
+        const UnitSpriteFrame frame = resolveUnitSpriteFrame(
+            bmp_width,
+            bmp_height,
+            unitType.hd_frame_width,
+            unitType.hd_frame_height,
+            shadow->density
+        );
+        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_body, iFrame);
+        if (frame.usesHdFrame) {
+            UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
+                frame,
+                visualLayout,
+                cameraZoom,
+                worldScale
+            );
+            if (iType == CARRYALL) {
+                destination.y += 24.0F;
+            }
+            renderDrawer->renderStrechSpriteF(
+                shadow,
+                {source.x, source.y, source.width, source.height},
+                {destination.x, destination.y, destination.width, destination.height},
+                ShadowTrans
+            );
+        }
+        else {
+            cRectangle dest = {
                 visualX,
-                visualY + 24,
+                visualY,
                 roundedScaledWidth,
                 roundedScaledHeight
             };
+            if (iType == CARRYALL) {
+                dest = {
+                    visualX,
+                    visualY + 24,
+                    roundedScaledWidth,
+                    roundedScaledHeight
+                };
+            }
+            renderDrawer->renderStrechSprite(
+                shadow,
+                {source.x, source.y, source.width, source.height},
+                dest,
+                ShadowTrans
+            );
         }
-        renderDrawer->renderStrechSprite(shadow,src, dest, ShadowTrans);
     }
 
     // Draw BODY
     Texture *bitmap = cPlayer.getUnitBitmap(iType);
     if (bitmap) {
-        cRectangle src = {start_x, start_y, bmp_width, bmp_height};
-        cRectangle dest = {
-            visualX,
-            visualY,
-            roundedScaledWidth,
-            roundedScaledHeight
-        };
-        renderDrawer->renderStrechSprite(bitmap,src, dest);
+        const UnitSpriteFrame frame = resolveUnitSpriteFrame(
+            bmp_width,
+            bmp_height,
+            unitType.hd_frame_width,
+            unitType.hd_frame_height,
+            bitmap->density
+        );
+        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_body, iFrame);
+        if (frame.usesHdFrame) {
+            const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
+                frame,
+                visualLayout,
+                cameraZoom,
+                worldScale
+            );
+            renderDrawer->renderStrechSpriteF(
+                bitmap,
+                {source.x, source.y, source.width, source.height},
+                {destination.x, destination.y, destination.width, destination.height}
+            );
+        }
+        else {
+            renderDrawer->renderStrechSprite(
+                bitmap,
+                {source.x, source.y, source.width, source.height},
+                {visualX, visualY, roundedScaledWidth, roundedScaledHeight}
+            );
+        }
     }
     else {
         log(std::format("unit of iType [{}] did not have a bitmap!?", iType));
@@ -849,17 +910,34 @@ void cUnit::draw()
     // Draw TOP
     Texture *top = cPlayer.getUnitTopBitmap(iType);
     if (top && iHitPoints > -1) {
-        // recalculate start_x using head instead of body
-        start_x = bmp_head * bmp_width;
-        start_y = bmp_height * iFrame;
-        cRectangle src = {start_x, start_y, bmp_width, bmp_height};
-        cRectangle dest = {
-            visualX,
-            visualY,
-            roundedScaledWidth,
-            roundedScaledHeight
-        };
-        renderDrawer->renderStrechSprite(top,src, dest);
+        const UnitSpriteFrame frame = resolveUnitSpriteFrame(
+            bmp_width,
+            bmp_height,
+            unitType.hd_frame_width,
+            unitType.hd_frame_height,
+            top->density
+        );
+        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_head, iFrame);
+        if (frame.usesHdFrame) {
+            const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
+                frame,
+                visualLayout,
+                cameraZoom,
+                worldScale
+            );
+            renderDrawer->renderStrechSpriteF(
+                top,
+                {source.x, source.y, source.width, source.height},
+                {destination.x, destination.y, destination.width, destination.height}
+            );
+        }
+        else {
+            renderDrawer->renderStrechSprite(
+                top,
+                {source.x, source.y, source.width, source.height},
+                {visualX, visualY, roundedScaledWidth, roundedScaledHeight}
+            );
+        }
     }
 
     // when we want to be picked up..

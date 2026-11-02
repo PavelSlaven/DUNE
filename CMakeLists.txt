@@ -223,6 +223,7 @@ if(BUILD_TESTING)
         options_menu_layout_tests
         tests/OptionsMenuLayoutTests.cpp
         src/utils/cRectangle.cpp
+        src/utils/RenderScale.cpp
     )
     target_include_directories(
         options_menu_layout_tests
@@ -448,6 +449,7 @@ if(BUILD_TESTING)
                 --resources ${CMAKE_CURRENT_SOURCE_DIR}/resources
         )
     endif()
+    include(tests/UnitRenderFixture.cmake)
 
     if(APPLE)
         target_link_libraries(command_bindings_tests PRIVATE ${SDL2_LIBRARIES})

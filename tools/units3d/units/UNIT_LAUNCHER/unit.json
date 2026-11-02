@@ -76,7 +76,8 @@
         "b": "units-gen/UNIT_LAUNCHER/launcher_k4_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k4.png"
+      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k4.png",
+      "scale_factor": 0.923
     },
     {
       "row": 0,
@@ -96,7 +97,8 @@
         "b": "units-gen/UNIT_LAUNCHER/launcher_k6_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k6.png"
+      "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour_k6.png",
+      "scale_factor": 1.058
     },
     {
       "row": 0,

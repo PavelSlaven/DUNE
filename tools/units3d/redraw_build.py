@@ -37,7 +37,7 @@ def run(unit, args):
     for record in records:
         name = frame_name(record)
         with frame_input(record, unit.pack_path):
-            boxes[name] = bbox(unit.old_frame('body', record)[..., 3])
+            boxes[name] = unit.output_box(bbox(unit.old_frame('body', record)[..., 3]))
     prepared = {}
     raw = {}
     cleaned = {}
@@ -61,6 +61,10 @@ def run(unit, args):
         box = boxes[name]
         ratios.append((box[2] - box[0]) / ((x1 - x0) * unit.maximum / CANVAS))
     scale_median = float(np.median(ratios))
+
+    def frame_scale(record, scale):
+        return scale * record.get('scale_factor', 1)
+
     has_mask = unit.atlases['house_mask'] is not None
     recolours = {}
     if has_mask:
@@ -73,6 +77,20 @@ def run(unit, args):
             recolours[frame_name(record)] = edit, cleaned_edit
 
     placement_records = sorted(records, key=lambda record: 'offset_from' in record)
+    offset_shift = unit.data.get('offset_shift', (0, 0))
+
+    def place_frame(rgba, scale, box, offset=None):
+        if offset is not None:
+            return place(rgba, unit.frame, scale, box, offset, source_maximum=unit.maximum)
+        frame = place(rgba, unit.frame, scale, box, source_maximum=unit.maximum)
+        base_offset = frame[2]
+        final_offset = (base_offset[0] + offset_shift[0], base_offset[1] + offset_shift[1])
+        if final_offset == base_offset:
+            return frame
+        shifted, clipped, _, _ = place(
+            rgba, unit.frame, scale, box, final_offset, source_maximum=unit.maximum,
+        )
+        return shifted, clipped, final_offset, frame[3]
 
     def place_bodies(candidate):
         placed = {}
@@ -84,7 +102,9 @@ def run(unit, args):
                 offset = placed[source_name][2]
             attempt_path = unit.path(record['attempts'][record['pick']])
             with frame_input(record, attempt_path):
-                placed[name] = place(raw[name], unit.frame, candidate, boxes[name], offset)
+                placed[name] = place_frame(
+                    raw[name], frame_scale(record, candidate), boxes[name], offset,
+                )
         return placed
 
     def fits(candidate):
@@ -96,7 +116,10 @@ def run(unit, args):
                 return False
             if has_mask:
                 with frame_input(record, unit.path(record['recolour'])):
-                    _, clipped, _, _ = place(recolours[name][1], unit.frame, candidate, boxes[name], offset)
+                    _, clipped, _, _ = place(
+                        recolours[name][1], unit.frame, frame_scale(record, candidate), boxes[name], offset,
+                        source_maximum=unit.maximum,
+                    )
                 if clipped:
                     return False
         return True
@@ -118,7 +141,8 @@ def run(unit, args):
         corridor = None
     output.mkdir(parents=True, exist_ok=True)
     (output / 'frames').mkdir()
-    atlases = {role: np.zeros_like(unit.image(unit.atlases['body']))
+    atlas_width, atlas_height = unit.atlas_size
+    atlases = {role: np.zeros((atlas_height, atlas_width, 4), np.uint8)
                for role, name in unit.atlases.items() if name is not None}
     params = {'scale': scale, 'scale_median': scale_median, 'frames': {}}
     metrics = ['row\tk\tpick\tiou\tshare\told_share\tstray\tok']
@@ -130,7 +154,10 @@ def run(unit, args):
         colour = body
         if despill:
             with frame_input(record, unit.path(record['attempts'][record['pick']])):
-                colour = place(cleaned[name], unit.frame, scale, boxes[name], offset)[0]
+                colour = place(
+                    cleaned[name], unit.frame, frame_scale(record, scale), boxes[name], offset,
+                    source_maximum=unit.maximum,
+                )[0]
         (output / 'frames' / f'{name}.png').write_bytes(encode_png(Image.fromarray(colour)))
         params['frames'][name] = {'offset': list(offset), 'moved': list(moved)}
         reasons = []
@@ -139,7 +166,10 @@ def run(unit, args):
             recolour_path = unit.path(record['recolour'])
             with frame_input(record, recolour_path):
                 edit, cleaned_edit = recolours[name]
-                edit_frame, edit_clipped, _, _ = place(cleaned_edit, unit.frame, scale, boxes[name], offset)
+                edit_frame, edit_clipped, _, _ = place(
+                    cleaned_edit, unit.frame, frame_scale(record, scale), boxes[name], offset,
+                    source_maximum=unit.maximum,
+                )
             clipped = clipped or edit_clipped
             on, edit_on = body[..., 3] > 127, edit_frame[..., 3] > 127
             union = (on | edit_on).sum()
@@ -148,7 +178,10 @@ def run(unit, args):
             green = rgb[..., 1] - np.maximum(rgb[..., 0], rgb[..., 2]) >= 80
             white = np.dstack([np.full(green.shape + (3,), 255, np.uint8),
                                green.astype(np.uint8) * 255])
-            mask, _, _, _ = place(white, unit.frame, scale, boxes[name], offset)
+            mask, _, _, _ = place(
+                white, unit.frame, frame_scale(record, scale), boxes[name], offset,
+                source_maximum=unit.maximum,
+            )
             mask[..., :3] = 255
             mask[..., 3] = np.round(mask[..., 3].astype(np.float32) * body[..., 3] / 255).astype(np.uint8)
             if 'red_fill' in unit.data:

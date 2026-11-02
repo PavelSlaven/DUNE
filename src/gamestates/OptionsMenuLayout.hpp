@@ -5,6 +5,7 @@
 #include <algorithm>
 
 struct OptionsMenuLayout {
+    cRectangle window;
     cRectangle apply;
     cRectangle advanced;
     cRectangle status;
@@ -16,23 +17,34 @@ struct OptionsMenuLayout {
     cRectangle back;
 
     [[nodiscard]] static OptionsMenuLayout create(
-        int windowWidth,
-        int windowHeight,
+        int canvasWidth,
+        int canvasHeight,
         int buttonHeight,
-        int margin,
-        int contentX,
-        int buttonWidth,
         bool hdLayout,
         bool playing)
     {
+        const int margin = hdLayout ? 8 : 4;
+        const int actionGap = std::max(2, margin / 2);
         const int contentGap = hdLayout ? 2 : 5;
+        const int contentX = hdLayout ? 24 : 5;
         const int applyY = (contentGap + buttonHeight) * 10;
         const int applyWidth = hdLayout ? 170 : 115;
-        const int halfWidth = buttonWidth / 2;
         const int advancedWidth = hdLayout ? 220 : 160;
-        const int actionGap = std::max(2, margin / 2);
+        const int windowWidth = hdLayout ? std::min(canvasWidth - 32, 680) : canvasWidth / 2;
+        const int oldHeight = hdLayout ? std::min(canvasHeight - 32, 680) : canvasHeight / 2;
+        const int applyBottom = applyY + buttonHeight;
+        const int actionRows = playing ? 2 : 1;
+        const int requiredHeight = applyBottom + margin + actionRows * buttonHeight
+            + (actionRows - 1) * actionGap + margin;
+        const int windowHeight = std::min(canvasHeight - 8, std::max(oldHeight, requiredHeight));
 
         OptionsMenuLayout result;
+        result.window = cRectangle(
+            (canvasWidth - windowWidth) / 2,
+            (canvasHeight - windowHeight) / 2,
+            windowWidth,
+            windowHeight
+        );
         result.apply = cRectangle(
             contentX,
             applyY,
@@ -52,47 +64,49 @@ struct OptionsMenuLayout {
             std::max(0, windowWidth - margin - statusX),
             buttonHeight
         );
-        const int quitY = windowHeight - margin - buttonHeight;
-        const int mainMenuY = quitY - actionGap - buttonHeight;
+        const int columnWidth = (windowWidth - 4 * margin) / 3;
+        const int x0 = margin;
+        const int x1 = 2 * margin + columnWidth;
+        const int x2 = 3 * margin + 2 * columnWidth;
+        const int lastWidth = windowWidth - margin - x2;
+        const int bottomY = windowHeight - margin - buttonHeight;
         result.mainMenu = cRectangle(
-            margin,
-            mainMenuY,
-            buttonWidth,
+            x1,
+            bottomY,
+            columnWidth,
             buttonHeight
         );
         result.quit = cRectangle(
-            margin,
-            quitY,
-            halfWidth,
+            x0,
+            bottomY,
+            columnWidth,
             buttonHeight
         );
         result.back = cRectangle(
-            margin + halfWidth + margin,
-            result.quit.getY(),
-            halfWidth - margin,
+            x2,
+            bottomY,
+            lastWidth,
             buttonHeight
         );
 
         if (playing) {
-            const int missionY = mainMenuY - actionGap - buttonHeight;
-            const int saveY = missionY - actionGap - buttonHeight;
-            const int saveWidth = (buttonWidth - margin) / 2;
+            const int upperY = bottomY - actionGap - buttonHeight;
             result.save = cRectangle(
-                margin,
-                saveY,
-                saveWidth,
+                x0,
+                upperY,
+                columnWidth,
                 buttonHeight
             );
             result.load = cRectangle(
-                margin + saveWidth + margin,
-                saveY,
-                buttonWidth - saveWidth - margin,
+                x1,
+                upperY,
+                columnWidth,
                 buttonHeight
             );
             result.missionSelect = cRectangle(
-                margin,
-                missionY,
-                buttonWidth,
+                x2,
+                upperY,
+                lastWidth,
                 buttonHeight
             );
         }

@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 from tools.hd_assets import decode_image, read_pack
+from tools.units3d.atlas_geometry import validate_atlas_size
 from tools.units3d.redraw_common import InputError, ROOT
 
 
@@ -70,10 +71,14 @@ def run(unit, args) -> int:
             return _error(f'{name}: файл не декодируется как изображение')
         source_image = unit.image(name)
         source_size = (source_image.shape[1], source_image.shape[0])
-        if list(image.size) != sizes[name] or image.size != source_size:
+        if list(image.size) != sizes[name]:
             return _error(
-                f'{name}: размер файла, манифеста и исходного атласа не совпадает'
+                f'{name}: размер файла не совпадает с манифестом'
             )
+        try:
+            validate_atlas_size(name, image.size, source_size)
+        except ValueError as error:
+            return _error(str(error))
         payloads[name] = payload
 
     output.parent.mkdir(parents=True, exist_ok=True)
