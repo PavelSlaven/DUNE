@@ -792,7 +792,11 @@ void cUnit::draw()
         roundedScaledHeight
     };
     const float cameraZoom = mapCamera->factorZoomLevel(1.0F);
-    const float worldScale = game.getWorldScaleFactor();
+    const float worldScale = unitWorldScaleFactor(
+        game.getWorldScaleFactor(),
+        gfxdata && gfxdata->getDensity() > 1,
+        iType == TANK || iType == SIEGETANK
+    );
     if (shadow) {
         const UnitSpriteFrame frame = resolveUnitSpriteFrame(
             bmp_width,

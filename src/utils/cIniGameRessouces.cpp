@@ -35,6 +35,8 @@ void IniGameRessources::install_units()
         unitInfo.shadow = nullptr;  // no shadow (deliverd with picture itself)
         unitInfo.bmp_width = 0;
         unitInfo.bmp_height = 0;
+        unitInfo.hd_frame_width = 0;
+        unitInfo.hd_frame_height = 0;
         unitInfo.turnspeed = 0;
         unitInfo.speed = 0;
         unitInfo.icon = -1;
