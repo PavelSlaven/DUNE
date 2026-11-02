@@ -142,6 +142,15 @@ public:
         return m_tileHeight;
     }
 
+    // Reaches one pixel into the next tile so rounding never leaves a gap between tiles.
+    int getTileDrawWidth(int absoluteXPosition) {
+        return getWindowXPosition(absoluteXPosition + TILESIZE_WIDTH_PIXELS) - getWindowXPosition(absoluteXPosition) + 1;
+    }
+
+    int getTileDrawHeight(int absoluteYPosition) {
+        return getWindowYPosition(absoluteYPosition + TILESIZE_HEIGHT_PIXELS) - getWindowYPosition(absoluteYPosition) + 1;
+    }
+
     float factorZoomLevel(int value) {
         return value * m_zoomLevel;
     }

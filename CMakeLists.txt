@@ -283,6 +283,17 @@ if(BUILD_TESTING)
     add_test(NAME world_scale_selection COMMAND world_scale_tests)
 
     add_executable(
+        sound_distance_tests
+        tests/SoundDistanceTests.cpp
+    )
+    target_include_directories(
+        sound_distance_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME sound_distance_scale COMMAND sound_distance_tests)
+
+    add_executable(
         world_object_scale_tests
         tests/WorldObjectScaleTests.cpp
     )
@@ -418,6 +429,14 @@ if(BUILD_TESTING)
     add_test(NAME faction_tint_uniformity COMMAND faction_tint_tests)
 
     include(tests/UnitRenderFixture.cmake)
+
+    set_source_files_properties(
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests/MouseHoverStateTests.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests/TerrainTileGapTests.cpp"
+        PROPERTIES COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang>:-fno-access-control>"
+    )
+    add_unit_frame_test(mouse_hover_state_tests mouse_hover_state MouseHoverStateTests.cpp recorded)
+    add_unit_frame_test(terrain_tile_gap_tests terrain_tile_gap TerrainTileGapTests.cpp recorded)
 
     if(APPLE)
         target_link_libraries(command_bindings_tests PRIVATE ${SDL2_LIBRARIES})
