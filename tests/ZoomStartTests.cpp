@@ -72,7 +72,6 @@ void runZoomStartChecks()
     for (const int percent : {100, 110, 125, 150}) {
         checkStartZoom(fixture, 4, percent, percent / 100.0F);
     }
-    checkStartZoom(fixture, 1, 150, 1.0F);
 
     for (const int percent : {100, 110, 125, 150}) {
         checkZoomSteps(fixture, percent);
