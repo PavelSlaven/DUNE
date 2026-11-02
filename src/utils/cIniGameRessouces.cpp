@@ -183,6 +183,8 @@ void IniGameRessources::install_units()
     sUnitInfo[SIEGETANK].bmp_width = 18 * 2;
     sUnitInfo[SIEGETANK].bmp_startpixel = 1;
     sUnitInfo[SIEGETANK].bmp_height = 18 * 2;
+    sUnitInfo[SIEGETANK].hd_frame_width = 176;
+    sUnitInfo[SIEGETANK].hd_frame_height = 176;
     sUnitInfo[SIEGETANK].bmp_frames = 0;
     sUnitInfo[SIEGETANK].bulletType = BULLET_SIEGE;
     sUnitInfo[SIEGETANK].fireTwice = true;

@@ -22,6 +22,13 @@ public:
         Uint8 opacity = 255,
         SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND
     );
+    void renderStrechSpriteF(
+        Texture *src,
+        cRectangle srcPos,
+        SDL_FRect destPos,
+        Uint8 opacity = 255,
+        SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND
+    );
     void renderStrechFullSprite(Texture *src, cRectangle dest_pos, Uint8 opacity = 255);
     void renderFromSurface(
         SDL_Surface *src,
