@@ -120,20 +120,11 @@ cRectangle cParticle::getVisualRectangle()
             mapCamera->factorZoomLevel(getFrameHeight())
         ))
     );
-    const float worldScale = game.getWorldScaleFactor();
-    const int visualWidth = std::max(
-        1,
-        static_cast<int>(std::lround(originalWidth * worldScale))
-    );
-    const int visualHeight = std::max(
-        1,
-        static_cast<int>(std::lround(originalHeight * worldScale))
-    );
     return {
-        draw_x() - (visualWidth - originalWidth) / 2,
-        draw_y() - (visualHeight - originalHeight) / 2,
-        visualWidth,
-        visualHeight,
+        draw_x(),
+        draw_y(),
+        originalWidth,
+        originalHeight,
     };
 }
 

@@ -159,8 +159,8 @@ void cPlaceItDrawer::drawStructureIdAtMousePos(cBuildingListItem *itemToPlace)
     int width = sStructureInfo[structureId].bmp_width;
     int height = sStructureInfo[structureId].bmp_height;
 
-    int scaledWidth = mapCamera->factorZoomLevel(width);
-    int scaledHeight = mapCamera->factorZoomLevel(height);
+    int scaledWidth = std::lround(mapCamera->factorZoomLevel(width));
+    int scaledHeight = std::lround(mapCamera->factorZoomLevel(height));
 
     Texture *bmp = nullptr;
     if (structureId == SLAB1) {

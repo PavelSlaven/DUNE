@@ -131,8 +131,13 @@ def verify_runtime_changes() -> None:
     unit_source = (
         ROOT / "src" / "gameobjects" / "units" / "cUnit.cpp"
     ).read_text(encoding="utf-8")
-    if "game.getWorldScaleFactor()" not in unit_source:
-        raise AssertionError("adaptive HD world scale is not used for units")
+    if "getWorldScaleFactor" in unit_source:
+        raise AssertionError("units must not be multiplied by the world scale")
+    camera_source = (
+        ROOT / "src" / "map" / "cMapCamera.cpp"
+    ).read_text(encoding="utf-8")
+    if camera_source.count("m_zoomLevel = game.getWorldScaleFactor();") != 2:
+        raise AssertionError("world scale is not the starting camera zoom")
     world_scale_source = (
         ROOT / "src" / "utils" / "WorldScale.cpp"
     ).read_text(encoding="utf-8")

@@ -96,9 +96,7 @@ void cGameControlsContext::activateRallyPointCommand()
 
 int cGameControlsContext::getMouseCellFromScreen(int mouseX, int mouseY) const
 {
-    int absMapX = mapCamera->getAbsMapMouseX(mouseX);
-    int absMapY = mapCamera->getAbsMapMouseY(mouseY);
-    return mapCamera->getCellFromAbsolutePosition(absMapX, absMapY);
+    return mapCamera->getCellFromWindowPosition(mouseX, mouseY);
 }
 
 void cGameControlsContext::determineToolTip()
@@ -192,6 +190,14 @@ void cGameControlsContext::onMouseMovedTo(const s_MouseEvent &event)
 
     // remember state
     m_prevTickMouseAtBattleField = mouseOnBattleField;
+}
+
+void cGameControlsContext::refreshMouseHover()
+{
+    s_MouseEvent event;
+    event.eventType = eMouseEventType::MOUSE_MOVED_TO;
+    event.coords = cPoint(m_mouse->getX(), m_mouse->getY());
+    onMouseMovedTo(event);
 }
 
 void cGameControlsContext::onNotifyMouseEvent(const s_MouseEvent &event)

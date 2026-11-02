@@ -11,7 +11,6 @@
   */
 
 #include "cAbstractStructure.h"
-#include "utils/WorldObjectScale.hpp"
 
 #include "d2tmc.h"
 #include "data/gfxdata.h"
@@ -913,25 +912,11 @@ void cAbstractStructure::drawWithShadow()
 
 cRectangle cAbstractStructure::getVisualRectangle()
 {
-    const int originalWidth = static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(getWidthInPixels())
-    ));
-    const int originalHeight = static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(getHeightInPixels())
-    ));
-    const float visualScale =
-        structureWorldScaleFactor(game.getWorldScaleFactor());
-    const int visualWidth = static_cast<int>(std::lround(
-        originalWidth * visualScale
-    ));
-    const int visualHeight = static_cast<int>(std::lround(
-        originalHeight * visualScale
-    ));
     return {
-        iDrawX() - (visualWidth - originalWidth) / 2,
-        iDrawY() - (visualHeight - originalHeight),
-        visualWidth,
-        visualHeight
+        iDrawX(),
+        iDrawY(),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(getWidthInPixels()))),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(getHeightInPixels())))
     };
 }
 

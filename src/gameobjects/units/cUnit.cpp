@@ -26,7 +26,6 @@
 #include "utils/Graphics.hpp"
 #include "utils/RNG.hpp"
 #include "utils/UnitSpriteLayout.hpp"
-#include "utils/WorldObjectScale.hpp"
 #include "utils/Localization.hpp"
 #include <SDL2/SDL.h>
 #include <format>
@@ -532,28 +531,11 @@ int cUnit::draw_y(int bmpHeight)
 
 cRectangle cUnit::getVisualRectangle()
 {
-    const int originalWidth = static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(getBmpWidth())
-    ));
-    const int originalHeight = static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(getBmpHeight())
-    ));
-    const float visualScale = unitWorldScaleFactor(
-        game.getWorldScaleFactor(),
-        gfxdata && gfxdata->getDensity() > 1,
-        iType == TANK || iType == SIEGETANK
-    );
-    const int visualWidth = static_cast<int>(std::lround(
-        originalWidth * visualScale
-    ));
-    const int visualHeight = static_cast<int>(std::lround(
-        originalHeight * visualScale
-    ));
     return {
-        draw_x() - (visualWidth - originalWidth) / 2,
-        draw_y() - (visualHeight - originalHeight) / 2,
-        visualWidth,
-        visualHeight
+        draw_x(),
+        draw_y(),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(getBmpWidth()))),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(getBmpHeight())))
     };
 }
 
@@ -576,9 +558,7 @@ void cUnit::draw_spice()
 {
     const cRectangle visual = getVisualRectangle();
     float width_x = visual.getWidth();
-    int height_y = std::max(1, static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(4) * game.getWorldScaleFactor()
-    )));
+    int height_y = std::max(1, static_cast<int>(std::lround(mapCamera->factorZoomLevel(4))));
     int drawx = visual.getX();
     int drawy = visual.getY() - ((height_y * 2) + 2);
 
@@ -621,9 +601,7 @@ void cUnit::draw_health()
     // draw units health
     const cRectangle visual = getVisualRectangle();
     float width_x = visual.getWidth();
-    int height_y = std::max(1, static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(4) * game.getWorldScaleFactor()
-    )));
+    int height_y = std::max(1, static_cast<int>(std::lround(mapCamera->factorZoomLevel(4))));
     int drawx = visual.getX();
     int drawy = visual.getY() - (height_y + 2);
 
@@ -650,9 +628,7 @@ void cUnit::draw_group(cTextDrawer* textDrawer)
     if (iHitPoints < 0) return;
 
     const cRectangle visual = getVisualRectangle();
-    int height_y = std::max(1, static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(4) * game.getWorldScaleFactor()
-    )));
+    int height_y = std::max(1, static_cast<int>(std::lround(mapCamera->factorZoomLevel(4))));
     int drawx = visual.getX();
     int drawy = visual.getY() - (height_y + 2);
     // draw group
@@ -792,11 +768,6 @@ void cUnit::draw()
         roundedScaledHeight
     };
     const float cameraZoom = mapCamera->factorZoomLevel(1.0F);
-    const float worldScale = unitWorldScaleFactor(
-        game.getWorldScaleFactor(),
-        gfxdata && gfxdata->getDensity() > 1,
-        iType == TANK || iType == SIEGETANK
-    );
     if (shadow) {
         const UnitSpriteFrame frame = resolveUnitSpriteFrame(
             bmp_width,
@@ -810,8 +781,7 @@ void cUnit::draw()
             UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
                 visualLayout,
-                cameraZoom,
-                worldScale
+                cameraZoom
             );
             if (iType == CARRYALL) {
                 destination.y += 24.0F;
@@ -862,8 +832,7 @@ void cUnit::draw()
             const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
                 visualLayout,
-                cameraZoom,
-                worldScale
+                cameraZoom
             );
             renderDrawer->renderStrechSpriteF(
                 bitmap,
@@ -899,8 +868,7 @@ void cUnit::draw()
             const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
                 visualLayout,
-                cameraZoom,
-                worldScale
+                cameraZoom
             );
             renderDrawer->renderStrechSpriteF(
                 top,
