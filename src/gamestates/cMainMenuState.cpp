@@ -24,23 +24,13 @@
 cMainMenuState::cMainMenuState(cGame &theGame, GameContext* ctx) :
     cGameState(theGame, ctx)
 {
-    m_hdLayout = m_game.isHdGraphicsActive();
-    m_metaTextDrawer = m_hdLayout
-        ? ctx->getTextContext()->getMenuTextDrawer()
-        : ctx->getTextContext()->getBeneTextDrawer();
-    m_textDrawer = m_hdLayout
-        ? ctx->getTextContext()->getMenuTextDrawer()
-        : m_metaTextDrawer;
+    m_metaTextDrawer = ctx->getTextContext()->getMenuTextDrawer();
+    m_textDrawer = ctx->getTextContext()->getMenuTextDrawer();
 
     auto *gfxinter = ctx->getGraphicsContext()->gfxinter.get();
     bmp_D2TM_Title = gfxinter->getTexture(BMP_D2TM);
 
-    if (m_hdLayout) {
-        buildHdMenu();
-    }
-    else {
-        buildClassicMenu();
-    }
+    buildHdMenu();
 
     m_saveDialog = std::make_unique<SaveSlotsDialog>(
         m_game,
@@ -49,25 +39,6 @@ cMainMenuState::cMainMenuState(cGame &theGame, GameContext* ctx) :
             m_game.initiateFadingOut();
         }
     );
-
-    if (m_game.isDebugMode()) {
-        backGroundDebug = renderDrawer->createRenderTargetTexture(
-            m_game.m_screenW,
-            m_game.m_screenH
-        );
-        renderDrawer->beginDrawingToTexture(backGroundDebug);
-        for (int x = 0; x < m_game.m_screenW; x += 60) {
-            for (int y = 0; y < m_game.m_screenH; y += 20) {
-                m_metaTextDrawer->drawText(
-                    x,
-                    y,
-                    Color{48, 48, 48, 255},
-                    "DEBUG"
-                );
-            }
-        }
-        renderDrawer->endDrawingToTexture();
-    }
 }
 
 void cMainMenuState::buildHdMenu()
@@ -229,148 +200,12 @@ void cMainMenuState::buildHdMenu()
     );
 }
 
-void cMainMenuState::buildClassicMenu()
-{
-    const int logoWidth = bmp_D2TM_Title->w;
-    const int logoHeight = bmp_D2TM_Title->h;
-    const int centerOfScreen = m_game.m_screenW / 2;
-
-    logoX = centerOfScreen - logoWidth / 2;
-    logoY = logoHeight / 10;
-    mainMenuWidth = 130;
-    mainMenuHeight = 143;
-    mainMenuFrameX = centerOfScreen - mainMenuWidth / 2;
-    mainMenuFrameY = 319;
-    logoY = static_cast<int>(
-        mainMenuFrameY - logoHeight * 1.2f
-    );
-    m_logoRect = cRectangle(
-        logoX,
-        logoY,
-        logoWidth,
-        logoHeight
-    );
-    sdl2power = cRectangle(
-        centerOfScreen + logoWidth / 4,
-        logoY + logoHeight + 75,
-        0,
-        0
-    );
-
-    const int buttonHeight = m_textDrawer->getFontHeight() + 4;
-    const int creditsWidth = m_textDrawer->getTextLength(
-        localization::text("CREDITS", "АВТОРЫ")
-    ) / 2;
-    gui_btn_credits = GuiButtonBuilder()
-        .withRect(cRectangle(
-            centerOfScreen - creditsWidth,
-            0,
-            creditsWidth,
-            buttonHeight
-        ))
-        .withLabel(localization::text("CREDITS", "АВТОРЫ"))
-        .withTextDrawer(m_textDrawer)
-        .withTheme(GuiTheme::Light())
-        .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
-        .onClick([this]() {
-            m_game.setNextStateToTransitionTo(GAME_CREDITS);
-            m_game.initiateFadingOut();
-        })
-        .build();
-
-    gui_window = new GuiWindow(
-        cRectangle(
-            mainMenuFrameX,
-            mainMenuFrameY,
-            mainMenuWidth,
-            mainMenuHeight
-        ),
-        m_textDrawer
-    );
-    gui_window->setTheme(GuiTheme::Light());
-
-    const int buttonX = mainMenuFrameX + 2;
-    const int buttonWidth = mainMenuWidth - 8;
-    const std::array<std::pair<const char *, int>, 7> rows{{
-        {localization::text("Campaign", "Кампания"), 323},
-        {localization::text("Skirmish", "Схватка"), 344},
-        {localization::text("Multiplayer", "Сетевая игра"), 364},
-        {localization::text("Saved games", "Сохранения"), 384},
-        {localization::text("Settings", "Настройки"), 404},
-        {localization::text("Hall of Fame", "Зал славы"), 424},
-        {localization::text("Exit", "Выход"), 444}
-    }};
-
-    for (std::size_t index = 0; index < rows.size(); ++index) {
-        const bool enabled =
-            index == 0 ||
-            index == 1 ||
-            (index == 3 && SaveGameManager::hasAnySave()) ||
-            index == 4 ||
-            index == 6;
-        std::function<void()> onClick;
-        if (index == 0) {
-            onClick = [this]() {
-                m_game.setNextStateToTransitionTo(GAME_SELECT_HOUSE);
-                m_game.initiateFadingOut();
-            };
-        }
-        else if (index == 1) {
-            onClick = [this]() {
-                m_game.loadSkirmishMaps();
-                m_game.initSkirmish();
-                m_game.setNextStateToTransitionTo(GAME_SETUPSKIRMISH);
-                m_game.initiateFadingOut();
-            };
-        }
-        else if (index == 3) {
-            onClick = [this]() {
-                m_saveDialog->open(false, false);
-            };
-        }
-        else if (index == 4) {
-            onClick = [this]() {
-                m_game.setNextStateToTransitionTo(GAME_OPTIONS);
-            };
-        }
-        else if (index == 6) {
-            onClick = [this]() {
-                m_game.m_playing = false;
-                m_game.initiateFadingOut();
-            };
-        }
-
-        GuiButton *button = GuiButtonBuilder()
-            .withRect(cRectangle(
-                buttonX,
-                rows[index].second,
-                buttonWidth,
-                buttonHeight
-            ))
-            .withLabel(rows[index].first)
-            .withTextDrawer(m_textDrawer)
-            .withTheme(
-                enabled
-                    ? GuiTheme::Light()
-                    : GuiTheme::Inactive()
-            )
-            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
-            .withEnabled(enabled)
-            .onClick(std::move(onClick))
-            .build();
-        gui_window->addGuiObject(button);
-    }
-}
-
 cMainMenuState::~cMainMenuState()
 {
     delete gui_window;
     delete gui_btn_credits;
     delete m_hdMenuBackground;
     delete m_hdMenuLogo;
-    if (m_game.isDebugMode()) {
-        delete backGroundDebug;
-    }
 }
 
 void cMainMenuState::thinkFast()
@@ -430,22 +265,12 @@ void cMainMenuState::drawHdBackground() const
 
 void cMainMenuState::draw() const
 {
-    if (m_hdLayout) {
-        drawHdBackground();
-    }
-    else if (m_game.isDebugMode()) {
-        renderDrawer->renderSprite(backGroundDebug, 0, 0);
-    }
+    drawHdBackground();
 
     Texture *logo = m_hdMenuLogo
         ? m_hdMenuLogo
         : bmp_D2TM_Title;
-    if (m_hdLayout) {
-        renderDrawer->renderStrechFullSprite(logo, m_logoRect);
-    }
-    else {
-        renderDrawer->renderSprite(logo, logoX, logoY);
-    }
+    renderDrawer->renderStrechFullSprite(logo, m_logoRect);
 
     gui_window->draw();
     gui_btn_credits->draw();

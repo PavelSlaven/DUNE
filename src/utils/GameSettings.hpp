@@ -1,6 +1,5 @@
 #pragma once
 #include "controls/CommandBindings.hpp"
-#include "utils/GraphicsMode.hpp"
 
 #include <string>
 
@@ -9,7 +8,6 @@ struct GameSettings {
     int screenH = 600;
     int renderScalePercent = 0;
     int worldScalePercent = 0;
-    GraphicsMode graphicsMode = GraphicsMode::Hd;
     float cameraDragMoveSpeed = 0.5f;
     float cameraBorderOrKeyMoveSpeed = 0.5f;
     bool cameraEdgeMove = true;

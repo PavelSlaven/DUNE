@@ -30,24 +30,14 @@ public:
 
     void setPlayer(cPlayer *pPlayer);
 
-protected:
-    void drawBuildingLists();
-    void drawCapacities();
-
-    void drawCandybar();
-
-    void drawMinimap();
-
 private:
     cPlayer *m_player;
     Graphics *m_gfxinter;
     cBuildingListDrawer m_buildingListDrawer;
     cSideBar *m_sidebar;
-    Color m_sidebarColor;
     cTextDrawer *m_smallTextDrawer;
     std::array<Texture *, 3> m_houseCrests{};
 
-    void createCandyBar();
     void drawHdSidebar();
     void drawHdBuildingLists();
     void drawHdRadarPanel();
@@ -61,11 +51,4 @@ private:
         bool warning) const;
     [[nodiscard]] Texture *getHouseCrest() const;
     [[nodiscard]] std::string getHouseDisplayName() const;
-
-    void drawPowerUsage() const;
-    void drawCreditsUsage();
-    Texture *candyBarBall=nullptr;
-    Texture *candyBarPiece=nullptr;
-    Texture *candyHorizonBar=nullptr;
-    Texture *candiBarRenderer= nullptr;
 };

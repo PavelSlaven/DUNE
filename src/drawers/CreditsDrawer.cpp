@@ -185,76 +185,65 @@ void CreditsDrawer::thinkAboutIndividualCreditOffsets()
  */
 void CreditsDrawer::draw()
 {
-    if (game.isHdGraphicsActive()) {
-        const HudLayout layout = HudLayout::create(
-            true,
-            game.m_screenW,
-            game.m_screenH
-        );
-        const cRectangle &rect = layout.credits;
-        const Color panel{15, 19, 21, 255};
-        const Color border{155, 116, 43, 255};
-        const Color label{208, 196, 157, 255};
-        const Color amount{255, 210, 82, 255};
+    const HudLayout layout = HudLayout::create(
+        true,
+        game.m_screenW,
+        game.m_screenH
+    );
+    const cRectangle &rect = layout.credits;
+    const Color panel{15, 19, 21, 255};
+    const Color border{155, 116, 43, 255};
+    const Color label{208, 196, 157, 255};
+    const Color amount{255, 210, 82, 255};
 
-        renderDrawer->renderRectFillColor(
-            rect.getX(),
-            rect.getY(),
-            rect.getWidth(),
-            rect.getHeight(),
-            panel
-        );
-        renderDrawer->renderRectColor(
-            rect.getX(),
-            rect.getY(),
-            rect.getWidth(),
-            rect.getHeight(),
-            border
-        );
-        renderDrawer->renderRectFillColor(
-            rect.getX() + 7,
-            rect.getY() + 10,
-            12,
-            14,
-            Color{205, 133, 35, 255}
-        );
-        renderDrawer->renderRectColor(
-            rect.getX() + 7,
-            rect.getY() + 10,
-            12,
-            14,
-            Color{255, 215, 103, 255}
-        );
-        m_gameTextDrawer->drawText(
-            rect.getX() + 26,
-            rect.getY() + 10,
-            label,
-            localization::text("CREDITS", "КРЕДИТЫ"),
-            false
-        );
+    renderDrawer->renderRectFillColor(
+        rect.getX(),
+        rect.getY(),
+        rect.getWidth(),
+        rect.getHeight(),
+        panel
+    );
+    renderDrawer->renderRectColor(
+        rect.getX(),
+        rect.getY(),
+        rect.getWidth(),
+        rect.getHeight(),
+        border
+    );
+    renderDrawer->renderRectFillColor(
+        rect.getX() + 7,
+        rect.getY() + 10,
+        12,
+        14,
+        Color{205, 133, 35, 255}
+    );
+    renderDrawer->renderRectColor(
+        rect.getX() + 7,
+        rect.getY() + 10,
+        12,
+        14,
+        Color{255, 215, 103, 255}
+    );
+    m_gameTextDrawer->drawText(
+        rect.getX() + 26,
+        rect.getY() + 10,
+        label,
+        localization::text("CREDITS", "КРЕДИТЫ"),
+        false
+    );
 
-        const std::string credits = std::format(
-            "{}",
-            std::max(0, currentCredits)
-        );
-        const int amountWidth = m_gameTextDrawer->getTextLength(credits);
-        m_gameTextDrawer->drawText(
-            rect.getEndX() - amountWidth - 9,
-            rect.getY() + 10,
-            amount,
-            credits,
-            false
-        );
-        return;
-    }
-
-    auto *tex = m_gfxinter->getTexture(CREDITS_BAR);
-    renderDrawer->renderSprite(tex, drawX, drawY);
-    renderDrawer->setClippingFor(drawX+1, drawY+5, drawX+tex->w-1, drawY+tex->h-5);
-    drawCurrentCredits(drawX, drawY);
-    drawPreviousCredits(drawX, drawY);
-    renderDrawer->resetClippingFor();
-
+    const std::string credits = std::format(
+        "{}",
+        std::max(0, currentCredits)
+    );
+    const int amountWidth = m_gameTextDrawer->getTextLength(credits);
+    m_gameTextDrawer->drawText(
+        rect.getEndX() - amountWidth - 9,
+        rect.getY() + 10,
+        amount,
+        credits,
+        false
+    );
 }
 
 int CreditsDrawer::getXDrawingOffset(int amount)

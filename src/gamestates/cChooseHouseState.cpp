@@ -21,99 +21,69 @@ cChooseHouseState::cChooseHouseState(cGame &theGame, GameContext* ctx) :
     cGameState(theGame, ctx),
     m_gfxinter(ctx->getGraphicsContext()->gfxinter.get())
 {
-    m_hdLayout = m_game.isHdGraphicsActive();
-    m_textDrawer = m_hdLayout
-        ? ctx->getTextContext()->getMenuTextDrawer()
-        : ctx->getTextContext()->getBeneTextDrawer();
-
-    bmp_Dune = m_gfxinter->getTexture(BMP_GAME_DUNE);
-
-    int duneAtTheRight = m_game.m_screenW - bmp_Dune->w;
-    int duneAlmostAtBottom = m_game.m_screenH - (bmp_Dune->h * 0.90);
-    coords_Dune = cPoint(duneAtTheRight, duneAlmostAtBottom);
-
-    bmp_SelectYourHouseTitle = m_gfxinter->getTexture(BMP_SELECT_YOUR_HOUSE);
-
-    selectYourHouseXCentered = (m_game.m_screenW / 2) - bmp_SelectYourHouseTitle->w / 2;
-    coords_SelectYourHouseTitle = cPoint(selectYourHouseXCentered, 0);
+    m_textDrawer = ctx->getTextContext()->getMenuTextDrawer();
 
     bmp_HouseAtreides = m_gfxinter->getTexture(BMP_SELECT_HOUSE_ATREIDES);
     bmp_HouseOrdos = m_gfxinter->getTexture(BMP_SELECT_HOUSE_ORDOS);
     bmp_HouseHarkonnen = m_gfxinter->getTexture(BMP_SELECT_HOUSE_HARKONNEN);
 
-    if (m_hdLayout) {
-        m_hdBackground = loadHdUiTexture(
-            "main_menu_background.png",
-            m_game.getGraphicsDensity(),
-            "HD house selection"
-        );
+    m_hdBackground = loadHdUiTexture(
+        "main_menu_background.png",
+        m_game.getGraphicsDensity(),
+        "HD house selection"
+    );
 
-        const int gap = std::clamp(m_game.m_screenW / 48, 16, 32);
-        const int horizontalMargin = std::clamp(
-            m_game.m_screenW / 24,
-            28,
-            72
-        );
-        const int availableCardWidth = (
-            m_game.m_screenW - horizontalMargin * 2 - gap * 2
-        ) / 3;
-        const int cardWidth = std::clamp(
-            availableCardWidth,
-            220,
-            420
-        );
-        const int cardsY = std::clamp(m_game.m_screenH / 6, 96, 150);
-        const int backWidth = 240;
-        const int backHeight = 46;
-        const int backY = m_game.m_screenH - backHeight - 18;
-        const int availableCardHeight = backY - cardsY - 26;
-        const int preferredCardHeight = std::clamp(
-            m_game.m_screenH * 3 / 5,
-            320,
-            520
-        );
-        const int cardHeight = std::max(
-            280,
-            std::min(preferredCardHeight, availableCardHeight)
-        );
-        const int cardsWidth = cardWidth * 3 + gap * 2;
-        const int firstX = (m_game.m_screenW - cardsWidth) / 2;
+    const int gap = std::clamp(m_game.m_screenW / 48, 16, 32);
+    const int horizontalMargin = std::clamp(
+        m_game.m_screenW / 24,
+        28,
+        72
+    );
+    const int availableCardWidth = (
+        m_game.m_screenW - horizontalMargin * 2 - gap * 2
+    ) / 3;
+    const int cardWidth = std::clamp(
+        availableCardWidth,
+        220,
+        420
+    );
+    const int cardsY = std::clamp(m_game.m_screenH / 6, 96, 150);
+    const int backWidth = 240;
+    const int backHeight = 46;
+    const int backY = m_game.m_screenH - backHeight - 18;
+    const int availableCardHeight = backY - cardsY - 26;
+    const int preferredCardHeight = std::clamp(
+        m_game.m_screenH * 3 / 5,
+        320,
+        520
+    );
+    const int cardHeight = std::max(
+        280,
+        std::min(preferredCardHeight, availableCardHeight)
+    );
+    const int cardsWidth = cardWidth * 3 + gap * 2;
+    const int firstX = (m_game.m_screenW - cardsWidth) / 2;
 
-        houseAtreides = cRectangle(firstX, cardsY, cardWidth, cardHeight);
-        houseOrdos = cRectangle(
-            firstX + cardWidth + gap,
-            cardsY,
-            cardWidth,
-            cardHeight
-        );
-        houseHarkonnen = cRectangle(
-            firstX + (cardWidth + gap) * 2,
-            cardsY,
-            cardWidth,
-            cardHeight
-        );
+    houseAtreides = cRectangle(firstX, cardsY, cardWidth, cardHeight);
+    houseOrdos = cRectangle(
+        firstX + cardWidth + gap,
+        cardsY,
+        cardWidth,
+        cardHeight
+    );
+    houseHarkonnen = cRectangle(
+        firstX + (cardWidth + gap) * 2,
+        cardsY,
+        cardWidth,
+        cardHeight
+    );
 
-        backButtonRect = new cRectangle(
-            (m_game.m_screenW - backWidth) / 2,
-            backY,
-            backWidth,
-            backHeight
-        );
-    }
-    else {
-        backButtonRect = m_textDrawer->getAsRectangle(
-            0,
-            m_game.m_screenH - m_textDrawer->getFontHeight(),
-            localization::text(" BACK", " НАЗАД")
-        );
-        int selectYourHouseY = m_game.m_screenH * 0.25f;
-        int columnWidth = m_game.m_screenW / 7;
-        int offset = (columnWidth / 2) - (bmp_HouseAtreides->w / 2);
-
-        houseAtreides = cRectangle((columnWidth * 1) + offset, selectYourHouseY, 90, 98);
-        houseOrdos = cRectangle((columnWidth * 3) + offset, selectYourHouseY, 90, 98);
-        houseHarkonnen = cRectangle((columnWidth * 5) + offset, selectYourHouseY, 90, 98);
-    }
+    backButtonRect = new cRectangle(
+        (m_game.m_screenW - backWidth) / 2,
+        backY,
+        backWidth,
+        backHeight
+    );
 
     hoversOverBackButton = false;
 }
@@ -124,8 +94,6 @@ cChooseHouseState::~cChooseHouseState()
     delete m_hdBackground;
 
     // not owner of these
-    bmp_Dune = nullptr;
-    bmp_SelectYourHouseTitle = nullptr;
     bmp_HouseAtreides = nullptr;
     bmp_HouseOrdos = nullptr;
     bmp_HouseHarkonnen = nullptr;
@@ -147,82 +115,59 @@ void cChooseHouseState::draw() const
         uiaudit::recordClick("house-back", backButtonRect->getX(), backButtonRect->getY(), backButtonRect->getWidth(), backButtonRect->getHeight());
     }
 
-    if (m_hdLayout) {
-        drawHdBackground();
+    drawHdBackground();
 
-        const std::string title = localization::text(
-            "CHOOSE YOUR HOUSE", "ВЫБЕРИТЕ ДОМ");
-        const int titleWidth = m_textDrawer->getTextLength(title);
-        m_textDrawer->drawText(
-            (m_game.m_screenW - titleWidth) / 2,
-            48,
-            Color{231, 190, 91, 255},
-            title
-        );
-
-        drawHdHouseCard(
-            houseAtreides,
-            bmp_HouseAtreides,
-            localization::text("ATREIDES", "АТРЕЙДЕС"),
-            m_hoveredHouse == ATREIDES
-        );
-        drawHdHouseCard(
-            houseOrdos,
-            bmp_HouseOrdos,
-            localization::text("ORDOS", "ОРДОС"),
-            m_hoveredHouse == ORDOS
-        );
-        drawHdHouseCard(
-            houseHarkonnen,
-            bmp_HouseHarkonnen,
-            localization::text("HARKONNEN", "ХАРКОННЕН"),
-            m_hoveredHouse == HARKONNEN
-        );
-
-        const Color backFill = hoversOverBackButton
-            ? Color{43, 49, 53, 245}
-            : Color{25, 31, 35, 245};
-        renderDrawer->renderRectFillColor(*backButtonRect, backFill);
-        renderDrawer->renderRectColor(
-            *backButtonRect,
-            Color{195, 142, 43, 255}
-        );
-        const std::string backLabel = localization::text("BACK", "НАЗАД");
-        const int backLabelWidth = m_textDrawer->getTextLength(backLabel);
-        m_textDrawer->drawText(
-            backButtonRect->getX() +
-                (backButtonRect->getWidth() - backLabelWidth) / 2,
-            backButtonRect->getY() +
-                (backButtonRect->getHeight() -
-                 m_textDrawer->getFontHeight()) / 2,
-            hoversOverBackButton
-                ? Color{255, 224, 139, 255}
-                : Color{238, 229, 204, 255},
-            backLabel
-        );
-
-        mouse->draw();
-        return;
-    }
-
-    // Render the planet Dune a bit downward
-    renderDrawer->renderSprite(bmp_Dune, coords_Dune.x, coords_Dune.y);
-
-    // HOUSES
-    renderDrawer->renderSprite(bmp_SelectYourHouseTitle, coords_SelectYourHouseTitle.x, coords_SelectYourHouseTitle.y);
-
-    renderDrawer->renderSprite(bmp_HouseAtreides, houseAtreides.getX(), houseAtreides.getY());
-    renderDrawer->renderSprite(bmp_HouseOrdos, houseOrdos.getX(), houseOrdos.getY());
-    renderDrawer->renderSprite(bmp_HouseHarkonnen, houseHarkonnen.getX(),houseOrdos.getY());
-
-    // BACK (bottom right
-    // TODO: Use actual cGuiButton
-    Color color = hoversOverBackButton ? Color{255, 0, 0,255} : Color{255, 255, 255,255};
+    const std::string title = localization::text(
+        "CHOOSE YOUR HOUSE", "ВЫБЕРИТЕ ДОМ");
+    const int titleWidth = m_textDrawer->getTextLength(title);
     m_textDrawer->drawText(
-        backButtonRect->getTopLeft(), color,
-        localization::text(" BACK", " НАЗАД"));
+        (m_game.m_screenW - titleWidth) / 2,
+        48,
+        Color{231, 190, 91, 255},
+        title
+    );
 
-    // MOUSE
+    drawHdHouseCard(
+        houseAtreides,
+        bmp_HouseAtreides,
+        localization::text("ATREIDES", "АТРЕЙДЕС"),
+        m_hoveredHouse == ATREIDES
+    );
+    drawHdHouseCard(
+        houseOrdos,
+        bmp_HouseOrdos,
+        localization::text("ORDOS", "ОРДОС"),
+        m_hoveredHouse == ORDOS
+    );
+    drawHdHouseCard(
+        houseHarkonnen,
+        bmp_HouseHarkonnen,
+        localization::text("HARKONNEN", "ХАРКОННЕН"),
+        m_hoveredHouse == HARKONNEN
+    );
+
+    const Color backFill = hoversOverBackButton
+        ? Color{43, 49, 53, 245}
+        : Color{25, 31, 35, 245};
+    renderDrawer->renderRectFillColor(*backButtonRect, backFill);
+    renderDrawer->renderRectColor(
+        *backButtonRect,
+        Color{195, 142, 43, 255}
+    );
+    const std::string backLabel = localization::text("BACK", "НАЗАД");
+    const int backLabelWidth = m_textDrawer->getTextLength(backLabel);
+    m_textDrawer->drawText(
+        backButtonRect->getX() +
+            (backButtonRect->getWidth() - backLabelWidth) / 2,
+        backButtonRect->getY() +
+            (backButtonRect->getHeight() -
+             m_textDrawer->getFontHeight()) / 2,
+        hoversOverBackButton
+            ? Color{255, 224, 139, 255}
+            : Color{238, 229, 204, 255},
+        backLabel
+    );
+
     mouse->draw();
 }
 

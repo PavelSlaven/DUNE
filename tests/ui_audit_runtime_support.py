@@ -12,7 +12,6 @@ SETTINGS = {
     "FullScreen": "false",
     "RenderScale": "0",
     "WorldScale": "0",
-    "GraphicsMode": "HD",
     "Language": "ru",
 }
 TIMEOUT_SECONDS = 120

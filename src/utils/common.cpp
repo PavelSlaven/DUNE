@@ -64,10 +64,6 @@ std::unique_ptr<GameSettings> loadSettingsFromIni(const std::string& filename)
         gameSettings->renderScalePercent = section.getInt("RenderScale");
     if (section.hasValue("WorldScale"))
         gameSettings->worldScalePercent = section.getInt("WorldScale");
-    if (section.hasValue("GraphicsMode"))
-        gameSettings->graphicsMode = graphicsModeFromString(
-            section.getStringValue("GraphicsMode")
-        );
     if (section.hasValue("CameraDragMoveSpeed"))
         gameSettings->cameraDragMoveSpeed = section.getDouble("CameraDragMoveSpeed");
     if (section.hasValue("CameraBorderOrKeyMoveSpeed"))
@@ -340,7 +336,6 @@ bool saveDisplaySettingsToIni(
     bool fullscreen,
     int renderScalePercent,
     int worldScalePercent,
-    GraphicsMode graphicsMode,
     std::string &errorMessage)
 {
     return saveIniReplacements(filename, {
@@ -348,8 +343,7 @@ bool saveDisplaySettingsToIni(
         {"ScreenHeight", std::format("{}", screenHeight)},
         {"FullScreen", boolToIni(fullscreen)},
         {"RenderScale", std::format("{}", renderScalePercent)},
-        {"WorldScale", std::format("{}", worldScalePercent)},
-        {"GraphicsMode", graphicsModeToString(graphicsMode)}
+        {"WorldScale", std::format("{}", worldScalePercent)}
     }, errorMessage);
 }
 
@@ -364,7 +358,6 @@ bool saveSettingsToIni(
         {"FullScreen", boolToIni(!settings.windowed)},
         {"RenderScale", std::format("{}", settings.renderScalePercent)},
         {"WorldScale", std::format("{}", settings.worldScalePercent)},
-        {"GraphicsMode", graphicsModeToString(settings.graphicsMode)},
         {"CameraDragMoveSpeed", std::format("{}", settings.cameraDragMoveSpeed)},
         {"CameraBorderOrKeyMoveSpeed", std::format("{}", settings.cameraBorderOrKeyMoveSpeed)},
         {"CameraEdgeMove", boolToIni(settings.cameraEdgeMove)},

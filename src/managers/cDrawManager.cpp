@@ -39,17 +39,11 @@ cDrawManager::cDrawManager(GameContext *ctx, cPlayer *thePlayer) :
     m_timeManager(ctx->getTimeManager())
 {
     assert(thePlayer);
-    btnOptions = thePlayer->createTextureFromIndexedSurfaceWithPalette(
-        m_gfxinter->getSurface(BTN_OPTIONS), TransparentColorIndex
-    );
     m_mouseDrawer = new cMouseDrawer(thePlayer, ctx->getTextContext()->getSmallTextDrawer());
 }
 
 cDrawManager::~cDrawManager()
 {
-    if (btnOptions) {
-        delete btnOptions;
-    }
 }
 
 void cDrawManager::drawCombatState()
@@ -83,8 +77,6 @@ void cDrawManager::drawCombatState()
 
     // GUI
     drawSidebar();
-
-    drawOptionBar();
 
     renderDrawer->setClippingFor(0, cSideBar::TopBarHeight, mapCamera->getWindowWidth(), mapCamera->getWindowHeight() + cSideBar::TopBarHeight);
     drawStructurePlacing();
@@ -240,91 +232,71 @@ void cDrawManager::drawMouse()
 
 void cDrawManager::drawTopBarBackground()
 {
-    if (game.isHdGraphicsActive()) {
-        if (uiaudit::isEnabled()) {
-            uiaudit::recordArea("top-panel", 0, 0, game.m_screenW, cSideBar::TopBarHeight);
-        }
-        const Color panel{17, 21, 23, 255};
-        const Color border{151, 113, 43, 255};
-        const Color text{232, 222, 188, 255};
-        renderDrawer->renderRectFillColor(
-            0,
-            0,
-            game.m_screenW,
-            cSideBar::TopBarHeight,
-            panel
-        );
-        renderDrawer->renderLine(
-            0,
-            cSideBar::TopBarHeight - 2,
-            game.m_screenW,
-            cSideBar::TopBarHeight - 2,
-            border
-        );
-
-        const cRectangle optionsRect(7, 4, 126, 33);
-        renderDrawer->renderRectFillColor(
-            optionsRect.getX(),
-            optionsRect.getY(),
-            optionsRect.getWidth(),
-            optionsRect.getHeight(),
-            Color{27, 31, 33, 255}
-        );
-        renderDrawer->renderRectColor(
-            optionsRect.getX(),
-            optionsRect.getY(),
-            optionsRect.getWidth(),
-            optionsRect.getHeight(),
-            border
-        );
-        m_textDrawer->drawTextCenteredInBox(
-            localization::text("OPTIONS", "НАСТРОЙКИ"),
-            optionsRect,
-            text
-        );
-        if (uiaudit::isEnabled()) {
-            uiaudit::recordClick("top-options", optionsRect.getX(), optionsRect.getY(), optionsRect.getWidth(), optionsRect.getHeight());
-        }
-        if (game.getMouse()->isLeftButtonClicked() &&
-            game.getMouse()->isOverRectangle(
-                optionsRect.getX(),
-                optionsRect.getY(),
-                optionsRect.getWidth(),
-                optionsRect.getHeight())) {
-            game.setNextStateToTransitionTo(GAME_OPTIONS);
-        }
-        return;
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("top-panel", 0, 0, game.m_screenW, cSideBar::TopBarHeight);
     }
+    const Color panel{17, 21, 23, 255};
+    const Color border{151, 113, 43, 255};
+    const Color text{232, 222, 188, 255};
+    renderDrawer->renderRectFillColor(
+        0,
+        0,
+        game.m_screenW,
+        cSideBar::TopBarHeight,
+        panel
+    );
+    renderDrawer->renderLine(
+        0,
+        cSideBar::TopBarHeight - 2,
+        game.m_screenW,
+        cSideBar::TopBarHeight - 2,
+        border
+    );
 
-    Texture *topbarPiece = m_gfxinter->getTexture(BMP_TOPBAR_BACKGROUND);
-    for (int x = 0; x < game.m_screenW; x+= topbarPiece->w) {
-        renderDrawer->renderSprite(topbarPiece, x, 0);
-    }
-
-    renderDrawer->renderSprite(btnOptions, 1, 0);
-
-    //HACK HACK: for now do it like this, instead of using an actual GUI object here
-    cRectangle optionsRect = cRectangle(0,0, 162, 30);
+    const cRectangle optionsRect(7, 4, 126, 33);
+    renderDrawer->renderRectFillColor(
+        optionsRect.getX(),
+        optionsRect.getY(),
+        optionsRect.getWidth(),
+        optionsRect.getHeight(),
+        Color{27, 31, 33, 255}
+    );
+    renderDrawer->renderRectColor(
+        optionsRect.getX(),
+        optionsRect.getY(),
+        optionsRect.getWidth(),
+        optionsRect.getHeight(),
+        border
+    );
+    m_textDrawer->drawTextCenteredInBox(
+        localization::text("OPTIONS", "НАСТРОЙКИ"),
+        optionsRect,
+        text
+    );
     if (uiaudit::isEnabled()) {
         uiaudit::recordClick("top-options", optionsRect.getX(), optionsRect.getY(), optionsRect.getWidth(), optionsRect.getHeight());
     }
-    if (game.getMouse()->isLeftButtonClicked() && game.getMouse()->isOverRectangle(&optionsRect)) {
+    if (game.getMouse()->isLeftButtonClicked() &&
+        game.getMouse()->isOverRectangle(
+            optionsRect.getX(),
+            optionsRect.getY(),
+            optionsRect.getWidth(),
+            optionsRect.getHeight())) {
         game.setNextStateToTransitionTo(GAME_OPTIONS);
     }
 }
 
 void cDrawManager::drawTopBarMusicControls()
 {
-    const bool hd = game.isHdGraphicsActive();
-    const HudLayout layout = HudLayout::create(hd, game.m_screenW, game.m_screenH);
-    const int left = hd ? 143 : 167;
-    const int right = layout.battlefield.getEndX() - (hd ? 8 : 5);
-    drawMusicControls(left, right, hd);
+    const HudLayout layout = HudLayout::create(true, game.m_screenW, game.m_screenH);
+    const int left = 143;
+    const int right = layout.battlefield.getEndX() - 8;
+    drawMusicControls(left, right);
 }
 
-void cDrawManager::drawMusicControls(int left, int right, bool hd)
+void cDrawManager::drawMusicControls(int left, int right)
 {
-    const MusicControlsLayout layout = MusicControlsLayout::create(left, right, hd);
+    const MusicControlsLayout layout = MusicControlsLayout::create(left, right, true);
     if (!layout.visible) {
         return;
     }
@@ -334,9 +306,9 @@ void cDrawManager::drawMusicControls(int left, int right, bool hd)
         uiaudit::recordClick("music-speed-slider", layout.speedSlider.getX(), layout.speedSlider.getY(), layout.speedSlider.getWidth(), layout.speedSlider.getHeight());
     }
 
-    const Color panel = hd ? Color{35, 32, 25, 255} : Color{16, 16, 16, 225};
-    const Color border = hd ? Color{188, 139, 47, 255} : Color{214, 149, 20, 255};
-    const Color borderDark = hd ? Color{71, 50, 24, 255} : Color{92, 62, 12, 255};
+    const Color panel{35, 32, 25, 255};
+    const Color border{188, 139, 47, 255};
+    const Color borderDark{71, 50, 24, 255};
     const Color text{232, 222, 188, 255};
 
     for (const cRectangle *rect : {&layout.previous, &layout.next}) {
@@ -453,28 +425,11 @@ void cDrawManager::setPlayerToDraw(cPlayer *playerToDraw)
     m_mapDrawer.setPlayer(playerToDraw);
 }
 
-void cDrawManager::drawOptionBar()
-{
-    if (game.isHdGraphicsActive()) {
-        return;
-    }
-    if (uiaudit::isEnabled()) {
-        uiaudit::recordArea("top-panel", 0, 0, game.m_screenW, cSideBar::TopBarHeight);
-    }
-    // upper bar
-    renderDrawer->renderRectFillColor(0, 0, game.m_screenW, cSideBar::TopBarHeight, Color{0, 0, 0,255});
-    renderDrawer->renderRectFillColor(0,game.m_screenW, 40,32, Color{214,149,20,255});
-
-    for (int w = 0; w < (game.m_screenW + 800); w += 789) {
-        renderDrawer->renderSprite(m_gfxinter->getTexture(BMP_GERALD_TOP_BAR), w, 31);
-    }
-}
-
 void cDrawManager::drawNotifications()
 {
     std::vector<cPlayerNotification> &notifications = m_player->getNotifications();
 //    int y = cSideBar::TopBarHeight + 14; // 12 pixels
-    int y = game.isHdGraphicsActive() ? m_commandBarDrawer.getTopY() - 18 : game.m_screenH - 44;
+    int y = m_commandBarDrawer.getTopY() - 18;
     for (auto &notification : notifications) {
         m_textDrawer->drawText(4, y, notification.getColor(), notification.getMessage().c_str());
         y-=15;

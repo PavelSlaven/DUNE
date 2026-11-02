@@ -158,7 +158,6 @@ UnitFrameFixture::UnitFrameFixture(int density, int worldScalePercent)
 
     game.m_screenW = 800;
     game.m_screenH = 600;
-    game.m_graphicsDensity = density_;
     game.m_effectiveWorldScalePercent = worldScalePercent_;
     game.m_drawUnitDebug = false;
     game.m_mapViewport = nullptr;
@@ -325,7 +324,6 @@ void UnitFrameFixture::setCamera(float zoom, float viewportX, float viewportY)
 void UnitFrameFixture::setDisplaySettings(int density, int worldScalePercent)
 {
     const int normalizedDensity = std::max(1, density);
-    game.m_graphicsDensity = normalizedDensity;
     game.m_effectiveWorldScalePercent = worldScalePercent;
     gfxdata->density = normalizedDensity;
     const auto updateTextureDensity = [normalizedDensity](auto &cache) {

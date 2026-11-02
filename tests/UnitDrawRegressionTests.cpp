@@ -102,14 +102,13 @@ void verifyCalls(const std::vector<UnitDrawCall> &expected, const std::string &l
 void checkBaselineCase(
     UnitFrameFixture &fixture,
     const UnitFrameBaseline &baseline,
-    int density,
     float zoom,
     float selectedScale,
     int bodyAngle,
     int turretAngle,
     int animationFrame)
 {
-    fixture.setDisplaySettings(density, static_cast<int>(std::lround(selectedScale * 100.0F)));
+    fixture.setDisplaySettings(cGame::kHdAssetDensity, static_cast<int>(std::lround(selectedScale * 100.0F)));
     fixture.setCamera(zoom);
     fixture.setUnit(0, baseline.type, 256, 288, bodyAngle, turretAngle, animationFrame);
     fixture.setUnitFlags(0, true, true);
@@ -159,8 +158,8 @@ void checkBaselineCase(
                visual.getX(), visual.getY() - 7);
     appendIcon(expected, "renderStrechFullSprite", gfxdata->getTexture(FOCUS),
                visual.getX(), visual.getY(), &visual);
-    verifyCalls(expected, std::format("{} density={} zoom={} scale={} body={} turret={} frame={}",
-                                      baseline.name, density, zoom, selectedScale,
+    verifyCalls(expected, std::format("{} zoom={} scale={} body={} turret={} frame={}",
+                                      baseline.name, zoom, selectedScale,
                                       bodyAngle, turretAngle, animationFrame));
 }
 
@@ -203,24 +202,21 @@ void runRegressionMatrix()
 {
     UnitFrameFixture fixture(4, 100);
     for (const UnitFrameBaseline &baseline : UnitFrameBaselines) {
-        for (const int density : {1, 4}) {
-            if (baseline.type == SIEGETANK && density == 4) continue;
-            for (const float zoom : UnitFrameZoomLevels) {
-                for (const float selectedScale : UnitFrameWorldScales) {
-                    for (int bodyAngle = 0; bodyAngle < 8; ++bodyAngle) {
-                        for (int turretAngle = 0; turretAngle < 8; ++turretAngle) {
-                            for (const int animationFrame : unitFrameAnimationRows(baseline.animationFrames)) {
-                                checkBaselineCase(
-                                    fixture,
-                                    baseline,
-                                    density,
-                                    zoom,
-                                    selectedScale,
-                                    bodyAngle,
-                                    turretAngle,
-                                    animationFrame
-                                );
-                            }
+        if (baseline.type == SIEGETANK) continue;
+        for (const float zoom : UnitFrameZoomLevels) {
+            for (const float selectedScale : UnitFrameWorldScales) {
+                for (int bodyAngle = 0; bodyAngle < 8; ++bodyAngle) {
+                    for (int turretAngle = 0; turretAngle < 8; ++turretAngle) {
+                        for (const int animationFrame : unitFrameAnimationRows(baseline.animationFrames)) {
+                            checkBaselineCase(
+                                fixture,
+                                baseline,
+                                zoom,
+                                selectedScale,
+                                bodyAngle,
+                                turretAngle,
+                                animationFrame
+                            );
                         }
                     }
                 }

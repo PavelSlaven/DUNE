@@ -38,8 +38,7 @@ cMessageDrawer::~cMessageDrawer()
 
 void cMessageDrawer::draw()
 {
-    if (m_state == messages::eMessageDrawerState::COMBAT &&
-        game.isHdGraphicsActive()) {
+    if (m_state == messages::eMessageDrawerState::COMBAT) {
         const HudLayout layout = HudLayout::create(
             true,
             game.m_screenW,
@@ -90,16 +89,6 @@ void cMessageDrawer::draw()
             renderDrawer->resetClippingFor();
         }
         return;
-    }
-
-    if (m_state == messages::eMessageDrawerState::COMBAT) {
-        renderDrawer->renderFromSurface(
-            m_bmpBar,
-            m_position.x,
-            m_position.y,
-            255,
-            m_gfxinter->getDensity()
-        );
     }
 
     if (m_alpha > -1) {

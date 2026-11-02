@@ -11,10 +11,3 @@ constexpr std::array<int, 4> ManualWorldScales{100, 110, 125, 150};
     int selectedWorldScalePercent,
     int outputHeight
 );
-[[nodiscard]] int selectHdAssetDensityForDisplay(
-    int outputWidth,
-    int outputHeight,
-    int logicalWidth,
-    int logicalHeight,
-    int worldScalePercent
-);

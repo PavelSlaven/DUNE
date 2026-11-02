@@ -43,12 +43,7 @@ bool isEnglishLanguage(const GameSettings &settings)
 
 cOptionsState::cOptionsState(cGame &theGame, GameContext *ctx, int prevState)
     : cGameState(theGame, ctx),
-    m_textDrawer(
-        theGame.isHdGraphicsActive()
-            ? ctx->getTextContext()->getMenuTextDrawer()
-            : ctx->getTextContext()->getBeneTextDrawer()
-    ),
-    m_hdLayout(theGame.isHdGraphicsActive()),
+    m_textDrawer(ctx->getTextContext()->getMenuTextDrawer()),
     m_prevState(prevState),
     m_guiWindow(nullptr)
 {
@@ -64,9 +59,7 @@ cOptionsState::cOptionsState(cGame &theGame, GameContext *ctx, int prevState)
                 return;
             }
             m_loadGameButton->setEnabled(true);
-            m_loadGameButton->setTheme(
-                m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light()
-            );
+            m_loadGameButton->setTheme(GuiTheme::Remaster());
         }
     );
     refresh();
@@ -88,8 +81,6 @@ void cOptionsState::initializeDisplaySettings()
     ) ? settings->worldScalePercent : AutomaticWorldScale;
     m_savedFullscreen = !settings->windowed;
     m_selectedFullscreen = m_savedFullscreen;
-    m_savedGraphicsMode = settings->graphicsMode;
-    m_selectedGraphicsMode = m_savedGraphicsMode;
     m_worldScaleOptions.assign(
         ManualWorldScales.begin(),
         ManualWorldScales.end()
@@ -253,24 +244,16 @@ void cOptionsState::selectPreviousResolution()
 
 void cOptionsState::constructAdvancedWindow(int /*prevState*/)
 {
-    const int mainMenuWidth = m_hdLayout
-        ? std::min(m_game.m_screenW - 32, 760)
-        : m_game.m_screenW / 2;
-    const int mainMenuHeight = m_hdLayout
-        ? std::min(m_game.m_screenH - 32, 640)
-        : m_game.m_screenH / 2;
+    const int mainMenuWidth = std::min(m_game.m_screenW - 32, 760);
+    const int mainMenuHeight = std::min(m_game.m_screenH - 32, 640);
     const int frameX = (m_game.m_screenW - mainMenuWidth) / 2;
     const int frameY = (m_game.m_screenH - mainMenuHeight) / 2;
-    const int margin = m_hdLayout ? 8 : 4;
-    const int buttonHeight = m_hdLayout
-        ? std::max(32, m_textDrawer->getFontHeight() + 10)
-        : m_textDrawer->getFontHeight() + margin;
-    const int labelWidth = m_hdLayout ? 560 : mainMenuWidth - 80;
-    const int checkX = m_hdLayout ? 600 : mainMenuWidth - buttonHeight - margin;
-    const GuiTheme theme = m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light();
-    const GuiRenderKind buttonKind = m_hdLayout
-        ? GuiRenderKind::REMASTER_BUTTON
-        : GuiRenderKind::OPAQUE_WITH_BORDER;
+    const int margin = 8;
+    const int buttonHeight = std::max(32, m_textDrawer->getFontHeight() + 10);
+    const int labelWidth = 560;
+    const int checkX = 600;
+    const GuiTheme theme = GuiTheme::Remaster();
+    const GuiRenderKind buttonKind = GuiRenderKind::REMASTER_BUTTON;
 
     m_guiWindow = new GuiWindow(
         cRectangle(frameX, frameY, mainMenuWidth, mainMenuHeight),
@@ -397,7 +380,7 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
         m_guiWindow->addGuiObject(rules);
     }
     else if (m_optionsPage == OptionsPage::Controls) {
-        const int bindingButtonWidth = m_hdLayout ? 190 : 105;
+        const int bindingButtonWidth = 190;
         const int bindingButtonX = mainMenuWidth - margin - bindingButtonWidth;
         const auto addBinding = [this, &row, theme, buttonKind, buttonHeight,
                                  bindingButtonX, bindingButtonWidth](
@@ -461,7 +444,7 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
 
     const int footerY = mainMenuHeight - buttonHeight - margin;
     GuiButton *apply = GuiButtonBuilder()
-            .withRect(m_guiWindow->getRelativeRect(16, footerY, m_hdLayout ? 180 : 100, buttonHeight))
+            .withRect(m_guiWindow->getRelativeRect(16, footerY, 180, buttonHeight))
             .withLabel(optionText(m_selectedSettings, "Apply", "Применить"))
             .withTextDrawer(m_textDrawer).withTheme(theme).withKind(buttonKind)
             .onClick([this]() {
@@ -478,8 +461,8 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
     m_guiWindow->addGuiObject(apply);
     GuiButton *back = GuiButtonBuilder()
             .withRect(m_guiWindow->getRelativeRect(
-                mainMenuWidth - (m_hdLayout ? 180 : 100) - margin, footerY,
-                m_hdLayout ? 180 : 100, buttonHeight
+                mainMenuWidth - 180 - margin, footerY,
+                180, buttonHeight
             ))
             .withLabel(optionText(m_selectedSettings, "Back", "Назад"))
             .withTextDrawer(m_textDrawer).withTheme(theme).withKind(buttonKind)
@@ -612,25 +595,6 @@ std::string cOptionsState::selectedWorldScaleText() const
     );
 }
 
-void cOptionsState::toggleGraphicsMode()
-{
-    m_selectedGraphicsMode =
-        m_selectedGraphicsMode == GraphicsMode::Hd
-            ? GraphicsMode::Classic
-            : GraphicsMode::Hd;
-    if (m_displayStatusLabel) {
-        m_displayStatusLabel->setText("");
-    }
-    updateDisplayControls();
-}
-
-std::string cOptionsState::selectedGraphicsModeText() const
-{
-    return m_selectedGraphicsMode == GraphicsMode::Hd
-        ? "HD"
-        : optionText(m_selectedSettings, "Classic", "Классика");
-}
-
 void cOptionsState::toggleLanguage()
 {
     m_selectedSettings.language = isEnglishLanguage(m_selectedSettings) ? "ru" : "en";
@@ -672,7 +636,6 @@ void cOptionsState::updateDisplaySettingsDirtyState()
         m_worldScaleOptions[m_selectedWorldScaleIndex] !=
             m_savedWorldScalePercent ||
         m_selectedFullscreen != m_savedFullscreen ||
-        m_selectedGraphicsMode != m_savedGraphicsMode ||
         m_selectedSettings.language != m_savedLanguage;
     m_applyDisplayButton->setEnabled(changed);
 }
@@ -687,9 +650,6 @@ void cOptionsState::updateDisplayControls()
     }
     if (m_worldScaleValueLabel) {
         m_worldScaleValueLabel->setText(selectedWorldScaleText());
-    }
-    if (m_graphicsModeValueLabel) {
-        m_graphicsModeValueLabel->setText(selectedGraphicsModeText());
     }
     if (m_languageValueLabel) {
         m_languageValueLabel->setText(selectedLanguageText());
@@ -716,7 +676,6 @@ void cOptionsState::saveDisplaySettings()
     m_selectedSettings.windowed = !m_selectedFullscreen;
     m_selectedSettings.renderScalePercent = selectedRenderScale;
     m_selectedSettings.worldScalePercent = selectedWorldScale;
-    m_selectedSettings.graphicsMode = m_selectedGraphicsMode;
     m_selectedSettings.playMusic = m_ctx->getSoundPlayer()->getMusicEnabled();
     m_selectedSettings.playSound = m_ctx->getSoundPlayer()->getSoundEnabled();
     if (saveSettingsToIni("settings.ini", m_selectedSettings, errorMessage)) {
@@ -724,7 +683,6 @@ void cOptionsState::saveDisplaySettings()
         m_savedRenderScalePercent = selectedRenderScale;
         m_savedWorldScalePercent = selectedWorldScale;
         m_savedFullscreen = m_selectedFullscreen;
-        m_savedGraphicsMode = m_selectedGraphicsMode;
         m_savedLanguage = m_selectedSettings.language;
         if (m_displayStatusLabel) {
             m_displayStatusLabel->setText(optionText(
@@ -758,35 +716,27 @@ void cOptionsState::constructWindow(int prevState)
         constructAdvancedWindow(prevState);
         return;
     }
-    int margin = m_hdLayout ? 8 : 4;
-    int buttonHeight = m_hdLayout
-        ? std::max(32, m_textDrawer->getFontHeight() + 10)
-        : m_textDrawer->getFontHeight() + margin;
+    int margin = 8;
+    int buttonHeight = std::max(32, m_textDrawer->getFontHeight() + 10);
     const OptionsMenuLayout menuLayout = OptionsMenuLayout::create(
         m_game.m_screenW,
         m_game.m_screenH,
         buttonHeight,
-        m_hdLayout,
+        true,
         m_prevState == GAME_PLAYING
     );
     int mainMenuWidth = menuLayout.window.getWidth();
     int buttonWidth = mainMenuWidth - 8;
-    const GuiTheme controlTheme = m_hdLayout
-        ? GuiTheme::Remaster()
-        : GuiTheme::Light();
-    const GuiRenderKind buttonKind = m_hdLayout
-        ? GuiRenderKind::REMASTER_BUTTON
-        : GuiRenderKind::OPAQUE_WITH_BORDER;
-    const int contentX = m_hdLayout ? 24 : 5;
-    const int audioLabelWidth = m_hdLayout ? 110 : 50;
-    const int audioCheckX = m_hdLayout ? 138 : 80;
-    const int volumeLabelX = m_hdLayout ? 218 : 5;
-    const int volumeLabelWidth = m_hdLayout ? 110 : 50 + buttonWidth / 2;
-    const int audioSliderX = m_hdLayout
-        ? 350
-        : 5 + buttonWidth / 4 + 50 * 2;
-    const int audioSliderWidth = m_hdLayout ? 250 : buttonHeight * 5;
-    const int contentRowStride = buttonHeight + (m_hdLayout ? 2 : 5);
+    const GuiTheme controlTheme = GuiTheme::Remaster();
+    const GuiRenderKind buttonKind = GuiRenderKind::REMASTER_BUTTON;
+    const int contentX = 24;
+    const int audioLabelWidth = 110;
+    const int audioCheckX = 138;
+    const int volumeLabelX = 218;
+    const int volumeLabelWidth = 110;
+    const int audioSliderX = 350;
+    const int audioSliderWidth = 250;
+    const int contentRowStride = buttonHeight + 2;
     const auto relativeRect = [this](const cRectangle &rect) {
         return m_guiWindow->getRelativeRect(
             rect.getX(),
@@ -856,9 +806,7 @@ void cOptionsState::constructWindow(int prevState)
                 .withTheme(
                     SaveGameManager::hasAnySave()
                         ? controlTheme
-                        : (m_hdLayout
-                            ? GuiTheme::RemasterInactive()
-                            : GuiTheme::Inactive())
+                        : GuiTheme::RemasterInactive()
                 )
                 .withKind(buttonKind)
                 .withEnabled(SaveGameManager::hasAnySave())
@@ -1045,7 +993,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &sld_speedRect = m_guiWindow->getRelativeRect(
         audioCheckX,
         contentRowStride * 3,
-        m_hdLayout ? 220 : 100,
+        220,
         buttonHeight
     );
     int convertedForSlider = 2 - timeManager->getGlobalSpeed() + 10;
@@ -1064,7 +1012,7 @@ void cOptionsState::constructWindow(int prevState)
     m_guiWindow->addGuiObject(gui_sld_speedRect);
 
     const int resolutionRowY = contentRowStride * 4;
-    const int displayLabelWidth = m_hdLayout ? 160 : 100;
+    const int displayLabelWidth = 160;
     const cRectangle &resolutionLabelRect =
         m_guiWindow->getRelativeRect(
             contentX,
@@ -1082,9 +1030,9 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(resolutionLabel);
 
-    const int arrowWidth = m_hdLayout ? 46 : 30;
-    const int resolutionValueWidth = m_hdLayout ? 180 : 110;
-    const int selectorX = m_hdLayout ? 198 : 110;
+    const int arrowWidth = 46;
+    const int resolutionValueWidth = 180;
+    const int selectorX = 198;
     const cRectangle &previousResolutionRect =
         m_guiWindow->getRelativeRect(selectorX, resolutionRowY, arrowWidth, buttonHeight);
     GuiButton *previousResolutionButton = GuiButtonBuilder()
@@ -1164,7 +1112,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(previousRenderScaleButton);
 
-    const int renderScaleValueWidth = m_hdLayout ? 200 : 130;
+    const int renderScaleValueWidth = 200;
     const cRectangle &renderScaleValueRect = m_guiWindow->getRelativeRect(
         selectorX + arrowWidth + margin,
         renderScaleRowY,
@@ -1270,84 +1218,12 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(nextWorldScaleButton);
 
-    const int graphicsModeRowY = contentRowStride * 7;
-    const cRectangle &graphicsModeLabelRect =
-        m_guiWindow->getRelativeRect(
-            contentX,
-            graphicsModeRowY,
-            displayLabelWidth,
-            buttonHeight
-        );
-    GuiLabel *graphicsModeLabel = GuiLabelBuilder()
-            .withLabel(optionText(m_selectedSettings, "Graphics", "Графика"))
-            .withTextDrawer(m_textDrawer)
-            .withTheme(controlTheme)
-            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
-            .withRect(graphicsModeLabelRect)
-            .withTextAlign(GuiTextAlignHorizontal::LEFT)
-            .build();
-    m_guiWindow->addGuiObject(graphicsModeLabel);
-
-    const cRectangle &previousGraphicsModeRect =
-        m_guiWindow->getRelativeRect(
-            selectorX,
-            graphicsModeRowY,
-            arrowWidth,
-            buttonHeight
-        );
-    GuiButton *previousGraphicsModeButton = GuiButtonBuilder()
-            .withRect(previousGraphicsModeRect)
-            .withLabel("<")
-            .withTextDrawer(m_textDrawer)
-            .withTheme(controlTheme)
-            .withKind(buttonKind)
-            .onClick([this]() {
-                toggleGraphicsMode();
-            })
-            .build();
-    m_guiWindow->addGuiObject(previousGraphicsModeButton);
-
-    const cRectangle &graphicsModeValueRect =
-        m_guiWindow->getRelativeRect(
-            selectorX + arrowWidth + margin,
-            graphicsModeRowY,
-            resolutionValueWidth,
-            buttonHeight
-        );
-    m_graphicsModeValueLabel = GuiLabelBuilder()
-            .withLabel(selectedGraphicsModeText())
-            .withTextDrawer(m_textDrawer)
-            .withTheme(controlTheme)
-            .withKind(GuiRenderKind::OPAQUE_WITH_BORDER)
-            .withRect(graphicsModeValueRect)
-            .build();
-    m_guiWindow->addGuiObject(m_graphicsModeValueLabel);
-
-    const cRectangle &nextGraphicsModeRect =
-        m_guiWindow->getRelativeRect(
-            selectorX + arrowWidth + margin + resolutionValueWidth + margin,
-            graphicsModeRowY,
-            arrowWidth,
-            buttonHeight
-        );
-    GuiButton *nextGraphicsModeButton = GuiButtonBuilder()
-            .withRect(nextGraphicsModeRect)
-            .withLabel(">")
-            .withTextDrawer(m_textDrawer)
-            .withTheme(controlTheme)
-            .withKind(buttonKind)
-            .onClick([this]() {
-                toggleGraphicsMode();
-            })
-            .build();
-    m_guiWindow->addGuiObject(nextGraphicsModeButton);
-
-    const int fullscreenRowY = contentRowStride * 8;
+    const int fullscreenRowY = contentRowStride * 7;
     const cRectangle &fullscreenLabelRect =
         m_guiWindow->getRelativeRect(
             contentX,
             fullscreenRowY,
-            m_hdLayout ? 220 : 175,
+            220,
             buttonHeight
         );
     GuiLabel *fullscreenLabel = GuiLabelBuilder()
@@ -1362,7 +1238,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &fullscreenCheckRect =
         m_guiWindow->getRelativeRect(
-            m_hdLayout ? 252 : 185,
+            252,
             fullscreenRowY,
             buttonHeight,
             buttonHeight
@@ -1388,7 +1264,7 @@ void cOptionsState::constructWindow(int prevState)
     fullscreenCheck->setChecked(m_selectedFullscreen);
     m_guiWindow->addGuiObject(fullscreenCheck);
 
-    const int languageRowY = contentRowStride * 9;
+    const int languageRowY = contentRowStride * 8;
     const cRectangle &languageLabelRect = m_guiWindow->getRelativeRect(
         contentX, languageRowY, displayLabelWidth, buttonHeight
     );
@@ -1487,15 +1363,13 @@ void cOptionsState::draw() const
     if (m_backgroundTexture) {
         renderDrawer->renderSprite(m_backgroundTexture,0,0);
     }
-    if (m_hdLayout) {
-        renderDrawer->renderRectFillColor(
-            0,
-            0,
-            m_game.m_screenW,
-            m_game.m_screenH,
-            Color{4, 6, 7, 150}
-        );
-    }
+    renderDrawer->renderRectFillColor(
+        0,
+        0,
+        m_game.m_screenW,
+        m_game.m_screenH,
+        Color{4, 6, 7, 150}
+    );
     m_guiWindow->draw();
 
     if (m_saveDialog && m_saveDialog->isOpen()) {
@@ -1569,7 +1443,6 @@ void cOptionsState::refresh()
     m_resolutionValueLabel = nullptr;
     m_renderScaleValueLabel = nullptr;
     m_worldScaleValueLabel = nullptr;
-    m_graphicsModeValueLabel = nullptr;
     m_languageValueLabel = nullptr;
     m_displayStatusLabel = nullptr;
     m_applyDisplayButton = nullptr;

@@ -2336,12 +2336,7 @@ Texture *cPlayer::createTextureFromIndexedSurfaceWithPalette(SDL_Surface *refere
             return nullptr;
         }
 
-        SDL_SetTextureScaleMode(
-            texture,
-            game.getGraphicsDensity() > 1
-                ? SDL_ScaleModeLinear
-                : SDL_ScaleModeNearest
-        );
+        SDL_SetTextureScaleMode(texture, SDL_ScaleModeLinear);
         return new Texture(
             texture,
             rgbaSurface->w,

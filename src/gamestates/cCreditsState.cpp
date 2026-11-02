@@ -18,25 +18,21 @@
 cCreditsState::cCreditsState(cGame &theGame, GameContext* ctx) :
     cGameState(theGame, ctx),
     m_moveSpeed(0.15f),
-    m_textDrawer(m_game.isHdGraphicsActive()
-        ? ctx->getTextContext()->getMenuTextDrawer()
-        : ctx->getTextContext()->getBeneTextDrawer())
+    m_textDrawer(ctx->getTextContext()->getMenuTextDrawer())
 {
     auto *gfxinter = ctx->getGraphicsContext()->gfxinter.get();
-    if (m_game.isHdGraphicsActive()) {
-        m_teamBmp = loadHdUiTexture(
-            "credits_team.png",
-            m_game.getGraphicsDensity(),
-            "HD credits team photo"
-        );
-        m_titleBmp = loadHdUiTexture(
-            "credits_title.png",
-            m_game.getGraphicsDensity(),
-            "HD credits title"
-        );
-        m_ownsTeamBmp = m_teamBmp != nullptr;
-        m_ownsTitleBmp = m_titleBmp != nullptr;
-    }
+    m_teamBmp = loadHdUiTexture(
+        "credits_team.png",
+        m_game.getGraphicsDensity(),
+        "HD credits team photo"
+    );
+    m_titleBmp = loadHdUiTexture(
+        "credits_title.png",
+        m_game.getGraphicsDensity(),
+        "HD credits title"
+    );
+    m_ownsTeamBmp = m_teamBmp != nullptr;
+    m_ownsTitleBmp = m_titleBmp != nullptr;
     if (!m_teamBmp) {
         m_teamBmp = gfxinter->getTexture(CREDITS_DUNE2_CORE_TEAM);
     }
@@ -55,15 +51,9 @@ cCreditsState::cCreditsState(cGame &theGame, GameContext* ctx) :
     m_titleX = centerOfScreen - (titleWidth / 2);
     resetCrawler();
 
-    const bool hdLayout = m_game.isHdGraphicsActive();
-    const int backButtonWidth = hdLayout
-        ? std::max(140, m_textDrawer->getTextLength(
-            localization::text("BACK", "НАЗАД")) + 24)
-        : m_textDrawer->getTextLength(
-            localization::text(" BACK", " НАЗАД"));
-    const int backButtonHeight = hdLayout
-        ? std::max(36, m_textDrawer->getFontHeight() + 10)
-        : 21;
+    const int backButtonWidth = std::max(140, m_textDrawer->getTextLength(
+        localization::text("BACK", "НАЗАД")) + 24);
+    const int backButtonHeight = std::max(36, m_textDrawer->getFontHeight() + 10);
     const int backButtonY = m_game.m_screenH - backButtonHeight;
     const int backButtonX = 0;
     cRectangle backButtonRect(backButtonX, backButtonY, backButtonWidth, backButtonHeight);
@@ -71,10 +61,8 @@ cCreditsState::cCreditsState(cGame &theGame, GameContext* ctx) :
             .withRect(backButtonRect)
             .withLabel(localization::text("BACK", "НАЗАД"))
             .withTextDrawer(m_textDrawer)
-            .withTheme(hdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
-            .withKind(hdLayout
-                ? GuiRenderKind::REMASTER_BUTTON
-                : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTheme(GuiTheme::Remaster())
+            .withKind(GuiRenderKind::REMASTER_BUTTON)
             .onClick([this]() {
                 m_game.setNextStateToTransitionTo(GAME_MENU);
                 m_game.initiateFadingOut();

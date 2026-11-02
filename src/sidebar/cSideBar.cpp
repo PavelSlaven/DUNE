@@ -302,9 +302,7 @@ void cSideBar::onNotifyMouseEvent(const s_MouseEvent &event)
         return;
     }
 
-    if (game.isHdGraphicsActive()) {
-        drawManager->getBuildingListDrawer()->onNotifyMouseEvent(event);
-    }
+    drawManager->getBuildingListDrawer()->onNotifyMouseEvent(event);
 
     switch (event.eventType) {
         case eMouseEventType::MOUSE_MOVED_TO:
