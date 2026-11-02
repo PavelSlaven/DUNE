@@ -37,6 +37,14 @@ jobs:
         run: |
           cd "${{ github.workspace }}\build"
           cmake --build . --target all -- -j 4
+      - name: Test
+        run: |
+          cd "${{ github.workspace }}\build"
+          ctest --output-on-failure
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_RENDER_DRIVER: software
+          SDL_AUDIODRIVER: dummy
   Ubuntu:
     name: Ubuntu (x86)
     runs-on: [ ubuntu-latest ]
@@ -66,6 +74,14 @@ jobs:
         run: |
           cd "${{ github.workspace }}/build"
           make -j4
+      - name: Test
+        run: |
+          cd "${{ github.workspace }}/build"
+          ctest --output-on-failure
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_RENDER_DRIVER: software
+          SDL_AUDIODRIVER: dummy
   MACOSX:
     name: Mac OS X (Arm64)
     runs-on: [ macos-15 ]
@@ -87,6 +103,14 @@ jobs:
         run: |
           cd "${{ github.workspace }}/build"
           make -j4
+      - name: Test
+        run: |
+          cd "${{ github.workspace }}/build"
+          ctest --output-on-failure
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_RENDER_DRIVER: software
+          SDL_AUDIODRIVER: dummy
   MACOSX_INTEL:
     name: Mac OS X (Intel)
     runs-on: [ macos-15-intel ]
@@ -108,3 +132,11 @@ jobs:
         run: |
           cd "${{ github.workspace }}/build"
           make -j4
+      - name: Test
+        run: |
+          cd "${{ github.workspace }}/build"
+          ctest --output-on-failure
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_RENDER_DRIVER: software
+          SDL_AUDIODRIVER: dummy

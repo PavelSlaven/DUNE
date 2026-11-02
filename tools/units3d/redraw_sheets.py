@@ -84,6 +84,18 @@ def _frame_from_atlas(atlas, role, unit, record, path):
     return frame.copy()
 
 
+def _old_frame_on_output(unit, role, record):
+    frame = unit.old_frame(role, record)
+    width, height = unit.frame
+    dx, dy = unit.anchor_shift
+    x0, y0 = max(dx, 0), max(dy, 0)
+    x1, y1 = min(dx + frame.shape[1], width), min(dy + frame.shape[0], height)
+    output = np.zeros((height, width, frame.shape[2]), dtype=frame.dtype)
+    if x1 > x0 and y1 > y0:
+        output[y0:y1, x0:x1] = frame[y0 - dy:y1 - dy, x0 - dx:x1 - dx]
+    return output
+
+
 def _layers(body, mask, shadow, color):
     if mask is not None:
         body = _tint(body, mask, color)
@@ -187,9 +199,9 @@ def sheet(unit, args):
                     atlases['shadow'], 'shadow', unit, record,
                     Path(args.atlases) / f'{unit.atlases["shadow"]}.png')
             else:
-                body = unit.old_frame('body', record)
-                mask = None if unit.atlases['house_mask'] is None else unit.old_frame('house_mask', record)
-                shadow = None if unit.atlases['shadow'] is None else unit.old_frame('shadow', record)
+                body = _old_frame_on_output(unit, 'body', record)
+                mask = None if unit.atlases['house_mask'] is None else _old_frame_on_output(unit, 'house_mask', record)
+                shadow = None if unit.atlases['shadow'] is None else _old_frame_on_output(unit, 'shadow', record)
             layers = _layers(body, mask, shadow, color)
             _paste_layers(image, layers, (LEFT_WIDTH + k * cw, y), (cw, ch))
 
@@ -229,9 +241,9 @@ def sheet(unit, args):
                     atlases['shadow'], 'shadow', unit, record,
                     Path(args.atlases) / f'{unit.atlases["shadow"]}.png')
             else:
-                body = unit.old_frame('body', record)
-                mask = None if unit.atlases['house_mask'] is None else unit.old_frame('house_mask', record)
-                shadow = None if unit.atlases['shadow'] is None else unit.old_frame('shadow', record)
+                body = _old_frame_on_output(unit, 'body', record)
+                mask = None if unit.atlases['house_mask'] is None else _old_frame_on_output(unit, 'house_mask', record)
+                shadow = None if unit.atlases['shadow'] is None else _old_frame_on_output(unit, 'shadow', record)
             _paste_layers(image, _layers(body, mask, shadow, HOUSES[0][1]),
                           (x, panel_y + 90))
             x += fw
