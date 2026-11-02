@@ -185,6 +185,12 @@ def load_unit(directory, command, pack_path=None):
         for record in records:
             if not isinstance(record, dict):
                 raise InputError('frames: expected object')
+            if 'scale_factor' in record:
+                scale_factor = record['scale_factor']
+                if (isinstance(scale_factor, bool)
+                        or not isinstance(scale_factor, (int, float))
+                        or not np.isfinite(scale_factor) or scale_factor <= 0):
+                    raise InputError('scale_factor: expected a positive finite number')
             row, k = required(record, 'row', 'frames'), required(record, 'k', 'frames')
             if not isinstance(row, int) or not isinstance(k, int):
                 raise InputError(f'frames: invalid row={row}, k={k}')
@@ -293,7 +299,8 @@ def load_unit(directory, command, pack_path=None):
     if command != 'pack':
         height, width = unit.image(atlases['body']).shape[:2]
         if 8 * reference_frame[0] > width or rows * reference_frame[1] > height:
-            raise InputError('reference_frame/rows: cells exceed body atlas')
+            grid = 'reference_frame/rows' if 'reference_frame' in data else 'frame/rows'
+            raise InputError(f'{grid}: cells exceed body atlas')
         for name in atlases.values():
             if name is not None and unit.image(name).shape[:2] != (height, width):
                 raise InputError(f'{name}: atlas size differs from body')

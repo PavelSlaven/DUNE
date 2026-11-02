@@ -61,6 +61,10 @@ def run(unit, args):
         box = boxes[name]
         ratios.append((box[2] - box[0]) / ((x1 - x0) * unit.maximum / CANVAS))
     scale_median = float(np.median(ratios))
+
+    def frame_scale(record, scale):
+        return scale * record.get('scale_factor', 1)
+
     has_mask = unit.atlases['house_mask'] is not None
     recolours = {}
     if has_mask:
@@ -85,7 +89,7 @@ def run(unit, args):
             attempt_path = unit.path(record['attempts'][record['pick']])
             with frame_input(record, attempt_path):
                 placed[name] = place(
-                    raw[name], unit.frame, candidate, boxes[name], offset,
+                    raw[name], unit.frame, frame_scale(record, candidate), boxes[name], offset,
                     source_maximum=unit.maximum,
                 )
         return placed
@@ -100,7 +104,7 @@ def run(unit, args):
             if has_mask:
                 with frame_input(record, unit.path(record['recolour'])):
                     _, clipped, _, _ = place(
-                        recolours[name][1], unit.frame, candidate, boxes[name], offset,
+                        recolours[name][1], unit.frame, frame_scale(record, candidate), boxes[name], offset,
                         source_maximum=unit.maximum,
                     )
                 if clipped:
@@ -138,7 +142,7 @@ def run(unit, args):
         if despill:
             with frame_input(record, unit.path(record['attempts'][record['pick']])):
                 colour = place(
-                    cleaned[name], unit.frame, scale, boxes[name], offset,
+                    cleaned[name], unit.frame, frame_scale(record, scale), boxes[name], offset,
                     source_maximum=unit.maximum,
                 )[0]
         (output / 'frames' / f'{name}.png').write_bytes(encode_png(Image.fromarray(colour)))
@@ -150,7 +154,7 @@ def run(unit, args):
             with frame_input(record, recolour_path):
                 edit, cleaned_edit = recolours[name]
                 edit_frame, edit_clipped, _, _ = place(
-                    cleaned_edit, unit.frame, scale, boxes[name], offset,
+                    cleaned_edit, unit.frame, frame_scale(record, scale), boxes[name], offset,
                     source_maximum=unit.maximum,
                 )
             clipped = clipped or edit_clipped
@@ -162,7 +166,7 @@ def run(unit, args):
             white = np.dstack([np.full(green.shape + (3,), 255, np.uint8),
                                green.astype(np.uint8) * 255])
             mask, _, _, _ = place(
-                white, unit.frame, scale, boxes[name], offset,
+                white, unit.frame, frame_scale(record, scale), boxes[name], offset,
                 source_maximum=unit.maximum,
             )
             mask[..., :3] = 255

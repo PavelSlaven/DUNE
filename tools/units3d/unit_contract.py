@@ -700,45 +700,46 @@ def _dedupe_sites(sites: list[dict[str, Any]]) -> list[dict[str, Any]]:
 def parse_carryall_offset(source: SourceIndex) -> tuple[int, dict[str, Any]]:
     path = "src/gameobjects/units/cUnit.cpp"
     lines = source.function_lines(path, "void cUnit::draw()")
-    branch_start = next(
-        (index for index, (_, line) in enumerate(lines) if "if (iType == CARRYALL)" in line),
-        None,
-    )
-    if branch_start is None:
-        raise ValueError("CARRYALL shadow branch was not found in cUnit::draw")
-    depth = 0
-    opened = False
-    branch: list[tuple[int, str]] = []
-    for line_number, line in lines[branch_start:]:
-        clean = re.sub(r"//.*$", "", line)
-        branch.append((line_number, line))
-        depth += clean.count("{") - clean.count("}")
-        opened = opened or "{" in clean
-        if opened and depth == 0:
-            break
-    match = next(
-        (
-            match
-            for _, line in branch
-            if (match := re.search(
-                r"(?:visualY\s*\+\s*|destination\.y\s*\+=\s*)(\d+)(?:\.0F)?",
-                line,
-            ))
-        ),
-        None,
-    )
-    if match is None:
-        raise ValueError("CARRYALL visualY offset was not found in its branch")
-    offset = int(match.group(1))
-    line_number, line = next(
-        (line_number, line)
-        for line_number, line in branch
-        if re.search(
-            r"(?:visualY\s*\+\s*|destination\.y\s*\+=\s*)\d+(?:\.0F)?",
-            line,
+    branches: list[tuple[int, dict[str, Any]]] = []
+    for index, (_, line) in enumerate(lines):
+        if "if (iType == CARRYALL)" not in line:
+            continue
+        depth = 0
+        opened = False
+        branch: list[tuple[int, str]] = []
+        for line_number, branch_line in lines[index:]:
+            branch.append((line_number, branch_line))
+            depth += branch_line.count("{") - branch_line.count("}")
+            opened = opened or "{" in branch_line
+            if opened and depth == 0:
+                break
+        offset_line = next(
+            (
+                (line_number, branch_line, match)
+                for line_number, branch_line in branch
+                if (match := re.search(
+                    r"(?:visualY\s*\+\s*|destination\.y\s*\+=\s*)(\d+)(?:\.0F)?",
+                    branch_line,
+                ))
+            ),
+            None,
         )
-    )
-    return offset, {"ref": f"{path}:{line_number}", "identifier": line.strip()}
+        if offset_line is None:
+            raise ValueError("CARRYALL visualY offset was not found in its branch")
+        line_number, branch_line, match = offset_line
+        branches.append((int(match.group(1)), {
+            "ref": f"{path}:{line_number}",
+            "identifier": branch_line.strip(),
+        }))
+    if len(branches) != 2:
+        raise ValueError("CARRYALL shadow HD and non-HD branches were not both found")
+    hd_offset, non_hd_offset = branches[0][0], branches[1][0]
+    if hd_offset != non_hd_offset:
+        raise ValueError(
+            f"CARRYALL shadow offsets differ between HD and non-HD branches: "
+            f"{hd_offset} and {non_hd_offset}"
+        )
+    return non_hd_offset, branches[1][1]
 
 
 def parse_draw_geometry(
@@ -763,6 +764,9 @@ def parse_draw_geometry(
     shadow_render = source.function_ref(cpp, draw_func, "renderStrechSpriteF(")
     body_render = source.function_ref(cpp, draw_func, "renderStrechSpriteF(", occurrence=1)
     top_render = source.function_ref(cpp, draw_func, "renderStrechSpriteF(", occurrence=2)
+    shadow_render_classic = source.function_ref(cpp, draw_func, "renderStrechSprite(")
+    body_render_classic = source.function_ref(cpp, draw_func, "renderStrechSprite(", occurrence=1)
+    top_render_classic = source.function_ref(cpp, draw_func, "renderStrechSprite(", occurrence=2)
 
     draw_x_func = "int cUnit::draw_x(int bmpWidth)"
     draw_y_func = "int cUnit::draw_y(int bmpHeight)"
@@ -935,7 +939,11 @@ def parse_draw_geometry(
                 "order": ["shadow", "body", "top"],
                 "destination": "Кадры без отдельного HD frame используют прежний visual rectangle; кадры с HD frame центрируются в нём. Тень, корпус и верх рисуются в этом порядке; к тени CARRYALL добавляется считанное смещение.",
             },
-            "sources": unique_refs([shadow_render, body_render, top_render]),
+            "sources": unique_refs([
+                shadow_render, shadow_render_classic,
+                body_render, body_render_classic,
+                top_render, top_render_classic,
+            ]),
         },
         "draw_destination": {
             "value": {
