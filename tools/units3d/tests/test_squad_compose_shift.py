@@ -156,7 +156,58 @@ class SquadComposeShiftTests(unittest.TestCase):
                     check=False,
                 )
                 self.assertNotEqual(completed.returncode, 0, invalid_shift)
-                self.assertIn("shift", completed.stderr, invalid_shift)
+                self.assertTrue(
+                    any(line.startswith("ValueError: shift: ожидается")
+                        for line in completed.stderr.splitlines()),
+                    completed.stderr,
+                )
+
+    def test_shift_outside_cell_is_rejected(self):
+        (ROOT / ".tmp").mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix="u12-compose-outside-", dir=ROOT / ".tmp") as directory:
+            temporary = Path(directory)
+            body_source = temporary / "UNIT_SOLDIER.png"
+            mask_source = temporary / "HM_UNIT_SOLDIER.png"
+            self.atlases["UNIT_SOLDIER"].save(body_source)
+            self.atlases["HM_UNIT_SOLDIER"].save(mask_source)
+
+            placements = json.loads(PLACEMENTS_PATH.read_text(encoding="utf-8"))
+            placements["shift"] = [0, 120]
+            placements_path = temporary / "placements-outside.json"
+            placements_path.write_text(
+                json.dumps(placements, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+
+            for mode, source, extra in (
+                ("mask", mask_source, ["--mask"]),
+                ("body", body_source, []),
+            ):
+                completed = subprocess.run(
+                    [
+                        sys.executable, str(COMPOSE_PATH), "compose",
+                        "--squad", "UNIT_SOLDIERS",
+                        "--source", str(source),
+                        "--body", str(body_source),
+                        *extra,
+                        "--placements", str(placements_path),
+                        "--out-root", str(temporary / f"outside-{mode}-root"),
+                        "--output", str(temporary / f"outside-{mode}.png"),
+                        "--sheet", str(temporary / f"outside-{mode}-sheet.png"),
+                        "--report", str(temporary / f"outside-{mode}-checks.json"),
+                    ],
+                    cwd=ROOT,
+                    capture_output=True,
+                    text=True,
+                    env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                    check=False,
+                )
+                self.assertNotEqual(completed.returncode, 0, mode)
+                self.assertTrue(
+                    any(line.startswith("ValueError: alpha вне клетки")
+                        for line in completed.stderr.splitlines()),
+                    completed.stderr,
+                )
 
 
 if __name__ == "__main__":
