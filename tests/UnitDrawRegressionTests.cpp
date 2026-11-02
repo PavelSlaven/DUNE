@@ -121,9 +121,8 @@ void checkBaselineCase(
         return;
     }
 
-    const float effectiveScale = density == 1 ? 1.0F : selectedScale;
     const cRectangle visual = unitFrameExpectedVisual(
-        256, 288, 0, 0, 40, baseline.width, baseline.height, zoom, effectiveScale
+        256, 288, 0, 0, 40, baseline.width, baseline.height, zoom
     );
     const int bodyFacing = unitFrameFacingIndex(bodyAngle);
     const int turretFacing = unitFrameFacingIndex(turretAngle);
