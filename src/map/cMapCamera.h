@@ -231,4 +231,6 @@ private:
 
     void onKeyHold(const cKeyboardEvent &event);
     void onKeyPressed(const cKeyboardEvent &event);
+
+    friend class UiAuditAccess;
 };

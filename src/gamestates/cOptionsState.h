@@ -24,6 +24,7 @@ class SaveSlotsDialog;
 
 class cOptionsState : public cGameState {
 public:
+    friend class UiAuditAccess;
     explicit cOptionsState(cGame &theGame, GameContext *ctx, int prevState);
     ~cOptionsState() override;
 

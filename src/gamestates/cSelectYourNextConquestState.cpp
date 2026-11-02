@@ -1,6 +1,7 @@
 #include "cSelectYourNextConquestState.h"
 
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "data/gfxdata.h"
 #include "data/gfxinter.h"
 #include "data/gfxworld.h"
@@ -334,6 +335,13 @@ void cSelectYourNextConquestState::draw() const
     // 2. Show next progress + story (in message bar)
     // 3. Click next region
     // 4. Set up region and go to GAME_BRIEFING, which will do the rest...-> fade out
+
+    if (uiaudit::isEnabled() && state == eRegionState::REGSTATE_SELECT_NEXT_CONQUEST) {
+        const cRectangle mapRect = m_hdLayout
+            ? m_hdCampaignLayout.map
+            : cRectangle(offsetX + 16, offsetY + 72, 608, 241);
+        uiaudit::recordClick("campaign-region-map", mapRect.getX(), mapRect.getY(), mapRect.getWidth(), mapRect.getHeight());
+    }
 
     const int iHouse = players[0].getHouse();
     if (m_hdLayout) {

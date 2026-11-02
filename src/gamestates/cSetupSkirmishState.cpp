@@ -1,6 +1,7 @@
 #include "gamestates/cSetupSkirmishState.h"
 
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
 #include "managers/cDrawManager.h"
@@ -512,6 +513,53 @@ void cSetupSkirmishState::draw() const
     drawDetonateBlooms(detonateBloomsRect);
     drawTechLevel(techLevelRect);
     drawMapList(selectArea);
+
+    if (uiaudit::isEnabled()) {
+        const auto zone = [](const char *name, const cRectangle &r) {
+            uiaudit::recordClick(name, r.getX(), r.getY(), r.getWidth(), r.getHeight());
+        };
+        for (int p = 0; p < (AI_WORM - 1) && p < startingPoints; p++) {
+            const int y = playerList.getY() + 4 + (p * m_playerRowHeight);
+            const std::string row = std::to_string(p + 1);
+            if (p > 1) {
+                zone(("skirmish-brain:" + row).c_str(), cRectangle(4, y, 73, 16));
+            }
+            if (!skirmishPlayer[p].bPlaying) {
+                continue;
+            }
+            zone(("skirmish-house:" + row).c_str(), cRectangle(74, y, 76, 16));
+            zone(("skirmish-credits:" + row).c_str(), cRectangle(174, y, 56, 16));
+            zone(("skirmish-units:" + row).c_str(), cRectangle(272, y, 21, 16));
+            zone(("skirmish-team:" + row).c_str(), cRectangle(340, y, 21, 16));
+        }
+        zone("skirmish-blooms", bloomsRect);
+        zone("skirmish-worms", wormsRect);
+        zone("skirmish-tech-level", techLevelRect);
+        if (spawnBlooms) {
+            zone("skirmish-detonate-blooms", detonateBloomsRect);
+        }
+        if (iSkirmishMap == 0) {
+            zone("skirmish-start-points", startPointsRect);
+        }
+        int mapX = selectArea.getX() + 5;
+        int mapY = selectArea.getY() + 5;
+        for (int j = mapStartingIndexToDisplay; j < mapStartingIndexToDisplay + maxMapsInSelectArea; j++) {
+            if (m_previewMaps->getMapCount() < j) {
+                continue;
+            }
+            if (m_previewMaps->getMap(j).name.empty()) {
+                continue;
+            }
+            if (m_previewMaps->getMap(j).validMap) {
+                zone(("skirmish-map:" + std::to_string(j)).c_str(), cRectangle(mapX, mapY, mapItemButtonWidth, mapItemButtonHeight));
+            }
+            mapX += mapItemButtonWidth + 15;
+            if ((mapX + mapItemButtonWidth) > selectArea.getEndX()) {
+                mapX = selectArea.getX() + 5;
+                mapY += mapItemButtonHeight + 15;
+            }
+        }
+    }
 
     // Headers and rows share the same column geometry so localization cannot
     // shift one independently from the other.

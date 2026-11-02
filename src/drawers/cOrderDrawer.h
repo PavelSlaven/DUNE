@@ -10,6 +10,7 @@ class GameContext;
 class cTextDrawer;
 
 class cOrderDrawer {
+    friend class UiAuditAccess;
 public:
     explicit cOrderDrawer(GameContext *ctx, cPlayer *player);
 

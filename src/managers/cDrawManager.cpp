@@ -2,6 +2,7 @@
 
 #include "controls/cGameControlsContext.h"
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "data/gfxdata.h"
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
@@ -240,6 +241,9 @@ void cDrawManager::drawMouse()
 void cDrawManager::drawTopBarBackground()
 {
     if (game.isHdGraphicsActive()) {
+        if (uiaudit::isEnabled()) {
+            uiaudit::recordArea("top-panel", 0, 0, game.m_screenW, cSideBar::TopBarHeight);
+        }
         const Color panel{17, 21, 23, 255};
         const Color border{151, 113, 43, 255};
         const Color text{232, 222, 188, 255};
@@ -278,6 +282,9 @@ void cDrawManager::drawTopBarBackground()
             optionsRect,
             text
         );
+        if (uiaudit::isEnabled()) {
+            uiaudit::recordClick("top-options", optionsRect.getX(), optionsRect.getY(), optionsRect.getWidth(), optionsRect.getHeight());
+        }
         if (game.getMouse()->isLeftButtonClicked() &&
             game.getMouse()->isOverRectangle(
                 optionsRect.getX(),
@@ -298,6 +305,9 @@ void cDrawManager::drawTopBarBackground()
 
     //HACK HACK: for now do it like this, instead of using an actual GUI object here
     cRectangle optionsRect = cRectangle(0,0, 162, 30);
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordClick("top-options", optionsRect.getX(), optionsRect.getY(), optionsRect.getWidth(), optionsRect.getHeight());
+    }
     if (game.getMouse()->isLeftButtonClicked() && game.getMouse()->isOverRectangle(&optionsRect)) {
         game.setNextStateToTransitionTo(GAME_OPTIONS);
     }
@@ -317,6 +327,11 @@ void cDrawManager::drawMusicControls(int left, int right, bool hd)
     const MusicControlsLayout layout = MusicControlsLayout::create(left, right, hd);
     if (!layout.visible) {
         return;
+    }
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordClick("music-previous", layout.previous.getX(), layout.previous.getY(), layout.previous.getWidth(), layout.previous.getHeight());
+        uiaudit::recordClick("music-next", layout.next.getX(), layout.next.getY(), layout.next.getWidth(), layout.next.getHeight());
+        uiaudit::recordClick("music-speed-slider", layout.speedSlider.getX(), layout.speedSlider.getY(), layout.speedSlider.getWidth(), layout.speedSlider.getHeight());
     }
 
     const Color panel = hd ? Color{35, 32, 25, 255} : Color{16, 16, 16, 225};
@@ -442,6 +457,9 @@ void cDrawManager::drawOptionBar()
 {
     if (game.isHdGraphicsActive()) {
         return;
+    }
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("top-panel", 0, 0, game.m_screenW, cSideBar::TopBarHeight);
     }
     // upper bar
     renderDrawer->renderRectFillColor(0, 0, game.m_screenW, cSideBar::TopBarHeight, Color{0, 0, 0,255});

@@ -14,6 +14,8 @@
 
 #include "d2tmc.h"
 #include "data/gfxdata.h"
+#include "debug/UiAudit.hpp"
+#include "include/Texture.hpp"
 #include "drawers/SDLDrawer.hpp"
 #include "gameobjects/particles/cParticle.h"
 #include "gameobjects/projectiles/bullet.h"
@@ -584,6 +586,10 @@ void cUnit::draw_spice()
     int max = getUnitInfo().credit_capacity;
     int w = healthBar(width_x, iCredits, max);
 
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordUnitLabel("spice", iID, iType, drawx, drawy, static_cast<int>(width_x), height_y, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()});
+    }
+
     // bar itself
     renderDrawer->renderRectFillColor(drawx, drawy, width_x, height_y, 0, 0, 0,ShadowTrans);
     renderDrawer->renderRectFillColor(drawx, drawy, w, height_y, 255, 91, 1,ShadowTrans);
@@ -634,6 +640,10 @@ void cUnit::draw_health()
 
     if (r > 255) r = 255;
 
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordUnitLabel("health", iID, iType, drawx, drawy, static_cast<int>(width_x), height_y, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()});
+    }
+
     // bar itself
     renderDrawer->renderRectFillColor(drawx, drawy, width_x, height_y, 0, 0, 0,ShadowTrans);
     renderDrawer->renderRectFillColor(drawx, drawy, (w - 1), height_y, (Uint8)r,(Uint8)g, 32,ShadowTrans);
@@ -659,8 +669,14 @@ void cUnit::draw_group(cTextDrawer* textDrawer)
     if (iGroup > 0 && iPlayer == HUMAN) {
         // @mira I don't fix group name without acces to textDrawer: fixed on ctx branch
         const int groupX = drawx + std::max(3, visual.getWidth() - 8);
+        if (uiaudit::isEnabled()) {
+            uiaudit::beginLabelText();
+        }
         textDrawer->drawText(groupX, drawy - 11, Color::black(),std::format("{}",iGroup));
         textDrawer->drawText(groupX, drawy - 12, Color::white(),std::format("{}",iGroup));
+        if (uiaudit::isEnabled()) {
+            uiaudit::endLabelText("group", iID, iType, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()});
+        }
     }
 }
 
@@ -712,6 +728,13 @@ void cUnit::draw_experience()
     const cRectangle visual = getVisualRectangle();
     int drawx = visual.getX() + 3;
     int drawy = visual.getY() - 19;
+
+    if (uiaudit::isEnabled()) {
+        const Texture *star = gfxdata->getTexture(OBJECT_STAR_01 + iStarType);
+        if (star != nullptr) {
+            uiaudit::recordUnitLabel("experience", iID, iType, drawx, drawy, (iStars - 1) * 9 + star->w, star->h, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()});
+        }
+    }
 
     // 1 star = 1 experience
     for (int i = 0; i < iStars; i++) {

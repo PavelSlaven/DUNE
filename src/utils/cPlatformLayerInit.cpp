@@ -1,3 +1,4 @@
+#include "debug/UiAuditArguments.hpp"
 #include "cPlatformLayerInit.h"
 
 #include "utils/cLog.h"
@@ -14,7 +15,10 @@ cPlatformLayerInit::cPlatformLayerInit()
     cLogger *logger = cLogger::getInstance();
     logger->logHeader("SDL");
 
-    if (SDL_Init(SDL_INIT_EVERYTHING)< 0) {
+    const Uint32 initFlags = uiaudit::isEnabled()
+        ? (SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS)
+        : SDL_INIT_EVERYTHING;
+    if (SDL_Init(initFlags)< 0) {
         logger->log(LOG_FATAL, COMP_SDL2, "SDL2 init", SDL_GetError(), OUTC_FAILED);
         throw std::runtime_error(SDL_GetError());
     }

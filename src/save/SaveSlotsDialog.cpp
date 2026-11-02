@@ -2,6 +2,7 @@
 
 #include "cGame.h"
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "drawers/SDLDrawer.hpp"
 #include "drawers/cTextDrawer.h"
 #include "save/SaveSlotName.hpp"
@@ -263,6 +264,17 @@ void SaveSlotsDialog::draw() const
 {
     if (!m_open) {
         return;
+    }
+    if (uiaudit::isEnabled()) {
+        uiaudit::dropClicksUnderModal();
+        for (std::size_t index = 0; index < m_slotRects.size(); ++index) {
+            const cRectangle &slot = m_slotRects[index];
+            uiaudit::recordClick(("save-slot:" + std::to_string(index + 1)).c_str(), slot.getX(), slot.getY(), slot.getWidth(), slot.getHeight());
+        }
+        uiaudit::recordClick("save-name", m_nameRect.getX(), m_nameRect.getY(), m_nameRect.getWidth(), m_nameRect.getHeight());
+        uiaudit::recordClick("save-save", m_saveRect.getX(), m_saveRect.getY(), m_saveRect.getWidth(), m_saveRect.getHeight());
+        uiaudit::recordClick("save-load", m_loadRect.getX(), m_loadRect.getY(), m_loadRect.getWidth(), m_loadRect.getHeight());
+        uiaudit::recordClick("save-close", m_closeRect.getX(), m_closeRect.getY(), m_closeRect.getWidth(), m_closeRect.getHeight());
     }
 
     const Color overlay{0, 0, 0, 190};
