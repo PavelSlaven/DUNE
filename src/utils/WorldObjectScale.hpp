@@ -13,7 +13,7 @@ struct WorldObjectLayout {
 /**
  * Keep the harvester on the refinery pad at exactly the same visual scale
  * as the unit uses on the map.  The transparent 80x52 unit frame extends
- * beyond the pad, while its visible south-facing body stays on the deck.
+ * beyond the pad, while its visible south-facing body is centred on the deck.
  */
 inline WorldObjectLayout refineryHarvesterLayout(
     int refineryX,
@@ -23,8 +23,8 @@ inline WorldObjectLayout refineryHarvesterLayout(
 {
     constexpr float logicalRefineryWidth = 96.0F;
     constexpr float logicalRefineryHeight = 64.0F;
-    constexpr float logicalOffsetX = 30.0F;
-    constexpr float logicalOffsetY = 15.0F;
+    constexpr float logicalOffsetX = 26.75F;
+    constexpr float logicalOffsetY = 17.375F;
     constexpr float logicalHarvesterWidth = 80.0F;
     constexpr float logicalHarvesterHeight = 52.0F;
     return {
