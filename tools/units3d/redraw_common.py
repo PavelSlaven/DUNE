@@ -252,6 +252,23 @@ def load_unit(directory, command, pack_path=None):
                     raise InputError('offset_shift: expected two integer coordinates')
                 if data.get('scale') == 'fit':
                     raise InputError('offset_shift: incompatible with scale="fit"')
+            if 'offset_shift_by_direction' in data:
+                directional_shifts = data['offset_shift_by_direction']
+                if (not isinstance(directional_shifts, dict)
+                        or any(
+                            key not in {str(k) for k in range(8)}
+                            or not isinstance(value, list)
+                            or len(value) != 2
+                            or any(type(coordinate) is not int for coordinate in value)
+                            for key, value in directional_shifts.items()
+                        )):
+                    raise InputError(
+                        'offset_shift_by_direction: expected direction keys "0" through "7" with two integer coordinates'
+                    )
+                if data.get('scale') == 'fit':
+                    raise InputError(
+                        'offset_shift_by_direction: incompatible with scale="fit"'
+                    )
             if 'scale' in data:
                 scale = data['scale']
                 if scale != 'fit' and (
