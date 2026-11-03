@@ -9,7 +9,6 @@ Upstream-описание находится в [`README.md`](README.md). Пол
 D2TM — ремейк **Dune II: The Building of a Dynasty** на C++ и SDL2. Эта рабочая ветка существенно расширяет upstream v0.8.0:
 
 - единая русская/английская сборка с переключением языка;
-- режимы графики Classic и HD;
 - физический HD-рендер интерфейса и игрового мира;
 - единый комплект HD4 с обновлёнными интерфейсом, сценами, зданиями, юнитами и эффектами;
 - адаптивные меню и HUD для разрешений от 800×600 до 8K и сверхшироких экранов;
@@ -253,7 +252,7 @@ src/main.cpp
 
 | Группа | Ключи |
 |---|---|
-| Экран | `ScreenWidth`, `ScreenHeight`, `FullScreen`, `RenderScale`, `WorldScale`, `GraphicsMode` |
+| Экран | `ScreenWidth`, `ScreenHeight`, `FullScreen`, `RenderScale`, `WorldScale` |
 | Камера | `CameraBorderOrKeyMoveSpeed`, `CameraDragMoveSpeed`, `CameraEdgeMove`, `pauseWhenLosingFocus` |
 | Язык | `Language=ru` или `Language=en` |
 | Звук | `playMusic`, `playSound` |
@@ -273,26 +272,25 @@ src/main.cpp
 
 ## 9. Графика, масштабирование и ресурсы
 
-`GraphicsMode` имеет два значения:
+Игра всегда использует единый комплект HD4; разрешение экрана и масштаб мира настраиваются независимо от плотности ресурсов. Режима «Классика» и ключа `GraphicsMode` нет: строка `GraphicsMode=...` в старом `settings.ini` игнорируется.
 
-- `Classic` использует классические data pack-файлы;
-- `HD` всегда использует единый комплект HD4; разрешение экрана и масштаб мира настраиваются независимо от плотности ресурсов.
+Секции ресурсов находятся в `resources/bin/settings.ini`:
 
-Секции ресурсов находятся в `resources/bin/d2tm.cfg`:
+- `[DATAFILE]` — только `GFXAUDIO`;
+- `[HD4_DATAFILE]` — HD4 (`GFXDATA`, `GFXINTER`, `GFXWORLD`, `GFXMENTAT`).
 
-- `[DATAFILE]` — Classic;
-- `[HD4_DATAFILE]` — HD4.
+Классические паки `sdl_data.dat`, `sdl_inter.dat`, `sdl_world.dat`, `sdl_mentat.dat` и классические сцены `data/scenes/sdl_*.dat` остаются в репозитории только как эталон для инструментов; в пакет игры они не попадают (проверка — в `.github/workflows/release.yml`).
 
 Основные контейнеры:
 
 ```text
-data/sdl_data*.dat    — общая графика
-data/sdl_inter*.dat   — интерфейс и карточки
-data/sdl_world*.dat   — мир, здания, юниты, эффекты
-data/sdl_mentat*.dat  — ментаты
-data/sdl_audio.dat    — встроенный звук/музыка
-data/scenes/hd2|hd4   — внешние HD-сцены
-data/hd2|hd4          — отдельные HD UI-текстуры
+data/sdl_data_hd4.dat    — общая графика
+data/sdl_inter_hd4.dat   — интерфейс и карточки
+data/sdl_world_hd4.dat   — мир, здания, юниты, эффекты
+data/sdl_mentat_hd4.dat  — ментаты
+data/sdl_audio.dat       — встроенный звук/музыка
+data/scenes/hd4          — сцены ментатов
+data/hd4                 — отдельные HD UI-текстуры
 ```
 
 Отдельные UI-текстуры загружаются через `src/utils/HdUiTextureLoader.*` из `data/hd4`. В частности:
@@ -467,7 +465,7 @@ Workflow `.github/workflows/release.yml` запускается тегом `v*` 
 |---|---|
 | Игра не стартует | установленный `log.txt`, наличие SDL DLL и data pack-файлов |
 | Неверный язык | `settings.ini: Language`, `Localization.hpp`, соответствующий `campaign*`/`skirmish*` |
-| Пропала HD-картинка | `GraphicsMode`, выбранная секция `d2tm.cfg`, файл в `data/hd2|hd4` или data pack |
+| Пропала HD-картинка | секция `[HD4_DATAFILE]` в `settings.ini`, файл в `data/hd4` или data pack |
 | Кнопка видна, но не нажимается | чистый layout-контракт и обработчик координат мыши |
 | ESC ломает раскладку | `cOptionsState`, `m_prevState`, повторное построение layout после перехода |
 | Музыка перезапускается | категория в `cGame_logic.cpp` и `MusicTransitionPolicy.hpp` |

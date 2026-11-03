@@ -15,57 +15,31 @@
 
 cSelectMissionState::cSelectMissionState(cGame &theGame, GameContext* ctx, int prevState) :
     cGameState(theGame, ctx),
-    m_textDrawer(
-        theGame.isHdGraphicsActive()
-            ? ctx->getTextContext()->getMenuTextDrawer()
-            : ctx->getTextContext()->getBeneTextDrawer()
-    )
+    m_textDrawer(ctx->getTextContext()->getMenuTextDrawer())
 {
-    m_hdLayout = theGame.isHdGraphicsActive();
-    if (m_hdLayout) {
-        m_hdBackground = loadHdUiTexture(
-            "main_menu_background.png",
-            m_game.getGraphicsDensity(),
-            "HD mission selection"
-        );
-    }
+    m_hdBackground = loadHdUiTexture(
+        "main_menu_background.png",
+        m_game.getGraphicsDensity(),
+        "HD mission selection"
+    );
 
-    int mainMenuWidth;
-    int mainMenuHeight;
-    int mainMenuFrameX;
-    int mainMenuFrameY;
-    if (m_hdLayout) {
-        mainMenuWidth = std::clamp(
-            m_game.m_screenW - 64,
-            440,
-            600
-        );
-        mainMenuHeight = std::min(
-            m_game.m_screenH - 64,
-            500
-        );
-        mainMenuFrameX = (m_game.m_screenW - mainMenuWidth) / 2;
-        mainMenuFrameY = (m_game.m_screenH - mainMenuHeight) / 2;
-    }
-    else {
-        int frameMargin = m_game.m_screenH * 0.3;
-        mainMenuFrameX = frameMargin;
-        mainMenuFrameY = frameMargin;
-        mainMenuWidth = m_game.m_screenW - (frameMargin * 2);
-        mainMenuHeight = m_game.m_screenH - (frameMargin * 2);
-    }
+    const int mainMenuWidth = std::clamp(
+        m_game.m_screenW - 64,
+        440,
+        600
+    );
+    const int mainMenuHeight = std::min(
+        m_game.m_screenH - 64,
+        500
+    );
+    const int mainMenuFrameX = (m_game.m_screenW - mainMenuWidth) / 2;
+    const int mainMenuFrameY = (m_game.m_screenH - mainMenuHeight) / 2;
 
-    const int margin = m_hdLayout ? 8 : 4;
-    const int buttonHeight = m_hdLayout
-        ? std::max(36, m_textDrawer->getFontHeight() + 10)
-        : m_textDrawer->getFontHeight() + margin;
+    const int margin = 8;
+    const int buttonHeight = std::max(36, m_textDrawer->getFontHeight() + 10);
     const int buttonWidth = mainMenuWidth - margin * 2;
-    const GuiTheme theme = m_hdLayout
-        ? GuiTheme::Remaster()
-        : GuiTheme::Light();
-    const GuiRenderKind kind = m_hdLayout
-        ? GuiRenderKind::REMASTER_BUTTON
-        : GuiRenderKind::OPAQUE_WITH_BORDER;
+    const GuiTheme theme = GuiTheme::Remaster();
+    const GuiRenderKind kind = GuiRenderKind::REMASTER_BUTTON;
 
     const cRectangle &window = cRectangle(mainMenuFrameX, mainMenuFrameY, mainMenuWidth, mainMenuHeight);
     gui_window = new GuiWindow(window, m_textDrawer);
@@ -78,7 +52,7 @@ cSelectMissionState::cSelectMissionState(cGame &theGame, GameContext* ctx, int p
     // QUIT game
     int width = buttonWidth;
 
-    int y = m_hdLayout ? 42 : 40;
+    int y = 42;
     for (int i = 2; i <= 9; i++) {
         const cRectangle &rect = gui_window->getRelativeRect(margin, y, width, buttonHeight);
         GuiButton *btnMission = GuiButtonBuilder()
@@ -128,50 +102,48 @@ void cSelectMissionState::thinkFast()
 
 void cSelectMissionState::draw() const
 {
-    if (m_hdLayout) {
-        renderDrawer->renderClearToColor(Color{10, 12, 14, 255});
-        if (m_hdBackground) {
-            const float sourceAspect =
-                static_cast<float>(m_hdBackground->w) /
-                std::max(1, m_hdBackground->h);
-            const float screenAspect =
-                static_cast<float>(m_game.m_screenW) /
-                std::max(1, m_game.m_screenH);
-            cRectangle destination;
-            if (sourceAspect > screenAspect) {
-                const int width = static_cast<int>(
-                    m_game.m_screenH * sourceAspect
-                );
-                destination = cRectangle(
-                    (m_game.m_screenW - width) / 2,
-                    0,
-                    width,
-                    m_game.m_screenH
-                );
-            }
-            else {
-                const int height = static_cast<int>(
-                    m_game.m_screenW / sourceAspect
-                );
-                destination = cRectangle(
-                    0,
-                    (m_game.m_screenH - height) / 2,
-                    m_game.m_screenW,
-                    height
-                );
-            }
-            renderDrawer->renderStrechFullSprite(
-                m_hdBackground,
-                destination
+    renderDrawer->renderClearToColor(Color{10, 12, 14, 255});
+    if (m_hdBackground) {
+        const float sourceAspect =
+            static_cast<float>(m_hdBackground->w) /
+            std::max(1, m_hdBackground->h);
+        const float screenAspect =
+            static_cast<float>(m_game.m_screenW) /
+            std::max(1, m_game.m_screenH);
+        cRectangle destination;
+        if (sourceAspect > screenAspect) {
+            const int width = static_cast<int>(
+                m_game.m_screenH * sourceAspect
             );
-            renderDrawer->renderRectFillColor(
+            destination = cRectangle(
+                (m_game.m_screenW - width) / 2,
                 0,
-                0,
-                m_game.m_screenW,
-                m_game.m_screenH,
-                Color{3, 6, 8, 150}
+                width,
+                m_game.m_screenH
             );
         }
+        else {
+            const int height = static_cast<int>(
+                m_game.m_screenW / sourceAspect
+            );
+            destination = cRectangle(
+                0,
+                (m_game.m_screenH - height) / 2,
+                m_game.m_screenW,
+                height
+            );
+        }
+        renderDrawer->renderStrechFullSprite(
+            m_hdBackground,
+            destination
+        );
+        renderDrawer->renderRectFillColor(
+            0,
+            0,
+            m_game.m_screenW,
+            m_game.m_screenH,
+            Color{3, 6, 8, 150}
+        );
     }
 
     gui_window->draw();

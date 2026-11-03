@@ -371,44 +371,21 @@ void UiAuditAccess::recordSidebarClicks(cSideBarDrawer &drawer)
         cBuildingList *list = sidebar->getList(selected);
         if (list != nullptr && list->isAvailable()) {
             cBuildingListDrawer &items = drawer.m_buildingListDrawer;
-            if (game.isHdGraphicsActive()) {
-                const HudLayout layout = items.getLayout(list);
-                const int scrollRow = items.getScrollRow(list);
-                for (int i = 0; i < list->getItemCount(); ++i) {
-                    if (list->getItem(i) == nullptr) {
-                        continue;
-                    }
-                    const cRectangle card = layout.cardRect(i, scrollRow);
-                    if (card.getY() < layout.cards.getY() || card.getEndY() > layout.cards.getEndY()) {
-                        continue;
-                    }
-                    uiaudit::recordClick(("build-item:" + std::to_string(i)).c_str(),
-                                         card.getX(), card.getY(), card.getWidth(), card.getHeight());
+            const HudLayout layout = items.getLayout(list);
+            const int scrollRow = items.getScrollRow(list);
+            for (int i = 0; i < list->getItemCount(); ++i) {
+                if (list->getItem(i) == nullptr) {
+                    continue;
                 }
-                uiaudit::recordClick("build-scrollbar", layout.scrollbar.getX(), layout.scrollbar.getY(),
-                                     layout.scrollbar.getWidth(), layout.scrollbar.getHeight());
-            }
-            else {
-                int x = items.getDrawX();
-                int y = items.getDrawY();
-                int column = 0;
-                for (int i = 0; i < MAX_ITEMS; i++) {
-                    if (list->getItem(i) == nullptr) {
-                        break;
-                    }
-                    uiaudit::recordClick(("build-item:" + std::to_string(i)).c_str(),
-                                         x, y, items.getCardWidth(), items.getCardHeight());
-                    if (column < items.getColumnCount() - 1) {
-                        column++;
-                        x += items.getCardWidth() + items.getCardGap();
-                    }
-                    else {
-                        y += items.getCardHeight() + items.getCardGap();
-                        x = items.getDrawX();
-                        column = 0;
-                    }
+                const cRectangle card = layout.cardRect(i, scrollRow);
+                if (card.getY() < layout.cards.getY() || card.getEndY() > layout.cards.getEndY()) {
+                    continue;
                 }
+                uiaudit::recordClick(("build-item:" + std::to_string(i)).c_str(),
+                                     card.getX(), card.getY(), card.getWidth(), card.getHeight());
             }
+            uiaudit::recordClick("build-scrollbar", layout.scrollbar.getX(), layout.scrollbar.getY(),
+                                 layout.scrollbar.getWidth(), layout.scrollbar.getHeight());
         }
     }
 
@@ -940,19 +917,10 @@ bool UiAuditAccess::prepareGameScreen(cGame &game, int house, int kind)
                 return true;
             }
             const int index = 2;
-            int x = 0;
-            int y = 0;
-            if (game.isHdGraphicsActive()) {
-                const HudLayout layout = items->getLayout(list);
-                const cRectangle card = layout.cardRect(index, items->getScrollRow(list));
-                x = card.getX() + card.getWidth() / 2;
-                y = card.getY() + card.getHeight() / 2;
-            }
-            else {
-                const int columns = items->getColumnCount();
-                x = items->getDrawX() + (index % columns) * (items->getCardWidth() + items->getCardGap()) + items->getCardWidth() / 2;
-                y = items->getDrawY() + (index / columns) * (items->getCardHeight() + items->getCardGap()) + items->getCardHeight() / 2;
-            }
+            const HudLayout layout = items->getLayout(list);
+            const cRectangle card = layout.cardRect(index, items->getScrollRow(list));
+            const int x = card.getX() + card.getWidth() / 2;
+            const int y = card.getY() + card.getHeight() / 2;
             drawManager->setMessage(list->getItem(index)->getInfo(), true);
             for (int i = 0; i < 90; i++) {
                 drawManager->thinkFast();

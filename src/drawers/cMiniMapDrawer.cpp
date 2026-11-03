@@ -34,18 +34,11 @@ cMiniMapDrawer::cMiniMapDrawer(GameContext *ctx, cMap *map, cPlayer *player, cMa
     assert(mapCamera);
 
     const HudLayout hud = HudLayout::create(
-        game.isHdGraphicsActive(),
+        true,
         game.m_screenW,
         game.m_screenH
     );
-    const cRectangle minimapArea = game.isHdGraphicsActive()
-        ? hud.radarViewport
-        : cRectangle(
-            game.m_screenW - cSideBar::WidthOfMinimap,
-            cSideBar::TopBarHeight,
-            cSideBar::WidthOfMinimap,
-            cSideBar::HeightOfMinimap
-        );
+    const cRectangle minimapArea = hud.radarViewport;
 
     int reportX = minimapArea.getWidth() / getMapWidthInPixels();
     int reportY = minimapArea.getHeight() / getMapHeightInPixels();
@@ -106,36 +99,7 @@ void cMiniMapDrawer::draw()
     }
     renderDrawer->renderStrechFullSprite(mipMapTex, m_RectMinimap);
 
-    drawStaticFrame();
     drawViewPortRectangle();
-}
-
-void cMiniMapDrawer::drawStaticFrame()
-{
-    if (game.isHdGraphicsActive()) {
-        return;
-    }
-    if (m_status == eMinimapStatus::NOTAVAILABLE) return;
-    if (m_status == eMinimapStatus::RENDERMAP) return;
-    if (m_status == eMinimapStatus::LOWPOWER) return;
-
-    if (m_status == eMinimapStatus::POWERDOWN) {
-        renderDrawer->renderStrechFullSprite(m_gfxinter->getTexture(m_iStaticFrame), m_RectFullMinimap);
-        return;
-    }
-
-    // Draw static info
-    // < STAT01 frames are going from very transparent to opaque
-    if (m_iStaticFrame < STAT10) {
-        m_iTrans = 255 - healthBar(192, (STAT12 - m_iStaticFrame), 12);
-    } else {
-        m_iTrans = 255;
-    }
-
-    // non-stat01 frames are drawn transparent
-    if (m_iStaticFrame != STAT01) {
-        renderDrawer->renderStrechFullSprite(m_gfxinter->getTexture(m_iStaticFrame), m_RectFullMinimap,m_iTrans);
-    }
 }
 
 void cMiniMapDrawer::init()

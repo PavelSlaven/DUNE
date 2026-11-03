@@ -19,7 +19,6 @@
 #include <SDL2/SDL.h>
 
 struct GameSettings;
-enum class GraphicsMode;
 
 
 /**
@@ -62,7 +61,6 @@ bool saveDisplaySettingsToIni(
     bool fullscreen,
     int renderScalePercent,
     int worldScalePercent,
-    GraphicsMode graphicsMode,
     std::string &errorMessage
 );
 

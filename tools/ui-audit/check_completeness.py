@@ -8,7 +8,7 @@ import combos
 
 RESOLUTIONS = ("1024x768", "1280x720", "1366x768", "1600x900", "1920x1080", "2560x1440")
 LANGUAGES = ("ru", "en")
-GRAPHICS = ("hd", "classic")
+GRAPHICS = ("hd",)
 
 
 def all_combos():

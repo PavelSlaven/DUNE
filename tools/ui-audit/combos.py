@@ -3,7 +3,7 @@ import re
 
 FULL_RESOLUTIONS = ("1024x768", "1920x1080")
 LANGUAGES = ("ru", "en")
-GRAPHICS = ("hd", "classic")
+GRAPHICS = ("hd",)
 
 
 def parse_scales(text):
@@ -56,8 +56,6 @@ def parse_id(identifier):
 
 
 def scenes_for(combo, scenes):
-    if combo["graphics"] == "classic":
-        return [scene for scene in scenes if not scene.get("hd_only")]
     if combo["scope"] == "game":
         return [scene for scene in scenes if scene.get("game_screen")]
     return list(scenes)

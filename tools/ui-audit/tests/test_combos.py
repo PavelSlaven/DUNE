@@ -37,26 +37,21 @@ class CombinationCounts(unittest.TestCase):
     def setUp(self):
         self.generated = combos.generate(SCALES)
 
-    def test_total_is_276_with_24_old_and_252_new(self):
-        self.assertEqual(len(self.generated), 276)
-        self.assertEqual(len([c for c in self.generated if c["legacy"]]), 24)
-        self.assertEqual(len([c for c in self.generated if not c["legacy"]]), 252)
+    def test_total_is_230_with_12_old_and_218_new(self):
+        self.assertEqual(len(self.generated), 230)
+        self.assertEqual(len([c for c in self.generated if c["legacy"]]), 12)
+        self.assertEqual(len([c for c in self.generated if not c["legacy"]]), 218)
 
     def test_every_combination_is_unique(self):
         ids = [combos.combo_id(c) for c in self.generated]
-        self.assertEqual(len(set(ids)), 276)
+        self.assertEqual(len(set(ids)), 230)
 
-    def test_old_combinations_are_the_automatic_scales_of_both_graphics(self):
+    def test_old_combinations_are_the_automatic_scales_of_hd(self):
         legacy = [c for c in self.generated if c["legacy"]]
         self.assertTrue(all(c["render"] == 0 and c["world"] == 0 and c["scope"] == "all" for c in legacy))
-        self.assertEqual({c["graphics"] for c in legacy}, {"hd", "classic"})
+        self.assertEqual({c["graphics"] for c in legacy}, {"hd"})
         self.assertEqual({c["language"] for c in legacy}, {"ru", "en"})
         self.assertEqual({c["resolution"] for c in legacy}, set(RENDER_COUNTS))
-
-    def test_classic_has_46_combinations_without_object_size(self):
-        classic = find(self.generated, graphics="classic")
-        self.assertEqual(len(classic), 46)
-        self.assertTrue(all(c["world"] == 0 and c["scope"] == "all" for c in classic))
 
     def test_hd_has_46_full_and_184_game_only_combinations(self):
         hd = find(self.generated, graphics="hd")
@@ -72,7 +67,7 @@ class CombinationCounts(unittest.TestCase):
 
     def test_game_scale_variants_per_resolution_are_automatic_plus_manual(self):
         for res, count in RENDER_COUNTS.items():
-            renders = {c["render"] for c in find(self.generated, resolution=res, graphics="classic", language="ru")}
+            renders = {c["render"] for c in find(self.generated, resolution=res, graphics="hd", language="ru")}
             self.assertEqual(len(renders), count + 1)
             self.assertIn(0, renders)
 
@@ -94,8 +89,8 @@ class CombinationNames(unittest.TestCase):
         self.assertEqual(combos.combo_id(new[0]), "1024x768/ru/hd/r125w110")
 
     def test_automatic_object_size_with_manual_game_scale(self):
-        new = find(combos.generate(SCALES), resolution="1024x768", language="en", graphics="classic", render=125)
-        self.assertEqual(combos.combo_id(new[0]), "1024x768/en/classic/r125w0")
+        new = find(combos.generate(SCALES), resolution="1024x768", language="en", graphics="hd", render=125, world=0)
+        self.assertEqual(combos.combo_id(new[0]), "1024x768/en/hd/r125w0")
 
 
 class ScenesAndPng(unittest.TestCase):
@@ -104,11 +99,6 @@ class ScenesAndPng(unittest.TestCase):
 
     def pick(self, **fields):
         return find(self.generated, **fields)[0]
-
-    def test_classic_drops_scenes_only_for_hd(self):
-        classic = self.pick(graphics="classic", render=0, world=0, resolution="1280x720", language="ru")
-        ids = [s["id"] for s in combos.scenes_for(classic, SCENES)]
-        self.assertEqual(ids, ["main-menu", "game-screen", "units-label-trike"])
 
     def test_game_scope_keeps_only_game_screen_scenes(self):
         game = self.pick(graphics="hd", scope="game", resolution="1280x720", language="ru", render=0, world=110)
@@ -137,7 +127,7 @@ class ScenesAndPng(unittest.TestCase):
 
 class NewCombinationCompleteness(unittest.TestCase):
     def combo(self):
-        return find(combos.generate(SCALES), resolution="1280x720", language="ru", graphics="classic", render=100)[0]
+        return find(combos.generate(SCALES), resolution="1280x720", language="ru", graphics="hd", render=100, world=0)[0]
 
     def write(self, root, relative):
         path = Path(root) / relative
@@ -163,7 +153,7 @@ class NewCombinationCompleteness(unittest.TestCase):
             problems = check_completeness.check_combinations(
                 root, SCENES, {(combo_id, "main-menu")}, [combo])
         kinds = sorted(kind for kind, _ in problems)
-        self.assertEqual(kinds, ["missing-log", "missing-log", "missing-png"])
+        self.assertEqual(kinds, ["missing-log"] * 4 + ["missing-png"])
 
     def test_png_of_an_unflagged_scene_is_extra(self):
         combo = self.combo()
@@ -174,15 +164,6 @@ class NewCombinationCompleteness(unittest.TestCase):
             self.write(root, f"png/{combo_id}/game-screen.png")
             problems = check_completeness.check_combinations(root, SCENES, set(), [combo])
         self.assertEqual(problems, [("extra-png", f"png/{combo_id}/game-screen.png")])
-
-    def test_hd_only_scene_is_not_expected_in_classic(self):
-        combo = self.combo()
-        combo_id = combos.combo_id(combo)
-        with tempfile.TemporaryDirectory() as root:
-            for scene in SCENES:
-                if not scene["hd_only"]:
-                    self.write(root, f"logs/{combo_id}/{scene['id']}.geometry.jsonl")
-            self.assertEqual(check_completeness.check_combinations(root, SCENES, set(), [combo]), [])
 
 
 if __name__ == "__main__":

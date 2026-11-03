@@ -30,9 +30,6 @@ private:
     Graphics *m_gfxinter;
     cRectangle *backButtonRect;
 
-    Texture *bmp_Dune;
-    Texture *bmp_SelectYourHouseTitle;
-
     // TODO: abstract away the selectable houses
     Texture *bmp_HouseAtreides;
     Texture *bmp_HouseOrdos;
@@ -44,13 +41,8 @@ private:
     cRectangle houseOrdos;
     cRectangle houseHarkonnen;
 
-    int selectYourHouseXCentered;
-    cPoint coords_Dune;
-    cPoint coords_SelectYourHouseTitle;
-
     // Functions
     bool hoversOverBackButton;
-    bool m_hdLayout = false;
     int m_hoveredHouse = -1;
 
     void onMouseLeftButtonClicked(const s_MouseEvent &event) const;

@@ -159,8 +159,7 @@ bool writeGeometry(cGame &game, const std::filesystem::path &path, int outputW, 
         return false;
     }
     file << "{\"k\":\"header\",\"scene\":\"" << escapeJson(g_scene->id) << "\",\"resolution\":\"" << outputW << 'x'
-         << outputH << "\",\"language\":\"" << (localization::isEnglish() ? "en" : "ru") << "\",\"graphics\":\""
-         << (game.isHdGraphicsActive() ? "hd" : "classic") << "\",\"canvas\":{\"w\":" << game.m_screenW
+         << outputH << "\",\"language\":\"" << (localization::isEnglish() ? "en" : "ru") << "\",\"graphics\":\"hd\",\"canvas\":{\"w\":" << game.m_screenW
          << ",\"h\":" << game.m_screenH << "},\"game_screen\":" << (g_scene->gameScreen ? "true" : "false")
          << ",\"render_scale\":" << UiAuditAccess::renderScale(game)
          << ",\"world_scale\":" << UiAuditAccess::worldScale(game);

@@ -29,11 +29,15 @@ mkdir bin\data
 mkdir bin\data\scenes
 mkdir bin\data\bmp
 echo 6. Copying data files
-copy resources\bin\data\*.dat bin\data
+copy resources\bin\data\sdl_audio.dat bin\data
+copy resources\bin\data\*_hd4.dat bin\data
 copy resources\bin\data\*.fon bin\data
 copy resources\bin\data\*.ttf bin\data
-echo 7. Copying scenes
-copy resources\bin\data\scenes\*.* bin\data\scenes
+echo 7. Copying HD scenes and textures
+mkdir bin\data\scenes\hd4
+copy resources\bin\data\scenes\hd4\*.dat bin\data\scenes\hd4
+mkdir bin\data\hd4
+copy resources\bin\data\hd4\*.* bin\data\hd4
 echo 8. Create save game directories
 mkdir bin\save
 mkdir bin\save\atreides

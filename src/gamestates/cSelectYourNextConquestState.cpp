@@ -80,39 +80,34 @@ cSelectYourNextConquestState::cSelectYourNextConquestState(cGame &theGame, GameC
     m_gfxworld(ctx->getGraphicsContext()->gfxworld.get()),
     m_gfxinter(ctx->getGraphicsContext()->gfxinter.get())
 {
-    m_hdLayout = m_game.isHdGraphicsActive();
-    m_textDrawer = m_hdLayout
-        ? ctx->getTextContext()->getMenuTextDrawer()
-        : ctx->getTextContext()->getBeneTextDrawer();
-    if (m_hdLayout) {
-        m_hdCampaignLayout = CampaignMapLayout::create(
-            m_game.m_screenW,
-            m_game.m_screenH
-        );
-        m_hdBackground = loadHdUiTexture(
-            "main_menu_background.png",
-            m_game.getGraphicsDensity(),
-            "HD campaign map background"
-        );
-        m_hdCampaignMap = loadHdUiTexture(
-            "campaign_map.png",
-            m_game.getGraphicsDensity(),
-            "HD campaign map"
-        );
+    m_textDrawer = ctx->getTextContext()->getMenuTextDrawer();
+    m_hdCampaignLayout = CampaignMapLayout::create(
+        m_game.m_screenW,
+        m_game.m_screenH
+    );
+    m_hdBackground = loadHdUiTexture(
+        "main_menu_background.png",
+        m_game.getGraphicsDensity(),
+        "HD campaign map background"
+    );
+    m_hdCampaignMap = loadHdUiTexture(
+        "campaign_map.png",
+        m_game.getGraphicsDensity(),
+        "HD campaign map"
+    );
 
-        std::string crestFile = "hud_house_atreides.png";
-        if (players[0].getHouse() == HARKONNEN) {
-            crestFile = "hud_house_harkonnen.png";
-        }
-        else if (players[0].getHouse() == ORDOS) {
-            crestFile = "hud_house_ordos.png";
-        }
-        m_hdHouseCrest = loadHdUiTexture(
-            crestFile,
-            m_game.getGraphicsDensity(),
-            "HD campaign house crest"
-        );
+    std::string crestFile = "hud_house_atreides.png";
+    if (players[0].getHouse() == HARKONNEN) {
+        crestFile = "hud_house_harkonnen.png";
     }
+    else if (players[0].getHouse() == ORDOS) {
+        crestFile = "hud_house_ordos.png";
+    }
+    m_hdHouseCrest = loadHdUiTexture(
+        crestFile,
+        m_game.getGraphicsDensity(),
+        "HD campaign house crest"
+    );
     state = eRegionState::REGSTATE_INIT;
     regionSceneState = eRegionSceneState::SCENE_INIT;
 
@@ -130,26 +125,13 @@ cSelectYourNextConquestState::cSelectYourNextConquestState(cGame &theGame, GameC
     isFinishedConqueringRegions = true;
 
     const std::string missionSelectLabel = localization::text("MISSION SELECT", "ВЫБОР МИССИИ");
-    cRectangle toMissionSelectRect;
-    if (m_hdLayout) {
-        toMissionSelectRect = m_hdCampaignLayout.missionButton;
-    }
-    else {
-        const int length = m_textDrawer->getTextLength(missionSelectLabel);
-        toMissionSelectRect = *m_textDrawer->getAsRectangle(
-            m_game.m_screenW - length,
-            m_game.m_screenH - m_textDrawer->getFontHeight(),
-            missionSelectLabel
-        );
-    }
+    const cRectangle toMissionSelectRect = m_hdCampaignLayout.missionButton;
     GuiButton *gui_btn_toMissionSelect = GuiButtonBuilder()
             .withRect(toMissionSelectRect)        
             .withLabel(missionSelectLabel)
-            .withKind(m_hdLayout
-                ? GuiRenderKind::REMASTER_BUTTON
-                : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withKind(GuiRenderKind::REMASTER_BUTTON)
             .withTextDrawer(m_textDrawer)
-            .withTheme(m_hdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
+            .withTheme(GuiTheme::Remaster())
             .onClick([this]() {
                 m_game.setNextStateToTransitionTo(GAME_MISSIONSELECT);})
             .build();   
@@ -158,13 +140,8 @@ cSelectYourNextConquestState::cSelectYourNextConquestState(cGame &theGame, GameC
 
 void cSelectYourNextConquestState::calculateOffset()
 {
-    if (m_hdLayout) {
-        offsetX = m_hdCampaignLayout.panel.getX();
-        offsetY = m_hdCampaignLayout.panel.getY();
-        return;
-    }
-    offsetX = (m_game.m_screenW - 640) / 2;
-    offsetY = (m_game.m_screenH - 480) / 2;
+    offsetX = m_hdCampaignLayout.panel.getX();
+    offsetY = m_hdCampaignLayout.panel.getY();
 }
 
 cSelectYourNextConquestState::~cSelectYourNextConquestState()
@@ -187,7 +164,7 @@ void cSelectYourNextConquestState::thinkFast()
     if (state == eRegionState::REGSTATE_INIT) {
         // temp bitmap to read from
         regionClickMapBmp = m_gfxworld->getSurface(WORLD_DUNE_CLICK); // 8 bit bitmap
-        if (m_hdLayout && m_hdRegionBorders == nullptr) {
+        if (m_hdRegionBorders == nullptr) {
             m_hdRegionBorders = createHdRegionBordersTexture();
         }
         // NOTE: No need to use Offset here, as it is on a tempreg and we pretend our mouse is on that BMP as well
@@ -337,23 +314,18 @@ void cSelectYourNextConquestState::draw() const
     // 4. Set up region and go to GAME_BRIEFING, which will do the rest...-> fade out
 
     if (uiaudit::isEnabled() && state == eRegionState::REGSTATE_SELECT_NEXT_CONQUEST) {
-        const cRectangle mapRect = m_hdLayout
-            ? m_hdCampaignLayout.map
-            : cRectangle(offsetX + 16, offsetY + 72, 608, 241);
+        const cRectangle mapRect = m_hdCampaignLayout.map;
         uiaudit::recordClick("campaign-region-map", mapRect.getX(), mapRect.getY(), mapRect.getWidth(), mapRect.getHeight());
     }
 
-    const int iHouse = players[0].getHouse();
-    if (m_hdLayout) {
-        drawHdBackground();
-        drawHdChrome();
-        renderDrawer->setClippingFor(
-            m_hdCampaignLayout.map.getX(),
-            m_hdCampaignLayout.map.getY(),
-            m_hdCampaignLayout.map.getEndX(),
-            m_hdCampaignLayout.map.getEndY()
-        );
-    }
+    drawHdBackground();
+    drawHdChrome();
+    renderDrawer->setClippingFor(
+        m_hdCampaignLayout.map.getX(),
+        m_hdCampaignLayout.map.getY(),
+        m_hdCampaignLayout.map.getEndX(),
+        m_hdCampaignLayout.map.getEndY()
+    );
     if (state == eRegionState::REGSTATE_INTRODUCTION) {
         drawStateIntroduction();
     }
@@ -368,24 +340,12 @@ void cSelectYourNextConquestState::draw() const
     }
 
 
-    if (m_hdLayout) {
-        renderDrawer->resetClippingFor();
-        renderDrawer->renderRectColor(
-            m_hdCampaignLayout.map,
-            Color{190, 145, 58, 255}
-        );
-        drawHdMessage();
-    }
-    else {
-        // Draw this last
-        renderDrawer->renderSprite(
-            m_gfxworld->getTexture(BMP_NEXTCONQ),
-            offsetX,
-            offsetY
-        );
-        drawLogoInFourCorners(iHouse);
-        drawManager->drawMessageBar();
-    }
+    renderDrawer->resetClippingFor();
+    renderDrawer->renderRectColor(
+        m_hdCampaignLayout.map,
+        Color{190, 145, 58, 255}
+    );
+    drawHdMessage();
 
     m_guiBtnToMissionSelect->draw();
 
@@ -652,74 +612,26 @@ void cSelectYourNextConquestState::drawHdMessage() const
     }
 }
 
-void cSelectYourNextConquestState::drawLogoInFourCorners(int iHouse) const
-{
-    int iLogo = -1;
-
-    // Draw your logo
-    if (iHouse == ATREIDES)
-        iLogo = BMP_NCATR;
-
-    if (iHouse == ORDOS)
-        iLogo = BMP_NCORD;
-
-    if (iHouse == HARKONNEN)
-        iLogo = BMP_NCHAR;
-
-    // Draw 4 times the logo (in each corner)
-    if (iLogo > -1) {
-        renderDrawer->renderSprite(m_gfxworld->getTexture(iLogo), offsetX, offsetY);
-        renderDrawer->renderSprite(m_gfxworld->getTexture(iLogo), offsetX + (640) - 64, offsetY);
-        renderDrawer->renderSprite(m_gfxworld->getTexture(iLogo), offsetX, offsetY + (480) - 64);
-        renderDrawer->renderSprite(m_gfxworld->getTexture(iLogo), offsetX + (640) - 64, offsetY + (480) - 64);
-    }
-}
-
 void cSelectYourNextConquestState::drawStateIntroduction() const
 {
-    if (m_hdLayout) {
-        if (regionSceneState == SCENE_THREE_HOUSES_COME_FOR_DUNE) {
-            drawHdMapBase(static_cast<Uint8>(iRegionSceneAlpha));
-        }
-        else if (regionSceneState == SCENE_TO_TAKE_CONTROL_OF_THE_LAND ||
-                 regionSceneState == SCENE_THAT_HAS_BECOME_DIVIDED) {
-            drawHdMapBase();
-            drawHdMapBorders(static_cast<Uint8>(iRegionSceneAlpha));
-        }
-        else if (regionSceneState == SCENE_SELECT_YOUR_NEXT_CONQUEST) {
-            drawHdMapBase();
-            drawHdMapBorders();
-        }
-        return;
-    }
     if (regionSceneState == SCENE_THREE_HOUSES_COME_FOR_DUNE) {
-        // draw dune planet (being faded in)
-        renderDrawer->renderSprite(m_gfxinter->getTexture(BMP_GAME_DUNE),offsetX, offsetY + 12,iRegionSceneAlpha);
+        drawHdMapBase(static_cast<Uint8>(iRegionSceneAlpha));
     }
-    else if (regionSceneState == SCENE_TO_TAKE_CONTROL_OF_THE_LAND) {
-        renderDrawer->renderSprite(m_gfxinter->getTexture(BMP_GAME_DUNE), offsetX, offsetY + 12); // dune is opaque
-        renderDrawer->renderSprite(m_gfxworld->getTexture(WORLD_DUNE), offsetX + 16, offsetY + 73, iRegionSceneAlpha);
-    }
-    else if (regionSceneState == SCENE_THAT_HAS_BECOME_DIVIDED) {
-        // now the world map is opaque
-        renderDrawer->renderSprite(m_gfxworld->getTexture(WORLD_DUNE), offsetX + 16, offsetY + 73);
-        renderDrawer->renderSprite(m_gfxworld->getTexture(WORLD_DUNE_REGIONS), offsetX + 16, offsetY + 73,iRegionSceneAlpha);
+    else if (regionSceneState == SCENE_TO_TAKE_CONTROL_OF_THE_LAND ||
+             regionSceneState == SCENE_THAT_HAS_BECOME_DIVIDED) {
+        drawHdMapBase();
+        drawHdMapBorders(static_cast<Uint8>(iRegionSceneAlpha));
     }
     else if (regionSceneState == SCENE_SELECT_YOUR_NEXT_CONQUEST) {
-        renderDrawer->renderSprite(m_gfxworld->getTexture(WORLD_DUNE_REGIONS), offsetX + 16, offsetY + 73);
+        drawHdMapBase();
+        drawHdMapBorders();
     }
 }
 
 void cSelectYourNextConquestState::drawStateConquerRegions() const   // draw dune first
 {
-    if (m_hdLayout) {
-        drawHdMapBase();
-        drawHdMapBorders();
-    }
-    else {
-        renderDrawer->renderSprite(m_gfxworld->getTexture(WORLD_DUNE), offsetX + 16, offsetY + 73);
-        renderDrawer->renderSprite(m_gfxworld->getTexture(WORLD_DUNE_REGIONS), offsetX + 16, offsetY + 73);
-    }
+    drawHdMapBase();
+    drawHdMapBorders();
 
     // draw here stuff
     for (int i = 0; i < 27; i++) {
@@ -734,14 +646,8 @@ void cSelectYourNextConquestState::drawStateConquerRegions() const   // draw dun
 
 void cSelectYourNextConquestState::drawStateSelectYourNextConquest() const
 {
-    if (m_hdLayout) {
-        drawHdMapBase();
-        drawHdMapBorders();
-    }
-    else {
-        renderDrawer->renderSprite(m_gfxworld->getTexture(WORLD_DUNE), offsetX + 16, offsetY + 73);
-        renderDrawer->renderSprite(m_gfxworld->getTexture(WORLD_DUNE_REGIONS), offsetX + 16, offsetY + 73);
-    }
+    drawHdMapBase();
+    drawHdMapBorders();
 
     cRegion *pRegion = getRegionMouseIsOver();
     if (pRegion && pRegion->bSelectable) {
@@ -888,20 +794,11 @@ void cSelectYourNextConquestState::regionDraw(cRegion &regionPiece) const
     }
     if (drawHouse != regionPiece.oldHouse) {
         delete regionPiece.bmpColor;
-        if (m_hdLayout) {
-            const int regionIndex = static_cast<int>(&regionPiece - world);
-            regionPiece.bmpColor = createHdRegionTintTexture(
-                regionIndex,
-                drawHouse
-            );
-        }
-        else {
-            regionPiece.bmpColor = players[drawHouse]
-                .createTextureFromIndexedSurfaceWithPalette(
-                    regionPiece.bmp,
-                    TransparentColorIndex
-                );
-        }
+        const int regionIndex = static_cast<int>(&regionPiece - world);
+        regionPiece.bmpColor = createHdRegionTintTexture(
+            regionIndex,
+            drawHouse
+        );
         regionPiece.oldHouse = drawHouse;
     }
     drawRegion(regionPiece);
@@ -913,57 +810,29 @@ void cSelectYourNextConquestState::drawRegion(cRegion &regionPiece) const
     if (regionPiece.bmpColor ==nullptr) {
         return;
     }
-    if (m_hdLayout) {
-        const int maximumAlpha = regionPiece.bSelectable ? 132 : 104;
-        const Uint8 alpha = static_cast<Uint8>(std::clamp(
-            regionPiece.iAlpha * maximumAlpha / 255,
-            0,
-            maximumAlpha
-        ));
-        renderDrawer->renderStrechFullSprite(
-            regionPiece.bmpColor,
-            m_hdCampaignLayout.map,
-            alpha
-        );
-        return;
-    }
-    const int regionX = offsetX + regionPiece.x;
-    const int regionY = offsetY + regionPiece.y;
-
-    if (regionPiece.iAlpha >= 255) {
-        renderDrawer->renderSprite(regionPiece.bmpColor, regionX, regionY);
-    }
-    else {
-        renderDrawer->renderSprite(regionPiece.bmpColor, regionX, regionY,regionPiece.iAlpha);
-    }
+    const int maximumAlpha = regionPiece.bSelectable ? 132 : 104;
+    const Uint8 alpha = static_cast<Uint8>(std::clamp(
+        regionPiece.iAlpha * maximumAlpha / 255,
+        0,
+        maximumAlpha
+    ));
+    renderDrawer->renderStrechFullSprite(
+        regionPiece.bmpColor,
+        m_hdCampaignLayout.map,
+        alpha
+    );
 }
 // End of function
 
 int cSelectYourNextConquestState::regionOver(int mouseX, int mouseY)
 {
     // when mouse is not even on the map, return -1
-    const cRectangle mapRect = m_hdLayout
-        ? m_hdCampaignLayout.map
-        : cRectangle(offsetX + 16, offsetY + 72, 608, 241);
+    const cRectangle mapRect = m_hdCampaignLayout.map;
     if (!mapRect.isPointWithin(mouseX, mouseY)) return -1;
 
     // from here, we are on a region
-    const int wCalc = m_hdLayout
-        ? m_hdCampaignLayout.clickMapX(mouseX, regionClickMapBmp->w)
-        : std::clamp(
-            static_cast<int>(std::floor(
-                (mouseX - offsetX - 16) * regionClickMapBmp->w / 608.0)),
-            0,
-            regionClickMapBmp->w - 1
-        );
-    const int hCalc = m_hdLayout
-        ? m_hdCampaignLayout.clickMapY(mouseY, regionClickMapBmp->h)
-        : std::clamp(
-            static_cast<int>(std::floor(
-                (mouseY - offsetY - 73) * regionClickMapBmp->h / 240.0)),
-            0,
-            regionClickMapBmp->h - 1
-        );
+    const int wCalc = m_hdCampaignLayout.clickMapX(mouseX, regionClickMapBmp->w);
+    const int hCalc = m_hdCampaignLayout.clickMapY(mouseY, regionClickMapBmp->h);
     int c = getPixelColorIndexFromSurface(regionClickMapBmp, wCalc, hCalc);
     //std::cout << "REGION_OVER " << mouseX-offsetX << " " << mouseY-offsetY << " " << c << std::endl;
     drawManager->setMessage(localization::format("Region {}", "Регион {}", c - 1));

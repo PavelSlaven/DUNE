@@ -98,6 +98,28 @@ jobs:
           cp -a resources/bin/. package/
           rm -f package/d2tm.exe
           cp resources/game.ini.org package/game.ini
+          rm -f package/data/sdl_data.dat package/data/sdl_inter.dat \
+            package/data/sdl_world.dat package/data/sdl_mentat.dat \
+            package/data/scenes/new.dat package/data/scenes/windtrap.dat \
+            package/data/scenes/sdl_*.dat
+          for classic in \
+            data/sdl_data.dat data/sdl_inter.dat data/sdl_world.dat \
+            data/sdl_mentat.dat data/scenes/new.dat data/scenes/windtrap.dat
+          do
+            if test -e "package/$classic"; then
+              echo "Classic file is in the package: $classic" >&2
+              exit 1
+            fi
+          done
+          if compgen -G "package/data/scenes/sdl_*.dat" > /dev/null; then
+            echo "Classic scenes are in the package" >&2
+            exit 1
+          fi
+          test -f package/data/sdl_audio.dat
+          test -f package/data/sdl_data_hd4.dat
+          test -f package/data/sdl_inter_hd4.dat
+          test -f package/data/sdl_world_hd4.dat
+          test -f package/data/sdl_mentat_hd4.dat
           (
             cd package
             zip -q -r -1 "../${archive}" .
