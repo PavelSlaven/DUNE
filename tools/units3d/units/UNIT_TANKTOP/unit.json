@@ -108,5 +108,9 @@
       "pick": "b",
       "recolour": "units-gen/UNIT_TANKTOP/tanktop_recolour_k7.png"
     }
+  ],
+  "offset_shift": [
+    0,
+    -16
   ]
 }
