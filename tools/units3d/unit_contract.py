@@ -298,15 +298,15 @@ def build_unit_resource_index(
 
 
 def parse_density(source: SourceIndex) -> tuple[int, dict[str, Any]]:
-    relative_path = "src/cGame_logic.cpp"
-    match = re.search(r"constexpr int density\s*=\s*(\d+)\s*;", source.text(relative_path))
+    relative_path = "src/cGame.h"
+    match = re.search(r"static constexpr int kHdAssetDensity\s*=\s*(\d+)\s*;", source.text(relative_path))
     if match is None:
-        raise ValueError("HD4 density assignment was not found in cGame_logic.cpp")
+        raise ValueError("HD asset density constant was not found in cGame.h")
     density = int(match.group(1))
     return density, {
         "value": density,
         "sources": unique_refs([
-            source.ref(relative_path, f"constexpr int density = {density};"),
+            source.ref(relative_path, f"static constexpr int kHdAssetDensity = {density};"),
             source.ref("src/drawers/SDLDrawer.cpp", "srcRect.w *= src->density;"),
             source.ref("src/drawers/SDLDrawer.cpp", "srcRect.h *= src->density;"),
         ]),
@@ -800,9 +800,8 @@ def parse_draw_geometry(
         source.function_ref(cpp, visual_rectangle_func, "mapCamera->factorZoomLevel(getBmpHeight())"),
     ])
     world_scale_sources = unique_refs([
-        source.ref("src/cGame.h", "return isHdGraphicsActive()"),
+        source.ref("src/cGame.h", "float getWorldScaleFactor() const"),
         source.ref("src/cGame.h", "static_cast<float>(m_effectiveWorldScalePercent) / 100.0F"),
-        source.ref("src/cGame.h", ": 1.0F;"),
     ])
     unit_scale_sources = unique_refs([
         source.function_ref(cpp, visual_rectangle_func, "mapCamera->factorZoomLevel(getBmpWidth())"),
@@ -909,7 +908,7 @@ def parse_draw_geometry(
             "sources": visual_rectangle_y_sources,
         },
         "world_scale_configuration": {
-            "value": "При активной HD-графике getWorldScaleFactor возвращает m_effectiveWorldScalePercent / 100; иначе возвращает 1.0F. Это значение задаёт начальное приближение камеры.",
+            "value": "getWorldScaleFactor возвращает m_effectiveWorldScalePercent / 100. Это значение задаёт начальное приближение камеры.",
             "sources": world_scale_sources,
         },
         "unit_size_ignores_world_scale": {
