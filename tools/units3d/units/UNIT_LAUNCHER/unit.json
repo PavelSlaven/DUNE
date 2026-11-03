@@ -33,9 +33,10 @@
       "k": 0,
       "attempts": {
         "a": "units-gen/UNIT_LAUNCHER/launcher_k0_a.png",
-        "b": "units-gen/UNIT_LAUNCHER/launcher_k0_b.png"
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k0_b.png",
+        "b_tone": "units-gen/UNIT_LAUNCHER/launcher_k0_b_tone.png"
       },
-      "pick": "b",
+      "pick": "b_tone",
       "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour2_k0.png"
     },
     {
@@ -43,9 +44,10 @@
       "k": 1,
       "attempts": {
         "a": "units-gen/UNIT_LAUNCHER/launcher_k1_a.png",
-        "b": "units-gen/UNIT_LAUNCHER/launcher_k1_b.png"
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k1_b.png",
+        "a_tone": "units-gen/UNIT_LAUNCHER/launcher_k1_a_tone.png"
       },
-      "pick": "a",
+      "pick": "a_tone",
       "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour2_k1.png"
     },
     {
@@ -53,9 +55,10 @@
       "k": 2,
       "attempts": {
         "a": "units-gen/UNIT_LAUNCHER/launcher_k2_a.png",
-        "b": "units-gen/UNIT_LAUNCHER/launcher_k2_b.png"
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k2_b.png",
+        "a_tone": "units-gen/UNIT_LAUNCHER/launcher_k2_a_tone.png"
       },
-      "pick": "a",
+      "pick": "a_tone",
       "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour2_k2.png"
     },
     {
@@ -63,9 +66,10 @@
       "k": 3,
       "attempts": {
         "a": "units-gen/UNIT_LAUNCHER/launcher_k3_a.png",
-        "b": "units-gen/UNIT_LAUNCHER/launcher_k3_b.png"
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k3_b.png",
+        "b_tone": "units-gen/UNIT_LAUNCHER/launcher_k3_b_tone.png"
       },
-      "pick": "b",
+      "pick": "b_tone",
       "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour2_k3.png"
     },
     {
@@ -73,9 +77,10 @@
       "k": 4,
       "attempts": {
         "a": "units-gen/UNIT_LAUNCHER/launcher_k4_a.png",
-        "b": "units-gen/UNIT_LAUNCHER/launcher_k4_b.png"
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k4_b.png",
+        "a_tone": "units-gen/UNIT_LAUNCHER/launcher_k4_a_tone.png"
       },
-      "pick": "a",
+      "pick": "a_tone",
       "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour2_k4.png",
       "scale_factor": 0.923
     },
@@ -84,9 +89,10 @@
       "k": 5,
       "attempts": {
         "a": "units-gen/UNIT_LAUNCHER/launcher_k5_a.png",
-        "b": "units-gen/UNIT_LAUNCHER/launcher_k5_b.png"
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k5_b.png",
+        "b_tone": "units-gen/UNIT_LAUNCHER/launcher_k5_b_tone.png"
       },
-      "pick": "b",
+      "pick": "b_tone",
       "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour2_k5.png"
     },
     {
@@ -94,9 +100,10 @@
       "k": 6,
       "attempts": {
         "a": "units-gen/UNIT_LAUNCHER/launcher_k6_a.png",
-        "b": "units-gen/UNIT_LAUNCHER/launcher_k6_b.png"
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k6_b.png",
+        "a_tone": "units-gen/UNIT_LAUNCHER/launcher_k6_a_tone.png"
       },
-      "pick": "a",
+      "pick": "a_tone",
       "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour2_k6.png",
       "scale_factor": 1.058
     },
@@ -105,9 +112,10 @@
       "k": 7,
       "attempts": {
         "a": "units-gen/UNIT_LAUNCHER/launcher_k7_a.png",
-        "b": "units-gen/UNIT_LAUNCHER/launcher_k7_b.png"
+        "b": "units-gen/UNIT_LAUNCHER/launcher_k7_b.png",
+        "a_tone": "units-gen/UNIT_LAUNCHER/launcher_k7_a_tone.png"
       },
-      "pick": "a",
+      "pick": "a_tone",
       "recolour": "units-gen/UNIT_LAUNCHER/launcher_recolour2_k7.png"
     }
   ],
