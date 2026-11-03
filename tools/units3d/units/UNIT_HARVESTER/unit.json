@@ -112,264 +112,264 @@
       "row": 1,
       "k": 0,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r1k0_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r1k0_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k0_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k0_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r1k0_a.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r1k0_a.png",
       "offset_from": 0
     },
     {
       "row": 1,
       "k": 1,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r1k1_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r1k1_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k1_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k1_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r1k1_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r1k1_b.png",
       "offset_from": 0
     },
     {
       "row": 1,
       "k": 2,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r1k2_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r1k2_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k2_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k2_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r1k2_a.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r1k2_a.png",
       "offset_from": 0
     },
     {
       "row": 1,
       "k": 3,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r1k3_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r1k3_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k3_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k3_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r1k3_a.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r1k3_a.png",
       "offset_from": 0
     },
     {
       "row": 1,
       "k": 4,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r1k4_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r1k4_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k4_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k4_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r1k4_a.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r1k4_a.png",
       "offset_from": 0
     },
     {
       "row": 1,
       "k": 5,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r1k5_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r1k5_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k5_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k5_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r1k5_a.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r1k5_a.png",
       "offset_from": 0
     },
     {
       "row": 1,
       "k": 6,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r1k6_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r1k6_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k6_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k6_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r1k6_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r1k6_b.png",
       "offset_from": 0
     },
     {
       "row": 1,
       "k": 7,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r1k7_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r1k7_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k7_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r1k7_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r1k7_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r1k7_b.png",
       "offset_from": 0
     },
     {
       "row": 2,
       "k": 0,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r2k0_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r2k0_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k0_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k0_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r2k0_a.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r2k0_a.png",
       "offset_from": 0
     },
     {
       "row": 2,
       "k": 1,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r2k1_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r2k1_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k1_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k1_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r2k1_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r2k1_b.png",
       "offset_from": 0
     },
     {
       "row": 2,
       "k": 2,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r2k2_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r2k2_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k2_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k2_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r2k2_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r2k2_b.png",
       "offset_from": 0
     },
     {
       "row": 2,
       "k": 3,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r2k3_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r2k3_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k3_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k3_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r2k3_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r2k3_b.png",
       "offset_from": 0
     },
     {
       "row": 2,
       "k": 4,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r2k4_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r2k4_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k4_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k4_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r2k4_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r2k4_b.png",
       "offset_from": 0
     },
     {
       "row": 2,
       "k": 5,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r2k5_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r2k5_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k5_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k5_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r2k5_a.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r2k5_a.png",
       "offset_from": 0
     },
     {
       "row": 2,
       "k": 6,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r2k6_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r2k6_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k6_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k6_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r2k6_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r2k6_b.png",
       "offset_from": 0
     },
     {
       "row": 2,
       "k": 7,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r2k7_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r2k7_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k7_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r2k7_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r2k7_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r2k7_b.png",
       "offset_from": 0
     },
     {
       "row": 3,
       "k": 0,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r3k0_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r3k0_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k0_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k0_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r3k0_a.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r3k0_a.png",
       "offset_from": 0
     },
     {
       "row": 3,
       "k": 1,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r3k1_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r3k1_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k1_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k1_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r3k1_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r3k1_b.png",
       "offset_from": 0
     },
     {
       "row": 3,
       "k": 2,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r3k2_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r3k2_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k2_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k2_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r3k2_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r3k2_b.png",
       "offset_from": 0
     },
     {
       "row": 3,
       "k": 3,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r3k3_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r3k3_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k3_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k3_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r3k3_a.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r3k3_a.png",
       "offset_from": 0
     },
     {
       "row": 3,
       "k": 4,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r3k4_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r3k4_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k4_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k4_b.png"
       },
       "pick": "a",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r3k4_a.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r3k4_a.png",
       "offset_from": 0
     },
     {
       "row": 3,
       "k": 5,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r3k5_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r3k5_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k5_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k5_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r3k5_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r3k5_b.png",
       "offset_from": 0
     },
     {
       "row": 3,
       "k": 6,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r3k6_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r3k6_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k6_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k6_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r3k6_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r3k6_b.png",
       "offset_from": 0
     },
     {
       "row": 3,
       "k": 7,
       "attempts": {
-        "a": "units-gen/UNIT_HARVESTER/cut/harvester_r3k7_a.png",
-        "b": "units-gen/UNIT_HARVESTER/cut/harvester_r3k7_b.png"
+        "a": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k7_a.png",
+        "b": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_r3k7_b.png"
       },
       "pick": "b",
-      "recolour": "units-gen/UNIT_HARVESTER/cut/harvester_recolour_r3k7_b.png",
+      "recolour": "units-gen/UNIT_HARVESTER/cut-0.793144/harvester_recolour_r3k7_b.png",
       "offset_from": 0
     }
   ],
@@ -382,7 +382,7 @@
       3
     ]
   },
-  "scale": 1.057526,
+  "scale": 0.793144,
   "share_corridor": [
     0.34811,
     0.63164
