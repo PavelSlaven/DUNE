@@ -1,3 +1,4 @@
+#include "debug/UiAudit.hpp"
 #include "GuiButton.h"
 
 #include "d2tmc.h"
@@ -27,6 +28,12 @@ GuiButton::~GuiButton()
 
 void GuiButton::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiButton");
+        if (m_enabled && (m_onLeftMouseButtonClickedAction || m_onRightMouseButtonClickedAction)) {
+            auditClick("GuiButton:" + m_buttonText);
+        }
+    }
     switch (m_renderKind) {
         case OPAQUE_WITHOUT_BORDER:
             renderDrawer->renderRectFillColor(m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight(), m_theme.fillColor);

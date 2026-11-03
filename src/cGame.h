@@ -316,6 +316,7 @@ public:
     std::shared_ptr<s_TerrainInfo> getTerrainInfo() const;
 private:
     friend class SaveGameManager;
+    friend class UiAuditAccess;
     /**
      * Variables start here
      */

@@ -4,6 +4,7 @@
 #include "controls/cGameControlsContext.h"
 #include "data/gfxdata.h"
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "gameobjects/structures/cGunTurret.h"
 #include "gameobjects/structures/cRefinery.h"
 #include "gameobjects/structures/cRepairFacility.h"
@@ -1025,6 +1026,11 @@ void cStructureDrawer::drawStructureHealthBar(int iStructure)
     int g = healthNormalized * 255;
 
     if (r > 255) r = 255;
+
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordLabel("structure-health", iStructure, "STRUCTURE", draw_x, draw_y, width_x + 1, height_y + 1,
+                             uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()});
+    }
 
     // bar itself
     renderDrawer->renderRectFillColor(draw_x, draw_y, width_x+1, height_y+1, 0,0,0,255);

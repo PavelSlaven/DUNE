@@ -13,6 +13,7 @@ class GameContext;
 class Graphics;
 
 class cBuildingListDrawer : cInputObserver {
+    friend class UiAuditAccess;
 
 public:
     explicit cBuildingListDrawer(const GameContext *ctx, cPlayer *player);

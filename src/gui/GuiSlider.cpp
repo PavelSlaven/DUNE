@@ -1,3 +1,4 @@
+#include "debug/UiAudit.hpp"
 #include "gui/GuiSlider.hpp"
 #include "d2tmc.h"
 #include "drawers/SDLDrawer.hpp"
@@ -16,6 +17,10 @@ GuiSlider::GuiSlider(const cRectangle &rect, int minValue, int maxValue, int ini
 }
 
 void GuiSlider::draw() const {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiSlider");
+        auditClick("GuiSlider");
+    }
     drawTrack();
     drawKnob();
 }

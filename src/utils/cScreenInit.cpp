@@ -1,3 +1,4 @@
+#include "debug/UiAuditArguments.hpp"
 #include "cScreenInit.h"
 
 #include "cLog.h"
@@ -123,6 +124,9 @@ void cScreenInit::adaptResolution(
 
 DisplayResolution cScreenInit::getWindowedSize() const
 {
+    if (uiaudit::isEnabled()) {
+        return outputResolution;
+    }
     SDL_Rect usableBounds{};
     int availableWidth = windowResolution.width;
     int availableHeight = windowResolution.height;

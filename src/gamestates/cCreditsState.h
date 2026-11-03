@@ -23,6 +23,7 @@ struct s_CreditLine {
 class cCreditsState : public cGameState {
 
 public:
+    friend class UiAuditAccess;
     explicit cCreditsState(cGame &theGame, GameContext* ctx);
     ~cCreditsState() override;
 
