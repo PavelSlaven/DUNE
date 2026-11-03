@@ -35,7 +35,7 @@
   "scale": 1.148390687555,
   "share_corridor": [
     0.15,
-    0.60
+    0.6
   ],
   "sheet_building": {
     "name": "BUILD_HEAVYFACTORY",
@@ -125,5 +125,9 @@
       "pick": "a",
       "recolour": "units-gen/UNIT_SIEGETOP/siegetop_recolour9_k7.png"
     }
+  ],
+  "offset_shift": [
+    0,
+    -19
   ]
 }

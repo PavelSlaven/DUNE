@@ -78,13 +78,18 @@ def run(unit, args):
 
     placement_records = sorted(records, key=lambda record: 'offset_from' in record)
     offset_shift = unit.data.get('offset_shift', (0, 0))
+    offset_shift_by_direction = unit.data.get('offset_shift_by_direction', {})
 
-    def place_frame(rgba, scale, box, offset=None):
+    def place_frame(rgba, scale, box, direction, offset=None):
         if offset is not None:
             return place(rgba, unit.frame, scale, box, offset, source_maximum=unit.maximum)
         frame = place(rgba, unit.frame, scale, box, source_maximum=unit.maximum)
         base_offset = frame[2]
-        final_offset = (base_offset[0] + offset_shift[0], base_offset[1] + offset_shift[1])
+        direction_shift = offset_shift_by_direction.get(str(direction), (0, 0))
+        final_offset = (
+            base_offset[0] + offset_shift[0] + direction_shift[0],
+            base_offset[1] + offset_shift[1] + direction_shift[1],
+        )
         if final_offset == base_offset:
             return frame
         shifted, clipped, _, _ = place(
@@ -103,7 +108,7 @@ def run(unit, args):
             attempt_path = unit.path(record['attempts'][record['pick']])
             with frame_input(record, attempt_path):
                 placed[name] = place_frame(
-                    raw[name], frame_scale(record, candidate), boxes[name], offset,
+                    raw[name], frame_scale(record, candidate), boxes[name], record['k'], offset,
                 )
         return placed
 

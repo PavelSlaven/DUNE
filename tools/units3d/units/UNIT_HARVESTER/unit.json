@@ -386,5 +386,10 @@
   "share_corridor": [
     0.34811,
     0.63164
+  ],
+  "offset_shift_by_direction": {"0": [0, -28], "4": [0, -28]},
+  "offset_shift": [
+    0,
+    -16
   ]
 }
