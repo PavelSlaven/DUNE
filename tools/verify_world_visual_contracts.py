@@ -132,7 +132,12 @@ def verify_runtime_hooks() -> None:
     ).read_text(encoding="utf-8")
     assert "drawHdBuildingFoundation" in structure_source
     assert "drawHarvesterOnRefineryPad" in structure_source
-    assert "structureWorldScaleFactor" in abstract_source
+    assert "getWorldScaleFactor" not in abstract_source
+    assert "factorZoomLevel(getWidthInPixels())" in abstract_source
+    camera_source = (ROOT / "src" / "map" / "cMapCamera.cpp").read_text(
+        encoding="utf-8"
+    )
+    assert camera_source.count("m_zoomLevel = game.getWorldScaleFactor();") == 2
     assert (EXTRA / "BUILDING_FOUNDATION_HD.png").is_file()
 
 

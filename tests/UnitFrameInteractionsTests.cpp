@@ -44,10 +44,9 @@ void verifyVisualMatrix(UnitFrameFixture &fixture)
                     fixture.setDisplaySettings(density, static_cast<int>(std::lround(selectedScale * 100.0F)));
                     fixture.setCamera(zoom, 32.0F, 48.0F);
                     fixture.setUnit(0, baseline.type, 256, 288, 0, 0, 0);
-                    const float effectiveScale = density == 1 ? 1.0F : selectedScale;
                     const cRectangle expected = unitFrameExpectedVisual(
                         256, 288, 32, 48, 40,
-                        baseline.width, baseline.height, zoom, effectiveScale
+                        baseline.width, baseline.height, zoom
                     );
                     requireRect(unit[0].getVisualRectangle(), expected,
                                 std::format("{} density={} zoom={} scale={}",
@@ -84,14 +83,13 @@ void verifyHealthGroupAndExperience(UnitFrameFixture &fixture)
                     if (baseline.type == HARVESTER) {
                         unit[0].iCredits = fixtureCreditCapacity / 2;
                     }
-                    const float effectiveScale = density == 1 ? 1.0F : selectedScale;
                     const cRectangle visual = unitFrameExpectedVisual(
                         256, 288, 32, 48, 40,
-                        baseline.width, baseline.height, zoom, effectiveScale
+                        baseline.width, baseline.height, zoom
                     );
                     const int barHeight = std::max(
                         1,
-                        static_cast<int>(std::lround(4.0F * zoom * effectiveScale))
+                        static_cast<int>(std::lround(4.0F * zoom))
                     );
                     const float healthRatio = static_cast<float>(fixtureHitPoints) /
                         static_cast<float>(fixtureMaxHp);
@@ -235,9 +233,9 @@ void verifyClickAndBandSelection(UnitFrameFixture &fixture)
             unit[0].thinkFast_position();
 
             const cRectangle visual = unitFrameExpectedVisual(
-                256, 256, 0, 0, 40, 36, 36, zoom, selectedScale
+                256, 256, 0, 0, 40, 36, 36, zoom
             );
-            const int artSize = static_cast<int>(std::lround(44.0F * zoom * selectedScale));
+            const int artSize = static_cast<int>(std::lround(44.0F * zoom));
             const cRectangle expectedHdArt(
                 visual.getX() - (artSize - visual.getWidth()) / 2,
                 visual.getY() - (artSize - visual.getHeight()) / 2,

@@ -76,6 +76,8 @@ public:
 
     int getMouseCellFromScreen(int mouseX, int mouseY) const;
 
+    void refreshMouseHover();
+
     void onNotifyMouseEvent(const s_MouseEvent &event) override;
     void onNotifyKeyboardEvent(const cKeyboardEvent &event) override;
     void onNotifyGameEvent(const s_GameEvent &event) override;

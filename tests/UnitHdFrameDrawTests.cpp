@@ -58,11 +58,10 @@ SDL_FRect expectedDestination(
     const cRectangle &visual,
     int logicalWidth,
     int logicalHeight,
-    float zoom,
-    float scale)
+    float zoom)
 {
-    const float width = static_cast<float>(std::lround(std::lround(logicalWidth * zoom) * scale));
-    const float height = static_cast<float>(std::lround(std::lround(logicalHeight * zoom) * scale));
+    const float width = static_cast<float>(std::lround(logicalWidth * zoom));
+    const float height = static_cast<float>(std::lround(logicalHeight * zoom));
     return {
         visual.getX() + (visual.getWidth() - width) / 2.0F,
         visual.getY() + (visual.getHeight() - height) / 2.0F,
@@ -87,7 +86,6 @@ void checkOne(
     clearUnitDrawCalls();
     unit[0].draw();
 
-    const float effectiveScale = selectedScale;
     const UnitFrameBaseline *baseline = nullptr;
     for (const auto &candidate : UnitFrameBaselines) {
         if (candidate.type == testCase.type) {
@@ -98,7 +96,7 @@ void checkOne(
     require(baseline != nullptr, "HD draw case is absent from the independent baseline table");
     const cRectangle visual = unitFrameExpectedVisual(
         256, 288, 0, 0, 40,
-        baseline->width, baseline->height, zoom, effectiveScale
+        baseline->width, baseline->height, zoom
     );
     const int body = unitFrameFacingIndex(bodyAngle);
     const int turret = unitFrameFacingIndex(turretAngle);
@@ -111,7 +109,7 @@ void checkOne(
         call.method = "renderStrechSpriteF";
         call.texture = fixture.shadowTexture(testCase.type);
         call.source = expectedSource(body, animationFrame, logicalWidth, logicalHeight);
-        call.floatDestination = expectedDestination(visual, logicalWidth, logicalHeight, zoom, effectiveScale);
+        call.floatDestination = expectedDestination(visual, logicalWidth, logicalHeight, zoom);
         call.opacity = UnitFrameShadowOpacity;
         expected.push_back(call);
     }
@@ -119,7 +117,7 @@ void checkOne(
     bodyCall.method = "renderStrechSpriteF";
     bodyCall.texture = fixture.bodyTexture(testCase.type);
     bodyCall.source = expectedSource(body, animationFrame, logicalWidth, logicalHeight);
-    bodyCall.floatDestination = expectedDestination(visual, logicalWidth, logicalHeight, zoom, effectiveScale);
+    bodyCall.floatDestination = expectedDestination(visual, logicalWidth, logicalHeight, zoom);
     expected.push_back(bodyCall);
 
     if (baseline->hasTurret) {
@@ -127,7 +125,7 @@ void checkOne(
         topCall.method = "renderStrechSpriteF";
         topCall.texture = fixture.turretTexture(testCase.type);
         topCall.source = expectedSource(turret, animationFrame, logicalWidth, logicalHeight);
-        topCall.floatDestination = expectedDestination(visual, logicalWidth, logicalHeight, zoom, effectiveScale);
+        topCall.floatDestination = expectedDestination(visual, logicalWidth, logicalHeight, zoom);
         expected.push_back(topCall);
     }
 

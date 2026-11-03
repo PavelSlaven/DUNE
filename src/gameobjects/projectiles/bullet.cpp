@@ -84,20 +84,12 @@ void cBullet::draw()
 {
     int x = draw_x();
     int y = draw_y();
-    const int originalSize = std::max(
+    const int visualSize = std::max(
         1,
         static_cast<int>(std::lround(
             mapCamera->factorZoomLevel(getBulletBmpWidth())
         ))
     );
-    const int visualSize = std::max(
-        1,
-        static_cast<int>(std::lround(
-            originalSize * game.getWorldScaleFactor()
-        ))
-    );
-    x -= (visualSize - originalSize) / 2;
-    y -= (visualSize - originalSize) / 2;
 
     if (x < -visualSize || x > (game.m_screenW + visualSize))
         return;

@@ -792,14 +792,12 @@ def parse_draw_geometry(
         source.ref("src/map/cMapCamera.h", "return std::round(factorZoomLevel((absoluteYPosition - m_viewportStartY) + offset) + m_heightOfTopBar);"),
     ])
     visual_rectangle_sources = unique_refs([
+        source.function_ref(cpp, visual_rectangle_func, "draw_x(),"),
         source.function_ref(cpp, visual_rectangle_func, "mapCamera->factorZoomLevel(getBmpWidth())"),
-        source.function_ref(cpp, visual_rectangle_func, "originalWidth * visualScale"),
-        source.function_ref(cpp, visual_rectangle_func, "draw_x() - (visualWidth - originalWidth) / 2"),
     ])
     visual_rectangle_y_sources = unique_refs([
+        source.function_ref(cpp, visual_rectangle_func, "draw_y(),"),
         source.function_ref(cpp, visual_rectangle_func, "mapCamera->factorZoomLevel(getBmpHeight())"),
-        source.function_ref(cpp, visual_rectangle_func, "originalHeight * visualScale"),
-        source.function_ref(cpp, visual_rectangle_func, "draw_y() - (visualHeight - originalHeight) / 2"),
     ])
     world_scale_sources = unique_refs([
         source.ref("src/cGame.h", "return isHdGraphicsActive()"),
@@ -807,8 +805,10 @@ def parse_draw_geometry(
         source.ref("src/cGame.h", ": 1.0F;"),
     ])
     unit_scale_sources = unique_refs([
-        source.function_ref(cpp, visual_rectangle_func, "game.getWorldScaleFactor()"),
-        source.function_ref("src/utils/WorldObjectScale.hpp", "inline float unitWorldScaleFactor(", "return worldScaleFactor;"),
+        source.function_ref(cpp, visual_rectangle_func, "mapCamera->factorZoomLevel(getBmpWidth())"),
+        source.function_ref(cpp, visual_rectangle_func, "mapCamera->factorZoomLevel(getBmpHeight())"),
+        source.ref("src/map/cMapCamera.cpp", "m_zoomLevel = game.getWorldScaleFactor();"),
+        source.ref("src/map/cMapCamera.cpp", "m_zoomLevel = game.getWorldScaleFactor();", 1),
     ])
 
     shadow_trans_path = "src/include/d2tmc.h"
@@ -901,19 +901,19 @@ def parse_draw_geometry(
             "sources": draw_y_sources,
         },
         "visual_rectangle": {
-            "value": "originalWidth = lround(factorZoomLevel(getBmpWidth())); visualWidth = lround(originalWidth * visualScale); x = draw_x() - (visualWidth - originalWidth) / 2. draw_x() обозначает левый край исходного кадра; с целочисленным округлением центр остаётся у draw_x() + originalWidth / 2.",
+            "value": "x = draw_x(); width = lround(factorZoomLevel(getBmpWidth())). draw_x() обозначает левый край кадра; на масштаб мира ширина не умножается.",
             "sources": visual_rectangle_sources,
         },
         "visual_rectangle_y": {
-            "value": "originalHeight = lround(factorZoomLevel(getBmpHeight())); visualHeight = lround(originalHeight * visualScale); y = draw_y() - (visualHeight - originalHeight) / 2. draw_y() обозначает верхний край исходного кадра; с целочисленным округлением центр остаётся у draw_y() + originalHeight / 2.",
+            "value": "y = draw_y(); height = lround(factorZoomLevel(getBmpHeight())). draw_y() обозначает верхний край кадра; на масштаб мира высота не умножается.",
             "sources": visual_rectangle_y_sources,
         },
         "world_scale_configuration": {
-            "value": "При активной HD-графике getWorldScaleFactor возвращает m_effectiveWorldScalePercent / 100; иначе возвращает 1.0F.",
+            "value": "При активной HD-графике getWorldScaleFactor возвращает m_effectiveWorldScalePercent / 100; иначе возвращает 1.0F. Это значение задаёт начальное приближение камеры.",
             "sources": world_scale_sources,
         },
-        "unit_world_scale_factor": {
-            "value": "getVisualRectangle передаёт game.getWorldScaleFactor() в unitWorldScaleFactor; helper возвращает worldScaleFactor без изменения.",
+        "unit_size_ignores_world_scale": {
+            "value": "getVisualRectangle умножает размер кадра только на приближение камеры. Масштаб мира входит в это приближение через конструктор cMapCamera и resetZoom, на юнит отдельно не умножается.",
             "sources": unit_scale_sources,
         },
         "source_rectangle": {
@@ -952,14 +952,14 @@ def parse_draw_geometry(
         "draw_destination": {
             "value": {
                 "visual_rectangle": "cUnit::draw берёт visual из getVisualRectangle().",
-                "destination": "Без отдельного HD frame destination совпадает с visual. HD frame масштабируется с округлением по camera zoom и world scale, затем центрируется в visual.",
+                "destination": "Без отдельного HD frame destination совпадает с visual. HD frame масштабируется с округлением по camera zoom, затем центрируется в visual.",
             },
             "sources": unique_refs([
                 source.function_ref(cpp, draw_func, "const cRectangle visual = getVisualRectangle();"),
                 source.ref(layout, "const int zoomedWidth = static_cast<int>(std::lround(frame.width * cameraZoom));"),
-                source.ref(layout, "const int destinationWidth = static_cast<int>(std::lround(zoomedWidth * worldScale));"),
-                source.ref(layout, "static_cast<float>(visual.x) + static_cast<float>(visual.width - destinationWidth) / 2.0F"),
-                source.ref(layout, "static_cast<float>(visual.y) + static_cast<float>(visual.height - destinationHeight) / 2.0F"),
+                source.ref(layout, "const int zoomedHeight = static_cast<int>(std::lround(frame.height * cameraZoom));"),
+                source.ref(layout, "static_cast<float>(visual.x) + static_cast<float>(visual.width - zoomedWidth) / 2.0F"),
+                source.ref(layout, "static_cast<float>(visual.y) + static_cast<float>(visual.height - zoomedHeight) / 2.0F"),
                 resolved_frame_ref,
             ]),
         },

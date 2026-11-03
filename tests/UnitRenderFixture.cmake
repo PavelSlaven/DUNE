@@ -51,6 +51,11 @@ set_source_files_properties(
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/UnitFrameFixture.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/UnitFrameInteractionsTests.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/UnitDrawRegressionTests.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/ZoomStartTests.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/BuildingRectangleTests.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/PlacementFrameTests.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/MouseCellScanTests.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/MouseCellRefreshTests.cpp"
     PROPERTIES COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang>:-fno-access-control>"
 )
 
@@ -115,3 +120,8 @@ add_unit_frame_test(unit_hd_frame_draw_tests unit_hd_frame_draw UnitHdFrameDrawT
 add_unit_frame_test(unit_frame_interactions_tests unit_frame_interactions UnitFrameInteractionsTests.cpp recorded)
 add_unit_frame_test(unit_draw_regression_tests unit_draw_regression UnitDrawRegressionTests.cpp recorded)
 add_unit_frame_test(unit_render_pixels_tests unit_render_pixels UnitRenderPixelsTests.cpp real)
+add_unit_frame_test(zoom_start_tests zoom_start ZoomStartTests.cpp recorded)
+add_unit_frame_test(building_visual_rectangle_tests building_visual_rectangle BuildingRectangleTests.cpp recorded)
+add_unit_frame_test(placement_frame_tests placement_frame PlacementFrameTests.cpp recorded)
+add_unit_frame_test(mouse_cell_scan_tests mouse_cell_scan MouseCellScanTests.cpp recorded)
+add_unit_frame_test(mouse_cell_refresh_tests mouse_cell_refresh MouseCellRefreshTests.cpp recorded)
