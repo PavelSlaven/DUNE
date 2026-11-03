@@ -58,7 +58,6 @@ def make_runtime(executable, resources, directory, combo):
         "FullScreen": "false",
         "RenderScale": combo["render"],
         "WorldScale": combo["world"],
-        "GraphicsMode": "HD" if combo["graphics"] == "hd" else "Classic",
         "Language": combo["language"],
     })
     (runtime / "settings.ini").write_text(settings, encoding="utf-8")

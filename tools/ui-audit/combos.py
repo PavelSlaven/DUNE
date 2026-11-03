@@ -56,8 +56,6 @@ def parse_id(identifier):
 
 
 def scenes_for(combo, scenes):
-    if combo["graphics"] == "classic":
-        return [scene for scene in scenes if not scene.get("hd_only")]
     if combo["scope"] == "game":
         return [scene for scene in scenes if scene.get("game_screen")]
     return list(scenes)

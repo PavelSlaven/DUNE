@@ -13,7 +13,7 @@ COMBOS = [
     f"{resolution}/{language}/{graphics}"
     for resolution in RESOLUTIONS
     for language in ("ru", "en")
-    for graphics in ("hd", "classic")
+    for graphics in ("hd",)
 ]
 SCENES = [
     {"id": "main-menu__no-saves", "hud": False},
@@ -77,7 +77,7 @@ class Completeness(unittest.TestCase):
         self.assertEqual(run_check(self.root), [("missing-png", relative)])
 
     def test_missing_hud_png_in_reduced_combo_is_refused(self):
-        relative = png_path("1600x900/en/classic", "game-hud__atreides")
+        relative = png_path("1600x900/en/hd", "game-hud__atreides")
         (self.root / relative).unlink()
         self.assertEqual(run_check(self.root), [("missing-png", relative)])
 
@@ -87,7 +87,7 @@ class Completeness(unittest.TestCase):
         self.assertEqual(run_check(self.root), [("missing-png", relative)])
 
     def test_extra_png_in_reduced_combo_is_refused(self):
-        relative = png_path("1600x900/en/classic", "main-menu__no-saves")
+        relative = png_path("1600x900/en/hd", "main-menu__no-saves")
         touch(self.root, relative)
         self.assertEqual(run_check(self.root), [("extra-png", relative)])
 
@@ -102,7 +102,7 @@ class Completeness(unittest.TestCase):
         self.assertEqual(run_check(self.root), [("extra-png", relative)])
 
     def test_missing_log_in_full_combo_is_refused(self):
-        relative = log_path("1920x1080/en/classic", "options-game__load-enabled")
+        relative = log_path("1920x1080/en/hd", "options-game__load-enabled")
         (self.root / relative).unlink()
         self.assertEqual(run_check(self.root), [("missing-log", relative)])
 
@@ -113,8 +113,8 @@ class Completeness(unittest.TestCase):
 
     def test_every_problem_is_reported(self):
         missing_png = png_path("1024x768/en/hd", "game-hud__atreides")
-        missing_log = log_path("1366x768/ru/classic", "game-hud__atreides")
-        extra_png = png_path("1366x768/ru/classic", "main-menu__no-saves")
+        missing_log = log_path("1366x768/ru/hd", "game-hud__atreides")
+        extra_png = png_path("1366x768/ru/hd", "main-menu__no-saves")
         (self.root / missing_png).unlink()
         (self.root / missing_log).unlink()
         touch(self.root, extra_png)
