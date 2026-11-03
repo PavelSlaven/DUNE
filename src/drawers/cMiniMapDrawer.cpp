@@ -2,6 +2,7 @@
 
 #include "drawers/SDLDrawer.hpp"
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "data/gfxdata.h"
 #include "data/gfxinter.h"
 #include "player/cPlayer.h"
@@ -71,6 +72,9 @@ cMiniMapDrawer::~cMiniMapDrawer()
 
 void cMiniMapDrawer::draw()
 {
+    if (uiaudit::isEnabled() && m_player->hasAtleastOneStructure(RADAR)) {
+        uiaudit::recordClick("minimap", m_RectFullMinimap.getX(), m_RectFullMinimap.getY(), m_RectFullMinimap.getWidth(), m_RectFullMinimap.getHeight());
+    }
     if (!m_map) {
         return;
     }
@@ -79,6 +83,9 @@ void cMiniMapDrawer::draw()
         return;
     }
 
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("minimap", m_RectFullMinimap.getX(), m_RectFullMinimap.getY(), m_RectFullMinimap.getWidth(), m_RectFullMinimap.getHeight());
+    }
     renderDrawer->renderRectFillColor(m_RectFullMinimap, Color::black());
 
     if (m_status == eMinimapStatus::POWERUP || m_status == eMinimapStatus::RENDERMAP || m_status == eMinimapStatus::POWERDOWN) {

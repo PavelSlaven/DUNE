@@ -73,8 +73,7 @@ inline cRectangle unitFrameExpectedVisual(
     int topBarHeight,
     int logicalWidth,
     int logicalHeight,
-    float zoom,
-    float worldScale)
+    float zoom)
 {
     const int drawX = static_cast<int>(std::round(
         zoom * (posX - viewportStartX + (32 - logicalWidth) / 2)
@@ -82,15 +81,11 @@ inline cRectangle unitFrameExpectedVisual(
     const int drawY = static_cast<int>(std::round(
         zoom * (posY - viewportStartY + (32 - logicalHeight) / 2) + topBarHeight
     ));
-    const int originalWidth = static_cast<int>(std::lround(zoom * logicalWidth));
-    const int originalHeight = static_cast<int>(std::lround(zoom * logicalHeight));
-    const int visualWidth = static_cast<int>(std::lround(originalWidth * worldScale));
-    const int visualHeight = static_cast<int>(std::lround(originalHeight * worldScale));
     return {
-        drawX - (visualWidth - originalWidth) / 2,
-        drawY - (visualHeight - originalHeight) / 2,
-        visualWidth,
-        visualHeight
+        drawX,
+        drawY,
+        static_cast<int>(std::lround(zoom * logicalWidth)),
+        static_cast<int>(std::lround(zoom * logicalHeight))
     };
 }
 
@@ -104,12 +99,7 @@ inline std::array<int, 4> unitFrameExpectedSource(
             logicalWidth, logicalHeight};
 }
 
-inline float unitFrameExpectedDestinationSize(
-    int logicalSize,
-    float zoom,
-    float worldScale)
+inline float unitFrameExpectedDestinationSize(int logicalSize, float zoom)
 {
-    return static_cast<float>(std::lround(
-        std::lround(logicalSize * zoom) * worldScale
-    ));
+    return static_cast<float>(std::lround(logicalSize * zoom));
 }

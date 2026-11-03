@@ -11,25 +11,6 @@ struct WorldObjectLayout {
 };
 
 /**
- * WorldScale is visual only. Buildings stay anchored to the bottom of their
- * logical footprint, so allowing the full configured range does not move
- * their gameplay cells or collision geometry.
- */
-inline float structureWorldScaleFactor(float worldScaleFactor)
-{
-    return std::clamp(worldScaleFactor, 0.5F, 1.5F);
-}
-
-/** Keep every unit at the configured world scale, regardless of HD artwork. */
-inline float unitWorldScaleFactor(
-    float worldScaleFactor,
-    bool /*hdGraphics*/,
-    bool /*enlargedHdTank*/)
-{
-    return worldScaleFactor;
-}
-
-/**
  * Keep the harvester on the refinery pad at exactly the same visual scale
  * as the unit uses on the map.  The transparent 80x52 unit frame extends
  * beyond the pad, while its visible south-facing body stays on the deck.

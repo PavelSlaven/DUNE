@@ -29,6 +29,8 @@ public:
     eGameStateType getType() override;
 
 private:
+    friend class UiAuditAccess;
+
     void buildHdMenu();
     void drawHdBackground() const;
 

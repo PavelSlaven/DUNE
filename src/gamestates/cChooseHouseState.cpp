@@ -1,6 +1,7 @@
 #include "gamestates/cChooseHouseState.h"
 
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
 #include "utils/cSoundPlayer.h"
@@ -106,6 +107,13 @@ void cChooseHouseState::thinkFast()
 void cChooseHouseState::draw() const
 {
     cMouse *mouse = m_game.getMouse();
+
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordClick("house-atreides", houseAtreides.getX(), houseAtreides.getY(), houseAtreides.getWidth(), houseAtreides.getHeight());
+        uiaudit::recordClick("house-ordos", houseOrdos.getX(), houseOrdos.getY(), houseOrdos.getWidth(), houseOrdos.getHeight());
+        uiaudit::recordClick("house-harkonnen", houseHarkonnen.getX(), houseHarkonnen.getY(), houseHarkonnen.getWidth(), houseHarkonnen.getHeight());
+        uiaudit::recordClick("house-back", backButtonRect->getX(), backButtonRect->getY(), backButtonRect->getWidth(), backButtonRect->getHeight());
+    }
 
     drawHdBackground();
 

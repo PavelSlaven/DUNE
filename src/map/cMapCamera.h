@@ -29,11 +29,7 @@ public:
 
     void thinkFast();
 
-    void resetZoom() {
-        m_zoomLevel = 1.0f;
-        calibrate();
-        keepViewportWithinReasonableBounds();
-    }
+    void resetZoom();
 
     void jumpTo(int theX, int theY);
 
@@ -93,16 +89,16 @@ public:
         return std::round(factorZoomLevel((absoluteYPosition - m_viewportStartY) + offset) + m_heightOfTopBar);
     }
 
-    // These methods need to use zoomfactor to properly calculate the position on the map
+    // A sample exactly on a cell border belongs to the cell before it, as the drawn rectangles are half-open on the right
     int getAbsMapMouseX(int mouseX) {
-        int iMouseX = divideByZoomLevel(mouseX);
-        return iMouseX + getViewportStartX();
+        return static_cast<int>(std::ceil((mouseX + 0.5) / m_zoomLevel + m_viewportStartX)) - 1;
     }
 
     int getAbsMapMouseY(int mouseY) {
-        int iMouseY = divideByZoomLevel(mouseY - m_heightOfTopBar);
-        return iMouseY + getViewportStartY();
+        return static_cast<int>(std::ceil((mouseY - m_heightOfTopBar + 0.5) / m_zoomLevel + m_viewportStartY)) - 1;
     }
+
+    int getCellFromWindowPosition(int windowX, int windowY);
 
     int getViewportStartX() {
         return m_viewportStartX;
@@ -144,6 +140,15 @@ public:
 
     float getZoomedTileHeight() const {
         return m_tileHeight;
+    }
+
+    // Reaches one pixel into the next tile so rounding never leaves a gap between tiles.
+    int getTileDrawWidth(int absoluteXPosition) {
+        return getWindowXPosition(absoluteXPosition + TILESIZE_WIDTH_PIXELS) - getWindowXPosition(absoluteXPosition) + 1;
+    }
+
+    int getTileDrawHeight(int absoluteYPosition) {
+        return getWindowYPosition(absoluteYPosition + TILESIZE_HEIGHT_PIXELS) - getWindowYPosition(absoluteYPosition) + 1;
     }
 
     float factorZoomLevel(int value) {
@@ -213,6 +218,8 @@ private:
 
     void adjustViewport(float screenX, float screenY);
 
+    void refreshMouseHover();
+
     // Calculates viewport and tile width/height
     void calibrate();
 
@@ -231,4 +238,6 @@ private:
 
     void onKeyHold(const cKeyboardEvent &event);
     void onKeyPressed(const cKeyboardEvent &event);
+
+    friend class UiAuditAccess;
 };

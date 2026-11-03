@@ -6,6 +6,7 @@
 #include "context/TextContext.hpp"
 #include "controls/cGameControlsContext.h"
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "drawers/SDLDrawer.hpp"
 #include "include/Texture.hpp"
 #include "gameobjects/structures/cAbstractStructure.h"
@@ -96,6 +97,10 @@ void cCommandBarDrawer::rebuildLayout()
 void cCommandBarDrawer::draw()
 {
     rebuildLayout();
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("command-bar", m_panelRect.getX(), m_panelRect.getY(), m_panelRect.getWidth(), m_panelRect.getHeight());
+        UiAuditAccess::recordCommandBarClicks(*this);
+    }
 
     if (m_disabledCommandBarTexture) {
         renderDrawer->renderStrechFullSprite(m_disabledCommandBarTexture, m_panelRect);

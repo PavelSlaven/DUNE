@@ -1,3 +1,4 @@
+#include "debug/UiAudit.hpp"
 #include "GuiWindow.h"
 
 #include "d2tmc.h"
@@ -21,6 +22,9 @@ GuiWindow::~GuiWindow() noexcept
 
 void GuiWindow::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiWindow");
+    }
     // draw window itself...
     drawRectFillBorder(m_theme);
     for (auto &guiObject : gui_objects) {

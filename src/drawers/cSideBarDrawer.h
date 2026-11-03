@@ -14,6 +14,7 @@ class GameContext;
 class Graphics;
 
 class cSideBarDrawer : cInputObserver {
+    friend class UiAuditAccess;
 public:
     explicit cSideBarDrawer(GameContext *ctx, cPlayer *player);
     ~cSideBarDrawer() override;

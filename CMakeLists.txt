@@ -272,6 +272,17 @@ if(BUILD_TESTING)
     add_test(NAME world_scale_selection COMMAND world_scale_tests)
 
     add_executable(
+        sound_distance_tests
+        tests/SoundDistanceTests.cpp
+    )
+    target_include_directories(
+        sound_distance_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME sound_distance_scale COMMAND sound_distance_tests)
+
+    add_executable(
         world_object_scale_tests
         tests/WorldObjectScaleTests.cpp
     )
@@ -406,7 +417,47 @@ if(BUILD_TESTING)
     )
     add_test(NAME faction_tint_uniformity COMMAND faction_tint_tests)
 
+    add_executable(
+        ui_audit_arguments_tests
+        tests/UiAuditArgumentsTests.cpp
+        src/debug/UiAuditArguments.cpp
+    )
+    target_include_directories(
+        ui_audit_arguments_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME ui_audit_arguments COMMAND ui_audit_arguments_tests)
+
+    option(D2TM_UI_AUDIT_RUNTIME_TESTS "Run the UI audit tests that start the game; they need the real resources/ files" OFF)
+    if(D2TM_UI_AUDIT_RUNTIME_TESTS)
+        find_package(Python3 REQUIRED COMPONENTS Interpreter)
+        add_test(
+            NAME ui_audit_unknown_scene
+            COMMAND
+                ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tests/ui_audit_unknown_scene.py
+                --exe $<TARGET_FILE:${PROJECT_NAME}>
+                --resources ${CMAKE_CURRENT_SOURCE_DIR}/resources
+        )
+        add_test(
+            NAME ui_audit_main_menu_png
+            COMMAND
+                ${Python3_EXECUTABLE}
+                ${CMAKE_CURRENT_SOURCE_DIR}/tests/ui_audit_main_menu_png.py
+                --exe $<TARGET_FILE:${PROJECT_NAME}>
+                --resources ${CMAKE_CURRENT_SOURCE_DIR}/resources
+        )
+    endif()
     include(tests/UnitRenderFixture.cmake)
+
+    set_source_files_properties(
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests/MouseHoverStateTests.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests/TerrainTileGapTests.cpp"
+        PROPERTIES COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang>:-fno-access-control>"
+    )
+    add_unit_frame_test(mouse_hover_state_tests mouse_hover_state MouseHoverStateTests.cpp recorded)
+    add_unit_frame_test(terrain_tile_gap_tests terrain_tile_gap TerrainTileGapTests.cpp recorded)
 
     if(APPLE)
         target_link_libraries(command_bindings_tests PRIVATE ${SDL2_LIBRARIES})

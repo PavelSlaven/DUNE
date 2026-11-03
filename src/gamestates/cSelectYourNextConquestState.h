@@ -82,6 +82,7 @@ public:
     void fastForwardUntilMission(int missionNr, int house);
 
 private:
+    friend class UiAuditAccess;
     eRegionState state;
 
     eRegionSceneState regionSceneState;

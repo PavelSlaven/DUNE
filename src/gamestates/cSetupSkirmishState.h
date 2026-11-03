@@ -43,6 +43,7 @@ public:
     eGameStateType getType() override;
 
 private:
+    friend class UiAuditAccess;
     cTextDrawer* m_textDrawer = nullptr;
     s_SkirmishPlayer skirmishPlayer[MAX_PLAYERS] = {};
     std::shared_ptr<cPreviewMaps> m_previewMaps;

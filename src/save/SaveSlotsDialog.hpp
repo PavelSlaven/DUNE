@@ -33,6 +33,8 @@ public:
     void onTextInput(std::string_view text);
 
 private:
+    friend class UiAuditAccess;
+
     void rebuildLayout();
     void refreshSlots();
     void selectSlot(int slot);

@@ -45,7 +45,7 @@ void verifyVisualMatrix(UnitFrameFixture &fixture)
                 fixture.setUnit(0, baseline.type, 256, 288, 0, 0, 0);
                 const cRectangle expected = unitFrameExpectedVisual(
                     256, 288, 32, 48, 40,
-                    baseline.width, baseline.height, zoom, selectedScale
+                    baseline.width, baseline.height, zoom
                 );
                 requireRect(unit[0].getVisualRectangle(), expected,
                             std::format("{} zoom={} scale={}",
@@ -82,11 +82,11 @@ void verifyHealthGroupAndExperience(UnitFrameFixture &fixture)
                 }
                 const cRectangle visual = unitFrameExpectedVisual(
                     256, 288, 32, 48, 40,
-                    baseline.width, baseline.height, zoom, selectedScale
+                    baseline.width, baseline.height, zoom
                 );
                 const int barHeight = std::max(
                     1,
-                    static_cast<int>(std::lround(4.0F * zoom * selectedScale))
+                    static_cast<int>(std::lround(4.0F * zoom))
                 );
                 const float healthRatio = static_cast<float>(fixtureHitPoints) /
                     static_cast<float>(fixtureMaxHp);
@@ -229,9 +229,9 @@ void verifyClickAndBandSelection(UnitFrameFixture &fixture)
             unit[0].thinkFast_position();
 
             const cRectangle visual = unitFrameExpectedVisual(
-                256, 256, 0, 0, 40, 36, 36, zoom, selectedScale
+                256, 256, 0, 0, 40, 36, 36, zoom
             );
-            const int artSize = static_cast<int>(std::lround(44.0F * zoom * selectedScale));
+            const int artSize = static_cast<int>(std::lround(44.0F * zoom));
             const cRectangle expectedHdArt(
                 visual.getX() - (artSize - visual.getWidth()) / 2,
                 visual.getY() - (artSize - visual.getHeight()) / 2,

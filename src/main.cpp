@@ -22,6 +22,7 @@
 #include "utils/Graphics.hpp"
 
 #include "utils/cHandleArgument.h"
+#include "debug/UiAudit.hpp"
 #include "utils/common.h"
 #include <filesystem>
 #include <string>
@@ -82,6 +83,11 @@ std::shared_ptr<Graphics> gfxdata;		// graphics (terrain, units, structures)
 int main(int argc, char **argv)
 {
     useExecutableDirectoryAsWorkingDirectory();
+    uiaudit::consumeArguments(argc, argv);
+    int uiAuditExitCode = 0;
+    if (uiaudit::isEnabled() && uiaudit::handleEarlyExit(uiAuditExitCode)) {
+        return uiAuditExitCode;
+    }
 
     std::unique_ptr<GameSettings> settings = loadSettingsFromIni("settings.ini");
     
@@ -102,9 +108,16 @@ int main(int argc, char **argv)
 
     game.applySettings(settings.get());
 
+    bool uiAuditError = false;
     try {
         if (game.setupGame()) {
+            if (uiaudit::isEnabled()) {
+                uiaudit::onSetupDone(game);
+            }
             game.run();
+        }
+        else {
+            uiAuditError = true;
         }
 
         game.shutdown();
@@ -112,8 +125,12 @@ int main(int argc, char **argv)
     catch (std::runtime_error &e) {
         cLogger::getInstance()->log(LOG_ERROR, eLogComponent::COMP_NONE, "Unknown", std::format("Error: {}", e.what()));
         std::cerr << std::format("Error: {}\n\n", e.what());
+        uiAuditError = true;
     }
 
     std::cout << std::format("Thank you for playing Dune 2 - The Maker\n");
+    if (uiaudit::isEnabled() && (uiAuditError || uiaudit::failed())) {
+        return 1;
+    }
     return 0;
 }

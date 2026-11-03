@@ -121,7 +121,7 @@ void checkBaselineCase(
     }
 
     const cRectangle visual = unitFrameExpectedVisual(
-        256, 288, 0, 0, 40, baseline.width, baseline.height, zoom, selectedScale
+        256, 288, 0, 0, 40, baseline.width, baseline.height, zoom
     );
     const int bodyFacing = unitFrameFacingIndex(bodyAngle);
     const int turretFacing = unitFrameFacingIndex(turretAngle);

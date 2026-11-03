@@ -14,6 +14,8 @@
 
 #include "d2tmc.h"
 #include "data/gfxdata.h"
+#include "debug/UiAudit.hpp"
+#include "include/Texture.hpp"
 #include "drawers/SDLDrawer.hpp"
 #include "gameobjects/particles/cParticle.h"
 #include "gameobjects/projectiles/bullet.h"
@@ -26,7 +28,6 @@
 #include "utils/Graphics.hpp"
 #include "utils/RNG.hpp"
 #include "utils/UnitSpriteLayout.hpp"
-#include "utils/WorldObjectScale.hpp"
 #include "utils/Localization.hpp"
 #include <SDL2/SDL.h>
 #include <format>
@@ -532,28 +533,11 @@ int cUnit::draw_y(int bmpHeight)
 
 cRectangle cUnit::getVisualRectangle()
 {
-    const int originalWidth = static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(getBmpWidth())
-    ));
-    const int originalHeight = static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(getBmpHeight())
-    ));
-    const float visualScale = unitWorldScaleFactor(
-        game.getWorldScaleFactor(),
-        true,
-        iType == TANK || iType == SIEGETANK
-    );
-    const int visualWidth = static_cast<int>(std::lround(
-        originalWidth * visualScale
-    ));
-    const int visualHeight = static_cast<int>(std::lround(
-        originalHeight * visualScale
-    ));
     return {
-        draw_x() - (visualWidth - originalWidth) / 2,
-        draw_y() - (visualHeight - originalHeight) / 2,
-        visualWidth,
-        visualHeight
+        draw_x(),
+        draw_y(),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(getBmpWidth()))),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(getBmpHeight())))
     };
 }
 
@@ -576,14 +560,16 @@ void cUnit::draw_spice()
 {
     const cRectangle visual = getVisualRectangle();
     float width_x = visual.getWidth();
-    int height_y = std::max(1, static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(4) * game.getWorldScaleFactor()
-    )));
+    int height_y = std::max(1, static_cast<int>(std::lround(mapCamera->factorZoomLevel(4))));
     int drawx = visual.getX();
     int drawy = visual.getY() - ((height_y * 2) + 2);
 
     int max = getUnitInfo().credit_capacity;
     int w = healthBar(width_x, iCredits, max);
+
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordUnitLabel("spice", iID, iType, drawx, drawy, static_cast<int>(width_x), height_y, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()});
+    }
 
     // bar itself
     renderDrawer->renderRectFillColor(drawx, drawy, width_x, height_y, 0, 0, 0,ShadowTrans);
@@ -621,9 +607,7 @@ void cUnit::draw_health()
     // draw units health
     const cRectangle visual = getVisualRectangle();
     float width_x = visual.getWidth();
-    int height_y = std::max(1, static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(4) * game.getWorldScaleFactor()
-    )));
+    int height_y = std::max(1, static_cast<int>(std::lround(mapCamera->factorZoomLevel(4))));
     int drawx = visual.getX();
     int drawy = visual.getY() - (height_y + 2);
 
@@ -634,6 +618,10 @@ void cUnit::draw_health()
     int g = healthNormalized * 255;
 
     if (r > 255) r = 255;
+
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordUnitLabel("health", iID, iType, drawx, drawy, static_cast<int>(width_x), height_y, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()});
+    }
 
     // bar itself
     renderDrawer->renderRectFillColor(drawx, drawy, width_x, height_y, 0, 0, 0,ShadowTrans);
@@ -650,9 +638,7 @@ void cUnit::draw_group(cTextDrawer* textDrawer)
     if (iHitPoints < 0) return;
 
     const cRectangle visual = getVisualRectangle();
-    int height_y = std::max(1, static_cast<int>(std::lround(
-        mapCamera->factorZoomLevel(4) * game.getWorldScaleFactor()
-    )));
+    int height_y = std::max(1, static_cast<int>(std::lround(mapCamera->factorZoomLevel(4))));
     int drawx = visual.getX();
     int drawy = visual.getY() - (height_y + 2);
     // draw group
@@ -660,8 +646,14 @@ void cUnit::draw_group(cTextDrawer* textDrawer)
     if (iGroup > 0 && iPlayer == HUMAN) {
         // @mira I don't fix group name without acces to textDrawer: fixed on ctx branch
         const int groupX = drawx + std::max(3, visual.getWidth() - 8);
+        if (uiaudit::isEnabled()) {
+            uiaudit::beginLabelText();
+        }
         textDrawer->drawText(groupX, drawy - 11, Color::black(),std::format("{}",iGroup));
         textDrawer->drawText(groupX, drawy - 12, Color::white(),std::format("{}",iGroup));
+        if (uiaudit::isEnabled()) {
+            uiaudit::endLabelText("group", iID, iType, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()});
+        }
     }
 }
 
@@ -713,6 +705,13 @@ void cUnit::draw_experience()
     const cRectangle visual = getVisualRectangle();
     int drawx = visual.getX() + 3;
     int drawy = visual.getY() - 19;
+
+    if (uiaudit::isEnabled()) {
+        const Texture *star = gfxdata->getTexture(OBJECT_STAR_01 + iStarType);
+        if (star != nullptr) {
+            uiaudit::recordUnitLabel("experience", iID, iType, drawx, drawy, (iStars - 1) * 9 + star->w, star->h, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()});
+        }
+    }
 
     // 1 star = 1 experience
     for (int i = 0; i < iStars; i++) {
@@ -792,11 +791,6 @@ void cUnit::draw()
         roundedScaledHeight
     };
     const float cameraZoom = mapCamera->factorZoomLevel(1.0F);
-    const float worldScale = unitWorldScaleFactor(
-        game.getWorldScaleFactor(),
-        true,
-        iType == TANK || iType == SIEGETANK
-    );
     if (shadow) {
         const UnitSpriteFrame frame = resolveUnitSpriteFrame(
             bmp_width,
@@ -810,8 +804,7 @@ void cUnit::draw()
             UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
                 visualLayout,
-                cameraZoom,
-                worldScale
+                cameraZoom
             );
             if (iType == CARRYALL) {
                 destination.y += 24.0F;
@@ -862,8 +855,7 @@ void cUnit::draw()
             const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
                 visualLayout,
-                cameraZoom,
-                worldScale
+                cameraZoom
             );
             renderDrawer->renderStrechSpriteF(
                 bitmap,
@@ -899,8 +891,7 @@ void cUnit::draw()
             const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
                 visualLayout,
-                cameraZoom,
-                worldScale
+                cameraZoom
             );
             renderDrawer->renderStrechSpriteF(
                 top,

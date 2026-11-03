@@ -1,0 +1,169 @@
+file	function	key	mods	line	state	action	reason
+src/building/cItemBuilder.cpp	cItemBuilder::onKeyHold	SDL_SCANCODE_LSHIFT		826	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	build-multiplier	
+src/building/cItemBuilder.cpp	cItemBuilder::onKeyHold	SDL_SCANCODE_RSHIFT		826	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	build-multiplier	
+src/building/cItemBuilder.cpp	cItemBuilder::onKeyPressed	SDL_SCANCODE_LSHIFT		833	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	build-multiplier	
+src/building/cItemBuilder.cpp	cItemBuilder::onKeyPressed	SDL_SCANCODE_RSHIFT		833	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	build-multiplier	
+src/cGame_logic.cpp	cGame::applySettings	commandBindings		225	-	-	применение настроек при старте, не обработчик клавиши
+src/cGame_logic.cpp	cGame::onNotifyKeyboardEvent	SDL_SCANCODE_F11		1960	any state	screenshot	
+src/cGame_logic.cpp	cGame::onKeyDownGamePlaying	SDL_SCANCODE_LCTRL		2052	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	create-group	
+src/cGame_logic.cpp	cGame::onKeyDownGamePlaying	SDL_SCANCODE_RCTRL		2052	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	create-group	
+src/cGame_logic.cpp	cGame::onKeyDownGamePlaying	SDL_SCANCODE_TAB		2062	game: debug mode	debug-keys	
+src/cGame_logic.cpp	cGame::onKeyDownGamePlaying	SDL_SCANCODE_F4		2066	game: debug mode	debug-clear-shroud	
+src/cGame_logic.cpp	cGame::onKeyDownGamePlaying	SDL_SCANCODE_Z		2075	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	reset-zoom	
+src/cGame_logic.cpp	cGame::onKeyDownGamePlaying	SDL_SCANCODE_H		2079	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	center-on-focus	
+src/cGame_logic.cpp	cGame::onKeyDownGamePlaying	SDL_SCANCODE_C		2084	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	center-on-structure	
+src/cGame_logic.cpp	cGame::onKeyDownGamePlaying	SDL_SCANCODE_ESCAPE		2091	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	open-options	
+src/cGame_logic.cpp	cGame::onKeyDownGamePlaying	SDL_SCANCODE_F		2095	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-fps	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_F5		2104	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	quick-save	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_LSHIFT		2105	-	-	модификатор: условие «Shift не нажат» для быстрого сохранения
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_RSHIFT		2106	-	-	модификатор: условие «Shift не нажат» для быстрого сохранения
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_F9		2119	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	quick-load	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_F		2132	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-fps	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_BACKSLASH		2136	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	toggle-time	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	m_commandBindings.deploy		2140	game: units selected	deploy	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_M		2154	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	toggle-music	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_MUTE		2154	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	toggle-music	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_LEFTBRACKET		2167	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	track-previous	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_RIGHTBRACKET		2171	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	track-next	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_O		2175	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	music-volume-down	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_VOLUMEDOWN		2175	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	music-volume-down	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_P		2179	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	music-volume-up	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_VOLUMEUP		2179	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	music-volume-up	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_H		2183	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	center-on-focus	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_KP_PLUS		2187	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	game-speed-faster	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_KP_MINUS		2191	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	game-speed-slower	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_C		2197	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	center-on-structure	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_LALT	RETURN	2204	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	toggle-fullscreen	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	SDL_SCANCODE_RETURN	LALT	2204	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	toggle-fullscreen	
+src/cGame_logic.cpp	cGame::onKeyPressedGamePlaying	m_commandBindings.release		2219	game: structure selected	release	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_0		2413	game: debug mode	debug-control-player-0	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_1		2417	game: debug mode	debug-control-player-1	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_2		2421	game: debug mode	debug-control-player-2	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_3		2425	game: debug mode	debug-control-player-3	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_F2		2431	game: debug mode	debug-win-mission	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_F3		2436	game: debug mode	debug-lose-mission	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_F4		2441	game: debug mode	debug-give-credits	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_F8		2448	game: debug mode	debug-spawn-ornithopter	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_F4	LSHIFT	2460	game: debug mode	debug-destroy-object	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_LSHIFT	F4	2460	game: debug mode	debug-destroy-object	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_F5	LSHIFT	2486	game: debug mode	debug-damage-unit	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_LSHIFT	F5	2486	game: debug mode	debug-damage-unit	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_F7		2501	game: debug mode	debug-reveal-map	
+src/cGame_logic.cpp	cGame::onKeyDownDebugMode	SDL_SCANCODE_F6		2508	game: debug mode	debug-kill-carryalls	
+src/controls/CommandBindings.hpp	-	SDL_SCANCODE_LCTRL		19	game: units selected	attack	
+src/controls/CommandBindings.hpp	-	SDL_SCANCODE_R		20	game: nothing selected | game: structure selected | game: units selected | game: repair mode	repair	
+src/controls/CommandBindings.hpp	-	SDL_SCANCODE_D		21	game: units selected	unload	
+src/controls/CommandBindings.hpp	-	SDL_SCANCODE_D		22	game: units selected	deploy	
+src/controls/CommandBindings.hpp	-	SDL_SCANCODE_LCTRL		23	game: structure selected	rally	
+src/controls/CommandBindings.hpp	-	SDL_SCANCODE_D		24	game: structure selected	release	
+src/controls/CommandBindings.hpp	commandBinding	commandBinding		29	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBinding	SDL_SCANCODE_UNKNOWN		41	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingFromIni	SDL_SCANCODE_UNKNOWN		64	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingToIni	SDL_SCANCODE_UNKNOWN		70	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingDisplayName	SDL_SCANCODE_LCTRL		78	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingDisplayName	SDL_SCANCODE_RCTRL		79	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingDisplayName	SDL_SCANCODE_LSHIFT		81	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingDisplayName	SDL_SCANCODE_RSHIFT		82	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingDisplayName	SDL_SCANCODE_LALT		84	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingDisplayName	SDL_SCANCODE_RALT		85	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingDisplayName	SDL_SCANCODE_RETURN		87	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingDisplayName	SDL_SCANCODE_KP_ENTER		88	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/CommandBindings.hpp	commandBindingDisplayName	SDL_SCANCODE_SPACE		90	-	-	вспомогательная функция назначений: разбор, запись и подпись клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	SDL_SCANCODE_1		12	game: nothing selected | game: structure selected | game: units selected | game: debug mode	select-group	
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	SDL_SCANCODE_2		15	game: nothing selected | game: structure selected | game: units selected | game: debug mode	select-group	
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	SDL_SCANCODE_3		18	game: nothing selected | game: structure selected | game: units selected | game: debug mode	select-group	
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	SDL_SCANCODE_4		21	game: nothing selected | game: structure selected | game: units selected | game: debug mode	select-group	
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	SDL_SCANCODE_5		24	game: nothing selected | game: structure selected | game: units selected | game: debug mode	select-group	
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_LCTRL		67	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_RCTRL		68	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_LCTRL		69	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_RCTRL		69	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_LSHIFT		70	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_RSHIFT		71	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_LSHIFT		72	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_RSHIFT		72	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_LALT		73	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_RALT		74	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_LALT		75	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_RALT		75	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_UNKNOWN		92	-	-	определение пар клавиш-модификаторов и значения «нет клавиши»
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	m_commandBindings.rally		221	game: structure selected	rally	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyPressed	SDL_SCANCODE_LCTRL		233	game: nothing selected	create-group	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyPressed	SDL_SCANCODE_RCTRL		233	game: nothing selected	create-group	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyPressed	m_commandBindings.rally		234	game: structure selected	rally	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyPressed	m_commandBindings.repair		254	game: nothing selected | game: structure selected	repair	
+src/controls/mousestates/cMouseRepairState.cpp	cMouseRepairState::onNotifyKeyboardEvent	m_commandBindings.repair		92	game: repair mode	repair	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	m_commandBindings.attack		422	game: units selected	attack	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	SDL_SCANCODE_LSHIFT		427	game: units selected	add-to-selection	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	SDL_SCANCODE_RSHIFT		427	game: units selected	add-to-selection	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	SDL_SCANCODE_RCTRL		452	game: units selected	create-group	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	SDL_SCANCODE_LCTRL		452	game: units selected	create-group	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyPressed	m_commandBindings.attack		478	game: units selected	attack	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyPressed	SDL_SCANCODE_LSHIFT		483	game: units selected	add-to-selection	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyPressed	SDL_SCANCODE_RSHIFT		483	game: units selected	add-to-selection	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyPressed	m_commandBindings.repair		489	game: units selected	repair	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyPressed	m_commandBindings.unload		494	game: units selected	unload	
+src/drawers/cBuildingListDrawer.cpp	cBuildingListDrawer::onKeyHold	SDL_SCANCODE_TAB	D	1040	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-list-ids	
+src/drawers/cBuildingListDrawer.cpp	cBuildingListDrawer::onKeyHold	SDL_SCANCODE_D	TAB	1040	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-list-ids	
+src/drawers/cBuildingListDrawer.cpp	cBuildingListDrawer::onKeyPressed	SDL_SCANCODE_TAB	D	1047	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-list-ids	
+src/drawers/cBuildingListDrawer.cpp	cBuildingListDrawer::onKeyPressed	SDL_SCANCODE_D	TAB	1047	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-list-ids	
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	m_commandBindings.attack		89	-	-	подпись клавиши на кнопке командной панели, не обработчик
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	m_commandBindings.repair		90	-	-	подпись клавиши на кнопке командной панели, не обработчик
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	m_commandBindings.unload		91	-	-	подпись клавиши на кнопке командной панели, не обработчик
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	m_commandBindings.deploy		92	-	-	подпись клавиши на кнопке командной панели, не обработчик
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	m_commandBindings.rally		93	-	-	подпись клавиши на кнопке командной панели, не обработчик
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	m_commandBindings.release		94	-	-	подпись клавиши на кнопке командной панели, не обработчик
+src/gamestates/cChooseHouseState.cpp	cChooseHouseState::onNotifyKeyboardEvent	SDL_SCANCODE_ESCAPE		416	choose house	back-to-menu	
+src/gamestates/cCreditsState.cpp	cCreditsState::onNotifyKeyboardEvent	SDL_SCANCODE_ESCAPE		469	credits	back-to-menu	
+src/gamestates/cMainMenuState.cpp	cMainMenuState::onNotifyKeyboardEvent	SDL_SCANCODE_ESCAPE		505	main menu	quit-game	
+src/gamestates/cMainMenuState.cpp	cMainMenuState::onNotifyKeyboardEvent	SDL_SCANCODE_M		509	main menu	toggle-music	
+src/gamestates/cMainMenuState.cpp	cMainMenuState::onNotifyKeyboardEvent	SDL_SCANCODE_MUTE		510	main menu	toggle-music	
+src/gamestates/cOptionsState.cpp	cOptionsState::constructAdvancedWindow	commandBinding		423	-	-	отображение назначений в окне настроек, не обработчик клавиши
+src/gamestates/cOptionsState.cpp	cOptionsState::constructAdvancedWindow	commandBindings		423	-	-	отображение назначений в окне настроек, не обработчик клавиши
+src/gamestates/cOptionsState.cpp	cOptionsState::constructAdvancedWindow	commandBindings		475	-	-	отображение назначений в окне настроек, не обработчик клавиши
+src/gamestates/cOptionsState.cpp	cOptionsState::onNotifyKeyboardEvent	SDL_SCANCODE_ESCAPE		1544	options: key capture	cancel-key-capture	
+src/gamestates/cOptionsState.cpp	cOptionsState::onNotifyKeyboardEvent	SDL_SCANCODE_UNKNOWN		1545	-	-	значение «нет клавиши», не клавиша
+src/gamestates/cOptionsState.cpp	cOptionsState::onNotifyKeyboardEvent	commandBindings		1547	-	-	запись нажатой клавиши как назначения: переназначение без проверки занятости
+src/gamestates/cSelectYourNextConquestState.cpp	cSelectYourNextConquestState::onNotifyKeyboardEvent	SDL_SCANCODE_ESCAPE		1113	select next conquest	open-options	
+src/gamestates/cSetupSkirmishState.cpp	cSetupSkirmishState::onNotifyKeyboardEvent	SDL_SCANCODE_ESCAPE		1576	skirmish setup	back-to-menu	
+src/gamestates/cSetupSkirmishState.cpp	cSetupSkirmishState::onNotifyKeyboardEvent	SDL_SCANCODE_LEFT		1580	skirmish setup	previous-map	
+src/gamestates/cSetupSkirmishState.cpp	cSetupSkirmishState::onNotifyKeyboardEvent	SDL_SCANCODE_RIGHT		1583	skirmish setup	next-map	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyDown	SDL_SCANCODE_TAB	D	519	game: debug mode	draw-without-shroud	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyDown	SDL_SCANCODE_D	TAB	519	game: debug mode	draw-without-shroud	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyDown	SDL_SCANCODE_G		522	game: debug mode	show-grid	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyPressed	SDL_SCANCODE_TAB	D	533	game: debug mode	draw-without-shroud	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyPressed	SDL_SCANCODE_D	TAB	533	game: debug mode	draw-without-shroud	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyPressed	SDL_SCANCODE_G		536	game: debug mode	show-grid	
+src/map/cMapCamera.cpp	cMapCamera::onKeyHold	SDL_SCANCODE_LEFT		308	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	camera-scroll-left	
+src/map/cMapCamera.cpp	cMapCamera::onKeyHold	SDL_SCANCODE_UP		314	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	camera-scroll-up	
+src/map/cMapCamera.cpp	cMapCamera::onKeyHold	SDL_SCANCODE_RIGHT		320	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	camera-scroll-right	
+src/map/cMapCamera.cpp	cMapCamera::onKeyHold	SDL_SCANCODE_DOWN		326	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	camera-scroll-down	
+src/map/cMapCamera.cpp	cMapCamera::onKeyPressed	SDL_SCANCODE_LEFT		336	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	camera-scroll-left	
+src/map/cMapCamera.cpp	cMapCamera::onKeyPressed	SDL_SCANCODE_UP		341	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	camera-scroll-up	
+src/map/cMapCamera.cpp	cMapCamera::onKeyPressed	SDL_SCANCODE_RIGHT		346	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	camera-scroll-right	
+src/map/cMapCamera.cpp	cMapCamera::onKeyPressed	SDL_SCANCODE_DOWN		351	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	camera-scroll-down	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_ESCAPE		446	save/load dialog	close-dialog	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_UP		450	save/load dialog	previous-slot	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_DOWN		458	save/load dialog	next-slot	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_BACKSPACE		466	save/load dialog	delete-name-character	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_RETURN		476	save/load dialog	confirm-slot	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_KP_ENTER		476	save/load dialog	confirm-slot	
+src/utils/GameSettings.hpp	-	commandBindings		34	-	-	поле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		115	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		116	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		118	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		119	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		121	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		122	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		124	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		125	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		127	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		128	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		130	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	loadSettingsFromIni	commandBindings		131	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	saveSettingsToIni	commandBindings		387	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	saveSettingsToIni	commandBindings		388	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	saveSettingsToIni	commandBindings		389	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	saveSettingsToIni	commandBindings		390	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	saveSettingsToIni	commandBindings		391	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши
+src/utils/common.cpp	saveSettingsToIni	commandBindings		392	-	-	чтение и запись назначений в файле настроек, не обработчик клавиши

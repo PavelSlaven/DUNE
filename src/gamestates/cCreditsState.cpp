@@ -1,6 +1,7 @@
 #include "cCreditsState.h"
 
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "config.h"
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
@@ -401,6 +402,9 @@ void cCreditsState::thinkFast()
 
 void cCreditsState::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordCanvasClick("credits-speed-up");
+    }
     renderDrawer->renderSprite(m_teamBmp, m_teamCoordinates.x, m_teamCoordinates.y);
 
     int halfScreen = m_game.m_screenW / 2;

@@ -1,7 +1,9 @@
 #include "cMapCamera.h"
 
+#include "controls/cGameControlsContext.h"
 #include "data/gfxdata.h"
 #include "d2tmc.h"
+#include "player/cPlayer.h"
 #include "sidebar/cSideBar.h"
 #include "map/MapGeometry.hpp"
 
@@ -9,6 +11,27 @@
 
 namespace {
 constexpr auto kMapBoundaryScrollSpeed = 5.0f;
+
+template <typename WindowPosition>
+int findTileIndex(int pixel, int tileCount, int tileSize, WindowPosition windowPosition)
+{
+    if (tileCount <= 0 || pixel < windowPosition(0)) {
+        return -1;
+    }
+
+    int low = 0;
+    int high = tileCount - 1;
+    while (low < high) {
+        int mid = (low + high + 1) / 2;
+        if (windowPosition(mid * tileSize) <= pixel) {
+            low = mid;
+        }
+        else {
+            high = mid - 1;
+        }
+    }
+    return pixel < windowPosition((low + 1) * tileSize) ? low : -1;
+}
 }
 
 cMapCamera::cMapCamera(cMap *theMap, float moveSpeedDrag, float moveSpeedBorderOrKeys, bool cameraEdgeMove) :
@@ -18,7 +41,7 @@ cMapCamera::cMapCamera(cMap *theMap, float moveSpeedDrag, float moveSpeedBorderO
     m_pMap(theMap)
 {
     m_viewportStartX = m_viewportStartY = 32;
-    m_zoomLevel = 1.0f;
+    m_zoomLevel = game.getWorldScaleFactor();
 
     int widthOfSidebar = cSideBar::SidebarWidth;
     m_heightOfTopBar = cSideBar::TopBarHeight;
@@ -44,12 +67,21 @@ cMapCamera::~cMapCamera()
 {
 }
 
+void cMapCamera::resetZoom()
+{
+    m_zoomLevel = game.getWorldScaleFactor();
+    calibrate();
+    keepViewportWithinReasonableBounds();
+    refreshMouseHover();
+}
+
 void cMapCamera::zoomIn()
 {
     if (m_zoomLevel < 4.0) {
         m_zoomLevel += 0.1;
         auto m_mouse = game.getMouse();
         adjustViewport(m_mouse->getX(), m_mouse->getY());
+        refreshMouseHover();
     }
 }
 
@@ -78,6 +110,7 @@ void cMapCamera::zoomOut()
         m_zoomLevel -= 0.1;
         auto m_mouse = game.getMouse();
         adjustViewport(m_mouse->getX(), m_mouse->getY());
+        refreshMouseHover();
     }
 }
 
@@ -136,20 +169,22 @@ void cMapCamera::centerAndJumpViewPortToCell(int cell)
     newViewPortY = (newViewPortY / 32) * 32;
 
     jumpTo(newViewPortX, newViewPortY);
-
-    calibrate();
-
-    keepViewportWithinReasonableBounds();
 }
 
 void cMapCamera::thinkFast()
 {
+    const float previousViewportStartX = m_viewportStartX;
+    const float previousViewportStartY = m_viewportStartY;
+
     // update viewport coordinates
     m_viewportStartX = m_viewportStartX + m_moveX;
     m_viewportStartY = m_viewportStartY + m_moveY;
 
     keepViewportWithinReasonableBounds();
 
+    if (m_viewportStartX != previousViewportStartX || m_viewportStartY != previousViewportStartY) {
+        refreshMouseHover();
+    }
 }
 
 void cMapCamera::jumpTo(int theX, int theY)
@@ -157,17 +192,38 @@ void cMapCamera::jumpTo(int theX, int theY)
     m_viewportStartX = theX;
     m_viewportStartY = theY;
     calibrate();
+    keepViewportWithinReasonableBounds();
+    refreshMouseHover();
 }
 
 void cMapCamera::setViewportPosition(int x, int y)
 {
     jumpTo(x, y);
-    keepViewportWithinReasonableBounds();
 }
 
 int cMapCamera::getCellFromAbsolutePosition(int x, int y)
 {
     return global_map.getGeometry().getCellWithMapDimensions((x / 32), (y / 32));
+}
+
+int cMapCamera::getCellFromWindowPosition(int windowX, int windowY)
+{
+    int cellX = findTileIndex(windowX, global_map.getWidth(), TILESIZE_WIDTH_PIXELS, [this](int absoluteX) {
+        return getWindowXPosition(absoluteX);
+    });
+    int cellY = findTileIndex(windowY, global_map.getHeight(), TILESIZE_HEIGHT_PIXELS, [this](int absoluteY) {
+        return getWindowYPosition(absoluteY);
+    });
+    return global_map.getGeometry().getCellWithMapDimensions(cellX, cellY);
+}
+
+void cMapCamera::refreshMouseHover()
+{
+    cGameControlsContext *controls = players[HUMAN].getGameControlsContext();
+    if (controls == nullptr || drawManager == nullptr) {
+        return;
+    }
+    controls->refreshMouseHover();
 }
 
 void cMapCamera::onNotifyMouseEvent(const s_MouseEvent &event)

@@ -1,6 +1,7 @@
 #include "cSideBarDrawer.h"
 
 #include "d2tmc.h"
+#include "debug/UiAudit.hpp"
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
 #include "drawers/cOrderDrawer.h"
@@ -65,6 +66,9 @@ void cSideBarDrawer::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 // draws the sidebar on screen
 void cSideBarDrawer::draw()
 {
+    if (uiaudit::isEnabled()) {
+        UiAuditAccess::recordSidebarClicks(*this);
+    }
     drawHdSidebar();
 }
 
@@ -75,6 +79,9 @@ void cSideBarDrawer::drawHdSidebar()
         game.m_screenW,
         game.m_screenH
     );
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("sidebar", layout.sidebar.getX(), cSideBar::TopBarHeight, layout.sidebar.getWidth(), layout.sidebar.getHeight() - cSideBar::TopBarHeight);
+    }
     renderDrawer->renderRectFillColor(
         layout.sidebar.getX(),
         layout.sidebar.getY(),
@@ -360,6 +367,9 @@ void cSideBarDrawer::drawHdBuildingLists()
         );
     }
 
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("build-list", layout.catalog.getX(), layout.catalog.getY(), layout.catalog.getWidth(), layout.catalog.getHeight());
+    }
     renderDrawer->renderRectFillColor(
         layout.catalog.getX(),
         layout.catalog.getY(),
