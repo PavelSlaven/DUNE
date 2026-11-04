@@ -723,7 +723,8 @@ void cOptionsState::constructWindow(int prevState)
         m_game.m_screenH,
         buttonHeight,
         true,
-        m_prevState == GAME_PLAYING
+        m_prevState == GAME_PLAYING,
+        m_textDrawer->getFontHeight()
     );
     const GuiTheme controlTheme = GuiTheme::Remaster();
     const GuiRenderKind buttonKind = GuiRenderKind::REMASTER_BUTTON;
