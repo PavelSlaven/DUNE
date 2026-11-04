@@ -296,7 +296,16 @@ void cDrawManager::drawTopBarMusicControls()
 
 void cDrawManager::drawMusicControls(int left, int right)
 {
-    const MusicControlsLayout layout = MusicControlsLayout::create(left, right, true);
+    const std::string message = m_messageDrawer.getMessage();
+    const int reservedMessageWidth = message.empty()
+        ? 0
+        : m_textDrawer->getTextLength(message) + 16;
+    const MusicControlsLayout layout = MusicControlsLayout::create(
+        left,
+        right,
+        true,
+        reservedMessageWidth
+    );
     if (!layout.visible) {
         return;
     }

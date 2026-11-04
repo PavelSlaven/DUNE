@@ -18,16 +18,20 @@ struct MusicControlsLayout {
     [[nodiscard]] static MusicControlsLayout create(
         int left,
         int right,
-        bool hd)
+        bool hd,
+        int reservedMessageWidth = 0)
     {
         constexpr int MinimumWidth = 200;
         constexpr int MaximumWidth = 520;
         const int availableWidth = std::max(0, right - left);
-        if (availableWidth < MinimumWidth) {
+        const int controlsWidth = reservedMessageWidth > 0
+            ? availableWidth - reservedMessageWidth - 8
+            : availableWidth;
+        if (controlsWidth < MinimumWidth) {
             return {};
         }
 
-        const int width = std::min(availableWidth, MaximumWidth);
+        const int width = std::min(controlsWidth, MaximumWidth);
         const int buttonSize = hd ? 33 : 28;
         const int y = hd ? 4 : 1;
         const int gap = 5;

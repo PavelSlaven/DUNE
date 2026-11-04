@@ -3,6 +3,7 @@
 #include "utils/TextAlignment.hpp"
 
 #include <array>
+#include <cstdlib>
 #include <iostream>
 
 namespace {
@@ -96,12 +97,27 @@ int main()
                 outcome.prompt.getEndY() <= outcome.image.getEndY(),
             true
         );
+        const int promptCenterX = outcome.prompt.getX() + outcome.prompt.getWidth() / 2;
+        const int imageCenterX = outcome.image.getX() + outcome.image.getWidth() / 2;
         passed &= expectEqual(
-            "Outcome prompt occupies the lower-right area",
-            outcome.prompt.getX() >=
-                outcome.image.getX() + outcome.image.getWidth() / 3 &&
+            "Outcome prompt is centered in the lower part of the image",
+            std::abs(promptCenterX - imageCenterX) <= 1 &&
                 outcome.prompt.getY() >=
                 outcome.image.getY() + outcome.image.getHeight() * 3 / 4,
+            true
+        );
+        constexpr int widePromptTextWidth = 2000;
+        const OutcomeScreenLayout widePrompt = calculateOutcomeScreenLayout(
+            screenWidth,
+            screenHeight,
+            2752,
+            1536,
+            widePromptTextWidth
+        );
+        passed &= expectEqual(
+            "Wide outcome prompt text is scaled to the image width",
+            widePromptTextWidth * widePrompt.promptTextScale <=
+                widePrompt.image.getWidth() - 24 + 0.5F,
             true
         );
         constexpr int outcomePromptFontHeight = 50;
