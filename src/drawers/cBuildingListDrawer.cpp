@@ -671,18 +671,19 @@ void cBuildingListDrawer::drawHdCard(
             );
         }
         else {
+            const int firstLineY = y + imageHeight + 2;
             m_smallTextDrawer->drawTextCentered(
                 firstLine,
                 x + 3,
                 textWidth,
-                y + imageHeight + 2,
+                firstLineY,
                 labelColor
             );
             m_smallTextDrawer->drawTextCentered(
                 secondLine,
                 x + 3,
                 textWidth,
-                y + imageHeight + 15,
+                firstLineY + m_smallTextDrawer->getFontHeight(),
                 labelColor
             );
         }
