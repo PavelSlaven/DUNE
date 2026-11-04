@@ -76,9 +76,10 @@ def resize_premultiplied(image, size):
 
 
 def key_largest(image):
-    rgb = np.asarray(image.convert("RGB"), dtype=np.int32)
+    rgba = np.asarray(image.convert("RGBA"), dtype=np.int32)
+    rgb = rgba[..., :3]
     distance = np.sqrt(((rgb - np.array(MAGENTA)) ** 2).sum(axis=2))
-    solid = distance > 60
+    solid = (distance > 60) & (rgba[..., 3] > 127)
     labels, count = ndimage.label(solid, structure=np.ones((3, 3)))
     if count == 0:
         raise ValueError("no opaque pixels after keying magenta")
@@ -144,13 +145,14 @@ def edge_coverage(frame):
         "bottom": float(opaque[-band:].any(axis=0).mean()),
         "left": float(opaque[:, :band].any(axis=1).mean()),
         "right": float(opaque[:, -band:].any(axis=1).mean()),
+        "touch": float(opaque[0].any() and opaque[-1].any() and opaque[:, 0].any() and opaque[:, -1].any()),
         "fill": float(opaque.mean()),
     }
 
 
 def check(atlas, tiles, count):
     rows = [edge_coverage(f) for f in frames_of(atlas, tiles, count)]
-    ok = all(min(r["top"], r["bottom"], r["left"], r["right"]) >= MIN_EDGE_COVERAGE for r in rows)
+    ok = all(min(r["top"], r["bottom"], r["left"], r["right"]) >= MIN_EDGE_COVERAGE and r["touch"] == 1.0 for r in rows)
     return ok, rows
 
 

@@ -49,6 +49,16 @@ class FitTests(unittest.TestCase):
         frame = angle.fit(image, (2, 2))
         self.assertGreaterEqual(angle.edge_coverage(frame)["left"], 0.99)
 
+    def test_transparent_background_stays_transparent(self):
+        image = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
+        ImageDraw.Draw(image).rectangle((40, 40, 215, 215), fill=(120, 120, 120, 255))
+        frame = angle.fit(image, (2, 2))
+        self.assertEqual(frame.size, (256, 256))
+        self.assertEqual(angle.opaque_box(frame), (0, 0, 256, 256))
+        r, g, b, a = frame.getpixel((0, 0))
+        self.assertEqual((r, g, b), (120, 120, 120))
+        self.assertGreater(a, 127)
+
 
 class CheckTests(unittest.TestCase):
     def test_margins_fail(self):
@@ -57,6 +67,12 @@ class CheckTests(unittest.TestCase):
         ok, rows = angle.check(frame, (2, 2), 1)
         self.assertFalse(ok)
         self.assertEqual(rows[0]["left"], 0.0)
+
+    def test_transparent_rim_fails(self):
+        frame = Image.new("RGBA", (256, 256))
+        ImageDraw.Draw(frame).rectangle((2, 2, 253, 253), fill=(90, 90, 90, 255))
+        ok, rows = angle.check(frame, (2, 2), 1)
+        self.assertFalse(ok, rows)
 
 
 class StretchTests(unittest.TestCase):
