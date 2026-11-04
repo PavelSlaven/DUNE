@@ -9,6 +9,7 @@
 
 #include <format>
 #include <iostream>
+#include <cmath>
 #include <stdexcept>
 #include <vector>
 
@@ -25,6 +26,17 @@ void requireRect(const cRectangle &actual, const cRectangle &expected, const std
             std::format("{}: expected ({},{},{},{}), got ({},{},{},{})",
                         label, expected.getX(), expected.getY(), expected.getWidth(), expected.getHeight(),
                         actual.getX(), actual.getY(), actual.getWidth(), actual.getHeight()));
+}
+
+void requireFloatRect(const SDL_FRect &actual, const SDL_FRect &expected, const std::string &label)
+{
+    require(std::abs(actual.x - expected.x) < 0.0001F &&
+                std::abs(actual.y - expected.y) < 0.0001F &&
+                std::abs(actual.w - expected.w) < 0.0001F &&
+                std::abs(actual.h - expected.h) < 0.0001F,
+            std::format("{}: expected ({},{},{},{}), got ({},{},{},{})",
+                        label, expected.x, expected.y, expected.w, expected.h,
+                        actual.x, actual.y, actual.w, actual.h));
 }
 
 void appendSprite(
@@ -44,6 +56,41 @@ void appendSprite(
     call.y = destination.getY();
     call.width = destination.getWidth();
     call.height = destination.getHeight();
+    call.opacity = opacity;
+    expected.push_back(call);
+}
+
+void appendBaselineSprite(
+    std::vector<UnitDrawCall> &expected,
+    const UnitFrameBaseline &baseline,
+    Texture *texture,
+    cRectangle source,
+    const cRectangle &visual,
+    float zoom,
+    Uint8 opacity = 255)
+{
+    if (baseline.hdFrameWidth == 0) {
+        appendSprite(expected, "renderStrechSprite", texture, source, visual, opacity);
+        return;
+    }
+
+    const float width = static_cast<float>(std::lround(baseline.hdFrameWidth * zoom));
+    const float height = static_cast<float>(std::lround(baseline.hdFrameHeight * zoom));
+    const SDL_FRect destination{
+        visual.getX() + (visual.getWidth() - width) / 2.0F,
+        visual.getY() + (visual.getHeight() - height) / 2.0F,
+        width,
+        height
+    };
+    UnitDrawCall call;
+    call.method = "renderStrechSpriteF";
+    call.texture = texture;
+    call.source = source;
+    call.floatDestination = destination;
+    call.x = static_cast<int>(destination.x);
+    call.y = static_cast<int>(destination.y);
+    call.width = static_cast<int>(destination.w);
+    call.height = static_cast<int>(destination.h);
     call.opacity = opacity;
     expected.push_back(call);
 }
@@ -89,6 +136,13 @@ void verifyCalls(const std::vector<UnitDrawCall> &expected, const std::string &l
             require(got.opacity == wanted.opacity && got.blendMode == SDL_BLENDMODE_BLEND,
                     std::format("{} call {} changed opacity or blend mode", label, index));
         }
+        else if (wanted.method == "renderStrechSpriteF") {
+            requireRect(got.source, wanted.source, std::format("{} source {}", label, index));
+            requireFloatRect(got.floatDestination, wanted.floatDestination,
+                             std::format("{} destination {}", label, index));
+            require(got.opacity == wanted.opacity && got.blendMode == SDL_BLENDMODE_BLEND,
+                    std::format("{} call {} changed opacity or blend mode", label, index));
+        }
         else if (wanted.method == "renderStrechFullSprite") {
             requireRect(got.destination, wanted.destination, std::format("{} overlay {}", label, index));
         }
@@ -125,11 +179,13 @@ void checkBaselineCase(
     );
     const int bodyFacing = unitFrameFacingIndex(bodyAngle);
     const int turretFacing = unitFrameFacingIndex(turretAngle);
+    const int sourceWidth = baseline.hdFrameWidth > 0 ? baseline.hdFrameWidth : baseline.width;
+    const int sourceHeight = baseline.hdFrameHeight > 0 ? baseline.hdFrameHeight : baseline.height;
     const cRectangle sourceBody = {
-        bodyFacing * baseline.width,
-        animationFrame * baseline.height,
-        baseline.width,
-        baseline.height
+        bodyFacing * sourceWidth,
+        animationFrame * sourceHeight,
+        sourceWidth,
+        sourceHeight
     };
     std::vector<UnitDrawCall> expected;
     if (baseline.hasShadow) {
@@ -137,22 +193,22 @@ void checkBaselineCase(
         if (baseline.type == CARRYALL) {
             shadowDestination = {visual.getX(), visual.getY() + 24, visual.getWidth(), visual.getHeight()};
         }
-        appendSprite(expected, "renderStrechSprite", fixture.shadowTexture(baseline.type),
-                     sourceBody, shadowDestination, UnitFrameShadowOpacity);
+        appendBaselineSprite(expected, baseline, fixture.shadowTexture(baseline.type),
+                             sourceBody, shadowDestination, zoom, UnitFrameShadowOpacity);
     }
     if (baseline.hasBody) {
-        appendSprite(expected, "renderStrechSprite", fixture.bodyTexture(baseline.type),
-                     sourceBody, visual);
+        appendBaselineSprite(expected, baseline, fixture.bodyTexture(baseline.type),
+                             sourceBody, visual, zoom);
     }
     if (baseline.hasTurret) {
         const cRectangle sourceTurret = {
-            turretFacing * baseline.width,
-            animationFrame * baseline.height,
-            baseline.width,
-            baseline.height
+            turretFacing * sourceWidth,
+            animationFrame * sourceHeight,
+            sourceWidth,
+            sourceHeight
         };
-        appendSprite(expected, "renderStrechSprite", fixture.turretTexture(baseline.type),
-                     sourceTurret, visual);
+        appendBaselineSprite(expected, baseline, fixture.turretTexture(baseline.type),
+                             sourceTurret, visual, zoom);
     }
     appendIcon(expected, "renderSprite", gfxdata->getTexture(SYMB_PICKMEUP),
                visual.getX(), visual.getY() - 7);
@@ -202,7 +258,6 @@ void runRegressionMatrix()
 {
     UnitFrameFixture fixture(4, 100);
     for (const UnitFrameBaseline &baseline : UnitFrameBaselines) {
-        if (baseline.type == SIEGETANK) continue;
         for (const float zoom : UnitFrameZoomLevels) {
             for (const float selectedScale : UnitFrameWorldScales) {
                 for (int bodyAngle = 0; bodyAngle < 8; ++bodyAngle) {
