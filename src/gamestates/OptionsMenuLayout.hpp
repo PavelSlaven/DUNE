@@ -23,28 +23,27 @@ struct OptionsMenuLayout {
         int canvasWidth,
         int canvasHeight,
         int buttonHeight,
-        bool hdLayout,
         bool playing,
         int titleFontHeight = -1)
     {
-        const int margin = hdLayout ? 8 : 4;
+        const int margin = 8;
         const int actionGap = std::max(2, margin / 2);
-        const int contentGap = hdLayout ? 2 : 5;
-        const int contentX = hdLayout ? 24 : 5;
-        const int applyWidth = hdLayout ? 170 : 115;
-        const int advancedWidth = hdLayout ? 220 : 160;
-        const int windowWidth = hdLayout ? std::min(canvasWidth - 32, 680) : canvasWidth / 2;
-        const int oldHeight = hdLayout ? std::min(canvasHeight - 32, 680) : canvasHeight / 2;
+        const int contentGap = 2;
+        const int contentX = 24;
+        const int applyWidth = 170;
+        const int advancedWidth = 220;
+        const int windowWidth = std::min(canvasWidth - 32, 680);
+        const int oldHeight = std::min(canvasHeight - 32, 680);
         const int actionRows = playing ? 2 : 1;
         const int availableHeight = canvasHeight - 8;
         const int preferredContentTop = buttonHeight + contentGap;
         const int measuredTitleFontHeight = titleFontHeight >= 0
             ? titleFontHeight
-            : std::max(0, buttonHeight - (hdLayout ? 10 : 4));
+            : std::max(0, buttonHeight - 10);
         const int preferredApplyY = (contentGap + buttonHeight) * 10;
         const int preferredHeight = preferredApplyY + buttonHeight + margin
             + actionRows * buttonHeight + (actionRows - 1) * actionGap + margin;
-        const bool compact = hdLayout && preferredHeight > availableHeight;
+        const bool compact = preferredHeight > availableHeight;
         const int minimumContentTop = 2 + measuredTitleFontHeight + 2;
         const int contentTop = compact
             ? std::max(28, minimumContentTop)

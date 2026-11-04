@@ -126,16 +126,12 @@ MentatTextLayout wrapMentatText(
 AbstractMentat::AbstractMentat(
     GameContext* ctx,
     bool canMissionSelect,
-    bool adaptiveHdLayout,
     int hdMissionSelectCenterX,
     float hdMissionTextOffsetY)
 {
     gfxmentat = ctx->getGraphicsContext()->gfxmentat.get();
-    m_adaptiveHdLayout = adaptiveHdLayout;
     m_hdMissionSelectCenterX = hdMissionSelectCenterX;
-    m_textDrawer = m_adaptiveHdLayout
-        ? ctx->getTextContext()->getMentatHdTextDrawer()
-        : ctx->getTextContext()->getBeneTextDrawer();
+    m_textDrawer = ctx->getTextContext()->getMentatHdTextDrawer();
     iMentatSentence = -1;
 
     TIMER_Speaking = -1;
@@ -165,64 +161,42 @@ AbstractMentat::AbstractMentat(
 
     state = INIT;
 
-    if (m_adaptiveHdLayout) {
-        const float widthScale = static_cast<float>(game.m_screenW) * 0.90F / 640.0F;
-        const float heightScale = static_cast<float>(game.m_screenH) * 0.90F / 480.0F;
-        m_uiScale = std::clamp(std::min(widthScale, heightScale), 1.0F, 2.25F);
-    }
+    const float widthScale = static_cast<float>(game.m_screenW) * 0.90F / 640.0F;
+    const float heightScale = static_cast<float>(game.m_screenH) * 0.90F / 480.0F;
+    m_uiScale = std::clamp(std::min(widthScale, heightScale), 1.0F, 2.25F);
     m_panelWidth = static_cast<int>(std::lround(640.0F * m_uiScale));
     m_panelHeight = static_cast<int>(std::lround(480.0F * m_uiScale));
     offsetX = (game.m_screenW - m_panelWidth) / 2;
     offsetY = (game.m_screenH - m_panelHeight) / 2;
-    const int movieBaseX = m_adaptiveHdLayout ? HD_STANDARD_MOVIE_X : 256;
-    const int movieBaseY = m_adaptiveHdLayout ? HD_STANDARD_MOVIE_Y : 120;
-    if (m_adaptiveHdLayout) {
-        // Keep the source scene at its full 23:14 presentation size.  It is
-        // covered outside the glass opening by the foreground pass, which
-        // keeps the opaque remastered frame above the unscaled scene.
-        m_movieWidth = HD_STANDARD_MOVIE_WIDTH;
-        m_movieHeight = HD_STANDARD_MOVIE_HEIGHT;
-    }
+    const int movieBaseX = HD_STANDARD_MOVIE_X;
+    const int movieBaseY = HD_STANDARD_MOVIE_Y;
+    // Keep the source scene at its full 23:14 presentation size.  It is
+    // covered outside the glass opening by the foreground pass, which
+    // keeps the opaque remastered frame above the unscaled scene.
+    m_movieWidth = HD_STANDARD_MOVIE_WIDTH;
+    m_movieHeight = HD_STANDARD_MOVIE_HEIGHT;
     movieTopleftX = baseX(movieBaseX);
     movieTopleftY = baseY(movieBaseY);
 
     if (canMissionSelect) {
-        const std::string label = m_adaptiveHdLayout
-            ? localization::text("Missions", "Миссии")
-            : localization::text("Mission select", "Выбор миссии");
-        cRectangle toMissionSelectRect;
-        if (m_adaptiveHdLayout) {
-            // Center campaign navigation above the right response button.
-            const int frameX = m_hdMissionSelectCenterX - HD_MISSION_SELECT_FRAME_WIDTH / 2;
-            toMissionSelectRect = baseRect(
-                frameX + 4,
-                HD_MISSION_SELECT_BUTTON_Y,
-                HD_MISSION_SELECT_BUTTON_WIDTH,
-                HD_MISSION_SELECT_BUTTON_HEIGHT
-            );
-        }
-        else {
-            const int length = m_textDrawer->getTextLength(label);
-            toMissionSelectRect = cRectangle(
-                game.m_screenW - length,
-                game.m_screenH - m_textDrawer->getFontHeight(),
-                length,
-                m_textDrawer->getFontHeight()
-            );
-        }
+        const std::string label = localization::text("Missions", "Миссии");
+        // Center campaign navigation above the right response button.
+        const int frameX = m_hdMissionSelectCenterX - HD_MISSION_SELECT_FRAME_WIDTH / 2;
+        const cRectangle toMissionSelectRect = baseRect(
+            frameX + 4,
+            HD_MISSION_SELECT_BUTTON_Y,
+            HD_MISSION_SELECT_BUTTON_WIDTH,
+            HD_MISSION_SELECT_BUTTON_HEIGHT
+        );
 
         m_guiBtnToMissionSelect = GuiButtonBuilder()
             .withRect(toMissionSelectRect)
             .withLabel(label)
             .withTextDrawer(m_textDrawer)
-            .withTextScale(m_adaptiveHdLayout ? HD_BUTTON_TEXT_SCALE : 1.0F)
-            .withTextOffsetY(m_adaptiveHdLayout
-                ? static_cast<int>(std::lround(hdMissionTextOffsetY * m_uiScale))
-                : 0)
-            .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
-            .withKind(m_adaptiveHdLayout
-                ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER
-                : GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTextScale(HD_BUTTON_TEXT_SCALE)
+            .withTextOffsetY(static_cast<int>(std::lround(hdMissionTextOffsetY * m_uiScale)))
+            .withTheme(GuiTheme::Remaster())
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([] {
                 game.setNextStateToTransitionTo(GAME_MISSIONSELECT);
             })
@@ -407,7 +381,7 @@ void AbstractMentat::draw()
     const cRectangle panelDestination = {offsetX, offsetY, m_panelWidth, m_panelHeight};
     const bool hasMovie = gfxmovie != nullptr && iMovieFrame >= 0;
 
-    if (m_adaptiveHdLayout && hasMovie) {
+    if (hasMovie) {
         // HD composition, back to front: an oversized scene, one continuous
         // foreground texture with an alpha opening, then mentat animations and
         // text below.  The scene never draws over the frame or portrait.
@@ -418,9 +392,7 @@ void AbstractMentat::draw()
         );
     }
     else {
-        // Classic backgrounds already contain transparent openings.  HD Bene
-        // Gesserit screens have no separate movie and stay fully opaque.
-        if (!m_adaptiveHdLayout) draw_movie();
+        // HD Bene Gesserit screens have no separate movie and stay fully opaque.
         renderDrawer->renderStrechFullSprite(background, panelDestination);
     }
 
@@ -436,56 +408,47 @@ void AbstractMentat::draw()
         }
         // draw text that is being spoken
         if (iMentatSentence >= 0) {
-            if (m_adaptiveHdLayout) {
-                const cRectangle textBox = baseRect(20, 6, 600, 78);
-                const int gap = static_cast<int>(std::lround(2.0F * m_uiScale));
-                const float textScale = std::clamp(
-                    HD_MENTAT_TEXT_SCALE * m_uiScale,
-                    HD_MENTAT_TEXT_MIN_SCALE,
-                    HD_MENTAT_TEXT_MAX_SCALE
+            const cRectangle textBox = baseRect(20, 6, 600, 78);
+            const int gap = static_cast<int>(std::lround(2.0F * m_uiScale));
+            const float textScale = std::clamp(
+                HD_MENTAT_TEXT_SCALE * m_uiScale,
+                HD_MENTAT_TEXT_MIN_SCALE,
+                HD_MENTAT_TEXT_MAX_SCALE
+            );
+            const auto layout = wrapMentatText(
+                m_textDrawer,
+                sentence[iMentatSentence],
+                sentence[iMentatSentence + 1],
+                textBox.getWidth(),
+                textScale
+            );
+            const int lineHeight = static_cast<int>(
+                std::lround(m_textDrawer->getFontHeight() * layout.scale)
+            );
+            const int blockHeight = lineHeight * layout.lineCount +
+                std::max(0, layout.lineCount - 1) * gap;
+            const int blockTop = textBox.getY() +
+                std::max(0, (textBox.getHeight() - blockHeight) / 2);
+            renderDrawer->setClippingFor(
+                textBox.getX(),
+                textBox.getY(),
+                textBox.getX() + textBox.getWidth(),
+                textBox.getY() + textBox.getHeight()
+            );
+            for (int line = 0; line < layout.lineCount; ++line) {
+                m_textDrawer->drawTextScaledCenteredInBox(
+                    layout.lines[line],
+                    cRectangle(
+                        textBox.getX(),
+                        blockTop + line * (lineHeight + gap),
+                        textBox.getWidth(),
+                        lineHeight
+                    ),
+                    layout.scale,
+                    Color{255, 226, 165,255}
                 );
-                const auto layout = wrapMentatText(
-                    m_textDrawer,
-                    sentence[iMentatSentence],
-                    sentence[iMentatSentence + 1],
-                    textBox.getWidth(),
-                    textScale
-                );
-                const int lineHeight = static_cast<int>(
-                    std::lround(m_textDrawer->getFontHeight() * layout.scale)
-                );
-                const int blockHeight = lineHeight * layout.lineCount +
-                    std::max(0, layout.lineCount - 1) * gap;
-                const int blockTop = textBox.getY() +
-                    std::max(0, (textBox.getHeight() - blockHeight) / 2);
-                renderDrawer->setClippingFor(
-                    textBox.getX(),
-                    textBox.getY(),
-                    textBox.getX() + textBox.getWidth(),
-                    textBox.getY() + textBox.getHeight()
-                );
-                for (int line = 0; line < layout.lineCount; ++line) {
-                    m_textDrawer->drawTextScaledCenteredInBox(
-                        layout.lines[line],
-                        cRectangle(
-                            textBox.getX(),
-                            blockTop + line * (lineHeight + gap),
-                            textBox.getWidth(),
-                            lineHeight
-                        ),
-                        layout.scale,
-                        Color{255, 226, 165,255}
-                    );
-                }
-                renderDrawer->resetClippingFor();
             }
-            else {
-                m_textDrawer->drawText(baseX(18), baseY(17) + 1,Color{0, 0, 0,255},sentence[iMentatSentence]);
-                m_textDrawer->drawText(baseX(17), baseY(17),Color{255, 229, 174,255},sentence[iMentatSentence]);
-                const int secondLineY = baseY(17) + m_textDrawer->getFontHeight() + 5;
-                m_textDrawer->drawText(baseX(18), secondLineY + 1,Color{0, 0, 0,255},sentence[iMentatSentence+1]);
-                m_textDrawer->drawText(baseX(17), secondLineY,Color{255, 229, 174,255},sentence[iMentatSentence+1]);
-            }
+            renderDrawer->resetClippingFor();
         }
     }
 
@@ -505,8 +468,6 @@ void AbstractMentat::draw()
 
 void AbstractMentat::drawHdTextHeader() const
 {
-    if (!m_adaptiveHdLayout) return;
-
     Texture *atreidesHeader = gfxmentat->getTexture(MENTATA);
     renderDrawer->renderStrechSprite(
         atreidesHeader,
@@ -517,7 +478,7 @@ void AbstractMentat::drawHdTextHeader() const
 
 void AbstractMentat::harmonizeHdButtonTextScale()
 {
-    if (!m_adaptiveHdLayout || !leftGuiButton || !rightGuiButton) return;
+    if (!leftGuiButton || !rightGuiButton) return;
 
     float sharedScale = HD_BUTTON_TEXT_SCALE;
     const int fontHeight = std::max(1, m_textDrawer->getFontHeight());
@@ -568,8 +529,8 @@ void AbstractMentat::draw_movie()
     cRectangle dest = {
         movieTopleftX,
         movieTopleftY,
-        static_cast<int>(std::lround((m_adaptiveHdLayout ? m_movieWidth : tmp->w) * m_uiScale)),
-        static_cast<int>(std::lround((m_adaptiveHdLayout ? m_movieHeight : tmp->h) * m_uiScale))
+        static_cast<int>(std::lround(m_movieWidth * m_uiScale)),
+        static_cast<int>(std::lround(m_movieHeight * m_uiScale))
     };
     renderDrawer->renderStrechFullSprite(tmp, dest);
 }

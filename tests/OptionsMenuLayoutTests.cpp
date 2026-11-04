@@ -13,15 +13,13 @@ struct Case {
     int Wc;
     int Hc;
     int bh;
-    bool hd;
     bool playing;
 };
 
 std::ostream &operator<<(std::ostream &out, const Case &input)
 {
     return out << "Wc=" << input.Wc << " Hc=" << input.Hc
-               << " bh=" << input.bh << " hd=" << input.hd
-               << " playing=" << input.playing;
+               << " bh=" << input.bh << " playing=" << input.playing;
 }
 
 struct Check {
@@ -69,23 +67,23 @@ void rectangleEqual(
 
 bool compactSpacing(const Case &input)
 {
-    const int margin = input.hd ? 8 : 4;
+    const int margin = 8;
     const int actionGap = std::max(2, margin / 2);
-    const int contentGap = input.hd ? 2 : 5;
+    const int contentGap = 2;
     const int actionRows = input.playing ? 2 : 1;
     const int preferredApplyY = 10 * (input.bh + contentGap);
     const int preferredHeight = preferredApplyY + input.bh + margin
         + actionRows * input.bh + (actionRows - 1) * actionGap + margin;
-    return input.hd && preferredHeight > input.Hc - 8;
+    return preferredHeight > input.Hc - 8;
 }
 
 int expectedContentTop(const Case &input)
 {
-    const int titleHeight = input.hd ? input.bh - 10 : input.bh - 4;
+    const int titleHeight = input.bh - 10;
     const int minimumContentTop = 2 + titleHeight + 2;
     return compactSpacing(input)
         ? std::max(28, minimumContentTop)
-        : input.bh + (input.hd ? 2 : 5);
+        : input.bh + 2;
 }
 
 struct Field {
@@ -109,14 +107,14 @@ constexpr std::array<Field, 10> fields{{
 
 std::array<cRectangle, 10> expectedRectangles(const Case &input)
 {
-    const int m = input.hd ? 8 : 4;
+    const int m = 8;
     const int preferredActionGap = std::max(2, m / 2);
-    const int c = input.hd ? 2 : 5;
-    const int contentX = input.hd ? 24 : 5;
-    const int applyWidth = input.hd ? 170 : 115;
-    const int advancedWidth = input.hd ? 220 : 160;
-    const int W = input.hd ? std::min(input.Wc - 32, 680) : input.Wc / 2;
-    const int oldH = input.hd ? std::min(input.Hc - 32, 680) : input.Hc / 2;
+    const int c = 2;
+    const int contentX = 24;
+    const int applyWidth = 170;
+    const int advancedWidth = 220;
+    const int W = std::min(input.Wc - 32, 680);
+    const int oldH = std::min(input.Hc - 32, 680);
     const int n = input.playing ? 2 : 1;
     const bool compact = compactSpacing(input);
     const int contentTop = expectedContentTop(input);
@@ -156,7 +154,7 @@ void exact(Check &check, const Case &input, const OptionsMenuLayout &actual)
     for (std::size_t i = 0; i < fields.size(); ++i) {
         rectangleEqual(check, input, fields[i].name, actual.*fields[i].member, expected[i]);
     }
-    const int contentGap = input.hd ? 2 : 5;
+    const int contentGap = 2;
     const cRectangle speedLabel(
         16,
         expectedContentTop(input) + 2 * (input.bh + contentGap),
@@ -181,19 +179,16 @@ void table(Check &check)
         int colW;
         int lastW;
     };
-    const std::array<Row, 7> rows{{
-        {{1067, 600, 42, true, true}, {193, 7, 680, 586}, 536, 490, 8, 232, 456, 216, 216},
-        {{1067, 600, 42, true, false}, {193, 16, 680, 568}, 518, 0, 8, 232, 456, 216, 216},
-        {{1920, 1080, 42, true, true}, {620, 200, 680, 680}, 630, 584, 8, 232, 456, 216, 216},
-        {{801, 600, 42, true, true}, {60, 7, 680, 586}, 536, 490, 8, 232, 456, 216, 216},
-        {{800, 600, 20, false, true}, {200, 140, 400, 320}, 296, 274, 4, 136, 268, 128, 128},
-        {{1067, 600, 20, false, true}, {267, 140, 533, 320}, 296, 274, 4, 180, 356, 172, 173},
-        {{800, 600, 20, false, false}, {200, 150, 400, 300}, 276, 0, 4, 136, 268, 128, 128},
+    const std::array<Row, 4> rows{{
+        {{1067, 600, 42, true}, {193, 7, 680, 586}, 536, 490, 8, 232, 456, 216, 216},
+        {{1067, 600, 42, false}, {193, 16, 680, 568}, 518, 0, 8, 232, 456, 216, 216},
+        {{1920, 1080, 42, true}, {620, 200, 680, 680}, 630, 584, 8, 232, 456, 216, 216},
+        {{801, 600, 42, true}, {60, 7, 680, 586}, 536, 490, 8, 232, 456, 216, 216},
     }};
     for (const auto &row : rows) {
         const auto &input = row.input;
         const auto actual = OptionsMenuLayout::create(
-            input.Wc, input.Hc, input.bh, input.hd, input.playing);
+            input.Wc, input.Hc, input.bh, input.playing);
         rectangleEqual(check, input, "window", actual.window, row.window);
         equal(check, input, "quit.y(bottomY)", actual.quit.getY(), row.bottomY);
         equal(check, input, "quit.x(x0)", actual.quit.getX(), row.x0);
@@ -238,7 +233,7 @@ void inside(Check &check, const Case &input, const OptionsMenuLayout &actual)
 
 void headerSpacing(Check &check, const Case &input, const OptionsMenuLayout &actual)
 {
-    const int titleHeight = input.hd ? input.bh - 10 : input.bh - 4;
+    const int titleHeight = input.bh - 10;
     const int minimumContentTop = 2 + titleHeight + 2;
     if (actual.contentTop < minimumContentTop && check.fail(input, "header/contentTop")) {
         std::cerr << " actual=" << actual.contentTop
@@ -294,17 +289,15 @@ int main()
     Check overlapCheck{"overlap"};
     std::size_t cases = 0;
     const auto checkCanvas = [&](int Wc, int Hc) {
-        for (bool hd : {true, false}) {
-            for (int bh = hd ? 32 : 16; bh <= (hd ? 44 : 20); ++bh) {
-                for (bool playing : {true, false}) {
-                    const Case input{Wc, Hc, bh, hd, playing};
-                    const auto actual = OptionsMenuLayout::create(Wc, Hc, bh, hd, playing);
-                    exact(exactCheck, input, actual);
-                    inside(insideCheck, input, actual);
-                    headerSpacing(headerSpacingCheck, input, actual);
-                    overlap(overlapCheck, input, actual);
-                    ++cases;
-                }
+        for (int bh = 32; bh <= 44; ++bh) {
+            for (bool playing : {true, false}) {
+                const Case input{Wc, Hc, bh, playing};
+                const auto actual = OptionsMenuLayout::create(Wc, Hc, bh, playing);
+                exact(exactCheck, input, actual);
+                inside(insideCheck, input, actual);
+                headerSpacing(headerSpacingCheck, input, actual);
+                overlap(overlapCheck, input, actual);
+                ++cases;
             }
         }
     };
@@ -348,9 +341,9 @@ int main()
     Check tallButtonCheck{"bh44"};
     for (int Wc = 800; Wc <= 1067; ++Wc) {
         for (bool playing : {true, false}) {
-            const Case input{Wc, 600, 44, true, playing};
+            const Case input{Wc, 600, 44, playing};
             const auto actual = OptionsMenuLayout::create(
-                Wc, 600, 44, true, playing);
+                Wc, 600, 44, playing);
             inside(tallButtonCheck, input, actual);
             headerSpacing(headerSpacingCheck, input, actual);
             overlap(tallButtonCheck, input, actual);

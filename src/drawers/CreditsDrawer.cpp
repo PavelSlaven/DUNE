@@ -186,7 +186,6 @@ void CreditsDrawer::thinkAboutIndividualCreditOffsets()
 void CreditsDrawer::draw()
 {
     const HudLayout layout = HudLayout::create(
-        true,
         game.m_screenW,
         game.m_screenH
     );
@@ -246,18 +245,6 @@ void CreditsDrawer::draw()
     );
 }
 
-int CreditsDrawer::getXDrawingOffset(int amount)
-{
-    int offset = 1;
-    if (amount > 0)		offset =  4;
-    if (amount < 10)	offset =  5;
-    if (amount > 99)	offset =  3;
-    if (amount > 999)	offset =  2;
-    if (amount > 9999) 	offset =  1;
-    if (amount > 99999) offset =  0;
-    return offset;
-}
-
 int CreditsDrawer::getCreditDrawId(char c)
 {
     if (c == '0') return CREDITS_0;
@@ -271,75 +258,6 @@ int CreditsDrawer::getCreditDrawId(char c)
     if (c == '8') return CREDITS_8;
     if (c == '9') return CREDITS_9;
     return CREDITS_NONE;
-}
-
-// current credits are either drawn from 'above' or from below. (depending on direction)
-// the offset pushes them more up or down.
-void CreditsDrawer::drawCurrentCredits(int drawX, int drawY)
-{
-    if (currentCredits < 0) currentCredits = 0;
-
-    char credits[9];
-    memset(credits, 0, sizeof(credits));
-    snprintf(credits, sizeof(credits), "%d", currentCredits);
-
-    int offset = getXDrawingOffset(currentCredits);
-
-    for (int i=0; i < 6; i++) {
-        // the actual position to draw on is: ((game.m_screenX - 120) +
-        //        screen        -  14 + (6 digits (each 20 pixels due borders))
-        int dx = ((offset + i) * 20);
-        int dy = 0;
-
-        // the Y is per credit direction
-        if (offset_direction[i] == 1) {
-            // up, means it comes from 'below' and the offset_credit is the 'coming up' part.
-            dy = 20 - (int)offset_credit[i];
-        }
-        else if (offset_direction[i] == 2) {
-            dy = -20 + (int)offset_credit[i];
-        }
-
-        int nr = getCreditDrawId(credits[i]);
-
-        if (nr != CREDITS_NONE) {
-            renderDrawer->renderSprite(gfxdata->getTexture(nr), drawX+dx+8, drawY+dy+8);
-        }
-    }
-}
-
-// current credits are either drawn from 'above' or from below. (depending on direction)
-// the offset pushes them more up or down.
-void CreditsDrawer::drawPreviousCredits(int drawX, int drawY)
-{
-    if (previousCredits < 0) previousCredits = 0;
-
-    char credits[9];
-    memset(credits, 0, sizeof(credits));
-    snprintf(credits, sizeof(credits), "%d", previousCredits);
-
-    int offset = getXDrawingOffset(previousCredits);
-
-    for (int i=0; i < 6; i++) {
-        // the actual position to draw on is: ((game.m_screenX - 120) +
-        //        screen        -  14 + (6 digits (each 20 pixels due borders))
-        int dx = ((offset + i) * 20);
-        int dy = 0;
-
-        // the Y is per credit direction
-        if (offset_direction[i] == 1) {
-            // up, means it comes from 'below' and the offset_credit is the 'coming up' part.
-            dy = (int)offset_credit[i] * -1;
-        }
-        else if (offset_direction[i] == 2) {
-            dy = (int)offset_credit[i];
-        }
-        int nr = getCreditDrawId(credits[i]);
-
-        if (nr != CREDITS_NONE) {
-            renderDrawer->renderSprite(gfxdata->getTexture(nr), drawX+dx+8, drawY+dy+8);
-        }
-    }
 }
 
 // the think method will gradually update the currentCredits array so that it is 'the same'

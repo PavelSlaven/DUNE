@@ -769,7 +769,6 @@ void cOptionsState::constructWindow(int prevState)
         m_game.m_screenW,
         m_game.m_screenH,
         buttonHeight,
-        true,
         m_prevState == GAME_PLAYING,
         m_textDrawer->getFontHeight()
     );

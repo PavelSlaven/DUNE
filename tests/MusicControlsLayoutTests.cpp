@@ -6,11 +6,10 @@
 namespace {
 bool verify(int width, int height)
 {
-    const HudLayout hud = HudLayout::create(true, width, height);
+    const HudLayout hud = HudLayout::create(width, height);
     const MusicControlsLayout music = MusicControlsLayout::create(
         143,
-        hud.battlefield.getEndX() - 8,
-        true
+        hud.battlefield.getEndX() - 8
     );
     if (!music.visible || music.panel.getWidth() > 520 ||
         music.previous.isOverlapping(music.next) ||

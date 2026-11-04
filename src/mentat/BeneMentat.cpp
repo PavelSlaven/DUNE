@@ -14,27 +14,21 @@
 #include <cmath>
 #include <iostream>
 
-BeneMentat::BeneMentat(GameContext* ctx) : AbstractMentat(ctx, false, true)
+BeneMentat::BeneMentat(GameContext* ctx) : AbstractMentat(ctx, false)
 {
     iBackgroundFrame = MENTATM;
-    if (m_adaptiveHdLayout) {
-        // Match the two inset recesses painted into the HD background.  The
-        // classic 154x46 button bitmaps are wider and start too low here.
-        leftButton = new cRectangle(baseRect(336, 405, 112, 49));
-        rightButton = new cRectangle(baseRect(492, 405, 112, 49));
-    }
-    else {
-        buildLeftButton(gfxmentat->getTexture(BTN_NO), 293, 423);
-        buildRightButton(gfxmentat->getTexture(BTN_YES), 466, 423);
-    }
+    // Match the two inset recesses painted into the HD background.  The
+    // classic 154x46 button bitmaps are wider and start too low here.
+    leftButton = new cRectangle(baseRect(336, 405, 112, 49));
+    rightButton = new cRectangle(baseRect(492, 405, 112, 49));
 
     auto leftBuilder = GuiButtonBuilder()
             .withRect(*leftButton)        
             .withLabel(localization::text("No", "Нет"))
             .withTextDrawer(m_textDrawer)
-            .withTextScale(m_adaptiveHdLayout ? HD_BUTTON_TEXT_SCALE : 1.0F)
-            .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
-            .withKind(m_adaptiveHdLayout ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER : GuiRenderKind::WITH_TEXTURE)
+            .withTextScale(HD_BUTTON_TEXT_SCALE)
+            .withTheme(GuiTheme::Remaster())
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([]() {
                 logbook("cNoButtonCommand::execute()");
                 // head back to choose house
@@ -42,18 +36,15 @@ BeneMentat::BeneMentat(GameContext* ctx) : AbstractMentat(ctx, false, true)
                 game.setNextStateToTransitionTo(GAME_SELECT_HOUSE);
                 game.initiateFadingOut();
             });
-    if (!m_adaptiveHdLayout) {
-        leftBuilder.withTexture(gfxmentat->getTexture(BTN_NO));
-    }
     leftGuiButton = leftBuilder.build();
 
     auto rightBuilder = GuiButtonBuilder()
             .withRect(*rightButton)        
             .withLabel(localization::text("Yes", "Да"))
             .withTextDrawer(m_textDrawer)
-            .withTextScale(m_adaptiveHdLayout ? HD_BUTTON_TEXT_SCALE : 1.0F)
-            .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
-            .withKind(m_adaptiveHdLayout ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER : GuiRenderKind::WITH_TEXTURE)
+            .withTextScale(HD_BUTTON_TEXT_SCALE)
+            .withTheme(GuiTheme::Remaster())
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([this]() {
                 logbook("cYesButtonCommand::execute()");
                 game.setNextStateToTransitionTo(GAME_BRIEFING);
@@ -62,9 +53,6 @@ BeneMentat::BeneMentat(GameContext* ctx) : AbstractMentat(ctx, false, true)
                 game.missionInit();
                 players[HUMAN].setHouse(this->getHouse());
                game.initiateFadingOut();});
-    if (!m_adaptiveHdLayout) {
-        rightBuilder.withTexture(gfxmentat->getTexture(BTN_YES));
-    }
     rightGuiButton = rightBuilder.build();
 }
 
@@ -91,25 +79,19 @@ void BeneMentat::draw()
             "Do you wish to join House {}?",
             "Желаете вступить в Дом {}?",
             houseName);
-        if (m_adaptiveHdLayout) {
-            const float textScale = std::clamp(m_uiScale, 1.35F, 1.90F);
-            const int horizontalMargin = static_cast<int>(std::lround(18.0F * m_uiScale));
-            m_textDrawer->drawTextScaledCenteredInBox(
-                msg,
-                cRectangle(
-                    offsetX + horizontalMargin,
-                    baseY(3),
-                    m_panelWidth - horizontalMargin * 2,
-                    static_cast<int>(std::lround(49.0F * m_uiScale))
-                ),
-                textScale,
-                Color{255, 226, 165,255}
-            );
-        }
-        else {
-            m_textDrawer->drawText(baseX(18), baseY(17) + 1, Color{0, 0, 0,255}, msg);
-            m_textDrawer->drawText(baseX(17), baseY(17), Color{255, 214, 137,255}, msg);
-        }
+        const float textScale = std::clamp(m_uiScale, 1.35F, 1.90F);
+        const int horizontalMargin = static_cast<int>(std::lround(18.0F * m_uiScale));
+        m_textDrawer->drawTextScaledCenteredInBox(
+            msg,
+            cRectangle(
+                offsetX + horizontalMargin,
+                baseY(3),
+                m_panelWidth - horizontalMargin * 2,
+                static_cast<int>(std::lround(49.0F * m_uiScale))
+            ),
+            textScale,
+            Color{255, 226, 165,255}
+        );
     }
 }
 
@@ -121,8 +103,8 @@ void BeneMentat::draw_eyes()
 {
     drawMentatTexture(
         gfxmentat->getTexture(BEN_EYES01+ iMentatEyes),
-        m_adaptiveHdLayout ? 96 : 128,
-        m_adaptiveHdLayout ? 180 : 240
+        96,
+        180
     );
 }
 
@@ -130,7 +112,7 @@ void BeneMentat::draw_mouth()
 {
     drawMentatTexture(
         gfxmentat->getTexture(BEN_MOUTH01+ iMentatMouth),
-        m_adaptiveHdLayout ? 100 : 112,
-        m_adaptiveHdLayout ? 210 : 272
+        100,
+        210
     );
 }
