@@ -42,107 +42,37 @@ void cPlaceItDrawer::drawStatusOfStructureAtCell(cBuildingListItem *itemToPlace,
 
     int structureId = itemToPlace->getBuildId();
     assert(structureId > -1);
-
-    bool bWithinBuildDistance = false;
+    const s_PlaceResult placement = player->canPlaceBuildingListItemAt(mouseCell, structureId);
     int cellWidth = structureUtils.getWidthOfStructureTypeInCells(structureId);
     int cellHeight = structureUtils.getHeightOfStructureTypeInCells(structureId);
-
-#define SCANWIDTH	1
 
     int iCellX = global_map.getCellX(mouseCell);
     int iCellY = global_map.getCellY(mouseCell);
 
-    // check
-    int iStartX = iCellX-SCANWIDTH;
-    int iStartY = iCellY-SCANWIDTH;
-
-    int iEndX = iCellX + SCANWIDTH + cellWidth;
-    int iEndY = iCellY + SCANWIDTH + cellHeight;
-
-    // Fix up the boundaries
-    cPoint::split(iStartX, iStartY) = global_map.fixCoordinatesToBeWithinMap(iStartX, iStartY);
-    cPoint::split(iEndX, iEndY) = global_map.fixCoordinatesToBeWithinMap(iEndX, iEndY);
-
-    // Determine if structure to be placed is within build distance
-    for (int iX=iStartX; iX < iEndX; iX++) {
-        for (int iY=iStartY; iY < iEndY; iY++) {
-            int iCll = global_map.getGeometry().getCellWithMapDimensions(iX, iY);
-
-            if (iCll > -1) {
-                int idOfStructureAtCell = global_map.getCellIdStructuresLayer(iCll);
-                if (idOfStructureAtCell > -1) {
-                    int iID = idOfStructureAtCell;
-
-                    if (structure[iID]->getOwner() == HUMAN) {
-                        bWithinBuildDistance = true; // connection!
-                        break;
-                    }
-
-                    // TODO: Allow placement nearby allies?
-                }
-
-                if (global_map.getCellType(iCll) == TERRAIN_WALL ||
-                        global_map.getCellType(iCll) == TERRAIN_SLAB) {
-                    bWithinBuildDistance=true;
-                    // TODO: here we should actually find out if the slab is ours or not??
-                    break;
-                }
-            }
-        }
-    }
-
     int iDrawX = global_map.mouse_draw_x();
     int iDrawY = global_map.mouse_draw_y();
 
-    if (!bWithinBuildDistance) {
-        itemToPlaceColor = game.getColorPlaceBad();
-    }
-    else {
-        // Draw over it the mask for good/bad placing (decorates temp bitmap)
-        for (int iX=0; iX < cellWidth; iX++) {
-            for (int iY=0; iY < cellHeight; iY++) {
-                itemToPlaceColor = game.getColorPlaceNeutral();
-
-                int cellX = iCellX + iX;
-                int cellY = iCellY + iY;
-
-                if (!global_map.isWithinBoundaries(cellX, cellY)) {
-                    continue;
-                }
-
-                int iCll = global_map.getGeometry().makeCell(cellX, cellY);
-
-                if (!global_map.isCellPassable(iCll) || global_map.getCellType(iCll) != TERRAIN_ROCK) {
-                    itemToPlaceColor = game.getColorPlaceBad();
-                }
-
-                if (global_map.getCellType(iCll) == TERRAIN_SLAB) {
-                    itemToPlaceColor = game.getColorPlaceGood();
-                }
-
-                // occupied by units or structures
-                int idOfStructureAtCell = global_map.getCellIdStructuresLayer(iCll);
-                if (idOfStructureAtCell > -1) {
-                    itemToPlaceColor = game.getColorPlaceBad();
-                }
-
-                int unitIdOnMap = global_map.getCellIdUnitLayer(iCll);
-                if (unitIdOnMap > -1) {
-                    // temporarily dead units do not block, but alive units (non-dead) do block placement
-                    if (!unit[unitIdOnMap].isDead()) {
-                        itemToPlaceColor = game.getColorPlaceBad();
-                    }
-                    // TODO: Allow placement, let units move aside when clicking before placement?
-                }
-
-                // Draw bad gfx on spot
-                float desiredWidth = mapCamera->getZoomedTileWidth();
-                float desiredHeight = mapCamera->getZoomedTileHeight();
-                float posX = iX * desiredWidth;
-                float posY = iY * desiredHeight;
-                // cRectangle rectangle = cRectangle(posX, posY, desiredWidth, desiredHeight);
-                renderDrawer->renderRectFillColor(iDrawX+posX, iDrawY+posY, desiredWidth, desiredHeight,itemToPlaceColor);
+    for (int iX = 0; iX < cellWidth; iX++) {
+        for (int iY = 0; iY < cellHeight; iY++) {
+            const int cellX = iCellX + iX;
+            const int cellY = iCellY + iY;
+            if (!global_map.isWithinBoundaries(cellX, cellY)) {
+                continue;
             }
+
+            const int cell = global_map.getGeometry().makeCell(cellX, cellY);
+            itemToPlaceColor = placement.success
+                ? global_map.getCellType(cell) == TERRAIN_SLAB
+                    ? game.getColorPlaceGood()
+                    : game.getColorPlaceNeutral()
+                : game.getColorPlaceBad();
+
+            const float desiredWidth = mapCamera->getZoomedTileWidth();
+            const float desiredHeight = mapCamera->getZoomedTileHeight();
+            const float posX = iX * desiredWidth;
+            const float posY = iY * desiredHeight;
+            renderDrawer->renderRectFillColor(iDrawX + posX, iDrawY + posY, desiredWidth, desiredHeight,
+                                              itemToPlaceColor);
         }
     }
 }

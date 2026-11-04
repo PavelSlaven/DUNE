@@ -56,6 +56,7 @@ set_source_files_properties(
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/PlacementFrameTests.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/MouseCellScanTests.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/MouseCellRefreshTests.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/PlacementRuleTests.cpp"
     PROPERTIES COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang>:-fno-access-control>"
 )
 
@@ -125,3 +126,5 @@ add_unit_frame_test(building_visual_rectangle_tests building_visual_rectangle Bu
 add_unit_frame_test(placement_frame_tests placement_frame PlacementFrameTests.cpp recorded)
 add_unit_frame_test(mouse_cell_scan_tests mouse_cell_scan MouseCellScanTests.cpp recorded)
 add_unit_frame_test(mouse_cell_refresh_tests mouse_cell_refresh MouseCellRefreshTests.cpp recorded)
+add_unit_frame_test(mouse_click_init_tests mouse_click_init MouseClickInitTests.cpp recorded)
+add_unit_frame_test(placement_rule_tests placement_rule PlacementRuleTests.cpp recorded)
