@@ -26,15 +26,13 @@ cMiniMapDrawer::cMiniMapDrawer(GameContext *ctx, cMap *map, cPlayer *player, cMa
     m_mapCamera(mapCamera),
     m_gfxinter(ctx->getGraphicsContext()->gfxinter.get()),
     m_status(eMinimapStatus::NOTAVAILABLE),
-    m_iStaticFrame(STAT14),
-    m_iTrans(0)
+    m_iStaticFrame(STAT14)
 {
     assert(map);
     assert(player);
     assert(mapCamera);
 
     const HudLayout hud = HudLayout::create(
-        true,
         game.m_screenW,
         game.m_screenH
     );
@@ -106,7 +104,6 @@ void cMiniMapDrawer::init()
 {
     m_status = eMinimapStatus::NOTAVAILABLE;
     m_iStaticFrame = STAT14;
-    m_iTrans = 0;
     m_isMouseOver = false;
 }
 

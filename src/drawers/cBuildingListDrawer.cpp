@@ -548,11 +548,6 @@ int cBuildingListDrawer::getCardHeight() const
     return getLayout().cardHeight;
 }
 
-int cBuildingListDrawer::getCardGap() const
-{
-    return getLayout().cardGap;
-}
-
 void cBuildingListDrawer::drawHdCard(
     cBuildingListItem *item,
     int x,
@@ -731,7 +726,6 @@ HudLayout cBuildingListDrawer::getLayout(cBuildingList *list) const
         list != nullptr &&
         list->getType() == eListType::LIST_STARPORT;
     return HudLayout::create(
-        true,
         game.m_screenW,
         game.m_screenH,
         reserveOrderArea

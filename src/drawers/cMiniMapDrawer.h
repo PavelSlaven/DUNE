@@ -76,7 +76,6 @@ private:
     eMinimapStatus m_status;
 
     int m_iStaticFrame;
-    int m_iTrans;							// transparancy
 
     // the top left coordinates for the minimap
     int drawX, drawY;

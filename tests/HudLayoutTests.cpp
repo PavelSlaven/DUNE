@@ -6,7 +6,7 @@
 namespace {
 void verifyHdLayout(int width, int height, int expectedSidebar, int expectedColumns)
 {
-    const HudLayout layout = HudLayout::create(true, width, height);
+    const HudLayout layout = HudLayout::create(width, height);
     assert(layout.sidebarWidth == expectedSidebar);
     assert(layout.columns == expectedColumns);
     assert(layout.sidebar.getX() == width - expectedSidebar);
@@ -51,9 +51,5 @@ int main()
     verifyHdLayout(1280, 720, 360, 3);
     verifyHdLayout(1920, 1080, 360, 3);
 
-    const HudLayout classic = HudLayout::create(false, 800, 600);
-    assert(classic.sidebarWidth == 224);
-    assert(classic.cardWidth == 63);
-    assert(classic.cardHeight == 47);
     return 0;
 }

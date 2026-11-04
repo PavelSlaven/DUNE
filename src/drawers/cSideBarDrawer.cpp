@@ -75,7 +75,6 @@ void cSideBarDrawer::draw()
 void cSideBarDrawer::drawHdSidebar()
 {
     const HudLayout layout = HudLayout::create(
-        true,
         game.m_screenW,
         game.m_screenH
     );
@@ -140,7 +139,6 @@ std::string cSideBarDrawer::getHouseDisplayName() const
 void cSideBarDrawer::drawHdRadarPanel()
 {
     const HudLayout layout = HudLayout::create(
-        true,
         game.m_screenW,
         game.m_screenH
     );
@@ -308,7 +306,6 @@ void cSideBarDrawer::drawHdMeter(
 void cSideBarDrawer::drawHdCapacities()
 {
     const HudLayout layout = HudLayout::create(
-        true,
         game.m_screenW,
         game.m_screenH
     );
@@ -343,7 +340,6 @@ void cSideBarDrawer::drawHdBuildingLists()
     }
 
     const HudLayout layout = HudLayout::create(
-        true,
         game.m_screenW,
         game.m_screenH,
         selectedList != nullptr &&

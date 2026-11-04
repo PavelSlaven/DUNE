@@ -8,13 +8,11 @@
  * Immutable geometry for the combat HUD.
  *
  * HD drawing and hit testing must use this object instead of repeating sidebar
- * arithmetic in several drawers.  Classic mode deliberately keeps the original
- * Dune II dimensions.
+ * arithmetic in several drawers.
  */
 struct HudLayout {
     static constexpr int TopBarHeight = 42;
 
-    bool hd = false;
     int screenWidth = 0;
     int screenHeight = 0;
     int sidebarWidth = 224;
@@ -38,56 +36,13 @@ struct HudLayout {
     cRectangle scrollbar;
 
     static HudLayout create(
-        bool hdMode,
         int logicalWidth,
         int logicalHeight,
         bool reserveStarportOrderArea = false)
     {
         HudLayout layout;
-        layout.hd = hdMode;
         layout.screenWidth = logicalWidth;
         layout.screenHeight = logicalHeight;
-
-        if (!hdMode) {
-            layout.sidebarWidth = 224;
-            layout.columns = 3;
-            layout.cardGap = 3;
-            layout.cardWidth = 63;
-            layout.cardHeight = 47;
-
-            const int sidebarX = logicalWidth - layout.sidebarWidth;
-            layout.topBar = cRectangle(0, 0, logicalWidth, TopBarHeight);
-            layout.battlefield = cRectangle(
-                0,
-                TopBarHeight,
-                logicalWidth - layout.sidebarWidth,
-                logicalHeight - TopBarHeight
-            );
-            layout.sidebar = cRectangle(
-                sidebarX,
-                0,
-                layout.sidebarWidth,
-                logicalHeight
-            );
-            layout.credits = cRectangle(logicalWidth - 198, 0, 198, TopBarHeight);
-            layout.radarPanel = cRectangle(
-                logicalWidth - 200,
-                TopBarHeight,
-                200,
-                208
-            );
-            layout.radarViewport = layout.radarPanel;
-            layout.tabs = cRectangle(logicalWidth - 198, 268, 198, 28);
-            layout.catalog = cRectangle(
-                logicalWidth - 198,
-                302,
-                198,
-                std::max(0, logicalHeight - 302)
-            );
-            layout.cards = layout.catalog;
-            return layout;
-        }
-
         layout.sidebarWidth = logicalWidth < 960 ? 280 : 360;
         layout.columns = logicalWidth < 960 ? 2 : 3;
         layout.cardGap = 6;

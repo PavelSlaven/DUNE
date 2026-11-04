@@ -40,7 +40,6 @@ void cMessageDrawer::draw()
 {
     if (m_state == messages::eMessageDrawerState::COMBAT) {
         const HudLayout layout = HudLayout::create(
-            true,
             game.m_screenW,
             game.m_screenH
         );
@@ -52,7 +51,6 @@ void cMessageDrawer::draw()
         const MusicControlsLayout music = MusicControlsLayout::create(
             left,
             right,
-            true,
             reservedMessageWidth
         );
         const int messageX = music.visible

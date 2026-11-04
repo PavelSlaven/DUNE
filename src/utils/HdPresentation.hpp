@@ -40,8 +40,7 @@ struct HdPresentationRenderTargets {
 };
 
 [[nodiscard]] constexpr bool shouldUsePhysicalHdPresentation(
-    bool hdGraphics,
     HdPresentationScene scene)
 {
-    return hdGraphics && scene != HdPresentationScene::Legacy;
+    return scene != HdPresentationScene::Legacy;
 }

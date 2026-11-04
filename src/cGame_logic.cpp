@@ -802,10 +802,7 @@ bool cGame::useHdPresentation() const
     ) {
         scene = HdPresentationScene::Mentat;
     }
-    return shouldUsePhysicalHdPresentation(
-        true,
-        scene
-    );
+    return shouldUsePhysicalHdPresentation(scene);
 }
 
 Texture *cGame::ensureHdPresentationRenderTarget(bool fadeTarget)

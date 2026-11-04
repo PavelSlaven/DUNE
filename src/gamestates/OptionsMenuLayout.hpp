@@ -20,18 +20,17 @@ struct OptionsMenuLayout {
         int canvasWidth,
         int canvasHeight,
         int buttonHeight,
-        bool hdLayout,
         bool playing)
     {
-        const int margin = hdLayout ? 8 : 4;
+        const int margin = 8;
         const int actionGap = std::max(2, margin / 2);
-        const int contentGap = hdLayout ? 2 : 5;
-        const int contentX = hdLayout ? 24 : 5;
+        constexpr int contentGap = 2;
+        constexpr int contentX = 24;
         const int applyY = (contentGap + buttonHeight) * 10;
-        const int applyWidth = hdLayout ? 170 : 115;
-        const int advancedWidth = hdLayout ? 220 : 160;
-        const int windowWidth = hdLayout ? std::min(canvasWidth - 32, 680) : canvasWidth / 2;
-        const int oldHeight = hdLayout ? std::min(canvasHeight - 32, 680) : canvasHeight / 2;
+        constexpr int applyWidth = 170;
+        constexpr int advancedWidth = 220;
+        const int windowWidth = std::min(canvasWidth - 32, 680);
+        const int oldHeight = std::min(canvasHeight - 32, 680);
         const int applyBottom = applyY + buttonHeight;
         const int actionRows = playing ? 2 : 1;
         const int requiredHeight = applyBottom + margin + actionRows * buttonHeight

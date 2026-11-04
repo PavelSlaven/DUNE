@@ -18,7 +18,6 @@ struct MusicControlsLayout {
     [[nodiscard]] static MusicControlsLayout create(
         int left,
         int right,
-        bool hd,
         int reservedMessageWidth = 0)
     {
         constexpr int MinimumWidth = 200;
@@ -32,17 +31,17 @@ struct MusicControlsLayout {
         }
 
         const int width = std::min(controlsWidth, MaximumWidth);
-        const int buttonSize = hd ? 33 : 28;
-        const int y = hd ? 4 : 1;
+        constexpr int buttonSize = 33;
+        constexpr int y = 4;
         const int gap = 5;
-        const int sectionGap = hd ? 8 : 5;
+        constexpr int sectionGap = 8;
         const int contentWidth = width - sectionGap;
         const int musicWidth = contentWidth / 2;
         const int speedWidth = contentWidth - musicWidth;
         const int labelX = left + buttonSize + gap;
         const int labelWidth = std::max(0, musicWidth - buttonSize * 2 - gap * 2);
         const int speedX = left + musicWidth + sectionGap;
-        const int speedLabelWidth = std::min(hd ? 76 : 66, speedWidth / 2);
+        const int speedLabelWidth = std::min(76, speedWidth / 2);
         const int speedSliderX = speedX + speedLabelWidth + gap;
         const int speedSliderWidth = std::max(0, speedWidth - speedLabelWidth - gap);
 

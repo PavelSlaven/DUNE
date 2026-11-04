@@ -54,7 +54,6 @@ private:
     bool isOverItemCoordinates_Boolean(int x, int y, int drawX, int drawY);
     [[nodiscard]] int getCardWidth() const;
     [[nodiscard]] int getCardHeight() const;
-    [[nodiscard]] int getCardGap() const;
     void drawHdCard(cBuildingListItem *item, int x, int y);
     void drawHdScrollbar(cBuildingList *list, const HudLayout &layout);
     [[nodiscard]] HudLayout getLayout(cBuildingList *list = nullptr) const;

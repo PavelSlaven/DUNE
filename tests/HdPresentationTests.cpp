@@ -23,27 +23,22 @@ int main()
     bool passed = true;
     passed &= expectEqual(
         "HD menu uses physical presentation",
-        shouldUsePhysicalHdPresentation(true, HdPresentationScene::Menu),
+        shouldUsePhysicalHdPresentation(HdPresentationScene::Menu),
         true
     );
     passed &= expectEqual(
         "HD gameplay uses physical presentation",
-        shouldUsePhysicalHdPresentation(true, HdPresentationScene::Gameplay),
+        shouldUsePhysicalHdPresentation(HdPresentationScene::Gameplay),
         true
     );
     passed &= expectEqual(
         "HD post-House Mentat uses physical presentation",
-        shouldUsePhysicalHdPresentation(true, HdPresentationScene::Mentat),
+        shouldUsePhysicalHdPresentation(HdPresentationScene::Mentat),
         true
     );
     passed &= expectEqual(
-        "Classic gameplay keeps logical presentation",
-        shouldUsePhysicalHdPresentation(false, HdPresentationScene::Gameplay),
-        false
-    );
-    passed &= expectEqual(
         "Unconverted legacy screens keep their current path",
-        shouldUsePhysicalHdPresentation(true, HdPresentationScene::Legacy),
+        shouldUsePhysicalHdPresentation(HdPresentationScene::Legacy),
         false
     );
 

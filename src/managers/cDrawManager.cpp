@@ -31,7 +31,6 @@ cDrawManager::cDrawManager(GameContext *ctx, cPlayer *thePlayer) :
     m_messageDrawer(ctx),
     m_placeitDrawer(thePlayer),
     m_structureDrawer(ctx),
-    m_sidebarColor(Color{214, 149, 20,255}),
     m_player(thePlayer),
     m_textDrawer(ctx->getTextContext()->getGameTextDrawer()),
     m_smallTextDrawer(ctx->getTextContext()->getSmallTextDrawer()),
@@ -288,7 +287,7 @@ void cDrawManager::drawTopBarBackground()
 
 void cDrawManager::drawTopBarMusicControls()
 {
-    const HudLayout layout = HudLayout::create(true, game.m_screenW, game.m_screenH);
+    const HudLayout layout = HudLayout::create(game.m_screenW, game.m_screenH);
     const int left = 143;
     const int right = layout.battlefield.getEndX() - 8;
     drawMusicControls(left, right);
@@ -303,7 +302,6 @@ void cDrawManager::drawMusicControls(int left, int right)
     const MusicControlsLayout layout = MusicControlsLayout::create(
         left,
         right,
-        true,
         reservedMessageWidth
     );
     if (!layout.visible) {

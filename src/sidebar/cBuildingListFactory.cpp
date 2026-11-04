@@ -22,7 +22,6 @@ cBuildingListFactory *cBuildingListFactory::getInstance()
 int cBuildingListFactory::getButtonDrawY()
 {
     return HudLayout::create(
-        true,
         game.m_screenW,
         game.m_screenH
     ).tabs.getY();
@@ -31,7 +30,6 @@ int cBuildingListFactory::getButtonDrawY()
 int cBuildingListFactory::getButtonDrawXStart()
 {
     return HudLayout::create(
-        true,
         game.m_screenW,
         game.m_screenH
     ).tabs.getX();
@@ -49,7 +47,6 @@ void cBuildingListFactory::initializeList(cBuildingList *list, eListType listTyp
     list->setButtonDrawY(getButtonDrawY());
 
     const HudLayout layout = HudLayout::create(
-        true,
         game.m_screenW,
         game.m_screenH
     );

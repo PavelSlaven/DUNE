@@ -121,7 +121,6 @@ private:
     cMessageDrawer m_messageDrawer;
     cPlaceItDrawer m_placeitDrawer;
     cStructureDrawer m_structureDrawer;
-    Color m_sidebarColor;
 
     // TODO: bullet/projectile drawer
     cPlayer *m_player;
