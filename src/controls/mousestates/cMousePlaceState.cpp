@@ -61,8 +61,8 @@ void cMousePlaceState::onMouseLeftButtonClicked()
             "Здесь нельзя строить.");
         if (result.success) {
             message = localization::text(
-                "Cannot place another structure: no structure slot is available.",
-                "Нельзя поставить постройку: не осталось свободного места.");
+                "Cannot place another structure: the structure limit has been reached.",
+                "Нельзя поставить ещё одну постройку: достигнут лимит построек.");
         }
         else if (result.outOfBounds) {
             message = localization::text(
