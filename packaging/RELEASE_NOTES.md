@@ -3,17 +3,22 @@
 This release contains the Dune II — The Maker RU/HD remaster for Windows,
 Linux and macOS.
 
-## Highlights in v0.8.0-ru-hd.7
+## Highlights in v0.8.0-ru-hd.8
 
-- refreshed HD4-only presentation, including the main-menu cover, outcome
-  screens, Mentat briefings and the compact command panel;
-- Sangyo Russian interface font with corrected sizing and alignment;
-- revised skirmish layout and shorter localized map names;
-- updated launcher artwork, classic wall textures and normalized faction
-  colors;
-- in-mission game-speed control and improved music controls;
-- fixed Starport order rendering, a deployment crash, and the Starport tab
-  remaining available after the final Starport was destroyed.
+- redrawn vehicles and infantry for the 63 degree camera, with even sizes
+  across all eight directions: Devastator, Tank, Siege tank, Launcher,
+  infantry and squads;
+- the Harvester redrawn from a 3D model and centred on the refinery pad;
+- track marks under tanks, siege tanks and harvesters, dead infantry and
+  squish sprites in HD, right-handed infantry in west-facing frames;
+- concrete slabs drawn as thick plates at the building angle;
+- the classic graphics mode is removed: the game always uses the HD4 pack;
+- the world scale setting is now the starting camera zoom;
+- reworked settings window, key rebinding that refuses occupied keys and
+  tells Left Ctrl from Right Ctrl;
+- HD layout fixes: the outcome screen prompt is centred on the image, the
+  skirmish map size no longer overlaps the map name, top bar music controls
+  make room for long messages, and two-line build list labels are aligned.
 
 ## Installation
 
