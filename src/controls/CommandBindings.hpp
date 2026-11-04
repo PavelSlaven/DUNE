@@ -3,7 +3,9 @@
 #include <SDL2/SDL.h>
 
 #include <algorithm>
+#include <array>
 #include <cctype>
+#include <optional>
 #include <string>
 
 enum class CommandBindingAction {
@@ -25,6 +27,21 @@ struct CommandBindings {
 
     bool operator==(const CommandBindings &) const = default;
 };
+
+[[nodiscard]] inline bool commandBindingKeysMatch(
+    SDL_Scancode first,
+    SDL_Scancode second)
+{
+    if (first == second) {
+        return true;
+    }
+    if ((first == SDL_SCANCODE_LSHIFT || first == SDL_SCANCODE_RSHIFT) &&
+        (second == SDL_SCANCODE_LSHIFT || second == SDL_SCANCODE_RSHIFT)) {
+        return true;
+    }
+    return (first == SDL_SCANCODE_LALT || first == SDL_SCANCODE_RALT) &&
+        (second == SDL_SCANCODE_LALT || second == SDL_SCANCODE_RALT);
+}
 
 [[nodiscard]] inline SDL_Scancode commandBinding(
     const CommandBindings &bindings,
@@ -54,6 +71,31 @@ inline void setCommandBinding(
         case CommandBindingAction::Rally: bindings.rally = scancode; break;
         case CommandBindingAction::Release: bindings.release = scancode; break;
     }
+}
+
+[[nodiscard]] inline std::optional<CommandBindingAction> trySetCommandBinding(
+    CommandBindings &bindings,
+    CommandBindingAction action,
+    SDL_Scancode scancode)
+{
+    constexpr std::array actions{
+        CommandBindingAction::Attack,
+        CommandBindingAction::Repair,
+        CommandBindingAction::Unload,
+        CommandBindingAction::Deploy,
+        CommandBindingAction::Rally,
+        CommandBindingAction::Release
+    };
+    const auto conflict = std::find_if(actions.begin(), actions.end(), [&](const auto candidate) {
+        return candidate != action &&
+            commandBindingKeysMatch(commandBinding(bindings, candidate), scancode);
+    });
+    if (conflict != actions.end()) {
+        return *conflict;
+    }
+
+    setCommandBinding(bindings, action, scancode);
+    return std::nullopt;
 }
 
 [[nodiscard]] inline SDL_Scancode commandBindingFromIni(

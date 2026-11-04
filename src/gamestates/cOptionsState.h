@@ -75,6 +75,7 @@ private:
     OptionsPage m_optionsPage = OptionsPage::Main;
     std::optional<CommandBindingAction> m_bindingCapture;
     std::optional<OptionsPage> m_pendingOptionsPage;
+    std::string m_bindingMessage;
     GuiLabel *m_languageValueLabel = nullptr;
     GuiLabel *m_resolutionValueLabel = nullptr;
     GuiLabel *m_renderScaleValueLabel = nullptr;

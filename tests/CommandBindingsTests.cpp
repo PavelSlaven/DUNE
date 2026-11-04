@@ -18,6 +18,6 @@ int main()
     if (commandBindingFromIni("not-a-real-key", SDL_SCANCODE_R) != SDL_SCANCODE_R) return 6;
     std::set<SDL_Scancode> rightControl{SDL_SCANCODE_RCTRL};
     const cKeyboardEvent modifierEvent(eKeyEventType::HOLD, rightControl);
-    if (!modifierEvent.hasAssignedKey(SDL_SCANCODE_LCTRL)) return 7;
+    if (modifierEvent.hasAssignedKey(SDL_SCANCODE_LCTRL)) return 7;
     return 0;
 }

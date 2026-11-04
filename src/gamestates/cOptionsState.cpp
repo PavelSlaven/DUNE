@@ -39,6 +39,39 @@ bool isEnglishLanguage(const GameSettings &settings)
 {
     return settings.language == "en";
 }
+
+std::string bindingKeyName(SDL_Scancode scancode, bool english)
+{
+    switch (scancode) {
+        case SDL_SCANCODE_LCTRL:
+            return "LCTRL";
+        case SDL_SCANCODE_RCTRL:
+            return "RCTRL";
+        default:
+            return commandBindingDisplayName(scancode, english);
+    }
+}
+
+std::string commandBindingActionName(
+    const GameSettings &settings,
+    CommandBindingAction action)
+{
+    switch (action) {
+        case CommandBindingAction::Attack:
+            return optionText(settings, "Attack", "Атаковать");
+        case CommandBindingAction::Repair:
+            return optionText(settings, "Repair", "Ремонт");
+        case CommandBindingAction::Unload:
+            return optionText(settings, "Unload", "Разгрузить");
+        case CommandBindingAction::Deploy:
+            return optionText(settings, "Deploy", "Развернуть");
+        case CommandBindingAction::Rally:
+            return optionText(settings, "Rally", "Точка сбора");
+        case CommandBindingAction::Release:
+            return optionText(settings, "Release", "Выпустить");
+    }
+    return {};
+}
 }
 
 cOptionsState::cOptionsState(cGame &theGame, GameContext *ctx, int prevState)
@@ -402,7 +435,7 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
             if (action) {
                 value = m_bindingCapture == action
                     ? optionText(m_selectedSettings, "Press key...", "Нажмите клавишу…")
-                    : commandBindingDisplayName(
+                    : bindingKeyName(
                         commandBinding(m_selectedSettings.commandBindings, *action),
                         isEnglishLanguage(m_selectedSettings));
             }
@@ -416,6 +449,7 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
                     .withEnabled(action.has_value());
             if (action) {
                 builder.onClick([this, action]() {
+                    m_bindingMessage.clear();
                     m_bindingCapture = action;
                     refresh();
                 });
@@ -430,6 +464,18 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
         addBinding(optionText(m_selectedSettings, "Deploy", "Развернуть"), CommandBindingAction::Deploy);
         addBinding(optionText(m_selectedSettings, "Rally", "Точка сбора"), CommandBindingAction::Rally);
         addBinding(optionText(m_selectedSettings, "Release", "Выпустить"), CommandBindingAction::Release);
+        if (!m_bindingMessage.empty()) {
+            GuiLabel *message = GuiLabelBuilder()
+                    .withLabel(m_bindingMessage)
+                    .withTextDrawer(m_textDrawer)
+                    .withTheme(theme)
+                    .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+                    .withRect(m_guiWindow->getRelativeRect(
+                        16, row * (buttonHeight + 4), mainMenuWidth - 32, buttonHeight))
+                    .withTextAlign(GuiTextAlignHorizontal::LEFT)
+                    .build();
+            m_guiWindow->addGuiObject(message);
+        }
     }
     else {
         addToggle(optionText(m_selectedSettings, "Debug mode", "Режим отладки"), &GameSettings::debugMode);
@@ -612,6 +658,7 @@ std::string cOptionsState::selectedLanguageText() const
 void cOptionsState::switchOptionsPage(OptionsPage page)
 {
     m_bindingCapture.reset();
+    m_bindingMessage.clear();
     m_optionsPage = page;
     refresh();
 }
@@ -722,10 +769,9 @@ void cOptionsState::constructWindow(int prevState)
         m_game.m_screenW,
         m_game.m_screenH,
         buttonHeight,
-        m_prevState == GAME_PLAYING
+        m_prevState == GAME_PLAYING,
+        m_textDrawer->getFontHeight()
     );
-    int mainMenuWidth = menuLayout.window.getWidth();
-    int buttonWidth = mainMenuWidth - 8;
     const GuiTheme controlTheme = GuiTheme::Remaster();
     const GuiRenderKind buttonKind = GuiRenderKind::REMASTER_BUTTON;
     const int contentX = 24;
@@ -735,7 +781,10 @@ void cOptionsState::constructWindow(int prevState)
     const int volumeLabelWidth = 110;
     const int audioSliderX = 350;
     const int audioSliderWidth = 250;
-    const int contentRowStride = buttonHeight + 2;
+    const int contentRowStride = buttonHeight + menuLayout.contentGap;
+    const auto contentRowY = [menuLayout, contentRowStride](int row) {
+        return menuLayout.contentTop + (row - 1) * contentRowStride;
+    };
     const auto relativeRect = [this](const cRectangle &rect) {
         return m_guiWindow->getRelativeRect(
             rect.getX(),
@@ -841,7 +890,7 @@ void cOptionsState::constructWindow(int prevState)
     }
     const cRectangle &musicRect = m_guiWindow->getRelativeRect(
         contentX,
-        contentRowStride,
+        contentRowY(1),
         audioLabelWidth,
         buttonHeight
     );
@@ -856,7 +905,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &musicCheckRect = m_guiWindow->getRelativeRect(
         audioCheckX,
-        contentRowStride,
+        contentRowY(1),
         buttonHeight,
         buttonHeight
     );
@@ -875,7 +924,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &musicVolumeRect = m_guiWindow->getRelativeRect(
         volumeLabelX,
-        contentRowStride,
+        contentRowY(1),
         volumeLabelWidth,
         buttonHeight
     );
@@ -890,7 +939,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &btn_musicVolumeRect = m_guiWindow->getRelativeRect(
         audioSliderX,
-        contentRowStride,
+        contentRowY(1),
         audioSliderWidth,
         buttonHeight
     );
@@ -908,7 +957,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &soundRect = m_guiWindow->getRelativeRect(
         contentX,
-        contentRowStride * 2,
+        contentRowY(2),
         audioLabelWidth,
         buttonHeight
     );
@@ -923,7 +972,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &soundCheckRect = m_guiWindow->getRelativeRect(
         audioCheckX,
-        contentRowStride * 2,
+        contentRowY(2),
         buttonHeight,
         buttonHeight
     );
@@ -942,7 +991,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &soundVolumeRect = m_guiWindow->getRelativeRect(
         volumeLabelX,
-        contentRowStride * 2,
+        contentRowY(2),
         volumeLabelWidth,
         buttonHeight
     );
@@ -957,7 +1006,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &btn_soundVolumeRect = m_guiWindow->getRelativeRect(
         audioSliderX,
-        contentRowStride * 2,
+        contentRowY(2),
         audioSliderWidth,
         buttonHeight
     );
@@ -973,12 +1022,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(gui_sld_soundVolumeRect);
 
-    const cRectangle &speedRect = m_guiWindow->getRelativeRect(
-        contentX,
-        contentRowStride * 3,
-        audioLabelWidth,
-        buttonHeight
-    );
+    const cRectangle speedRect = relativeRect(menuLayout.speedLabel);
     GuiLabel *gui_DifficultyLabel = GuiLabelBuilder()
             .withLabel(optionText(m_selectedSettings, "Game speed", "Скорость игры"))
             .withTextDrawer(m_textDrawer)
@@ -991,7 +1035,7 @@ void cOptionsState::constructWindow(int prevState)
     cTimeManager* timeManager = m_ctx->getTimeManager();
     const cRectangle &sld_speedRect = m_guiWindow->getRelativeRect(
         audioCheckX,
-        contentRowStride * 3,
+        contentRowY(3),
         220,
         buttonHeight
     );
@@ -1010,7 +1054,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(gui_sld_speedRect);
 
-    const int resolutionRowY = contentRowStride * 4;
+    const int resolutionRowY = contentRowY(4);
     const int displayLabelWidth = 160;
     const cRectangle &resolutionLabelRect =
         m_guiWindow->getRelativeRect(
@@ -1079,7 +1123,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(nextResolutionButton);
 
-    const int renderScaleRowY = contentRowStride * 5;
+    const int renderScaleRowY = contentRowY(5);
     const cRectangle &renderScaleLabelRect =
         m_guiWindow->getRelativeRect(
             contentX,
@@ -1145,7 +1189,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(nextRenderScaleButton);
 
-    const int worldScaleRowY = contentRowStride * 6;
+    const int worldScaleRowY = contentRowY(6);
     const cRectangle &worldScaleLabelRect =
         m_guiWindow->getRelativeRect(
             contentX,
@@ -1217,7 +1261,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(nextWorldScaleButton);
 
-    const int fullscreenRowY = contentRowStride * 7;
+    const int fullscreenRowY = contentRowY(7);
     const cRectangle &fullscreenLabelRect =
         m_guiWindow->getRelativeRect(
             contentX,
@@ -1263,7 +1307,7 @@ void cOptionsState::constructWindow(int prevState)
     fullscreenCheck->setChecked(m_selectedFullscreen);
     m_guiWindow->addGuiObject(fullscreenCheck);
 
-    const int languageRowY = contentRowStride * 8;
+    const int languageRowY = contentRowY(8);
     const cRectangle &languageLabelRect = m_guiWindow->getRelativeRect(
         contentX, languageRowY, displayLabelWidth, buttonHeight
     );
@@ -1404,11 +1448,26 @@ void cOptionsState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
         const SDL_Scancode scancode = event.firstKey();
         if (scancode != SDL_SCANCODE_ESCAPE &&
             scancode != SDL_SCANCODE_UNKNOWN) {
-            setCommandBinding(
+            const auto conflict = trySetCommandBinding(
                 m_selectedSettings.commandBindings,
                 *m_bindingCapture,
                 scancode
             );
+            if (conflict) {
+                m_bindingMessage =
+                    optionText(m_selectedSettings, "Key ", "Клавиша ") +
+                    bindingKeyName(scancode, isEnglishLanguage(m_selectedSettings)) +
+                    optionText(m_selectedSettings,
+                        " is already assigned to ", " уже назначена команде «") +
+                    commandBindingActionName(m_selectedSettings, *conflict) +
+                    optionText(m_selectedSettings, ".", "».");
+            }
+            else {
+                m_bindingMessage.clear();
+            }
+        }
+        else {
+            m_bindingMessage.clear();
         }
         m_bindingCapture.reset();
         refresh();

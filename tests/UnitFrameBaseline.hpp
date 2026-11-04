@@ -17,6 +17,8 @@ struct UnitFrameBaseline {
     bool hasShadow;
     bool hasBody;
     bool hasTurret;
+    int hdFrameWidth = 0;
+    int hdFrameHeight = 0;
 };
 
 inline constexpr std::array<UnitFrameBaseline, 22> UnitFrameBaselines{{
@@ -25,7 +27,7 @@ inline constexpr std::array<UnitFrameBaseline, 22> UnitFrameBaselines{{
     {DEVASTATOR, "DEVASTATOR", 38, 46, 1, true, true, false},
     {HARVESTER, "HARVESTER", 80, 52, 4, true, true, false},
     {TANK, "TANK", 32, 32, 0, true, true, true},
-    {SIEGETANK, "SIEGETANK", 36, 36, 0, true, true, true},
+    {SIEGETANK, "SIEGETANK", 36, 36, 0, true, true, true, 44, 44},
     {MCV, "MCV", 48, 50, 1, true, true, false},
     {DEVIATOR, "DEVIATOR", 32, 32, 1, false, true, false},
     {LAUNCHER, "LAUNCHER", 32, 32, 1, true, true, false},

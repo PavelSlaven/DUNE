@@ -19,6 +19,20 @@ PLACEMENTS_PATH = ROOT / "codex-direct/U6/squads/UNIT_SOLDIERS/placements.json"
 PACK_PATH = Path(os.environ.get("D2TM_PACK_DIR", ROOT / "resources/bin/data")) / "sdl_data_hd4.dat"
 
 
+def final_exception_header(stderr: str) -> str:
+    lines = stderr.splitlines()
+    traceback_starts = [
+        index for index, line in enumerate(lines)
+        if line.startswith("Traceback (most recent call last):")
+    ]
+    if not traceback_starts:
+        return ""
+    return next(
+        (line for line in lines[traceback_starts[-1] + 1:] if line and not line[0].isspace()),
+        "",
+    )
+
+
 def load_compose_module():
     spec = importlib.util.spec_from_file_location("u12_squad_compose", COMPOSE_PATH)
     if spec is None or spec.loader is None:
@@ -55,6 +69,17 @@ class SquadComposeShiftTests(unittest.TestCase):
         missing = wanted - set(cls.atlases)
         if missing:
             raise AssertionError("в паке отсутствуют записи: " + ", ".join(sorted(missing)))
+
+    def test_final_exception_header_allows_multiline_value_error(self):
+        stderr = (
+            "Traceback (most recent call last):\n"
+            '  File "compose.py", line 1, in compose\n'
+            "    raise ValueError('первая строка\\nвторая строка')\n"
+            "ValueError: первая строка\n"
+            "вторая строка\n"
+        )
+
+        self.assertEqual(final_exception_header(stderr), "ValueError: первая строка")
 
     def run_compose(self, temporary: Path, name: str, source: Path, body: Path,
                     placements: Path, mask: bool = False) -> Path:
@@ -157,8 +182,7 @@ class SquadComposeShiftTests(unittest.TestCase):
                 )
                 self.assertNotEqual(completed.returncode, 0, invalid_shift)
                 self.assertTrue(
-                    any(line.startswith("ValueError: shift: ожидается")
-                        for line in completed.stderr.splitlines()),
+                    final_exception_header(completed.stderr).startswith("ValueError: shift: ожидается"),
                     completed.stderr,
                 )
 
@@ -204,8 +228,7 @@ class SquadComposeShiftTests(unittest.TestCase):
                 )
                 self.assertNotEqual(completed.returncode, 0, mode)
                 self.assertTrue(
-                    any(line.startswith("ValueError: alpha вне клетки")
-                        for line in completed.stderr.splitlines()),
+                    final_exception_header(completed.stderr).startswith("ValueError: alpha вне клетки"),
                     completed.stderr,
                 )
 

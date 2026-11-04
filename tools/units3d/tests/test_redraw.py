@@ -15,6 +15,7 @@ import numpy as np
 from PIL import Image
 
 from tools.hd_assets import PackEntry, decode_image, encode_png, read_pack, write_pack
+from tools.units3d.redraw_common import despill_edge, keyed, place
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -943,6 +944,80 @@ class RedrawAcceptanceTests(unittest.TestCase):
                 result = self.run_tool("build", self.root / f"build_bad_red_fill_{index}", unit=unit_dir)
                 self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
                 self.assertIn("red_fill", result.stderr)
+
+    def test_26_red_fill_uses_pixels_before_despill_at_scale_one(self):
+        unit_dir = self.root / "unit_red_fill_scale_one"
+        unit_dir.mkdir()
+        attempt_path = self.root / "red_fill_scale_one.png"
+        attempt = np.full((1024, 1024, 3), (255, 0, 255), dtype=np.uint8)
+        attempt[300:724, 300:724] = (255, 0, 150)
+        Image.fromarray(attempt).save(attempt_path)
+        recolour_path = self.root / "red_fill_scale_one_recolour.png"
+        recolour = np.full_like(attempt, (255, 0, 255))
+        recolour[300:724, 300:724] = (80, 80, 80)
+        recolour[500, 500] = (0, 255, 0)
+        Image.fromarray(recolour).save(recolour_path)
+
+        body = np.zeros((1024, 8192, 4), dtype=np.uint8)
+        for k in range(8):
+            body[300:724, k * 1024 + 300:k * 1024 + 724] = (80, 80, 80, 255)
+        mask = np.zeros_like(body)
+        pack_path = self.root / "red_fill_scale_one.dat"
+        write_pack(pack_path, [
+            PackEntry(0, "BODY", "png", encode_png(Image.fromarray(body))),
+            PackEntry(1, "MASK", "png", encode_png(Image.fromarray(mask))),
+        ])
+        records = [
+            {
+                "row": 0,
+                "k": k,
+                "attempts": {"synthetic": str(attempt_path.resolve())},
+                "pick": "synthetic",
+                "recolour": str(recolour_path.resolve()),
+            }
+            for k in range(8)
+        ]
+        data = {
+            "atlases": {"body": "BODY", "house_mask": "MASK", "shadow": None},
+            "frame": [1024, 1024],
+            "rows": 1,
+            "scale": 1.0,
+            "share_corridor": [0.0, 1.0],
+            "red_fill": 164,
+            "frames": records,
+        }
+        self.save_unit(unit_dir, data)
+
+        output = self.root / "build_red_fill_scale_one"
+        result = self.run_tool("build", output, "--pack", pack_path, unit=unit_dir)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        params = json.loads((output / "params.json").read_text(encoding="utf-8"))
+        self.assertEqual(params["scale"], 1.0)
+        self.assertEqual(params["frames"]["r0k0"]["offset"], [0, 0])
+
+        raw = keyed(attempt_path)
+        despilled = despill_edge(raw)
+        raw_frame = place(
+            raw, (1024, 1024), 1.0, (300, 300, 724, 724), (0, 0), source_maximum=1024
+        )[0]
+        despilled_frame = place(
+            despilled, (1024, 1024), 1.0, (300, 300, 724, 724), (0, 0), source_maximum=1024
+        )[0]
+        raw_score = raw_frame[..., 0].astype(np.int16) - np.maximum(
+            raw_frame[..., 1], raw_frame[..., 2]
+        ).astype(np.int16)
+        despilled_score = despilled_frame[..., 0].astype(np.int16) - np.maximum(
+            despilled_frame[..., 1], despilled_frame[..., 2]
+        ).astype(np.int16)
+        eligible = raw_frame[..., 3] >= 128
+        correct_mask = np.where((raw_score >= 164) & eligible, raw_frame[..., 3], 0)
+        wrong_mask = np.where((despilled_score >= 164) & eligible, raw_frame[..., 3], 0)
+        different_pixels = int(np.count_nonzero((correct_mask != wrong_mask) & eligible))
+        self.assertEqual(different_pixels, 10032)
+
+        with Image.open(output / "MASK.png") as image:
+            actual_mask = np.asarray(image.convert("RGBA"))[:1024, :1024, 3]
+        self.assertTrue(np.array_equal(actual_mask, correct_mask))
 
     def _troopers_unit(self, *, include_figures=True, scale=None):
         entries = {entry.name: entry for entry in read_pack(SOURCE_PACK)}

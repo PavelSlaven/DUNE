@@ -42,6 +42,14 @@ def plan(all_combos):
     return old + interleave(list(chains.values()))
 
 
+def audit_log_plan(ordered, scenes):
+    return [
+        {"combo": combos.combo_id(combo), "scene": scene["id"]}
+        for combo in ordered
+        for scene in combos.scenes_for(combo, scenes)
+    ]
+
+
 def done_marker(out_root, combo):
     return Path(out_root) / "done" / combos.combo_id(combo).replace("/", "_")
 
@@ -110,6 +118,9 @@ def main(argv=None):
         return 0
     (Path(args.out) / "order.json").write_text(json.dumps([combos.combo_id(c) for c in generated]), encoding="utf-8")
     scenes = json.loads(Path(args.catalog).read_text(encoding="utf-8"))["scenes"]
+    log_plan = audit_log_plan(ordered, scenes)
+    (Path(args.out) / "audit-plan.json").write_text(
+        json.dumps(log_plan, ensure_ascii=False, indent=1), encoding="utf-8")
     pending = [combo for combo in ordered if not done_marker(args.out, combo).exists()]
     if args.only:
         pending = [combo for combo in pending if combos.combo_id(combo) in args.only]

@@ -64,9 +64,6 @@ public:
 
     bool hasAssignedKey(SDL_Scancode scanCode) const {
         switch (scanCode) {
-            case SDL_SCANCODE_LCTRL:
-            case SDL_SCANCODE_RCTRL:
-                return hasEitherKey(SDL_SCANCODE_LCTRL, SDL_SCANCODE_RCTRL);
             case SDL_SCANCODE_LSHIFT:
             case SDL_SCANCODE_RSHIFT:
                 return hasEitherKey(SDL_SCANCODE_LSHIFT, SDL_SCANCODE_RSHIFT);

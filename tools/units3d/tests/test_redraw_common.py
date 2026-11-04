@@ -92,6 +92,21 @@ class CommonTests(unittest.TestCase):
                 self.assertEqual(single[325, 350, 3], 0)
                 self.assertEqual(single[506, 550, 3], 0)
 
+    def test_figures_accepts_endpoints_and_rejects_values_outside_them(self):
+        original = json.loads((ROOT / 'tools/units3d/units/UNIT_DEVASTATOR/unit.json').read_text())
+        for value in (0, 9):
+            with self.subTest(figures=value):
+                data = dict(original, figures=value)
+                (self.directory / 'unit.json').write_text(json.dumps(data), encoding='utf-8')
+                with self.assertRaisesRegex(InputError, 'figures'):
+                    load_unit(self.directory, 'pack')
+        for value in (1, 8):
+            with self.subTest(figures=value):
+                data = dict(original, figures=value)
+                (self.directory / 'unit.json').write_text(json.dumps(data), encoding='utf-8')
+                unit = load_unit(self.directory, 'pack')
+                self.assertEqual(unit.figures, value)
+
     def test_figures_validation_applies_to_all_commands(self):
         original = json.loads((ROOT / 'tools/units3d/units/UNIT_DEVASTATOR/unit.json').read_text())
         for command in ('build', 'score', 'recolour-inputs', 'inputs', 'shadow-rule', 'contact', 'sheet', 'pack'):
