@@ -725,8 +725,6 @@ void cOptionsState::constructWindow(int prevState)
         true,
         m_prevState == GAME_PLAYING
     );
-    int mainMenuWidth = menuLayout.window.getWidth();
-    int buttonWidth = mainMenuWidth - 8;
     const GuiTheme controlTheme = GuiTheme::Remaster();
     const GuiRenderKind buttonKind = GuiRenderKind::REMASTER_BUTTON;
     const int contentX = 24;
@@ -736,7 +734,10 @@ void cOptionsState::constructWindow(int prevState)
     const int volumeLabelWidth = 110;
     const int audioSliderX = 350;
     const int audioSliderWidth = 250;
-    const int contentRowStride = buttonHeight + 2;
+    const int contentRowStride = buttonHeight + menuLayout.contentGap;
+    const auto contentRowY = [menuLayout, contentRowStride](int row) {
+        return menuLayout.contentTop + (row - 1) * contentRowStride;
+    };
     const auto relativeRect = [this](const cRectangle &rect) {
         return m_guiWindow->getRelativeRect(
             rect.getX(),
@@ -842,7 +843,7 @@ void cOptionsState::constructWindow(int prevState)
     }
     const cRectangle &musicRect = m_guiWindow->getRelativeRect(
         contentX,
-        contentRowStride,
+        contentRowY(1),
         audioLabelWidth,
         buttonHeight
     );
@@ -857,7 +858,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &musicCheckRect = m_guiWindow->getRelativeRect(
         audioCheckX,
-        contentRowStride,
+        contentRowY(1),
         buttonHeight,
         buttonHeight
     );
@@ -876,7 +877,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &musicVolumeRect = m_guiWindow->getRelativeRect(
         volumeLabelX,
-        contentRowStride,
+        contentRowY(1),
         volumeLabelWidth,
         buttonHeight
     );
@@ -891,7 +892,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &btn_musicVolumeRect = m_guiWindow->getRelativeRect(
         audioSliderX,
-        contentRowStride,
+        contentRowY(1),
         audioSliderWidth,
         buttonHeight
     );
@@ -909,7 +910,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &soundRect = m_guiWindow->getRelativeRect(
         contentX,
-        contentRowStride * 2,
+        contentRowY(2),
         audioLabelWidth,
         buttonHeight
     );
@@ -924,7 +925,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &soundCheckRect = m_guiWindow->getRelativeRect(
         audioCheckX,
-        contentRowStride * 2,
+        contentRowY(2),
         buttonHeight,
         buttonHeight
     );
@@ -943,7 +944,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &soundVolumeRect = m_guiWindow->getRelativeRect(
         volumeLabelX,
-        contentRowStride * 2,
+        contentRowY(2),
         volumeLabelWidth,
         buttonHeight
     );
@@ -958,7 +959,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &btn_soundVolumeRect = m_guiWindow->getRelativeRect(
         audioSliderX,
-        contentRowStride * 2,
+        contentRowY(2),
         audioSliderWidth,
         buttonHeight
     );
@@ -974,12 +975,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(gui_sld_soundVolumeRect);
 
-    const cRectangle &speedRect = m_guiWindow->getRelativeRect(
-        contentX,
-        contentRowStride * 3,
-        audioLabelWidth,
-        buttonHeight
-    );
+    const cRectangle speedRect = relativeRect(menuLayout.speedLabel);
     GuiLabel *gui_DifficultyLabel = GuiLabelBuilder()
             .withLabel(optionText(m_selectedSettings, "Game speed", "Скорость игры"))
             .withTextDrawer(m_textDrawer)
@@ -992,7 +988,7 @@ void cOptionsState::constructWindow(int prevState)
     cTimeManager* timeManager = m_ctx->getTimeManager();
     const cRectangle &sld_speedRect = m_guiWindow->getRelativeRect(
         audioCheckX,
-        contentRowStride * 3,
+        contentRowY(3),
         220,
         buttonHeight
     );
@@ -1011,7 +1007,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(gui_sld_speedRect);
 
-    const int resolutionRowY = contentRowStride * 4;
+    const int resolutionRowY = contentRowY(4);
     const int displayLabelWidth = 160;
     const cRectangle &resolutionLabelRect =
         m_guiWindow->getRelativeRect(
@@ -1080,7 +1076,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(nextResolutionButton);
 
-    const int renderScaleRowY = contentRowStride * 5;
+    const int renderScaleRowY = contentRowY(5);
     const cRectangle &renderScaleLabelRect =
         m_guiWindow->getRelativeRect(
             contentX,
@@ -1146,7 +1142,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(nextRenderScaleButton);
 
-    const int worldScaleRowY = contentRowStride * 6;
+    const int worldScaleRowY = contentRowY(6);
     const cRectangle &worldScaleLabelRect =
         m_guiWindow->getRelativeRect(
             contentX,
@@ -1218,7 +1214,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(nextWorldScaleButton);
 
-    const int fullscreenRowY = contentRowStride * 7;
+    const int fullscreenRowY = contentRowY(7);
     const cRectangle &fullscreenLabelRect =
         m_guiWindow->getRelativeRect(
             contentX,
@@ -1264,7 +1260,7 @@ void cOptionsState::constructWindow(int prevState)
     fullscreenCheck->setChecked(m_selectedFullscreen);
     m_guiWindow->addGuiObject(fullscreenCheck);
 
-    const int languageRowY = contentRowStride * 8;
+    const int languageRowY = contentRowY(8);
     const cRectangle &languageLabelRect = m_guiWindow->getRelativeRect(
         contentX, languageRowY, displayLabelWidth, buttonHeight
     );
