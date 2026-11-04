@@ -50,10 +50,9 @@ struct OutcomeScreenLayout {
 
     const int promptWidth = std::max(1, drawWidth * 48 / 100);
     const int promptHeight = std::max(1, drawHeight * 5 / 100);
-    const int rightInset = std::max(1, drawWidth * 6 / 100);
     const int bottomInset = std::max(1, drawHeight * 7 / 100);
     const cRectangle prompt{
-        image.getEndX() - rightInset - promptWidth,
+        image.getX() + drawWidth / 3,
         image.getEndY() - bottomInset - promptHeight,
         promptWidth,
         promptHeight
