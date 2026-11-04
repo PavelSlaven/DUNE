@@ -8,13 +8,15 @@
 struct OutcomeScreenLayout {
     cRectangle image;
     cRectangle prompt;
+    float promptTextScale;
 };
 
 [[nodiscard]] inline OutcomeScreenLayout calculateOutcomeScreenLayout(
     int screenWidth,
     int screenHeight,
     int imageWidth,
-    int imageHeight)
+    int imageHeight,
+    int promptTextWidth = 0)
 {
     screenWidth = std::max(1, screenWidth);
     screenHeight = std::max(1, screenHeight);
@@ -48,15 +50,28 @@ struct OutcomeScreenLayout {
         drawHeight
     };
 
-    const int promptWidth = std::max(1, drawWidth * 48 / 100);
+    const int promptWidth = std::max(1, drawWidth / 3);
     const int promptHeight = std::max(1, drawHeight * 5 / 100);
-    const int bottomInset = std::max(1, drawHeight * 7 / 100);
+    const int bottomInset = std::max(1, drawHeight * 10 / 100);
+    const int promptX = image.getX() + (drawWidth - promptWidth) / 2;
     const cRectangle prompt{
-        image.getX() + drawWidth / 3,
+        promptX,
         image.getEndY() - bottomInset - promptHeight,
         promptWidth,
         promptHeight
     };
+    constexpr float basePromptScale = 50.0F / 18.0F;
+    constexpr int imageTextInset = 12;
+    const int availableTextWidth = std::max(
+        1,
+        drawWidth - imageTextInset * 2
+    );
+    const float promptTextScale = promptTextWidth > 0
+        ? std::min(
+            basePromptScale,
+            static_cast<float>(availableTextWidth) / promptTextWidth
+        )
+        : basePromptScale;
 
-    return {image, prompt};
+    return {image, prompt, promptTextScale};
 }

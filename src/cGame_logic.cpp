@@ -2563,22 +2563,24 @@ void cGame::drawOutcomeScreen(bool victory)
     Texture *texture = getHdOutcomeTexture(victory);
 
     if (texture) {
+        auto *textDrawer = ctx->getTextContext()->getMenuTextDrawer();
+        const std::string prompt = localization::text(
+            "Click to continue",
+            "Нажмите, чтобы продолжить"
+        );
         const OutcomeScreenLayout layout = calculateOutcomeScreenLayout(
             m_screenW,
             m_screenH,
             texture->pixelW,
-            texture->pixelH
+            texture->pixelH,
+            textDrawer->getTextLength(prompt)
         );
         renderDrawer->renderStrechFullSprite(texture, layout.image);
-        auto *textDrawer = ctx->getTextContext()->getMenuTextDrawer();
         const Color textColor{255, 224, 164, 255};
         textDrawer->drawTextScaledCenteredInBox(
-            localization::text(
-                "Click to continue",
-                "Нажмите, чтобы продолжить"
-            ),
+            prompt,
             layout.prompt,
-            50.0F / 18.0F,
+            layout.promptTextScale,
             textColor
         );
     }
