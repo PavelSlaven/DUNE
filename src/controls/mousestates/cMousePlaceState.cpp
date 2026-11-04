@@ -4,9 +4,8 @@
 #include "data/gfxdata.h"
 #include "controls/cGameControlsContext.h"
 #include "player/cPlayer.h"
+#include "utils/Localization.hpp"
 #include "utils/cSoundPlayer.h"
-#include "map/MapGeometry.hpp"
-#include <algorithm>
 
 #include "data/gfxaudio.h"
 
@@ -56,114 +55,73 @@ void cMousePlaceState::onMouseLeftButtonClicked()
         return;
     }
 
-    if (mayPlaceIt(itemToPlace, m_context->getMouseCell())) {
-        game.playSound(SOUND_PLACE);
-        m_player->placeItem(mouseCell, itemToPlace);
-        m_context->toPreviousState();
+    const auto notifyPlacementFailure = [this](const s_PlaceResult &result) {
+        const char *message = localization::text(
+            "Cannot build here.",
+            "Здесь нельзя строить.");
+        if (result.success) {
+            message = localization::text(
+                "Cannot place another structure: no structure slot is available.",
+                "Нельзя поставить постройку: не осталось свободного места.");
+        }
+        else if (result.outOfBounds) {
+            message = localization::text(
+                "Cannot build here: the structure would be outside the map.",
+                "Здесь нельзя строить: постройка выходит за пределы карты.");
+        }
+        else if (result.badTerrain) {
+            message = localization::text(
+                "Cannot build here: this terrain does not support structures.",
+                "Здесь нельзя строить: неподходящий рельеф.");
+        }
+        else if (!result.unitIds.empty()) {
+            message = localization::text(
+                "Cannot build here: a unit occupies the site.",
+                "Здесь нельзя строить: клетку занимает юнит.");
+        }
+        else if (!result.structureIds.empty()) {
+            message = localization::text(
+                "Cannot build here: a structure occupies the site.",
+                "Здесь нельзя строить: клетку занимает постройка.");
+        }
+        else if (result.outOfBuildDistance) {
+            message = localization::text(
+                "Cannot build here: the site is too far from your base.",
+                "Здесь нельзя строить: место слишком далеко от вашей базы.");
+        }
+        m_player->addNotification(message, eNotificationType::BAD);
+    };
+
+    s_PlaceResult result;
+    if (!mayPlaceIt(itemToPlace, mouseCell, &result)) {
+        notifyPlacementFailure(result);
+        return;
     }
+
+    const int structureType = itemToPlace->getBuildId();
+    cAbstractStructure *placed = m_player->placeItem(mouseCell, itemToPlace);
+    const bool terrainPlacement = structureType == SLAB1 || structureType == SLAB4 || structureType == WALL;
+    if (placed == nullptr && !terrainPlacement) {
+        result = m_player->canPlaceBuildingListItemAt(mouseCell, structureType);
+        notifyPlacementFailure(result);
+        return;
+    }
+
+    game.playSound(SOUND_PLACE);
+    m_context->toPreviousState();
 }
 
-bool cMousePlaceState::mayPlaceIt(cBuildingListItem *itemToPlace, int mouseCell)
+bool cMousePlaceState::mayPlaceIt(cBuildingListItem *itemToPlace, int mouseCell, s_PlaceResult *result)
 {
-    // TODO: Maybe reduce logic here by combining it with player->canPlaceXXXXXX function(s)?
-    if (mouseCell < 0) {
+    if (itemToPlace == nullptr) {
         return false;
     }
 
-    int structureIdToPlace = itemToPlace->getBuildId();
-    assert(structureIdToPlace > -1);
-
-    bool bWithinBuildDistance = false;
-
-    int cellWidth = structureUtils.getWidthOfStructureTypeInCells(structureIdToPlace);
-    int cellHeight = structureUtils.getHeightOfStructureTypeInCells(structureIdToPlace);
-
-#define SCANWIDTH    1
-
-    int iCellX = global_map.getCellX(mouseCell);
-    int iCellY = global_map.getCellY(mouseCell);
-
-    // check
-    int iStartX = iCellX - SCANWIDTH;
-    int iStartY = iCellY - SCANWIDTH;
-
-    int iEndX = iCellX + SCANWIDTH + cellWidth;
-    int iEndY = iCellY + SCANWIDTH + cellHeight;
-
-    // Fix up the boundaries
-    cPoint::split(iStartX, iStartY) = global_map.fixCoordinatesToBeWithinMap(iStartX, iStartY);
-    cPoint::split(iEndX, iEndY) = global_map.fixCoordinatesToBeWithinMap(iEndX, iEndY);
-
-    // Determine if structure to be placed is within build distance
-    for (int iX = iStartX; iX < iEndX; iX++) {
-        for (int iY = iStartY; iY < iEndY; iY++) {
-            int iCll = global_map.getGeometry().getCellWithMapDimensions(iX, iY);
-
-            if (iCll > -1) {
-                int idOfStructureAtCell = global_map.getCellIdStructuresLayer(iCll);
-                if (idOfStructureAtCell > -1) {
-                    int iID = idOfStructureAtCell;
-
-                    if (structure[iID]->getOwner() == HUMAN) {
-                        bWithinBuildDistance = true; // connection!
-                        break;
-                    }
-
-                    // TODO: Allow placement nearby allies?
-                }
-
-                if (global_map.getCellType(iCll) == TERRAIN_WALL ||
-                        global_map.getCellType(iCll) == TERRAIN_SLAB) {
-                    bWithinBuildDistance = true;
-                    // TODO: here we should actually find out if the slab is ours or not??
-                    break;
-                }
-            }
-            else {
-                return false;
-            }
-        }
+    const s_PlaceResult placement = m_player->canPlaceBuildingListItemAt(mouseCell, itemToPlace->getBuildId());
+    if (result != nullptr) {
+        *result = placement;
     }
-
-    if (!bWithinBuildDistance) {
-        return false;
-    }
-
-    for (int iX = 0; iX < cellWidth; iX++) {
-        for (int iY = 0; iY < cellHeight; iY++) {
-            int cellX = iCellX + iX;
-            int cellY = iCellY + iY;
-
-            if (!global_map.isWithinBoundaries(cellX, cellY)) {
-                return false;
-            }
-
-            int iCll = global_map.getGeometry().makeCell(cellX, cellY);
-
-            // occupied by units or structures
-            int idOfStructureAtCell = global_map.getCellIdStructuresLayer(iCll);
-            if (idOfStructureAtCell > -1) {
-                // may not place when we're not placing a slab.. hack hack
-                if (structureIdToPlace != SLAB4) {
-                    return false;
-                }
-            }
-
-            // non slab 'structures' can be blocked by units
-            if (structureIdToPlace != SLAB4 && structureIdToPlace != SLAB1) {
-                int unitIdOnMap = global_map.getCellIdUnitLayer(iCll);
-                if (unitIdOnMap > -1) {
-                    // temporarily dead units do not block, but alive units (non-dead) do block placement
-                    if (!unit[unitIdOnMap].isDead()) {
-                        return false;
-                    }
-                    // TODO: Allow placement, let units move aside when clicking before placement?
-                }
-            }
-        }
-    }
-
-    return true;
+    return placement.success;
 }
 
 void cMousePlaceState::onMouseRightButtonPressed()

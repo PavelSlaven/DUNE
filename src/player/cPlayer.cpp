@@ -1506,11 +1506,14 @@ cAbstractStructure *cPlayer::placeStructure(int destinationCell, int iStructureT
  */
 cAbstractStructure *cPlayer::placeItem(int destinationCell, cBuildingListItem *itemToPlace)
 {
+    if (itemToPlace == nullptr) {
+        return nullptr;
+    }
+
     int iStructureTypeId = itemToPlace->getBuildId();
     cStructureFactory *pStructureFactory = cStructureFactory::getInstance();
 
-    bool canPlace = canPlaceStructureAt(destinationCell, iStructureTypeId).success;
-    if (!canPlace) {
+    if (!canPlaceBuildingListItemAt(destinationCell, iStructureTypeId).success) {
         return nullptr;
     }
 
@@ -1532,6 +1535,10 @@ cAbstractStructure *cPlayer::placeItem(int destinationCell, cBuildingListItem *i
                                      iStructureTypeId,
                                      getId(),
                                      healthPercentage);
+
+    if (pStructure == nullptr && iStructureTypeId != SLAB1 && iStructureTypeId != SLAB4 && iStructureTypeId != WALL) {
+        return nullptr;
+    }
 
     buildingListUpdater->onBuildItemCompleted(itemToPlace);
     itemToPlace->decreaseTimesToBuild();
@@ -1995,6 +2002,86 @@ s_PlaceResult cPlayer::canPlaceConcreteAt(int iCell)
     result.success = true;
     result.onlyMyUnitsBlock = false;
 
+    return result;
+}
+
+s_PlaceResult cPlayer::canPlaceBuildingListItemAt(int iCell, int iStructureType)
+{
+    s_PlaceResult result;
+
+    if (iStructureType < 0 || iStructureType >= MAX_STRUCTURETYPES || !global_map.isValidCell(iCell)) {
+        result.outOfBounds = true;
+        return result;
+    }
+
+    const int width = structureUtils.getWidthOfStructureTypeInCells(iStructureType);
+    const int height = structureUtils.getHeightOfStructureTypeInCells(iStructureType);
+    if (width < 1 || height < 1) {
+        result.outOfBounds = true;
+        return result;
+    }
+
+    const int startX = global_map.getCellX(iCell);
+    const int startY = global_map.getCellY(iCell);
+
+    for (int offsetX = 0; offsetX < width; offsetX++) {
+        for (int offsetY = 0; offsetY < height; offsetY++) {
+            const int cellX = startX + offsetX;
+            const int cellY = startY + offsetY;
+            if (!global_map.isWithinBoundaries(cellX, cellY)) {
+                result.outOfBounds = true;
+                continue;
+            }
+
+            const int cell = global_map.getGeometry().makeCell(cellX, cellY);
+            if (iStructureType != SLAB4 && !global_map.isValidTerrainForStructureAtCell(cell)) {
+                result.badTerrain = true;
+            }
+
+            const int structureId = global_map.getCellIdStructuresLayer(cell);
+            if (structureId > -1 && iStructureType != SLAB4) {
+                result.structureIds.insert(structureId);
+            }
+
+            const int unitId = global_map.getCellIdUnitLayer(cell);
+            if (unitId > -1 && iStructureType != SLAB1 && iStructureType != SLAB4) {
+                result.unitIds.insert(unitId);
+            }
+        }
+    }
+
+    bool withinBuildDistance = false;
+    const int firstX = std::max(0, startX - 1);
+    const int firstY = std::max(0, startY - 1);
+    const int endX = std::min(global_map.getWidth(), startX + width + 1);
+    const int endY = std::min(global_map.getHeight(), startY + height + 1);
+
+    for (int x = firstX; x < endX && !withinBuildDistance; x++) {
+        for (int y = firstY; y < endY; y++) {
+            const int cell = global_map.getGeometry().getCellWithMapDimensions(x, y);
+            if (cell < 0) {
+                continue;
+            }
+
+            const int structureId = global_map.getCellIdStructuresLayer(cell);
+            if (structureId > -1 && structureId < MAX_STRUCTURES && structure[structureId] != nullptr &&
+                    structure[structureId]->getOwner() == id) {
+                withinBuildDistance = true;
+                break;
+            }
+
+            const int terrain = global_map.getCellType(cell);
+            if (terrain == TERRAIN_WALL || terrain == TERRAIN_SLAB) {
+                withinBuildDistance = true;
+                break;
+            }
+        }
+    }
+
+    result.outOfBuildDistance = !withinBuildDistance;
+    result.success = !result.outOfBounds && !result.badTerrain && result.unitIds.empty() &&
+            result.structureIds.empty() && !result.outOfBuildDistance;
+    result.onlyMyUnitsBlock = false;
     return result;
 }
 

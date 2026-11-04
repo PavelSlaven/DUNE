@@ -9,6 +9,7 @@
 
 class cGameControlsContext;
 class cPlayer;
+struct s_PlaceResult;
 
 /**
  * Mouse placing structure at battlefield
@@ -36,5 +37,5 @@ private:
 
     void onMouseMovedTo();
 
-    bool mayPlaceIt(cBuildingListItem *itemToPlace, int mouseCell);
+    bool mayPlaceIt(cBuildingListItem *itemToPlace, int mouseCell, s_PlaceResult *result = nullptr);
 };
