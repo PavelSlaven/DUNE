@@ -1,4 +1,5 @@
 {
+  "source_of_truth": "Источник истины — записи этого юнита в паке resources/bin/data/sdl_data_hd4.dat, принятые в игре (Р39, #60); пересборка из этого описания их не воспроизводит.",
   "atlases": {
     "body": "UNIT_SIEGETOP",
     "house_mask": "HM_UNIT_SIEGETOP",

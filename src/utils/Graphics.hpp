@@ -1,8 +1,10 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include <string>
+#include <cstddef>
+#include <functional>
 #include <memory>
+#include <string>
 #include <unordered_map>
 
 #include "include/Texture.hpp"
@@ -57,11 +59,30 @@ public:
     [[nodiscard]] int getLogicalWidth(int index) const;
     [[nodiscard]] int getLogicalHeight(int index) const;
 private:
+    struct HouseTexCacheKey {
+        int baseIndex;
+        int houseId;
+        int density;
+
+        bool operator==(const HouseTexCacheKey &) const = default;
+    };
+
+    struct HouseTexCacheKeyHash {
+        std::size_t operator()(const HouseTexCacheKey &key) const noexcept {
+            std::size_t hash = std::hash<int>{}(key.baseIndex);
+            hash ^= std::hash<int>{}(key.houseId) + 0x9e3779b9U +
+                (hash << 6U) + (hash >> 2U);
+            hash ^= std::hash<int>{}(key.density) + 0x9e3779b9U +
+                (hash << 6U) + (hash >> 2U);
+            return hash;
+        }
+    };
+
     SDL_Renderer *renderer;
     int density;
     std::unique_ptr<DataPack> dataPack;
     std::unordered_map<int, Texture *> texCache;
     std::unordered_map<std::string, Texture *> frameTexCache;
-    std::unordered_map<std::string, Texture *> houseTexCache;
+    std::unordered_map<HouseTexCacheKey, Texture *, HouseTexCacheKeyHash> houseTexCache;
     std::unordered_map<std::string, bool> loggedFallbacks;
 };
