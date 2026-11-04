@@ -44,18 +44,24 @@ void cMessageDrawer::draw()
             game.m_screenW,
             game.m_screenH
         );
+        const int left = 143;
+        const int right = layout.battlefield.getEndX() - 8;
+        const int reservedMessageWidth = m_message.empty()
+            ? 0
+            : m_textDrawer->getTextLength(m_message) + 16;
         const MusicControlsLayout music = MusicControlsLayout::create(
-            143,
-            layout.battlefield.getEndX() - 8,
-            true
+            left,
+            right,
+            true,
+            reservedMessageWidth
         );
         const int messageX = music.visible
             ? music.panel.getEndX() + 8
-            : 140;
+            : left;
         const cRectangle messageRect(
             messageX,
             4,
-            std::max(0, layout.battlefield.getEndX() - 8 - messageX),
+            std::max(0, right - messageX),
             33
         );
         renderDrawer->renderRectFillColor(
@@ -72,21 +78,38 @@ void cMessageDrawer::draw()
             messageRect.getHeight(),
             Color{112, 87, 42, 255}
         );
-        if (m_alpha > -1 && !m_message.empty()) {
-            renderDrawer->setClippingFor(
-                messageRect.getX() + 5,
-                messageRect.getY(),
-                messageRect.getEndX() - 5,
-                messageRect.getEndY()
-            );
-            m_textDrawer->drawText(
-                messageRect.getX() + 8,
-                messageRect.getY() + 10,
-                Color{232, 225, 196, Uint8(m_alpha)},
-                m_message,
-                false
-            );
-            renderDrawer->resetClippingFor();
+        const int messageTextWidth = m_message.empty()
+            ? 0
+            : m_textDrawer->getTextLength(m_message);
+        const int messageContentWidth = messageRect.getWidth() - 16;
+        if (m_alpha > -1 && messageTextWidth > 0 && messageContentWidth > 0) {
+            const Color messageColor{232, 225, 196, Uint8(m_alpha)};
+            if (messageTextWidth <= messageContentWidth) {
+                m_textDrawer->drawText(
+                    messageRect.getX() + 8,
+                    messageRect.getY() + 10,
+                    messageColor,
+                    m_message,
+                    false
+                );
+            } else {
+                const float scale = static_cast<float>(messageContentWidth) /
+                    static_cast<float>(messageTextWidth);
+                if (scale >= 0.5F) {
+                    m_textDrawer->drawTextScaledOpticallyCenteredInBox(
+                        m_message,
+                        cRectangle(
+                            messageRect.getX() + 8,
+                            messageRect.getY(),
+                            messageContentWidth,
+                            messageRect.getHeight()
+                        ),
+                        scale,
+                        messageColor,
+                        false
+                    );
+                }
+            }
         }
         return;
     }
