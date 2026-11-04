@@ -108,8 +108,8 @@ private:
     bool leftButtonReleased;
     bool rightButtonReleased;
 
-    bool leftButtonClicked;
-    bool rightButtonClicked;
+    bool leftButtonClicked = false;
+    bool rightButtonClicked = false;
 
     bool leftButtonClickedInPreviousFrame;
     bool rightButtonClickedInPreviousFrame;
