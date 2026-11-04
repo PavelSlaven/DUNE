@@ -241,6 +241,12 @@ Texture *Graphics::getHouseTexture(
         return nullptr;
     }
 
+    const HouseTexCacheKey cacheKey{baseIndex, houseId, density};
+    if (const auto cached = houseTexCache.find(cacheKey);
+        cached != houseTexCache.end()) {
+        return cached->second;
+    }
+
     const std::string baseName = dataPack->getNameFromIndex(baseIndex);
     const bool neutralHdStructure =
         density > 1 && baseName.starts_with("BUILD_");
@@ -301,19 +307,6 @@ Texture *Graphics::getHouseTexture(
                     dataPack->getIndexFromName("HOUSEMASK_" + baseName);
             }
         }
-    }
-
-    const std::string cacheKey = std::format(
-        "{}:{}:{}:{}:{}",
-        baseIndex,
-        selectedIndex,
-        maskIndex,
-        houseId,
-        density
-    );
-    const auto cached = houseTexCache.find(cacheKey);
-    if (cached != houseTexCache.end()) {
-        return cached->second;
     }
 
     SDL_Surface *selected = dataPack->getSurface(selectedIndex);
