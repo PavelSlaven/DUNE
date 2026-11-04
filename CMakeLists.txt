@@ -184,6 +184,19 @@ if(BUILD_TESTING)
     add_test(NAME command_bindings COMMAND command_bindings_tests)
 
     add_executable(
+        command_binding_conflict_tests
+        tests/CommandBindingConflictTests.cpp
+        src/controls/cKeyboardEvent.cpp
+    )
+    target_include_directories(
+        command_binding_conflict_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+    )
+    add_test(NAME command_binding_conflicts COMMAND command_binding_conflict_tests)
+
+    add_executable(
         render_scale_tests
         tests/RenderScaleTests.cpp
         src/utils/RenderScale.cpp

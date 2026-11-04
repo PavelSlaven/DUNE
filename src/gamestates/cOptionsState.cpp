@@ -39,6 +39,39 @@ bool isEnglishLanguage(const GameSettings &settings)
 {
     return settings.language == "en";
 }
+
+std::string bindingKeyName(SDL_Scancode scancode, bool english)
+{
+    switch (scancode) {
+        case SDL_SCANCODE_LCTRL:
+            return "LCTRL";
+        case SDL_SCANCODE_RCTRL:
+            return "RCTRL";
+        default:
+            return commandBindingDisplayName(scancode, english);
+    }
+}
+
+std::string commandBindingActionName(
+    const GameSettings &settings,
+    CommandBindingAction action)
+{
+    switch (action) {
+        case CommandBindingAction::Attack:
+            return optionText(settings, "Attack", "Атаковать");
+        case CommandBindingAction::Repair:
+            return optionText(settings, "Repair", "Ремонт");
+        case CommandBindingAction::Unload:
+            return optionText(settings, "Unload", "Разгрузить");
+        case CommandBindingAction::Deploy:
+            return optionText(settings, "Deploy", "Развернуть");
+        case CommandBindingAction::Rally:
+            return optionText(settings, "Rally", "Точка сбора");
+        case CommandBindingAction::Release:
+            return optionText(settings, "Release", "Выпустить");
+    }
+    return {};
+}
 }
 
 cOptionsState::cOptionsState(cGame &theGame, GameContext *ctx, int prevState)
@@ -402,7 +435,7 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
             if (action) {
                 value = m_bindingCapture == action
                     ? optionText(m_selectedSettings, "Press key...", "Нажмите клавишу…")
-                    : commandBindingDisplayName(
+                    : bindingKeyName(
                         commandBinding(m_selectedSettings.commandBindings, *action),
                         isEnglishLanguage(m_selectedSettings));
             }
@@ -416,6 +449,7 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
                     .withEnabled(action.has_value());
             if (action) {
                 builder.onClick([this, action]() {
+                    m_bindingMessage.clear();
                     m_bindingCapture = action;
                     refresh();
                 });
@@ -430,6 +464,18 @@ void cOptionsState::constructAdvancedWindow(int /*prevState*/)
         addBinding(optionText(m_selectedSettings, "Deploy", "Развернуть"), CommandBindingAction::Deploy);
         addBinding(optionText(m_selectedSettings, "Rally", "Точка сбора"), CommandBindingAction::Rally);
         addBinding(optionText(m_selectedSettings, "Release", "Выпустить"), CommandBindingAction::Release);
+        if (!m_bindingMessage.empty()) {
+            GuiLabel *message = GuiLabelBuilder()
+                    .withLabel(m_bindingMessage)
+                    .withTextDrawer(m_textDrawer)
+                    .withTheme(theme)
+                    .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+                    .withRect(m_guiWindow->getRelativeRect(
+                        16, row * (buttonHeight + 4), mainMenuWidth - 32, buttonHeight))
+                    .withTextAlign(GuiTextAlignHorizontal::LEFT)
+                    .build();
+            m_guiWindow->addGuiObject(message);
+        }
     }
     else {
         addToggle(optionText(m_selectedSettings, "Debug mode", "Режим отладки"), &GameSettings::debugMode);
@@ -612,6 +658,7 @@ std::string cOptionsState::selectedLanguageText() const
 void cOptionsState::switchOptionsPage(OptionsPage page)
 {
     m_bindingCapture.reset();
+    m_bindingMessage.clear();
     m_optionsPage = page;
     refresh();
 }
@@ -1405,11 +1452,26 @@ void cOptionsState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
         const SDL_Scancode scancode = event.firstKey();
         if (scancode != SDL_SCANCODE_ESCAPE &&
             scancode != SDL_SCANCODE_UNKNOWN) {
-            setCommandBinding(
+            const auto conflict = trySetCommandBinding(
                 m_selectedSettings.commandBindings,
                 *m_bindingCapture,
                 scancode
             );
+            if (conflict) {
+                m_bindingMessage =
+                    optionText(m_selectedSettings, "Key ", "Клавиша ") +
+                    bindingKeyName(scancode, isEnglishLanguage(m_selectedSettings)) +
+                    optionText(m_selectedSettings,
+                        " is already assigned to ", " уже назначена команде «") +
+                    commandBindingActionName(m_selectedSettings, *conflict) +
+                    optionText(m_selectedSettings, ".", "».");
+            }
+            else {
+                m_bindingMessage.clear();
+            }
+        }
+        else {
+            m_bindingMessage.clear();
         }
         m_bindingCapture.reset();
         refresh();
