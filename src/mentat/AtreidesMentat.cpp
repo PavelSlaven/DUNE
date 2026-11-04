@@ -13,52 +13,44 @@
 
 
 AtreidesMentat::AtreidesMentat(GameContext* ctx, bool allowMissionSelect)
-    : AbstractMentat(ctx, allowMissionSelect, true, 537, 4.0F)
+    : AbstractMentat(ctx, allowMissionSelect, 537, 4.0F)
 {
     iBackgroundFrame = MENTATA;
-    if (m_adaptiveHdLayout) {
-        // The movie is deliberately larger than the glass.  A cached alpha
-        // foreground keeps the monitor frame and Cyril's shoulder above it.
-        m_movieClipX = 276;
-        m_movieClipY = 115;
-        m_movieClipWidth = 322;
-        m_movieClipHeight = 219;
-        m_movieWidth = 400;
-        m_movieHeight = 243;
-        movieTopleftX = baseX(234);
-        movieTopleftY = baseY(95);
+    // The movie is deliberately larger than the glass.  A cached alpha
+    // foreground keeps the monitor frame and Cyril's shoulder above it.
+    m_movieClipX = 276;
+    m_movieClipY = 115;
+    m_movieClipWidth = 322;
+    m_movieClipHeight = 219;
+    m_movieWidth = 400;
+    m_movieHeight = 243;
+    movieTopleftX = baseX(234);
+    movieTopleftY = baseY(95);
 
-        // Match the two painted recesses in the remastered console.
-        leftButton = new cRectangle(baseRect(342, 393, 124, 52));
-        rightButton = new cRectangle(baseRect(482, 393, 110, 52));
-    }
-    else {
-        buildLeftButton(gfxmentat->getTexture(BTN_REPEAT), 293, 423);
-        buildRightButton(gfxmentat->getTexture(BTN_PROCEED), 466, 423);
-    }
+    // Match the two painted recesses in the remastered console.
+    leftButton = new cRectangle(baseRect(342, 393, 124, 52));
+    rightButton = new cRectangle(baseRect(482, 393, 110, 52));
 
     auto leftBuilder = GuiButtonBuilder()
             .withRect(*leftButton)        
             .withLabel(localization::text("Repeat", "Повторить"))
             .withTextDrawer(m_textDrawer)
-            .withTextScale(m_adaptiveHdLayout ? HD_BUTTON_TEXT_SCALE : 1.0F)
-            .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
-            .withKind(m_adaptiveHdLayout ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER : GuiRenderKind::WITH_TEXTURE)
+            .withTextScale(HD_BUTTON_TEXT_SCALE)
+            .withTheme(GuiTheme::Remaster())
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([this]() {this->resetSpeak();});
-    if (!m_adaptiveHdLayout) leftBuilder.withTexture(gfxmentat->getTexture(BTN_REPEAT));
     leftGuiButton = leftBuilder.build();
 
     auto rightBuilder = GuiButtonBuilder()
             .withRect(*rightButton)        
             .withLabel(localization::text("Next", "Далее"))
             .withTextDrawer(m_textDrawer)
-            .withTextScale(m_adaptiveHdLayout ? HD_BUTTON_TEXT_SCALE : 1.0F)
-            .withTheme(m_adaptiveHdLayout ? GuiTheme::Remaster() : GuiTheme::Light())
-            .withKind(m_adaptiveHdLayout ? GuiRenderKind::TRANSPARENT_WITHOUT_BORDER : GuiRenderKind::WITH_TEXTURE)
+            .withTextScale(HD_BUTTON_TEXT_SCALE)
+            .withTheme(GuiTheme::Remaster())
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([this]() {
                 logbook("cYesButtonCommand::execute()");
                 game.execute(*this);});
-    if (!m_adaptiveHdLayout) rightBuilder.withTexture(gfxmentat->getTexture(BTN_YES));
     rightGuiButton = rightBuilder.build();
     harmonizeHdButtonTextScale();
 }
@@ -127,20 +119,10 @@ void AtreidesMentat::clearHdMovieOpening(Texture *background)
 
 void AtreidesMentat::draw_eyes()
 {
-    if (m_adaptiveHdLayout) {
-        drawMentatTexture(gfxmentat->getTexture(ATR_EYES01 + iMentatEyes), 96, 180);
-    }
-    else {
-        renderDrawer->renderSprite(gfxmentat->getTexture(ATR_EYES01 + iMentatEyes), offsetX + 80, offsetY + 241);
-    }
+    drawMentatTexture(gfxmentat->getTexture(ATR_EYES01 + iMentatEyes), 96, 180);
 }
 
 void AtreidesMentat::draw_mouth()
 {
-    if (m_adaptiveHdLayout) {
-        drawMentatTexture(gfxmentat->getTexture(ATR_MOUTH01 + iMentatMouth), 100, 210);
-    }
-    else {
-        renderDrawer->renderSprite(gfxmentat->getTexture(ATR_MOUTH01 + iMentatMouth), offsetX + 80, offsetY + 273);
-    }
+    drawMentatTexture(gfxmentat->getTexture(ATR_MOUTH01 + iMentatMouth), 100, 210);
 }

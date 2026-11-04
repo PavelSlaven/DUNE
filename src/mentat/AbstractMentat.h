@@ -47,7 +47,6 @@ public:
     AbstractMentat(
         GameContext* ctx,
         bool canMissionSelect,
-        bool adaptiveHdLayout = false,
         int hdMissionSelectCenterX = 548,
         float hdMissionTextOffsetY = 1.0F
     );
@@ -145,7 +144,6 @@ protected:
     int m_movieClipWidth = 398;
     int m_movieClipHeight = 215;
     Texture *m_hdForegroundLayer = nullptr;
-    bool m_adaptiveHdLayout = false;
     float m_uiScale = 1.0F;
     int m_panelWidth = 640;
     int m_panelHeight = 480;
