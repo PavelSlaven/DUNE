@@ -12,6 +12,7 @@
 #include "sidebar/cBuildingListUpdater.h"
 #include "sidebar/cSideBar.h"
 
+#include <array>
 #include <iostream>
 #include <string>
 
@@ -42,9 +43,8 @@ void resetMap()
     setTerrain(CandidateCell - MapCells - 1, TERRAIN_SLAB);
 }
 
-void configurePlayerPlacement()
+void configurePlayerPlacement(cPlayer &player)
 {
-    cPlayer &player = players[HUMAN];
     if (player.getBuildingListUpdater() == nullptr) {
         player.setBuildingListUpdater(new cBuildingListUpdater(&player));
     }
@@ -124,6 +124,124 @@ void assertSharedDecision(InputRig &rig, int structureType, int cell, bool expec
     }
 }
 
+enum class PlacementOccupant {
+    NONE,
+    STRUCTURE,
+    UNIT
+};
+
+void setPlacementFootprintTerrain(int terrain)
+{
+    for (int offsetY = 0; offsetY < 2; offsetY++) {
+        for (int offsetX = 0; offsetX < 2; offsetX++) {
+            setTerrain(CandidateCell + offsetX + offsetY * MapCells, terrain);
+        }
+    }
+}
+
+void assertPlacementMatrixCase(UnitFrameFixture &fixture,
+                               InputRig &rig,
+                               int structureType,
+                               int terrain,
+                               PlacementOccupant occupant,
+                               bool expected,
+                               const std::string &label)
+{
+    resetMap();
+    setPlacementFootprintTerrain(terrain);
+
+    if (occupant == PlacementOccupant::STRUCTURE) {
+        auto *existingStructure = new cWindTrap();
+        existingStructure->setOwner(HUMAN);
+        existingStructure->setCell(CandidateCell);
+        existingStructure->setStructureId(FakeStructureId);
+        structure[FakeStructureId] = existingStructure;
+        global_map.cellSetIdForLayer(CandidateCell, MAPID_STRUCTURES, FakeStructureId);
+    }
+    else if (occupant == PlacementOccupant::UNIT) {
+        const int x = global_map.getCellX(CandidateCell) * CellSize;
+        const int y = global_map.getCellY(CandidateCell) * CellSize;
+        fixture.setUnit(0, TANK, x, y);
+    }
+
+    std::array<int, 4> terrainBefore{};
+    for (int offsetY = 0; offsetY < 2; offsetY++) {
+        for (int offsetX = 0; offsetX < 2; offsetX++) {
+            const int index = offsetY * 2 + offsetX;
+            terrainBefore[index] = global_map.getCellType(CandidateCell + offsetX + offsetY * MapCells);
+        }
+    }
+
+    assertSharedDecision(rig, structureType, CandidateCell, expected, label);
+
+    for (int offsetY = 0; offsetY < 2; offsetY++) {
+        for (int offsetX = 0; offsetX < 2; offsetX++) {
+            const int index = offsetY * 2 + offsetX;
+            const int cell = CandidateCell + offsetX + offsetY * MapCells;
+            int expectedTerrain = terrainBefore[index];
+            if (expected && structureType == SLAB1 && index == 0) {
+                expectedTerrain = TERRAIN_SLAB;
+            }
+            if (expected && structureType == SLAB4 && terrainBefore[index] == TERRAIN_ROCK &&
+                    !(occupant == PlacementOccupant::UNIT && index == 0)) {
+                expectedTerrain = TERRAIN_SLAB;
+            }
+            requirePlacement(global_map.getCellType(cell) == expectedTerrain,
+                             label + ": placing the item produced an unexpected terrain change");
+        }
+    }
+}
+
+void checkPlacementDecisionMatrix(UnitFrameFixture &fixture, InputRig &rig)
+{
+    struct TerrainCase {
+        const char *name;
+        int terrain;
+        std::array<bool, 3> allowed;
+    };
+    const std::array<int, 3> structureTypes{WINDTRAP, SLAB1, SLAB4};
+    const std::array<const char *, 3> structureNames{"ordinary building", "SLAB1", "SLAB4"};
+    const std::array<TerrainCase, 5> terrainCases{{
+        {"sand", TERRAIN_SAND, {false, false, true}},
+        {"rock", TERRAIN_ROCK, {true, true, true}},
+        {"slab", TERRAIN_SLAB, {true, true, true}},
+        {"mountain", TERRAIN_MOUNTAIN, {false, false, true}},
+        {"spice", TERRAIN_SPICE, {false, false, true}}
+    }};
+
+    for (const TerrainCase &terrainCase : terrainCases) {
+        for (std::size_t typeIndex = 0; typeIndex < structureTypes.size(); typeIndex++) {
+            const std::string label = std::string(structureNames[typeIndex]) + " on " + terrainCase.name;
+            assertPlacementMatrixCase(fixture,
+                                      rig,
+                                      structureTypes[typeIndex],
+                                      terrainCase.terrain,
+                                      PlacementOccupant::NONE,
+                                      terrainCase.allowed[typeIndex],
+                                      label);
+        }
+    }
+
+    const std::array<std::array<bool, 3>, 2> occupantRules{{
+        {false, false, true},
+        {false, true, true}
+    }};
+    const std::array<PlacementOccupant, 2> occupants{PlacementOccupant::STRUCTURE, PlacementOccupant::UNIT};
+    const std::array<const char *, 2> occupantNames{"structure", "unit"};
+    for (std::size_t occupantIndex = 0; occupantIndex < occupants.size(); occupantIndex++) {
+        for (std::size_t typeIndex = 0; typeIndex < structureTypes.size(); typeIndex++) {
+            const std::string label = std::string(structureNames[typeIndex]) + " with a " + occupantNames[occupantIndex];
+            assertPlacementMatrixCase(fixture,
+                                      rig,
+                                      structureTypes[typeIndex],
+                                      TERRAIN_ROCK,
+                                      occupants[occupantIndex],
+                                      occupantRules[occupantIndex][typeIndex],
+                                      label);
+        }
+    }
+}
+
 void checkTerrainRule(InputRig &rig)
 {
     resetMap();
@@ -155,6 +273,34 @@ void checkSlab1OverUnit(UnitFrameFixture &fixture, InputRig &rig)
     assertSharedDecision(rig, SLAB1, CandidateCell, true, "SLAB1 over a unit");
 }
 
+void checkAiPlacementWithoutBuilderConnection()
+{
+    resetMap();
+    setTerrain(CandidateCell - MapCells - 1, TERRAIN_ROCK);
+
+    cPlayer &human = players[HUMAN];
+    cBuildingListItem humanItem(WINDTRAP, sStructureInfo[WINDTRAP], 0);
+    humanItem.setTimesToBuild(2);
+    humanItem.setPlaceIt(true);
+    requirePlacement(!human.canPlaceBuildingListItemAt(CandidateCell, WINDTRAP).success,
+                     "human building without a construction link was allowed");
+    requirePlacement(human.placeItem(CandidateCell, &humanItem) == nullptr,
+                     "human building without a construction link was created");
+    requirePlacement(humanItem.getTimesToBuild() == 2 && humanItem.shouldPlaceIt(),
+                     "refused human placement changed the ready item");
+
+    cPlayer &ai = players[AI_CPU1];
+    ai.id = AI_CPU1;
+    ai.house = ATREIDES;
+    ai.m_Human = false;
+    configurePlayerPlacement(ai);
+    cBuildingListItem aiItem(WINDTRAP, sStructureInfo[WINDTRAP], 0);
+    aiItem.setTimesToBuild(2);
+    aiItem.setPlaceIt(true);
+    requirePlacement(ai.placeItem(CandidateCell, &aiItem) != nullptr,
+                     "AI building without a construction link was not created");
+}
+
 void runPlacementRuleChecks()
 {
     UnitFrameFixture fixture(4, 100);
@@ -162,11 +308,13 @@ void runPlacementRuleChecks()
     rig.setMousePosition(400, 300);
     useCamera(ScreenWidth, ScreenHeight, 1.0F, 0.0F, 0.0F);
     rig.installControls();
-    configurePlayerPlacement();
+    configurePlayerPlacement(players[HUMAN]);
 
     checkTerrainRule(rig);
     checkSlab4OverStructure(rig);
     checkSlab1OverUnit(fixture, rig);
+    checkPlacementDecisionMatrix(fixture, rig);
+    checkAiPlacementWithoutBuilderConnection();
 }
 }
 

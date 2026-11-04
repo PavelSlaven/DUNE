@@ -1513,7 +1513,11 @@ cAbstractStructure *cPlayer::placeItem(int destinationCell, cBuildingListItem *i
     int iStructureTypeId = itemToPlace->getBuildId();
     cStructureFactory *pStructureFactory = cStructureFactory::getInstance();
 
-    if (!canPlaceBuildingListItemAt(destinationCell, iStructureTypeId).success) {
+    const bool isHumanPlayer = isHuman();
+    const bool canPlace = isHumanPlayer
+                          ? canPlaceBuildingListItemAt(destinationCell, iStructureTypeId).success
+                          : canPlaceStructureAt(destinationCell, iStructureTypeId).success;
+    if (!canPlace) {
         return nullptr;
     }
 
@@ -1536,7 +1540,7 @@ cAbstractStructure *cPlayer::placeItem(int destinationCell, cBuildingListItem *i
                                      getId(),
                                      healthPercentage);
 
-    if (pStructure == nullptr && iStructureTypeId != SLAB1 && iStructureTypeId != SLAB4 && iStructureTypeId != WALL) {
+    if (isHumanPlayer && pStructure == nullptr && iStructureTypeId != SLAB1 && iStructureTypeId != SLAB4 && iStructureTypeId != WALL) {
         return nullptr;
     }
 
