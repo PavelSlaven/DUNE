@@ -668,19 +668,25 @@ void cSetupSkirmishState::drawPreviewMapAndMore(const cRectangle &previewMapRect
         const int infoY =
             previewMapRect.getY() + previewMapRect.getHeight() +
             (8);
+        const int infoRowHeight = m_textDrawer->getFontHeight() + 2;
+        const std::string mapName = localization::format(
+            "Name: {}", "Название: {}", selectedMap.name);
+        const std::string mapSize = std::format(
+            "{}", m_previewMaps->getMapSize(iSkirmishMap));
         m_textDrawer->drawText(previewMapRect.getX() + 4, infoY,
-                            Color::yellow(), localization::format(
-                                "Name: {}", "Название: {}", selectedMap.name));
+                            Color::yellow(), mapName);
         m_textDrawer->drawText(
-            previewMapRect.getX() + 4,
-            infoY + m_textDrawer->getFontHeight() + 2,
+            screen_x - m_textDrawer->getTextLength(mapSize) - 4,
+            infoY,
+            Color{225, 177, 21,255},
+            mapSize
+        );
+        m_textDrawer->drawText(previewMapRect.getX() + 4, infoY + infoRowHeight,
                             Color::white(), localization::format(
                                 "Author: {}", "Автор: {}", selectedMap.author));
-        m_textDrawer->drawText(previewMapRect.getEndX() -50, infoY,
-                            Color{225, 177, 21,255}, std::format("{}", m_previewMaps->getMapSize(iSkirmishMap)));
         m_textDrawer->drawText(
             previewMapRect.getX() + 4,
-            infoY + (m_textDrawer->getFontHeight() + 2) * 2,
+            infoY + infoRowHeight * 2,
                             Color::white(), std::format("{}", selectedMap.description));
         
     }
