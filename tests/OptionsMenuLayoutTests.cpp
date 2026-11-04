@@ -81,7 +81,11 @@ bool compactSpacing(const Case &input)
 
 int expectedContentTop(const Case &input)
 {
-    return compactSpacing(input) ? 28 : input.bh + (input.hd ? 2 : 5);
+    const int titleHeight = input.hd ? input.bh - 10 : input.bh - 4;
+    const int minimumContentTop = 2 + titleHeight + 2;
+    return compactSpacing(input)
+        ? std::max(28, minimumContentTop)
+        : input.bh + (input.hd ? 2 : 5);
 }
 
 struct Field {
@@ -115,12 +119,13 @@ std::array<cRectangle, 10> expectedRectangles(const Case &input)
     const int oldH = input.hd ? std::min(input.Hc - 32, 680) : input.Hc / 2;
     const int n = input.playing ? 2 : 1;
     const bool compact = compactSpacing(input);
-    const int contentTop = compact ? 28 : input.bh + c;
+    const int contentTop = expectedContentTop(input);
     const int actionGap = compact ? 2 : preferredActionGap;
     const int applyGap = compact ? 2 : m;
     const int applyY = compact ? contentTop + 9 * (input.bh + c) : 10 * (input.bh + c);
+    const int bottomMargin = compact ? 4 : m;
     const int required = applyY + input.bh + applyGap
-        + n * input.bh + (n - 1) * actionGap + m;
+        + n * input.bh + (n - 1) * actionGap + bottomMargin;
     const int H = std::min(input.Hc - 8, std::max(oldH, required));
     const int statusX = contentX + applyWidth + m + advancedWidth + m;
     const int colW = (W - 4 * m) / 3;
@@ -128,7 +133,7 @@ std::array<cRectangle, 10> expectedRectangles(const Case &input)
     const int x1 = 2 * m + colW;
     const int x2 = 3 * m + 2 * colW;
     const int lastW = W - m - x2;
-    const int bottomY = H - m - input.bh;
+    const int bottomY = H - bottomMargin - input.bh;
     const int upperY = bottomY - actionGap - input.bh;
 
     return {{
@@ -231,6 +236,16 @@ void inside(Check &check, const Case &input, const OptionsMenuLayout &actual)
     }
 }
 
+void headerSpacing(Check &check, const Case &input, const OptionsMenuLayout &actual)
+{
+    const int titleHeight = input.hd ? input.bh - 10 : input.bh - 4;
+    const int minimumContentTop = 2 + titleHeight + 2;
+    if (actual.contentTop < minimumContentTop && check.fail(input, "header/contentTop")) {
+        std::cerr << " actual=" << actual.contentTop
+                  << " expected_at_least=" << minimumContentTop << '\n';
+    }
+}
+
 bool intersects(const cRectangle &a, const cRectangle &b)
 {
     return a.getX() < b.getX() + b.getWidth() &&
@@ -275,6 +290,7 @@ int main()
     Check exactCheck{"exact"};
     Check tableCheck{"table"};
     Check insideCheck{"inside"};
+    Check headerSpacingCheck{"header-spacing"};
     Check overlapCheck{"overlap"};
     std::size_t cases = 0;
     const auto checkCanvas = [&](int Wc, int Hc) {
@@ -285,6 +301,7 @@ int main()
                     const auto actual = OptionsMenuLayout::create(Wc, Hc, bh, hd, playing);
                     exact(exactCheck, input, actual);
                     inside(insideCheck, input, actual);
+                    headerSpacing(headerSpacingCheck, input, actual);
                     overlap(overlapCheck, input, actual);
                     ++cases;
                 }
@@ -335,6 +352,7 @@ int main()
             const auto actual = OptionsMenuLayout::create(
                 Wc, 600, 44, true, playing);
             inside(tallButtonCheck, input, actual);
+            headerSpacing(headerSpacingCheck, input, actual);
             overlap(tallButtonCheck, input, actual);
         }
     }
@@ -342,10 +360,11 @@ int main()
     exactCheck.finish();
     tableCheck.finish();
     insideCheck.finish();
+    headerSpacingCheck.finish();
     overlapCheck.finish();
     tallButtonCheck.finish();
     if (exactCheck.failures || tableCheck.failures || insideCheck.failures ||
-        overlapCheck.failures || tallButtonCheck.failures) {
+        headerSpacingCheck.failures || overlapCheck.failures || tallButtonCheck.failures) {
         return 1;
     }
     std::cout << "Проверено случаев матрицы А + Б: " << cases << '\n';
