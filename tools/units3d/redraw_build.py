@@ -8,14 +8,11 @@ import numpy as np
 from PIL import Image
 
 from tools.hd_assets import encode_png
-from tools.units3d.redraw_common import CANVAS, InputError, bbox, clean_keyed, frame_input, frame_name, key, keyed, place, prepare
+from tools.units3d.redraw_common import CANVAS, InputError, bbox, despill_edge, frame_input, frame_name, key_and_clean, keyed, place, prepare, unit_figures
 
 
 def _fit_scale(scale_median, fits):
-    minimum = 0.8 * scale_median
-    low, high = 0, int(np.ceil((scale_median - minimum) / 0.001))
-    if scale_median - 0.001 * high < minimum:
-        high -= 1
+    low, high = 0, int(np.floor(200 * scale_median + 1e-9))
     while low < high:
         middle = (low + high) // 2
         candidate = scale_median - 0.001 * middle
@@ -31,7 +28,6 @@ def run(unit, args):
     if output.exists() and (not output.is_dir() or any(output.iterdir())):
         raise InputError(f'{output}: output must be absent or empty')
     records = unit.frames
-    figures = unit.data.get('figures', 1)
     despill = unit.data.get('despill', True)
     boxes = {}
     for record in records:
@@ -45,10 +41,18 @@ def run(unit, args):
         name = frame_name(record)
         attempt_path = unit.path(record['attempts'][record['pick']])
         with frame_input(record, attempt_path):
-            prepared[name] = keyed(attempt_path, figures=figures, return_stray=True)
+            prepared[name] = keyed(
+                attempt_path,
+                figures=unit_figures(unit.data),
+                return_stray=True,
+                return_black_background=True,
+            )
             bbox(prepared[name][0][..., 3])
             if despill:
-                cleaned[name] = keyed(attempt_path, figures=figures, despill=True)
+                if prepared[name][2]:
+                    cleaned[name] = prepared[name][0]
+                else:
+                    cleaned[name] = despill_edge(prepared[name][0])
         raw[name] = prepared[name][0]
     ratios = []
     for record in records:
@@ -72,7 +76,7 @@ def run(unit, args):
             recolour_path = unit.path(record['recolour'])
             with frame_input(record, recolour_path):
                 edit = prepare(recolour_path)
-                cleaned_edit, _ = clean_keyed(key(edit, figures), figures)
+                cleaned_edit, _ = key_and_clean(edit, unit_figures(unit.data))
                 bbox(cleaned_edit[..., 3])
             recolours[frame_name(record)] = edit, cleaned_edit
 

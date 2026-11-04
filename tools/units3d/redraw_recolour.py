@@ -4,7 +4,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from tools.units3d.redraw_common import bbox, flat, frame_input, frame_name, keyed, old_canvas
+from tools.units3d.redraw_common import bbox, flat, frame_input, frame_name, keyed, old_canvas, unit_figures
 
 
 def run(unit, args):
@@ -15,7 +15,7 @@ def run(unit, args):
         name = frame_name(record)
         attempt_path = unit.path(record['attempts'][record['pick']])
         with frame_input(record, attempt_path):
-            candidate = keyed(attempt_path, figures=unit.data.get('figures', 1))
+            candidate = keyed(attempt_path, figures=unit_figures(unit.data))
             bbox(candidate[..., 3])
         flat(candidate).save(output / f"pick_{name}.png")
 

@@ -5,12 +5,14 @@ import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 import numpy as np
 from PIL import Image
 
 from tools.hd_assets import PackEntry, encode_png, write_pack
 from tools.units3d.redraw import main
+from tools.units3d import redraw_build
 from tools.units3d.redraw_build import _fit_scale, run
 from tools.units3d.redraw_common import ROOT, load_unit
 
@@ -133,6 +135,20 @@ class BuildTests(unittest.TestCase):
         self.assertIn('r0k0', stderr)
         self.assertIn(str(recolour), stderr)
 
+    def test_figures_reaches_recolour_cleanup(self):
+        self.data['atlases']['house_mask'] = 'MASK'
+        self.data['figures'] = 8
+        self.data['share_corridor'] = [0, 1]
+        for record in self.data['frames']:
+            record['recolour'] = str(self.attempt)
+
+        with patch.object(redraw_build, 'key_and_clean', wraps=redraw_build.key_and_clean) as cleanup:
+            code, output, stderr = self.build()
+
+        self.assertEqual(code, 0, stderr)
+        self.assertEqual(cleanup.call_count, len(self.data['frames']))
+        self.assertTrue(all(call.args[1] == 8 for call in cleanup.call_args_list))
+
     def test_fit_scale_uses_relative_floor_and_binary_search(self):
         median = 1.173
         threshold = 0.9752
@@ -163,11 +179,14 @@ class BuildTests(unittest.TestCase):
         for median in (1.0, 0.4, 0.004):
             with self.subTest(median=median):
                 lowest = _fit_scale(median, lambda candidate: False)
-                self.assertGreaterEqual(lowest, 0.8 * median)
+                self.assertGreaterEqual(lowest, 0.8 * median - 1e-12)
                 self.assertLess(lowest - 0.001, 0.8 * median)
                 steps = (median - lowest) / 0.001
                 self.assertAlmostEqual(steps, round(steps))
                 self.assertEqual(_fit_scale(median, lambda candidate: True), median)
+
+    def test_fit_scale_reaches_point_seven_two_for_median_point_nine(self):
+        self.assertEqual(_fit_scale(0.9, lambda candidate: False), 0.72)
 
     def test_r8_positive_explicit_scale_below_fit_floor_is_valid(self):
         self.data['scale'] = 0.4
