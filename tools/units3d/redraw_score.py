@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from tools.units3d.redraw_common import bbox, frame_input, keyed
+from tools.units3d.redraw_common import bbox, frame_input, keyed, unit_figures
 
 
 CANVAS = 1024
@@ -44,7 +44,7 @@ def _frame_data(unit, record):
     for key_name, value in record['attempts'].items():
         path = unit.path(value)
         with frame_input(record, path):
-            rgba = keyed(path, figures=unit.data.get('figures', 1))
+            rgba = keyed(path, figures=unit_figures(unit.data))
             cx0, cy0, cx1, cy1 = bbox(rgba[..., 3])
         width, height = cx1 - cx0, cy1 - cy0
         attempts[key_name] = {

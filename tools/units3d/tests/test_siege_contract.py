@@ -105,7 +105,7 @@ class SiegeContractAcceptanceTests(unittest.TestCase):
     def test_generator_and_checker_siege_geometry(self) -> None:
         with tempfile.TemporaryDirectory(prefix="u9t1-contract-") as temporary:
             root = Path(temporary)
-            source_dir = Path(os.environ["D2TM_PACK_DIR"])
+            source_dir = Path(os.environ.get("D2TM_PACK_DIR", ROOT / "resources/bin/data"))
             pack_dir = root / "packs"
             pack_dir.mkdir()
             shutil.copyfile(source_dir / "sdl_data.dat", pack_dir / "sdl_data.dat")

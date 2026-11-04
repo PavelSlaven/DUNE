@@ -20,6 +20,8 @@ SOURCE_PACK_SHA256 = 'e2a87ce8cf9143f9d11ee0a54dcf10b7a57d109b49e713dadf4133c12d
 REPO_PACK = ROOT / 'resources/bin/data/sdl_data_hd4.dat'
 CANVAS = 1024
 DESPILL_BAND = 6
+DEFAULT_FIGURES = 1
+MAX_FIGURES = 8
 MAGENTA = np.array([255, 0, 255], np.float32)
 
 
@@ -29,6 +31,10 @@ class InputError(ValueError):
 
 def frame_name(record):
     return f"r{record['row']}k{record['k']}"
+
+
+def unit_figures(data):
+    return data.get('figures', DEFAULT_FIGURES)
 
 
 @contextmanager
@@ -64,6 +70,10 @@ class Unit:
     @property
     def atlases(self):
         return self.data['atlases']
+
+    @property
+    def figures(self):
+        return unit_figures(self.data)
 
     @property
     def frame(self):
@@ -151,8 +161,9 @@ def load_unit(directory, command, pack_path=None):
         if (role == 'body' or atlases[role] is not None) and (
                 not isinstance(atlases[role], str) or not atlases[role]):
             raise InputError(f'atlases.{role}: expected nonempty name')
-    figures = data.get('figures', 1)
-    if isinstance(figures, bool) or not isinstance(figures, int) or not 1 <= figures <= 8:
+    figures = unit_figures(data)
+    if (isinstance(figures, bool) or not isinstance(figures, int)
+            or not DEFAULT_FIGURES <= figures <= MAX_FIGURES):
         raise InputError('figures: expected an integer from 1 to 8')
     if 'despill' in data and not isinstance(data['despill'], bool):
         raise InputError('despill: expected true or false')
@@ -192,7 +203,7 @@ def load_unit(directory, command, pack_path=None):
                         or not np.isfinite(scale_factor) or scale_factor <= 0):
                     raise InputError('scale_factor: expected a positive finite number')
             row, k = required(record, 'row', 'frames'), required(record, 'k', 'frames')
-            if not isinstance(row, int) or not isinstance(k, int):
+            if not isinstance(row, int) or type(k) is not int:
                 raise InputError(f'frames: invalid row={row}, k={k}')
             name = frame_name(record)
             if not 0 <= row < rows or not 0 <= k < 8:
@@ -362,7 +373,7 @@ def black_background(rgb):
     return rgb[[0, 0, -1, -1], [0, -1, 0, -1]].max() < 16
 
 
-def key(img, figures=1):
+def key(img, figures=DEFAULT_FIGURES):
     rgb = np.asarray(img.convert('RGB'), np.float32)
     if black_background(rgb):
         labels, _ = ndimage.label(rgb.max(-1) < 12)
@@ -379,7 +390,7 @@ def key(img, figures=1):
     return np.dstack([color, a * 255]).round().astype(np.uint8)
 
 
-def clean_keyed(rgba, figures=1):
+def clean_keyed(rgba, figures=DEFAULT_FIGURES):
     labels, _ = ndimage.label(rgba[..., 3] > 127)
     kept = _kept_regions(labels, figures)
     allowed = ndimage.binary_dilation(kept, structure=np.ones((3, 3), bool), iterations=6)
@@ -387,6 +398,10 @@ def clean_keyed(rgba, figures=1):
     result = rgba.copy()
     result[stray, 3] = 0
     return result, int(stray.sum())
+
+
+def key_and_clean(image, figures=DEFAULT_FIGURES):
+    return clean_keyed(key(image, figures), figures)
 
 
 def despill_edge(rgba):
@@ -400,13 +415,25 @@ def despill_edge(rgba):
     return result
 
 
-def keyed(path, *, figures=1, return_stray=False, despill=False):
+def keyed(
+    path,
+    *,
+    figures=DEFAULT_FIGURES,
+    return_stray=False,
+    despill=False,
+    return_black_background=False,
+):
     validate_square(path)
     with Image.open(path) as image:
         resized = image.resize((CANVAS, CANVAS), Image.Resampling.LANCZOS)
-        rgba, stray = clean_keyed(key(resized, figures), figures)
-        if despill and not black_background(np.asarray(resized.convert('RGB'), np.float32)):
+        has_black_background = black_background(
+            np.asarray(resized.convert('RGB'), np.float32)
+        )
+        rgba, stray = key_and_clean(resized, figures)
+        if despill and not has_black_background:
             rgba = despill_edge(rgba)
+        if return_black_background:
+            return rgba, stray, has_black_background
         return (rgba, stray) if return_stray else rgba
 
 

@@ -123,9 +123,10 @@ class UnitContractBranchTests(unittest.TestCase):
         )
 
     def test_markdown_draw_order_keeps_all_unique_sources(self):
+        source_lines = (20, 10, 30, 40, 50, 60)
         unique_references = [
             {'ref': f'src/gameobjects/units/cUnit.cpp:{line}', 'identifier': 'draw_order'}
-            for line in (10, 20, 30, 40, 50, 60)
+            for line in source_lines
         ]
         sources = [
             unique_references[0], unique_references[1], unique_references[0],
@@ -143,7 +144,7 @@ class UnitContractBranchTests(unittest.TestCase):
         row = next(line for line in markdown.splitlines() if line.startswith('| `draw_order` |'))
         expected_links = [
             f'[src/gameobjects/units/cUnit.cpp:{line}](../../src/gameobjects/units/cUnit.cpp#L{line})'
-            for line in (10, 20, 30, 40, 50, 60)
+            for line in source_lines
         ]
         links = row.split(' | ')[-1].removesuffix(' |').split(', ')
 
