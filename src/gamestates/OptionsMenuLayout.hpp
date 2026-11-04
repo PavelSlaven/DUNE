@@ -6,6 +6,7 @@
 
 struct OptionsMenuLayout {
     cRectangle window;
+    cRectangle speedLabel;
     cRectangle apply;
     cRectangle advanced;
     cRectangle status;
@@ -15,27 +16,47 @@ struct OptionsMenuLayout {
     cRectangle mainMenu;
     cRectangle quit;
     cRectangle back;
+    int contentTop = 0;
+    int contentGap = 0;
 
     [[nodiscard]] static OptionsMenuLayout create(
         int canvasWidth,
         int canvasHeight,
         int buttonHeight,
         bool hdLayout,
-        bool playing)
+        bool playing,
+        int titleFontHeight = -1)
     {
         const int margin = hdLayout ? 8 : 4;
         const int actionGap = std::max(2, margin / 2);
         const int contentGap = hdLayout ? 2 : 5;
         const int contentX = hdLayout ? 24 : 5;
-        const int applyY = (contentGap + buttonHeight) * 10;
         const int applyWidth = hdLayout ? 170 : 115;
         const int advancedWidth = hdLayout ? 220 : 160;
         const int windowWidth = hdLayout ? std::min(canvasWidth - 32, 680) : canvasWidth / 2;
         const int oldHeight = hdLayout ? std::min(canvasHeight - 32, 680) : canvasHeight / 2;
-        const int applyBottom = applyY + buttonHeight;
         const int actionRows = playing ? 2 : 1;
-        const int requiredHeight = applyBottom + margin + actionRows * buttonHeight
-            + (actionRows - 1) * actionGap + margin;
+        const int availableHeight = canvasHeight - 8;
+        const int preferredContentTop = buttonHeight + contentGap;
+        const int measuredTitleFontHeight = titleFontHeight >= 0
+            ? titleFontHeight
+            : std::max(0, buttonHeight - (hdLayout ? 10 : 4));
+        const int preferredApplyY = (contentGap + buttonHeight) * 10;
+        const int preferredHeight = preferredApplyY + buttonHeight + margin
+            + actionRows * buttonHeight + (actionRows - 1) * actionGap + margin;
+        const bool compact = hdLayout && preferredHeight > availableHeight;
+        const int minimumContentTop = 2 + measuredTitleFontHeight + 2;
+        const int contentTop = compact
+            ? std::max(28, minimumContentTop)
+            : preferredContentTop;
+        const int compactActionGap = compact ? 2 : actionGap;
+        const int applyGap = compact ? 2 : margin;
+        const int bottomMargin = compact ? 4 : margin;
+        const int applyY = compact
+            ? contentTop + 9 * (buttonHeight + contentGap)
+            : preferredApplyY;
+        const int requiredHeight = applyY + buttonHeight + applyGap
+            + actionRows * buttonHeight + (actionRows - 1) * compactActionGap + bottomMargin;
         const int windowHeight = std::min(canvasHeight - 8, std::max(oldHeight, requiredHeight));
 
         OptionsMenuLayout result;
@@ -44,6 +65,14 @@ struct OptionsMenuLayout {
             (canvasHeight - windowHeight) / 2,
             windowWidth,
             windowHeight
+        );
+        result.contentTop = contentTop;
+        result.contentGap = contentGap;
+        result.speedLabel = cRectangle(
+            16,
+            contentTop + 2 * (buttonHeight + contentGap),
+            122,
+            buttonHeight
         );
         result.apply = cRectangle(
             contentX,
@@ -69,7 +98,7 @@ struct OptionsMenuLayout {
         const int x1 = 2 * margin + columnWidth;
         const int x2 = 3 * margin + 2 * columnWidth;
         const int lastWidth = windowWidth - margin - x2;
-        const int bottomY = windowHeight - margin - buttonHeight;
+        const int bottomY = windowHeight - bottomMargin - buttonHeight;
         result.mainMenu = cRectangle(
             x1,
             bottomY,
@@ -90,7 +119,7 @@ struct OptionsMenuLayout {
         );
 
         if (playing) {
-            const int upperY = bottomY - actionGap - buttonHeight;
+            const int upperY = bottomY - compactActionGap - buttonHeight;
             result.save = cRectangle(
                 x0,
                 upperY,

@@ -29,6 +29,21 @@ class PlanTest(unittest.TestCase):
     def test_interleave_takes_one_item_from_each_chain_in_turn(self):
         self.assertEqual(run_all.interleave([[1, 2, 3], [4], [5, 6]]), [1, 4, 5, 2, 6, 3])
 
+    def test_audit_log_plan_uses_scene_scope_from_the_plan(self):
+        combos_in_plan = [
+            combos.legacy_combo("1024x768/ru/hd"),
+            combos.parse_id("1024x768/ru/hd/r1w2"),
+        ]
+        scenes = [
+            {"id": "options-main", "game_screen": False},
+            {"id": "game-hud", "game_screen": True},
+        ]
+        self.assertEqual(run_all.audit_log_plan(combos_in_plan, scenes), [
+            {"combo": "1024x768/ru/hd", "scene": "options-main"},
+            {"combo": "1024x768/ru/hd", "scene": "game-hud"},
+            {"combo": "1024x768/ru/hd/r1w2", "scene": "game-hud"},
+        ])
+
 
 class SizeTest(unittest.TestCase):
     def test_forecast_scales_bytes_per_scene(self):
