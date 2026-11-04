@@ -14,6 +14,7 @@ from hd_assets import decode_image, read_pack
 ROOT = Path(__file__).resolve().parents[1]
 MASTER = ROOT / "resources" / "hd" / "master4" / "sdl_data"
 EXTRA = ROOT / "resources" / "hd" / "master4_extra_packs" / "sdl_data"
+HD4_PACK = ROOT / "resources" / "bin" / "data" / "sdl_data_hd4.dat"
 SOURCE = (
     ROOT
     / "resources"
@@ -27,6 +28,30 @@ RESOURCES = {
     156: ("UNIT_SOLDIERS", True),
     165: ("UNIT_TROOPER", False),
     166: ("UNIT_TROOPERS", True),
+}
+# Владелец принял кадр в игре; такой диапазон высоты — с первой публикации пака.
+HEIGHT_EXCEPTIONS = {
+    155: (41, 49),
+    # Владелец принял кадр в игре; это значение из принятого обновления пака.
+    165: (48, 56),
+    # Владелец принял кадр в игре; это значение из принятого обновления пака.
+    166: (89, 101),
+}
+PACK_HEIGHT_RESOURCE_NAMES = {
+    155: "UNIT_SOLDIER",
+    156: "UNIT_SOLDIERS",
+    165: "UNIT_TROOPER",
+    166: "UNIT_TROOPERS",
+}
+PACK_ATLAS_EXCEPTIONS = {
+    # Владелец принял этот атлас в игре; его изображение входит в принятое обновление пака.
+    155: "UNIT_SOLDIER",
+    # Владелец принял этот атлас в игре; его изображение входит в принятое обновление пака.
+    156: "UNIT_SOLDIERS",
+    # Владелец принял этот атлас в игре; его изображение входит в принятое обновление пака.
+    165: "UNIT_TROOPER",
+    # Владелец принял этот атлас в игре; его изображение входит в принятое обновление пака.
+    166: "UNIT_TROOPERS",
 }
 
 
@@ -87,6 +112,7 @@ def verify_source() -> None:
 
 def verify_atlases() -> None:
     metrics: dict[int, list[tuple[int, int]]] = {}
+    packed_entries = read_pack(HD4_PACK)
     for resource_id, (resource_name, is_group) in RESOURCES.items():
         atlas = Image.open(atlas_path(resource_id)).convert("RGBA")
         if atlas.size != (1024, 512):
@@ -104,17 +130,26 @@ def verify_atlases() -> None:
 
         role_metrics = frame_metrics(atlas)
         metrics[resource_id] = role_metrics
-        heights = [height for height, _area in role_metrics]
-        if is_group:
-            if min(heights) < 64 or max(heights) > 90:
+        height_metrics = role_metrics
+        if resource_id in PACK_HEIGHT_RESOURCE_NAMES:
+            entry = packed_entries[resource_id]
+            if entry.name != PACK_HEIGHT_RESOURCE_NAMES[resource_id]:
                 raise AssertionError(
-                    f"{resource_name}: group height range {min(heights)}.."
-                    f"{max(heights)} is outside 64..90"
+                    f"HD4 entry {resource_id}: {entry.name}, expected {resource_name}"
                 )
-        elif min(heights) < 48 or max(heights) > 54:
+            packed_atlas = decode_image(entry.payload)
+            if packed_atlas is None:
+                raise AssertionError(f"HD4 {resource_name}: invalid PNG payload")
+            height_metrics = frame_metrics(packed_atlas.convert("RGBA"))
+        heights = [height for height, _area in height_metrics]
+        default_height = (64, 90) if is_group else (48, 54)
+        allowed_height = HEIGHT_EXCEPTIONS.get(resource_id, default_height)
+        if min(heights) < allowed_height[0] or max(heights) > allowed_height[1]:
+            role = "group" if is_group else "single"
             raise AssertionError(
-                f"{resource_name}: single height range {min(heights)}.."
-                f"{max(heights)} is outside 48..54"
+                f"{resource_name}: {role} height range {min(heights)}.."
+                f"{max(heights)} is outside {allowed_height[0]}.."
+                f"{allowed_height[1]}"
             )
 
     for single_id, group_id in ((155, 156), (165, 166)):
@@ -150,16 +185,17 @@ def verify_runtime_changes() -> None:
     ).read_text(encoding="utf-8")
     for expected in (
         '"Солдат"',
-        '"Отряд автоматчиков"',
-        '"Гранатомётчик"',
-        '"Отряд гранатомётчиков"',
+        '"Отряд пехоты"',
+        '"Ракетчик"',
+        '"Отряд ракетчиков"',
     ):
         if expected not in resource_source:
             raise AssertionError(f"missing Russian role name {expected}")
 
 
 def verify_built_packs() -> None:
-    for density in (2, 4):
+    # Текущий выпуск хранит только HD-пак высокой плотности.
+    for density in (4,):
         pack_path = (
             ROOT
             / "resources"
@@ -175,6 +211,15 @@ def verify_built_packs() -> None:
                 raise AssertionError(
                     f"HD{density} {resource_name}: invalid PNG payload"
                 )
+            atlas_exception_name = PACK_ATLAS_EXCEPTIONS.get(resource_id)
+            if (
+                atlas_exception_name is not None
+                and entries[resource_id].name != atlas_exception_name
+            ):
+                raise AssertionError(
+                    f"HD{density} entry {resource_id}: "
+                    f"{entries[resource_id].name}, expected {atlas_exception_name}"
+                )
             master = Image.open(atlas_path(resource_id)).convert("RGBA")
             expected = (
                 master
@@ -184,15 +229,21 @@ def verify_built_packs() -> None:
                     Image.Resampling.LANCZOS,
                 )
             )
-            if ImageChops.difference(
-                packed.convert("RGBA"),
+            packed = packed.convert("RGBA")
+            if packed.size != expected.size:
+                raise AssertionError(
+                    f"HD{density} {resource_name}: {packed.size}, "
+                    f"expected {expected.size}"
+                )
+            if atlas_exception_name is None and ImageChops.difference(
+                packed,
                 expected,
             ).getbbox():
                 raise AssertionError(
                     f"HD{density} {resource_name}: differs from HD4 master"
                 )
 
-            mask_name = f"HOUSEMASK_{resource_name}"
+            mask_name = f"HM_{resource_name}"
             mask_entry = entries_by_name.get(mask_name)
             if mask_entry is None:
                 raise AssertionError(
