@@ -9,7 +9,6 @@ private:
     bool drawFlash;
     int flashes;
 
-    int TIMER_animation;
 
 public:
     cHeavyFactory();

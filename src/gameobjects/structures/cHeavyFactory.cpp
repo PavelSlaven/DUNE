@@ -11,7 +11,6 @@ cHeavyFactory::cHeavyFactory()
     // other variables (class specific)
     drawFlash = false;
     flashes = 0;
-    TIMER_animation = 0;
 }
 
 int cHeavyFactory::getType() const
@@ -34,14 +33,6 @@ void cHeavyFactory::think_animation_unitDeploy()
         return; // do nothing when not animating
     }
 
-    if (iFrame < 10) {
-        TIMER_animation++;
-        if (TIMER_animation > 35) {
-            TIMER_animation = 0;
-            iFrame++;
-        }
-    }
-
     if (flashes > 0) {
         TIMER_flag++;
         if (TIMER_flag > 70) {
@@ -51,11 +42,6 @@ void cHeavyFactory::think_animation_unitDeploy()
         }
     }
     else {
-        TIMER_flag = 0;
-        drawFlash = false;
-    }
-
-    if (iFrame > 9) {
         setAnimating(false);
     }
 }
