@@ -2,6 +2,7 @@
 
 #include "d2tmc.h"
 #include "gameobjects/structures/cRefinery.h"
+#include "gameobjects/structures/cUnitFactory.h"
 #include "gameobjects/structures/cSpiceSilo.h"
 #include "gameobjects/structures/cWindTrap.h"
 #include "map/cMapCamera.h"
@@ -135,6 +136,39 @@ int cStructureUtils::findStructureToDeployUnit(cPlayer *pPlayer, int structureTy
     }
 
     return structureIdFound;
+}
+
+int cStructureUtils::findFactoryForFinishedUnit(cPlayer *pPlayer, int structureType)
+{
+    assert(pPlayer);
+    const int playerId = pPlayer->getId();
+    int primaryId = pPlayer->getPrimaryStructureForStructureType(structureType);
+    if (primaryId > -1) {
+        cAbstractStructure *primary = structure[primaryId];
+        if (!primary || !primary->isValid() || primary->getType() != structureType || !primary->belongsTo(playerId)) {
+            primaryId = -1;
+        }
+    }
+
+    std::vector<factory_pad::FactoryCandidate> candidates;
+    for (int i = 0; i < MAX_STRUCTURES; i++) {
+        cAbstractStructure *theStructure = structure[i];
+        if (!theStructure || !theStructure->isValid() || !theStructure->belongsTo(playerId) ||
+                theStructure->getType() != structureType) {
+            continue;
+        }
+        auto *factory = dynamic_cast<cUnitFactory *>(theStructure);
+        if (!factory) {
+            continue;
+        }
+        candidates.push_back({i, factory->isPadFree()});
+    }
+
+    const int chosen = factory_pad::chooseFactory(candidates, primaryId);
+    if (chosen > -1 && primaryId < 0) {
+        pPlayer->setPrimaryBuildingForStructureType(structureType, chosen);
+    }
+    return chosen;
 }
 
 /**

@@ -21,6 +21,7 @@
 
 class cTextDrawer;
 class SaveGameManager;
+class cUnitFactory;
 
 enum class eTransferType {
     NONE,                               // nothing to transfer
@@ -28,6 +29,8 @@ enum class eTransferType {
     NEW_LEAVE,                          // bring a new unit, and let the carryall go back (and die)
     PICKUP,                             // carry an existing unit, bring to new location
     DIE,                                // will die when reaching goal-cell (added for proper animation)
+    PAD_PICKUP_STAY,
+    PAD_PICKUP_LEAVE,
 };
 
 enum class eActionType {
@@ -110,6 +113,8 @@ public:
 
     // carryall stuff
     bool bCarryMe;		// carry this unit when moving it around?
+    bool bRollingOffFactoryPad;
+    int iRollingOffFactoryPadStructureId;
     int  iCarryAll;		// any carry-all that will pickup this unit... so this unit knows
     // it should wait when moving, etc, etc
 
@@ -159,6 +164,9 @@ public:
     int draw_x();
     int draw_y();
     cRectangle getVisualRectangle();
+    static cRectangle visualRectangleAt(int unitType, float x, float y);
+    static void drawSprites(int owner, int type, int bodyFacing, int headFacing, int frameIndex,
+                            const cRectangle &visual, bool drawTop);
 
     int pos_x();
     int pos_y();
@@ -447,6 +455,7 @@ public:
 
 private:
     friend class SaveGameManager;
+    friend class cUnitFactory;
     eActionType m_action;
     eUnitActionIntent intent;
 
@@ -536,6 +545,7 @@ private:
     void createSquishedParticle();
 
     void forgetAboutUnitToPickUp();
+    void pickUpUnitFromFactoryPad();
 
     void tellCarryAllThatWouldPickMeUpToForgetAboutMe() const;
 
@@ -594,5 +604,9 @@ int UNIT_find_harvest_spot(int id);
 int CARRYALL_FREE_FOR_TRANSFER(int iPlayer);
 
 int CARRYALL_TRANSFER(int iuID, int iGoal);
+
+int CARRYALL_NEAREST_FREE(int iPlayer, int iCell);
+
+int SPAWN_CARRYALL_AT_BORDER(int iPlayer, int iCell);
 
 int UNIT_FREE_AROUND_MOVE(int iUnit);

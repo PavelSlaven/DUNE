@@ -54,6 +54,7 @@ void cLightFactory::think_animation()
     cAbstractStructure::think_animation();
     cAbstractStructure::think_flag_new();
     think_animation_unitDeploy();
+    thinkPad();
 }
 
 void cLightFactory::think_guard()

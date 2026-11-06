@@ -1,15 +1,14 @@
 #pragma once
 
-#include "cAbstractStructure.h"
+#include "cUnitFactory.h"
 
-class cHeavyFactory : public cAbstractStructure {
+class cHeavyFactory : public cUnitFactory {
 private:
     void think_animation_unitDeploy();
 
     bool drawFlash;
     int flashes;
 
-    int TIMER_animation;
 
 public:
     cHeavyFactory();

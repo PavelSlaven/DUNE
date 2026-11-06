@@ -20,6 +20,7 @@
 #include "gameobjects/particles/cParticle.h"
 #include "gameobjects/projectiles/bullet.h"
 #include "gameobjects/structures/cStarPort.h"
+#include "gameobjects/structures/cUnitFactory.h"
 #include "map/cMapCamera.h"
 #include "map/cMapEditor.h"
 #include "map/MapGeometry.hpp"
@@ -96,6 +97,8 @@ void cUnit::init(int i)
     lastDroppedOffCell = -1;
 
     bCarryMe = false;        // carry this unit when moving it around?
+    bRollingOffFactoryPad = false;
+    iRollingOffFactoryPadStructureId = -1;
     iCarryAll = -1;        // any carry-all that will pickup this unit... so this unit knows
     // it should wait when moving, etc, etc
 
@@ -533,11 +536,19 @@ int cUnit::draw_y(int bmpHeight)
 
 cRectangle cUnit::getVisualRectangle()
 {
+    return visualRectangleAt(iType, posX, posY);
+}
+
+cRectangle cUnit::visualRectangleAt(int unitType, float x, float y)
+{
+    const s_UnitInfo &info = sUnitInfo[unitType];
+    const int offsetX = (TILESIZE_WIDTH_PIXELS - info.bmp_width) / 2;
+    const int offsetY = (TILESIZE_HEIGHT_PIXELS - info.bmp_height) / 2;
     return {
-        draw_x(),
-        draw_y(),
-        static_cast<int>(std::lround(mapCamera->factorZoomLevel(getBmpWidth()))),
-        static_cast<int>(std::lround(mapCamera->factorZoomLevel(getBmpHeight())))
+        mapCamera->getWindowXPositionWithOffset(static_cast<int>(x), offsetX),
+        mapCamera->getWindowYPositionWithOffset(static_cast<int>(y), offsetY),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(info.bmp_width))),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(info.bmp_height)))
     };
 }
 
@@ -755,31 +766,21 @@ void cUnit::draw_path() const
     }
 }
 
-void cUnit::draw()
+void cUnit::drawSprites(int owner, int type, int bodyFacing, int headFacing, int frameIndex,
+                        const cRectangle &visual, bool drawTop)
 {
-    if (isHidden()) {
-        // temp hitpoints filled, meaning it is not visible (but not dead). Ie, it is being repaired, or transfered
-        // by carry-all
-        return;
-    }
-
-    if (isSandworm()) {
-        return;
-    }
-
-    s_UnitInfo &unitType = getUnitInfo();
+    s_UnitInfo &unitType = sUnitInfo[type];
     const int bmp_width = unitType.bmp_width;
     const int bmp_height = unitType.bmp_height;
 
     // the multiplier we will use to draw the unit
-    const int bmp_head = convertAngleToDrawIndex(iHeadFacing);
-    const int bmp_body = convertAngleToDrawIndex(iBodyFacing);
+    const int bmp_head = convertAngleToDrawIndex(headFacing);
+    const int bmp_body = convertAngleToDrawIndex(bodyFacing);
 
     // draw body first
-    cPlayer &cPlayer = players[this->iPlayer];
+    cPlayer &cPlayer = players[owner];
 
-    Texture *shadow = cPlayer.getUnitShadowBitmap(iType);
-    const cRectangle visual = getVisualRectangle();
+    Texture *shadow = cPlayer.getUnitShadowBitmap(type);
     const int roundedScaledWidth = visual.getWidth();
     const int roundedScaledHeight = visual.getHeight();
     const int visualX = visual.getX();
@@ -799,14 +800,14 @@ void cUnit::draw()
             unitType.hd_frame_height,
             shadow->density
         );
-        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_body, iFrame);
+        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_body, frameIndex);
         if (frame.usesHdFrame) {
             UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
                 visualLayout,
                 cameraZoom
             );
-            if (iType == CARRYALL) {
+            if (type == CARRYALL) {
                 destination.y += 24.0F;
             }
             renderDrawer->renderStrechSpriteF(
@@ -823,7 +824,7 @@ void cUnit::draw()
                 roundedScaledWidth,
                 roundedScaledHeight
             };
-            if (iType == CARRYALL) {
+            if (type == CARRYALL) {
                 dest = {
                     visualX,
                     visualY + 24,
@@ -841,7 +842,7 @@ void cUnit::draw()
     }
 
     // Draw BODY
-    Texture *bitmap = cPlayer.getUnitBitmap(iType);
+    Texture *bitmap = cPlayer.getUnitBitmap(type);
     if (bitmap) {
         const UnitSpriteFrame frame = resolveUnitSpriteFrame(
             bmp_width,
@@ -850,7 +851,7 @@ void cUnit::draw()
             unitType.hd_frame_height,
             bitmap->density
         );
-        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_body, iFrame);
+        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_body, frameIndex);
         if (frame.usesHdFrame) {
             const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
@@ -872,13 +873,13 @@ void cUnit::draw()
         }
     }
     else {
-        log(std::format("unit of iType [{}] did not have a bitmap!?", iType));
+        logbook(std::format("unit of iType [{}] did not have a bitmap!?", type));
     }
 
 
     // Draw TOP
-    Texture *top = cPlayer.getUnitTopBitmap(iType);
-    if (top && iHitPoints > -1) {
+    Texture *top = cPlayer.getUnitTopBitmap(type);
+    if (top && drawTop) {
         const UnitSpriteFrame frame = resolveUnitSpriteFrame(
             bmp_width,
             bmp_height,
@@ -886,7 +887,7 @@ void cUnit::draw()
             unitType.hd_frame_height,
             top->density
         );
-        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_head, iFrame);
+        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_head, frameIndex);
         if (frame.usesHdFrame) {
             const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
@@ -907,6 +908,25 @@ void cUnit::draw()
             );
         }
     }
+}
+
+void cUnit::draw()
+{
+    if (isHidden()) {
+        // temp hitpoints filled, meaning it is not visible (but not dead). Ie, it is being repaired, or transfered
+        // by carry-all
+        return;
+    }
+
+    if (isSandworm()) {
+        return;
+    }
+
+    const cRectangle visual = getVisualRectangle();
+    drawSprites(iPlayer, iType, iBodyFacing, iHeadFacing, iFrame, visual, iHitPoints > -1);
+
+    const int visualX = visual.getX();
+    const int visualY = visual.getY();
 
     // when we want to be picked up..
     if (bCarryMe) {
@@ -1218,6 +1238,10 @@ bool cUnit::isSandworm() const
  */
 void cUnit::think()
 {
+    if (bRollingOffFactoryPad) {
+        return;
+    }
+
     thinkActionAgnostic();
 
     // Think attack style
@@ -1688,6 +1712,12 @@ void cUnit::thinkFast_move_airUnit()
             }
         }
 
+        if (m_transferType == eTransferType::PAD_PICKUP_STAY ||
+                m_transferType == eTransferType::PAD_PICKUP_LEAVE) {
+            pickUpUnitFromFactoryPad();
+            return;
+        }
+
         // transfer is to create a new unit
         if (m_transferType == eTransferType::NEW_LEAVE ||
                 m_transferType == eTransferType::NEW_STAY) {
@@ -1923,6 +1953,51 @@ void cUnit::forgetAboutUnitToPickUp()  // forget about this
     iUnitID = -1;
 }
 
+void cUnit::pickUpUnitFromFactoryPad()
+{
+    const bool leaveAfterwards = m_transferType == eTransferType::PAD_PICKUP_LEAVE;
+
+    cUnitFactory *factory = nullptr;
+    const int structureId = global_map.getCellIdStructuresLayer(iCell);
+    if (structureId > -1 && structure[structureId]) {
+        factory = dynamic_cast<cUnitFactory *>(structure[structureId]);
+    }
+
+    int unitType = -1;
+    if (factory && factory->getOwner() == iPlayer) {
+        unitType = factory->takeUnitForCarryall(iID);
+    }
+
+    if (unitType < 0) {
+        if (leaveAfterwards) {
+            m_transferType = eTransferType::DIE;
+            setGoalCell(iFindCloseBorderCell(iCell));
+        }
+        else {
+            m_transferType = eTransferType::NONE;
+            setGoalCell(iCell);
+        }
+        return;
+    }
+
+    iNewUnitType = unitType;
+    m_transferType = leaveAfterwards ? eTransferType::NEW_LEAVE : eTransferType::NEW_STAY;
+
+    int dropCell = factory->getRallyPoint();
+    if (dropCell < 0) {
+        updateCellXAndY();
+        dropCell = findNewDropLocation(unitType, iCell);
+    }
+    if (dropCell < 0) {
+        dropCell = iCell;
+    }
+    setGoalCell(dropCell);
+    iBringTarget = iGoalCell;
+    TIMER_movedelay = 300;
+
+    cParticle::create(pos_x() + getBmpWidth() / 2, pos_y() + getBmpHeight() / 2, D2TM_PARTICLE_CARRYPUFF, -1, -1);
+}
+
 cUnit &cUnit::getUnitToPickupOrDrop() const
 {
     assert(iUnitID > -1 && "cUnit::getUnitToPickupOrDrop() called for invalid iUnitIDWithinStructure!");
@@ -1984,6 +2059,14 @@ void cUnit::carryall_order(int iuID, eTransferType transferType, int iBring, int
 
         bPickedUp = false;
         // DONE!
+    }
+    else if (transferType == eTransferType::PAD_PICKUP_STAY || transferType == eTransferType::PAD_PICKUP_LEAVE) {
+        m_transferType = transferType;
+        setGoalCell(iBring);
+        iBringTarget = iGoalCell;
+        iUnitID = -1;
+        iNewUnitType = -1;
+        bPickedUp = false;
     }
     else if (transferType == eTransferType::PICKUP && iuID > -1) {
         // the carryall must pickup the unit, and then bring it to the iBring stuff
@@ -3606,6 +3689,10 @@ void cUnit::thinkFast()
 {
     thinkFast_position();
 
+    if (bRollingOffFactoryPad) {
+        return;
+    }
+
     // aircraft
     if (isAirbornUnit()) {
         thinkFast_move_airUnit();
@@ -4813,6 +4900,50 @@ int CARRYALL_TRANSFER(int iuID, int iGoal)
         cUnit.carryall_order(iuID, eTransferType::PICKUP, iGoal, -1);
     }
     return carryAllUnitId;
+}
+
+int CARRYALL_NEAREST_FREE(int iPlayer, int iCell)
+{
+    int nearestId = -1;
+    double nearestDistance = 0;
+    for (int i = 0; i < MAX_UNITS; i++) {
+        cUnit &candidate = unit[i];
+        if (!candidate.isValid()) continue;
+        if (candidate.iPlayer != iPlayer) continue;
+        if (candidate.iType != CARRYALL) continue;
+        if (candidate.m_transferType != eTransferType::NONE) continue;
+        if (candidate.isHidden()) continue;
+
+        const double distance = global_map.distance(candidate.getCell(), iCell);
+        if (nearestId < 0 || distance < nearestDistance) {
+            nearestId = i;
+            nearestDistance = distance;
+        }
+    }
+    return nearestId;
+}
+
+int SPAWN_CARRYALL_AT_BORDER(int iPlayer, int iCell)
+{
+    int startCell = iFindCloseBorderCell(iCell);
+    if (startCell < 0) {
+        return -1;
+    }
+
+    const int carryallId = UNIT_CREATE(startCell, CARRYALL, iPlayer, true, false);
+    if (carryallId < 0) {
+        return -1;
+    }
+
+    const int facing = faceAngle(fDegrees(global_map.getCellX(startCell), global_map.getCellY(startCell),
+                                          global_map.getCellX(iCell), global_map.getCellY(iCell)));
+    cUnit &carryall = unit[carryallId];
+    carryall.iBodyShouldFace = facing;
+    carryall.iBodyFacing = facing;
+    carryall.iHeadShouldFace = facing;
+    carryall.iHeadFacing = facing;
+    carryall.carryall_order(-1, eTransferType::PAD_PICKUP_LEAVE, iCell, -1);
+    return carryallId;
 }
 
 int UNIT_FREE_AROUND_MOVE(int iUnit)

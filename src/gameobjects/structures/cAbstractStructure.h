@@ -114,6 +114,8 @@ public:
 
     void die();                       // die
 
+    virtual void releasePad() {}
+
     // drawing
     int iDrawX();
     int iDrawY();

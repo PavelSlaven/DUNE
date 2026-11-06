@@ -8,6 +8,7 @@
 #include "gameobjects/structures/cGunTurret.h"
 #include "gameobjects/structures/cRefinery.h"
 #include "gameobjects/structures/cRepairFacility.h"
+#include "gameobjects/structures/cUnitFactory.h"
 #include "gameobjects/structures/cRocketTurret.h"
 #include "gameobjects/structures/cWindTrap.h"
 #include "gameobjects/units/cUnit.h"
@@ -240,6 +241,9 @@ void cStructureDrawer::drawStructureForLayer(cAbstractStructure *structure, int 
             }
             else {
                 drawStructureAnimation(structure);
+                if (auto *factory = dynamic_cast<cUnitFactory *>(structure)) {
+                    factory->drawUnitOnPad();
+                }
             }
             bool drewHdHouseMarker = false;
             drewHdHouseMarker = drawHdRefineryFlag(structure);

@@ -169,6 +169,8 @@ int cAbstractStructure::getRange()
 // this structure dies
 void cAbstractStructure::die()
 {
+    releasePad();
+
     // selected structure
     // TODO: remove this, based on events
     cPlayer *pPlayer = getPlayer();
@@ -707,6 +709,8 @@ bool cAbstractStructure::belongsTo(const cPlayer *other) const
  */
 void cAbstractStructure::getsCapturedBy(cPlayer *pPlayer)
 {
+    releasePad();
+
     getPlayer()->decreaseStructureAmount(getType());
     iPlayer = pPlayer->getId();
     pPlayer->increaseStructureAmount(getType());
