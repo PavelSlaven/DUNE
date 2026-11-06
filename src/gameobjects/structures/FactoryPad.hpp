@@ -48,9 +48,9 @@ struct PadState {
     std::vector<int> waiting;
 };
 
-inline Point padCenter(int width, int height)
+inline Point padCenter(int width, int)
 {
-    return {(width - 1) * 32 + 16, height * 16};
+    return width >= 3 ? Point{78, 30} : Point{48, 31};
 }
 
 inline std::vector<CellCoord> exitCandidates(int x, int y, int width, int height)

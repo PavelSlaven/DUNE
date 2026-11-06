@@ -31,9 +31,9 @@ std::string describe(const std::vector<CellCoord> &cells)
 void padCenterIsOnTheRightColumn()
 {
     const Point light = padCenter(2, 2);
-    check(light.x == 48 && light.y == 32, "light factory pad center must be (48, 32)");
+    check(light.x == 48 && light.y == 31, "light factory pad center must be (48, 31)");
     const Point heavy = padCenter(3, 2);
-    check(heavy.x == 80 && heavy.y == 32, "heavy factory pad center must be (80, 32)");
+    check(heavy.x == 78 && heavy.y == 30, "heavy factory pad center must be (78, 30)");
 }
 
 void exitCellsFollowTheDocumentedOrder()

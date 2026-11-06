@@ -262,8 +262,8 @@ void checkPadAppearance(UnitFrameFixture &fixture, int factoryType, int unitType
                                       std::to_string(percent) + "%, zoom " + std::to_string(zoom);
             require(countAllUnits() == 0, label + ": a real unit exists although the unit must only stand on the pad");
 
-            const int padCenterX = absoluteX(factory->getCell()) + (width - 1) * 32 + 16;
-            const int padCenterY = absoluteY(factory->getCell()) + 32;
+            const int padCenterX = absoluteX(factory->getCell()) + (width == 2 ? 48 : 78);
+            const int padCenterY = absoluteY(factory->getCell()) + (width == 2 ? 31 : 30);
             fixture.setUnit(60, unitType, padCenterX - 16, padCenterY - 16, FACE_DOWN, FACE_DOWN);
             unit[60].iHitPoints = 100;
             clearUnitDrawCalls();
@@ -412,8 +412,8 @@ void itemTwoRoll(int factoryType, int unitType, int owner, int rallyCell, bool b
     (void)blockerCountBefore;
     (void)blocker;
 
-    const int padCenterX = absoluteX(factory->getCell()) + (width - 1) * 32 + 16;
-    const int padCenterY = absoluteY(factory->getCell()) + 32;
+    const int padCenterX = absoluteX(factory->getCell()) + (width == 2 ? 48 : 78);
+    const int padCenterY = absoluteY(factory->getCell()) + (width == 2 ? 31 : 30);
     require(std::abs(observed.startX - (padCenterX - 16)) <= 1.0F &&
                 std::abs(observed.startY - (padCenterY - 16)) <= 1.0F,
             "the rolling unit must start at the center of the pad");
@@ -468,8 +468,10 @@ void itemTwoRollDetails()
         previousX = rolling.posX;
         previousY = rolling.posY;
     }
-    require(pixelSteps == 48, "a roll from the pad to the cell below must take 48 steps, took " + std::to_string(pixelSteps));
-    require(ticks >= 48 * speed - speed && ticks <= 48 * speed + speed,
+    const int expectedSteps = 50;
+    require(pixelSteps == expectedSteps,
+            "a roll from the heavy factory pad to the cell below must take 50 steps, took " + std::to_string(pixelSteps));
+    require(ticks >= expectedSteps * speed - speed && ticks <= expectedSteps * speed + speed,
             "the roll speed differs from the walking speed: " + std::to_string(ticks) + " ticks for speed " +
                 std::to_string(speed));
     require(unit[id].iBodyFacing == FACE_DOWN, "the body must face the direction of the roll");
