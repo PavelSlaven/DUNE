@@ -752,6 +752,140 @@ void itemFive()
                 ", light " + std::to_string(light.toggles));
 }
 
+// ---------------------------------------------------------------------------
+
+constexpr int FlickerTicksPerFrame = 41;
+
+struct BuilderScope {
+    int owner;
+    cItemBuilder *builder;
+    cBuildingListItem item;
+
+    BuilderScope(int ownerId, int unitType) :
+        owner(ownerId),
+        builder(new cItemBuilder(&players[ownerId], nullptr)),
+        item(unitType, sUnitInfo[unitType], 0)
+    {
+        players[owner].itemBuilder = builder;
+        builder->m_items[0] = &item;
+        item.setIsBuilding(true);
+    }
+
+    ~BuilderScope()
+    {
+        players[owner].itemBuilder = nullptr;
+        delete builder;
+    }
+
+    BuilderScope(const BuilderScope &) = delete;
+    BuilderScope &operator=(const BuilderScope &) = delete;
+};
+
+void itemSevenSingleFactory(int factoryType, int unitType)
+{
+    resetWorld();
+    cAbstractStructure *factory = placeFactory(factoryType, FirstFactoryId, FactoryX, FactoryY, HUMAN);
+    useCamera(ScreenWidth, ScreenHeight, 1.0F, 0.0F, 0.0F);
+    BuilderScope scope(HUMAN, unitType);
+    for (int tick = 1; tick <= FlickerTicksPerFrame * 16; ++tick) {
+        tickWorld();
+        const int expected = (tick / FlickerTicksPerFrame) % 7;
+        require(factory->getFrame() == expected,
+                "flicker frame at tick " + std::to_string(tick) + " must be " + std::to_string(expected) +
+                    ", is " + std::to_string(factory->getFrame()));
+    }
+    scope.item.setIsBuilding(false);
+    tickWorld();
+    require(factory->getFrame() == 0, "the frame must be 0 on the tick after the building stopped");
+    tickWorld(FlickerTicksPerFrame * 3);
+    require(factory->getFrame() == 0, "the frame must stay 0 without a unit being built");
+}
+
+void itemSevenWrongType()
+{
+    resetWorld();
+    cAbstractStructure *heavy = placeFactory(HEAVYFACTORY, FirstFactoryId, FactoryX, FactoryY, HUMAN);
+    cAbstractStructure *light = placeFactory(LIGHTFACTORY, SecondFactoryId, 40, 40, HUMAN);
+    useCamera(ScreenWidth, ScreenHeight, 1.0F, 0.0F, 0.0F);
+    BuilderScope scope(HUMAN, TRIKE);
+    for (int tick = 1; tick <= FlickerTicksPerFrame * 3; ++tick) {
+        tickWorld();
+        require(heavy->getFrame() == 0, "a heavy factory must not flicker while a light factory unit is built");
+    }
+    require(light->getFrame() == 3, "the light factory must flicker while its unit is built");
+}
+
+void itemSevenChosenFactory()
+{
+    resetWorld();
+    cAbstractStructure *first = placeFactory(LIGHTFACTORY, FirstFactoryId, 10, 10, HUMAN);
+    cAbstractStructure *second = placeFactory(LIGHTFACTORY, SecondFactoryId, 40, 40, HUMAN);
+    useCamera(ScreenWidth, ScreenHeight, 1.0F, 0.0F, 0.0F);
+    BuilderScope scope(HUMAN, TRIKE);
+    for (int tick = 1; tick <= FlickerTicksPerFrame * 2; ++tick) {
+        tickWorld();
+        require(first->getFrame() == 0, "only the primary factory may flicker while its pad is free");
+    }
+    require(second->getFrame() == 2, "the primary factory must flicker");
+
+    finishUnit(HUMAN, TRIKE);
+    require(second->isAnimating(), "the finished unit must stand on the primary pad");
+    tickWorld(FlickerTicksPerFrame * 2);
+    require(second->getFrame() == 0 || first->getFrame() > 0,
+            "the flicker must move to the factory that would get the unit");
+    tickWorld();
+    require(second->getFrame() == 0, "the factory with a busy pad must stop flickering");
+    tickWorld(FlickerTicksPerFrame * 2);
+    require(first->getFrame() == 2, "the other factory with a free pad must flicker");
+}
+
+void itemSevenUnderStandingUnit()
+{
+    resetWorld();
+    cAbstractStructure *factory = placeFactory(LIGHTFACTORY, FirstFactoryId, FactoryX, FactoryY, HUMAN);
+    useCamera(ScreenWidth, ScreenHeight, 1.0F, 0.0F, 0.0F);
+    BuilderScope scope(HUMAN, TRIKE);
+    finishUnit(HUMAN, TRIKE);
+    require(factory->isAnimating(), "the finished unit must stand on the pad");
+    tickWorld(FlickerTicksPerFrame * 3);
+    require(factory->getFrame() == 3, "the flicker must go on under a standing unit");
+}
+
+void itemSevenDrawsTheFrame()
+{
+    resetWorld();
+    cAbstractStructure *factory = placeFactory(LIGHTFACTORY, FirstFactoryId, FactoryX, FactoryY, HUMAN);
+    useCamera(ScreenWidth, ScreenHeight, 1.0F, 0.0F, 0.0F);
+    BuilderScope scope(HUMAN, TRIKE);
+    tickWorld(FlickerTicksPerFrame * 3);
+    require(factory->getFrame() == 3, "the flicker did not reach frame 3");
+
+    GameContext context;
+    auto graphics = std::make_unique<GraphicsContext>();
+    graphics->gfxdata = gfxdata;
+    context.setGraphicsContext(std::move(graphics));
+    DrawerAccess drawer(&context);
+    clearUnitDrawCalls();
+    drawer.drawFactoryLayer(factory);
+    bool found = false;
+    for (const UnitDrawCall &call : unitDrawCalls()) {
+        if (call.texture == nullptr && call.source.getY() == 3 * 64) {
+            found = true;
+        }
+    }
+    require(found, "the factory picture must be drawn from the frame of the flicker");
+}
+
+void itemSeven()
+{
+    itemSevenSingleFactory(LIGHTFACTORY, TRIKE);
+    itemSevenSingleFactory(HEAVYFACTORY, TANK);
+    itemSevenWrongType();
+    itemSevenChosenFactory();
+    itemSevenUnderStandingUnit();
+    itemSevenDrawsTheFrame();
+}
+
 using Scenario = std::function<void()>;
 
 bool run(const std::string &name, const Scenario &scenario)
@@ -784,6 +918,7 @@ int main()
         passed &= run("item 4, new carry-all", [] { itemFourNewCarryall(); });
         passed &= run("item 4, carry-all released", [] { itemFourReleased(); });
         passed &= run("item 5, heavy factory animation", [] { itemFive(); });
+        passed &= run("item 7, flicker while a unit is built", [] { itemSeven(); });
     }
     catch (const std::exception &error) {
         std::cerr << "factory_pad_engine: " << error.what() << '\n';
