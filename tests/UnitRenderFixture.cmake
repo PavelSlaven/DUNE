@@ -57,6 +57,7 @@ set_source_files_properties(
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/MouseCellScanTests.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/MouseCellRefreshTests.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/PlacementRuleTests.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/FactoryPadEngineTests.cpp"
     PROPERTIES COMPILE_OPTIONS "$<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang>:-fno-access-control>"
 )
 
@@ -128,3 +129,4 @@ add_unit_frame_test(mouse_cell_scan_tests mouse_cell_scan MouseCellScanTests.cpp
 add_unit_frame_test(mouse_cell_refresh_tests mouse_cell_refresh MouseCellRefreshTests.cpp recorded)
 add_unit_frame_test(mouse_click_init_tests mouse_click_init MouseClickInitTests.cpp recorded)
 add_unit_frame_test(placement_rule_tests placement_rule PlacementRuleTests.cpp recorded)
+add_unit_frame_test(factory_pad_engine_tests factory_pad_engine FactoryPadEngineTests.cpp recorded)

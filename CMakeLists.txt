@@ -307,6 +307,17 @@ if(BUILD_TESTING)
     add_test(NAME world_object_scale_selection COMMAND world_object_scale_tests)
 
     add_executable(
+        factory_pad_tests
+        tests/FactoryPadTests.cpp
+    )
+    target_include_directories(
+        factory_pad_tests
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    add_test(NAME factory_pad_logic COMMAND factory_pad_tests)
+
+    add_executable(
         hd_presentation_tests
         tests/HdPresentationTests.cpp
     )
