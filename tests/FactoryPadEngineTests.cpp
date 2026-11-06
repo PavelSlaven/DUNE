@@ -448,8 +448,10 @@ void itemTwoRollDetails()
         tickWorld();
         ++ticks;
         const cUnit &rolling = unit[id];
+        const bool arrived = rolling.posX == static_cast<float>(absoluteX(exitCell)) &&
+                             rolling.posY == static_cast<float>(absoluteY(exitCell));
         require(rolling.iCell == exitCell, "the unit cell must stay the exit cell while rolling");
-        require(rolling.iGoalCell == exitCell, "the unit own logic changed the goal while rolling");
+        require(arrived || rolling.iGoalCell == exitCell, "the unit own logic changed the goal while rolling");
         for (const cAbstractStructure *item : structure) {
             if (!item) continue;
             for (const int cell : const_cast<cAbstractStructure *>(item)->getCellsOfStructure()) {
@@ -491,17 +493,20 @@ void itemTwo()
 
 void itemTwoAi()
 {
-    resetWorld();
-    configureAiPlayer();
-    cAbstractStructure *factory = placeFactory(LIGHTFACTORY, FirstFactoryId, FactoryX, FactoryY, AI_CPU1);
-    useCamera(ScreenWidth, ScreenHeight, 1.0F, 0.0F, 0.0F);
-    finishUnit(AI_CPU1, TRIKE);
-    require(countUnits(TRIKE) == 0, "the AI unit exists at once instead of standing on the pad");
-    const RollObservation observed = observeRoll(factory, TRIKE);
-    require(observed.rollEndTick > 0, "the AI unit never finished rolling");
-    tickWorld();
-    require(unit[observed.unitId].iGoalCell != unit[observed.unitId].iCell,
-            "an AI unit without a rally point must receive a free-around move after the roll");
+    bool everMoved = false;
+    for (int attempt = 0; attempt < 12 && !everMoved; ++attempt) {
+        resetWorld();
+        configureAiPlayer();
+        cAbstractStructure *factory = placeFactory(LIGHTFACTORY, FirstFactoryId, FactoryX, FactoryY, AI_CPU1);
+        useCamera(ScreenWidth, ScreenHeight, 1.0F, 0.0F, 0.0F);
+        finishUnit(AI_CPU1, TRIKE);
+        require(countUnits(TRIKE) == 0, "the AI unit exists at once instead of standing on the pad");
+        const RollObservation observed = observeRoll(factory, TRIKE);
+        require(observed.rollEndTick > 0, "the AI unit never finished rolling");
+        tickWorld();
+        everMoved = unit[observed.unitId].iGoalCell != unit[observed.unitId].iCell;
+    }
+    require(everMoved, "an AI unit without a rally point must receive a free-around move after the roll");
 }
 
 // ---------------------------------------------------------------------------

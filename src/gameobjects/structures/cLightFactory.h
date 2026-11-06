@@ -1,8 +1,8 @@
 #pragma once
 
-#include "cAbstractStructure.h"
+#include "cUnitFactory.h"
 
-class cLightFactory : public cAbstractStructure {
+class cLightFactory : public cUnitFactory {
 private:
     void think_animation_unitDeploy();
 

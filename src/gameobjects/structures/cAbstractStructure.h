@@ -114,6 +114,8 @@ public:
 
     void die();                       // die
 
+    virtual void releasePad() {}      // factories give up the unit pad when destroyed or captured
+
     // drawing
     int iDrawX();
     int iDrawY();

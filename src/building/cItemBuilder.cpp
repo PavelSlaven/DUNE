@@ -2,6 +2,7 @@
 
 #include "d2tmc.h"
 #include "gameobjects/structures/cAbstractStructure.h"
+#include "gameobjects/structures/cUnitFactory.h"
 #include "gameobjects/units/cUnit.h"
 #include "gameobjects/units/cReinforcements.h"
 #include "player/cPlayer.h"
@@ -400,6 +401,15 @@ void cItemBuilder::deployUnit(cBuildingListItem *item, int buildId) const
 {
     int structureTypeByItem = structureUtils.findStructureTypeByTypeOfList(item);
     assert(structureTypeByItem > -1);
+
+    if (structureTypeByItem == LIGHTFACTORY || structureTypeByItem == HEAVYFACTORY) {
+        const int factoryId = structureUtils.findFactoryForFinishedUnit(m_player, structureTypeByItem);
+        if (factoryId > -1) {
+            static_cast<cUnitFactory *>(structure[factoryId])->acceptReadyUnit(buildId);
+        }
+        return;
+    }
+
     int structureToDeployUnit = structureUtils.findStructureToDeployUnit(m_player, structureTypeByItem);
     int buildIdToProduce = buildId;
     if (structureToDeployUnit > -1) {

@@ -96,6 +96,7 @@ void cUnit::init(int i)
     lastDroppedOffCell = -1;
 
     bCarryMe = false;        // carry this unit when moving it around?
+    bRollingOffFactoryPad = false;
     iCarryAll = -1;        // any carry-all that will pickup this unit... so this unit knows
     // it should wait when moving, etc, etc
 
@@ -533,11 +534,19 @@ int cUnit::draw_y(int bmpHeight)
 
 cRectangle cUnit::getVisualRectangle()
 {
+    return visualRectangleAt(iType, posX, posY);
+}
+
+cRectangle cUnit::visualRectangleAt(int unitType, float x, float y)
+{
+    const s_UnitInfo &info = sUnitInfo[unitType];
+    const int offsetX = (TILESIZE_WIDTH_PIXELS - info.bmp_width) / 2;
+    const int offsetY = (TILESIZE_HEIGHT_PIXELS - info.bmp_height) / 2;
     return {
-        draw_x(),
-        draw_y(),
-        static_cast<int>(std::lround(mapCamera->factorZoomLevel(getBmpWidth()))),
-        static_cast<int>(std::lround(mapCamera->factorZoomLevel(getBmpHeight())))
+        mapCamera->getWindowXPositionWithOffset(static_cast<int>(x), offsetX),
+        mapCamera->getWindowYPositionWithOffset(static_cast<int>(y), offsetY),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(info.bmp_width))),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(info.bmp_height)))
     };
 }
 
@@ -755,31 +764,21 @@ void cUnit::draw_path() const
     }
 }
 
-void cUnit::draw()
+void cUnit::drawSprites(int owner, int type, int bodyFacing, int headFacing, int frameIndex,
+                        const cRectangle &visual, bool drawTop)
 {
-    if (isHidden()) {
-        // temp hitpoints filled, meaning it is not visible (but not dead). Ie, it is being repaired, or transfered
-        // by carry-all
-        return;
-    }
-
-    if (isSandworm()) {
-        return;
-    }
-
-    s_UnitInfo &unitType = getUnitInfo();
+    s_UnitInfo &unitType = sUnitInfo[type];
     const int bmp_width = unitType.bmp_width;
     const int bmp_height = unitType.bmp_height;
 
     // the multiplier we will use to draw the unit
-    const int bmp_head = convertAngleToDrawIndex(iHeadFacing);
-    const int bmp_body = convertAngleToDrawIndex(iBodyFacing);
+    const int bmp_head = convertAngleToDrawIndex(headFacing);
+    const int bmp_body = convertAngleToDrawIndex(bodyFacing);
 
     // draw body first
-    cPlayer &cPlayer = players[this->iPlayer];
+    cPlayer &cPlayer = players[owner];
 
-    Texture *shadow = cPlayer.getUnitShadowBitmap(iType);
-    const cRectangle visual = getVisualRectangle();
+    Texture *shadow = cPlayer.getUnitShadowBitmap(type);
     const int roundedScaledWidth = visual.getWidth();
     const int roundedScaledHeight = visual.getHeight();
     const int visualX = visual.getX();
@@ -799,14 +798,14 @@ void cUnit::draw()
             unitType.hd_frame_height,
             shadow->density
         );
-        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_body, iFrame);
+        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_body, frameIndex);
         if (frame.usesHdFrame) {
             UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
                 visualLayout,
                 cameraZoom
             );
-            if (iType == CARRYALL) {
+            if (type == CARRYALL) {
                 destination.y += 24.0F;
             }
             renderDrawer->renderStrechSpriteF(
@@ -823,7 +822,7 @@ void cUnit::draw()
                 roundedScaledWidth,
                 roundedScaledHeight
             };
-            if (iType == CARRYALL) {
+            if (type == CARRYALL) {
                 dest = {
                     visualX,
                     visualY + 24,
@@ -841,7 +840,7 @@ void cUnit::draw()
     }
 
     // Draw BODY
-    Texture *bitmap = cPlayer.getUnitBitmap(iType);
+    Texture *bitmap = cPlayer.getUnitBitmap(type);
     if (bitmap) {
         const UnitSpriteFrame frame = resolveUnitSpriteFrame(
             bmp_width,
@@ -850,7 +849,7 @@ void cUnit::draw()
             unitType.hd_frame_height,
             bitmap->density
         );
-        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_body, iFrame);
+        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_body, frameIndex);
         if (frame.usesHdFrame) {
             const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
@@ -872,13 +871,13 @@ void cUnit::draw()
         }
     }
     else {
-        log(std::format("unit of iType [{}] did not have a bitmap!?", iType));
+        logbook(std::format("unit of iType [{}] did not have a bitmap!?", type));
     }
 
 
     // Draw TOP
-    Texture *top = cPlayer.getUnitTopBitmap(iType);
-    if (top && iHitPoints > -1) {
+    Texture *top = cPlayer.getUnitTopBitmap(type);
+    if (top && drawTop) {
         const UnitSpriteFrame frame = resolveUnitSpriteFrame(
             bmp_width,
             bmp_height,
@@ -886,7 +885,7 @@ void cUnit::draw()
             unitType.hd_frame_height,
             top->density
         );
-        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_head, iFrame);
+        const UnitSpriteRectangle source = unitSpriteSourceRectangle(frame, bmp_head, frameIndex);
         if (frame.usesHdFrame) {
             const UnitSpriteFloatRectangle destination = unitSpriteDestinationRectangle(
                 frame,
@@ -907,6 +906,25 @@ void cUnit::draw()
             );
         }
     }
+}
+
+void cUnit::draw()
+{
+    if (isHidden()) {
+        // temp hitpoints filled, meaning it is not visible (but not dead). Ie, it is being repaired, or transfered
+        // by carry-all
+        return;
+    }
+
+    if (isSandworm()) {
+        return;
+    }
+
+    const cRectangle visual = getVisualRectangle();
+    drawSprites(iPlayer, iType, iBodyFacing, iHeadFacing, iFrame, visual, iHitPoints > -1);
+
+    const int visualX = visual.getX();
+    const int visualY = visual.getY();
 
     // when we want to be picked up..
     if (bCarryMe) {
@@ -1218,6 +1236,10 @@ bool cUnit::isSandworm() const
  */
 void cUnit::think()
 {
+    if (bRollingOffFactoryPad) {
+        return;
+    }
+
     thinkActionAgnostic();
 
     // Think attack style
@@ -3605,6 +3627,10 @@ bool cUnit::isAbleToGuard()
 void cUnit::thinkFast()
 {
     thinkFast_position();
+
+    if (bRollingOffFactoryPad) {
+        return;
+    }
 
     // aircraft
     if (isAirbornUnit()) {

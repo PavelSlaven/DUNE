@@ -21,6 +21,7 @@
 
 class cTextDrawer;
 class SaveGameManager;
+class cUnitFactory;
 
 enum class eTransferType {
     NONE,                               // nothing to transfer
@@ -110,6 +111,7 @@ public:
 
     // carryall stuff
     bool bCarryMe;		// carry this unit when moving it around?
+    bool bRollingOffFactoryPad; // driving off the pad of a factory; own movement and guard logic wait
     int  iCarryAll;		// any carry-all that will pickup this unit... so this unit knows
     // it should wait when moving, etc, etc
 
@@ -159,6 +161,9 @@ public:
     int draw_x();
     int draw_y();
     cRectangle getVisualRectangle();
+    static cRectangle visualRectangleAt(int unitType, float x, float y);
+    static void drawSprites(int owner, int type, int bodyFacing, int headFacing, int frameIndex,
+                            const cRectangle &visual, bool drawTop);
 
     int pos_x();
     int pos_y();
@@ -447,6 +452,7 @@ public:
 
 private:
     friend class SaveGameManager;
+    friend class cUnitFactory;
     eActionType m_action;
     eUnitActionIntent intent;
 
