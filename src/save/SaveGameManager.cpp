@@ -634,27 +634,49 @@ bool deserializeBody(
     for (FactoryPadSave &item : save.factoryPads) {
         if (!expectTag(input, "FACTORYPAD") ||
             !readValue(input, item.structureId) ||
-            !factory_pad::read(input, item.pad)) {
+            !factory_pad::read(input, item.pad, MAX_UNITS)) {
             error = localization::text("Factory pad data is corrupted", "Повреждены данные площадок заводов");
             return false;
         }
         bool isFactory = false;
+        int factoryOwner = -1;
         for (const StructureState &structureItem : save.structures) {
             if (structureItem.oldId == item.structureId) {
                 isFactory = structureItem.type == LIGHTFACTORY || structureItem.type == HEAVYFACTORY;
+                if (isFactory) {
+                    factoryOwner = structureItem.player;
+                }
             }
         }
         bool referencesAreValid = item.structureId >= 0 && item.structureId < MAX_STRUCTURES &&
                                   isFactory && !padStructureSeen[item.structureId] &&
                                   item.pad.phase != factory_pad::Phase::Empty &&
                                   item.pad.unitType < MAX_UNITTYPES &&
-                                  item.pad.carryallId < MAX_UNITS;
+                                  item.pad.carryallId >= -1 && item.pad.carryallId < MAX_UNITS;
+        if (referencesAreValid && item.pad.carryallId >= 0) {
+            referencesAreValid = usedUnitIds[item.pad.carryallId];
+            for (const UnitState &unitItem : save.units) {
+                if (unitItem.oldId == item.pad.carryallId) {
+                    referencesAreValid = referencesAreValid && unitItem.type == CARRYALL &&
+                                         unitItem.player == factoryOwner;
+                    break;
+                }
+            }
+        }
         for (const int waitingType : item.pad.waiting) {
             referencesAreValid = referencesAreValid && waitingType < MAX_UNITTYPES;
         }
         if (item.pad.phase == factory_pad::Phase::Rolling) {
             referencesAreValid = referencesAreValid && item.pad.rollUnitId < MAX_UNITS &&
                                  usedUnitIds[item.pad.rollUnitId];
+            bool foundMatchingRoller = false;
+            for (const UnitState &unitItem : save.units) {
+                if (unitItem.oldId == item.pad.rollUnitId) {
+                    foundMatchingRoller = unitItem.type == item.pad.unitType && unitItem.player == factoryOwner;
+                    break;
+                }
+            }
+            referencesAreValid = referencesAreValid && foundMatchingRoller;
         }
         if (!referencesAreValid) {
             error = localization::text("Invalid factory pad data", "Некорректные данные площадки завода");
@@ -1140,6 +1162,7 @@ bool SaveGameManager::restoreSnapshot(
         factory->restorePad(source.pad);
         if (source.pad.phase == factory_pad::Phase::Rolling) {
             unit[source.pad.rollUnitId].bRollingOffFactoryPad = true;
+            unit[source.pad.rollUnitId].iRollingOffFactoryPadStructureId = newId;
         }
     }
 

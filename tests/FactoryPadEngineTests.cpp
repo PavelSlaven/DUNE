@@ -8,6 +8,7 @@
 #include "gameobjects/structures/cBarracks.h"
 #include "gameobjects/structures/cHeavyFactory.h"
 #include "gameobjects/structures/cLightFactory.h"
+#include "gameobjects/structures/cUnitFactory.h"
 #include "gameobjects/units/cUnit.h"
 #include "map/cMap.h"
 #include "sidebar/cBuildingListItem.h"
@@ -702,6 +703,112 @@ void itemFourReleased()
     require(firstUnitOfType(TRIKE) >= 0, "the unit must roll out when an exit cell became free");
 }
 
+void itemFourReleasedCarryallDestinations()
+{
+    resetWorld();
+    cAbstractStructure *factory = placeFactory(LIGHTFACTORY, FirstFactoryId, FactoryX, FactoryY, HUMAN);
+    useCamera(ScreenWidth, ScreenHeight, 1.0F, 0.0F, 0.0F);
+    const std::vector<int> blockers = blockAllExits(FactoryX, FactoryY, 2);
+    finishUnit(HUMAN, TRIKE);
+    require(ticksUntilAnimationEnds(factory) > 0, "the animation never ended");
+    tickWorld(620);
+    const int newCarryall = firstUnitOfType(CARRYALL);
+    require(newCarryall >= 0 && unit[newCarryall].m_transferType == eTransferType::PAD_PICKUP_LEAVE,
+            "a new carry-all must be called with the leave order");
+    removeBlocker(blockers[0]);
+    factory->think_animation();
+    require(unit[newCarryall].m_transferType == eTransferType::DIE && isOnMapEdge(unit[newCarryall].iGoalCell),
+            "a released new carry-all must fly to the map edge and disappear");
+
+    resetWorld();
+    factory = placeFactory(LIGHTFACTORY, FirstFactoryId, FactoryX, FactoryY, HUMAN);
+    useCamera(ScreenWidth, ScreenHeight, 1.0F, 0.0F, 0.0F);
+    const int ownCarryall = createCarryall(cellAt(24, 14), HUMAN);
+    const std::vector<int> ownBlockers = blockAllExits(FactoryX, FactoryY, 2);
+    finishUnit(HUMAN, TRIKE);
+    require(ticksUntilAnimationEnds(factory) > 0, "the animation never ended");
+    tickWorld(601);
+    require(unit[ownCarryall].m_transferType == eTransferType::PAD_PICKUP_STAY,
+            "the own carry-all must be called before the exit is freed");
+    const int ownCell = unit[ownCarryall].iCell;
+    removeBlocker(ownBlockers[0]);
+    factory->think_animation();
+    require(unit[ownCarryall].m_transferType == eTransferType::NONE && unit[ownCarryall].iGoalCell == ownCell,
+            "a released own carry-all must stay at its current cell without an order");
+}
+
+void itemFourForeignCarryall()
+{
+    resetWorld();
+    cUnitFactory *first = static_cast<cUnitFactory *>(
+                              placeFactory(LIGHTFACTORY, FirstFactoryId, FactoryX, FactoryY, HUMAN));
+    cUnitFactory *second = static_cast<cUnitFactory *>(
+                               placeFactory(LIGHTFACTORY, SecondFactoryId, FactoryX + 15, FactoryY, HUMAN));
+    const int carryall = createCarryall(cellAt(60, 60), HUMAN);
+    require(carryall >= 0, "the test carry-all was not created");
+
+    factory_pad::PadState staleCall;
+    staleCall.phase = factory_pad::Phase::Standing;
+    staleCall.unitType = TRIKE;
+    staleCall.carryallId = carryall;
+    first->restorePad(staleCall);
+
+    factory_pad::PadState waitingForCarryall;
+    waitingForCarryall.phase = factory_pad::Phase::Standing;
+    waitingForCarryall.unitType = TRIKE;
+    waitingForCarryall.blockedTicks = factory_pad::BlockedTicksBeforeCarryall - 1;
+    second->restorePad(waitingForCarryall);
+    blockAllExits(FactoryX + 15, FactoryY, 2);
+    second->think_animation();
+
+    const int secondPadCell = cellAt(FactoryX + 15 + 1, FactoryY + 1);
+    require(second->getPad().carryallId == carryall &&
+                unit[carryall].m_transferType == eTransferType::PAD_PICKUP_STAY &&
+                unit[carryall].iBringTarget == secondPadCell,
+            "the second factory must call the carry-all to its own pad");
+    first->releasePad();
+
+    require(unit[carryall].m_transferType == eTransferType::PAD_PICKUP_STAY &&
+                unit[carryall].iBringTarget == secondPadCell,
+            "the first factory must not cancel a carry-all called to the second factory");
+}
+
+void itemTwoStaleRollerAlias()
+{
+    resetWorld();
+    cUnitFactory *first = static_cast<cUnitFactory *>(
+                              placeFactory(LIGHTFACTORY, SecondFactoryId, FactoryX, FactoryY, HUMAN));
+    cUnitFactory *second = static_cast<cUnitFactory *>(
+                               placeFactory(LIGHTFACTORY, FirstFactoryId, FactoryX + 15, FactoryY, HUMAN));
+    const int oldRoller = UNIT_CREATE(cellAt(5, 5), TRIKE, HUMAN, true, false);
+    require(oldRoller >= 0, "the first factory's roller was not created");
+    factory_pad::PadState firstRoll;
+    firstRoll.phase = factory_pad::Phase::Rolling;
+    firstRoll.unitType = TRIKE;
+    firstRoll.rollUnitId = oldRoller;
+    first->restorePad(firstRoll);
+    unit[oldRoller].die(false, false);
+
+    second->acceptReadyUnit(TRIKE);
+    for (int tick = 0; tick < 5000 && (second->isAnimating() || second->getPad().phase != factory_pad::Phase::Rolling);
+            ++tick) {
+        second->think_animation();
+    }
+    require(second->getPad().phase == factory_pad::Phase::Rolling && second->getPad().rollUnitId == oldRoller,
+            "the second factory must reuse the dead roller's slot");
+
+    const float beforeX = unit[oldRoller].posX;
+    const float beforeY = unit[oldRoller].posY;
+    const bool beforeRolling = unit[oldRoller].bRollingOffFactoryPad;
+    for (int tick = 0; tick < 50; ++tick) {
+        first->think_animation();
+    }
+
+    require(unit[oldRoller].posX == beforeX && unit[oldRoller].posY == beforeY &&
+                unit[oldRoller].bRollingOffFactoryPad == beforeRolling,
+            "the first factory must not move or clear the second factory's roller");
+}
+
 struct FrameLog {
     int endTick = -1;
     int toggles = 0;
@@ -902,6 +1009,7 @@ int main()
         passed &= run("item 1, unit stands on the pad", [&] { itemOnePadAppearance(fixture); });
         passed &= run("item 2, unit rolls out", [] { itemTwo(); });
         passed &= run("item 2, AI unit rolls out", [] { itemTwoAi(); });
+        passed &= run("item 2, stale rolling unit slot alias", [] { itemTwoStaleRollerAlias(); });
         passed &= run("item 3, queue and factory choice", [] { itemThree(); });
         passed &= run("item 3, Barracks unchanged", [] { itemThreeBarracksUnchanged(); });
         passed &= run("item 3, no reinforcement carry-all", [] { itemThreeNoReinforcement(); });
@@ -909,6 +1017,8 @@ int main()
         passed &= run("item 4, own carry-all with rally point", [] { itemFourOwnCarryall(true); });
         passed &= run("item 4, new carry-all", [] { itemFourNewCarryall(); });
         passed &= run("item 4, carry-all released", [] { itemFourReleased(); });
+        passed &= run("item 4, released carry-all destinations", [] { itemFourReleasedCarryallDestinations(); });
+        passed &= run("item 4, foreign carry-all slot alias", [] { itemFourForeignCarryall(); });
         passed &= run("item 5, heavy factory animation", [] { itemFive(); });
         passed &= run("item 7, flicker while a unit is built", [] { itemSeven(); });
     }

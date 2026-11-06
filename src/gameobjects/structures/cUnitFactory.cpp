@@ -7,6 +7,7 @@
 #include "map/MapGeometry.hpp"
 #include "map/cMap.h"
 #include "player/cPlayer.h"
+#include "utils/common.h"
 #include "utils/d2tm_math.h"
 
 #include <algorithm>
@@ -47,13 +48,14 @@ int cUnitFactory::padCell()
             global_map.getCellY(getCell()) + getHeight() - 1);
 }
 
-bool cUnitFactory::carryallStillCalled() const
+bool cUnitFactory::carryallStillCalled()
 {
     if (m_pad.carryallId < 0) {
         return false;
     }
     const cUnit &carryall = unit[m_pad.carryallId];
     return carryall.isValid() && carryall.iType == CARRYALL && carryall.iPlayer == iPlayer &&
+           carryall.iBringTarget == padCell() &&
            (carryall.m_transferType == eTransferType::PAD_PICKUP_STAY ||
             carryall.m_transferType == eTransferType::PAD_PICKUP_LEAVE);
 }
@@ -77,8 +79,14 @@ void cUnitFactory::releaseCarryall()
 {
     if (carryallStillCalled()) {
         cUnit &carryall = unit[m_pad.carryallId];
-        carryall.setGoalCell(carryall.iCell);
-        carryall.m_transferType = eTransferType::NONE;
+        if (carryall.m_transferType == eTransferType::PAD_PICKUP_LEAVE) {
+            carryall.m_transferType = eTransferType::DIE;
+            carryall.setGoalCell(iFindCloseBorderCell(carryall.iCell));
+        }
+        else {
+            carryall.setGoalCell(carryall.iCell);
+            carryall.m_transferType = eTransferType::NONE;
+        }
     }
     m_pad.carryallId = -1;
 }
@@ -166,6 +174,7 @@ void cUnitFactory::beginRoll(int exitCell)
     const int facing = faceAngle(fDegrees(from.x, from.y, toX, toY));
 
     rolling.bRollingOffFactoryPad = true;
+    rolling.iRollingOffFactoryPadStructureId = getStructureId();
     rolling.posX = static_cast<float>(from.x);
     rolling.posY = static_cast<float>(from.y);
     rolling.iBodyFacing = facing;
@@ -178,7 +187,8 @@ void cUnitFactory::beginRoll(int exitCell)
 void cUnitFactory::advanceRoll()
 {
     cUnit &rolling = unit[m_pad.rollUnitId];
-    if (!rolling.isValid() || !rolling.bRollingOffFactoryPad) {
+    if (!rolling.isValid() || !rolling.bRollingOffFactoryPad ||
+            rolling.iRollingOffFactoryPadStructureId != getStructureId()) {
         finishRoll();
         return;
     }
@@ -203,9 +213,11 @@ void cUnitFactory::advanceRoll()
 void cUnitFactory::finishRoll()
 {
     const int unitId = m_pad.rollUnitId;
-    if (unitId > -1 && unit[unitId].isValid() && unit[unitId].bRollingOffFactoryPad) {
+    if (unitId > -1 && unit[unitId].isValid() && unit[unitId].bRollingOffFactoryPad &&
+            unit[unitId].iRollingOffFactoryPadStructureId == getStructureId()) {
         cUnit &rolling = unit[unitId];
         rolling.bRollingOffFactoryPad = false;
+        rolling.iRollingOffFactoryPadStructureId = -1;
         rolling.posX = static_cast<float>(global_map.getAbsoluteXPositionFromCell(rolling.iCell));
         rolling.posY = static_cast<float>(global_map.getAbsoluteYPositionFromCell(rolling.iCell));
 
@@ -232,8 +244,10 @@ void cUnitFactory::releasePad()
     releaseCarryall();
     if (m_pad.phase == factory_pad::Phase::Rolling && m_pad.rollUnitId > -1) {
         cUnit &rolling = unit[m_pad.rollUnitId];
-        if (rolling.isValid() && rolling.bRollingOffFactoryPad) {
+        if (rolling.isValid() && rolling.bRollingOffFactoryPad &&
+                rolling.iRollingOffFactoryPadStructureId == getStructureId()) {
             rolling.bRollingOffFactoryPad = false;
+            rolling.iRollingOffFactoryPadStructureId = -1;
             rolling.posX = static_cast<float>(global_map.getAbsoluteXPositionFromCell(rolling.iCell));
             rolling.posY = static_cast<float>(global_map.getAbsoluteYPositionFromCell(rolling.iCell));
         }

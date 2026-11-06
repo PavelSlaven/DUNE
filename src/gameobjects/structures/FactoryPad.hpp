@@ -10,7 +10,6 @@ namespace factory_pad {
 
 inline constexpr int BlockedTicksBeforeCarryall = 600;
 inline constexpr int CarryallRetryTicks = 200;
-inline constexpr int MaxQueued = 256;
 
 struct Point {
     int x;
@@ -125,9 +124,7 @@ inline Offer offer(PadState &pad, int unitType)
         pad.unitType = unitType;
         return Offer::Appeared;
     }
-    if (static_cast<int>(pad.waiting.size()) < MaxQueued) {
-        pad.waiting.push_back(unitType);
-    }
+    pad.waiting.push_back(unitType);
     return Offer::Queued;
 }
 
@@ -223,7 +220,7 @@ inline void write(std::ostream &out, const PadState &pad)
     }
 }
 
-inline bool read(std::istream &in, PadState &pad)
+inline bool read(std::istream &in, PadState &pad, std::size_t maxWaiting)
 {
     int phase = 0;
     PadState parsed;
@@ -232,7 +229,7 @@ inline bool read(std::istream &in, PadState &pad)
           parsed.blockedTicks >> parsed.carryallId >> parsed.carryallRetry >> waitingCount)) {
         return false;
     }
-    if (phase < 0 || phase > 2 || waitingCount > static_cast<std::size_t>(MaxQueued)) {
+    if (phase < 0 || phase > 2 || waitingCount > maxWaiting) {
         return false;
     }
     parsed.phase = static_cast<Phase>(phase);

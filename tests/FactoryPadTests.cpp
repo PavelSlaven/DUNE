@@ -124,6 +124,18 @@ void padIsBusyUntilTheRollEnds()
     check(finishPad(pad) == -1 && pad.phase == Phase::Empty, "an empty queue must free the pad");
 }
 
+void queueKeepsEveryReadyUnit()
+{
+    PadState pad;
+    offer(pad, 7);
+    std::vector<int> expected;
+    for (int unitType = 0; unitType < 300; ++unitType) {
+        offer(pad, unitType);
+        expected.push_back(unitType);
+    }
+    check(pad.waiting == expected, "all 300 waiting unit types must remain in order");
+}
+
 void factoryChoiceFollowsThePrimaryRule()
 {
     std::vector<FactoryCandidate> factories{{3, true}, {5, true}, {9, true}};
@@ -211,6 +223,7 @@ void rollAdvancesByTheMovementSpeed()
 
 void stateSurvivesWritingAndReading()
 {
+    constexpr std::size_t TestQueueLimit = 300;
     PadState original;
     offer(original, 7);
     offer(original, 8);
@@ -222,7 +235,7 @@ void stateSurvivesWritingAndReading()
     std::stringstream stream;
     write(stream, original);
     PadState restored;
-    check(read(stream, restored), "a written state must be readable");
+    check(read(stream, restored, TestQueueLimit), "a written state must be readable");
     check(restored.phase == Phase::Standing && restored.unitType == 7 &&
               restored.blockedTicks == 123 && restored.carryallId == 17 &&
               restored.carryallRetry == 55 && restored.waiting == std::vector<int>({8, 9}),
@@ -236,7 +249,7 @@ void stateSurvivesWritingAndReading()
     std::stringstream rollingStream;
     write(rollingStream, rolling);
     PadState rollingBack;
-    check(read(rollingStream, rollingBack) && rollingBack.phase == Phase::Rolling &&
+    check(read(rollingStream, rollingBack, TestQueueLimit) && rollingBack.phase == Phase::Rolling &&
               rollingBack.rollUnitId == 30 && rollingBack.rollStep == 11 && rollingBack.rollTick == 2,
           "a rolling state must survive writing and reading");
 
@@ -245,12 +258,13 @@ void stateSurvivesWritingAndReading()
     write(emptyStream, empty);
     PadState emptyBack;
     emptyBack.phase = Phase::Standing;
-    check(read(emptyStream, emptyBack) && emptyBack.phase == Phase::Empty && emptyBack.waiting.empty(),
+    check(read(emptyStream, emptyBack, TestQueueLimit) && emptyBack.phase == Phase::Empty && emptyBack.waiting.empty(),
           "an empty state must survive writing and reading");
 }
 
 void damagedStateIsRejected()
 {
+    constexpr std::size_t TestQueueLimit = 300;
     const char *broken[] = {
         "5 7 -1 0 0 0 -1 0 0",
         "1 -1 -1 0 0 0 -1 0 0",
@@ -265,7 +279,7 @@ void damagedStateIsRejected()
     for (const char *text : broken) {
         std::stringstream stream{std::string(text)};
         PadState state;
-        check(!read(stream, state), std::string("a damaged state was accepted: '") + text + "'");
+        check(!read(stream, state, TestQueueLimit), std::string("a damaged state was accepted: '") + text + "'");
     }
 }
 }
@@ -277,6 +291,7 @@ int main()
     exitSelectionSkipsOutsideAndOccupiedCells();
     rollMovesInAStraightLineWithoutJumps();
     padIsBusyUntilTheRollEnds();
+    queueKeepsEveryReadyUnit();
     factoryChoiceFollowsThePrimaryRule();
     blockedExitCallsACarryallAfterThreeSeconds();
     aFreeExitStartsTheRollAndResetsTheCounter();

@@ -98,6 +98,7 @@ void cUnit::init(int i)
 
     bCarryMe = false;        // carry this unit when moving it around?
     bRollingOffFactoryPad = false;
+    iRollingOffFactoryPadStructureId = -1;
     iCarryAll = -1;        // any carry-all that will pickup this unit... so this unit knows
     // it should wait when moving, etc, etc
 

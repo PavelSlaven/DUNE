@@ -114,6 +114,7 @@ public:
     // carryall stuff
     bool bCarryMe;		// carry this unit when moving it around?
     bool bRollingOffFactoryPad;
+    int iRollingOffFactoryPadStructureId;
     int  iCarryAll;		// any carry-all that will pickup this unit... so this unit knows
     // it should wait when moving, etc, etc
 

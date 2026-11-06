@@ -99,6 +99,7 @@ bool parses(const SaveSnapshot &save, SaveSnapshot *result = nullptr)
 void padsSurviveWritingAndReading()
 {
     SaveSnapshot save = baseSnapshot();
+    save.units.push_back(unitState(9, CARRYALL, 401));
     save.factoryPads.push_back({3, standingPad()});
     save.factoryPads.push_back({5, rollingPad()});
     SaveSnapshot parsed;
@@ -143,6 +144,18 @@ void damagedPadsAreRejected()
     missingRoller.factoryPads.push_back({5, rolling});
     check(!parses(missingRoller), "a rolling unit that is not in the save was accepted");
 
+    SaveSnapshot wrongRollerType = baseSnapshot();
+    rolling = rollingPad();
+    rolling.unitType = TRIKE;
+    wrongRollerType.factoryPads.push_back({5, rolling});
+    check(!parses(wrongRollerType), "a rolling unit with a different type was accepted");
+
+    SaveSnapshot wrongRollerOwner = baseSnapshot();
+    rolling = rollingPad();
+    wrongRollerOwner.units[0].player = 2;
+    wrongRollerOwner.factoryPads.push_back({5, rolling});
+    check(!parses(wrongRollerOwner), "a rolling unit owned by another player was accepted");
+
     SaveSnapshot badUnitType = baseSnapshot();
     factory_pad::PadState standing = standingPad();
     standing.unitType = MAX_UNITTYPES;
@@ -160,6 +173,22 @@ void damagedPadsAreRejected()
     standing.carryallId = MAX_UNITS;
     badCarryall.factoryPads.push_back({3, standing});
     check(!parses(badCarryall), "an unknown carry-all number was accepted");
+
+    SaveSnapshot missingCarryall = baseSnapshot();
+    missingCarryall.factoryPads.push_back({3, standingPad()});
+    check(!parses(missingCarryall), "a carry-all ID missing from the saved units was accepted");
+
+    SaveSnapshot wrongCarryallType = baseSnapshot();
+    wrongCarryallType.units.push_back(unitState(9, TANK, 401));
+    wrongCarryallType.factoryPads.push_back({3, standingPad()});
+    check(!parses(wrongCarryallType), "a carry-all ID referring to a non-carry-all was accepted");
+
+    SaveSnapshot wrongCarryallOwner = baseSnapshot();
+    UnitState foreignCarryall = unitState(9, CARRYALL, 401);
+    foreignCarryall.player = 2;
+    wrongCarryallOwner.units.push_back(foreignCarryall);
+    wrongCarryallOwner.factoryPads.push_back({3, standingPad()});
+    check(!parses(wrongCarryallOwner), "a carry-all owned by another player was accepted");
 }
 
 void truncatedAndOldBodiesAreRejected()

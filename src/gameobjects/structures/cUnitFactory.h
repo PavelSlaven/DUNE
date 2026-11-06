@@ -40,7 +40,7 @@ private:
     factory_pad::Point padOrigin();
     int findExitCell(int unitType);
     int padCell();
-    bool carryallStillCalled() const;
+    bool carryallStillCalled();
     void requestCarryall();
     void releaseCarryall();
     void beginRoll(int exitCell);
