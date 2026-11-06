@@ -23,8 +23,8 @@ inline WorldObjectLayout refineryHarvesterLayout(
 {
     constexpr float logicalRefineryWidth = 96.0F;
     constexpr float logicalRefineryHeight = 64.0F;
-    constexpr float logicalOffsetX = 26.75F;
-    constexpr float logicalOffsetY = 17.375F;
+    constexpr float logicalOffsetX = 32.375F;
+    constexpr float logicalOffsetY = 0.625F;
     constexpr float logicalHarvesterWidth = 80.0F;
     constexpr float logicalHarvesterHeight = 52.0F;
     return {
