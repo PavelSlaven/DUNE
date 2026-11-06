@@ -25,8 +25,7 @@ public:
 
     void releasePad() override;
 
-    void onCarryallArrived(int carryallId);
-    void onCarryallLost(int carryallId);
+    int takeUnitForCarryall(int carryallId);
 
     const factory_pad::PadState &getPad() const {
         return m_pad;
@@ -39,6 +38,10 @@ protected:
 private:
     factory_pad::Point padOrigin();
     int findExitCell(int unitType);
+    int padCell();
+    bool carryallStillCalled() const;
+    void requestCarryall();
+    void releaseCarryall();
     void beginRoll(int exitCell);
     void advanceRoll();
     void finishRoll();

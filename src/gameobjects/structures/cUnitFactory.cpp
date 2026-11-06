@@ -40,17 +40,78 @@ int cUnitFactory::findExitCell(int unitType)
     });
 }
 
+int cUnitFactory::padCell()
+{
+    return global_map.getGeometry().makeCell(global_map.getCellX(getCell()) + getWidth() - 1,
+            global_map.getCellY(getCell()) + getHeight() - 1);
+}
+
+bool cUnitFactory::carryallStillCalled() const
+{
+    if (m_pad.carryallId < 0) {
+        return false;
+    }
+    const cUnit &carryall = unit[m_pad.carryallId];
+    return carryall.isValid() && carryall.iType == CARRYALL && carryall.iPlayer == iPlayer &&
+           (carryall.m_transferType == eTransferType::PAD_PICKUP_STAY ||
+            carryall.m_transferType == eTransferType::PAD_PICKUP_LEAVE);
+}
+
+void cUnitFactory::requestCarryall()
+{
+    const int cell = padCell();
+    int carryallId = CARRYALL_NEAREST_FREE(getOwner(), cell);
+    if (carryallId > -1) {
+        unit[carryallId].carryall_order(-1, eTransferType::PAD_PICKUP_STAY, cell, -1);
+    }
+    else {
+        carryallId = SPAWN_CARRYALL_AT_BORDER(getOwner(), cell);
+    }
+    if (carryallId > -1) {
+        m_pad.carryallId = carryallId;
+    }
+}
+
+void cUnitFactory::releaseCarryall()
+{
+    if (carryallStillCalled()) {
+        cUnit &carryall = unit[m_pad.carryallId];
+        carryall.setGoalCell(carryall.iCell);
+        carryall.m_transferType = eTransferType::NONE;
+    }
+    m_pad.carryallId = -1;
+}
+
+int cUnitFactory::takeUnitForCarryall(int carryallId)
+{
+    if (m_pad.phase != factory_pad::Phase::Standing || m_pad.carryallId != carryallId) {
+        return -1;
+    }
+    const int unitType = m_pad.unitType;
+    if (factory_pad::finishPad(m_pad) > -1) {
+        setAnimating(true);
+    }
+    return unitType;
+}
+
 void cUnitFactory::thinkPad()
 {
     switch (m_pad.phase) {
         case factory_pad::Phase::Empty:
             return;
         case factory_pad::Phase::Standing: {
+            if (m_pad.carryallId > -1 && !carryallStillCalled()) {
+                m_pad.carryallId = -1;
+            }
             const bool animationFinished = !isAnimating();
             const int exitCell = animationFinished ? findExitCell(m_pad.unitType) : -1;
             const factory_pad::StandingAction action = factory_pad::tickStanding(m_pad, animationFinished, exitCell > -1);
             if (action == factory_pad::StandingAction::StartRoll) {
+                releaseCarryall();
                 beginRoll(exitCell);
+            }
+            else if (action == factory_pad::StandingAction::RequestCarryall) {
+                requestCarryall();
             }
             return;
         }
@@ -117,7 +178,8 @@ void cUnitFactory::finishRoll()
         rolling.posX = static_cast<float>(global_map.getAbsoluteXPositionFromCell(rolling.iCell));
         rolling.posY = static_cast<float>(global_map.getAbsoluteYPositionFromCell(rolling.iCell));
 
-        if (rolling.iPlayer > 0 && rolling.iPlayer < AI_WORM && !rolling.isAirbornUnit()) {
+        if (rolling.iPlayer > 0 && rolling.iPlayer < AI_WORM && !rolling.isAirbornUnit() &&
+                rolling.iGoalCell == rolling.iCell) {
             const int freeCell = UNIT_FREE_AROUND_MOVE(unitId);
             if (freeCell > -1) {
                 rolling.move_to(freeCell);
@@ -136,6 +198,7 @@ void cUnitFactory::finishRoll()
 
 void cUnitFactory::releasePad()
 {
+    releaseCarryall();
     if (m_pad.phase == factory_pad::Phase::Rolling && m_pad.rollUnitId > -1) {
         cUnit &rolling = unit[m_pad.rollUnitId];
         if (rolling.isValid() && rolling.bRollingOffFactoryPad) {
@@ -145,14 +208,6 @@ void cUnitFactory::releasePad()
         }
     }
     m_pad = factory_pad::PadState();
-}
-
-void cUnitFactory::onCarryallArrived(int)
-{
-}
-
-void cUnitFactory::onCarryallLost(int)
-{
 }
 
 void cUnitFactory::restorePad(const factory_pad::PadState &pad)

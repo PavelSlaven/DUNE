@@ -20,6 +20,7 @@
 #include "gameobjects/particles/cParticle.h"
 #include "gameobjects/projectiles/bullet.h"
 #include "gameobjects/structures/cStarPort.h"
+#include "gameobjects/structures/cUnitFactory.h"
 #include "map/cMapCamera.h"
 #include "map/cMapEditor.h"
 #include "map/MapGeometry.hpp"
@@ -1710,6 +1711,12 @@ void cUnit::thinkFast_move_airUnit()
             }
         }
 
+        if (m_transferType == eTransferType::PAD_PICKUP_STAY ||
+                m_transferType == eTransferType::PAD_PICKUP_LEAVE) {
+            pickUpUnitFromFactoryPad();
+            return;
+        }
+
         // transfer is to create a new unit
         if (m_transferType == eTransferType::NEW_LEAVE ||
                 m_transferType == eTransferType::NEW_STAY) {
@@ -1945,6 +1952,51 @@ void cUnit::forgetAboutUnitToPickUp()  // forget about this
     iUnitID = -1;
 }
 
+void cUnit::pickUpUnitFromFactoryPad()
+{
+    const bool leaveAfterwards = m_transferType == eTransferType::PAD_PICKUP_LEAVE;
+
+    cUnitFactory *factory = nullptr;
+    const int structureId = global_map.getCellIdStructuresLayer(iCell);
+    if (structureId > -1 && structure[structureId]) {
+        factory = dynamic_cast<cUnitFactory *>(structure[structureId]);
+    }
+
+    int unitType = -1;
+    if (factory && factory->getOwner() == iPlayer) {
+        unitType = factory->takeUnitForCarryall(iID);
+    }
+
+    if (unitType < 0) {
+        if (leaveAfterwards) {
+            m_transferType = eTransferType::DIE;
+            setGoalCell(iFindCloseBorderCell(iCell));
+        }
+        else {
+            m_transferType = eTransferType::NONE;
+            setGoalCell(iCell);
+        }
+        return;
+    }
+
+    iNewUnitType = unitType;
+    m_transferType = leaveAfterwards ? eTransferType::NEW_LEAVE : eTransferType::NEW_STAY;
+
+    int dropCell = factory->getRallyPoint();
+    if (dropCell < 0) {
+        updateCellXAndY();
+        dropCell = findNewDropLocation(unitType, iCell);
+    }
+    if (dropCell < 0) {
+        dropCell = iCell;
+    }
+    setGoalCell(dropCell);
+    iBringTarget = iGoalCell;
+    TIMER_movedelay = 300;
+
+    cParticle::create(pos_x() + getBmpWidth() / 2, pos_y() + getBmpHeight() / 2, D2TM_PARTICLE_CARRYPUFF, -1, -1);
+}
+
 cUnit &cUnit::getUnitToPickupOrDrop() const
 {
     assert(iUnitID > -1 && "cUnit::getUnitToPickupOrDrop() called for invalid iUnitIDWithinStructure!");
@@ -2006,6 +2058,14 @@ void cUnit::carryall_order(int iuID, eTransferType transferType, int iBring, int
 
         bPickedUp = false;
         // DONE!
+    }
+    else if (transferType == eTransferType::PAD_PICKUP_STAY || transferType == eTransferType::PAD_PICKUP_LEAVE) {
+        m_transferType = transferType;
+        setGoalCell(iBring);
+        iBringTarget = iGoalCell;
+        iUnitID = -1;
+        iNewUnitType = -1;
+        bPickedUp = false;
     }
     else if (transferType == eTransferType::PICKUP && iuID > -1) {
         // the carryall must pickup the unit, and then bring it to the iBring stuff
@@ -4839,6 +4899,50 @@ int CARRYALL_TRANSFER(int iuID, int iGoal)
         cUnit.carryall_order(iuID, eTransferType::PICKUP, iGoal, -1);
     }
     return carryAllUnitId;
+}
+
+int CARRYALL_NEAREST_FREE(int iPlayer, int iCell)
+{
+    int nearestId = -1;
+    double nearestDistance = 0;
+    for (int i = 0; i < MAX_UNITS; i++) {
+        cUnit &candidate = unit[i];
+        if (!candidate.isValid()) continue;
+        if (candidate.iPlayer != iPlayer) continue;
+        if (candidate.iType != CARRYALL) continue;
+        if (candidate.m_transferType != eTransferType::NONE) continue;
+        if (candidate.isHidden()) continue;
+
+        const double distance = global_map.distance(candidate.getCell(), iCell);
+        if (nearestId < 0 || distance < nearestDistance) {
+            nearestId = i;
+            nearestDistance = distance;
+        }
+    }
+    return nearestId;
+}
+
+int SPAWN_CARRYALL_AT_BORDER(int iPlayer, int iCell)
+{
+    int startCell = iFindCloseBorderCell(iCell);
+    if (startCell < 0) {
+        return -1;
+    }
+
+    const int carryallId = UNIT_CREATE(startCell, CARRYALL, iPlayer, true, false);
+    if (carryallId < 0) {
+        return -1;
+    }
+
+    const int facing = faceAngle(fDegrees(global_map.getCellX(startCell), global_map.getCellY(startCell),
+                                          global_map.getCellX(iCell), global_map.getCellY(iCell)));
+    cUnit &carryall = unit[carryallId];
+    carryall.iBodyShouldFace = facing;
+    carryall.iBodyFacing = facing;
+    carryall.iHeadShouldFace = facing;
+    carryall.iHeadFacing = facing;
+    carryall.carryall_order(-1, eTransferType::PAD_PICKUP_LEAVE, iCell, -1);
+    return carryallId;
 }
 
 int UNIT_FREE_AROUND_MOVE(int iUnit)

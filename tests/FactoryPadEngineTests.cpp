@@ -598,6 +598,13 @@ void itemThreeNoReinforcement()
 
 // ---------------------------------------------------------------------------
 
+bool isOnMapEdge(int cell)
+{
+    const int x = global_map.getCellX(cell);
+    const int y = global_map.getCellY(cell);
+    return x == 0 || y == 0 || x == MapCells - 1 || y == MapCells - 1;
+}
+
 int createCarryall(int cell, int owner)
 {
     return UNIT_CREATE(cell, CARRYALL, owner, true, false);
@@ -659,7 +666,7 @@ void itemFourNewCarryall()
     tickWorld(610);
     require(countUnits(CARRYALL) == 1, "a new carry-all must be created when the owner has none");
     const int carryall = firstUnitOfType(CARRYALL);
-    require(global_map.isAtMapBoundaries(unit[carryall].iCell) || unit[carryall].m_transferType != eTransferType::NONE,
+    require(isOnMapEdge(unit[carryall].iCell) || unit[carryall].m_transferType != eTransferType::NONE,
             "the new carry-all must start at the map border and carry an order");
 
     bool dropped = false;
@@ -673,8 +680,7 @@ void itemFourNewCarryall()
     }
     require(dropped, "the new carry-all never delivered the unit");
     tickWorld(50);
-    require(unit[carryall].m_transferType == eTransferType::DIE &&
-                global_map.isAtMapBoundaries(unit[carryall].iGoalCell),
+    require(unit[carryall].m_transferType == eTransferType::DIE && isOnMapEdge(unit[carryall].iGoalCell),
             "a new carry-all must leave the map after the drop");
 }
 

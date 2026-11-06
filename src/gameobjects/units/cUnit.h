@@ -29,6 +29,8 @@ enum class eTransferType {
     NEW_LEAVE,                          // bring a new unit, and let the carryall go back (and die)
     PICKUP,                             // carry an existing unit, bring to new location
     DIE,                                // will die when reaching goal-cell (added for proper animation)
+    PAD_PICKUP_STAY,                    // fly to a factory pad, take the waiting unit and drop it nearby; the carryall stays
+    PAD_PICKUP_LEAVE,                   // same, but the carryall flies off the map afterwards
 };
 
 enum class eActionType {
@@ -542,6 +544,7 @@ private:
     void createSquishedParticle();
 
     void forgetAboutUnitToPickUp();
+    void pickUpUnitFromFactoryPad();
 
     void tellCarryAllThatWouldPickMeUpToForgetAboutMe() const;
 
@@ -600,5 +603,9 @@ int UNIT_find_harvest_spot(int id);
 int CARRYALL_FREE_FOR_TRANSFER(int iPlayer);
 
 int CARRYALL_TRANSFER(int iuID, int iGoal);
+
+int CARRYALL_NEAREST_FREE(int iPlayer, int iCell);
+
+int SPAWN_CARRYALL_AT_BORDER(int iPlayer, int iCell);
 
 int UNIT_FREE_AROUND_MOVE(int iUnit);
