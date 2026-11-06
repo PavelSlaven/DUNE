@@ -138,11 +138,6 @@ int cStructureUtils::findStructureToDeployUnit(cPlayer *pPlayer, int structureTy
     return structureIdFound;
 }
 
-/**
- * The factory (of given type) where a finished unit goes: the primary one when its pad is free, else any other
- * with a free pad, else the primary one (the unit waits there). The primary building is not changed, unless
- * the player has none yet.
- */
 int cStructureUtils::findFactoryForFinishedUnit(cPlayer *pPlayer, int structureType)
 {
     assert(pPlayer);

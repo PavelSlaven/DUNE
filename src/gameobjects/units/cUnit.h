@@ -29,8 +29,8 @@ enum class eTransferType {
     NEW_LEAVE,                          // bring a new unit, and let the carryall go back (and die)
     PICKUP,                             // carry an existing unit, bring to new location
     DIE,                                // will die when reaching goal-cell (added for proper animation)
-    PAD_PICKUP_STAY,                    // fly to a factory pad, take the waiting unit and drop it nearby; the carryall stays
-    PAD_PICKUP_LEAVE,                   // same, but the carryall flies off the map afterwards
+    PAD_PICKUP_STAY,
+    PAD_PICKUP_LEAVE,
 };
 
 enum class eActionType {
@@ -113,7 +113,7 @@ public:
 
     // carryall stuff
     bool bCarryMe;		// carry this unit when moving it around?
-    bool bRollingOffFactoryPad; // driving off the pad of a factory; own movement and guard logic wait
+    bool bRollingOffFactoryPad;
     int  iCarryAll;		// any carry-all that will pickup this unit... so this unit knows
     // it should wait when moving, etc, etc
 

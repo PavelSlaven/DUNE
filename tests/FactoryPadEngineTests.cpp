@@ -244,8 +244,6 @@ std::vector<int> blockAllExits(int x, int y, int width)
     return blockers;
 }
 
-// ---------------------------------------------------------------------------
-
 void checkPadAppearance(UnitFrameFixture &fixture, int factoryType, int unitType)
 {
     const int width = factoryType == LIGHTFACTORY ? 2 : 3;
@@ -335,8 +333,6 @@ void itemOnePadAppearance(UnitFrameFixture &fixture)
         checkPadAppearance(fixture, HEAVYFACTORY, unitType);
     }
 }
-
-// ---------------------------------------------------------------------------
 
 struct RollObservation {
     int createdAtTick = -1;
@@ -478,7 +474,6 @@ void itemTwoRollDetails()
     tickWorld();
     require(unit[id].iGoalCell == rally, "after the roll the unit must go to the rally point");
 
-    // the player may give an order to an ordinary unit after the roll
     const int farCell = cellAt(26, 26);
     unit[id].move_to(farCell, -1, -1, INTENT_MOVE);
     require(unit[id].iGoalCell == farCell, "the player order must replace the rally order");
@@ -510,8 +505,6 @@ void itemTwoAi()
     }
     require(everMoved, "an AI unit without a rally point must receive a free-around move after the roll");
 }
-
-// ---------------------------------------------------------------------------
 
 void itemThree()
 {
@@ -597,8 +590,6 @@ void itemThreeNoReinforcement()
     require(countUnits(CARRYALL) == 0 && countAllUnits() == unitsBefore,
             "a ready factory unit must not be delivered by a reinforcement carry-all");
 }
-
-// ---------------------------------------------------------------------------
 
 bool isOnMapEdge(int cell)
 {
@@ -711,8 +702,6 @@ void itemFourReleased()
     require(firstUnitOfType(TRIKE) >= 0, "the unit must roll out when an exit cell became free");
 }
 
-// ---------------------------------------------------------------------------
-
 struct FrameLog {
     int endTick = -1;
     int toggles = 0;
@@ -759,8 +748,6 @@ void itemFive()
             "the heavy factory must switch the fire like the light one: heavy " + std::to_string(heavy.toggles) +
                 ", light " + std::to_string(light.toggles));
 }
-
-// ---------------------------------------------------------------------------
 
 constexpr int FlickerTicksPerFrame = 41;
 

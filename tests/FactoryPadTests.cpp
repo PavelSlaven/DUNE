@@ -70,7 +70,6 @@ void exitSelectionSkipsOutsideAndOccupiedCells()
     check(chooseExitCell(10, 10, 2, 2, resolve, isFree) == 11 * 64 + 12,
           "the right side must be searched from the bottom up");
 
-    // factory at the right map edge: P + 1 is outside the map
     check(chooseExitCell(61, 10, 2, 2, resolve, isFree) == 12 * 64 + 62,
           "a free cell under the pad must still be chosen at the map edge");
     occupied.insert(12 * 64 + 62);
