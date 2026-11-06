@@ -41,7 +41,7 @@ class RolloutPackTests(unittest.TestCase):
             ("BUILD_BARRACKS", (2, 2), 1),
             ("BUILD_CONSTYARD", (2, 2), 1),
             ("BUILD_IX", (2, 2), 1),
-            ("BUILD_LIGHTFACTORY", (2, 2), 1),
+            ("BUILD_LIGHTFACTORY", (2, 2), 8),
             ("BUILD_SILO", (2, 2), 1),
             ("BUILD_WOR", (2, 2), 1),
             ("BUILD_PALACE", (3, 3), 1),
@@ -62,17 +62,24 @@ class RolloutPackTests(unittest.TestCase):
                 with self.subTest(record=name, frame=frame_index):
                     self.assertEqual(angle.edge_coverage(frame)["touch"], 1.0)
 
-    def test_heavy_factory_assembles_inside_the_pit(self):
-        frames = angle.frames_of(self.image("BUILD_HEAVYFACTORY"), (3, 2), 11)
-        baseline = np.asarray(frames[0])
-        allowed = self.rect_mask(frames[0].size, [(254, 29, 328, 161)])
-        for frame_index in range(1, 11):
-            current = np.asarray(frames[frame_index])
-            changed = np.any(current != baseline, axis=2)
-            with self.subTest(record="BUILD_HEAVYFACTORY", frame=frame_index):
-                self.assertFalse(np.any(changed & ~allowed), "pixels changed outside the assembly pit")
-                if frame_index == 10:
-                    self.assertGreaterEqual(int(changed.sum()), 3000)
+    def test_factory_pad_lights_stay_inside_the_pad(self):
+        records = (
+            ("BUILD_LIGHTFACTORY", (2, 2), 8, 128),
+            ("BUILD_HEAVYFACTORY", (3, 2), 11, 236),
+        )
+        for name, slab, count, pad_x in records:
+            frames = angle.frames_of(self.image(name), slab, count)
+            baseline = np.asarray(frames[0])
+            allowed = self.rect_mask(frames[0].size, [(pad_x, 0, frames[0].width, frames[0].height)])
+            for frame_index in range(1, 7):
+                current = np.asarray(frames[frame_index])
+                changed = np.any(current != baseline, axis=2)
+                with self.subTest(record=name, frame=frame_index):
+                    self.assertFalse(np.any(changed & ~allowed), "pixels changed outside the pad")
+                    self.assertTrue(np.any(changed & allowed), "pad lights did not change")
+            for frame_index in range(7, count):
+                with self.subTest(record=name, frame=frame_index):
+                    self.assertTrue(np.array_equal(np.asarray(frames[frame_index]), baseline))
 
     def test_repair_gate_rises_inside_the_gate(self):
         frames = angle.frames_of(self.image("BUILD_REPAIR"), (3, 2), 8)
