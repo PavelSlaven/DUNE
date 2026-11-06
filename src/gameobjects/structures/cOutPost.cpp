@@ -24,8 +24,7 @@ void cOutPost::thinkFast()
     if (TIMER_flag > 54) {
         iFrame++;
 
-        // switch between 0 and 7.
-        if (iFrame > 7) {
+        if (iFrame > 15) {
             iFrame=0;
         }
 
