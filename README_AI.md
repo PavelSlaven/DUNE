@@ -116,7 +116,7 @@ cmake --build build-ru --parallel
 
 ## 5. Тесты и проверки
 
-В проекте зарегистрировано 38 тестов (точный список — `ctest --test-dir build-ru -N`); основные области:
+В проекте зарегистрировано 39 тестов (точный список — `ctest --test-dir build-ru -N`); основные области:
 
 | Область | Тесты |
 |---|---|
@@ -130,7 +130,7 @@ cmake --build build-ru --parallel
 | Музыка | `music_playlist_tests`, `music_transition_policy_tests` |
 | Шрифты | `font_coverage_tests` |
 | Цвета фракций | `faction_tint_tests` |
-| Площадка завода: появление юнита, съезд, очередь, Карриер, мерцание | `factory_pad_tests` (логика без SDL, `FactoryPad.hpp`), `factory_pad_engine_tests` (движок) |
+| Площадка завода: появление юнита, съезд, очередь, Карриер, мерцание, сохранение | `factory_pad_tests` (логика без SDL, `FactoryPad.hpp`), `factory_pad_engine_tests` (движок), `factory_pad_save_tests` (раздел `FACTORYPADS` сохранения) |
 
 Обычный запуск:
 
@@ -163,7 +163,7 @@ git diff --check
 git status --short
 ```
 
-Снимок на 2026-11-06: Release x64 собирался успешно; все 38 тестов прошли при корректном MinGW `PATH`.
+Снимок на 2026-11-06: Release x64 собирался успешно; все 39 тестов прошли при корректном MinGW `PATH`.
 
 ## 6. Запуск и параметры командной строки
 
