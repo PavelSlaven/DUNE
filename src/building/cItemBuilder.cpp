@@ -780,6 +780,18 @@ cBuildingListItem *cItemBuilder::getItem(int position)
     return m_items[position];
 }
 
+bool cItemBuilder::isBuildingUnitForStructureType(int structureType)
+{
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        cBuildingListItem *item = m_items[i];
+        if (item == nullptr || !item->isBuilding() || item->getBuildType() != UNIT) continue;
+        if (structureUtils.getStructureTypeByUnitBuildId(item->getBuildId()) == structureType) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void cItemBuilder::startBuilding(cBuildingListItem *item)
 {
     if (item == nullptr) return;

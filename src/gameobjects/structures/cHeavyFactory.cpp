@@ -91,7 +91,6 @@ void cHeavyFactory::startAnimating()
         drawFlash = true;
     }
     else {
-        iFrame = 0;
         flashes = 0;
         drawFlash = false;
         TIMER_flag = 0;

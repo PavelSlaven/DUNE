@@ -1,5 +1,6 @@
 #include "cUnitFactory.h"
 
+#include "building/cItemBuilder.h"
 #include "d2tmc.h"
 #include "definitions.h"
 #include "gameobjects/units/cUnit.h"
@@ -94,8 +95,38 @@ int cUnitFactory::takeUnitForCarryall(int carryallId)
     return unitType;
 }
 
+bool cUnitFactory::isFlickeringFactory()
+{
+    cItemBuilder *builder = getPlayer()->getItemBuilder();
+    if (!builder || !builder->isBuildingUnitForStructureType(getType())) {
+        return false;
+    }
+    return structureUtils.findFactoryForFinishedUnit(getPlayer(), getType()) == getStructureId();
+}
+
+void cUnitFactory::thinkFlicker()
+{
+    if (!isFlickeringFactory()) {
+        iFrame = 0;
+        m_flickerTimer = 0;
+        return;
+    }
+    if (iFrame < 0) {
+        iFrame = 0;
+    }
+    if (++m_flickerTimer > 40) {
+        m_flickerTimer = 0;
+        iFrame++;
+        if (iFrame > 6) {
+            iFrame = 0;
+        }
+    }
+}
+
 void cUnitFactory::thinkPad()
 {
+    thinkFlicker();
+
     switch (m_pad.phase) {
         case factory_pad::Phase::Empty:
             return;

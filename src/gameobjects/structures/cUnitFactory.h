@@ -34,6 +34,7 @@ public:
 
 protected:
     void thinkPad();
+    void thinkFlicker();
 
 private:
     factory_pad::Point padOrigin();
@@ -46,5 +47,8 @@ private:
     void advanceRoll();
     void finishRoll();
 
+    bool isFlickeringFactory();
+
     factory_pad::PadState m_pad;
+    int m_flickerTimer = 0;
 };

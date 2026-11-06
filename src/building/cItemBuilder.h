@@ -39,6 +39,8 @@ public:
     void removeItemFromList(cBuildingListItem *item);
     bool isAnotherBuildingListItemInTheSameListBeingBuilt(cBuildingListItem *item);
 
+    bool isBuildingUnitForStructureType(int structureType);
+
     bool isAnythingBeingBuiltForListType(eListType listType, int sublistType);
     bool isAnythingBeingBuiltForListIdAwaitingPlacement(eListType listType, int sublistType);
     bool isAnythingBeingBuiltForListIdAwaitingDeployment(eListType listType, int sublistType);
