@@ -19,7 +19,7 @@ struct SaveSlotInfo {
 
 class SaveGameManager {
 public:
-    static constexpr int FormatVersion = 1;
+    static constexpr int FormatVersion = 2;
     static constexpr int MaximumSlots = 10;
 
     [[nodiscard]] static std::filesystem::path quickSavePath();

@@ -9,7 +9,9 @@
 #include "cGame.h"
 #include "data/gfxdata.h"
 #include "d2tmc.h"
+#include "gameobjects/structures/FactoryPad.hpp"
 #include "gameobjects/structures/cStructureFactory.h"
+#include "gameobjects/structures/cUnitFactory.h"
 #include "gameobjects/particles/cParticle.h"
 #include "gameobjects/projectiles/bullet.h"
 #include "gameobjects/units/cReinforcements.h"
@@ -172,6 +174,11 @@ struct BuildQueueState {
     int timerCap = cBuildingListItem::DefaultTimerCap;
 };
 
+struct FactoryPadSave {
+    int structureId = -1;
+    factory_pad::PadState pad;
+};
+
 struct SaveSnapshot {
     std::string saveName;
     bool skirmish = false;
@@ -193,6 +200,7 @@ struct SaveSnapshot {
     std::vector<UnitState> units;
     std::vector<ReinforcementState> reinforcements;
     std::vector<BuildQueueState> buildQueue;
+    std::vector<FactoryPadSave> factoryPads;
 };
 
 template<typename T>
@@ -345,6 +353,12 @@ std::string serializeBody(const SaveSnapshot &save)
                << item.building << ' ' << item.state << ' ' << item.placeIt << ' '
                << item.deployIt << ' ' << item.progressFrameTimer << ' '
                << item.flashingTimer << ' ' << item.timerCap << '\n';
+    }
+    output << "FACTORYPADS " << save.factoryPads.size() << '\n';
+    for (const FactoryPadSave &item : save.factoryPads) {
+        output << "FACTORYPAD " << item.structureId << ' ';
+        factory_pad::write(output, item.pad);
+        output << '\n';
     }
     output << "END\n";
     return output.str();
@@ -609,6 +623,45 @@ bool deserializeBody(
             return false;
         }
     }
+    if (!expectTag(input, "FACTORYPADS") ||
+        !readValue(input, count) ||
+        count > MAX_STRUCTURES) {
+        error = localization::text("Invalid factory pad list", "Некорректный список площадок заводов");
+        return false;
+    }
+    std::array<bool, MAX_STRUCTURES> padStructureSeen{};
+    save.factoryPads.resize(count);
+    for (FactoryPadSave &item : save.factoryPads) {
+        if (!expectTag(input, "FACTORYPAD") ||
+            !readValue(input, item.structureId) ||
+            !factory_pad::read(input, item.pad)) {
+            error = localization::text("Factory pad data is corrupted", "Повреждены данные площадок заводов");
+            return false;
+        }
+        bool isFactory = false;
+        for (const StructureState &structureItem : save.structures) {
+            if (structureItem.oldId == item.structureId) {
+                isFactory = structureItem.type == LIGHTFACTORY || structureItem.type == HEAVYFACTORY;
+            }
+        }
+        bool referencesAreValid = item.structureId >= 0 && item.structureId < MAX_STRUCTURES &&
+                                  isFactory && !padStructureSeen[item.structureId] &&
+                                  item.pad.phase != factory_pad::Phase::Empty &&
+                                  item.pad.unitType < MAX_UNITTYPES &&
+                                  item.pad.carryallId < MAX_UNITS;
+        for (const int waitingType : item.pad.waiting) {
+            referencesAreValid = referencesAreValid && waitingType < MAX_UNITTYPES;
+        }
+        if (item.pad.phase == factory_pad::Phase::Rolling) {
+            referencesAreValid = referencesAreValid && item.pad.rollUnitId < MAX_UNITS &&
+                                 usedUnitIds[item.pad.rollUnitId];
+        }
+        if (!referencesAreValid) {
+            error = localization::text("Invalid factory pad data", "Некорректные данные площадки завода");
+            return false;
+        }
+        padStructureSeen[item.structureId] = true;
+    }
     if (!expectTag(input, "END")) {
         error = localization::text("Save data is incomplete", "Данные сохранения неполны");
         return false;
@@ -718,6 +771,12 @@ save_game_detail::SaveSnapshot SaveGameManager::captureSnapshot(cGame &game)
         target.decayTimer = source->TIMER_decay;
         target.prebuildTimer = source->TIMER_prebuild;
         save.structures.push_back(target);
+
+        if (const auto *factory = dynamic_cast<const cUnitFactory *>(source)) {
+            if (!factory->isPadFree()) {
+                save.factoryPads.push_back({index, factory->getPad()});
+            }
+        }
     }
 
     for (int index = 0; index < MAX_UNITS; ++index) {
@@ -1070,6 +1129,18 @@ bool SaveGameManager::restoreSnapshot(
         target->setUnitIdWithin(source.unitWithin);
         target->setUnitIdEntering(source.unitEntering);
         target->setUnitIdHeadingTowards(source.unitHeading);
+    }
+
+    for (const FactoryPadSave &source : save.factoryPads) {
+        const int newId = structureMapping[source.structureId];
+        auto *factory = newId >= 0 ? dynamic_cast<cUnitFactory *>(structure[newId]) : nullptr;
+        if (!factory) {
+            continue;
+        }
+        factory->restorePad(source.pad);
+        if (source.pad.phase == factory_pad::Phase::Rolling) {
+            unit[source.pad.rollUnitId].bRollingOffFactoryPad = true;
+        }
     }
 
     restoreCellState(save);
