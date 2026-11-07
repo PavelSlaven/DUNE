@@ -49,6 +49,8 @@ class RolloutPackTests(unittest.TestCase):
             ("BUILD_REFINERY", (3, 2), 8),
             ("BUILD_REPAIR", (3, 2), 8),
             ("BUILD_HEAVYFACTORY", (3, 2), 11),
+            ("BUILD_HIGHTECH", (3, 2), 7),
+            ("BUILD_STARPORT", (3, 3), 8),
         )
         for name, slab, count in records:
             with self.subTest(record=name):
