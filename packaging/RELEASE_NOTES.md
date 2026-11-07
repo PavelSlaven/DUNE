@@ -3,22 +3,18 @@
 This release contains the Dune II — The Maker RU/HD remaster for Windows,
 Linux and macOS.
 
-## Highlights in v0.8.0-ru-hd.8
+## Highlights in v0.8.0-ru-hd.9
 
-- redrawn vehicles and infantry for the 63 degree camera, with even sizes
-  across all eight directions: Devastator, Tank, Siege tank, Launcher,
-  infantry and squads;
-- the Harvester redrawn from a 3D model and centred on the refinery pad;
-- track marks under tanks, siege tanks and harvesters, dead infantry and
-  squish sprites in HD, right-handed infantry in west-facing frames;
-- concrete slabs drawn as thick plates at the building angle;
-- the classic graphics mode is removed: the game always uses the HD4 pack;
-- the world scale setting is now the starting camera zoom;
-- reworked settings window, key rebinding that refuses occupied keys and
-  tells Left Ctrl from Right Ctrl;
-- HD layout fixes: the outcome screen prompt is centred on the image, the
-  skirmish map size no longer overlaps the map name, top bar music controls
-  make room for long messages, and two-line build list labels are aligned.
+- all buildings redrawn edge to edge at one camera angle, without fences
+  and gates; seven of them stand as full grey slabs;
+- the Command Post is redrawn as a full slab with a large radar dish that
+  turns slowly; it has no flag;
+- the Light and Heavy Factories have a landing pad with an X on the hatch;
+  its lights flicker while a unit is built, and the finished unit appears
+  on the pad and drives off by itself;
+- the Harvester docks in the middle of the redrawn refinery pad;
+- the Launcher hull is shaded and shows more house colour;
+- saved games from earlier releases do not load in this release.
 
 ## Installation
 
