@@ -19,7 +19,7 @@ int main()
     std::vector<int> callsBetweenChanges;
     int previousFrame = outpost->getFrame();
     int callsSinceChange = 0;
-    for (int calls = 0; calls < 2000 && frames.size() < 17; ++calls) {
+    for (int calls = 0; calls < 4000 && frames.size() < 33; ++calls) {
         outpost->thinkFast();
         ++callsSinceChange;
         const int frame = outpost->getFrame();
@@ -34,22 +34,22 @@ int main()
     }
 
     std::vector<int> expectedFrames;
-    for (int frame = 1; frame <= 15; ++frame) {
+    for (int frame = 1; frame <= 31; ++frame) {
         expectedFrames.push_back(frame);
     }
     expectedFrames.push_back(0);
     expectedFrames.push_back(1);
     if (frames != expectedFrames) {
         std::ostringstream message;
-        message << "expected frames 1..15,0,1; got";
+        message << "expected frames 1..31,0,1; got";
         for (const int frame : frames) {
             message << ' ' << frame;
         }
         std::cerr << "outpost_frame: " << message.str() << '\n';
         return 1;
     }
-    if (callsBetweenChanges.size() != 16) {
-        std::cerr << "outpost_frame: expected 16 intervals, got " << callsBetweenChanges.size() << '\n';
+    if (callsBetweenChanges.size() != 32) {
+        std::cerr << "outpost_frame: expected 32 intervals, got " << callsBetweenChanges.size() << '\n';
         return 1;
     }
     for (size_t interval = 0; interval < callsBetweenChanges.size(); ++interval) {
@@ -59,6 +59,6 @@ int main()
             return 1;
         }
     }
-    std::cout << "outpost_frame: 17 frame changes with 55 calls between them: ok\n";
+    std::cout << "outpost_frame: 33 frame changes with 55 calls between them: ok\n";
     return 0;
 }

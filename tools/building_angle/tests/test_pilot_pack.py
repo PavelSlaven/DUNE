@@ -24,7 +24,7 @@ class PilotPackTests(unittest.TestCase):
         return image.convert("RGBA")
 
     def test_build_radar_reaches_every_edge(self):
-        ok, rows = angle.check(self.image("BUILD_RADAR"), (2, 2), 16)
+        ok, rows = angle.check(self.image("BUILD_RADAR"), (2, 2), 32)
         self.assertTrue(ok, rows)
 
     def test_build_windtrap_reaches_every_edge(self):
