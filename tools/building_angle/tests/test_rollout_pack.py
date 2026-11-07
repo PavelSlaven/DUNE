@@ -42,6 +42,7 @@ class RolloutPackTests(unittest.TestCase):
             ("BUILD_CONSTYARD", (2, 2), 1),
             ("BUILD_IX", (2, 2), 1),
             ("BUILD_LIGHTFACTORY", (2, 2), 8),
+            ("BUILD_RADAR", (2, 2), 32),
             ("BUILD_SILO", (2, 2), 1),
             ("BUILD_WOR", (2, 2), 1),
             ("BUILD_PALACE", (3, 3), 1),
@@ -53,6 +54,28 @@ class RolloutPackTests(unittest.TestCase):
             with self.subTest(record=name):
                 ok, rows = angle.check(self.image(name), slab, count)
                 self.assertTrue(ok, rows)
+
+    def test_radar_dish_turns_inside_its_circle(self):
+        frames = angle.frames_of(self.image("BUILD_RADAR"), (2, 2), 32)
+        baseline = np.asarray(frames[0])
+        y, x = np.ogrid[:256, :256]
+        allowed = (x - 130) ** 2 + (y - 114) ** 2 <= 128 ** 2
+        arrays = [baseline]
+        for frame_index in range(1, 32):
+            current = np.asarray(frames[frame_index])
+            arrays.append(current)
+            changed = np.any(current != baseline, axis=2)
+            with self.subTest(frame=frame_index):
+                self.assertFalse(np.any(changed & ~allowed), "pixels changed outside the dish circle")
+                self.assertGreaterEqual(int(changed.sum()), 5000, "too few pixels changed")
+        for left in range(32):
+            for right in range(left + 1, 32):
+                with self.subTest(frame_pair=(left, right)):
+                    self.assertFalse(np.array_equal(arrays[left], arrays[right]), "frames are identical")
+
+    def test_radar_has_no_flag(self):
+        alpha = np.asarray(self.image("BUILD_RADAR_FLAG"))[..., 3]
+        self.assertTrue(np.all(alpha == 0), "BUILD_RADAR_FLAG is not fully transparent")
 
     def test_stretched_buildings_touch_every_edge(self):
         records = (("BUILD_HIGHTECH", (3, 2), 7), ("BUILD_STARPORT", (3, 3), 8))

@@ -107,13 +107,13 @@ class OutpostPackTests(unittest.TestCase):
         self.radar = decode_image(entries["BUILD_RADAR"].payload).convert("RGBA")
 
     def test_current_outpost_leaves_margins(self):
-        ok, rows = angle.check(self.radar, (2, 2), 8)
+        ok, rows = angle.check(self.radar, (2, 2), 32)
         if ok:
             self.skipTest("pack already holds an edge-to-edge Outpost")
         self.assertLess(rows[0]["left"], angle.MIN_EDGE_COVERAGE)
 
     def test_stretched_outpost_reaches_every_edge(self):
-        ok, rows = angle.check(angle.stretch(self.radar, (2, 2), 8), (2, 2), 8)
+        ok, rows = angle.check(angle.stretch(self.radar, (2, 2), 32), (2, 2), 32)
         self.assertTrue(ok, rows)
 
 

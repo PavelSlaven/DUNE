@@ -131,6 +131,7 @@ cmake --build build-ru --parallel
 | Шрифты | `font_coverage_tests` |
 | Цвета фракций | `faction_tint_tests` |
 | Площадка завода: появление юнита, съезд, очередь, Карриер, мерцание, сохранение | `factory_pad_tests` (логика без SDL, `FactoryPad.hpp`), `factory_pad_engine_tests` (движок), `factory_pad_save_tests` (раздел `FACTORYPADS` сохранения) |
+| Командный пост: кадры поворота тарелки | `outpost_frame_tests` |
 
 Обычный запуск:
 
