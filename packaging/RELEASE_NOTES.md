@@ -3,18 +3,21 @@
 This release contains the Dune II — The Maker RU/HD remaster for Windows,
 Linux and macOS.
 
-## Highlights in v0.8.0-ru-hd.9
+## Highlights in v0.8.0-ru-hd.10
 
-- all buildings redrawn edge to edge at one camera angle, without fences
-  and gates; seven of them stand as full grey slabs;
-- the Command Post is redrawn as a full slab with a large radar dish that
-  turns slowly; it has no flag;
-- the Light and Heavy Factories have a landing pad with an X on the hatch;
-  its lights flicker while a unit is built, and the finished unit appears
-  on the pad and drives off by itself;
-- the Harvester docks in the middle of the redrawn refinery pad;
-- the Launcher hull is shaded and shows more house colour;
-- saved games from earlier releases do not load in this release.
+- new hand-drawn build-menu cards for buildings, units and Palace strikes;
+  the Raider and the Trike share one card;
+- the Barracks are redrawn as a military compound of flat-roofed blocks
+  around an empty yard, and the WOR as a sandstone fortress with gate
+  niches, round towers, a dome and a dish;
+- every building flies the Spice Silo flag with the same pole, shadow,
+  size and waving; the Command Post carries its flag at the lower right;
+- the Spaceport and the High-Tech Factory reach every edge of their cells,
+  and the High-Tech Factory's dark panels are now metal;
+- the horizontal seam across concrete slabs is as thin as the vertical one;
+- the Launcher hull is steel grey like the tanks instead of sand;
+- the game engine is unchanged since v0.8.0-ru-hd.9, so its saved games
+  still load; saves from older releases do not.
 
 ## Installation
 
