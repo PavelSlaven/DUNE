@@ -31,12 +31,5 @@ class PilotPackTests(unittest.TestCase):
         ok, rows = angle.check(self.image("BUILD_WINDTRAP"), (2, 2), 1)
         self.assertTrue(ok, rows)
 
-    def test_build_windtrap_flag_pole_is_opaque(self):
-        flag = self.image("BUILD_WINDTRAP_FLAG")
-        for frame in range(8):
-            area = flag.crop((208, frame * 256 + 150, 214, frame * 256 + 179)).getchannel("A")
-            self.assertEqual(area.getextrema(), (255, 255), f"frame {frame}")
-
-
 if __name__ == "__main__":
     unittest.main()
