@@ -75,9 +75,41 @@ class RolloutPackTests(unittest.TestCase):
                 with self.subTest(frame_pair=(left, right)):
                     self.assertFalse(np.array_equal(arrays[left], arrays[right]), "frames are identical")
 
-    def test_radar_has_no_flag(self):
-        alpha = np.asarray(self.image("BUILD_RADAR_FLAG"))[..., 3]
-        self.assertTrue(np.all(alpha == 0), "BUILD_RADAR_FLAG is not fully transparent")
+    def test_building_flags_match_silo_flag(self):
+        buildings = (
+            "WINDTRAP",
+            "REFINERY",
+            "CONSTYARD",
+            "BARRACKS",
+            "RADAR",
+            "STARPORT",
+            "PALACE",
+            "IX",
+            "LIGHTFACTORY",
+            "WOR",
+            "HIGHTECH",
+        )
+        for prefix in ("BUILD", "HM_BUILD"):
+            silo = self.image(f"{prefix}_SILO_FLAG")
+            self.assertEqual(silo.height % 8, 0)
+            silo_frame_height = silo.height // 8
+            silo_alpha = np.asarray(silo)[..., 3]
+            silo_counts = [
+                int(np.count_nonzero(silo_alpha[index * silo_frame_height:(index + 1) * silo_frame_height] > 0))
+                for index in range(8)
+            ]
+            for building in buildings:
+                name = f"{prefix}_{building}_FLAG"
+                image = self.image(name)
+                self.assertEqual(image.height % 8, 0, name)
+                frame_height = image.height // 8
+                alpha = np.asarray(image)[..., 3]
+                counts = [
+                    int(np.count_nonzero(alpha[index * frame_height:(index + 1) * frame_height] > 0))
+                    for index in range(8)
+                ]
+                with self.subTest(record=name):
+                    self.assertEqual(counts, silo_counts)
 
     def test_stretched_buildings_touch_every_edge(self):
         records = (("BUILD_HIGHTECH", (3, 2), 7), ("BUILD_STARPORT", (3, 3), 8))
