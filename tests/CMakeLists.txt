@@ -22,6 +22,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_d2tm_math.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_SfxTrackAllocator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicJukeBox.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Packs.cpp
 )
 
 # Production source files the tests depend on.
@@ -48,6 +49,8 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/utils/Log.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/SfxTrackAllocator.cpp
     ${CMAKE_SOURCE_DIR}/src/context/MusicJukeBox.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/cDataPack.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/cPack.cpp
 )
 
 add_executable(d2tm_tests
@@ -66,11 +69,12 @@ target_include_directories(d2tm_tests
 
 target_link_libraries(d2tm_tests PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(d2tm_tests PRIVATE cpp_stacktrace)
+target_compile_definitions(d2tm_tests PRIVATE D2TM_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 
 # cKeyBindings calls SDL scancode functions. On Linux/Windows link_libraries() in the root
 # CMakeLists.txt provides SDL3; on macOS (pkg-config) it must be linked explicitly.
 if(APPLE)
-    target_link_libraries(d2tm_tests PRIVATE ${SDL3_LIBRARIES})
+    target_link_libraries(d2tm_tests PRIVATE ${SDL3_LIBRARIES} ${SDL3_IMAGE_LIBRARIES} ${SDL3_MIXER_LIBRARIES})
     # Same as the game target: Apple libc++ has no float std::from_chars, IniParsing.cpp needs the fallback.
     target_compile_definitions(d2tm_tests PRIVATE D2TM_CLANG=1)
 endif()
@@ -85,7 +89,7 @@ endif()
 
 include(CTest)
 include(Catch)
-catch_discover_tests(d2tm_tests)
+catch_discover_tests(d2tm_tests PROPERTIES SKIP_RETURN_CODE 4)
 
 # seedgen (resources/tools/seedgen): C code of the Dune 2 map generator, with golden master tests.
 # Its globals and function names would clash with the game, so it gets its own test executables:
