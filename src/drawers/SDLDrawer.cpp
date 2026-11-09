@@ -58,9 +58,10 @@ void SDLDrawer::renderTexture(SDL_Texture *tex, int x, int y, int w, int h, Uint
     SDL_RenderTexture(renderer, tex, nullptr, &tmp);
 }
 
-void SDLDrawer::renderFromSurface(SDL_Surface *src, int x, int y,Uint8 opacity)
+void SDLDrawer::renderFromSurface(SDL_Surface *src, int x, int y, Uint8 opacity, int density)
 {
-    SDL_FRect tmp = {static_cast<float>(x), static_cast<float>(y), static_cast<float>(src->w), static_cast<float>(src->h)};
+    const int normalizedDensity = std::max(1, density);
+    SDL_FRect tmp = {static_cast<float>(x), static_cast<float>(y), static_cast<float>(src->w / normalizedDensity), static_cast<float>(src->h / normalizedDensity)};
     transparentColorKey = SDL_MapRGB(SDL_GetPixelFormatDetails(src->format), SDL_GetSurfacePalette(src), 255, 0, 255);
     SDL_SetSurfaceColorKey(src, true, transparentColorKey);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, src);
@@ -68,7 +69,7 @@ void SDLDrawer::renderFromSurface(SDL_Surface *src, int x, int y,Uint8 opacity)
         std::cerr << "error drawSprite : " << SDL_GetError();
         return;
     }
-    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
+    SDL_SetTextureScaleMode(texture, normalizedDensity > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(texture, opacity);
     SDL_RenderTexture(renderer, texture, nullptr, &tmp);
@@ -80,7 +81,11 @@ void SDLDrawer::renderStrechSprite(Texture *src, cRectangle src_pos, cRectangle 
     if (src == nullptr || src->tex.get() == nullptr) return;
     SDL_SetTextureBlendMode(src->tex.get(), SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(src->tex.get(), opacity);
-    SDL_FRect srcRect = src_pos.toSDLF();
+    const float density = static_cast<float>(src->density);
+    SDL_FRect srcRect = {static_cast<float>(src_pos.getX()) * density,
+                         static_cast<float>(src_pos.getY()) * density,
+                         static_cast<float>(src_pos.getWidth()) * density,
+                         static_cast<float>(src_pos.getHeight()) * density};
     SDL_FRect destRect = dest_pos.toSDLF();
     SDL_RenderTexture(renderer, src->tex.get(), &srcRect, &destRect);
 }
@@ -341,9 +346,20 @@ void SDLDrawer::endDrawingToTexture()
     }
 }
 
-Texture *SDLDrawer::createTextureFromIndexedSurfaceWithPalette(SDL_Surface *referenceSurface, int paletteIndexForTransparency, const HouseColors& houseColors)
+Texture *SDLDrawer::createTextureFromIndexedSurfaceWithPalette(SDL_Surface *referenceSurface, int paletteIndexForTransparency, const HouseColors& houseColors, int assetDensity)
 {
     d2tm_assert(referenceSurface && "referenceSurface must be given");
+
+    if (!isSurface8BitPaletted(referenceSurface)) {
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, referenceSurface);
+        if (!texture) {
+            SDL_Log("SDL_CreateTextureFromSurface error : %s", SDL_GetError());
+            return nullptr;
+        }
+        const int density = std::max(1, assetDensity);
+        SDL_SetTextureScaleMode(texture, density > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+        return new Texture(texture, referenceSurface->w, referenceSurface->h, false, assetDensity);
+    }
 
     // Step 1: Create a copy of the surface (same INDEX8 format)
     SDL_Surface *modifiableSurface = SDL_CreateSurface(referenceSurface->w, referenceSurface->h, SDL_PIXELFORMAT_INDEX8);
@@ -422,9 +438,10 @@ Texture *SDLDrawer::createTextureFromIndexedSurfaceWithPalette(SDL_Surface *refe
         SDL_DestroySurface(rgbaSurface);
         return nullptr;
     }
-    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
+    const int density = std::max(1, assetDensity);
+    SDL_SetTextureScaleMode(texture, density > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
 
-    auto *newTexture = new Texture(texture, rgbaSurface->w, rgbaSurface->h);
+    auto *newTexture = new Texture(texture, rgbaSurface->w, rgbaSurface->h, false, assetDensity);
     SDL_DestroySurface(rgbaSurface);
     return newTexture;
 }

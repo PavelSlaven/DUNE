@@ -19,7 +19,8 @@
 #include <iostream>
 #include "include/cAssert.h"
 
-Graphics::Graphics(SDL_Renderer *_renderer,const std::string &filePackName): renderer(_renderer)
+Graphics::Graphics(SDL_Renderer *_renderer,const std::string &filePackName, int assetDensity)
+    : renderer(_renderer), assetDensity(assetDensity)
 {
     d2tm_assert(_renderer != nullptr);
     dataPack = std::make_unique<DataPack>(filePackName, nullptr);
@@ -60,8 +61,8 @@ Texture *Graphics::getTexture(int index)
         std::cerr << "Graphics: Failed to convert texture " << index << " : " <<SDL_GetError() << std::endl;
         return nullptr;
     }
-    SDL_SetTextureScaleMode(outTexture, SDL_SCALEMODE_NEAREST);
-    texCache.emplace(index, std::make_unique<Texture>(outTexture, outSurface->w, outSurface->h));
+    SDL_SetTextureScaleMode(outTexture, getDensity() > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+    texCache.emplace(index, std::make_unique<Texture>(outTexture, outSurface->w, outSurface->h, false, getDensity()));
     return texCache[index].get();
 }
 
