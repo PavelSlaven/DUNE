@@ -151,6 +151,7 @@
 | Б6 Цвета фракций, маски, вариации поверхности; цвет Сардаукаров — вопрос по ходу | то же | PR | `faction_tint_tests`, `terrain_variation_tests` |
 | Б7 RU/EN, шрифты, перевод кампаний (новая кампания Сардаукаров — вопрос по ходу) | то же | PR | `font_coverage_tests` + проверка строк |
 | Б8 Сохранения: 10 слотов, F5/F9 | то же | PR | `save_file_codec_tests`, `save_slot_name_tests`; совместимость — по В5 |
+| Б8а Игровые правки зданий форка (волна 3): единое правило размещения, стыковка Харвестера, площадки заводов с разделом сохранения `FACTORYPADS`, тарелка Командного поста на 32 кадрах | то же | PR | тесты функций `placement-rule`, `refinery-dock`, `factory-pads`, `radar-dish` по `docs/upstream/PORT_MAP.md` |
 | Б9 Музыкальные пулы, история треков, `[` / `]` — на SDL3_mixer | то же | PR | `music_playlist_tests`, `music_transition_policy_tests`, `music_controls_layout_tests` |
 | Б10 Панель быстрых приказов, назначение клавиш, вкладка управления | то же | PR | `command_bindings_tests`, `command_bar_layout_tests`, `interaction_regression_tests` |
 | Б11 Ментаты HD, титры, сцены | то же | PR | снимки Б13 |
