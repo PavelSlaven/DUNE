@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 import csv
 import io
+import os
+import stat
 import sys
 import tempfile
 from collections import defaultdict
@@ -89,6 +91,80 @@ def tsv_text(rows: list[tuple[object, ...]]) -> str:
     writer = csv.writer(output, delimiter="\t", lineterminator="\n")
     writer.writerows(rows)
     return output.getvalue()
+
+
+def ensure_parent_directory(path: Path, created_directories: list[Path]) -> None:
+    missing: list[Path] = []
+    parent = path.parent
+    while not parent.exists():
+        missing.append(parent)
+        if parent == parent.parent:
+            break
+        parent = parent.parent
+    for directory in reversed(missing):
+        directory.mkdir()
+        created_directories.append(directory)
+
+
+def validate_destinations(destinations: list[Path]) -> None:
+    for destination in destinations:
+        try:
+            mode = destination.lstat().st_mode
+        except FileNotFoundError:
+            continue
+        if not stat.S_ISREG(mode):
+            raise ValueError(f"{destination}: destination is not a regular file")
+
+
+def write_outputs(
+    outputs: list[tuple[Path, bytes]],
+    report_path: Path,
+) -> None:
+    destinations = [destination for destination, _ in outputs]
+    validate_destinations(destinations)
+
+    existed_before = {destination for destination in destinations if os.path.lexists(destination)}
+    created_directories: list[Path] = []
+    temporary_files: list[Path] = []
+    installed_destinations: list[Path] = []
+    try:
+        staged: list[tuple[Path, Path]] = []
+        for destination, data in outputs:
+            ensure_parent_directory(destination, created_directories)
+            descriptor, temporary_name = tempfile.mkstemp(
+                prefix=f".{destination.name}.",
+                suffix=".tmp",
+                dir=destination.parent,
+            )
+            temporary = Path(temporary_name)
+            temporary_files.append(temporary)
+            with os.fdopen(descriptor, "wb") as output:
+                output.write(data)
+            staged.append((destination, temporary))
+
+        staged.sort(key=lambda item: item[0] != report_path)
+        for destination, temporary in staged:
+            os.replace(temporary, destination)
+            temporary_files.remove(temporary)
+            installed_destinations.append(destination)
+    except Exception:
+        for temporary in temporary_files:
+            try:
+                temporary.unlink(missing_ok=True)
+            except OSError:
+                pass
+        for destination in installed_destinations:
+            if destination not in existed_before:
+                try:
+                    destination.unlink(missing_ok=True)
+                except OSError:
+                    pass
+        for directory in reversed(created_directories):
+            try:
+                directory.rmdir()
+            except OSError:
+                pass
+        raise
 
 
 def whole_file_plan(relative: Path, source: Path, label: str) -> tuple[PlannedOutput, tuple[object, ...]]:
@@ -277,6 +353,13 @@ def run(args: argparse.Namespace) -> int:
             print(error, file=sys.stderr)
         return 1
 
+    destinations = [out_dir / plan.relative for plan in plans] + [report_path]
+    try:
+        validate_destinations(destinations)
+    except (OSError, ValueError) as error:
+        print(f"cannot write merge results: {error}", file=sys.stderr)
+        return 1
+
     temporary_root = Path.cwd() / ".tmp" / "p2"
     try:
         temporary_root.mkdir(parents=True, exist_ok=True)
@@ -299,15 +382,15 @@ def run(args: argparse.Namespace) -> int:
         print(f"cannot prepare merged packs: {error}", file=sys.stderr)
         return 1
 
+    outputs: list[tuple[Path, bytes]] = []
+    for plan in plans:
+        destination = out_dir / plan.relative
+        assert plan.copied_data is not None
+        outputs.append((destination, plan.copied_data))
+    outputs.append((report_path, tsv_text(report_rows).encode("utf-8")))
     try:
-        for plan in plans:
-            destination = out_dir / plan.relative
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            assert plan.copied_data is not None
-            destination.write_bytes(plan.copied_data)
-        report_path.parent.mkdir(parents=True, exist_ok=True)
-        report_path.write_text(tsv_text(report_rows), encoding="utf-8", newline="")
-    except OSError as error:
+        write_outputs(outputs, report_path)
+    except (OSError, ValueError) as error:
         print(f"cannot write merge results: {error}", file=sys.stderr)
         return 1
     return 0

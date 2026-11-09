@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
+import stat
 import sys
 import tempfile
 from dataclasses import dataclass
@@ -211,22 +213,96 @@ def write_outputs(
     result: list[ResultEntry],
 ) -> None:
     result_entries = [item.entry for item in result]
-    if len(result_entries) == len(fork) and all(
+    copy_fork = len(result_entries) == len(fork) and all(
         entry_value(left) == entry_value(right)
         for left, right in zip(result_entries, fork, strict=True)
-    ):
-        output_bytes = fork_path.read_bytes()
-    else:
-        with tempfile.TemporaryDirectory(prefix="align-hd4-") as temporary_dir:
-            temporary_pack = Path(temporary_dir) / "aligned.dat"
-            hd_assets.write_pack(temporary_pack, result_entries)
-            output_bytes = temporary_pack.read_bytes()
+    )
+    destinations = (output_path, report_path)
+    existed: dict[Path, bool] = {}
+    for destination in destinations:
+        try:
+            mode = destination.lstat().st_mode
+        except FileNotFoundError:
+            existed[destination] = False
+        else:
+            if not stat.S_ISREG(mode):
+                raise ValueError(
+                    f"{destination}: destination exists and is not a regular file"
+                )
+            existed[destination] = True
 
-    report_bytes = result_report(result).encode("utf-8")
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    report_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_bytes(output_bytes)
-    report_path.write_bytes(report_bytes)
+    created_directories: list[Path] = []
+    temporary_files: list[Path] = []
+    installed_new_files: list[Path] = []
+
+    def ensure_parent(directory: Path) -> None:
+        missing: list[Path] = []
+        current = directory
+        while not current.exists():
+            missing.append(current)
+            parent = current.parent
+            if parent == current:
+                break
+            current = parent
+        if current.exists() and not current.is_dir():
+            raise NotADirectoryError(f"{current} is not a directory")
+        for path in reversed(missing):
+            try:
+                path.mkdir()
+            except FileExistsError:
+                if not path.is_dir():
+                    raise
+            else:
+                created_directories.append(path)
+
+    def make_temporary(destination: Path) -> Path:
+        descriptor, name = tempfile.mkstemp(
+            prefix=f".{destination.name}.",
+            suffix=".tmp",
+            dir=destination.parent,
+        )
+        temporary_path = Path(name)
+        temporary_files.append(temporary_path)
+        os.close(descriptor)
+        return temporary_path
+
+    try:
+        ensure_parent(output_path.parent)
+        ensure_parent(report_path.parent)
+
+        temporary_output = make_temporary(output_path)
+        if copy_fork:
+            temporary_output.write_bytes(fork_path.read_bytes())
+        else:
+            hd_assets.write_pack(temporary_output, result_entries)
+
+        temporary_report = make_temporary(report_path)
+        temporary_report.write_bytes(result_report(result).encode("utf-8"))
+
+        for temporary_path, destination in (
+            (temporary_report, report_path),
+            (temporary_output, output_path),
+        ):
+            os.replace(temporary_path, destination)
+            if not existed[destination]:
+                installed_new_files.append(destination)
+    except Exception:
+        for temporary_path in temporary_files:
+            try:
+                temporary_path.unlink(missing_ok=True)
+            except OSError:
+                pass
+        for destination in installed_new_files:
+            try:
+                destination.unlink(missing_ok=True)
+            except OSError:
+                pass
+        for directory in reversed(created_directories):
+            try:
+                directory.rmdir()
+            except OSError:
+                pass
+        raise
 
 
 def run(args: argparse.Namespace) -> int:
