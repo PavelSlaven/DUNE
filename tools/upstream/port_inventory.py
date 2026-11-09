@@ -17,17 +17,17 @@ from typing import Iterable
 
 
 BASE = "e17379ad660fca46859b403a6c3d33ec8d831a40"
-FORK = "6662b2f4857c679425ea2166092a21f4bde7d6e7"
-UPSTREAM = "a51b97f15d0eee2d323a1737f140eb2cbd60973c"
+FORK = "9208dcf5a358f40afd95c99480e4e09f781ed566"
+UPSTREAM = "d06f2fcd2a347182c3774fb96e9a85570405c489"
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUTPUT = ROOT / "docs" / "upstream" / "port_inventory.json"
 FEATURES_PATH = ROOT / "tools" / "upstream" / "port_features.json"
 
 PACKS = {
-    "src/data/gfxdata.h": "sdl_data_hd4.dat",
-    "src/data/gfxinter.h": "sdl_inter_hd4.dat",
-    "src/data/gfxmentat.h": "sdl_mentat_hd4.dat",
-    "src/data/gfxworld.h": "sdl_world_hd4.dat",
+    "gfxdata.h": "sdl_data_hd4.dat",
+    "gfxinter.h": "sdl_inter_hd4.dat",
+    "gfxmentat.h": "sdl_mentat_hd4.dat",
+    "gfxworld.h": "sdl_world_hd4.dat",
 }
 
 DEFINE_LINE = re.compile(r"^\s*#\s*define\s+([A-Za-z_][A-Za-z0-9_]*)(.*)$")
@@ -299,14 +299,31 @@ def lfs_paths(paths: Iterable[str]) -> dict[str, bool]:
 
 def parse_defines(sources: dict[str, list[str]]) -> dict[str, dict[str, dict]]:
     defines: dict[str, dict[str, dict]] = defaultdict(dict)
+    headers_by_name: dict[str, str] = {}
     for path in sorted(sources):
-        if not re.fullmatch(r"src/data/[^/]+\.h", path):
+        if not re.fullmatch(r"src/(?:data|include)/gfx[^/]+\.h", path):
             continue
+        header_name = path.rsplit("/", 1)[-1]
+        previous_path = headers_by_name.get(header_name)
+        if previous_path is not None:
+            raise RuntimeError(
+                f"duplicate pack-index header name {header_name!r}: "
+                f"{previous_path} and {path}"
+            )
+        headers_by_name[header_name] = path
         for line_number, line in enumerate(sources[path], start=1):
             match = DEFINE_LINE.match(line)
-            if not match:
-                continue
-            name, remainder = match.groups()
+            if match:
+                name, remainder = match.groups()
+            else:
+                match = re.match(
+                    r"^\s*(?:(?:inline|static)\s+)*constexpr\s+int\s+"
+                    r"([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*;\s*(?://.*)?$",
+                    line,
+                )
+                if not match:
+                    continue
+                name, remainder = match.groups()
             body = remainder.split("//", 1)[0].split("/*", 1)[0].strip()
             token = body.split(None, 1)[0] if body else ""
             integer = INTEGER_DEFINE.fullmatch(token)
@@ -336,8 +353,11 @@ def new_defines(
     target_defines: dict[str, dict[str, dict]],
 ) -> list[dict]:
     added: list[dict] = []
+    original_names_by_header: dict[str, set[str]] = defaultdict(set)
+    for path, defines in base_defines.items():
+        original_names_by_header[path.rsplit("/", 1)[-1]].update(defines)
     for path in sorted(target_defines):
-        original_names = base_defines.get(path, {})
+        original_names = original_names_by_header.get(path.rsplit("/", 1)[-1], set())
         for name, define in sorted(target_defines[path].items()):
             if name in original_names:
                 continue
@@ -356,12 +376,14 @@ def id_collisions(
     upstream_by_header_value: dict[tuple[str, int], list[str]] = defaultdict(list)
     for define in upstream_added:
         if define["integer"]:
-            upstream_by_header_value[(define["path"], define["value"])].append(define["name"])
+            header_name = define["path"].rsplit("/", 1)[-1]
+            upstream_by_header_value[(header_name, define["value"])].append(define["name"])
     collisions = []
     for define in fork_added:
         if not define["integer"]:
             continue
-        for upstream_name in upstream_by_header_value.get((define["path"], define["value"]), []):
+        header_name = define["path"].rsplit("/", 1)[-1]
+        for upstream_name in upstream_by_header_value.get((header_name, define["value"]), []):
             if define["name"] != upstream_name:
                 collisions.append(
                     {
@@ -436,7 +458,8 @@ def pack_index_findings(
 ) -> list[dict]:
     findings: list[dict] = []
     for define in upstream_new:
-        pack_name = PACKS.get(define["path"])
+        header_name = define["path"].rsplit("/", 1)[-1]
+        pack_name = PACKS.get(header_name)
         if pack_name is None or not define["integer"]:
             continue
         entries = pack_entries.get(pack_name)
