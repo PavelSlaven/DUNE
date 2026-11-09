@@ -17,6 +17,11 @@ question() {
     exit 1
 }
 
+usage() {
+    printf 'Использование: %s <SHA базы апстрима> [--pristine]\n' "$0" >&2
+    exit 2
+}
+
 run() {
     printf 'Команда:'
     printf ' %q' "$@"
@@ -131,7 +136,14 @@ build_dependency() {
             question 'Не совпадает SHA подмодуля FreeType.'
         printf 'Подмодуль: %s; URL: %s; SHA: %s\n' "$source_dir/external/freetype" "$submodule_url" "$actual_sha"
     fi
-    manifest=$(printf '%s\n' "$dep_sha" "${dep_args[@]}")
+    case "$name" in
+        SDL_image|SDL_ttf|SDL_mixer)
+            manifest=$(printf '%s\n' "$(<"$DUNE_DEPS_DIR/installed/SDL")" "$dep_sha" "${dep_args[@]}")
+            ;;
+        *)
+            manifest=$(printf '%s\n' "$dep_sha" "${dep_args[@]}")
+            ;;
+    esac
     if [[ -f "$stamp" && "$(cat "$stamp")" == "$manifest" ]]; then
         printf 'SKIP_DEPENDENCY %s: установка с теми же SHA и опциями уже завершена.\n' "$name"
         return
@@ -145,11 +157,11 @@ build_dependency() {
 run_game() {
     local driver=$1
     printf 'Рабочий каталог: %s\n' "$DUNE_OUT_DIR/run/bin"
-    printf 'Команда: SDL_VIDEODRIVER=%s SDL_AUDIODRIVER=dummy XDG_DATA_HOME=%q timeout 20 %q\n' \
-        "$driver" "$DUNE_OUT_DIR/xdg" "$DUNE_OUT_DIR/build/d2tm"
+    printf 'Команда: SDL_VIDEODRIVER=%s SDL_AUDIODRIVER=dummy XDG_DATA_HOME=%q timeout 20 ./d2tm\n' \
+        "$driver" "$DUNE_OUT_DIR/xdg"
     if (cd "$DUNE_OUT_DIR/run/bin" &&
         SDL_VIDEODRIVER="$driver" SDL_AUDIODRIVER=dummy \
-        XDG_DATA_HOME="$DUNE_OUT_DIR/xdg" timeout 20 "$DUNE_OUT_DIR/build/d2tm") \
+        XDG_DATA_HOME="$DUNE_OUT_DIR/xdg" timeout 20 ./d2tm) \
         > "$log_dir/stdout-$driver.log" 2>&1; then
         game_status=0
     else
@@ -167,12 +179,15 @@ run_game() {
 
 main() {
     printf 'Полный лог: %s/full.log\n' "$log_dir"
-    up0=a51b97f15d0eee2d323a1737f140eb2cbd60973c
-    printf 'База UP0: %s; HEAD: %s\n' "$up0" "$(git -C "$repo_root" rev-parse HEAD)"
-    git -C "$repo_root" merge-base --is-ancestor "$up0" HEAD ||
-        question 'UP0 не является предком HEAD.'
-    git -C "$repo_root" diff --quiet "$up0" -- . ':(exclude)tools/upstream' ||
-        question 'Отслеживаемые файлы вне tools/upstream отличаются от UP0.'
+    printf 'База апстрима: %s; HEAD: %s\n' "$upstream_base" "$(git -C "$repo_root" rev-parse HEAD)"
+    git -C "$repo_root" merge-base --is-ancestor "$upstream_base" HEAD ||
+        question 'База апстрима не является предком HEAD.'
+    if [[ "$pristine" == 1 ]]; then
+        git -C "$repo_root" diff --quiet "$upstream_base" -- . ':(exclude)tools/upstream' ||
+            question 'Отслеживаемые файлы вне tools/upstream отличаются от базы апстрима.'
+    else
+        printf 'Проверка чистоты базы пропущена.\n'
+    fi
     df -h /
     check_disk
     mkdir -p "$DUNE_DEPS_DIR/src" "$DUNE_DEPS_DIR/build" "$DUNE_DEPS_DIR/installed" "$prefix"
@@ -191,19 +206,11 @@ main() {
     export CPATH="$prefix/include"
     export LIBRARY_PATH="$library_dir"
     export LD_LIBRARY_PATH="$library_dir"
-    printf 'Обход UP0: CMakeLists.txt:88 использует голые имена SDL; CI устанавливает зависимости в стандартные пути /usr/local и вызывает ldconfig.\n'
+    printf 'Обход базы апстрима: CMakeLists.txt:88 использует голые имена SDL; CI устанавливает зависимости в стандартные пути /usr/local и вызывает ldconfig.\n'
     printf 'CPATH=%s\nLIBRARY_PATH=%s\nLD_LIBRARY_PATH=%s\n' "$CPATH" "$LIBRARY_PATH" "$LD_LIBRARY_PATH"
 
-    up0_cache="$DUNE_OUT_DIR/build/CMakeCache.txt"
-    if [[ -f "$up0_cache" &&
-        "$(sed -n 's/^CMAKE_HOME_DIRECTORY:[^=]*=//p' "$up0_cache")" == "$repo_root" &&
-        "$(sed -n 's/^CMAKE_BUILD_TYPE:[^=]*=//p' "$up0_cache")" == RelWithDebInfo &&
-        "$(sed -n 's/^CMAKE_PREFIX_PATH:[^=]*=//p' "$up0_cache")" == "$prefix" ]]; then
-        printf 'Конфигурация UP0 с теми же исходниками и префиксом уже готова.\n'
-    else
-        run cmake -S "$repo_root" -B "$DUNE_OUT_DIR/build" \
-            -DCMAKE_BUILD_TYPE=RelWithDebInfo "-DCMAKE_PREFIX_PATH=$prefix"
-    fi
+    run cmake -S "$repo_root" -B "$DUNE_OUT_DIR/build" \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo "-DCMAKE_PREFIX_PATH=$prefix"
     run make -C "$DUNE_OUT_DIR/build" -j16
     check_disk
     if (cd "$DUNE_OUT_DIR/build" && timeout 1800 ctest --output-on-failure) 2>&1 | tee "$log_dir/ctest.log"; then
@@ -216,6 +223,9 @@ main() {
 
     if [[ -d "$DUNE_OUT_DIR/run" ]]; then
         mv "$DUNE_OUT_DIR/run" "$log_dir/previous-run"
+    fi
+    if [[ -d "$DUNE_OUT_DIR/xdg" ]]; then
+        mv "$DUNE_OUT_DIR/xdg" "$log_dir/previous-xdg"
     fi
     mkdir -p "$DUNE_OUT_DIR/run/bin" "$DUNE_OUT_DIR/xdg"
     cp -a "$repo_root/resources/bin/campaign" "$repo_root/resources/bin/data" \
@@ -248,7 +258,7 @@ main() {
     done
     printf 'Тесты ctest: %s; %s\n' "$test_count" "$test_summary"
     printf 'Запуск: SDL_VIDEODRIVER=%s; код timeout=%s\n' "$selected_driver" "$game_status"
-    printf 'Строка MENU: %s\nИсточник: src/game/cGame_logic.cpp:903–904, вызов :785\n' "$menu_line"
+    printf 'Строка MENU: %s\nИсточник: src/game/cGame_logic.cpp:945–946\n' "$menu_line"
     printf 'Лог игры: %s\nКаталог библиотек: %s\n' "$game_log" "$library_dir"
     printf 'Причина переменных окружения: голые имена в CMakeLists.txt:88; в CI апстрима используются стандартные пути /usr/local и ldconfig.\n'
     check_disk
@@ -261,6 +271,16 @@ if [[ ${1:-} == --dependency ]]; then
     name=$3
     build_dependency "$name" 2>&1 | tee "$log_dir/$name.log"
     exit
+fi
+
+if (( $# < 1 || $# > 2 )) || [[ ! ${1:-} =~ ^[[:xdigit:]]{40}$ ]] ||
+    { (( $# == 2 )) && [[ $2 != --pristine ]]; }; then
+    usage
+fi
+upstream_base=$1
+pristine=0
+if (( $# == 2 )); then
+    pristine=1
 fi
 
 log_dir="$DUNE_OUT_DIR/logs/$(date -u +%Y%m%dT%H%M%S)-$$"
