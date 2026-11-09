@@ -11,6 +11,7 @@
 
 #include <array>
 #include <filesystem>
+#include <fstream>
 #include <memory>
 #include <string>
 #include <utility>
@@ -104,11 +105,24 @@ TEST_CASE("P3 Texture keeps physical size and density", "[P3]")
 
 TEST_CASE("P3 Graphics loads HD4 data pack with density 4", "[P3]")
 {
+    const std::filesystem::path sourceRoot = D2TM_SOURCE_DIR;
+    const std::filesystem::path packPath = sourceRoot / "resources/bin/data/sdl_data_hd4.dat";
+    std::ifstream packFile(packPath, std::ios::binary);
+    REQUIRE(packFile.is_open());
+
+    std::string firstLine;
+    std::getline(packFile, firstLine);
+    if (!firstLine.empty() && firstLine.back() == '\r') {
+        firstLine.pop_back();
+    }
+    if (firstLine == "version https://git-lfs.github.com/spec/v1") {
+        SKIP("HD4 pack is a Git LFS pointer: sdl_data_hd4.dat");
+    }
+
     SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "dummy");
     REQUIRE(SDL_Init(SDL_INIT_VIDEO));
     SoftwareRenderer canvas(8, 8);
-    const std::filesystem::path sourceRoot = D2TM_SOURCE_DIR;
-    Graphics gfx(canvas.renderer, (sourceRoot / "resources/bin/data/sdl_data_hd4.dat").string(), 4);
+    Graphics gfx(canvas.renderer, packPath.string(), 4);
     CHECK(gfx.getDensity() == 4);
 
     Texture *t = gfx.getTexture(UNIT_QUAD);
