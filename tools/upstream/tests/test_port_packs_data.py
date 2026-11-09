@@ -27,6 +27,11 @@ CLASSIC_WITHOUT_HD = {
         "FLIPDIAGBL", "FLIPDIAGBR", "FLIPDIAGTL", "FLIPDIAGTR", "SAVEICON",
     ],
 }
+HD_DRAWINGS = {
+    "sdl_data_hd4.dat": ["EXPLOSION_CARRYALL"],
+    "sdl_inter_hd4.dat": ["BMP_SELECT_HOUSE_SARDAUKAR", "ICON_POWER_LOW"],
+    "sdl_mentat_hd4.dat": ["MENTATS"],
+}
 HEADERS = {
     "sdl_data_hd4.dat": "src/data/gfxdata.h",
     "sdl_inter_hd4.dat": "src/data/gfxinter.h",
@@ -127,7 +132,7 @@ class PortPacksDataTests(unittest.TestCase):
                 self.assertEqual(actual, [tuple(r[k] for k in
                     ("pack", "index", "name", "extension", "sha256")) for r in rows])
 
-    def test_hd4_pack_entries_and_classic_x4_pixels(self):
+    def test_hd4_pack_entries(self):
         from tools import hd_assets
         expected = read_expected("hd4_packs_expected.tsv")
         self.assertEqual(set(expected), set(TAG_COUNTS))
@@ -136,7 +141,8 @@ class PortPacksDataTests(unittest.TestCase):
                 entries = hd_assets.read_pack(self.require_pack(pack))
                 self.assertEqual(len(entries), len(rows))
                 self.assertEqual(sum(r["source"] == "fork" for r in rows), TAG_COUNTS[pack])
-                classics = None
+                self.assertEqual([r["name"] for r in rows if r["source"] == "hd_drawing"],
+                                 HD_DRAWINGS.get(pack, []))
                 for index, (entry, row) in enumerate(zip(entries, rows)):
                     with self.subTest(index=index, name=row["name"]):
                         self.assertEqual((entry.index, entry.name, entry.extension),
@@ -145,22 +151,10 @@ class PortPacksDataTests(unittest.TestCase):
                         with Image.open(io.BytesIO(entry.payload)) as image:
                             image.load()
                             self.assertEqual(image.size, (int(row["width"]), int(row["height"])))
-                            if row["source"] == "fork":
+                            if row["source"] in ("fork", "hd_drawing"):
                                 self.assertEqual(hashlib.sha256(entry.payload).hexdigest(), row["sha256"])
                             else:
-                                self.assertEqual(row["source"], "classic_x4")
-                                self.assertEqual(row["sha256"], "-")
-                                if classics is None:
-                                    classic_pack = pack.replace("_hd4.dat", ".dat")
-                                    classics = hd_assets.read_pack(self.require_pack(classic_pack))
-                                classic = classics[index]
-                                self.assertEqual((classic.index, classic.name), (index, entry.name))
-                                original = hd_assets.decode_image(classic.payload)
-                                self.assertIsNotNone(original)
-                                scaled = hd_assets.scale_image(original, 4)
-                                self.assertEqual(image.size, scaled.size)
-                                self.assertEqual(image.convert("RGBA").tobytes(),
-                                                 scaled.convert("RGBA").tobytes())
+                                self.fail(f"Неизвестный источник: {row['source']}")
 
     def test_unchanged_pack_file_hashes(self):
         for pack, digest in UNCHANGED_SHA256.items():
