@@ -539,7 +539,7 @@ void cSelectYourNextConquestState::regionDraw(cRegion &regionPiece) const
         cPlayer* temp = m_objects->getPlayer(regionPiece.iHouse);
         // select_palette(temp.pal);
         if (regionPiece.iHouse!=regionPiece.oldHouse) {
-            regionPiece.bmpColor = createPlayerTextureFromIndexedSurfaceWithPalette(m_ctx->getSDLDrawer(), temp, regionPiece.bmp, TransparentColorIndex);
+            regionPiece.bmpColor = createPlayerTextureFromIndexedSurfaceWithPalette(m_ctx->getSDLDrawer(), temp, regionPiece.bmp, TransparentColorIndex, m_gfxworld->getDensity());
             regionPiece.oldHouse=regionPiece.iHouse;
         }
         drawRegion(regionPiece);
@@ -550,7 +550,7 @@ void cSelectYourNextConquestState::regionDraw(cRegion &regionPiece) const
         int iHouse = m_objects->getPlayer(HUMAN)->getHouse();
         cPlayer* temp = m_objects->getPlayer(iHouse);
         if (regionPiece.iHouse!=regionPiece.oldHouse) {
-            regionPiece.bmpColor = createPlayerTextureFromIndexedSurfaceWithPalette(m_ctx->getSDLDrawer(), temp, regionPiece.bmp, TransparentColorIndex);
+            regionPiece.bmpColor = createPlayerTextureFromIndexedSurfaceWithPalette(m_ctx->getSDLDrawer(), temp, regionPiece.bmp, TransparentColorIndex, m_gfxworld->getDensity());
         }
         drawRegion(regionPiece);
     }
@@ -581,8 +581,8 @@ int cSelectYourNextConquestState::regionOver(int mouseX, int mouseY)
     if (!mapRect.isPointWithin(mouseX, mouseY)) return -1;
 
     // from here, we are on a region
-    int wCalc = round((mouseX-offsetX-16)*608.0/regionClickMapBmp->w);
-    int hCalc = round((mouseY-offsetY-73)*240.0/regionClickMapBmp->h);
+    int wCalc = scaleToBitmap(mouseX - offsetX - 16, 608, regionClickMapBmp->w);
+    int hCalc = scaleToBitmap(mouseY - offsetY - 73, 240, regionClickMapBmp->h);
     int c = getPixelColorIndexFromSurface(regionClickMapBmp, wCalc, hCalc);
     //std::cout << "REGION_OVER " << mouseX-offsetX << " " << mouseY-offsetY << " " << c << std::endl;
     m_drawManager->setMessage(std::format("region {}",c-1));

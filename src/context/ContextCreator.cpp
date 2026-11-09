@@ -32,7 +32,7 @@ ContextCreator::ContextCreator(SDL_Renderer *renderer, cFileValidator *settingsV
     //
     // loading all datapacks
     //
-    gfxmentat = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXMENTAT));
+    gfxmentat = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXMENTAT), kHd4AssetDensity);
     if (gfxmentat == nullptr) {
         Logger::error(COMP_INIT, "Load data", "Could not hook/load datafile: {}", settingsValidator->getName(eGameDirFileName::GFXMENTAT));
     }
@@ -40,7 +40,7 @@ ContextCreator::ContextCreator(SDL_Renderer *renderer, cFileValidator *settingsV
         Logger::info(COMP_INIT, "Load data", "Hooked datafile: {}", settingsValidator->getName(eGameDirFileName::GFXMENTAT));
     }
 
-    gfxworld = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXWORLD));
+    gfxworld = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXWORLD), kHd4AssetDensity);
     if (gfxworld == nullptr) {
         Logger::error(COMP_INIT, "Load data", "Could not hook/load datafile: {}", settingsValidator->getName(eGameDirFileName::GFXWORLD));
     }
@@ -48,7 +48,7 @@ ContextCreator::ContextCreator(SDL_Renderer *renderer, cFileValidator *settingsV
         Logger::info(COMP_INIT, "Load data", "Hooked datafile: {}", settingsValidator->getName(eGameDirFileName::GFXWORLD));
     }
 
-    gfxinter = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXINTER));
+    gfxinter = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXINTER), kHd4AssetDensity);
     if (gfxinter == nullptr) {
         Logger::error(COMP_INIT, "Load data", "Could not hook/load datafile: {}", settingsValidator->getName(eGameDirFileName::GFXINTER));
     }
@@ -56,7 +56,7 @@ ContextCreator::ContextCreator(SDL_Renderer *renderer, cFileValidator *settingsV
         Logger::info(COMP_INIT, "Load data", "Hooked datafile: {}", settingsValidator->getName(eGameDirFileName::GFXINTER));
     }
 
-    gfxdata = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXDATA));
+    gfxdata = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXDATA), kHd4AssetDensity);
     if (gfxdata == nullptr) {
         Logger::error(COMP_INIT, "Load data", "Could not hook/load datafile: {}", settingsValidator->getName(eGameDirFileName::GFXDATA));
     }

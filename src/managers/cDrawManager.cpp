@@ -98,7 +98,7 @@ void cDrawManager::reset()
     m_messageDrawer = std::make_unique<cMessageDrawer>(m_ctx, m_services);
     m_placeitDrawer = std::make_unique<cPlaceItDrawer>(m_ctx, m_player, m_structureUtils);
     m_structureDrawer = std::make_unique<cStructureDrawer>(m_ctx, m_player, m_structureUtils);
-    m_btnOptions.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_ctx->getSDLDrawer(),m_player, m_gfxinter->getSurface(BTN_OPTIONS), TransparentColorIndex));
+    m_btnOptions.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_ctx->getSDLDrawer(),m_player, m_gfxinter->getSurface(BTN_OPTIONS), TransparentColorIndex, m_gfxinter->getDensity()));
     m_mouseDrawer = std::make_unique<cMouseDrawer>(m_player, m_ctx->getTextContext()->getSmallTextDrawer());
 
     m_sidebarDrawer->serviceInit(m_services);
@@ -233,7 +233,7 @@ void cDrawManager::drawRallyPoint()
     int drawX = m_mapCamera->getWindowXPositionFromCell(rallyPointCell);
     int drawY = m_mapCamera->getWindowYPositionFromCell(rallyPointCell);
 
-    SDL_Surface *mouseMoveBitmap = m_gfxdata->getSurface(MOUSE_MOVE);
+    Texture *mouseMoveBitmap = m_gfxdata->getTexture(MOUSE_MOVE);
 
     int rallyPointWidthScaled = m_mapCamera->factorZoomLevel(mouseMoveBitmap->w);
     int rallyPointHeightScaled = m_mapCamera->factorZoomLevel(mouseMoveBitmap->h);
@@ -319,7 +319,7 @@ void cDrawManager::setPlayerToDraw(cPlayer *playerToDraw)
     const bool houseChanged = m_player->getHouse() != playerToDraw->getHouse();
     m_player = playerToDraw;
     if (houseChanged) {
-        m_btnOptions.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_ctx->getSDLDrawer(), m_player, m_gfxinter->getSurface(BTN_OPTIONS), TransparentColorIndex));
+        m_btnOptions.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_ctx->getSDLDrawer(), m_player, m_gfxinter->getSurface(BTN_OPTIONS), TransparentColorIndex, m_gfxinter->getDensity()));
     }
     m_creditsDrawer->setPlayer(playerToDraw);
     m_sidebarDrawer->setPlayer(playerToDraw);

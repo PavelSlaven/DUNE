@@ -58,11 +58,11 @@ cMessageDrawer::~cMessageDrawer()
 void cMessageDrawer::draw()
 {
     if (m_state == messages::eMessageDrawerState::COMBAT) {
-        m_sdlDrawer->renderFromSurface(m_bmpBar, m_position.x, m_position.y);
+        m_sdlDrawer->renderFromSurface(m_bmpBar, m_position.x, m_position.y, 255, m_gfxinter->getDensity());
     }
 
     if (m_alpha > -1) {
-        m_sdlDrawer->renderFromSurface(m_bmpBar, m_position.x, m_position.y, m_alpha);
+        m_sdlDrawer->renderFromSurface(m_bmpBar, m_position.x, m_position.y, m_alpha, m_gfxinter->getDensity());
         // draw message
         m_textDrawer->drawText(m_position.x+13, m_position.y+6, Color{0, 0, 0,Uint8(m_alpha)}, m_message, false);
     }
@@ -172,23 +172,24 @@ void cMessageDrawer::setMessage(const std::string &msg, bool keepMessage)
 
 void cMessageDrawer::createMessageBarBmp(int desiredWidth)
 {
+    const int density = m_gfxinter->getDensity();
     if (m_bmpBar) {
         SDL_DestroySurface(m_bmpBar);
     }
 
-    m_bmpBar = SDL_CreateSurface(desiredWidth, 30, SDL_PIXELFORMAT_RGBA32);
+    m_bmpBar = SDL_CreateSurface(desiredWidth * density, 30 * density, SDL_PIXELFORMAT_RGBA32);
     auto color = SDL_MapRGBA(SDL_GetPixelFormatDetails(m_bmpBar->format), SDL_GetSurfacePalette(m_bmpBar), 255, 0, 255, 255);
     SDL_FillSurfaceRect(m_bmpBar, nullptr, color);
     SDL_BlitSurface(m_gfxinter->getSurface(MESSAGE_LEFT), nullptr, m_bmpBar, nullptr);
 
-    for (int drawX = 11; drawX < m_bmpBar->w; drawX+= 55) {
+    for (int drawX = 11 * density; drawX < m_bmpBar->w; drawX += 55 * density) {
         auto src = m_gfxinter->getSurface(MESSAGE_MIDDLE);
         auto tmp = cRectangle{drawX, 0,src->w,src->h};
         SDL_Rect destRect = tmp.toSDL();
         SDL_BlitSurface(src, nullptr, m_bmpBar, &destRect);
     }
     auto src = m_gfxinter->getSurface(MESSAGE_RIGHT);
-    auto tmp = cRectangle{m_bmpBar->w - 11, 0,src->w,src->h};
+    auto tmp = cRectangle{m_bmpBar->w - 11 * density, 0,src->w,src->h};
     SDL_Rect destRect = tmp.toSDL();
     SDL_BlitSurface(src, nullptr, m_bmpBar, &destRect);
 }

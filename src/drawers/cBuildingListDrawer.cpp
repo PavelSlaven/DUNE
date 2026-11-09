@@ -34,6 +34,7 @@
 #include "gameobjects/structures/cStructureFactory.h"
 #include "gameobjects/units/cUnits.h"
 #include "include/cAssert.h"
+#include "include/Texture.hpp"
 #include "context/TextContext.hpp"
 #include "drawers/cTextDrawer.h"
 #include "game/cGameSettings.h"
@@ -88,7 +89,7 @@ void cBuildingListDrawer::drawButtonHoverRectangle(cBuildingList *list)
     int id = list->getButtonIconIdUnpressed();
 
     int width = 33;
-    int height = (m_gfxinter->getSurface(id))->h;
+    int height = m_gfxinter->getTexture(id)->h;
 
     Color color = m_player->getSelectFadingColor();
 
@@ -116,7 +117,7 @@ void cBuildingListDrawer::drawButton(cBuildingList *list, bool pressed)
 
 //	int width = (gfxinter->getSurface(id))->w;
     int width = 33;
-    int height = (m_gfxinter->getSurface(id))->h;
+    int height = m_gfxinter->getTexture(id)->h;
 
     // clear
     m_sdlDrawer->renderSprite(m_gfxinter->getTexture(list->getButtonIconIdUnpressed()), x, y);		// draw pressed button version (unpressed == default in gui)

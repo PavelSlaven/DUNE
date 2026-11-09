@@ -70,7 +70,7 @@ CreditsDrawer::CreditsDrawer(GameContext* ctx, cGameSettings *settings, cPlayer 
     m_previousCredits = 0;
 
     // center credits bar within sidebar
-    int widthCreditsBar = (m_gfxinter->getSurface(CREDITS_BAR))->w;
+    int widthCreditsBar = m_gfxinter->getTexture(CREDITS_BAR)->w;
     m_drawX = settings->getScreenW() - (cSideBar::SidebarWidthWithoutCandyBar / 2) - (widthCreditsBar / 2);
     m_drawY = 0;
 }

@@ -347,9 +347,9 @@ void AbstractMentat::loadScene(const std::string &scene)
 {
     gfxmovie = nullptr;
 
-    const std::string filename = "data/scenes/sdl_" + scene + ".dat";
+    const std::string filename = hd4SceneFile(scene);
 
-    gfxmovie = std::make_shared<Graphics>(m_sdlDrawer->getRenderer(),filename);
+    gfxmovie = std::make_shared<Graphics>(m_sdlDrawer->getRenderer(),filename, kHd4AssetDensity);
 
     TIMER_movie = 0;
     iMovieFrame=0;
