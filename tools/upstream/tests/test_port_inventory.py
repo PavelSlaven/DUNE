@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import fnmatch
+import importlib.util
 import json
 import os
 import re
@@ -498,6 +499,62 @@ def port_map_errors(data: dict, rules: dict[str, dict], map_text: str) -> list[s
 
 
 class PortInventoryTests(unittest.TestCase):
+    def test_pack_indices_are_read_from_constexpr_and_moved_headers(self) -> None:
+        spec = importlib.util.spec_from_file_location("port_inventory_under_test", GENERATOR)
+        self.assertIsNotNone(spec)
+        self.assertIsNotNone(spec.loader)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        base_sources = {
+            "src/data/gfxmentat.h": ["#define MENTAT_A 0"],
+            "src/data/gfxdata.h": ["#define DATA_A 0"],
+        }
+        upstream_sources = {
+            "src/include/gfxmentat.h": [
+                "constexpr int MENTAT_A = 0;",
+                "constexpr int MENTAT_B = 1;",
+            ],
+            "src/data/gfxdata.h": [
+                "constexpr int DATA_A = 0;",
+                "constexpr int DATA_B = 1;",
+            ],
+        }
+        pack_entries = {
+            "sdl_mentat_hd4.dat": {0: "MENTAT_A"},
+            "sdl_data_hd4.dat": {0: "DATA_A", 1: "HM_OTHER"},
+        }
+
+        findings = module.pack_index_findings(
+            module.new_defines(
+                module.parse_defines(base_sources),
+                module.parse_defines(upstream_sources),
+            ),
+            pack_entries,
+        )
+
+        self.assertEqual(
+            findings,
+            [
+                {
+                    "kind": "pack_index_taken",
+                    "header": "src/data/gfxdata.h",
+                    "pack": "sdl_data_hd4.dat",
+                    "define": "DATA_B",
+                    "value": 1,
+                    "fork_entry": "HM_OTHER",
+                },
+                {
+                    "kind": "pack_index_missing",
+                    "header": "src/include/gfxmentat.h",
+                    "pack": "sdl_mentat_hd4.dat",
+                    "define": "MENTAT_B",
+                    "value": 1,
+                    "fork_entry": None,
+                },
+            ],
+        )
+
     def test_generator_output_matches_committed_inventory_byte_for_byte(self) -> None:
         self.assertTrue(GENERATOR.is_file(), f"missing generator: {GENERATOR}")
         self.assertTrue(MANIFEST.is_file(), f"missing committed inventory: {MANIFEST}")

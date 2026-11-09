@@ -6236,7 +6236,40 @@
       "subject": "Merge pull request #101 from PavelSlaven/docs/hd10-release"
     }
   ],
-  "id_collisions": [],
+  "id_collisions": [
+    {
+      "define": "BMP_SELECT_HOUSE_SARDAUKAR",
+      "fork_entry": null,
+      "header": "src/data/gfxinter.h",
+      "kind": "pack_index_missing",
+      "pack": "sdl_inter_hd4.dat",
+      "value": 144
+    },
+    {
+      "define": "ICON_POWER_LOW",
+      "fork_entry": null,
+      "header": "src/data/gfxinter.h",
+      "kind": "pack_index_missing",
+      "pack": "sdl_inter_hd4.dat",
+      "value": 145
+    },
+    {
+      "define": "MENTATS",
+      "fork_entry": null,
+      "header": "src/include/gfxmentat.h",
+      "kind": "pack_index_missing",
+      "pack": "sdl_mentat_hd4.dat",
+      "value": 51
+    },
+    {
+      "define": "EXPLOSION_CARRYALL",
+      "fork_entry": "HM_BUILD_REFINERY",
+      "header": "src/data/gfxdata.h",
+      "kind": "pack_index_taken",
+      "pack": "sdl_data_hd4.dat",
+      "value": 167
+    }
+  ],
   "packs": {
     "sdl_data_hd4.dat": "781d3f7cea009d357d8b1236c11f681f6bbe831e8245bcb3c81ee46e3646a0c1",
     "sdl_inter_hd4.dat": "fe4a6044a9a80f90562debc1c4d0c183b8eff65f665ac667b2859e05d28ab739",

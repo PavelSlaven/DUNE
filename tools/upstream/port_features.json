@@ -691,7 +691,7 @@
       "marker_exceptions": [
         {
           "path": "tests/UnitFrameFixture.cpp",
-          "reason": "Тестовая оснастка хранит ссылки на загруженные HD-текстуры для проверки отрисовки; это не маски Дома или вариации рельефа."
+          "reason": "UnitFrameFixture adds HM_UNIT_* house masks to a test pack and calls getHouseTexture only to build house-coloured unit textures for render tests; it does not implement house tinting."
         },
         {
           "path": "tests/UnitRenderPixelsTests.cpp",
@@ -964,7 +964,7 @@
       "marker_exceptions": [
         {
           "path": "src/debug/UiAuditAccess.cpp",
-          "reason": "UiAuditAccess uses CommandBindingAction only to simulate command-bar input in a UI-audit scene."
+          "reason": "UiAuditAccess sets CommandBindingAction to start key capture in an audited options scene and records command-bar button geometry through recordCommandBarClicks; it does not implement the command bar."
         },
         {
           "path": "src/debug/UiAudit.hpp",
