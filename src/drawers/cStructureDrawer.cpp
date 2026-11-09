@@ -361,8 +361,8 @@ void cStructureDrawer::renderIconThatPowerIsLow(cAbstractStructure *structure) c
 
 void cStructureDrawer::renderIconThatStructureIsBeingRepaired(cAbstractStructure *structure) const
 {
-    int iconWidth = (m_gfxdata->getSurface(MOUSE_REPAIR))->w;
-    int iconHeight = (m_gfxdata->getSurface(MOUSE_REPAIR))->h;
+    int iconWidth = m_gfxdata->getTexture(MOUSE_REPAIR)->w;
+    int iconHeight = m_gfxdata->getTexture(MOUSE_REPAIR)->h;
     int drawX = structure->iDrawX();
     int drawY = structure->iDrawY();
     int offsetX = (structure->getWidthInPixels() - iconWidth) / 2;
@@ -383,8 +383,8 @@ void cStructureDrawer::renderIconOfUnitBeingRepaired(cAbstractStructure *structu
     cUnit *pUnit = m_objects->getUnit(unitId);
     int iconId = pUnit->getUnitInfo().icon;
 
-    int iconWidth = (m_gfxinter->getSurface(iconId))->w;
-    int iconHeight = (m_gfxinter->getSurface(iconId))->h;
+    int iconWidth = m_gfxinter->getTexture(iconId)->w;
+    int iconHeight = m_gfxinter->getTexture(iconId)->h;
 
     // draw health bar of unit on top of icon?
     int draw_x = 3;

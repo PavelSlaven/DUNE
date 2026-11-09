@@ -29,6 +29,7 @@
 #include "include/definitions.h"
 #include "include/Facing.h"
 #include "include/cAssert.h"
+#include "include/Texture.hpp"
 
 #include <SDL3/SDL.h>
 #include <cmath>
@@ -275,7 +276,7 @@ void cUnitDrawer::draw()
     }
 
     if (m_unit.isSelected()) {
-        SDL_Surface *focusBitmap = m_gfxdata->getSurface(FOCUS);
+        Texture *focusBitmap = m_gfxdata->getTexture(FOCUS);
         int bmp_width = focusBitmap->w;
         int bmp_height = focusBitmap->h;
 

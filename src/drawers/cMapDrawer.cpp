@@ -91,8 +91,8 @@ std::unique_ptr<Texture> cMapDrawer::createFogTexture() const
 
     if (fogTexture == nullptr) return nullptr;
 
-    SDL_SetTextureScaleMode(fogTexture, SDL_SCALEMODE_NEAREST);
-    return std::make_unique<Texture>(fogTexture, width, height);
+    SDL_SetTextureScaleMode(fogTexture, m_gfxdata->getDensity() > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+    return std::make_unique<Texture>(fogTexture, width, height, false, m_gfxdata->getDensity());
 }
 
 cMapDrawer::~cMapDrawer()

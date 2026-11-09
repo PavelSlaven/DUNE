@@ -16,6 +16,8 @@
 #pragma once
 
 #include <SDL3/SDL.h>
+#include <algorithm>
+#include <cmath>
 #include <string>
 #include <memory>
 #include <unordered_map>
@@ -31,7 +33,7 @@ class DataPack;
  */
 class Graphics {
 public:
-    explicit Graphics(SDL_Renderer *_renderer, const std::string &filePackName);
+    explicit Graphics(SDL_Renderer *_renderer, const std::string &filePackName, int assetDensity = 1);
     ~Graphics();
     // return a surface from his index
     SDL_Surface *getSurface(int index) const;
@@ -43,8 +45,24 @@ public:
     Texture *getTexture(const std::string &name);
     // return number of file in Pack
     int getNumberOfFiles();
+    int getDensity() const {
+        return std::max(1, assetDensity);
+    }
 private:
     SDL_Renderer *renderer;
+    int assetDensity;
     std::unique_ptr<DataPack> dataPack;
     std::unordered_map<int, std::unique_ptr<Texture>> texCache;
 };
+
+inline constexpr int kHd4AssetDensity = 4;
+
+inline std::string hd4SceneFile(const std::string &scene)
+{
+    return "data/scenes/hd4/sdl_" + scene + ".dat";
+}
+
+inline int scaleToBitmap(int logical, int logicalExtent, int bitmapExtent)
+{
+    return static_cast<int>(std::round(logical * static_cast<double>(bitmapExtent) / logicalExtent));
+}

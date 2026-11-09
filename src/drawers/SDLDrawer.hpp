@@ -33,7 +33,7 @@ public:
     void renderSprite(Texture *src,int x, int y,Uint8 opacity = 255);
     void renderStrechSprite(Texture *src, cRectangle src_pos, cRectangle dest_pos, Uint8 opacity = 255);
     void renderStrechFullSprite(Texture *src, cRectangle dest_pos, Uint8 opacity = 255);
-    void renderFromSurface(SDL_Surface *src, int x, int y,Uint8 opacity = 255);
+    void renderFromSurface(SDL_Surface *src, int x, int y, Uint8 opacity = 255, int density = 1);
     void renderTexture(SDL_Texture *tex, int x, int y, int w, int h, Uint8 opacity = 255);
 
     void renderRectFillColor(int x, int y, int width, int height, Uint8 r, Uint8 g, Uint8 b, unsigned char opacity=255);
@@ -67,7 +67,7 @@ public:
     Texture *createRenderTargetTexture(int width, int height);
     void beginDrawingToTexture(Texture* targetTexture);
     void endDrawingToTexture();
-    Texture *createTextureFromIndexedSurfaceWithPalette(SDL_Surface *referenceSurface, int paletteIndexForTransparency, const HouseColors& houseColors);
+    Texture *createTextureFromIndexedSurfaceWithPalette(SDL_Surface *referenceSurface, int paletteIndexForTransparency, const HouseColors& houseColors, int assetDensity = 1);
 private:
     void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel_color);
 

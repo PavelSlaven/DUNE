@@ -104,11 +104,11 @@ void cSideBarDrawer::setPlayer(cPlayer *pPlayer)
 void cSideBarDrawer::createPlayerCandyBar()
 {
     m_candyBarBall.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_sdlDrawer,
-        m_player, m_gfxinter->getSurface(BMP_GERALD_CANDYBAR_BALL), TransparentColorIndex));
+        m_player, m_gfxinter->getSurface(BMP_GERALD_CANDYBAR_BALL), TransparentColorIndex, m_gfxinter->getDensity()));
     m_candyBarPiece.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_sdlDrawer,
-        m_player, m_gfxinter->getSurface(BMP_GERALD_CANDYBAR_PIECE), TransparentColorIndex));
+        m_player, m_gfxinter->getSurface(BMP_GERALD_CANDYBAR_PIECE), TransparentColorIndex, m_gfxinter->getDensity()));
     m_candyHorizonBar.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_sdlDrawer,
-        m_player, m_gfxinter->getSurface(HORIZONTAL_CANDYBAR), TransparentColorIndex));
+        m_player, m_gfxinter->getSurface(HORIZONTAL_CANDYBAR), TransparentColorIndex, m_gfxinter->getDensity()));
 
     m_sdlDrawer->beginDrawingToTexture(m_candiBarRenderer);
     createCandyBar();
