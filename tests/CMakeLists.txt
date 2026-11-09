@@ -23,6 +23,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_SfxTrackAllocator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicJukeBox.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Packs.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Loading.cpp
 )
 
 # Production source files the tests depend on.
@@ -51,6 +52,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/context/MusicJukeBox.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cDataPack.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cPack.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/Graphics.cpp
 )
 
 add_executable(d2tm_tests
