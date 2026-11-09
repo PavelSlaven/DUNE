@@ -1,743 +1,938 @@
 # Карта переноса функций RU/HD
 
-BASE = e17379ad660fca46859b403a6c3d33ec8d831a40; FORK = 6662b2f4857c679425ea2166092a21f4bde7d6e7; UP0 = a51b97f15d0eee2d323a1737f140eb2cbd60973c. Общий предок FORK и UP0 проверен командой git merge-base и равен BASE. Источники: README_AI §1 в FORK, все 13 заголовков fork_commits и соседний port_inventory.json. Правила отнесения хранятся в tools/upstream/port_features.json; полная связь путей с функциями хранится только в JSON.
+BASE = e17379ad660fca46859b403a6c3d33ec8d831a40; FORK = 9208dcf5a358f40afd95c99480e4e09f781ed566; UP1 = d06f2fcd2a347182c3774fb96e9a85570405c489. Общий предок FORK и UP1 проверен командой git merge-base и равен BASE. Источники функций — README_AI и перечисленные в инвентаре коммиты FORK; полная связь путей с функциями хранится только в `tools/upstream/port_features.json` и `docs/upstream/port_inventory.json`.
 
-Для кода правила используют явные пути, выбранные по диффу BASE..FORK. marker_hits хранит совпадения маркеров с добавленными и удалёнными строками. Проверка требует объяснить каждое совпадение собственной функцией, транзитивной зависимостью или мотивированным исключением; совпадение API само по себе не определяет принадлежность файла. Тест карты отдельно сверяет все списки и числа с JSON.
+Правила относят код по точным путям и glob из реестра. `marker_hits` фиксирует совпадения маркеров в добавленных и удалённых строках BASE..FORK1; каждое совпадение должно объясняться включённой функцией, её зависимостью либо мотивированным исключением. Тест карты сверяет пути, числа и совпадения с Git и инвентарём.
 
-«Не менялся» означает отсутствие изменения BASE..UP0; новый файл форка при этом может отсутствовать в UP0. Класс функции определяется наиболее сложной интеграцией её кода, поэтому внутри rewrite остаются данные и чистые модули для копирования. У rename JSON сохраняет обе границы пути; это две записи одной операции, а не два файла FORK.
+В судьбе пути «не менялся» означает отсутствие изменения BASE..UP1; файл, созданный только в FORK1, может отсутствовать в UP1. В записях Git rename отражён обеими границами одного перемещения. Класс функции показывает требуемый способ переноса её кода; данные и отдельные модули при этом могут переноситься иначе.
 
 ## Функции форка
 
-Порядок таблицы — рекомендуемый порядок переноса. Б2 предшествует интерпретации индексов; шаги Б3–Б12 следуют плану. Зависимости описывают порядок переноса функций, а не полный граф #include. Тестовые зависимости просмотрены транзитивно; общий include сам по себе не доказывает проверку функции.
-
 | id | Название | Источник | Класс | Зависимости | Шаги | paths_count |
 |---|---|---|---|---|---|---:|
-| graphics-modes | Режимы Classic/HD и загрузка HD4 | README_AI §1 | rewrite | нет | Б3 | 22 |
-| hd4-assets | Единый комплект HD4: интерфейс, сцены, здания, юниты и эффекты | README_AI §1 | rewrite | graphics-modes | Б3, Б6, Б11 | 2032 |
+| graphics-modes | Загрузка HD4 (классический режим удалён) | README_AI §1 | rewrite | нет | Б3 | 71 |
+| hd4-assets | Единый комплект HD4: интерфейс, сцены, здания, юниты и эффекты | README_AI §1 | rewrite | graphics-modes | Б3, Б6, Б11 | 2884 |
 | hd-render | Физический HD-рендер интерфейса и мира | README_AI §1 | rewrite | graphics-modes | Б4 | 88 |
+| world-scale | Масштаб мира как стартовый зум камеры и HD-кадры юнитов | fork_commits | rewrite | hd-render | Б4 | 51 |
 | retina-render-state | Восстановление состояния рендера на Retina | fork_commits | reapply | hd-render | Б4 | 4 |
 | adaptive-layout | Адаптивные меню и HUD | README_AI §1 | rewrite | hd-render | Б5 | 62 |
+| ui-audit | Режим отладки интерфейса | fork_commits | rewrite | adaptive-layout | Б5 | 65 |
 | faction-tint-terrain | Маски цвета Дома и вариации поверхности | fork_commits | rewrite | hd-render, hd4-assets | Б6 | 20 |
 | localization | Единая русская/английская сборка и переключение языка | README_AI §1 | rewrite | adaptive-layout | Б7 | 191 |
 | save-slots | Десять именованных сохранений и F5/F9 | README_AI §1 | rewrite | adaptive-layout, localization | Б8 | 25 |
 | music-pools | Музыкальные пулы, история и переключение треков | README_AI §1 | rewrite | adaptive-layout, localization | Б9 | 42 |
 | command-bar | Бронзовая панель приказов и настраиваемые клавиши | README_AI §1 | rewrite | adaptive-layout, localization | Б10 | 38 |
-| controls-tab | Вкладка управления в расширенных настройках | README_AI §1 | rewrite | command-bar | Б10 | 5 |
-| interaction-refresh | Повторный вход в настройки, фиксация приказов и доступность ремонта | fork_commits | rewrite | command-bar, controls-tab | Б10 | 10 |
+| controls-tab | Вкладка управления в расширенных настройках | README_AI §1 | rewrite | command-bar | Б10 | 9 |
+| interaction-refresh | Повторный вход в настройки, фиксация приказов и доступность ремонта | fork_commits | rewrite | command-bar, controls-tab | Б10 | 13 |
 | starport-orders | Сохранение значения заказа Starport и закрытие потерянного каталога | fork_commits | rewrite | command-bar | Б10 | 7 |
+| placement-rule | Единое правило размещения зданий | fork_commits | rewrite | hd-render | Б8а | 7 |
+| refinery-dock | Стыковка Харвестера в центре площадки НПЗ | fork_commits | reapply | hd4-assets | Б8а | 8 |
+| factory-pads | Площадки заводов: выезд юнитов, очередь, перевозчик, мигание, раздел сохранения FACTORYPADS | fork_commits | rewrite | hd4-assets, save-slots | Б8а | 24 |
+| radar-dish | Тарелка Командного поста на 32 кадрах | fork_commits | rewrite | hd4-assets | Б8а | 10 |
 | credits-art | Художественные изображения титров | README_AI §1 | rewrite | hd4-assets, localization | Б11 | 5 |
-| release-packaging | Сборки и публикация Windows, Linux и macOS | fork_commits | reapply | save-slots, music-pools, interaction-refresh, credits-art | Б12 | 13 |
+| release-packaging | Сборки и публикация Windows, Linux и macOS | fork_commits | reapply | save-slots, music-pools, interaction-refresh, credits-art | Б12 | 14 |
 | author-gallery | Авторское приветствие, галерея и паспорт форка | fork_commits | reapply | release-packaging | Б12 | 7 |
+| process-docs | Документы и инструменты процесса форка: задания, решения, карта переноса | fork_commits | reapply | нет | Б14 | 385 |
 
-Десять пользовательских возможностей перечислены в `README_AI.md@6662b2f:11` (**единая русская/английская**) и следующих пунктах §1. Дополнения fork_commits: f1b8ea26 — маски, поверхность и Starport; 863fc08d — Retina; 45f81e3a и 05048ffb — настройки и приказы; 2d7c6883, 46da206b, 26bb1e90, b8eff0c5, ecfd4990, 53adba17 — выпуск; 9aa0eae6 и 6662b2f4 — приветствие и галерея; d8bfe207 уточняет локализацию. Пути каждого коммита опубликованы в fork_commits.
+### graphics-modes — Загрузка HD4 (классический режим удалён)
 
-### graphics-modes — Режимы Classic/HD и загрузка HD4
+Перенести загрузку HD4 и применение графических настроек.
 
-Переписать загрузку и применение настроек на владельцев UP0; чистый выбор режима сохранить. Сначала согласовать индексы на Б2, затем подключать HD4.
+Пути кода и тестов; судьба в UP1:
 
-Пути кода и тестов; судьба в апстриме:
+- `CMakeLists.txt` — изменён
+- `src/cGame.h` — удалён
+- `src/cGame_logic.cpp` — удалён
+- `src/context/ContextCreator.cpp` — изменён
+- `src/context/ContextCreator.hpp` — изменён
+- `src/drawers/CreditsDrawer.cpp` — изменён
+- `src/drawers/CreditsDrawer.h` — изменён
+- `src/drawers/cBuildingListDrawer.cpp` — изменён
+- `src/drawers/cBuildingListDrawer.h` — изменён
+- `src/drawers/cCommandBarDrawer.cpp` — отсутствует
+- `src/drawers/cMapDrawer.cpp` — изменён
+- `src/drawers/cMessageDrawer.cpp` — изменён
+- `src/drawers/cMiniMapDrawer.cpp` — изменён
+- `src/drawers/cMiniMapDrawer.h` — изменён
+- `src/drawers/cSideBarDrawer.cpp` — изменён
+- `src/drawers/cSideBarDrawer.h` — изменён
+- `src/drawers/cStructureDrawer.cpp` — изменён
+- `src/gameobjects/units/cUnit.cpp` — изменён
+- `src/gamestates/OptionsMenuLayout.hpp` — отсутствует
+- `src/gamestates/cChooseHouseState.cpp` — изменён
+- `src/gamestates/cChooseHouseState.h` — изменён
+- `src/gamestates/cCreditsState.cpp` — изменён
+- `src/gamestates/cMainMenuState.cpp` — изменён
+- `src/gamestates/cMainMenuState.h` — изменён
+- `src/gamestates/cOptionsState.cpp` — изменён
+- `src/gamestates/cOptionsState.h` — изменён
+- `src/gamestates/cSelectMissionState.cpp` — изменён
+- `src/gamestates/cSelectMissionState.h` — изменён
+- `src/gamestates/cSelectYourNextConquestState.cpp` — изменён
+- `src/gamestates/cSelectYourNextConquestState.h` — изменён
+- `src/gamestates/cSetupSkirmishState.cpp` — изменён
+- `src/gamestates/cSetupSkirmishState.h` — изменён
+- `src/managers/cDrawManager.cpp` — изменён
+- `src/managers/cDrawManager.h` — изменён
+- `src/mentat/AbstractMentat.cpp` — перемещён в `src/gameobjects/mentat/AbstractMentat.cpp`
+- `src/mentat/AbstractMentat.h` — перемещён в `src/gameobjects/mentat/AbstractMentat.h`
+- `src/mentat/AtreidesMentat.cpp` — удалён
+- `src/mentat/BeneMentat.cpp` — удалён
+- `src/mentat/HarkonnenMentat.cpp` — удалён
+- `src/mentat/OrdosMentat.cpp` — удалён
+- `src/player/cPlayer.cpp` — перемещён в `src/gameobjects/players/cPlayer.cpp`
+- `src/sidebar/HudLayout.hpp` — отсутствует
+- `src/sidebar/MusicControlsLayout.hpp` — отсутствует
+- `src/sidebar/cBuildingListFactory.cpp` — изменён
+- `src/sidebar/cSideBar.cpp` — изменён
+- `src/utils/GameSettings.hpp` — перемещён в `src/utils/InitialGameSettings.hpp`
+- `src/utils/HdPresentation.hpp` — отсутствует
+- `src/utils/HdUiTextureLoader.cpp` — отсутствует
+- `src/utils/HdUiTextureLoader.hpp` — отсутствует
+- `src/utils/WorldScale.cpp` — отсутствует
+- `src/utils/WorldScale.hpp` — отсутствует
+- `src/utils/cDataPack.cpp` — изменён
+- `src/utils/cDataPack.hpp` — изменён
+- `src/utils/cPack.cpp` — изменён
+- `src/utils/cPack.h` — изменён
+- `src/utils/common.cpp` — изменён
+- `src/utils/common.h` — изменён
+- `tests/HdPresentationTests.cpp` — отсутствует
+- `tests/HudLayoutTests.cpp` — отсутствует
+- `tests/MusicControlsLayoutTests.cpp` — отсутствует
+- `tests/OptionsMenuLayoutTests.cpp` — отсутствует
+- `tests/UnitDrawRegressionTests.cpp` — отсутствует
+- `tests/UnitFrameFixture.cpp` — отсутствует
+- `tests/UnitFrameInteractionsTests.cpp` — отсутствует
+- `tests/WorldScaleTests.cpp` — отсутствует
 
-- `CMakeLists.txt` — изменён.
-- `src/cGame.h` — удалён; код: `src/game/cGame.h@a51b97f:90` (**class cGame**).
-- `src/cGame_logic.cpp` — удалён; код: `src/game/cGame_logic.cpp@a51b97f:289` (**cGame::applySettings**); `src/game/GameStateTransition.hpp@a51b97f:21` (**class GameStateTransition**); `src/game/MentatFlow.hpp@a51b97f:25` (**class MentatFlow**); `src/game/MissionFlow.hpp@a51b97f:25` (**class MissionFlow**); `src/game/ScenarioFlow.hpp@a51b97f:27` (**class ScenarioFlow**).
-- `src/context/ContextCreator.cpp` — изменён.
-- `src/context/ContextCreator.hpp` — изменён.
-- `src/gamestates/cOptionsState.cpp` — изменён.
-- `src/gamestates/cOptionsState.h` — изменён.
-- `src/utils/GameSettings.hpp` — перемещён в `src/utils/InitialGameSettings.hpp`.
-- `src/utils/GraphicsMode.hpp` — не менялся.
-- `src/utils/HdUiTextureLoader.cpp` — не менялся.
-- `src/utils/HdUiTextureLoader.hpp` — не менялся.
-- `src/utils/WorldScale.cpp` — не менялся.
-- `src/utils/WorldScale.hpp` — не менялся.
-- `src/utils/cDataPack.cpp` — изменён.
-- `src/utils/cDataPack.hpp` — изменён.
-- `src/utils/cPack.cpp` — изменён.
-- `src/utils/cPack.h` — изменён.
-- `src/utils/common.cpp` — изменён.
-- `src/utils/common.h` — изменён.
-- `tests/GraphicsModeTests.cpp` — не менялся.
-- `tests/WorldScaleTests.cpp` — не менялся.
-
-Остальные пути по каталогу второго уровня: resources/bin: 1.
-
-Тесты форка: `tests/GraphicsModeTests.cpp`, `tests/WorldScaleTests.cpp` (выбор HD4). `tests/CommandBindingsTests.cpp` транзитивно включает common.h, но режимы графики не проверяет. Подключения и контракты — в реестре ниже.
-
-Обратная зависимость от hd-render: загрузчик передаёт плотность в конструктор Texture — `src/utils/HdUiTextureLoader.cpp@6662b2f:34` (**new Texture**), — а параметр плотности добавлен вместе с hd-render (шаг Б4): `src/include/Texture.hpp@6662b2f:21` (**assetDensity**). Б3 переносить вместе с этим конструктором или после него.
+Остальные пути по каталогу второго уровня: корень: 3; .github/workflows: 1; docs: 1; resources/bin: 1
 
 ### hd4-assets — Единый комплект HD4: интерфейс, сцены, здания, юниты и эффекты
 
-Мастера и инструменты скопировать как исходные данные. Класс rewrite относится к интеграции: ментаты перемещены, часть прежних классов удалена. Сценарии загрузки, отдельные спрайты рейдера и дополнительные индексы согласовать на Б2; HD4 включать на Б3, маски на Б6, сцены на Б11.
+Перенести комплект HD4 и инструменты его сборки, затем подключить ресурсы к загрузчику.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `src/drawers/cBuildingListDrawer.cpp` — изменён.
-- `src/drawers/cMapDrawer.cpp` — изменён.
-- `src/drawers/cSideBarDrawer.cpp` — изменён.
-- `src/drawers/cSideBarDrawer.h` — изменён.
-- `src/drawers/cStructureDrawer.cpp` — изменён.
-- `src/drawers/cStructureDrawer.h` — изменён.
-- `src/gameobjects/structures/cLightFactory.cpp` — изменён.
-- `src/gamestates/cChooseHouseState.cpp` — изменён.
-- `src/gamestates/cChooseHouseState.h` — изменён.
-- `src/gamestates/cCreditsState.cpp` — изменён.
-- `src/gamestates/cCreditsState.h` — изменён.
-- `src/gamestates/cMainMenuState.cpp` — изменён.
-- `src/gamestates/cMainMenuState.h` — изменён.
-- `src/gamestates/cSelectMissionState.cpp` — изменён.
-- `src/gamestates/cSelectMissionState.h` — изменён.
-- `src/gamestates/cSelectYourNextConquestState.cpp` — изменён.
-- `src/gamestates/cSelectYourNextConquestState.h` — изменён.
-- `src/mentat/AbstractMentat.cpp` — перемещён в `src/gameobjects/mentat/AbstractMentat.cpp`.
-- `src/mentat/AbstractMentat.h` — перемещён в `src/gameobjects/mentat/AbstractMentat.h`.
-- `src/mentat/AtreidesMentat.cpp` — удалён; код: `src/gameobjects/mentat/AtreidesMentat.cpp@a51b97f:27` (**AtreidesMentat::AtreidesMentat**).
-- `src/mentat/AtreidesMentat.h` — удалён; код: `src/gameobjects/mentat/AtreidesMentat.h@a51b97f:20` (**class AtreidesMentat**).
-- `src/mentat/BeneMentat.cpp` — удалён; код: `src/gameobjects/mentat/BeneMentat.cpp@a51b97f:35` (**BeneMentat::BeneMentat**).
-- `src/mentat/HarkonnenMentat.cpp` — удалён; код: `src/gameobjects/mentat/HarkonnenMentat.cpp@a51b97f:28` (**HarkonnenMentat::HarkonnenMentat**).
-- `src/mentat/OrdosMentat.cpp` — удалён; код: `src/gameobjects/mentat/OrdosMentat.cpp@a51b97f:27` (**OrdosMentat::OrdosMentat**).
-- `src/mentat/OrdosMentat.h` — удалён; код: `src/gameobjects/mentat/OrdosMentat.h@a51b97f:20` (**class OrdosMentat**).
-- `src/utils/Graphics.cpp` — изменён.
-- `src/utils/Graphics.hpp` — изменён.
-- `src/utils/cDataPack.cpp` — изменён.
-- `src/utils/cDataPack.hpp` — изменён.
-- `src/utils/cPack.cpp` — изменён.
-- `src/utils/cPack.h` — изменён.
-- `src/utils/cIniGameRessouces.cpp` — удалён; код: `src/context/cInfoContextCreator.cpp@a51b97f:109` (**cInfoContextCreator::initUnits**); `src/context/cInfoContextCreator.cpp@a51b97f:1378` (**cInfoContextCreator::initStructures**).
+- `src/drawers/cBuildingListDrawer.cpp` — изменён
+- `src/drawers/cMapDrawer.cpp` — изменён
+- `src/drawers/cSideBarDrawer.cpp` — изменён
+- `src/drawers/cSideBarDrawer.h` — изменён
+- `src/drawers/cStructureDrawer.cpp` — изменён
+- `src/drawers/cStructureDrawer.h` — изменён
+- `src/gameobjects/structures/cLightFactory.cpp` — изменён
+- `src/gamestates/cChooseHouseState.cpp` — изменён
+- `src/gamestates/cChooseHouseState.h` — изменён
+- `src/gamestates/cCreditsState.cpp` — изменён
+- `src/gamestates/cCreditsState.h` — изменён
+- `src/gamestates/cMainMenuState.cpp` — изменён
+- `src/gamestates/cMainMenuState.h` — изменён
+- `src/gamestates/cSelectMissionState.cpp` — изменён
+- `src/gamestates/cSelectMissionState.h` — изменён
+- `src/gamestates/cSelectYourNextConquestState.cpp` — изменён
+- `src/gamestates/cSelectYourNextConquestState.h` — изменён
+- `src/mentat/AbstractMentat.cpp` — перемещён в `src/gameobjects/mentat/AbstractMentat.cpp`
+- `src/mentat/AbstractMentat.h` — перемещён в `src/gameobjects/mentat/AbstractMentat.h`
+- `src/mentat/AtreidesMentat.cpp` — удалён
+- `src/mentat/AtreidesMentat.h` — удалён
+- `src/mentat/BeneMentat.cpp` — удалён
+- `src/mentat/HarkonnenMentat.cpp` — удалён
+- `src/mentat/OrdosMentat.cpp` — удалён
+- `src/mentat/OrdosMentat.h` — удалён
+- `src/utils/Graphics.cpp` — изменён
+- `src/utils/Graphics.hpp` — изменён
+- `src/utils/cDataPack.cpp` — изменён
+- `src/utils/cDataPack.hpp` — изменён
+- `src/utils/cIniGameRessouces.cpp` — удалён
+- `src/utils/cPack.cpp` — изменён
+- `src/utils/cPack.h` — изменён
 
-Остальные пути по каталогу второго уровня: resources/bin: 68; resources/hd: 1723; tools: 209.
-
-Тесты форка: нет подходящих tests/*.cpp по графу включений. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: resources/bin: 49; resources/hd: 1723; tools: 209; tools/building_angle: 1; tools/ui-audit: 17; tools/units3d: 53; units-gen/UNIT_DEVIATOR: 24; units-gen/UNIT_HARVESTER: 104; units-gen/UNIT_LAUNCHER: 48; units-gen/UNIT_MCV: 24; units-gen/UNIT_QUAD: 24; units-gen/UNIT_SABOTEUR: 108; units-gen/UNIT_SIEGEBASE: 24; units-gen/UNIT_SIEGETOP: 24; units-gen/UNIT_SINGLEFREMEN: 108; units-gen/UNIT_SOLDIER: 108; units-gen/UNIT_SONICTANK: 24; units-gen/UNIT_TANKBASE: 24; units-gen/UNIT_TANKTOP: 24; units-gen/UNIT_TRIKE: 24; units-gen/UNIT_TROOPER: 108
 
 ### hd-render — Физический HD-рендер интерфейса и мира
 
-Переписать владение окном, настройками и состояниями; заново применить физический рендер и масштабирование к SDL3. Чистые расчёты масштаба сохранить вместе с тестами.
+Перенести физический HD-рендер интерфейса и мира в текущий цикл отрисовки.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/cGame.h` — удалён; код: `src/game/cGame.h@a51b97f:90` (**class cGame**).
-- `src/cGame_logic.cpp` — удалён; код: `src/game/cGame_logic.cpp@a51b97f:289` (**cGame::applySettings**); `src/game/GameStateTransition.hpp@a51b97f:21` (**class GameStateTransition**); `src/game/MentatFlow.hpp@a51b97f:25` (**class MentatFlow**); `src/game/MissionFlow.hpp@a51b97f:25` (**class MissionFlow**); `src/game/ScenarioFlow.hpp@a51b97f:27` (**class ScenarioFlow**).
-- `src/context/ContextCreator.cpp` — изменён.
-- `src/context/ContextCreator.hpp` — изменён.
-- `src/context/TextContext.cpp` — изменён.
-- `src/context/TextContext.hpp` — изменён.
-- `src/drawers/CreditsDrawer.cpp` — изменён.
-- `src/drawers/CreditsDrawer.h` — изменён.
-- `src/drawers/SDLDrawer.cpp` — изменён.
-- `src/drawers/SDLDrawer.hpp` — изменён.
-- `src/drawers/cBuildingListDrawer.cpp` — изменён.
-- `src/drawers/cBuildingListDrawer.h` — изменён.
-- `src/drawers/cCommandBarDrawer.cpp` — не менялся.
-- `src/drawers/cMapDrawer.cpp` — изменён.
-- `src/drawers/cMessageDrawer.cpp` — изменён.
-- `src/drawers/cOrderDrawer.cpp` — изменён.
-- `src/drawers/cOrderDrawer.h` — изменён.
-- `src/drawers/cSideBarDrawer.cpp` — изменён.
-- `src/drawers/cSideBarDrawer.h` — изменён.
-- `src/drawers/cStructureDrawer.cpp` — изменён.
-- `src/drawers/cStructureDrawer.h` — изменён.
-- `src/drawers/cTextDrawer.cpp` — изменён.
-- `src/drawers/cTextDrawer.h` — изменён.
-- `src/drawers/cTextTextureCache.cpp` — изменён.
-- `src/drawers/cTextTextureCache.h` — изменён.
-- `src/gameobjects/particles/cParticle.cpp` — изменён.
-- `src/gameobjects/particles/cParticle.h` — изменён.
-- `src/gameobjects/projectiles/bullet.cpp` — изменён.
-- `src/gameobjects/structures/cAbstractStructure.cpp` — изменён.
-- `src/gameobjects/structures/cAbstractStructure.h` — изменён.
-- `src/gameobjects/structures/cHeavyFactory.cpp` — изменён.
-- `src/gameobjects/structures/cLightFactory.cpp` — изменён.
-- `src/gameobjects/units/cUnit.cpp` — изменён.
-- `src/gameobjects/units/cUnit.h` — изменён.
-- `src/gamestates/cChooseHouseState.cpp` — изменён.
-- `src/gamestates/cChooseHouseState.h` — изменён.
-- `src/gamestates/cCreditsState.cpp` — изменён.
-- `src/gamestates/cMainMenuState.cpp` — изменён.
-- `src/gamestates/cMainMenuState.h` — изменён.
-- `src/gamestates/cOptionsState.cpp` — изменён.
-- `src/gamestates/cOptionsState.h` — изменён.
-- `src/gamestates/cSelectMissionState.cpp` — изменён.
-- `src/gamestates/cSelectMissionState.h` — изменён.
-- `src/gamestates/cSelectYourNextConquestState.cpp` — изменён.
-- `src/gamestates/cSelectYourNextConquestState.h` — изменён.
-- `src/gamestates/cSetupSkirmishState.cpp` — изменён.
-- `src/gamestates/cSetupSkirmishState.h` — изменён.
-- `src/gui/GuiButton.cpp` — изменён.
-- `src/gui/GuiButton.h` — изменён.
-- `src/gui/GuiCheckBox.cpp` — изменён.
-- `src/gui/GuiLabel.cpp` — изменён.
-- `src/gui/GuiLabel.hpp` — изменён.
-- `src/gui/GuiObject.h` — изменён.
-- `src/gui/GuiTheme.hpp` — изменён.
-- `src/include/Texture.hpp` — изменён.
-- `src/managers/cDrawManager.cpp` — изменён.
-- `src/mentat/AbstractMentat.cpp` — перемещён в `src/gameobjects/mentat/AbstractMentat.cpp`.
-- `src/mentat/AbstractMentat.h` — перемещён в `src/gameobjects/mentat/AbstractMentat.h`.
-- `src/mentat/AtreidesMentat.cpp` — удалён; код: `src/gameobjects/mentat/AtreidesMentat.cpp@a51b97f:27` (**AtreidesMentat::AtreidesMentat**).
-- `src/mentat/AtreidesMentat.h` — удалён; код: `src/gameobjects/mentat/AtreidesMentat.h@a51b97f:20` (**class AtreidesMentat**).
-- `src/mentat/BeneMentat.cpp` — удалён; код: `src/gameobjects/mentat/BeneMentat.cpp@a51b97f:35` (**BeneMentat::BeneMentat**).
-- `src/mentat/HarkonnenMentat.cpp` — удалён; код: `src/gameobjects/mentat/HarkonnenMentat.cpp@a51b97f:28` (**HarkonnenMentat::HarkonnenMentat**).
-- `src/mentat/OrdosMentat.cpp` — удалён; код: `src/gameobjects/mentat/OrdosMentat.cpp@a51b97f:27` (**OrdosMentat::OrdosMentat**).
-- `src/mentat/OrdosMentat.h` — удалён; код: `src/gameobjects/mentat/OrdosMentat.h@a51b97f:20` (**class OrdosMentat**).
-- `src/player/cPlayer.cpp` — перемещён в `src/gameobjects/players/cPlayer.cpp`.
-- `src/player/cPlayer.h` — перемещён в `src/gameobjects/players/cPlayer.h`.
-- `src/utils/GameSettings.hpp` — перемещён в `src/utils/InitialGameSettings.hpp`.
-- `src/utils/Graphics.cpp` — изменён.
-- `src/utils/Graphics.hpp` — изменён.
-- `src/utils/HdPresentation.hpp` — не менялся.
-- `src/utils/OutcomeScreenLayout.hpp` — не менялся.
-- `src/utils/RenderScale.cpp` — не менялся.
-- `src/utils/RenderScale.hpp` — не менялся.
-- `src/utils/TextAlignment.hpp` — не менялся.
-- `src/utils/WorldObjectScale.hpp` — не менялся.
-- `src/utils/WorldScale.cpp` — не менялся.
-- `src/utils/WorldScale.hpp` — не менялся.
-- `src/utils/cScreenInit.cpp` — удалён; код: `src/game/cSDLSystem.cpp@a51b97f:249` (**cSDLSystem::cSDLSystem**).
-- `src/utils/cScreenInit.h` — удалён; код: `src/game/cSDLSystem.h@a51b97f:28` (**class cSDLSystem**).
-- `src/utils/common.cpp` — изменён.
-- `src/utils/common.h` — изменён.
-- `tests/HdPresentationTests.cpp` — не менялся.
-- `tests/RenderScaleTests.cpp` — не менялся.
-- `tests/RenderTargetStateTests.cpp` — не менялся.
-- `tests/WorldObjectScaleTests.cpp` — не менялся.
-- `tests/WorldScaleTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/cGame.h` — удалён
+- `src/cGame_logic.cpp` — удалён
+- `src/context/ContextCreator.cpp` — изменён
+- `src/context/ContextCreator.hpp` — изменён
+- `src/context/TextContext.cpp` — изменён
+- `src/context/TextContext.hpp` — изменён
+- `src/drawers/CreditsDrawer.cpp` — изменён
+- `src/drawers/CreditsDrawer.h` — изменён
+- `src/drawers/SDLDrawer.cpp` — изменён
+- `src/drawers/SDLDrawer.hpp` — изменён
+- `src/drawers/cBuildingListDrawer.cpp` — изменён
+- `src/drawers/cBuildingListDrawer.h` — изменён
+- `src/drawers/cCommandBarDrawer.cpp` — отсутствует
+- `src/drawers/cMapDrawer.cpp` — изменён
+- `src/drawers/cMessageDrawer.cpp` — изменён
+- `src/drawers/cOrderDrawer.cpp` — изменён
+- `src/drawers/cOrderDrawer.h` — изменён
+- `src/drawers/cSideBarDrawer.cpp` — изменён
+- `src/drawers/cSideBarDrawer.h` — изменён
+- `src/drawers/cStructureDrawer.cpp` — изменён
+- `src/drawers/cStructureDrawer.h` — изменён
+- `src/drawers/cTextDrawer.cpp` — изменён
+- `src/drawers/cTextDrawer.h` — изменён
+- `src/drawers/cTextTextureCache.cpp` — изменён
+- `src/drawers/cTextTextureCache.h` — изменён
+- `src/gameobjects/particles/cParticle.cpp` — изменён
+- `src/gameobjects/particles/cParticle.h` — изменён
+- `src/gameobjects/projectiles/bullet.cpp` — изменён
+- `src/gameobjects/structures/cAbstractStructure.cpp` — изменён
+- `src/gameobjects/structures/cAbstractStructure.h` — изменён
+- `src/gameobjects/structures/cHeavyFactory.cpp` — изменён
+- `src/gameobjects/structures/cLightFactory.cpp` — изменён
+- `src/gameobjects/units/cUnit.cpp` — изменён
+- `src/gameobjects/units/cUnit.h` — изменён
+- `src/gamestates/cChooseHouseState.cpp` — изменён
+- `src/gamestates/cChooseHouseState.h` — изменён
+- `src/gamestates/cCreditsState.cpp` — изменён
+- `src/gamestates/cMainMenuState.cpp` — изменён
+- `src/gamestates/cMainMenuState.h` — изменён
+- `src/gamestates/cOptionsState.cpp` — изменён
+- `src/gamestates/cOptionsState.h` — изменён
+- `src/gamestates/cSelectMissionState.cpp` — изменён
+- `src/gamestates/cSelectMissionState.h` — изменён
+- `src/gamestates/cSelectYourNextConquestState.cpp` — изменён
+- `src/gamestates/cSelectYourNextConquestState.h` — изменён
+- `src/gamestates/cSetupSkirmishState.cpp` — изменён
+- `src/gamestates/cSetupSkirmishState.h` — изменён
+- `src/gui/GuiButton.cpp` — изменён
+- `src/gui/GuiButton.h` — изменён
+- `src/gui/GuiCheckBox.cpp` — изменён
+- `src/gui/GuiLabel.cpp` — изменён
+- `src/gui/GuiLabel.hpp` — изменён
+- `src/gui/GuiObject.h` — изменён
+- `src/gui/GuiTheme.hpp` — изменён
+- `src/include/Texture.hpp` — изменён
+- `src/managers/cDrawManager.cpp` — изменён
+- `src/mentat/AbstractMentat.cpp` — перемещён в `src/gameobjects/mentat/AbstractMentat.cpp`
+- `src/mentat/AbstractMentat.h` — перемещён в `src/gameobjects/mentat/AbstractMentat.h`
+- `src/mentat/AtreidesMentat.cpp` — удалён
+- `src/mentat/AtreidesMentat.h` — удалён
+- `src/mentat/BeneMentat.cpp` — удалён
+- `src/mentat/HarkonnenMentat.cpp` — удалён
+- `src/mentat/OrdosMentat.cpp` — удалён
+- `src/mentat/OrdosMentat.h` — удалён
+- `src/player/cPlayer.cpp` — перемещён в `src/gameobjects/players/cPlayer.cpp`
+- `src/player/cPlayer.h` — перемещён в `src/gameobjects/players/cPlayer.h`
+- `src/utils/GameSettings.hpp` — перемещён в `src/utils/InitialGameSettings.hpp`
+- `src/utils/Graphics.cpp` — изменён
+- `src/utils/Graphics.hpp` — изменён
+- `src/utils/HdPresentation.hpp` — отсутствует
+- `src/utils/OutcomeScreenLayout.hpp` — отсутствует
+- `src/utils/RenderScale.cpp` — отсутствует
+- `src/utils/RenderScale.hpp` — отсутствует
+- `src/utils/TextAlignment.hpp` — отсутствует
+- `src/utils/WorldObjectScale.hpp` — отсутствует
+- `src/utils/WorldScale.cpp` — отсутствует
+- `src/utils/WorldScale.hpp` — отсутствует
+- `src/utils/cScreenInit.cpp` — удалён
+- `src/utils/cScreenInit.h` — удалён
+- `src/utils/common.cpp` — изменён
+- `src/utils/common.h` — изменён
+- `tests/HdPresentationTests.cpp` — отсутствует
+- `tests/RenderScaleTests.cpp` — отсутствует
+- `tests/RenderTargetStateTests.cpp` — отсутствует
+- `tests/WorldObjectScaleTests.cpp` — отсутствует
+- `tests/WorldScaleTests.cpp` — отсутствует
 
-Остальные пути по каталогу второго уровня: resources/bin: 1.
+Остальные пути по каталогу второго уровня: resources/bin: 1
 
-Тесты форка: `tests/HdPresentationTests.cpp`, `tests/RenderScaleTests.cpp`, `tests/RenderTargetStateTests.cpp`, `tests/WorldObjectScaleTests.cpp`, `tests/WorldScaleTests.cpp`. Подключения и контракты — в реестре ниже.
+### world-scale — Масштаб мира как стартовый зум камеры и HD-кадры юнитов
+
+Перенести стартовый зум камеры и масштаб HD-кадров юнитов. Коммиты FORK1: ae9c8644, cf757ad7, b460d25e, c8800549, e0a6fa1e, ad96bbbc, 3f130230, c0ec4a37.
+
+Пути кода и тестов; судьба в UP1:
+
+- `CMakeLists.txt` — изменён
+- `src/cGame_logic.cpp` — удалён
+- `src/controls/cGameControlsContext.cpp` — изменён
+- `src/controls/cGameControlsContext.h` — изменён
+- `src/drawers/SDLDrawer.cpp` — изменён
+- `src/drawers/SDLDrawer.hpp` — изменён
+- `src/drawers/cMapDrawer.cpp` — изменён
+- `src/drawers/cPlaceItDrawer.cpp` — изменён
+- `src/gameobjects/particles/cParticle.cpp` — изменён
+- `src/gameobjects/projectiles/bullet.cpp` — изменён
+- `src/gameobjects/structures/cAbstractStructure.cpp` — изменён
+- `src/gameobjects/units/cUnit.cpp` — изменён
+- `src/include/structs.h` — изменён
+- `src/map/cMapCamera.cpp` — перемещён в `src/gameobjects/map/cMapCamera.cpp`
+- `src/map/cMapCamera.h` — перемещён в `src/gameobjects/map/cMapCamera.h`
+- `src/utils/SoundDistance.hpp` — отсутствует
+- `src/utils/UnitSpriteLayout.hpp` — отсутствует
+- `src/utils/WorldObjectScale.hpp` — отсутствует
+- `src/utils/cIniGameRessouces.cpp` — удалён
+- `tests/BuildingRectangleTests.cpp` — отсутствует
+- `tests/MouseCellRefreshTests.cpp` — отсутствует
+- `tests/MouseCellScanTests.cpp` — отсутствует
+- `tests/MouseHoverStateTests.cpp` — отсутствует
+- `tests/PlacementFrameTests.cpp` — отсутствует
+- `tests/SoundDistanceTests.cpp` — отсутствует
+- `tests/TerrainTileGapTests.cpp` — отсутствует
+- `tests/UnitDrawRecorder.cpp` — отсутствует
+- `tests/UnitDrawRecorder.hpp` — отсутствует
+- `tests/UnitDrawRegressionTests.cpp` — отсутствует
+- `tests/UnitFrameBaseline.hpp` — отсутствует
+- `tests/UnitFrameFixture.cpp` — отсутствует
+- `tests/UnitFrameFixture.hpp` — отсутствует
+- `tests/UnitFrameInteractionsTests.cpp` — отсутствует
+- `tests/UnitHdFrameDrawTests.cpp` — отсутствует
+- `tests/UnitRenderFixture.cmake` — отсутствует
+- `tests/UnitRenderPixelsTests.cpp` — отсутствует
+- `tests/UnitSpriteLayoutTests.cpp` — отсутствует
+- `tests/UnitTextRecorder.cpp` — отсутствует
+- `tests/WorldObjectScaleTests.cpp` — отсутствует
+- `tests/ZoomStartTests.cpp` — отсутствует
+- `tests/ZoomTestSupport.hpp` — отсутствует
+
+Остальные пути по каталогу второго уровня: codex-direct/U15: 2; docs: 1; docs/units: 2; tools: 2; tools/units3d: 3
 
 ### retina-render-state — Восстановление состояния рендера на Retina
 
-Применить восстановление viewport, scale и clip к SDL3 после базового HD-рендера. Проверить вложенные render targets профильным тестом.
+Перенести восстановление viewport, масштаба и clip для Retina в текущий SDL-рендерер.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/drawers/SDLDrawer.cpp` — изменён.
-- `src/drawers/SDLDrawer.hpp` — изменён.
-- `tests/RenderTargetStateTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/drawers/SDLDrawer.cpp` — изменён
+- `src/drawers/SDLDrawer.hpp` — изменён
+- `tests/RenderTargetStateTests.cpp` — отсутствует
 
-Остальные пути по каталогу второго уровня: нет.
-
-Тесты форка: `tests/RenderTargetStateTests.cpp`. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: нет
 
 ### adaptive-layout — Адаптивные меню и HUD
 
-Сохранить геометрические политики; адаптировать прямоугольники к SDL3, затем переписать привязку к состояниям и настройкам UP0. Проверить тесты геометрии до интеграции экранов.
+Перенести геометрию адаптивных меню и HUD, подключив её к экранам.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/cGame_logic.cpp` — удалён; код: `src/game/cGame_logic.cpp@a51b97f:289` (**cGame::applySettings**); `src/game/GameStateTransition.hpp@a51b97f:21` (**class GameStateTransition**); `src/game/MentatFlow.hpp@a51b97f:25` (**class MentatFlow**); `src/game/MissionFlow.hpp@a51b97f:25` (**class MissionFlow**); `src/game/ScenarioFlow.hpp@a51b97f:27` (**class ScenarioFlow**).
-- `src/drawers/CommandBarLayout.hpp` — не менялся.
-- `src/drawers/CreditsDrawer.cpp` — изменён.
-- `src/drawers/CreditsDrawer.h` — изменён.
-- `src/drawers/cBuildingListDrawer.cpp` — изменён.
-- `src/drawers/cBuildingListDrawer.h` — изменён.
-- `src/drawers/cCommandBarDrawer.cpp` — не менялся.
-- `src/drawers/cMessageDrawer.cpp` — изменён.
-- `src/drawers/cMessageDrawer.h` — изменён.
-- `src/drawers/cMiniMapDrawer.cpp` — изменён.
-- `src/drawers/cSideBarDrawer.cpp` — изменён.
-- `src/drawers/cSideBarDrawer.h` — изменён.
-- `src/drawers/cTextDrawer.cpp` — изменён.
-- `src/drawers/cTextTextureCache.cpp` — изменён.
-- `src/drawers/cTextTextureCache.h` — изменён.
-- `src/gamestates/AdvancedOptionsHeaderLayout.hpp` — не менялся.
-- `src/gamestates/CampaignMapLayout.hpp` — не менялся.
-- `src/gamestates/OptionsMenuLayout.hpp` — не менялся.
-- `src/gamestates/cChooseHouseState.cpp` — изменён.
-- `src/gamestates/cChooseHouseState.h` — изменён.
-- `src/gamestates/cCreditsState.cpp` — изменён.
-- `src/gamestates/cMainMenuState.cpp` — изменён.
-- `src/gamestates/cMainMenuState.h` — изменён.
-- `src/gamestates/cOptionsState.cpp` — изменён.
-- `src/gamestates/cOptionsState.h` — изменён.
-- `src/gamestates/cSelectMissionState.cpp` — изменён.
-- `src/gamestates/cSelectMissionState.h` — изменён.
-- `src/gamestates/cSelectYourNextConquestState.cpp` — изменён.
-- `src/gamestates/cSelectYourNextConquestState.h` — изменён.
-- `src/gamestates/cSetupSkirmishState.cpp` — изменён.
-- `src/gamestates/cSetupSkirmishState.h` — изменён.
-- `src/gui/GuiButton.cpp` — изменён.
-- `src/gui/GuiButton.h` — изменён.
-- `src/managers/cDrawManager.cpp` — изменён.
-- `src/managers/cDrawManager.h` — изменён.
-- `src/mentat/AbstractMentat.cpp` — перемещён в `src/gameobjects/mentat/AbstractMentat.cpp`.
-- `src/mentat/AbstractMentat.h` — перемещён в `src/gameobjects/mentat/AbstractMentat.h`.
-- `src/mentat/AtreidesMentat.cpp` — удалён; код: `src/gameobjects/mentat/AtreidesMentat.cpp@a51b97f:27` (**AtreidesMentat::AtreidesMentat**).
-- `src/mentat/AtreidesMentat.h` — удалён; код: `src/gameobjects/mentat/AtreidesMentat.h@a51b97f:20` (**class AtreidesMentat**).
-- `src/mentat/BeneMentat.cpp` — удалён; код: `src/gameobjects/mentat/BeneMentat.cpp@a51b97f:35` (**BeneMentat::BeneMentat**).
-- `src/mentat/HarkonnenMentat.cpp` — удалён; код: `src/gameobjects/mentat/HarkonnenMentat.cpp@a51b97f:28` (**HarkonnenMentat::HarkonnenMentat**).
-- `src/mentat/OrdosMentat.cpp` — удалён; код: `src/gameobjects/mentat/OrdosMentat.cpp@a51b97f:27` (**OrdosMentat::OrdosMentat**).
-- `src/mentat/OrdosMentat.h` — удалён; код: `src/gameobjects/mentat/OrdosMentat.h@a51b97f:20` (**class OrdosMentat**).
-- `src/save/SaveSlotsDialog.cpp` — не менялся.
-- `src/save/SaveSlotsDialog.hpp` — не менялся.
-- `src/sidebar/HudLayout.hpp` — не менялся.
-- `src/sidebar/MusicControlsLayout.hpp` — не менялся.
-- `src/sidebar/cBuildingList.cpp` — изменён.
-- `src/sidebar/cBuildingList.h` — изменён.
-- `src/sidebar/cBuildingListFactory.cpp` — изменён.
-- `src/sidebar/cSideBar.cpp` — изменён.
-- `src/sidebar/cSideBar.h` — изменён.
-- `src/utils/OutcomeScreenLayout.hpp` — не менялся.
-- `src/utils/TextAlignment.hpp` — не менялся.
-- `tests/CampaignMapLayoutTests.cpp` — не менялся.
-- `tests/CommandBarLayoutTests.cpp` — не менялся.
-- `tests/HdPresentationTests.cpp` — не менялся.
-- `tests/HudLayoutTests.cpp` — не менялся.
-- `tests/InteractionRegressionTests.cpp` — не менялся.
-- `tests/MusicControlsLayoutTests.cpp` — не менялся.
-- `tests/OptionsMenuLayoutTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/cGame_logic.cpp` — удалён
+- `src/drawers/CommandBarLayout.hpp` — отсутствует
+- `src/drawers/CreditsDrawer.cpp` — изменён
+- `src/drawers/CreditsDrawer.h` — изменён
+- `src/drawers/cBuildingListDrawer.cpp` — изменён
+- `src/drawers/cBuildingListDrawer.h` — изменён
+- `src/drawers/cCommandBarDrawer.cpp` — отсутствует
+- `src/drawers/cMessageDrawer.cpp` — изменён
+- `src/drawers/cMessageDrawer.h` — изменён
+- `src/drawers/cMiniMapDrawer.cpp` — изменён
+- `src/drawers/cSideBarDrawer.cpp` — изменён
+- `src/drawers/cSideBarDrawer.h` — изменён
+- `src/drawers/cTextDrawer.cpp` — изменён
+- `src/drawers/cTextTextureCache.cpp` — изменён
+- `src/drawers/cTextTextureCache.h` — изменён
+- `src/gamestates/AdvancedOptionsHeaderLayout.hpp` — отсутствует
+- `src/gamestates/CampaignMapLayout.hpp` — отсутствует
+- `src/gamestates/OptionsMenuLayout.hpp` — отсутствует
+- `src/gamestates/cChooseHouseState.cpp` — изменён
+- `src/gamestates/cChooseHouseState.h` — изменён
+- `src/gamestates/cCreditsState.cpp` — изменён
+- `src/gamestates/cMainMenuState.cpp` — изменён
+- `src/gamestates/cMainMenuState.h` — изменён
+- `src/gamestates/cOptionsState.cpp` — изменён
+- `src/gamestates/cOptionsState.h` — изменён
+- `src/gamestates/cSelectMissionState.cpp` — изменён
+- `src/gamestates/cSelectMissionState.h` — изменён
+- `src/gamestates/cSelectYourNextConquestState.cpp` — изменён
+- `src/gamestates/cSelectYourNextConquestState.h` — изменён
+- `src/gamestates/cSetupSkirmishState.cpp` — изменён
+- `src/gamestates/cSetupSkirmishState.h` — изменён
+- `src/gui/GuiButton.cpp` — изменён
+- `src/gui/GuiButton.h` — изменён
+- `src/managers/cDrawManager.cpp` — изменён
+- `src/managers/cDrawManager.h` — изменён
+- `src/mentat/AbstractMentat.cpp` — перемещён в `src/gameobjects/mentat/AbstractMentat.cpp`
+- `src/mentat/AbstractMentat.h` — перемещён в `src/gameobjects/mentat/AbstractMentat.h`
+- `src/mentat/AtreidesMentat.cpp` — удалён
+- `src/mentat/AtreidesMentat.h` — удалён
+- `src/mentat/BeneMentat.cpp` — удалён
+- `src/mentat/HarkonnenMentat.cpp` — удалён
+- `src/mentat/OrdosMentat.cpp` — удалён
+- `src/mentat/OrdosMentat.h` — удалён
+- `src/save/SaveSlotsDialog.cpp` — отсутствует
+- `src/save/SaveSlotsDialog.hpp` — отсутствует
+- `src/sidebar/HudLayout.hpp` — отсутствует
+- `src/sidebar/MusicControlsLayout.hpp` — отсутствует
+- `src/sidebar/cBuildingList.cpp` — изменён
+- `src/sidebar/cBuildingList.h` — изменён
+- `src/sidebar/cBuildingListFactory.cpp` — изменён
+- `src/sidebar/cSideBar.cpp` — изменён
+- `src/sidebar/cSideBar.h` — изменён
+- `src/utils/OutcomeScreenLayout.hpp` — отсутствует
+- `src/utils/TextAlignment.hpp` — отсутствует
+- `tests/CampaignMapLayoutTests.cpp` — отсутствует
+- `tests/CommandBarLayoutTests.cpp` — отсутствует
+- `tests/HdPresentationTests.cpp` — отсутствует
+- `tests/HudLayoutTests.cpp` — отсутствует
+- `tests/InteractionRegressionTests.cpp` — отсутствует
+- `tests/MusicControlsLayoutTests.cpp` — отсутствует
+- `tests/OptionsMenuLayoutTests.cpp` — отсутствует
 
-Остальные пути по каталогу второго уровня: нет.
+Остальные пути по каталогу второго уровня: нет
 
-Тесты форка: `tests/CampaignMapLayoutTests.cpp`, `tests/CommandBarLayoutTests.cpp`, `tests/HdPresentationTests.cpp`, `tests/HudLayoutTests.cpp`, `tests/InteractionRegressionTests.cpp`, `tests/MusicControlsLayoutTests.cpp`, `tests/OptionsMenuLayoutTests.cpp`. Подключения и контракты — в реестре ниже.
+### ui-audit — Режим отладки интерфейса
+
+Перенести режим отладки интерфейса, сбор снимков и вспомогательные инструменты. Коммиты FORK1: 87f6beeb, 5c77e8f9.
+
+Пути кода и тестов; судьба в UP1:
+
+- `CMakeLists.txt` — изменён
+- `src/audio/MusicController.h` — отсутствует
+- `src/cGame.h` — удалён
+- `src/cGame_logic.cpp` — удалён
+- `src/controls/cMouse.h` — изменён
+- `src/debug/UiAudit.hpp` — отсутствует
+- `src/debug/UiAuditAccess.cpp` — отсутствует
+- `src/debug/UiAuditArguments.cpp` — отсутствует
+- `src/debug/UiAuditArguments.hpp` — отсутствует
+- `src/debug/UiAuditCapture.cpp` — отсутствует
+- `src/debug/UiAuditScenes.cpp` — отсутствует
+- `src/debug/UiAuditScenes.hpp` — отсутствует
+- `src/drawers/cBuildingListDrawer.h` — изменён
+- `src/drawers/cCommandBarDrawer.cpp` — отсутствует
+- `src/drawers/cCommandBarDrawer.h` — отсутствует
+- `src/drawers/cMiniMapDrawer.cpp` — изменён
+- `src/drawers/cOrderDrawer.h` — изменён
+- `src/drawers/cSideBarDrawer.cpp` — изменён
+- `src/drawers/cSideBarDrawer.h` — изменён
+- `src/drawers/cStructureDrawer.cpp` — изменён
+- `src/drawers/cTextDrawer.cpp` — изменён
+- `src/gameobjects/units/cUnit.cpp` — изменён
+- `src/gamestates/cChooseHouseState.cpp` — изменён
+- `src/gamestates/cCreditsState.cpp` — изменён
+- `src/gamestates/cCreditsState.h` — изменён
+- `src/gamestates/cMainMenuState.h` — изменён
+- `src/gamestates/cOptionsState.h` — изменён
+- `src/gamestates/cSelectYourNextConquestState.cpp` — изменён
+- `src/gamestates/cSelectYourNextConquestState.h` — изменён
+- `src/gamestates/cSetupSkirmishState.cpp` — изменён
+- `src/gamestates/cSetupSkirmishState.h` — изменён
+- `src/gui/GuiButton.cpp` — изменён
+- `src/gui/GuiCheckBox.cpp` — изменён
+- `src/gui/GuiLabel.cpp` — изменён
+- `src/gui/GuiObject.cpp` — изменён
+- `src/gui/GuiObject.h` — изменён
+- `src/gui/GuiSlider.cpp` — изменён
+- `src/gui/GuiWindow.cpp` — изменён
+- `src/main.cpp` — изменён
+- `src/managers/cDrawManager.cpp` — изменён
+- `src/map/cMapCamera.h` — перемещён в `src/gameobjects/map/cMapCamera.h`
+- `src/mentat/AbstractMentat.cpp` — перемещён в `src/gameobjects/mentat/AbstractMentat.cpp`
+- `src/mentat/AbstractMentat.h` — перемещён в `src/gameobjects/mentat/AbstractMentat.h`
+- `src/save/SaveSlotsDialog.cpp` — отсутствует
+- `src/save/SaveSlotsDialog.hpp` — отсутствует
+- `src/utils/cPlatformLayerInit.cpp` — удалён
+- `src/utils/cScreenInit.cpp` — удалён
+- `tests/UiAuditArgumentsTests.cpp` — отсутствует
+- `tests/ui_audit_main_menu_png.py` — отсутствует
+- `tests/ui_audit_runtime_support.py` — отсутствует
+- `tests/ui_audit_unknown_scene.py` — отсутствует
+
+Остальные пути по каталогу второго уровня: tools/ui-audit: 14
 
 ### faction-tint-terrain — Маски цвета Дома и вариации поверхности
 
-Переписать интеграцию масок с контекстами игроков и объектов; расчёт цвета и варианты поверхности применить заново после сверки ID. Носитель выбора масок по имени — `src/utils/Graphics.cpp@6662b2f:292` (**"HM_"**); `src/utils/cDataPack.cpp@6662b2f:42` (**DataPack::getIndexFromSurface**) и `src/utils/cDataPack.cpp@6662b2f:48` (**DataPack::getNameFromIndex**) связывают поверхность с именем записи для выбора маски. DataPack включён также в загрузку режимов и HD4-ассеты.
+Перенести фракционные цветовые маски, вариации поверхности и инструменты.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/drawers/TerrainVariation.hpp` — не менялся.
-- `src/drawers/cMapDrawer.cpp` — изменён.
-- `src/drawers/cStructureDrawer.cpp` — изменён.
-- `src/drawers/cStructureDrawer.h` — изменён.
-- `src/player/cPlayer.cpp` — перемещён в `src/gameobjects/players/cPlayer.cpp`.
-- `src/player/cPlayer.h` — перемещён в `src/gameobjects/players/cPlayer.h`.
-- `src/utils/FactionTint.hpp` — не менялся.
-- `src/utils/Graphics.cpp` — изменён.
-- `src/utils/Graphics.hpp` — изменён.
-- `src/utils/cDataPack.cpp` — изменён.
-- `src/utils/cDataPack.hpp` — изменён.
-- `src/utils/cPack.cpp` — изменён.
-- `src/utils/cPack.h` — изменён.
-- `tests/FactionTintTests.cpp` — не менялся.
-- `tests/TerrainVariationTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/drawers/TerrainVariation.hpp` — отсутствует
+- `src/drawers/cMapDrawer.cpp` — изменён
+- `src/drawers/cStructureDrawer.cpp` — изменён
+- `src/drawers/cStructureDrawer.h` — изменён
+- `src/player/cPlayer.cpp` — перемещён в `src/gameobjects/players/cPlayer.cpp`
+- `src/player/cPlayer.h` — перемещён в `src/gameobjects/players/cPlayer.h`
+- `src/utils/FactionTint.hpp` — отсутствует
+- `src/utils/Graphics.cpp` — изменён
+- `src/utils/Graphics.hpp` — изменён
+- `src/utils/cDataPack.cpp` — изменён
+- `src/utils/cDataPack.hpp` — изменён
+- `src/utils/cPack.cpp` — изменён
+- `src/utils/cPack.h` — изменён
+- `tests/FactionTintTests.cpp` — отсутствует
+- `tests/TerrainVariationTests.cpp` — отсутствует
 
-Остальные пути по каталогу второго уровня: tools: 4.
-
-Тесты форка: `tests/FactionTintTests.cpp`, `tests/TerrainVariationTests.cpp`. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: tools: 4
 
 ### localization — Единая русская/английская сборка и переключение языка
 
-Переписать интеграцию локализации с новым разбором кампаний и владельцами настроек; перенести языковые ресурсы, шрифт и функции выбора текста. Новую кампанию Сардаукаров переводить отдельной проверяемой правкой на Б7.
+Перенести русскую и английскую сборки, переключение языка и локализованные ресурсы.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/cGame.h` — удалён; код: `src/game/cGame.h@a51b97f:90` (**class cGame**).
-- `src/cGame_logic.cpp` — удалён; код: `src/game/cGame_logic.cpp@a51b97f:289` (**cGame::applySettings**); `src/game/GameStateTransition.hpp@a51b97f:21` (**class GameStateTransition**); `src/game/MentatFlow.hpp@a51b97f:25` (**class MentatFlow**); `src/game/MissionFlow.hpp@a51b97f:25` (**class MissionFlow**); `src/game/ScenarioFlow.hpp@a51b97f:27` (**class ScenarioFlow**).
-- `src/context/ContextCreator.cpp` — изменён.
-- `src/context/ContextCreator.hpp` — изменён.
-- `src/context/TextContext.cpp` — изменён.
-- `src/context/TextContext.hpp` — изменён.
-- `src/controls/CommandBindings.hpp` — не менялся.
-- `src/controls/mousestates/cMouseNormalState.cpp` — изменён.
-- `src/drawers/CreditsDrawer.cpp` — изменён.
-- `src/drawers/OrderButtonPolicy.hpp` — не менялся.
-- `src/drawers/cBuildingListDrawer.cpp` — изменён.
-- `src/drawers/cCommandBarDrawer.cpp` — не менялся.
-- `src/drawers/cMouseDrawer.cpp` — изменён.
-- `src/drawers/cOrderDrawer.cpp` — изменён.
-- `src/drawers/cOrderDrawer.h` — изменён.
-- `src/drawers/cSideBarDrawer.cpp` — изменён.
-- `src/drawers/cSideBarDrawer.h` — изменён.
-- `src/drawers/cTextDrawer.cpp` — изменён.
-- `src/drawers/cTextDrawer.h` — изменён.
-- `src/drawers/cTextTextureCache.cpp` — изменён.
-- `src/gameobjects/structures/cAbstractStructure.cpp` — изменён.
-- `src/gameobjects/structures/cOrderProcesser.cpp` — изменён.
-- `src/gameobjects/structures/cWindTrap.cpp` — изменён.
-- `src/gameobjects/units/cUnit.cpp` — изменён.
-- `src/gamestates/cChooseHouseState.cpp` — изменён.
-- `src/gamestates/cCreditsState.cpp` — изменён.
-- `src/gamestates/cMainMenuState.cpp` — изменён.
-- `src/gamestates/cOptionsState.cpp` — изменён.
-- `src/gamestates/cOptionsState.h` — изменён.
-- `src/gamestates/cSelectMissionState.cpp` — изменён.
-- `src/gamestates/cSelectYourNextConquestState.cpp` — изменён.
-- `src/gamestates/cSetupSkirmishState.cpp` — изменён.
-- `src/ini.cpp` — удалён; код: `src/utils/ini.cpp@a51b97f:80` (**cIni::loadRegionfile**).
-- `src/managers/cDrawManager.cpp` — изменён.
-- `src/map/cPreviewMaps.cpp` — удалён; код: `src/gameobjects/map/cPreviewMaps.cpp@a51b97f:37` (**cPreviewMaps::cPreviewMaps**).
-- `src/mentat/AbstractMentat.cpp` — перемещён в `src/gameobjects/mentat/AbstractMentat.cpp`.
-- `src/mentat/AtreidesMentat.cpp` — удалён; код: `src/gameobjects/mentat/AtreidesMentat.cpp@a51b97f:27` (**AtreidesMentat::AtreidesMentat**).
-- `src/mentat/BeneMentat.cpp` — удалён; код: `src/gameobjects/mentat/BeneMentat.cpp@a51b97f:35` (**BeneMentat::BeneMentat**).
-- `src/mentat/HarkonnenMentat.cpp` — удалён; код: `src/gameobjects/mentat/HarkonnenMentat.cpp@a51b97f:28` (**HarkonnenMentat::HarkonnenMentat**).
-- `src/mentat/OrdosMentat.cpp` — удалён; код: `src/gameobjects/mentat/OrdosMentat.cpp@a51b97f:27` (**OrdosMentat::OrdosMentat**).
-- `src/player/cPlayer.cpp` — перемещён в `src/gameobjects/players/cPlayer.cpp`.
-- `src/save/SaveFileCodec.cpp` — не менялся.
-- `src/save/SaveGameManager.cpp` — не менялся.
-- `src/save/SaveSlotName.hpp` — не менялся.
-- `src/save/SaveSlotsDialog.cpp` — не менялся.
-- `src/sidebar/cBuildingListItem.cpp` — изменён.
-- `src/utils/FontSupport.hpp` — не менялся.
-- `src/utils/GameSettings.hpp` — перемещён в `src/utils/InitialGameSettings.hpp`.
-- `src/utils/Localization.hpp` — не менялся.
-- `src/utils/cIniGameRessouces.cpp` — удалён; код: `src/context/cInfoContextCreator.cpp@a51b97f:109` (**cInfoContextCreator::initUnits**); `src/context/cInfoContextCreator.cpp@a51b97f:1378` (**cInfoContextCreator::initStructures**).
-- `src/utils/common.cpp` — изменён.
-- `tests/CommandBindingsTests.cpp` — не менялся.
-- `tests/FontCoverageTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/cGame.h` — удалён
+- `src/cGame_logic.cpp` — удалён
+- `src/context/ContextCreator.cpp` — изменён
+- `src/context/ContextCreator.hpp` — изменён
+- `src/context/TextContext.cpp` — изменён
+- `src/context/TextContext.hpp` — изменён
+- `src/controls/CommandBindings.hpp` — отсутствует
+- `src/controls/mousestates/cMouseNormalState.cpp` — изменён
+- `src/drawers/CreditsDrawer.cpp` — изменён
+- `src/drawers/OrderButtonPolicy.hpp` — отсутствует
+- `src/drawers/cBuildingListDrawer.cpp` — изменён
+- `src/drawers/cCommandBarDrawer.cpp` — отсутствует
+- `src/drawers/cMouseDrawer.cpp` — изменён
+- `src/drawers/cOrderDrawer.cpp` — изменён
+- `src/drawers/cOrderDrawer.h` — изменён
+- `src/drawers/cSideBarDrawer.cpp` — изменён
+- `src/drawers/cSideBarDrawer.h` — изменён
+- `src/drawers/cTextDrawer.cpp` — изменён
+- `src/drawers/cTextDrawer.h` — изменён
+- `src/drawers/cTextTextureCache.cpp` — изменён
+- `src/gameobjects/structures/cAbstractStructure.cpp` — изменён
+- `src/gameobjects/structures/cOrderProcesser.cpp` — изменён
+- `src/gameobjects/structures/cWindTrap.cpp` — изменён
+- `src/gameobjects/units/cUnit.cpp` — изменён
+- `src/gamestates/cChooseHouseState.cpp` — изменён
+- `src/gamestates/cCreditsState.cpp` — изменён
+- `src/gamestates/cMainMenuState.cpp` — изменён
+- `src/gamestates/cOptionsState.cpp` — изменён
+- `src/gamestates/cOptionsState.h` — изменён
+- `src/gamestates/cSelectMissionState.cpp` — изменён
+- `src/gamestates/cSelectYourNextConquestState.cpp` — изменён
+- `src/gamestates/cSetupSkirmishState.cpp` — изменён
+- `src/ini.cpp` — удалён
+- `src/managers/cDrawManager.cpp` — изменён
+- `src/map/cPreviewMaps.cpp` — удалён
+- `src/mentat/AbstractMentat.cpp` — перемещён в `src/gameobjects/mentat/AbstractMentat.cpp`
+- `src/mentat/AtreidesMentat.cpp` — удалён
+- `src/mentat/BeneMentat.cpp` — удалён
+- `src/mentat/HarkonnenMentat.cpp` — удалён
+- `src/mentat/OrdosMentat.cpp` — удалён
+- `src/player/cPlayer.cpp` — перемещён в `src/gameobjects/players/cPlayer.cpp`
+- `src/save/SaveFileCodec.cpp` — отсутствует
+- `src/save/SaveGameManager.cpp` — отсутствует
+- `src/save/SaveSlotName.hpp` — отсутствует
+- `src/save/SaveSlotsDialog.cpp` — отсутствует
+- `src/sidebar/cBuildingListItem.cpp` — изменён
+- `src/utils/FontSupport.hpp` — отсутствует
+- `src/utils/GameSettings.hpp` — перемещён в `src/utils/InitialGameSettings.hpp`
+- `src/utils/Localization.hpp` — отсутствует
+- `src/utils/cIniGameRessouces.cpp` — удалён
+- `src/utils/common.cpp` — изменён
+- `tests/CommandBindingsTests.cpp` — отсутствует
+- `tests/FontCoverageTests.cpp` — отсутствует
 
-Остальные пути по каталогу второго уровня: resources/bin: 136; tools: 1.
-
-Тесты форка: `tests/FontCoverageTests.cpp`, `tests/SaveSlotNameTests.cpp`, `tests/CommandBindingsTests.cpp` (русское имя клавиши). Подключения и контракты — в реестре ниже.
-
+Остальные пути по каталогу второго уровня: resources/bin: 136; tools: 1
 
 ### save-slots — Десять именованных сохранений и F5/F9
 
-Сохранить кодек и правила имён; переписать захват и восстановление объектов UP0. Зависимости старого менеджера видны в `src/save/SaveGameManager.cpp@6662b2f:9` (**"cGame.h"**) и `src/save/SaveGameManager.cpp@6662b2f:11` (**"d2tmc.h"**). Тесты кодека не проверяют восстановление миссии.
+Перенести именованные слоты сохранений, диалог выбора и команды F5/F9.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/building/cItemBuilder.h` — изменён.
-- `src/cGame.h` — удалён; код: `src/game/cGame.h@a51b97f:90` (**class cGame**).
-- `src/cGame_logic.cpp` — удалён; код: `src/game/cGame_logic.cpp@a51b97f:289` (**cGame::applySettings**); `src/game/GameStateTransition.hpp@a51b97f:21` (**class GameStateTransition**); `src/game/MentatFlow.hpp@a51b97f:25` (**class MentatFlow**); `src/game/MissionFlow.hpp@a51b97f:25` (**class MissionFlow**); `src/game/ScenarioFlow.hpp@a51b97f:27` (**class ScenarioFlow**).
-- `src/gameobjects/structures/cAbstractStructure.h` — изменён.
-- `src/gameobjects/units/cReinforcements.h` — изменён.
-- `src/gameobjects/units/cUnit.h` — изменён.
-- `src/gamestates/OptionsMenuLayout.hpp` — не менялся.
-- `src/gamestates/cGameState.h` — изменён.
-- `src/gamestates/cMainMenuState.cpp` — изменён.
-- `src/gamestates/cMainMenuState.h` — изменён.
-- `src/gamestates/cOptionsState.cpp` — изменён.
-- `src/gamestates/cOptionsState.h` — изменён.
-- `src/map/cMap.h` — перемещён в `src/gameobjects/map/cMap.h`.
-- `src/player/cPlayer.h` — перемещён в `src/gameobjects/players/cPlayer.h`.
-- `src/save/SaveFileCodec.cpp` — не менялся.
-- `src/save/SaveFileCodec.hpp` — не менялся.
-- `src/save/SaveGameManager.cpp` — не менялся.
-- `src/save/SaveGameManager.hpp` — не менялся.
-- `src/save/SaveSlotName.hpp` — не менялся.
-- `src/save/SaveSlotsDialog.cpp` — не менялся.
-- `src/save/SaveSlotsDialog.hpp` — не менялся.
-- `src/sidebar/cBuildingListItem.h` — изменён.
-- `tests/SaveFileCodecTests.cpp` — не менялся.
-- `tests/SaveSlotNameTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/building/cItemBuilder.h` — изменён
+- `src/cGame.h` — удалён
+- `src/cGame_logic.cpp` — удалён
+- `src/gameobjects/structures/cAbstractStructure.h` — изменён
+- `src/gameobjects/units/cReinforcements.h` — изменён
+- `src/gameobjects/units/cUnit.h` — изменён
+- `src/gamestates/OptionsMenuLayout.hpp` — отсутствует
+- `src/gamestates/cGameState.h` — изменён
+- `src/gamestates/cMainMenuState.cpp` — изменён
+- `src/gamestates/cMainMenuState.h` — изменён
+- `src/gamestates/cOptionsState.cpp` — изменён
+- `src/gamestates/cOptionsState.h` — изменён
+- `src/map/cMap.h` — перемещён в `src/gameobjects/map/cMap.h`
+- `src/player/cPlayer.h` — перемещён в `src/gameobjects/players/cPlayer.h`
+- `src/save/SaveFileCodec.cpp` — отсутствует
+- `src/save/SaveFileCodec.hpp` — отсутствует
+- `src/save/SaveGameManager.cpp` — отсутствует
+- `src/save/SaveGameManager.hpp` — отсутствует
+- `src/save/SaveSlotName.hpp` — отсутствует
+- `src/save/SaveSlotsDialog.cpp` — отсутствует
+- `src/save/SaveSlotsDialog.hpp` — отсутствует
+- `src/sidebar/cBuildingListItem.h` — изменён
+- `tests/SaveFileCodecTests.cpp` — отсутствует
+- `tests/SaveSlotNameTests.cpp` — отсутствует
 
-Остальные пути по каталогу второго уровня: нет.
-
-Тесты форка: `tests/OptionsMenuLayoutTests.cpp`, `tests/SaveFileCodecTests.cpp`, `tests/SaveSlotNameTests.cpp`. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: нет
 
 ### music-pools — Музыкальные пулы, история и переключение треков
 
-Сохранить независимый плейлист и политику перехода. Переписать backend и маршрутизацию категорий под UP0; граница старого менеджера — `src/audio/MusicController.h@6662b2f:10` (**class cSoundPlayer**). Внешние WAV перенести как данные без перезаписи пользовательской музыки.
+Перенести музыкальные пулы, историю воспроизведения и управление треками.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/audio/MusicController.cpp` — не менялся.
-- `src/audio/MusicController.h` — не менялся.
-- `src/audio/MusicPlaylist.cpp` — не менялся.
-- `src/audio/MusicPlaylist.h` — не менялся.
-- `src/audio/MusicTransitionPolicy.hpp` — не менялся.
-- `src/cGame.h` — удалён; код: `src/game/cGame.h@a51b97f:90` (**class cGame**).
-- `src/cGame_logic.cpp` — удалён; код: `src/game/cGame_logic.cpp@a51b97f:289` (**cGame::applySettings**); `src/game/GameStateTransition.hpp@a51b97f:21` (**class GameStateTransition**); `src/game/MentatFlow.hpp@a51b97f:25` (**class MentatFlow**); `src/game/MissionFlow.hpp@a51b97f:25` (**class MissionFlow**); `src/game/ScenarioFlow.hpp@a51b97f:27` (**class ScenarioFlow**).
-- `src/drawers/cMessageDrawer.cpp` — изменён.
-- `src/managers/cDrawManager.cpp` — изменён.
-- `src/managers/cDrawManager.h` — изменён.
-- `src/player/cPlayer.cpp` — перемещён в `src/gameobjects/players/cPlayer.cpp`.
-- `src/player/cPlayer.h` — перемещён в `src/gameobjects/players/cPlayer.h`.
-- `src/sidebar/MusicControlsLayout.hpp` — не менялся.
-- `src/utils/cSoundPlayer.cpp` — изменён.
-- `src/utils/cSoundPlayer.h` — изменён.
-- `tests/MusicControlsLayoutTests.cpp` — не менялся.
-- `tests/MusicPlaylistTests.cpp` — не менялся.
-- `tests/MusicTransitionPolicyTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/audio/MusicController.cpp` — отсутствует
+- `src/audio/MusicController.h` — отсутствует
+- `src/audio/MusicPlaylist.cpp` — отсутствует
+- `src/audio/MusicPlaylist.h` — отсутствует
+- `src/audio/MusicTransitionPolicy.hpp` — отсутствует
+- `src/cGame.h` — удалён
+- `src/cGame_logic.cpp` — удалён
+- `src/drawers/cMessageDrawer.cpp` — изменён
+- `src/managers/cDrawManager.cpp` — изменён
+- `src/managers/cDrawManager.h` — изменён
+- `src/player/cPlayer.cpp` — перемещён в `src/gameobjects/players/cPlayer.cpp`
+- `src/player/cPlayer.h` — перемещён в `src/gameobjects/players/cPlayer.h`
+- `src/sidebar/MusicControlsLayout.hpp` — отсутствует
+- `src/utils/cSoundPlayer.cpp` — изменён
+- `src/utils/cSoundPlayer.h` — изменён
+- `tests/MusicControlsLayoutTests.cpp` — отсутствует
+- `tests/MusicPlaylistTests.cpp` — отсутствует
+- `tests/MusicTransitionPolicyTests.cpp` — отсутствует
 
-Остальные пути по каталогу второго уровня: resources/bin: 22; tools: 1.
-
-Тесты форка: `tests/MusicControlsLayoutTests.cpp`, `tests/MusicPlaylistTests.cpp`, `tests/MusicTransitionPolicyTests.cpp`. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: resources/bin: 22; tools: 1
 
 ### command-bar — Бронзовая панель приказов и настраиваемые клавиши
 
-Сохранить чистые политики и графику панели, применить рисование заново; переписать интеграцию ввода с преемниками InteractionManager. Подписи и клавиши формировать из фактических назначений.
+Перенести бронзовую панель приказов и настраиваемые привязки клавиш.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/cGame.h` — удалён; код: `src/game/cGame.h@a51b97f:90` (**class cGame**).
-- `src/cGame_logic.cpp` — удалён; код: `src/game/cGame_logic.cpp@a51b97f:289` (**cGame::applySettings**); `src/game/GameStateTransition.hpp@a51b97f:21` (**class GameStateTransition**); `src/game/MentatFlow.hpp@a51b97f:25` (**class MentatFlow**); `src/game/MissionFlow.hpp@a51b97f:25` (**class MissionFlow**); `src/game/ScenarioFlow.hpp@a51b97f:27` (**class ScenarioFlow**).
-- `src/context/TextContext.cpp` — изменён.
-- `src/context/TextContext.hpp` — изменён.
-- `src/controls/CommandBindings.hpp` — не менялся.
-- `src/controls/CommandModePolicy.hpp` — не менялся.
-- `src/controls/cGameControlsContext.cpp` — изменён.
-- `src/controls/cGameControlsContext.h` — изменён.
-- `src/controls/cKeyboardEvent.h` — изменён.
-- `src/controls/mousestates/cMouseNormalState.cpp` — изменён.
-- `src/controls/mousestates/cMouseNormalState.h` — изменён.
-- `src/controls/mousestates/cMouseRepairState.cpp` — изменён.
-- `src/controls/mousestates/cMouseUnitsSelectedState.cpp` — изменён.
-- `src/controls/mousestates/cMouseUnitsSelectedState.h` — изменён.
-- `src/drawers/CommandBarLayout.hpp` — не менялся.
-- `src/drawers/CommandBarPolicy.hpp` — не менялся.
-- `src/drawers/cCommandBarDrawer.cpp` — не менялся.
-- `src/drawers/cCommandBarDrawer.h` — не менялся.
-- `src/gamestates/cOptionsState.cpp` — изменён.
-- `src/gamestates/cOptionsState.h` — изменён.
-- `src/include/definitions.h` — изменён.
-- `src/managers/cDrawManager.cpp` — изменён.
-- `src/managers/cDrawManager.h` — изменён.
-- `src/managers/cInteractionManager.cpp` — удалён; код: `src/gamestates/cGamePlaying.cpp@a51b97f:304` (**cGamePlaying::onNotifyMouseEvent**).
-- `src/utils/GameSettings.hpp` — перемещён в `src/utils/InitialGameSettings.hpp`.
-- `src/utils/common.cpp` — изменён.
-- `tests/CommandBarLayoutTests.cpp` — не менялся.
-- `tests/CommandBindingsTests.cpp` — не менялся.
-- `tests/InteractionRegressionTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/cGame.h` — удалён
+- `src/cGame_logic.cpp` — удалён
+- `src/context/TextContext.cpp` — изменён
+- `src/context/TextContext.hpp` — изменён
+- `src/controls/CommandBindings.hpp` — отсутствует
+- `src/controls/CommandModePolicy.hpp` — отсутствует
+- `src/controls/cGameControlsContext.cpp` — изменён
+- `src/controls/cGameControlsContext.h` — изменён
+- `src/controls/cKeyboardEvent.h` — изменён
+- `src/controls/mousestates/cMouseNormalState.cpp` — изменён
+- `src/controls/mousestates/cMouseNormalState.h` — изменён
+- `src/controls/mousestates/cMouseRepairState.cpp` — изменён
+- `src/controls/mousestates/cMouseUnitsSelectedState.cpp` — изменён
+- `src/controls/mousestates/cMouseUnitsSelectedState.h` — изменён
+- `src/drawers/CommandBarLayout.hpp` — отсутствует
+- `src/drawers/CommandBarPolicy.hpp` — отсутствует
+- `src/drawers/cCommandBarDrawer.cpp` — отсутствует
+- `src/drawers/cCommandBarDrawer.h` — отсутствует
+- `src/gamestates/cOptionsState.cpp` — изменён
+- `src/gamestates/cOptionsState.h` — изменён
+- `src/include/definitions.h` — изменён
+- `src/managers/cDrawManager.cpp` — изменён
+- `src/managers/cDrawManager.h` — изменён
+- `src/managers/cInteractionManager.cpp` — удалён
+- `src/utils/GameSettings.hpp` — перемещён в `src/utils/InitialGameSettings.hpp`
+- `src/utils/common.cpp` — изменён
+- `tests/CommandBarLayoutTests.cpp` — отсутствует
+- `tests/CommandBindingsTests.cpp` — отсутствует
+- `tests/InteractionRegressionTests.cpp` — отсутствует
 
-Остальные пути по каталогу второго уровня: resources/bin: 2; resources/hd: 4; tools: 2.
-
-Тесты форка: `tests/CommandBarLayoutTests.cpp`, `tests/CommandBindingsTests.cpp`, `tests/InteractionRegressionTests.cpp`. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: resources/bin: 2; resources/hd: 4; tools: 2
 
 ### controls-tab — Вкладка управления в расширенных настройках
 
-Переписать интеграцию вкладки с новым владельцем настроек; раскладку применить заново к изменённому экрану после переноса назначений клавиш. Тесты политик не доказывают сохранение настроек при полном повторном входе.
+Перенести вкладку управления и проверку конфликтов клавиш.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/gamestates/AdvancedOptionsHeaderLayout.hpp` — не менялся.
-- `src/gamestates/cOptionsState.cpp` — изменён.
-- `src/gamestates/cOptionsState.h` — изменён.
-- `tests/InteractionRegressionTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/controls/CommandBindings.hpp` — отсутствует
+- `src/controls/cKeyboardEvent.h` — изменён
+- `src/gamestates/AdvancedOptionsHeaderLayout.hpp` — отсутствует
+- `src/gamestates/cOptionsState.cpp` — изменён
+- `src/gamestates/cOptionsState.h` — изменён
+- `tests/CommandBindingConflictTests.cpp` — отсутствует
+- `tests/CommandBindingsTests.cpp` — отсутствует
+- `tests/InteractionRegressionTests.cpp` — отсутствует
 
-Остальные пути по каталогу второго уровня: нет.
-
-Тесты форка: `tests/InteractionRegressionTests.cpp`. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: нет
 
 ### interaction-refresh — Повторный вход в настройки, фиксация приказов и доступность ремонта
 
-Переписать привязку к новому циклу состояний, сохранив правила фиксации приказа, отмены и доступности ремонта. Полный цикл повторного входа в настройки тестами политик не проверен.
+Перенести обновление настроек при повторном входе, фиксацию приказов и доступность ремонта.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/controls/CommandModePolicy.hpp` — не менялся.
-- `src/controls/mousestates/cMouseNormalState.cpp` — изменён.
-- `src/controls/mousestates/cMouseRepairState.cpp` — изменён.
-- `src/controls/mousestates/cMouseUnitsSelectedState.cpp` — изменён.
-- `src/drawers/CommandBarPolicy.hpp` — не менялся.
-- `src/drawers/cCommandBarDrawer.cpp` — не менялся.
-- `src/gamestates/cOptionsState.cpp` — изменён.
-- `src/gamestates/cOptionsState.h` — изменён.
-- `tests/InteractionRegressionTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/controls/CommandModePolicy.hpp` — отсутствует
+- `src/controls/cMouse.h` — изменён
+- `src/controls/mousestates/cMouseNormalState.cpp` — изменён
+- `src/controls/mousestates/cMouseRepairState.cpp` — изменён
+- `src/controls/mousestates/cMouseUnitsSelectedState.cpp` — изменён
+- `src/drawers/CommandBarPolicy.hpp` — отсутствует
+- `src/drawers/cCommandBarDrawer.cpp` — отсутствует
+- `src/gamestates/cOptionsState.cpp` — изменён
+- `src/gamestates/cOptionsState.h` — изменён
+- `tests/InteractionRegressionTests.cpp` — отсутствует
+- `tests/MouseClickInitTests.cpp` — отсутствует
+- `tests/UnitRenderFixture.cmake` — отсутствует
 
-Остальные пути по каталогу второго уровня: нет.
-
-Тесты форка: `tests/InteractionRegressionTests.cpp`. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: нет
 
 ### starport-orders — Сохранение значения заказа Starport и закрытие потерянного каталога
 
-Скопировать чистую очередь и переписать интеграцию с владельцами игроков и объектов; проверить сохранение build ID после изменения каталога и закрытие заказа при потере Starport.
+Перенести сохранение значения заказа Starport и закрытие потерянного каталога.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/gameobjects/structures/StarportOrderQueue.hpp` — не менялся.
-- `src/gameobjects/structures/cOrderProcesser.cpp` — изменён.
-- `src/gameobjects/structures/cOrderProcesser.h` — изменён.
-- `src/gameobjects/structures/cStarPort.cpp` — изменён.
-- `src/sidebar/cBuildingListUpdater.cpp` — изменён.
-- `tests/InteractionRegressionTests.cpp` — не менялся.
+- `CMakeLists.txt` — изменён
+- `src/gameobjects/structures/StarportOrderQueue.hpp` — отсутствует
+- `src/gameobjects/structures/cOrderProcesser.cpp` — изменён
+- `src/gameobjects/structures/cOrderProcesser.h` — изменён
+- `src/gameobjects/structures/cStarPort.cpp` — изменён
+- `src/sidebar/cBuildingListUpdater.cpp` — изменён
+- `tests/InteractionRegressionTests.cpp` — отсутствует
 
-Остальные пути по каталогу второго уровня: нет.
+Остальные пути по каталогу второго уровня: нет
 
-Тесты форка: `tests/InteractionRegressionTests.cpp`. Подключения и контракты — в реестре ниже.
+### placement-rule — Единое правило размещения зданий
+
+Перенести общее правило размещения зданий и подключить его к режиму установки, подсказке и проверке игрока. Коммиты FORK1: e7a1c04f, a8a7f49a, 9ea227d2.
+
+Пути кода и тестов; судьба в UP1:
+
+- `src/controls/mousestates/cMousePlaceState.cpp` — изменён
+- `src/controls/mousestates/cMousePlaceState.h` — изменён
+- `src/drawers/cPlaceItDrawer.cpp` — изменён
+- `src/player/cPlayer.cpp` — перемещён в `src/gameobjects/players/cPlayer.cpp`
+- `src/player/cPlayer.h` — перемещён в `src/gameobjects/players/cPlayer.h`
+- `tests/PlacementRuleTests.cpp` — отсутствует
+- `tests/UnitRenderFixture.cmake` — отсутствует
+
+Остальные пути по каталогу второго уровня: нет
+
+### refinery-dock — Стыковка Харвестера в центре площадки НПЗ
+
+Перенести стыковку Харвестера в центре площадки НПЗ. Коммиты FORK1: c655ceb6, b6c58b8c.
+
+Пути кода и тестов; судьба в UP1:
+
+- `src/utils/WorldObjectScale.hpp` — отсутствует
+- `tests/WorldObjectScaleTests.cpp` — отсутствует
+
+Остальные пути по каталогу второго уровня: codex-direct/U23: 4; resources/bin: 1; tools/units3d: 1
+
+### factory-pads — Площадки заводов: выезд юнитов, очередь, перевозчик, мигание, раздел сохранения FACTORYPADS
+
+Перенести площадки заводов: выезд, очередь, перевозчик, мигание и раздел FACTORYPADS. Коммиты FORK1: 223f24c5, e39f6279, ac3c6b7d, e632b5e3, 90da98c4, 7bed86fc, 46b71484, 9e8a65e3, 00d15658, 5c2cda10, 29b3ca76, f2b5811e.
+
+Пути кода и тестов; судьба в UP1:
+
+- `CMakeLists.txt` — изменён
+- `src/building/cItemBuilder.cpp` — изменён
+- `src/building/cItemBuilder.h` — изменён
+- `src/drawers/cStructureDrawer.cpp` — изменён
+- `src/gameobjects/structures/FactoryPad.hpp` — отсутствует
+- `src/gameobjects/structures/cAbstractStructure.cpp` — изменён
+- `src/gameobjects/structures/cAbstractStructure.h` — изменён
+- `src/gameobjects/structures/cHeavyFactory.cpp` — изменён
+- `src/gameobjects/structures/cHeavyFactory.h` — изменён
+- `src/gameobjects/structures/cLightFactory.cpp` — изменён
+- `src/gameobjects/structures/cLightFactory.h` — изменён
+- `src/gameobjects/structures/cUnitFactory.cpp` — отсутствует
+- `src/gameobjects/structures/cUnitFactory.h` — отсутствует
+- `src/gameobjects/units/cUnit.cpp` — изменён
+- `src/gameobjects/units/cUnit.h` — изменён
+- `src/save/SaveGameManager.cpp` — отсутствует
+- `src/save/SaveGameManager.hpp` — отсутствует
+- `src/utils/cStructureUtils.cpp` — изменён
+- `src/utils/cStructureUtils.h` — изменён
+- `tests/FactoryPadEngineTests.cpp` — отсутствует
+- `tests/FactoryPadSaveTests.cpp` — отсутствует
+- `tests/FactoryPadTests.cpp` — отсутствует
+- `tests/UnitRenderFixture.cmake` — отсутствует
+
+Остальные пути по каталогу второго уровня: корень: 1
+
+### radar-dish — Тарелка Командного поста на 32 кадрах
+
+Перенести анимацию тарелки Командного поста на 32 кадрах и её ресурсы. Коммиты FORK1: 3d3ff49e, 849650d0.
+
+Пути кода и тестов; судьба в UP1:
+
+- `src/gameobjects/structures/cOutPost.cpp` — изменён
+- `tests/OutpostFrameTests.cpp` — отсутствует
+- `tests/UnitRenderFixture.cmake` — отсутствует
+
+Остальные пути по каталогу второго уровня: корень: 1; resources/bin: 1; resources/hd: 2; tools/building_angle: 3
 
 ### credits-art — Художественные изображения титров
 
-Изображения скопировать, отрисовку и переходы экрана переписать с новым владельцем настроек после HD-рендера и локализации. Профильного теста изображений нет; визуальная приёмка относится к Б13.
+Перенести художественные изображения и разметку титров.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `src/gamestates/cCreditsState.cpp` — изменён.
-- `src/gamestates/cCreditsState.h` — изменён.
+- `src/gamestates/cCreditsState.cpp` — изменён
+- `src/gamestates/cCreditsState.h` — изменён
 
-Остальные пути по каталогу второго уровня: resources/bin: 2; tools: 1.
-
-Тесты форка: нет подходящих tests/*.cpp по графу включений. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: resources/bin: 2; tools: 1
 
 ### release-packaging — Сборки и публикация Windows, Linux и macOS
 
-Применить workflow, CMake и правила LFS заново к зависимостям UP0. Тексты установки сохранить как исходный материал и обновить сведения о SDL3; проверка платформ относится к Б12.
+Перенести сборку и публикацию выпусков для Windows, Linux и macOS.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-- `CMakeLists.txt` — изменён.
-- `src/main.cpp` — изменён.
+- `CMakeLists.txt` — изменён
+- `src/main.cpp` — изменён
 
-Остальные пути по каталогу второго уровня: .github/workflows: 1; packaging: 4; resources/bin: 4; корень: 2.
-
-Тесты форка: нет подходящих tests/*.cpp по графу включений. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: корень: 2; .github/workflows: 2; packaging: 4; resources/bin: 4
 
 ### author-gallery — Авторское приветствие, галерея и паспорт форка
 
-Скопировать снимки и паспорт как исторические материалы, применить приветствие заново в README апстрима. Тексты паспорта о SDL2 и прежних владельцах состояния обновить после переноса; снимки форка не подтверждают поведение UP0.
+Перенести авторское приветствие, галерею снимков и паспорт FORK1.
 
-Пути кода и тестов; судьба в апстриме:
+Пути кода и тестов; судьба в UP1:
 
-Остальные пути по каталогу второго уровня: docs/screenshots: 5; корень: 2.
+- нет.
 
-Тесты форка: нет подходящих tests/*.cpp по графу включений. Подключения и контракты — в реестре ниже.
+Остальные пути по каталогу второго уровня: корень: 2; docs/screenshots: 5
+
+### process-docs — Документы и инструменты процесса форка: задания, решения, карта переноса
+
+Перенести документы и инструменты процесса форка.
+
+Пути кода и тестов; судьба в UP1:
+
+- нет.
+
+Остальные пути по каталогу второго уровня: codex-direct: 23; codex-direct/A1: 1; codex-direct/B0: 1; codex-direct/G1: 12; codex-direct/G2: 20; codex-direct/G3: 70; codex-direct/U1: 12; codex-direct/U10: 1; codex-direct/U11: 11; codex-direct/U12: 14; codex-direct/U13: 4; codex-direct/U14: 2; codex-direct/U15: 4; codex-direct/U16: 2; codex-direct/U17: 1; codex-direct/U18: 1; codex-direct/U19: 1; codex-direct/U2: 2; codex-direct/U20: 1; codex-direct/U21: 2; codex-direct/U23: 4; codex-direct/U24: 8; codex-direct/U25: 5; codex-direct/U26: 6; codex-direct/U27: 5; codex-direct/U28: 3; codex-direct/U29: 4; codex-direct/U3: 13; codex-direct/U31: 4; codex-direct/U33: 6; codex-direct/U34: 11; codex-direct/U36: 25; codex-direct/U37: 4; codex-direct/U38: 1; codex-direct/U39: 2; codex-direct/U4: 12; codex-direct/U40: 1; codex-direct/U44: 1; codex-direct/U45: 1; codex-direct/U45R: 1; codex-direct/U5: 10; codex-direct/U6: 19; codex-direct/U7: 4; codex-direct/U8: 4; codex-direct/U9: 25; docs: 3; docs/screenshots: 5; docs/units: 5; docs/upstream: 5; tools/upstream: 3
 
 ## Реестр тестов форка
 
-Каждый файл использует собственный main, а не именованные TEST_CASE. Ниже приведены имена CTest, прямые проектные include и оставшиеся транзитивные зависимости из FORK. Реестр описывает проверки в исходниках; C++-тесты на Б0 не запускались.
+В FORK1 43 файла **tests/*.cpp**: 40 отдельных C++-тестов с собственным `main` и три файла поддержки. Для 40 тестов заданы отдельные CTest-имена; две runtime-проверки UI регистрируются опционально. Это реестр исходников и include, тесты не запускались. Столбец include показывает прямые project include: число перед стрелкой — строка include в исходном файле. Регистрации и строки относятся к FORK1.
 
-- `tests/CampaignMapLayoutTests.cpp@6662b2f:6` (**main**); CTest: campaign_map_layout_geometry — `CMakeLists.txt@6662b2f:333` (**campaign_map_layout_geometry**). Панели карты кампании помещаются в экран. Прямые include: `tests/CampaignMapLayoutTests.cpp@6662b2f:1` (**gamestates/CampaignMapLayout.hpp**) → `src/gamestates/CampaignMapLayout.hpp`. Косвенные: `src/utils/cPoint.h`, `src/utils/cRectangle.h`.
-- `tests/CommandBarLayoutTests.cpp@6662b2f:3` (**main**); CTest: command_bar_layout_geometry — `CMakeLists.txt@6662b2f:246` (**command_bar_layout_geometry**). Геометрия кнопок панели приказов при разных размерах. Прямые include: `tests/CommandBarLayoutTests.cpp@6662b2f:1` (**drawers/CommandBarLayout.hpp**) → `src/drawers/CommandBarLayout.hpp`. Косвенные: `src/utils/cPoint.h`, `src/utils/cRectangle.h`.
-- `tests/CommandBindingsTests.cpp@6662b2f:7` (**main**); CTest: command_bindings — `CMakeLists.txt@6662b2f:184` (**command_bindings**). Назначения клавиш, разбор SDL scancode и эквивалентность левого и правого Ctrl. Прямые include: `tests/CommandBindingsTests.cpp@6662b2f:2` (**controls/CommandBindings.hpp**) → `src/controls/CommandBindings.hpp`, `tests/CommandBindingsTests.cpp@6662b2f:3` (**controls/cKeyboardEvent.h**) → `src/controls/cKeyboardEvent.h`. Косвенные: `src/include/enums.h`, `src/utils/cPoint.h`, `src/utils/common.h`.
-- `tests/FactionTintTests.cpp@6662b2f:5` (**main**); CTest: faction_tint_uniformity — `CMakeLists.txt@6662b2f:417` (**faction_tint_uniformity**). Расчёт цветового канала фракции и сохранение оттенков текстуры; загрузка масок не проверяется. Прямые include: `tests/FactionTintTests.cpp@6662b2f:1` (**utils/FactionTint.hpp**) → `src/utils/FactionTint.hpp`. Косвенные: нет.
-- `tests/FontCoverageTests.cpp@6662b2f:9` (**main**); CTest: russian_font_coverage — `CMakeLists.txt@6662b2f:320` (**russian_font_coverage**). Наличие кириллических глифов в настоящем шрифте. Прямые include: `tests/FontCoverageTests.cpp@6662b2f:3` (**utils/FontSupport.hpp**) → `src/utils/FontSupport.hpp`. Косвенные: нет.
-- `tests/GraphicsModeTests.cpp@6662b2f:5` (**main**); CTest: graphics_mode_selection — `CMakeLists.txt@6662b2f:207` (**graphics_mode_selection**). Разбор режима Classic/HD, запасной режим и выбор секции HD4. Прямые include: `tests/GraphicsModeTests.cpp@6662b2f:1` (**utils/GraphicsMode.hpp**) → `src/utils/GraphicsMode.hpp`. Косвенные: нет.
-- `tests/HdPresentationTests.cpp@6662b2f:20` (**main**); CTest: hd_presentation_selection — `CMakeLists.txt@6662b2f:304` (**hd_presentation_selection**). Выбор физического представления, отдельные frame/fade targets, геометрия outcome и оптическое центрирование текста. Прямые include: `tests/HdPresentationTests.cpp@6662b2f:1` (**utils/HdPresentation.hpp**) → `src/utils/HdPresentation.hpp`, `tests/HdPresentationTests.cpp@6662b2f:2` (**utils/OutcomeScreenLayout.hpp**) → `src/utils/OutcomeScreenLayout.hpp`, `tests/HdPresentationTests.cpp@6662b2f:3` (**utils/TextAlignment.hpp**) → `src/utils/TextAlignment.hpp`. Косвенные: `src/utils/cPoint.h`, `src/utils/cRectangle.h`.
-- `tests/HudLayoutTests.cpp@6662b2f:47` (**main**); CTest: hud_layout_geometry — `CMakeLists.txt@6662b2f:220` (**hud_layout_geometry**). Геометрия HUD и отсутствие пересечений. Прямые include: `tests/HudLayoutTests.cpp@6662b2f:1` (**sidebar/HudLayout.hpp**) → `src/sidebar/HudLayout.hpp`. Косвенные: `src/utils/cPoint.h`, `src/utils/cRectangle.h`.
-- `tests/InteractionRegressionTests.cpp@6662b2f:28` (**main**); CTest: interaction_regressions — `CMakeLists.txt@6662b2f:259` (**interaction_regressions**). Заголовок настроек, фиксация приказа, отмена, доступность команд и значение заказа Starport. Прямые include: `tests/InteractionRegressionTests.cpp@6662b2f:1` (**controls/CommandModePolicy.hpp**) → `src/controls/CommandModePolicy.hpp`, `tests/InteractionRegressionTests.cpp@6662b2f:2` (**drawers/CommandBarPolicy.hpp**) → `src/drawers/CommandBarPolicy.hpp`, `tests/InteractionRegressionTests.cpp@6662b2f:3` (**drawers/OrderButtonPolicy.hpp**) → `src/drawers/OrderButtonPolicy.hpp`, `tests/InteractionRegressionTests.cpp@6662b2f:4` (**gamestates/AdvancedOptionsHeaderLayout.hpp**) → `src/gamestates/AdvancedOptionsHeaderLayout.hpp`, `tests/InteractionRegressionTests.cpp@6662b2f:5` (**gameobjects/structures/StarportOrderQueue.hpp**) → `src/gameobjects/structures/StarportOrderQueue.hpp`. Косвенные: `src/utils/cPoint.h`, `src/utils/cRectangle.h`.
-- `tests/MusicControlsLayoutTests.cpp@6662b2f:48` (**main**); CTest: music_controls_layout_geometry — `CMakeLists.txt@6662b2f:406` (**music_controls_layout_geometry**). Размещение музыкальных кнопок в HUD. Прямые include: `tests/MusicControlsLayoutTests.cpp@6662b2f:1` (**sidebar/HudLayout.hpp**) → `src/sidebar/HudLayout.hpp`, `tests/MusicControlsLayoutTests.cpp@6662b2f:2` (**sidebar/MusicControlsLayout.hpp**) → `src/sidebar/MusicControlsLayout.hpp`. Косвенные: `src/utils/cPoint.h`, `src/utils/cRectangle.h`.
-- `tests/MusicPlaylistTests.cpp@6662b2f:22` (**main**); CTest: music_playlist_shuffle_history — `CMakeLists.txt@6662b2f:382` (**music_playlist_shuffle_history**). Shuffle-bag, история назад/вперёд и обнаружение внешних файлов. Прямые include: `tests/MusicPlaylistTests.cpp@6662b2f:1` (**audio/MusicPlaylist.h**) → `src/audio/MusicPlaylist.h`. Косвенные: нет.
-- `tests/MusicTransitionPolicyTests.cpp@6662b2f:3` (**main**); CTest: music_transition_policy — `CMakeLists.txt@6662b2f:393` (**music_transition_policy**). Повторный вход в категорию и смена категории. Прямые include: `tests/MusicTransitionPolicyTests.cpp@6662b2f:1` (**audio/MusicTransitionPolicy.hpp**) → `src/audio/MusicTransitionPolicy.hpp`. Косвенные: нет.
-- `tests/OptionsMenuLayoutTests.cpp@6662b2f:38` (**main**); CTest: options_menu_layout_geometry — `CMakeLists.txt@6662b2f:233` (**options_menu_layout_geometry**). Геометрия меню настроек и действий сохранения/загрузки. Прямые include: `tests/OptionsMenuLayoutTests.cpp@6662b2f:1` (**gamestates/OptionsMenuLayout.hpp**) → `src/gamestates/OptionsMenuLayout.hpp`. Косвенные: `src/utils/cPoint.h`, `src/utils/cRectangle.h`.
-- `tests/RenderScaleTests.cpp@6662b2f:33` (**main**); CTest: render_scale_calculations — `CMakeLists.txt@6662b2f:196` (**render_scale_calculations**). Автоматический и ручной размер логического canvas. Прямые include: `tests/RenderScaleTests.cpp@6662b2f:1` (**utils/RenderScale.hpp**) → `src/utils/RenderScale.hpp`. Косвенные: нет.
-- `tests/RenderTargetStateTests.cpp@6662b2f:28` (**main**); CTest: render_target_state_restoration — `CMakeLists.txt@6662b2f:347` (**render_target_state_restoration**). Вложенные render targets, viewport, scale, clip, прозрачность и alpha. Прямые include: `tests/RenderTargetStateTests.cpp@6662b2f:3` (**drawers/SDLDrawer.hpp**) → `src/drawers/SDLDrawer.hpp`, `tests/RenderTargetStateTests.cpp@6662b2f:4` (**include/Texture.hpp**) → `src/include/Texture.hpp`. Косвенные: `src/utils/Color.hpp`, `src/utils/cPoint.h`, `src/utils/cRectangle.h`.
-- `tests/SaveFileCodecTests.cpp@6662b2f:23` (**main**); CTest: save_file_codec_roundtrip — `CMakeLists.txt@6662b2f:359` (**save_file_codec_roundtrip**). Round-trip и отклонение неверных checksum, версии, заголовка и размера. Прямые include: `tests/SaveFileCodecTests.cpp@6662b2f:1` (**save/SaveFileCodec.hpp**) → `src/save/SaveFileCodec.hpp`. Косвенные: нет.
-- `tests/SaveSlotNameTests.cpp@6662b2f:16` (**main**); CTest: save_slot_name_handling — `CMakeLists.txt@6662b2f:370` (**save_slot_name_handling**). Слоты 1–10, очистка имени и корректное усечение UTF-8. Прямые include: `tests/SaveSlotNameTests.cpp@6662b2f:1` (**save/SaveSlotName.hpp**) → `src/save/SaveSlotName.hpp`. Косвенные: `src/utils/Localization.hpp`.
-- `tests/TerrainVariationTests.cpp@6662b2f:7` (**main**); CTest: terrain_variation_selection — `CMakeLists.txt@6662b2f:270` (**terrain_variation_selection**). Детерминированный выбор варианта поверхности и проверка границ. Прямые include: `tests/TerrainVariationTests.cpp@6662b2f:1` (**drawers/TerrainVariation.hpp**) → `src/drawers/TerrainVariation.hpp`. Косвенные: `src/data/gfxdata.h`.
-- `tests/WorldObjectScaleTests.cpp@6662b2f:28` (**main**); CTest: world_object_scale_selection — `CMakeLists.txt@6662b2f:293` (**world_object_scale_selection**). Масштаб объектов и геометрия харвестера на НПЗ. Прямые include: `tests/WorldObjectScaleTests.cpp@6662b2f:1` (**utils/WorldObjectScale.hpp**) → `src/utils/WorldObjectScale.hpp`. Косвенные: нет.
-- `tests/WorldScaleTests.cpp@6662b2f:17` (**main**); CTest: world_scale_selection — `CMakeLists.txt@6662b2f:282` (**world_scale_selection**). Автоматический и ручной масштаб мира; HD4 при разных canvas. Прямые include: `tests/WorldScaleTests.cpp@6662b2f:1` (**utils/WorldScale.hpp**) → `src/utils/WorldScale.hpp`. Косвенные: нет.
-
+| C++-файл / main | CTest и регистрация | Покрытие; прямые include |
+|---|---|---|
+| `tests/BuildingRectangleTests.cpp@9208dcf:75` | `building_visual_rectangle` (`tests/UnitRenderFixture.cmake:126`) | прямоугольники зданий; `1`→`tests/ZoomTestSupport.hpp`; `3`→`src/gameobjects/structures/cRefinery.h`; `4`→`src/gameobjects/structures/cWindTrap.h` |
+| `tests/CampaignMapLayoutTests.cpp@9208dcf:6` | `campaign_map_layout_geometry` (`CMakeLists.txt:358`) | панели карты кампании; `1`→`src/gamestates/CampaignMapLayout.hpp` |
+| `tests/CommandBarLayoutTests.cpp@9208dcf:3` | `command_bar_layout_geometry` (`CMakeLists.txt:249`) | геометрия панели приказов; `1`→`src/drawers/CommandBarLayout.hpp` |
+| `tests/CommandBindingConflictTests.cpp@9208dcf:7` | `command_binding_conflicts` (`CMakeLists.txt:197`) | конфликты сочетаний клавиш; `2`→`src/controls/CommandBindings.hpp`; `3`→`src/controls/cKeyboardEvent.h` |
+| `tests/CommandBindingsTests.cpp@9208dcf:7` | `command_bindings` (`CMakeLists.txt:184`) | назначения, SDL scancode и Ctrl; `2`→`src/controls/CommandBindings.hpp`; `3`→`src/controls/cKeyboardEvent.h` |
+| `tests/FactionTintTests.cpp@9208dcf:5` | `faction_tint_uniformity` (`CMakeLists.txt:442`) | цветовой канал фракции; `1`→`src/utils/FactionTint.hpp` |
+| `tests/FactoryPadEngineTests.cpp@9208dcf:1004` | `factory_pad_engine` (`tests/UnitRenderFixture.cmake:132`) | производство и выезд с factory pads; `1`→`tests/ZoomTestSupport.hpp`; `3`→`tests/UnitDrawRecorder.hpp`; `5`→`src/building/cItemBuilder.h`; `6`→`src/data/gfxdata.h`; `7`→`src/drawers/cStructureDrawer.h`; `8`→`src/gameobjects/structures/cBarracks.h`; `9`→`src/gameobjects/structures/cHeavyFactory.h`; `10`→`src/gameobjects/structures/cLightFactory.h`; `11`→`src/gameobjects/structures/cUnitFactory.h`; `12`→`src/gameobjects/units/cUnit.h`; `13`→`src/map/cMap.h`; `14`→`src/sidebar/cBuildingListItem.h` |
+| `tests/FactoryPadSaveTests.cpp@9208dcf:219` | `factory_pad_save` (`tests/UnitRenderFixture.cmake:134`) | сохранение состояния factory pads; `1`→`src/save/SaveFileCodec.hpp`; `2`→`src/save/SaveGameManager.cpp` |
+| `tests/FactoryPadTests.cpp@9208dcf:287` | `factory_pad_logic` (`CMakeLists.txt:318`) | очередь и выезд с factory pad; `1`→`src/gameobjects/structures/FactoryPad.hpp` |
+| `tests/FontCoverageTests.cpp@9208dcf:9` | `russian_font_coverage` (`CMakeLists.txt:345`) | кириллические глифы настоящего шрифта; `2`→**SDL2/SDL_ttf.h**; `3`→`src/utils/FontSupport.hpp` |
+| `tests/HdPresentationTests.cpp@9208dcf:21` | `hd_presentation_selection` (`CMakeLists.txt:329`) | HD-представления и геометрия outcome; `1`→`src/utils/HdPresentation.hpp`; `2`→`src/utils/OutcomeScreenLayout.hpp`; `3`→`src/utils/TextAlignment.hpp` |
+| `tests/HudLayoutTests.cpp@9208dcf:47` | `hud_layout_geometry` (`CMakeLists.txt:222`) | геометрия HUD; `1`→`src/sidebar/HudLayout.hpp` |
+| `tests/InteractionRegressionTests.cpp@9208dcf:28` | `interaction_regressions` (`CMakeLists.txt:262`) | заголовок настроек и фиксация/отмена приказа; `1`→`src/controls/CommandModePolicy.hpp`; `2`→`src/drawers/CommandBarPolicy.hpp`; `3`→`src/drawers/OrderButtonPolicy.hpp`; `4`→`src/gamestates/AdvancedOptionsHeaderLayout.hpp`; `5`→`src/gameobjects/structures/StarportOrderQueue.hpp` |
+| `tests/MouseCellRefreshTests.cpp@9208dcf:167` | `mouse_cell_refresh` (`tests/UnitRenderFixture.cmake:129`) | обновление ячейки под курсором; `1`→`tests/ZoomTestSupport.hpp` |
+| `tests/MouseCellScanTests.cpp@9208dcf:214` | `mouse_cell_scan` (`tests/UnitRenderFixture.cmake:128`) | сканирование ячеек под курсором; `1`→`tests/ZoomTestSupport.hpp` |
+| `tests/MouseClickInitTests.cpp@9208dcf:11` | `mouse_click_init` (`tests/UnitRenderFixture.cmake:130`) | начальная обработка щелчка мыши; `1`→`src/utils/cSoundPlayer.h`; `2`→`src/utils/cTimeCounter.h`; `3`→`src/utils/cTimeManager.h`; `4`→`src/context/GameContext.hpp`; `5`→`src/context/TextContext.hpp`; `6`→`src/controls/cMouse.h`; `7`→`src/drawers/cTextDrawer.h` |
+| `tests/MouseHoverStateTests.cpp@9208dcf:199` | `mouse_hover_state` (`CMakeLists.txt:483`) | переходы состояния наведения; `1`→`tests/ZoomTestSupport.hpp`; `3`→`src/controls/mousestates/cMouseNormalState.h`; `4`→`src/data/gfxdata.h` |
+| `tests/MusicControlsLayoutTests.cpp@9208dcf:47` | `music_controls_layout_geometry` (`CMakeLists.txt:431`) | кнопки музыки в HUD; `1`→`src/sidebar/HudLayout.hpp`; `2`→`src/sidebar/MusicControlsLayout.hpp` |
+| `tests/MusicPlaylistTests.cpp@9208dcf:22` | `music_playlist_shuffle_history` (`CMakeLists.txt:407`) | shuffle-bag и история треков; `1`→`src/audio/MusicPlaylist.h` |
+| `tests/MusicTransitionPolicyTests.cpp@9208dcf:3` | `music_transition_policy` (`CMakeLists.txt:418`) | смена музыкальной категории; `1`→`src/audio/MusicTransitionPolicy.hpp` |
+| `tests/OptionsMenuLayoutTests.cpp@9208dcf:283` | `options_menu_layout_geometry` (`CMakeLists.txt:236`) | геометрия меню настроек; `1`→`src/gamestates/OptionsMenuLayout.hpp`; `2`→`src/utils/RenderScale.hpp` |
+| `tests/OutpostFrameTests.cpp@9208dcf:10` | `outpost_frame` (`tests/UnitRenderFixture.cmake:133`) | кадры аванпоста; `3`→`src/gameobjects/structures/cOutPost.h` |
+| `tests/PlacementFrameTests.cpp@9208dcf:110` | `placement_frame` (`tests/UnitRenderFixture.cmake:127`) | геометрия предпросмотра здания; `1`→`tests/ZoomTestSupport.hpp`; `3`→`tests/UnitDrawRecorder.hpp`; `5`→`src/drawers/cPlaceItDrawer.h`; `6`→`src/gameobjects/structures/cRefinery.h`; `7`→`src/gameobjects/structures/cWindTrap.h`; `8`→`src/sidebar/cBuildingListItem.h` |
+| `tests/PlacementRuleTests.cpp@9208dcf:321` | `placement_rule` (`tests/UnitRenderFixture.cmake:131`) | правила размещения зданий; `1`→`tests/ZoomTestSupport.hpp`; `3`→`tests/UnitDrawRecorder.hpp`; `5`→`src/controls/mousestates/cMousePlaceState.h`; `6`→`src/data/gfxdata.h`; `7`→`src/drawers/cPlaceItDrawer.h`; `8`→`src/building/cItemBuilder.h`; `9`→`src/gameobjects/structures/cWindTrap.h`; `10`→`src/player/cPlayer.h`; `11`→`src/sidebar/cBuildingList.h`; `12`→`src/sidebar/cBuildingListUpdater.h`; `13`→`src/sidebar/cSideBar.h` |
+| `tests/RenderScaleTests.cpp@9208dcf:33` | `render_scale_calculations` (`CMakeLists.txt:209`) | логический canvas; `1`→`src/utils/RenderScale.hpp` |
+| `tests/RenderTargetStateTests.cpp@9208dcf:28` | `render_target_state_restoration` (`CMakeLists.txt:372`) | состояние вложенных render targets; `3`→`src/drawers/SDLDrawer.hpp`; `4`→`src/include/Texture.hpp`; `6`→**SDL2/SDL.h** |
+| `tests/SaveFileCodecTests.cpp@9208dcf:23` | `save_file_codec_roundtrip` (`CMakeLists.txt:384`) | кодек и неверные save-заголовки; `1`→`src/save/SaveFileCodec.hpp` |
+| `tests/SaveSlotNameTests.cpp@9208dcf:16` | `save_slot_name_handling` (`CMakeLists.txt:395`) | слоты и UTF-8 имя; `1`→`src/save/SaveSlotName.hpp` |
+| `tests/SoundDistanceTests.cpp@9208dcf:17` | `sound_distance_scale` (`CMakeLists.txt:296`) | затухание звука по расстоянию; `1`→`src/utils/SoundDistance.hpp` |
+| `tests/TerrainTileGapTests.cpp@9208dcf:55` | `terrain_tile_gap` (`CMakeLists.txt:484`) | стыки кадров поверхности; `1`→`tests/ZoomTestSupport.hpp` |
+| `tests/TerrainVariationTests.cpp@9208dcf:7` | `terrain_variation_selection` (`CMakeLists.txt:273`) | варианты поверхности и границы; `1`→`src/drawers/TerrainVariation.hpp` |
+| `tests/UiAuditArgumentsTests.cpp@9208dcf:44` | `ui_audit_arguments` (`CMakeLists.txt:454`) | аргументы UI-аудита; `1`→`src/debug/UiAuditArguments.hpp` |
+| `tests/UnitDrawRegressionTests.cpp@9208dcf:285` | `unit_draw_regression` (`tests/UnitRenderFixture.cmake:123`) | регрессии отрисовки юнитов; `1`→`tests/UnitDrawRecorder.hpp`; `2`→`tests/UnitFrameBaseline.hpp`; `3`→`tests/UnitFrameFixture.hpp`; `6`→`src/data/gfxdata.h`; `7`→`src/map/cMapCamera.h`; `8`→`src/player/cPlayer.h` |
+| `tests/UnitFrameInteractionsTests.cpp@9208dcf:335` | `unit_frame_interactions` (`tests/UnitRenderFixture.cmake:122`) | покадровые взаимодействия; `1`→`tests/UnitDrawRecorder.hpp`; `2`→`tests/UnitFrameBaseline.hpp`; `3`→`tests/UnitFrameFixture.hpp`; `5`→`src/utils/cSoundPlayer.h`; `6`→`src/utils/cTimeCounter.h`; `7`→`src/utils/cTimeManager.h`; `8`→`src/context/GameContext.hpp`; `9`→`src/context/TextContext.hpp`; `10`→`src/controls/cGameControlsContext.h`; `11`→`src/controls/cMouse.h`; `12`→`src/data/gfxdata.h`; `14`→`src/drawers/cTextDrawer.h`; `15`→`src/map/cMapCamera.h`; `16`→`src/player/cPlayer.h` |
+| `tests/UnitHdFrameDrawTests.cpp@9208dcf:197` | `unit_hd_frame_draw` (`tests/UnitRenderFixture.cmake:121`) | выбор HD-кадров юнитов; `1`→`tests/UnitDrawRecorder.hpp`; `2`→`tests/UnitFrameBaseline.hpp`; `3`→`tests/UnitFrameFixture.hpp`; `4`→`src/utils/UnitSpriteLayout.hpp`; `7`→`src/data/gfxdata.h`; `8`→`src/map/cMapCamera.h`; `9`→`src/player/cPlayer.h` |
+| `tests/UnitRenderPixelsTests.cpp@9208dcf:241` | `unit_render_pixels` (`tests/UnitRenderFixture.cmake:124`) | пиксели рендера юнитов; `1`→`tests/UnitFrameFixture.hpp`; `4`→`src/map/cMapCamera.h`; `5`→`src/player/cPlayer.h` |
+| `tests/UnitSpriteLayoutTests.cpp@9208dcf:101` | `unit_sprite_layout` (`tests/UnitRenderFixture.cmake:116`) | раскладка HD-спрайтов; `1`→`src/utils/UnitSpriteLayout.hpp`; `3`→`tests/UnitFrameBaseline.hpp` |
+| `tests/WorldObjectScaleTests.cpp@9208dcf:17` | `world_object_scale_selection` (`CMakeLists.txt:307`) | масштаб объектов мира и НПЗ; `1`→`src/utils/WorldObjectScale.hpp` |
+| `tests/WorldScaleTests.cpp@9208dcf:17` | `world_scale_selection` (`CMakeLists.txt:285`) | масштаб мира; `1`→`src/utils/WorldScale.hpp` |
+| `tests/ZoomStartTests.cpp@9208dcf:83` | `zoom_start` (`tests/UnitRenderFixture.cmake:125`) | начальный масштаб карты; `1`→`tests/ZoomTestSupport.hpp` |
 ## Данные и паки
 
-Изменения двоичных паков определяются по путям .dat, где binary или lfs равен true: указатель LFS сам по себе может иметь текстовый numstat. В пересечении сторон только `resources/bin/data/sdl_inter.dat` (M/M). Все двоичные пересечения JSON:
+Двоичные паки определяются по .dat-путям с `binary=true` или `lfs=true`; LFS-указатель может иметь текстовый numstat. В объединённом наборе 28 таких путей: FORK1 изменил 22 A + 2 M, UP1 — 1 A + 4 M. Единственный overlap — `resources/bin/data/sdl_inter.dat` (M/M). FORK1 изменил `resources/bin/data/sdl_world.dat`; UP1 изменил `resources/bin/data/sdl_data.dat`, `resources/bin/data/sdl_mentat.dat`, `resources/bin/data/sdl_audio.dat` и добавил `resources/bin/data/sdl_gfxeditor.dat`. Четыре HD4-пака добавлены FORK1.
 
-- `resources/bin/data/sdl_inter.dat` — M/M.
+JSON содержит пустой `id_collisions`. В FORK1 — 18 сцен .dat непосредственно в **resources/bin/data/scenes/hd4**, вложенного набора **scenes/hd4/hd4** нет.
 
-Классический `resources/bin/data/sdl_world.dat` менял только форк; `resources/bin/data/sdl_data.dat`, `resources/bin/data/sdl_mentat.dat`, `resources/bin/data/sdl_audio.dat` — только апстрим. `resources/bin/data/sdl_gfxeditor.dat` добавлен апстримом. Для общего sdl_inter требуется сверка записей на Б2. Флаги binary и lfs в JSON отражают разные свойства: numstat Git и фильтр FORK.
+SHA-256 HD4-паков FORK1, сверенные с LFS oid:
 
-Перед read_pack из `tools/hd_assets.py` сверены SHA-256 четырёх HD4-паков с oid их LFS-указателей в FORK. Полученные хеши:
-
-| Пак FORK | SHA-256 |
+| Пак | SHA-256 |
 |---|---|
-| `resources/bin/data/sdl_data_hd4.dat` | e2a87ce8cf9143f9d11ee0a54dcf10b7a57d109b49e713dadf4133c12d882045 |
-| `resources/bin/data/sdl_inter_hd4.dat` | 8ecf69b14ee2becec0978d81d9fd911e557dc56445fae324560e9fe83fff021e |
+| `resources/bin/data/sdl_data_hd4.dat` | 781d3f7cea009d357d8b1236c11f681f6bbe831e8245bcb3c81ee46e3646a0c1 |
+| `resources/bin/data/sdl_inter_hd4.dat` | fe4a6044a9a80f90562debc1c4d0c183b8eff65f665ac667b2859e05d28ab739 |
 | `resources/bin/data/sdl_mentat_hd4.dat` | 4455422c7e7b7e6e16532c66242859b43a2002068752c9da56a46e456fa284f6 |
 | `resources/bin/data/sdl_world_hd4.dat` | 94cf42fef1a755cc36b3b70f34900b15f76f28a540a38b73f69483f41b311d68 |
 
-Все записи id_collisions из JSON; define_pair отсутствуют, поскольку форк не добавлял числовых define в этих заголовках. Отсутствие define_pair не исключает конфликта содержимого пака.
-
-| kind | Заголовок UP0 / define | Значение | Пак FORK | fork_entry |
-|---|---|---:|---|---|
-| pack_index_missing | `src/data/gfxinter.h@a51b97f:165` (**BMP_SELECT_HOUSE_SARDAUKAR**) | 144 | `resources/bin/data/sdl_inter_hd4.dat` | null |
-| pack_index_missing | `src/data/gfxmentat.h@a51b97f:72` (**MENTATS**) | 51 | `resources/bin/data/sdl_mentat_hd4.dat` | null |
-| pack_index_taken | `src/data/gfxdata.h@a51b97f:188` (**EXPLOSION_CARRYALL**) | 167 | `resources/bin/data/sdl_data_hd4.dat` | HM_BUILD_REFINERY |
-
-Коллизия индекса 167 — подтверждённый факт: в `resources/bin/data/sdl_data_hd4.dat` запись HM_BUILD_REFINERY занимает индекс, который апстрим отдал EXPLOSION_CARRYALL. См. [PavelSlaven/DUNE#2](https://github.com/PavelSlaven/DUNE/issues/2) и шаг Б2 плана. На Б2 нужно согласовать таблицы и содержимое паков до переноса масок. Содержание issue по сети на Б0 не запрашивалось; факт установлен чтением локального пака и закреплённого заголовка.
-
-Правило сканирования не отличает индекс от другой числовой константы. Среди найденных трёх записей случая «не индекс» нет: EXPLOSION_CARRYALL используется в `src/context/cInfoContextCreator.cpp@a51b97f:800` (**EXPLOSION_CARRYALL**); BMP_SELECT_HOUSE_SARDAUKAR передаётся в getTexture в `src/gamestates/cChooseHouseState.cpp@a51b97f:63` (**BMP_SELECT_HOUSE_SARDAUKAR**). MENTATS присваивается iBackgroundFrame в `src/gameobjects/mentat/SardaukarMentat.cpp@a51b97f:32` (**iBackgroundFrame = MENTATS**), который передаётся в getTexture в `src/gameobjects/mentat/AbstractMentat.cpp@a51b97f:316` (**getTexture(iBackgroundFrame)**).
-
 ## Аддитивное
 
-Новые пути FORK со статусом A и upstream=null — кандидаты для копирования исходников и данных; таблица считает каждый путь один раз. Сначала переносится содержимое, затем проверяется интеграция по классу функции. Наличие нового пути не доказывает совместимость его include, API или runtime-контракта.
+Новые пути FORK1 со статусом A и `upstream=null` — кандидаты для переноса; каждый путь считается один раз. Новый путь сам по себе не гарантирует совместимость include, API или runtime-контракта.
 
-| Каталог | Новые пути для копирования |
+| Каталог | Путей |
 |---|---:|
 | .github/workflows | 1 |
 | README_AI.md | 1 |
-| docs/screenshots | 5 |
+| codex-direct | 364 |
+| docs | 18 |
 | packaging | 4 |
-| resources/bin | 152 |
+| resources/bin | 133 |
 | resources/hd | 1723 |
 | src/audio | 5 |
 | src/controls | 2 |
+| src/debug | 7 |
 | src/drawers | 6 |
-| src/gameobjects | 1 |
+| src/gameobjects | 4 |
 | src/gamestates | 3 |
 | src/save | 7 |
 | src/sidebar | 2 |
-| src/utils | 14 |
-| tests | 20 |
-| tools | 210 |
-
-`README_AI.md`, HD-мастера, инструменты и снимки переносятся как исходные материалы. Тесты сохраняются все; SDL2-зависимые подключения адаптируются по списку ниже. Регистрацию целей из `CMakeLists.txt` применяют заново. Тексты packaging обновляют под новые зависимости. Совместимость инструментов с будущими паками не проверена.
+| src/utils | 15 |
+| tests | 51 |
+| tools | 305 |
+| units-gen | 800 |
+| **Итого** | **3451** |
 
 ## SDL2 в коде форка
 
-Счётчик собирает токены с префиксами SDL_, Mix_, MIX_, IMG_, TTF_ и пути SDL2/<файл> из #include. Подтверждёнными считаются все токены, встретившиеся хотя бы в одном файле src/ в UP0. В каждом добавленном, изменённом или перемещённом форком src-файле считаются строки FORK с токеном вне подтверждённого множества; несколько токенов в строке дают одну строку. Файлы с нулём строк исключены. Шаблоны замен из diff не используются.
+Счётчик считает строки с токенами `SDL_`, `Mix_`, `MIX_`, `IMG_`, `TTF_` и путями **SDL2/<файл>** в изменённых/добавленных/перемещённых **src/**-файлах FORK1, если токен не встречался в **src/** UP1. Несколько токенов в строке дают одну строку, файлы с нулём строк исключены. JSON: 333 строки в 54 файлах. Это не обнаруживает сохранённые имена с изменёнными сигнатурами.
 
-По JSON: 305 строк в 49 файлах. Наибольшие значения:
-
-| Путь FORK | lines |
+| Путь FORK1 | Строк |
 |---|---:|
-| `src/drawers/SDLDrawer.cpp` | 39 |
+| `src/drawers/SDLDrawer.cpp` | 41 |
 | `src/utils/cDataPack.cpp` | 37 |
 | `src/utils/cSoundPlayer.cpp` | 32 |
 | `src/cGame_logic.cpp` | 27 |
-| `src/utils/cPack.cpp` | 23 |
-| `src/player/cPlayer.cpp` | 20 |
+| `src/utils/cPack.cpp` | 24 |
+| `src/player/cPlayer.cpp` | 19 |
 | `src/utils/Graphics.cpp` | 17 |
+| `src/debug/UiAuditCapture.cpp` | 12 |
 | `src/utils/cScreenInit.cpp` | 11 |
 | `src/drawers/cTextTextureCache.cpp` | 10 |
-| `src/gamestates/cSelectYourNextConquestState.cpp` | 10 |
 
-Подсчёт не видит функции, у которых в SDL3 сохранилось имя, но изменилась сигнатура.
+SDL2 прямо или транзитивно подключают 27 из 40 C++-тестов; прямой SDL2 include есть у `FontCoverageTests` и `RenderTargetStateTests`. Общие маршруты:
 
-SDL2 прямо или транзитивно подключают 10 из 20 тестов. Семь тестов без собственного прямого SDL2 include приходят к `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**); RenderTargetStateTests дополнительно имеет прямое подключение и тоже достигает cRectangle. Ниже полные цепочки подключений для каждого из десяти тестов:
-
-- `tests/CampaignMapLayoutTests.cpp`:
-  - `tests/CampaignMapLayoutTests.cpp@6662b2f:1` (**gamestates/CampaignMapLayout.hpp**) → `src/gamestates/CampaignMapLayout.hpp@6662b2f:3` (**utils/cRectangle.h**) → `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**).
-- `tests/CommandBarLayoutTests.cpp`:
-  - `tests/CommandBarLayoutTests.cpp@6662b2f:1` (**drawers/CommandBarLayout.hpp**) → `src/drawers/CommandBarLayout.hpp@6662b2f:3` (**utils/cRectangle.h**) → `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**).
-- `tests/CommandBindingsTests.cpp`:
-  - `tests/CommandBindingsTests.cpp@6662b2f:2` (**controls/CommandBindings.hpp**) → `src/controls/CommandBindings.hpp@6662b2f:3` (**SDL2/SDL.h**).
-  - `tests/CommandBindingsTests.cpp@6662b2f:3` (**controls/cKeyboardEvent.h**) → `src/controls/cKeyboardEvent.h@6662b2f:9` (**utils/common.h**) → `src/utils/common.h@6662b2f:19` (**SDL2/SDL.h**).
-- `tests/FontCoverageTests.cpp`:
-  - `tests/FontCoverageTests.cpp@6662b2f:2` (**SDL2/SDL_ttf.h**).
-  - `tests/FontCoverageTests.cpp@6662b2f:3` (**utils/FontSupport.hpp**) → `src/utils/FontSupport.hpp@6662b2f:3` (**SDL2/SDL_ttf.h**).
-- `tests/HdPresentationTests.cpp`:
-  - `tests/HdPresentationTests.cpp@6662b2f:2` (**utils/OutcomeScreenLayout.hpp**) → `src/utils/OutcomeScreenLayout.hpp@6662b2f:3` (**utils/cRectangle.h**) → `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**).
-  - `tests/HdPresentationTests.cpp@6662b2f:3` (**utils/TextAlignment.hpp**) → `src/utils/TextAlignment.hpp@6662b2f:3` (**utils/cRectangle.h**) → `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**).
-- `tests/HudLayoutTests.cpp`:
-  - `tests/HudLayoutTests.cpp@6662b2f:1` (**sidebar/HudLayout.hpp**) → `src/sidebar/HudLayout.hpp@6662b2f:3` (**utils/cRectangle.h**) → `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**).
-- `tests/InteractionRegressionTests.cpp`:
-  - `tests/InteractionRegressionTests.cpp@6662b2f:4` (**gamestates/AdvancedOptionsHeaderLayout.hpp**) → `src/gamestates/AdvancedOptionsHeaderLayout.hpp@6662b2f:3` (**utils/cRectangle.h**) → `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**).
-- `tests/MusicControlsLayoutTests.cpp`:
-  - `tests/MusicControlsLayoutTests.cpp@6662b2f:1` (**sidebar/HudLayout.hpp**) → `src/sidebar/HudLayout.hpp@6662b2f:3` (**utils/cRectangle.h**) → `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**).
-  - `tests/MusicControlsLayoutTests.cpp@6662b2f:2` (**sidebar/MusicControlsLayout.hpp**) → `src/sidebar/MusicControlsLayout.hpp@6662b2f:3` (**utils/cRectangle.h**) → `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**).
-- `tests/OptionsMenuLayoutTests.cpp`:
-  - `tests/OptionsMenuLayoutTests.cpp@6662b2f:1` (**gamestates/OptionsMenuLayout.hpp**) → `src/gamestates/OptionsMenuLayout.hpp@6662b2f:3` (**utils/cRectangle.h**) → `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**).
-- `tests/RenderTargetStateTests.cpp`:
-  - `tests/RenderTargetStateTests.cpp@6662b2f:3` (**drawers/SDLDrawer.hpp**) → `src/drawers/SDLDrawer.hpp@6662b2f:3` (**utils/cRectangle.h**) → `src/utils/cRectangle.h@6662b2f:4` (**SDL2/SDL_rect.h**).
-  - `tests/RenderTargetStateTests.cpp@6662b2f:3` (**drawers/SDLDrawer.hpp**) → `src/drawers/SDLDrawer.hpp@6662b2f:4` (**utils/Color.hpp**) → `src/utils/Color.hpp@6662b2f:3` (**SDL2/SDL_pixels.h**).
-  - `tests/RenderTargetStateTests.cpp@6662b2f:3` (**drawers/SDLDrawer.hpp**) → `src/drawers/SDLDrawer.hpp@6662b2f:8` (**SDL2/SDL.h**).
-  - `tests/RenderTargetStateTests.cpp@6662b2f:4` (**include/Texture.hpp**) → `src/include/Texture.hpp@6662b2f:2` (**SDL2/SDL.h**).
-  - `tests/RenderTargetStateTests.cpp@6662b2f:6` (**SDL2/SDL.h**).
+- Через `src/utils/cRectangle.h@9208dcf:4` → **SDL2/SDL_rect.h**: `CampaignMapLayout`, `CommandBarLayout`, `HdPresentation`, `HudLayout`, `InteractionRegression`, `MusicControlsLayout`, `OptionsMenuLayout`, `RenderTargetState`, `UnitSpriteLayout`.
+- Через `tests/UnitFrameFixture.hpp@9208dcf:3` → `src/drawers/SDLDrawer.hpp@9208dcf:8` → **SDL2/SDL.h**: `BuildingRectangle`, `MouseCellRefresh`, `MouseCellScan`, `MouseHoverState`, `TerrainTileGap`, `UnitDrawRegression`, `UnitFrameInteractions`, `UnitHdFrameDraw`, `UnitRenderPixels`, `ZoomStart`.
+- Через `tests/UnitDrawRecorder.hpp@9208dcf:6` → **SDL2/SDL.h**: `FactoryPadEngine`, `PlacementFrame`, `PlacementRule`, `UnitDrawRegression`, `UnitFrameInteractions`, `UnitHdFrameDraw` (последние три также входят в группу с `UnitFrameFixture`).
+- `CommandBindingConflict` и `CommandBindings`: `src/controls/CommandBindings.hpp@9208dcf:3` → **SDL2/SDL.h**; `MouseClickInit`: `src/controls/cMouse.h@9208dcf:7` → **SDL2/SDL.h**.
+- `FactoryPadSave`: `src/save/SaveGameManager.cpp@9208dcf:9` → `src/cGame.h@9208dcf:27` → **SDL2/SDL.h**.
+- `FontCoverage`: прямой **SDL2/SDL_ttf.h** и `src/utils/FontSupport.hpp@9208dcf:3` → **SDL2/SDL_ttf.h**.
+- У `RenderTargetState` дополнительно `src/drawers/SDLDrawer.hpp@9208dcf:4` → `src/utils/Color.hpp@9208dcf:3` → **SDL2/SDL_pixels.h**; прямое подключение `src/include/Texture.hpp@9208dcf:2` → **SDL2/SDL.h**.
 
 ## Риски переноса
 
-- `src/cGame_logic.cpp` и `src/cGame.h` удалены по JSON. Перенос целого старого файла вернёт прежнее владение состоянием. Преемники перечислены у функций; распределение RU/HD-кода между ними требует реализации и тестов следующих шагов.
-- `src/save/SaveGameManager.cpp` — новый путь без пересечения с апстримом, но его include указывают на прежние cGame и d2tmc. Поэтому отсутствие overlap не разрешает копировать интеграцию сохранений; ссылки на подключения приведены в save-slots.
-- `src/drawers/SDLDrawer.cpp`, `src/utils/cDataPack.cpp`, `src/utils/cPack.cpp`, `src/utils/cSoundPlayer.cpp`: JSON показывает одновременно изменения сторон и неподтверждённые SDL-токены. Копирование прежней реализации затронет новые API рендера, ввода-вывода и аудио; механическая замена имён не проверена.
-- `src/utils/GameSettings.hpp` перемещён в `src/utils/InitialGameSettings.hpp`; runtime-настройки представлены отдельно: `src/game/cGameSettings.h@a51b97f:20` (**class cGameSettings**). Параметры HD, языка, музыки и клавиш нужно распределить по времени жизни, а не переносить только старую структуру.
-- `src/managers/cInteractionManager.cpp` удалён; входные события находятся в `src/gamestates/cGamePlaying.cpp@a51b97f:304` (**cGamePlaying::onNotifyMouseEvent**). Рассылку событий панели приказов нужно встроить в cGamePlaying, сохранив порядок контекста, камеры и остальных получателей.
-- `resources/bin/data/sdl_inter.dat` — пересечение M/M; выбор одного целого пака потеряет изменения другой стороны. `resources/bin/data/sdl_data_hd4.dat` несёт подтверждённую коллизию 167; `resources/bin/data/sdl_inter_hd4.dat` и `resources/bin/data/sdl_mentat_hd4.dat` не содержат индексов новых картинок Сардаукаров. Разбор и согласование относятся к Б2.
-- Два набора сцен FORK: resources/bin/data/scenes/hd4 содержит 18 DAT непосредственно в каталоге, а resources/bin/data/scenes/hd4/hd4 — ещё 18 DAT. У всех 18 одноимённых пар разные oid LFS. Пример: `resources/bin/data/scenes/hd4/sdl_ix.dat@6662b2f:2` (**sha256:22ae115b4f82698918be5854746883ee1c37d34e5bb51d8c10a46e86fc6da6a6**) и `resources/bin/data/scenes/hd4/hd4/sdl_ix.dat@6662b2f:2` (**sha256:c13e88db4ac518f9e7ab31f416dcdaa1b199af01beb2b5bd7125501a960476d0**). Загрузчик `src/mentat/AbstractMentat.cpp@6662b2f:692` (**data/scenes/hd4/sdl_{}.dat**) проверяет только прямой набор scenes/hd4. Вложенный набор scenes/hd4/hd4 кодом src/ в FORK не читается: путь hd4/hd4 в исходниках отсутствует. Выбор сохраняемого набора при упаковке относится к Б11.
-- `resources/bin/skirmish_en/4PL_Sin├йadPlains.ini`: JSON фиксирует rename из `resources/bin/skirmish/4PL_SinéadPlains.ini`. Написание имени изменилось вместе с языковым каталогом; разрешение имени на целевых платформах не проверено.
-- `src/utils/FontSupport.hpp` и `tests/FontCoverageTests.cpp` зависят от SDL2_ttf через подключения в реестре. Проверка кириллицы с настоящим шрифтом после миграции относится к Б7.
-- `.github/workflows/release.yml` — новый путь форка, однако `CMakeLists.txt` пересекается с апстримом. Старые команды выпуска и комплект зависимостей нельзя считать проверенными для UP0; платформенные сборки относятся к Б12.
-- Отнесение путей к функциям проверено маркерами в одну сторону: тест 6 ловит недостающих владельцев, но не лишних. Около 85 отнесений у 46 путей кода не подтверждены ни одним маркером, а маркеры renderStrechSprite, buttonWidth, renderTargetStack, TTF_SizeUTF8, m_titleBmp, UNIT_RAIDER и CMAKE_CXX_COMPILER_ID встречаются и в коде апстрима. Исполнитель шага переноса сверяет список путей своей функции с диффом BASE..FORK этих путей.
-
+- `src/cGame_logic.cpp` и `src/cGame.h` изменены FORK1, а UP1 удалил оба пути. Перенос этих файлов целиком вернёт прежнее владение состоянием вместо текущих `src/game/cGame_logic.cpp@d06f2fc:375` (**cGame::init**) и `src/game/cGame.h@d06f2fc:89` (**class cGame**).
+- `src/save/SaveGameManager.cpp@9208dcf:9` подключает старый **cGame.h**, а `src/save/SaveGameManager.cpp@9208dcf:11` — **d2tmc.h**. Новый файл добавлен только форком, тогда как игровой API UP1 находится в `src/game/cGame.h@d06f2fc:89`; перенос сохранений требует адаптации к новому API.
+- `src/drawers/SDLDrawer.cpp`, `src/utils/cDataPack.cpp`, `src/utils/cPack.cpp` и `src/utils/cSoundPlayer.cpp` изменены обеими сторонами и содержат SDL2-код. Инвентарь FORK1 насчитывает 333 строки SDL-токенов в 54 src-файлах, поэтому механическая замена имён не проверяет сигнатуры и контракты рендера, паков и аудио.
+- `src/utils/GameSettings.hpp@9208dcf:6` в UP1 перемещён в `src/utils/InitialGameSettings.hpp@d06f2fc:21`; runtime-настройки представлены отдельно в `src/game/cGameSettings.h@d06f2fc:23`. При переносе нужно сохранить разные времена жизни начальных и runtime-настроек.
+- `src/managers/cInteractionManager.cpp` изменён FORK1, но удалён UP1. Обработку событий следует встроить в `src/gamestates/cGamePlaying.cpp@d06f2fc:317` (**cGamePlaying::onNotifyMouseEvent**), сохранив порядок получателей.
+- Среди двоичных/LFS-путей только `resources/bin/data/sdl_inter.dat` пересекается как M/M (`resources/bin/data/sdl_inter.dat@9208dcf:2`, `resources/bin/data/sdl_inter.dat@d06f2fc:2`). Записей `id_collisions` в JSON нет; общий пак нужно сверить по содержимому.
+- Переименование `resources/bin/skirmish/4PL_SinéadPlains.ini` в `resources/bin/skirmish_en/4PL_Sin├йadPlains.ini@9208dcf:1` сохранено FORK1; разрешение имени файла целевыми платформами не проверено.
+- `src/utils/FontSupport.hpp@9208dcf:3` и `tests/FontCoverageTests.cpp@9208dcf:2` зависят от SDL2_ttf. Проверка кириллицы на настоящем шрифте после миграции остаётся необходимой.
+- `.github/workflows/release.yml@9208dcf:1` добавлен форком при пересекающемся `CMakeLists.txt`; команды выпуска и комплект зависимостей для UP1 не проверены.
+- Маркерная карта содержит 554 назначения функций на кодовые пути; у 249 назначений на 152 путях нет совпадения маркера. В UP1 всё ещё встречаются `renderStrechSprite`, `buttonWidth`, `renderTargetStack`, `m_titleBmp` и `UNIT_RAIDER`, поэтому владельца каждого перенесённого пути нужно сверять по диффу.
+- world-scale: UP1 перенёс камеру в `src/gameobjects/map/cMapCamera.cpp@d06f2fc:89` (**cMapCamera::setZoomLevel**); выбор масштаба форка нужно согласовать с этим текущим владельцем.
+- placement-rule: UP1 изменил `src/controls/mousestates/cMousePlaceState.cpp`; актуальная проверка размещения — `src/controls/mousestates/cMousePlaceState.cpp@d06f2fc:98` (**cMousePlaceState::mayPlaceIt**).
+- factory-pads: UP1 изменил `src/gameobjects/structures/cLightFactory.cpp`; логику площадки и выезда юнита нужно встроить в текущий вывод фабрики `src/gameobjects/structures/cLightFactory.cpp@d06f2fc:76` (**cLightFactory::draw**).
+- radar-dish: UP1 изменил `src/gameobjects/structures/cOutPost.cpp`; вращение следует согласовать с текущей анимацией `src/gameobjects/structures/cOutPost.cpp@d06f2fc:51` (**cOutPost::think_animation**).
+- refinery-dock: FORK1 вызывает `refineryHarvesterLayout` из `src/drawers/cStructureDrawer.cpp@9208dcf:880`; кодовые пути этой функции не изменены в BASE..UP1. UP1 рисует REFINERY через `src/drawers/cStructureDrawer.cpp@d06f2fc:316` (**cStructureDrawer::drawStructureForLayer**), который направляет его в `src/drawers/cStructureDrawer.cpp@d06f2fc:280` (**cStructureDrawer::drawStructureAnimationRefinery**). Путь потребителя не входит в запись refinery-dock.
 ## Сверка чисел плана
 
-В шаге Б0 и §3.2 перечислены исходные оценки объёма. Следующие строки уточняют каждое несовпадение объёма или смысла статуса по JSON:
-
-- «184 изменённых форком файла» в шаге Б0: 184 = 183 M + 1 операция R среди прежних путей; JSON хранит R дважды, на исходном и целевом пути. Полный объём с добавлениями: 2156 A + 183 M + 1 R = 2340 операций, или 2341 запись путей. Охват функций проверяется для всех 2341 записей, а не только для прежних файлов.
-- «20 удалённых файлов» в §3.2: среди overlap апстрим имеет 14 D + 6 исходных R = 20 путей с переносом интеграции; буквально удалённых по Git — 14, остальные 6 перемещены.
-- «Не меньше 118 конфликтных файлов» в §3.2: 118 = 98 M + 14 D + 6 исходных R апстрима среди путей overlap. JSON подтверждает пересечение изменений, но не число фактических конфликтов merge; merge на Б0 не выполнялся.
-
-Число 20 «удалённых или перенесённых» из шага Б0 совпадает с 14 D + 6 R. Для проверки границ подсчёта кодовый объём из §1.2 также воспроизводится: src/ + tests/ + корневой CMakeLists.txt дают для форка 114 M + 60 A = 174 операции, +15 654 / −1 262 строки; для апстрима 197 M + 176 A + 48 D + 49 R = 470 операций, +40 438 / −18 467 строк. В суммах строки каждого rename учитываются один раз. Эти 174 и 470 не описывают все ресурсы и инструменты дерева.
-
-Итоговый объединённый раздел paths содержит 3076 записей. Полный FORK: 2156 A + 183 M + 2 границы R; полный UP0: 312 A + 219 M + 214 D + 108 границ R (54 операции). Коммиты BASE..FORK: 13. Тестовые файлы tests/*.cpp: 20 у форка и 15 в UP0. Источник статусов и соответствия функциям — JSON, источник состава и назначения тестов — реестр подключений выше.
+- До добавлений FORK1 изменил 204 пути M и сделал 1 rename: 205 операций. Полный FORK1 — 3451 A + 204 M + 1 R = 3656 операций и 3657 path-записей.
+- UP1 удалил 222 пути и переместил 48; всего 270 D/R операций. Пересечение содержит 139 path-записей: 116 M, 15 D и 8 R. Это число затронутых путей, а не фактических merge-конфликтов.
+- Кодовый объём **src/**, **tests/** и корневого `CMakeLists.txt`: FORK1 — 234 операции, +24 812 / −2 171 строка; UP1 — 499 операций, +44 323 / −19 619 строк. Rename считается один раз.
+- Объединённый инвентарь содержит 4394 path-записи. UP1: 341 A + 217 M + 222 D + 48 R = 828 операций, 876 записей. FORK1: 3657 записей, 3656 операций.
+- Первый родительский путь BASE..FORK1 содержит 183 коммита, BASE..UP1 — 2215. Файлы **tests/*.cpp**: 43 у FORK1 и 21 у UP1.

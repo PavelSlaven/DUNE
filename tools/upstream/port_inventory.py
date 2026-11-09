@@ -17,8 +17,8 @@ from typing import Iterable
 
 
 BASE = "e17379ad660fca46859b403a6c3d33ec8d831a40"
-FORK = "6662b2f4857c679425ea2166092a21f4bde7d6e7"
-UPSTREAM = "a51b97f15d0eee2d323a1737f140eb2cbd60973c"
+FORK = "9208dcf5a358f40afd95c99480e4e09f781ed566"
+UPSTREAM = "d06f2fcd2a347182c3774fb96e9a85570405c489"
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUTPUT = ROOT / "docs" / "upstream" / "port_inventory.json"
 FEATURES_PATH = ROOT / "tools" / "upstream" / "port_features.json"
