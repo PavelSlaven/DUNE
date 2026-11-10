@@ -1,0 +1,25 @@
+символ или место	путь@d06f2fc:строка	что делает	место в PORT
+VideoFlow	src/game/VideoFlow.hpp@d06f2fc:26	Класс-обёртка для передачи запроса проигрывания в callback без зависимости от cGame.	src/game/VideoFlow.hpp@832c953:26
+VideoFlow::PlayCallback	src/game/VideoFlow.hpp@d06f2fc:28	Тип callback: принимает имя файла const std::string&, ничего не возвращает.	src/game/VideoFlow.hpp@832c953:28
+VideoFlow::VideoFlow(PlayCallback)	src/game/VideoFlow.hpp@d06f2fc:30	Принимает callback и перемещает его в m_play; явный конструктор.	src/game/VideoFlow.hpp@832c953:30
+VideoFlow::play(filename)	src/game/VideoFlow.hpp@d06f2fc:34	Принимает имя файла и вызывает m_play(filename); возвращаемого значения нет.	src/game/VideoFlow.hpp@832c953:34
+VideoFlow::m_play	src/game/VideoFlow.hpp@d06f2fc:39	Хранит PlayCallback.	src/game/VideoFlow.hpp@832c953:39
+cGame хранит VideoFlow	src/game/cGame.h@d06f2fc:73,263	Объявляет тип и владеет объектом через unique_ptr.	src/game/cGame.h@832c953:72,262
+VideoFlow инициализируется callback-ом игры	src/game/cGame_logic.cpp@d06f2fc:235-238	Callback создаёт состояние ролика по filename и ставит переход GAME_VIDEO.	src/game/cGame_logic.cpp@832c953:234-237
+VideoFlow передаётся через сервисы	src/game/cGame_logic.cpp@d06f2fc:291	Записывает указатель на VideoFlow в game services для потребителей.	src/game/cGame_logic.cpp@832c953:290
+Потребитель VideoFlow в сервисах	src/include/sGameServices.h@d06f2fc:40,65	Объявляет VideoFlow и предоставляет указатель videoFlow.	src/include/sGameServices.h@832c953:40,65
+MainMenu хранит VideoFlow	src/gamestates/cMainMenuState.h@d06f2fc:28,52	Объявляет тип и хранит указатель на сервисный VideoFlow.	src/gamestates/cMainMenuState.h@832c953:28,55
+MainMenu получает VideoFlow	src/gamestates/cMainMenuState.cpp@d06f2fc:32,51,58	Подключает VideoFlow, берёт его из сервисов и проверяет указатель.	src/gamestates/cMainMenuState.cpp@832c953:33,56,63
+Состояние перед запуском	src/gamestates/cMainMenuState.cpp@d06f2fc:295,297	getType сообщает, что кнопка показана в состоянии главного меню GAMESTATE_MAIN_MENU.	src/gamestates/cMainMenuState.cpp@832c953:275,277
+Кнопка Introduction проверяет intro.pak	src/gamestates/cMainMenuState.cpp@d06f2fc:210-211	Задаёт имя intro.pak и включает кнопку только если файл существует в рабочем каталоге игры.	src/gamestates/cMainMenuState.cpp@832c953:171-172
+Кнопка Introduction запускает ролик	src/gamestates/cMainMenuState.cpp@d06f2fc:214,219,221	Показывает Introduction; клик вызывает videoFlow->play("intro.pak"), а кнопка включена только при наличии файла.	src/gamestates/cMainMenuState.cpp@832c953:173-174
+cCreatorState создаёт video state	src/gamestates/cCreatorState.cpp@d06f2fc:81-82	Создаёт cVideoState с переданным именем пакета.	src/gamestates/cCreatorState.cpp@832c953:81-82
+Переход в GAME_VIDEO	src/game/cGame_logic.cpp@d06f2fc:1108-1109	При обработке GAME_VIDEO выбирает состояние VIDEO как новое текущее игровое состояние.	src/game/cGame_logic.cpp@832c953:1137-1138
+Пакет кадров ролика	src/gamestates/cVideoState.cpp@d06f2fc:43,54	Переданное имя файла открывается как пакет кадров через Graphics и DataPack.	intro.pak отсутствует в дереве PORT (git ls-tree не вывел запись)
+cVideoState идентифицирует состояние	src/gamestates/cVideoState.cpp@d06f2fc:70-72	Возвращает тип GAMESTATE_VIDEO.	src/gamestates/cVideoState.cpp@832c953:70-72
+cVideoState читает кадры	src/gamestates/cVideoState.cpp@d06f2fc:80-88	thinkNormal выдаёт кадры по одному, затем ставит переход с затемнением в GAME_MENU.	src/gamestates/cVideoState.cpp@832c953:80-88
+cVideoState отображает кадр	src/gamestates/cVideoState.cpp@d06f2fc:91-99	Рисует текущую текстуру кадра и курсор мыши.	src/gamestates/cVideoState.cpp@832c953:91-99
+Пропуск ролика мышью	src/gamestates/cVideoState.cpp@d06f2fc:101-105	Нажатие левой кнопки мыши запускает переход с затемнением в GAME_MENU.	src/gamestates/cVideoState.cpp@832c953:101-105
+Пропуск ролика клавиатурой	src/gamestates/cVideoState.cpp@d06f2fc:108-112	Нажатие любой клавиши запускает переход с затемнением в GAME_MENU.	src/gamestates/cVideoState.cpp@832c953:108-112
+Ошибка или отсутствие кадров	src/gamestates/cVideoState.cpp@d06f2fc:56-64	При пустом пакете пишет ошибку; thinkNormal затем возвращает игру в меню, так как кадров нет.	src/gamestates/cVideoState.cpp@832c953:56-64
+Файл данных intro.pak	src/gamestates/cMainMenuState.cpp@d06f2fc:210	Единственный явно указанный на диске файл ролика; в UP1 отсутствует по git ls-tree -r UP1 -- intro.pak.	нет (в PORT git ls-tree -r PORT -- intro.pak пуст)

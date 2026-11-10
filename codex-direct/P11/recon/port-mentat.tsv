@@ -1,0 +1,89 @@
+ревизия	функция или участок	путь@ревизия:строка	что делает	записи и файлы
+832c953	AbstractMentat::AbstractMentat	src/gameobjects/mentat/AbstractMentat.cpp@832c953:45-111	Инициализирует состояние и начинается с iBackgroundFrame=-1; задаёт movieTopleftX=offsetX+256, movieTopleftY=offsetY+120.	Нет изображения до выбора производного фона; объект gfxmentat загружен из gfxmentat.dat.
+832c953	AbstractMentat::think	src/gameobjects/mentat/AbstractMentat.cpp@832c953:121-166	Обновляет анимацию речи и вызывает выбор кадров глаз, рта и сцены; в тишине ставит iMentatMouth=0.	Нет строкового имени ресурса.
+832c953	AbstractMentat::thinkMovie	src/gameobjects/mentat/AbstractMentat.cpp@832c953:168-182	Каждые 21 тика задаёт iMovieFrame=(iMovieFrame+1) mod число файлов сцены.	gfxmovie, pack сцены из loadScene.
+832c953	AbstractMentat::thinkEyes	src/gameobjects/mentat/AbstractMentat.cpp@832c953:184-216	Выбирает кадр глаз: rnd(100)<30 -> 3, <60 -> 0, иначе 4; если кадр повторился, берёт rnd(4).	Кадры по индексам gfxmentat.dat: ATR_EYES01–05, BEN_EYES01–05, HAR_EYES01–05, ORD_EYES01–05.
+832c953	AbstractMentat::thinkMouth	src/gameobjects/mentat/AbstractMentat.cpp@832c953:218-271	При речи продвигает кадр на 1–4 с циклом mod 5; иногда ждёт 25 тиков на закрытом рте; без речи кадр 0.	Кадры по индексам gfxmentat.dat: ATR_MOUTH01–05, BEN_MOUTH01–05, HAR_MOUTH01–05, ORD_MOUTH01–05.
+832c953	AbstractMentat::draw	src/gameobjects/mentat/AbstractMentat.cpp@832c953:273-314	Сначала вызывает draw_movie(), затем рисует фон поверх неё, затем глаза и рот; прямоугольник фона=(offsetX,offsetY,640,480), строки 280-288.	Фоны gfxmentat.dat: MENTATA, MENTATM, MENTATH, MENTATO, MENTATS; сцена из gfxmovie.
+832c953	AbstractMentat::getBackgroundBitmap	src/gameobjects/mentat/AbstractMentat.cpp@832c953:316-320	При iBackgroundFrame>=0 возвращает gfxmentat->getTexture(iBackgroundFrame), иначе nullptr.	gfxmentat.dat, индекс iBackgroundFrame.
+832c953	AbstractMentat::draw_movie	src/gameobjects/mentat/AbstractMentat.cpp@832c953:322-331	Рисует texture текущего iMovieFrame; прямоугольник=(movieTopleftX,movieTopleftY,tmp->w,tmp->h), строка 329.	gfxmovie; файл сцены выбирает loadScene.
+832c953	AbstractMentat::loadScene	src/gameobjects/mentat/AbstractMentat.cpp@832c953:346-364	Вызывает hd4SceneFile(scene), создаёт Graphics с плотностью kHd4AssetDensity=4 и ставит iMovieFrame=0; путь data/scenes/hd4/sdl_<scene>.dat.	Записи scenes/hd4/sdl_win01.dat, sdl_win02.dat, sdl_lose01.dat, sdl_lose02.dat, sdl_platr.dat, sdl_plhar.dat, sdl_plord.dat; счётчики в tests/data/hd4_packs_expected.tsv: 1,1,1,1,33,33,33. Также есть динамический briefScene в src/utils/ini.cpp:137.
+832c953	AtreidesMentat::AtreidesMentat	src/gameobjects/mentat/AtreidesMentat.cpp@832c953:27-55	Выбирает фон iBackgroundFrame=MENTATA.	gfxmentat.dat: MENTATA; кнопочные IDs BTN_REPEAT, BTN_PROCEED, BTN_YES.
+832c953	AtreidesMentat::draw_eyes	src/gameobjects/mentat/AtreidesMentat.cpp@832c953:73-76	Рисует кадр ATR_EYES01+iMentatEyes; прямоугольник имеет левый верх (offsetX+80,offsetY+241), размер текстуры, строка 75.	gfxmentat.dat, индексы ATR_EYES01–05.
+832c953	AtreidesMentat::draw_mouth	src/gameobjects/mentat/AtreidesMentat.cpp@832c953:78-81	Рисует кадр ATR_MOUTH01+iMentatMouth; прямоугольник имеет левый верх (offsetX+80,offsetY+273), размер текстуры, строка 80.	gfxmentat.dat, индексы ATR_MOUTH01–05.
+832c953	BeneMentat::BeneMentat	src/gameobjects/mentat/BeneMentat.cpp@832c953:35-60	Выбирает фон iBackgroundFrame=MENTATM.	gfxmentat.dat: MENTATM; кнопочные IDs BTN_NO, BTN_YES.
+832c953	BeneMentat::draw_eyes	src/gameobjects/mentat/BeneMentat.cpp@832c953:106-109	Рисует кадр BEN_EYES01+iMentatEyes; прямоугольник имеет левый верх (offsetX+128,offsetY+240), размер текстуры, строка 108.	gfxmentat.dat, индексы BEN_EYES01–05.
+832c953	BeneMentat::draw_mouth	src/gameobjects/mentat/BeneMentat.cpp@832c953:111-114	Рисует кадр BEN_MOUTH01+iMentatMouth; прямоугольник имеет левый верх (offsetX+112,offsetY+272), размер текстуры, строка 113.	gfxmentat.dat, индексы BEN_MOUTH01–05.
+832c953	HarkonnenMentat::HarkonnenMentat	src/gameobjects/mentat/HarkonnenMentat.cpp@832c953:28-54	Выбирает фон iBackgroundFrame=MENTATH.	gfxmentat.dat: MENTATH; кнопочные IDs BTN_REPEAT, BTN_PROCEED, BTN_YES.
+832c953	HarkonnenMentat::draw_eyes	src/gameobjects/mentat/HarkonnenMentat.cpp@832c953:71-74	Рисует кадр HAR_EYES01+iMentatEyes; прямоугольник имеет левый верх (offsetX+64,offsetY+256), размер текстуры, строка 73.	gfxmentat.dat, индексы HAR_EYES01–05.
+832c953	HarkonnenMentat::draw_mouth	src/gameobjects/mentat/HarkonnenMentat.cpp@832c953:76-79	Рисует кадр HAR_MOUTH01+iMentatMouth; прямоугольник имеет левый верх (offsetX+64,offsetY+288), размер текстуры, строка 78.	gfxmentat.dat, индексы HAR_MOUTH01–05.
+832c953	OrdosMentat::OrdosMentat	src/gameobjects/mentat/OrdosMentat.cpp@832c953:27-53	Выбирает фон iBackgroundFrame=MENTATO.	gfxmentat.dat: MENTATO; кнопочные IDs BTN_REPEAT, BTN_PROCEED, BTN_YES.
+832c953	OrdosMentat::draw_eyes	src/gameobjects/mentat/OrdosMentat.cpp@832c953:70-73	Рисует кадр ORD_EYES01+iMentatEyes; прямоугольник имеет левый верх (offsetX+32,offsetY+240), размер текстуры, строка 72.	gfxmentat.dat, индексы ORD_EYES01–05.
+832c953	OrdosMentat::draw_mouth	src/gameobjects/mentat/OrdosMentat.cpp@832c953:75-78	Рисует кадр ORD_MOUTH01+iMentatMouth; прямоугольник имеет левый верх (offsetX+31,offsetY+270), размер текстуры, строка 77.	gfxmentat.dat, индексы ORD_MOUTH01–05.
+832c953	SardaukarMentat::SardaukarMentat	src/gameobjects/mentat/SardaukarMentat.cpp@832c953:28-54	Выбирает фон iBackgroundFrame=MENTATS.	gfxmentat.dat: MENTATS; кнопочные IDs BTN_REPEAT, BTN_PROCEED, BTN_YES.
+832c953	SardaukarMentat::draw_eyes	src/gameobjects/mentat/SardaukarMentat.cpp@832c953:71-74	Пустая реализация; глаза не рисует, вызов renderSprite только закомментирован.	Запись/файл не запрашиваются.
+832c953	SardaukarMentat::draw_mouth	src/gameobjects/mentat/SardaukarMentat.cpp@832c953:76-79	Пустая реализация; рот не рисует, вызов renderSprite только закомментирован.	Запись/файл не запрашиваются.
+BASE..UP1	hunk: перенос и комментарий заголовка AbstractMentat.cpp	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:1	Переносит AbstractMentat.cpp из src/mentat и заменяет старый шапочный комментарий.	—
+BASE..UP1	hunk: include d2tmc удалён	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:16	Удаляет прямое подключение d2tmc.h.	—
+BASE..UP1	hunk: добавление eGameState	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:18	Добавляет подключение include/eGameState.h.	—
+BASE..UP1	hunk: game flow и settings includes	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:22	Добавляет GameStateTransition, MentatFlow и cGameSettings.	—
+BASE..UP1	hunk: logger и text drawer includes	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:27	Подключает Log.h и cTextDrawer.h.	—
+BASE..UP1	hunk: SDL upgrade includes	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:31	Заменяет SDL2 и SDL2_ttf на SDL3 и SDL3_ttf.	—
+BASE..UP1	hunk: includes и экран 640x480	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:34	Добавляет assert, контексты, Texture, cRectangle и константы MENTAT_SCREEN_W/H=640/480.	—
+BASE..UP1	hunk: конструктор и проверка аргументов	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:47	Расширяет сигнатуру constructor параметрами settings, stateTransitions, mentatFlow; проверяет и сохраняет указатели.	—
+BASE..UP1	hunk: SDLDrawer pointer	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:54	Сохраняет SDLDrawer из GameContext.	—
+BASE..UP1	hunk: mission select rect	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:83	Получает размеры экрана из settings вместо глобального game.	—
+BASE..UP1	hunk: builder и владение кнопкой	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:86	Создаёт GuiButton через auto и убирает raw pointer локальной переменной.	—
+BASE..UP1	hunk: renderer и тема кнопки	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:90	Передаёт renderer и строит светлую тему новым builder.	—
+BASE..UP1	hunk: callback кнопки	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:94	Переводит переход на m_stateTransitions вместо глобального game.	—
+BASE..UP1	hunk: владение mission select кнопкой	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:98	Перемещает созданную кнопку в m_guiBtnToMissionSelect.	—
+BASE..UP1	hunk: экранные смещения	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:106	Считает offset из settings и использует константы 640x480.	—
+BASE..UP1	hunk: init logging	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:110	Заменяет очистку старого char-массива и logbook вызовом Logger.	—
+BASE..UP1	hunk: destructor raw deletes	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:114	Удаляет ручные delete для кнопок.	—
+BASE..UP1	hunk: destructor ownership/logging	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:117	Переходит на автоочистку unique_ptr и Logger.	—
+BASE..UP1	hunk: длина реплики в think	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:143	Считает длину строк через std::string::size вместо strlen.	—
+BASE..UP1	hunk: draw renderer calls	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:275	Меняет renderDrawer на m_sdlDrawer в очистке и рамке экрана.	—
+BASE..UP1	hunk: draw background rect	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:284	Использует MENTAT_SCREEN_W/H и m_sdlDrawer при рисовании фона.	gfxmentat по iBackgroundFrame.
+BASE..UP1	hunk: draw_movie renderer	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:330	Меняет renderer на m_sdlDrawer.	gfxmovie.
+BASE..UP1	hunk: initSentences	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:335	Очищает каждую std::string в цикле вместо memset.	—
+BASE..UP1	hunk: setSentence signature	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:340	Меняет параметр const char* на const std::string&.	—
+BASE..UP1	hunk: setSentence body	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:342	Ограничивает строку до 254 символов через substr и пишет Logger.	—
+BASE..UP1	hunk: loadScene filename	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:350	Формирует путь конкатенацией data/scenes/sdl_<scene>.dat вместо snprintf в буфер; hd4 в пути здесь ещё нет.	data/scenes/sdl_<scene>.dat.
+BASE..UP1	hunk: loadScene renderer	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:352	Передаёт renderer из m_sdlDrawer; явная плотность не передана.	gfxmovie, data/scenes/sdl_<scene>.dat.
+BASE..UP1	hunk: loadScene success log	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:358	Заменяет logbook на Logger::info.	—
+BASE..UP1	hunk: loadScene failure log	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:363	Заменяет logbook на Logger::error.	—
+BASE..UP1	hunk: buildLeftButton ownership	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:376	Создаёт cRectangle через std::make_unique вместо delete и new.	—
+BASE..UP1	hunk: buildRightButton ownership	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:382	Создаёт cRectangle через std::make_unique вместо delete и new.	—
+BASE..UP1	hunk: hover events	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:393	Добавляет обработку MOUSE_MOVED_TO для mission select и обеих кнопок.	—
+BASE..UP1	hunk: mouse event routing	src/gameobjects/mentat/AbstractMentat.cpp@d06f2fc:408	Перед обработкой клика во время речи уведомляет mission select кнопку.	—
+BASE..UP1	hunk: перенос и шапка AbstractMentat.h	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:1	Переносит заголовок и добавляет новую шапку файла.	—
+BASE..UP1	hunk: удаление старого описания класса	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:15	Удаляет исторический комментарий из старого заголовка.	—
+BASE..UP1	hunk: forward declarations и array	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:20	Заменяет тяжёлые includes на Graphics forward declaration и добавляет array.	—
+BASE..UP1	hunk: SDL_ttf	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:25	Меняет SDL2_ttf на SDL3_ttf.	—
+BASE..UP1	hunk: дополнительные forward declarations	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:31	Объявляет MentatFlow, GameStateTransition, cGameSettings, SDLDrawer и cTextDrawer.	—
+BASE..UP1	hunk: конструктор в header	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:46	Меняет публичную сигнатуру конструктора на settings, transitions, flow и canMissionSelect.	—
+BASE..UP1	hunk: setSentence в header	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:61	Меняет аргумент setSentence на const std::string&.	—
+BASE..UP1	hunk: строки предложений	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:94	Заменяет char sentence[10][255] на std::array<std::string,10>.	—
+BASE..UP1	hunk: SDLDrawer member	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:105	Добавляет указатель SDLDrawer.	—
+BASE..UP1	hunk: rectangle ownership	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:107	Переводит кнопочные cRectangle на unique_ptr.	—
+BASE..UP1	hunk: GUI button ownership	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:115	Переводит GuiButton на unique_ptr.	—
+BASE..UP1	hunk: mission select ownership	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:123	Переводит указатель mission select кнопки на unique_ptr.	—
+BASE..UP1	hunk: flow members	src/gameobjects/mentat/AbstractMentat.h@d06f2fc:125	Добавляет хранимые state transition и mentat flow указатели.	—
+BASE..UP1	hunk: новый AtreidesMentat.cpp	src/gameobjects/mentat/AtreidesMentat.cpp@d06f2fc:1	Добавляет полную реализацию класса: фон MENTATA, кнопки, обработчики и отрисовку глаз/рта; удалённый старый путь src/mentat/AtreidesMentat.cpp заменён этим файлом.	gfxmentat.dat: MENTATA, BTN_REPEAT, BTN_PROCEED, BTN_YES, ATR_EYES*, ATR_MOUTH*.
+BASE..UP1	hunk: новый AtreidesMentat.h	src/gameobjects/mentat/AtreidesMentat.h@d06f2fc:1	Добавляет новый класс-наследник и декларации draw_eyes/draw_mouth/draw_other/draw.	—
+BASE..UP1	hunk: новый BeneMentat.cpp	src/gameobjects/mentat/BeneMentat.cpp@d06f2fc:1	Добавляет полную реализацию BeneMentat с MENTATM, выбором yes/no и отрисовкой глаз/рта; старый src/mentat/BeneMentat.cpp удалён.	gfxmentat.dat: MENTATM, BTN_NO, BTN_YES, BEN_EYES*, BEN_MOUTH*.
+BASE..UP1	hunk: новый BeneMentat.h	src/gameobjects/mentat/BeneMentat.h@d06f2fc:1	Добавляет декларацию нового BeneMentat, строковые реплики и обработчики кнопок.	—
+BASE..UP1	hunk: новый HarkonnenMentat.cpp	src/gameobjects/mentat/HarkonnenMentat.cpp@d06f2fc:1	Добавляет реализацию HarkonnenMentat с MENTATH, кнопками и рисованием глаз/рта; старый src/mentat/HarkonnenMentat.cpp удалён.	gfxmentat.dat: MENTATH, BTN_REPEAT, BTN_PROCEED, BTN_YES, HAR_EYES*, HAR_MOUTH*.
+BASE..UP1	hunk: новый HarkonnenMentat.h	src/gameobjects/mentat/HarkonnenMentat.h@d06f2fc:1	Добавляет декларацию наследника AbstractMentat.	—
+BASE..UP1	hunk: новый OrdosMentat.cpp	src/gameobjects/mentat/OrdosMentat.cpp@d06f2fc:1	Добавляет реализацию OrdosMentat с MENTATO, кнопками и рисованием глаз/рта; старый src/mentat/OrdosMentat.cpp удалён.	gfxmentat.dat: MENTATO, BTN_REPEAT, BTN_PROCEED, BTN_YES, ORD_EYES*, ORD_MOUTH*.
+BASE..UP1	hunk: новый OrdosMentat.h	src/gameobjects/mentat/OrdosMentat.h@d06f2fc:1	Добавляет декларацию наследника AbstractMentat.	—
+BASE..UP1	hunk: новый SardaukarMentat.cpp	src/gameobjects/mentat/SardaukarMentat.cpp@d06f2fc:1	Добавляет новый SardaukarMentat с фоном MENTATS; глаза и рот пока пустые hooks.	gfxmentat.dat: MENTATS, кнопочные ID.
+BASE..UP1	hunk: новый SardaukarMentat.h	src/gameobjects/mentat/SardaukarMentat.h@d06f2fc:1	Добавляет декларацию нового наследника AbstractMentat.	—
+BASE..UP1	hunk: удаление прежнего AtreidesMentat.cpp	src/gameobjects/mentat/AtreidesMentat.cpp@d06f2fc:1	Удаляет src/mentat/AtreidesMentat.cpp из BASE (1–61); функции теперь находятся в добавленном файле src/gameobjects/mentat/AtreidesMentat.cpp.	—
+BASE..UP1	hunk: удаление прежнего AtreidesMentat.h	src/gameobjects/mentat/AtreidesMentat.h@d06f2fc:1	Удаляет src/mentat/AtreidesMentat.h из BASE (1–15); декларации теперь в новом пути.	—
+BASE..UP1	hunk: удаление прежнего BeneMentat.cpp	src/gameobjects/mentat/BeneMentat.cpp@d06f2fc:1	Удаляет src/mentat/BeneMentat.cpp из BASE (1–81); реализация теперь в новом пути.	—
+BASE..UP1	hunk: удаление прежнего BeneMentat.h	src/gameobjects/mentat/BeneMentat.h@d06f2fc:1	Удаляет src/mentat/BeneMentat.h из BASE (1–18); декларации теперь в новом пути.	—
+BASE..UP1	hunk: удаление прежнего HarkonnenMentat.cpp	src/gameobjects/mentat/HarkonnenMentat.cpp@d06f2fc:1	Удаляет src/mentat/HarkonnenMentat.cpp из BASE (1–56); реализация теперь в новом пути.	—
+BASE..UP1	hunk: удаление прежнего HarkonnenMentat.h	src/gameobjects/mentat/HarkonnenMentat.h@d06f2fc:1	Удаляет src/mentat/HarkonnenMentat.h из BASE (1–14); декларации теперь в новом пути.	—
+BASE..UP1	hunk: удаление прежнего OrdosMentat.cpp	src/gameobjects/mentat/OrdosMentat.cpp@d06f2fc:1	Удаляет src/mentat/OrdosMentat.cpp из BASE (1–56); реализация теперь в новом пути.	—
+BASE..UP1	hunk: удаление прежнего OrdosMentat.h	src/gameobjects/mentat/OrdosMentat.h@d06f2fc:1	Удаляет src/mentat/OrdosMentat.h из BASE (1–14); декларации теперь в новом пути.	—

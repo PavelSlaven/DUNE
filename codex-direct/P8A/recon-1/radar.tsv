@@ -1,0 +1,15 @@
+ревизия	символ	файл или участок	путь@ревизия:строка	что делает
+FORK1	cOutPost::thinkFast	выбор кадра тарелки	src/gameobjects/structures/cOutPost.cpp@9208dcf:15-32	При TIMER_flag > 54 увеличивает iFrame, циклически выбирает 0…31; 32 кадра и 55 вызовов между сменами
+PORT	cOutPost::thinkFast	выбор кадра тарелки	src/gameobjects/structures/cOutPost.cpp@832c953:30-48	При TIMER_flag > 54 увеличивает iFrame, циклически выбирает 0…7; 8 кадров и 55 вызовов между сменами
+3d3ff49e	iFrame > 15	diff	src/gameobjects/structures/cOutPost.cpp@3d3ff49e:27	Расширяет цикл кадров с 8 до 16
+849650d0	iFrame > 31	diff	src/gameobjects/structures/cOutPost.cpp@849650d0:27	Расширяет цикл кадров с 16 до 32
+UP1	файловый заголовок	diff	src/gameobjects/structures/cOutPost.cpp@d06f2fc:1	Добавляет заголовок файла; выбор кадра не меняется
+PORT	BUILD_RADAR	идентификатор записи	src/data/gfxdata.h@832c953:50	Запись 26 типа BMP для изображения тарелки
+PORT	BUILD_RADAR	getSurface	src/context/cInfoContextCreator.cpp@832c953:1546	Загружает изображение тарелки из записи пака
+PORT	BUILD_RADAR_SHADOW	getTexture	src/context/cInfoContextCreator.cpp@832c953:1547	Загружает тень записи 27
+PORT	RADAR flag 1	структура Outpost	src/context/cInfoContextCreator.cpp@832c953:1553	Первый флаг записи структуры Outpost
+PORT	RADAR flag 2	структура Outpost	src/context/cInfoContextCreator.cpp@832c953:1558	Второй флаг записи структуры Outpost
+PORT	BUILD_RADAR_FLAG	HD House Flag	src/utils/HdHouseFlag.hpp@832c953:17	Связывает RADAR с HD-изображением BUILD_RADAR_FLAG размером 64 на 64
+FORK1	порядок кадров	OutpostFrameTests.cpp	tests/OutpostFrameTests.cpp@9208dcf:42	Сравнивает полученные кадры с ожидаемыми 1…31,0,1
+FORK1	число интервалов	OutpostFrameTests.cpp	tests/OutpostFrameTests.cpp@9208dcf:51	Проверяет 32 интервала между сменами кадра
+FORK1	длина интервала	OutpostFrameTests.cpp	tests/OutpostFrameTests.cpp@9208dcf:56	Проверяет по 55 вызовов thinkFast в каждом интервале
