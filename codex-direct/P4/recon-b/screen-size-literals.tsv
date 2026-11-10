@@ -1,0 +1,21 @@
+путь@ce0cacf:строка	символ	что вычисляется	когда читается
+src/utils/InitialGameSettings.hpp@ce0cacf:22	screenW = 800	начальное значение логической ширины до чтения INI/CLI	при создании объекта
+src/utils/InitialGameSettings.hpp@ce0cacf:23	screenH = 600	начальное значение логической высоты до чтения INI/CLI	при создании объекта
+src/game/cSDLSystem.cpp@ce0cacf:35	MIN_RENDER_WIDTH = 800	нижний предел ширины логического рендера	при создании объекта
+src/game/cSDLSystem.cpp@ce0cacf:36	MIN_RENDER_HEIGHT = 600	нижний предел высоты логического рендера	при создании объекта
+src/gameobjects/mentat/AbstractMentat.cpp@ce0cacf:42	MENTAT_SCREEN_W = 640	ширина фиксированного логического холста под графику Mentat, не размер дисплея	при создании объекта
+src/gameobjects/mentat/AbstractMentat.cpp@ce0cacf:43	MENTAT_SCREEN_H = 480	высота фиксированного логического холста под графику Mentat, не размер дисплея	при создании объекта
+src/gamestates/cSelectMissionState.cpp@ce0cacf:73	640	ширина фиксированной рамки меню миссий, не ширина экрана	при создании объекта
+src/gamestates/cSelectMissionState.cpp@ce0cacf:74	480	высота фиксированной рамки меню миссий, не высота экрана	при создании объекта
+src/gamestates/cSelectMissionState.cpp@ce0cacf:75	mainMenuWidth = 640	задаёт ширину фиксированной рамки меню миссий, не ширину экрана	при создании объекта
+src/gamestates/cSelectMissionState.cpp@ce0cacf:76	mainMenuHeight = 480	задаёт высоту фиксированной рамки меню миссий, не высоту экрана	при создании объекта
+src/gamestates/cSelectYourNextConquestState.cpp@ce0cacf:142	640	ширина фиксированного логического canvas регионального экрана, используется для центрирования; не размер окна	при создании объекта
+src/gamestates/cSelectYourNextConquestState.cpp@ce0cacf:143	480	высота фиксированного логического canvas регионального экрана, используется для центрирования; не размер окна	при создании объекта
+src/gamestates/cSelectYourNextConquestState.cpp@ce0cacf:349	640	размер ресурса/координатного холста карты регионов, а не размер окна	каждый кадр
+src/gamestates/cSelectYourNextConquestState.cpp@ce0cacf:350	480	размер ресурса/координатного холста карты регионов, а не размер окна	каждый кадр
+src/gamestates/cSelectYourNextConquestState.cpp@ce0cacf:351	640, 480	размер ресурса/координатного холста карты регионов, а не размер окна	каждый кадр
+src/gamestates/cVideoState.cpp@ce0cacf:35	VIDEO_WIDTH = 640	базовая ширина кадра cutscene в целевом прямоугольнике; исходные кадры указаны как 320x288, это не ширина экрана	при создании объекта
+src/gamestates/cVideoState.cpp@ce0cacf:36	VIDEO_MAX_HEIGHT = 480	максимальная базовая высота кадра cutscene в целевом прямоугольнике; это не высота экрана	при создании объекта
+src/utils/WorldScale.hpp@ce0cacf:17	768	порог высоты логического холста, передаваемой функции выбора масштаба мира; это не физическая высота дисплея	при событии: вычисление автоматического масштаба мира
+src/utils/WorldScale.hpp@ce0cacf:20	1080	порог высоты логического холста, передаваемой функции выбора масштаба мира; это не физическая высота дисплея	при событии: вычисление автоматического масштаба мира
+src/utils/WorldScale.hpp@ce0cacf:23	1600	порог высоты логического холста, передаваемой функции выбора масштаба мира; это не физическая высота дисплея	при событии: вычисление автоматического масштаба мира
