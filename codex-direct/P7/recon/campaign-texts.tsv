@@ -1,0 +1,73 @@
+revision	house	path	language	text_rows	load_site
+FORK1	Atreides	resources/bin/campaign/atreides/mission1.ini	RU	3	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign/atreides/mission2.ini	RU	4	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign/atreides/mission3.ini	RU	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign/atreides/mission4.ini	RU	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign/atreides/mission5.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign/atreides/mission6.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign/atreides/mission7.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign/atreides/mission8.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign/briefings/mentata.ini	RU	247	src/ini.cpp@9208dcf:1276; src/ini.cpp@9208dcf:1282; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign/harkonnen/mission1.ini	RU	3	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign/harkonnen/mission2.ini	RU	3	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign/harkonnen/mission3.ini	RU	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign/harkonnen/mission4.ini	RU	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign/harkonnen/mission5.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign/harkonnen/mission6.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign/harkonnen/mission7.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign/harkonnen/mission8.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign/briefings/mentath.ini	RU	233	src/ini.cpp@9208dcf:1278; src/ini.cpp@9208dcf:1282; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign/ordos/mission1.ini	RU	3	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign/ordos/mission2.ini	RU	3	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign/ordos/mission3.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign/ordos/mission4.ini	RU	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign/ordos/mission5.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign/ordos/mission6.ini	RU	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign/ordos/mission7.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign/ordos/mission8.ini	RU	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign/briefings/mentato.ini	RU	195	src/ini.cpp@9208dcf:1277; src/ini.cpp@9208dcf:1282; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign_en/atreides/mission1.ini	EN	3	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign_en/atreides/mission2.ini	EN	4	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign_en/atreides/mission3.ini	EN	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign_en/atreides/mission4.ini	EN	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign_en/atreides/mission5.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign_en/atreides/mission6.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign_en/atreides/mission7.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign_en/atreides/mission8.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Atreides	resources/bin/campaign_en/briefings/mentata.ini	EN	331	src/ini.cpp@9208dcf:1276; src/ini.cpp@9208dcf:1282; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign_en/harkonnen/mission1.ini	EN	3	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign_en/harkonnen/mission2.ini	EN	3	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign_en/harkonnen/mission3.ini	EN	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign_en/harkonnen/mission4.ini	EN	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign_en/harkonnen/mission5.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign_en/harkonnen/mission6.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign_en/harkonnen/mission7.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign_en/harkonnen/mission8.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Harkonnen	resources/bin/campaign_en/briefings/mentath.ini	EN	295	src/ini.cpp@9208dcf:1278; src/ini.cpp@9208dcf:1282; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign_en/ordos/mission1.ini	EN	3	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign_en/ordos/mission2.ini	EN	3	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign_en/ordos/mission3.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign_en/ordos/mission4.ini	EN	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign_en/ordos/mission5.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign_en/ordos/mission6.ini	EN	2	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign_en/ordos/mission7.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign_en/ordos/mission8.ini	EN	1	src/ini.cpp@9208dcf:420; src/utils/Localization.hpp@9208dcf:30
+FORK1	Ordos	resources/bin/campaign_en/briefings/mentato.ini	EN	294	src/ini.cpp@9208dcf:1277; src/ini.cpp@9208dcf:1282; src/utils/Localization.hpp@9208dcf:30
+UP1	Sardaukar	resources/bin/campaign/briefings/mentats.ini	EN	310	src/gamestates/cTellHouseState.cpp@d06f2fc:84; src/gamestates/cMentatState.cpp@d06f2fc:96; src/gamestates/cMentatState.cpp@d06f2fc:114; src/gamestates/cMentatState.cpp@d06f2fc:133; src/utils/ini.cpp@d06f2fc:353; src/utils/ini.cpp@d06f2fc:358; src/utils/IniParsing.cpp@d06f2fc:640
+UP1	Sardaukar	resources/bin/campaign/sardaukar/mission1.ini	EN	3	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@d06f2fc:83; src/utils/IniParsing.cpp@d06f2fc:360
+UP1	Sardaukar	resources/bin/campaign/sardaukar/mission2.ini	EN	3	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@d06f2fc:83; src/utils/IniParsing.cpp@d06f2fc:360
+UP1	Sardaukar	resources/bin/campaign/sardaukar/mission3.ini	EN	2	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@d06f2fc:83; src/utils/IniParsing.cpp@d06f2fc:360
+UP1	Sardaukar	resources/bin/campaign/sardaukar/mission4.ini	EN	2	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@d06f2fc:83; src/utils/IniParsing.cpp@d06f2fc:360
+UP1	Sardaukar	resources/bin/campaign/sardaukar/mission5.ini	EN	1	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@d06f2fc:83; src/utils/IniParsing.cpp@d06f2fc:360
+UP1	Sardaukar	resources/bin/campaign/sardaukar/mission6.ini	EN	1	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@d06f2fc:83; src/utils/IniParsing.cpp@d06f2fc:360
+UP1	Sardaukar	resources/bin/campaign/sardaukar/mission7.ini	EN	1	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@d06f2fc:83; src/utils/IniParsing.cpp@d06f2fc:360
+UP1	Sardaukar	resources/bin/campaign/sardaukar/mission8.ini	EN	1	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@d06f2fc:83; src/utils/IniParsing.cpp@d06f2fc:360
+PORT	Sardaukar	resources/bin/campaign/briefings/mentats.ini	EN	310	src/gamestates/cTellHouseState.cpp@d06f2fc:84; src/gamestates/cMentatState.cpp@d06f2fc:96; src/gamestates/cMentatState.cpp@d06f2fc:114; src/gamestates/cMentatState.cpp@d06f2fc:133; src/utils/ini.cpp@0a33444:353; src/utils/ini.cpp@0a33444:358; src/utils/IniParsing.cpp@0a33444:640
+PORT	Sardaukar	resources/bin/campaign/sardaukar/mission1.ini	EN	3	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@0a33444:83; src/utils/IniParsing.cpp@0a33444:360
+PORT	Sardaukar	resources/bin/campaign/sardaukar/mission2.ini	EN	3	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@0a33444:83; src/utils/IniParsing.cpp@0a33444:360
+PORT	Sardaukar	resources/bin/campaign/sardaukar/mission3.ini	EN	2	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@0a33444:83; src/utils/IniParsing.cpp@0a33444:360
+PORT	Sardaukar	resources/bin/campaign/sardaukar/mission4.ini	EN	2	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@0a33444:83; src/utils/IniParsing.cpp@0a33444:360
+PORT	Sardaukar	resources/bin/campaign/sardaukar/mission5.ini	EN	1	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@0a33444:83; src/utils/IniParsing.cpp@0a33444:360
+PORT	Sardaukar	resources/bin/campaign/sardaukar/mission6.ini	EN	1	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@0a33444:83; src/utils/IniParsing.cpp@0a33444:360
+PORT	Sardaukar	resources/bin/campaign/sardaukar/mission7.ini	EN	1	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@0a33444:83; src/utils/IniParsing.cpp@0a33444:360
+PORT	Sardaukar	resources/bin/campaign/sardaukar/mission8.ini	EN	1	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:514; src/utils/ini.cpp@0a33444:83; src/utils/IniParsing.cpp@0a33444:360

@@ -1,0 +1,137 @@
+путь	статус BASE→FORK1	размер объекта Git	Git LFS	размер содержимого Git LFS	есть в PORT	объект совпадает	язык
+resources/bin/OFL_PT_FONTS.txt	A	4586	нет	-	нет	нет пути	по имени не определён
+resources/bin/README_RU.txt	A	19939	нет	-	нет	нет пути	ru
+resources/bin/campaign/atreides/mission1.ini	M	1505	нет	-	да	нет	ru
+resources/bin/campaign/atreides/mission2.ini	M	885	нет	-	да	нет	ru
+resources/bin/campaign/atreides/mission3.ini	M	589	нет	-	да	нет	ru
+resources/bin/campaign/atreides/mission4.ini	M	539	нет	-	да	нет	ru
+resources/bin/campaign/atreides/mission5.ini	M	458	нет	-	да	нет	ru
+resources/bin/campaign/atreides/mission6.ini	M	424	нет	-	да	нет	ru
+resources/bin/campaign/atreides/mission7.ini	M	396	нет	-	да	нет	ru
+resources/bin/campaign/atreides/mission8.ini	M	388	нет	-	да	нет	ru
+resources/bin/campaign/briefings/mentata.ini	M	32372	нет	-	да	нет	ru
+resources/bin/campaign/briefings/mentath.ini	M	31683	нет	-	да	нет	ru
+resources/bin/campaign/briefings/mentato.ini	M	30819	нет	-	да	нет	ru
+resources/bin/campaign/harkonnen/mission1.ini	M	1482	нет	-	да	нет	ru
+resources/bin/campaign/harkonnen/mission2.ini	M	1241	нет	-	да	нет	ru
+resources/bin/campaign/harkonnen/mission3.ini	M	1024	нет	-	да	нет	ru
+resources/bin/campaign/harkonnen/mission4.ini	M	1027	нет	-	да	нет	ru
+resources/bin/campaign/harkonnen/mission5.ini	M	895	нет	-	да	нет	ru
+resources/bin/campaign/harkonnen/mission6.ini	M	955	нет	-	да	нет	ru
+resources/bin/campaign/harkonnen/mission7.ini	M	826	нет	-	да	нет	ru
+resources/bin/campaign/harkonnen/mission8.ini	M	821	нет	-	да	нет	ru
+resources/bin/campaign/ordos/mission1.ini	M	1481	нет	-	да	нет	ru
+resources/bin/campaign/ordos/mission2.ini	M	1234	нет	-	да	нет	ru
+resources/bin/campaign/ordos/mission3.ini	M	973	нет	-	да	нет	ru
+resources/bin/campaign/ordos/mission4.ini	M	1024	нет	-	да	нет	ru
+resources/bin/campaign/ordos/mission5.ini	M	970	нет	-	да	нет	ru
+resources/bin/campaign/ordos/mission6.ini	M	1015	нет	-	да	нет	ru
+resources/bin/campaign/ordos/mission7.ini	M	972	нет	-	да	нет	ru
+resources/bin/campaign/ordos/mission8.ini	M	898	нет	-	да	нет	ru
+resources/bin/campaign_en/atreides/mission1.ini	A	1416	нет	-	нет	нет пути	en
+resources/bin/campaign_en/atreides/mission2.ini	A	754	нет	-	нет	нет пути	en
+resources/bin/campaign_en/atreides/mission3.ini	A	512	нет	-	нет	нет пути	en
+resources/bin/campaign_en/atreides/mission4.ini	A	498	нет	-	нет	нет пути	en
+resources/bin/campaign_en/atreides/mission5.ini	A	422	нет	-	нет	нет пути	en
+resources/bin/campaign_en/atreides/mission6.ini	A	393	нет	-	нет	нет пути	en
+resources/bin/campaign_en/atreides/mission7.ini	A	362	нет	-	нет	нет пути	en
+resources/bin/campaign_en/atreides/mission8.ini	A	360	нет	-	нет	нет пути	en
+resources/bin/campaign_en/briefings/mentata.ini	A	25045	нет	-	нет	нет пути	en
+resources/bin/campaign_en/briefings/mentath.ini	A	24109	нет	-	нет	нет пути	en
+resources/bin/campaign_en/briefings/mentato.ini	A	22160	нет	-	нет	нет пути	en
+resources/bin/campaign_en/harkonnen/mission1.ini	A	1389	нет	-	нет	нет пути	en
+resources/bin/campaign_en/harkonnen/mission2.ini	A	1146	нет	-	нет	нет пути	en
+resources/bin/campaign_en/harkonnen/mission3.ini	A	959	нет	-	нет	нет пути	en
+resources/bin/campaign_en/harkonnen/mission4.ini	A	938	нет	-	нет	нет пути	en
+resources/bin/campaign_en/harkonnen/mission5.ini	A	868	нет	-	нет	нет пути	en
+resources/bin/campaign_en/harkonnen/mission6.ini	A	903	нет	-	нет	нет пути	en
+resources/bin/campaign_en/harkonnen/mission7.ini	A	801	нет	-	нет	нет пути	en
+resources/bin/campaign_en/harkonnen/mission8.ini	A	786	нет	-	нет	нет пути	en
+resources/bin/campaign_en/ordos/mission1.ini	A	1370	нет	-	нет	нет пути	en
+resources/bin/campaign_en/ordos/mission2.ini	A	1096	нет	-	нет	нет пути	en
+resources/bin/campaign_en/ordos/mission3.ini	A	939	нет	-	нет	нет пути	en
+resources/bin/campaign_en/ordos/mission4.ini	A	949	нет	-	нет	нет пути	en
+resources/bin/campaign_en/ordos/mission5.ini	A	945	нет	-	нет	нет пути	en
+resources/bin/campaign_en/ordos/mission6.ini	A	941	нет	-	нет	нет пути	en
+resources/bin/campaign_en/ordos/mission7.ini	A	920	нет	-	нет	нет пути	en
+resources/bin/campaign_en/ordos/mission8.ini	A	864	нет	-	нет	нет пути	en
+resources/bin/data/OFL_RUSSO_ONE.txt	A	4389	нет	-	нет	нет пути	по имени не определён
+resources/bin/data/PTMono-Regular.ttf	A	185912	нет	-	нет	нет пути	по имени не определён
+resources/bin/data/PTSansNarrow-Regular.ttf	A	131	да	396212	нет	нет пути	по имени не определён
+resources/bin/data/RussoOne-Regular.ttf	A	130	да	39124	нет	нет пути	по имени не определён
+resources/bin/data/licenses/Sangyo-COPYRIGHT.txt	A	38	нет	-	нет	нет пути	по имени не определён
+resources/bin/data/licenses/Sangyo-LICENSE.txt	A	4301	нет	-	нет	нет пути	по имени не определён
+resources/bin/settings.ini	M	1723	нет	-	да	нет	по имени не определён
+resources/bin/skirmish/2PL_AncientDelta.ini	M	4157	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_BottleNeck2022.ini	M	4146	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_BrokenMountains2022.ini	M	4157	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_CliffsRene2022.ini	M	1654	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_DavidsPass2022.ini	M	3195	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_DriftingPlains.ini	M	4156	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_Duality2022.ini	M	4153	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_Durancut.ini	M	2110	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_Edge2Edge.ini	M	2317	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_KigYar.ini	M	4144	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_KynesValley.ini	M	4157	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_MRelCanyon.ini	M	4156	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_MarlandCove.ini	M	4158	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_MarthasRock.ini	M	4153	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_Mayberry.ini	M	4158	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_OgelleBasin.ini	M	4155	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_Rabban.ini	M	4145	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_SIlverstoneChannel.ini	M	4158	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_Sanctuarys2022.ini	M	4150	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_TwinFists2022.ini	M	4152	нет	-	да	нет	ru
+resources/bin/skirmish/2PL_TwoStacks.ini	M	4150	нет	-	да	нет	ru
+resources/bin/skirmish/3PL_FocalPoint.ini	M	4158	нет	-	да	нет	ru
+resources/bin/skirmish/3PL_Gankyil.ini	M	4150	нет	-	да	нет	ru
+resources/bin/skirmish/3PL_GuillermoGorge.ini	M	4161	нет	-	да	нет	ru
+resources/bin/skirmish/3PL_Middle_Man.ini	M	2173	нет	-	да	нет	ru
+resources/bin/skirmish/3PL_Uvavu.ini	M	4164	нет	-	да	нет	ru
+resources/bin/skirmish/4PL_FelisCathedra.ini	M	4170	нет	-	да	нет	ru
+resources/bin/skirmish/4PL_GolekCrossing.ini	M	4166	нет	-	да	нет	ru
+resources/bin/skirmish/4PL_GuillermoGorge.ini	M	4167	нет	-	да	нет	ru
+resources/bin/skirmish/4PL_HuelsbeckRing.ini	M	4168	нет	-	да	нет	ru
+resources/bin/skirmish/4PL_Isis_Fields.ini	M	4162	нет	-	да	нет	ru
+resources/bin/skirmish/4PL_Neighbours.ini	M	4166	нет	-	да	нет	ru
+resources/bin/skirmish/4PL_SietchStefan2022.ini	M	4166	нет	-	да	нет	ru
+resources/bin/skirmish/4PL_SineadPlains.ini	A	4164	нет	-	нет	нет пути	ru
+resources/bin/skirmish/4PL_SinéadPlains.ini	D	-	нет объекта	-	да	нет	ru
+resources/bin/skirmish/4PL_Warm Place.ini	M	1702	нет	-	да	нет	ru
+resources/bin/skirmish/4PL_WormsHole.ini	M	4165	нет	-	да	нет	ru
+resources/bin/skirmish_en/2PL_AncientDelta.ini	A	4145	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_BottleNeck2022.ini	A	4143	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_BrokenMountains2022.ini	A	4148	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_CliffsRene2022.ini	A	1649	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_DavidsPass2022.ini	A	3184	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_DriftingPlains.ini	A	4146	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_Duality2022.ini	A	4140	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_Durancut.ini	A	2094	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_Edge2Edge.ini	A	2309	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_KigYar.ini	A	4140	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_KynesValley.ini	A	4149	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_MRelCanyon.ini	A	4144	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_MarlandCove.ini	A	4145	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_MarthasRock.ini	A	4145	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_Mayberry.ini	A	4146	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_OgelleBasin.ini	A	4144	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_Rabban.ini	A	4139	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_SIlverstoneChannel.ini	A	4152	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_Sanctuarys2022.ini	A	4142	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_TwinFists2022.ini	A	4143	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/2PL_TwoStacks.ini	A	4143	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/3PL_FocalPoint.ini	A	4149	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/3PL_Gankyil.ini	A	4145	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/3PL_GuillermoGorge.ini	A	4153	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/3PL_Middle_Man.ini	A	2165	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/3PL_Uvavu.ini	A	4150	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/4PL_FelisCathedra.ini	A	4159	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/4PL_GolekCrossing.ini	A	4157	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/4PL_GuillermoGorge.ini	A	4159	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/4PL_HuelsbeckRing.ini	A	4159	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/4PL_Isis_Fields.ini	A	4154	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/4PL_Neighbours.ini	A	4159	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/4PL_SietchStefan2022.ini	A	4158	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/4PL_Sin├йadPlains.ini	A	4157	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/4PL_Warm Place.ini	A	1693	нет	-	нет	нет пути	en
+resources/bin/skirmish_en/4PL_WormsHole.ini	A	4153	нет	-	нет	нет пути	en
