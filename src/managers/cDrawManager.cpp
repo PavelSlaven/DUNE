@@ -430,6 +430,11 @@ void cDrawManager::setMessage(std::string msg, bool keepMessage)
     m_messageDrawer->setMessage(msg, keepMessage);
 }
 
+std::string cDrawManager::getMessage() const
+{
+    return m_messageDrawer->getMessage();
+}
+
 void cDrawManager::setKeepMessage(bool value)
 {
     m_messageDrawer->setKeepMessage(value);

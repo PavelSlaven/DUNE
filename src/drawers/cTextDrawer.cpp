@@ -18,8 +18,11 @@
 #include "game/cGameSettings.h"
 #include "drawers/SDLDrawer.hpp"
 #include "utils/Color.hpp"
+#include "utils/TextAlignment.hpp"
 #include <iostream>
 #include "include/cAssert.h"
+
+#include <algorithm>
 
 cTextDrawer::cTextDrawer(TTF_Font *theFont, cGameSettings *settings, SDLDrawer *renderer) :
     m_font(theFont),
@@ -97,6 +100,58 @@ void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle
 void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const
 {
     drawTextCenteredInBox(msg, rect.getX() + offsetX, rect.getY() + offsetY, rect.getWidth(), rect.getHeight(), color);
+}
+
+void cTextDrawer::drawTextScaledCenteredInBox(
+    const std::string &msg,
+    const cRectangle &rect,
+    float scale,
+    Color color,
+    bool applyShadow) const
+{
+    if (msg.empty()) return;
+    scale = std::max(0.5F, scale);
+    auto cacheEntry = m_textCache->findOrCreate(color, msg);
+    cacheEntry->lifeCounter += 1;
+    const int width = static_cast<int>(cacheEntry->width * scale + 0.5F);
+    const int height = static_cast<int>(cacheEntry->height * scale + 0.5F);
+    const int x = rect.getX() + (rect.getWidth() - width) / 2;
+    const int y = rect.getY() + (rect.getHeight() - height) / 2;
+    if (applyShadow) {
+        m_renderer->renderTexture(cacheEntry->shadowsTexture, x + 2, y + 2, width, height);
+    }
+    m_renderer->renderTexture(cacheEntry->texture, x, y, width, height);
+}
+
+void cTextDrawer::drawTextScaledOpticallyCenteredInBox(
+    const std::string &msg,
+    const cRectangle &rect,
+    float scale,
+    Color color,
+    bool applyShadow) const
+{
+    if (msg.empty()) return;
+    scale = std::max(0.5F, scale);
+    auto cacheEntry = m_textCache->findOrCreate(color, msg);
+    cacheEntry->lifeCounter += 1;
+    const int width = static_cast<int>(cacheEntry->width * scale + 0.5F);
+    const int height = static_cast<int>(cacheEntry->height * scale + 0.5F);
+    const cPoint origin = calculateOpticallyCenteredTextOrigin(
+        rect,
+        width,
+        height,
+        cacheEntry->inkBounds
+    );
+    if (applyShadow) {
+        m_renderer->renderTexture(
+            cacheEntry->shadowsTexture,
+            origin.x + 2,
+            origin.y + 2,
+            width,
+            height
+        );
+    }
+    m_renderer->renderTexture(cacheEntry->texture, origin.x, origin.y, width, height);
 }
 
 void cTextDrawer::drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const

@@ -59,5 +59,6 @@ private:
     int m_headerX = 0;
     int m_headerWidth = 0;
     int m_headerY = 0;
+    Texture* m_hdBackground = nullptr;
     std::unique_ptr<GuiWindow> gui_window;
 };

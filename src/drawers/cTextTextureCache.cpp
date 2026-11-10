@@ -19,6 +19,56 @@
 #include "include/cAssert.h"
 #include "utils/Log.h"
 
+#include <algorithm>
+
+namespace {
+TextInkBounds findInkBounds(SDL_Surface *surface)
+{
+    TextInkBounds result;
+    if (!surface || surface->w <= 0 || surface->h <= 0) return result;
+
+    result.textureWidth = surface->w;
+    result.textureHeight = surface->h;
+    result.width = surface->w;
+    result.height = surface->h;
+
+    SDL_Surface *rgba = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA32);
+    if (!rgba) return result;
+
+    if (!SDL_LockSurface(rgba)) {
+        SDL_DestroySurface(rgba);
+        return result;
+    }
+
+    int minX = rgba->w;
+    int minY = rgba->h;
+    int maxX = -1;
+    int maxY = -1;
+    const auto *pixels = static_cast<const Uint8 *>(rgba->pixels);
+    for (int y = 0; y < rgba->h; ++y) {
+        const Uint8 *row = pixels + y * rgba->pitch;
+        for (int x = 0; x < rgba->w; ++x) {
+            if (row[x * 4 + 3] == 0) continue;
+            minX = std::min(minX, x);
+            minY = std::min(minY, y);
+            maxX = std::max(maxX, x);
+            maxY = std::max(maxY, y);
+        }
+    }
+
+    SDL_UnlockSurface(rgba);
+    SDL_DestroySurface(rgba);
+
+    if (maxX >= minX && maxY >= minY) {
+        result.x = minX;
+        result.y = minY;
+        result.width = maxX - minX + 1;
+        result.height = maxY - minY + 1;
+    }
+    return result;
+}
+}
+
 cTextTextureCache::cTextTextureCache(TTF_Font *font, SDLDrawer *renderer)
     : m_font(font), m_renderer(renderer)
 {
@@ -64,6 +114,7 @@ std::unique_ptr<textCacheEntry> cTextTextureCache::createCacheEntry(Color color,
     SDL_SetTextureScaleMode(newCacheEntry->texture, SDL_SCALEMODE_NEAREST);
     newCacheEntry->width = textSurface->w;
     newCacheEntry->height = textSurface->h;
+    newCacheEntry->inkBounds = findInkBounds(textSurface);
     newCacheEntry->lifeCounter = 10;
     SDL_DestroySurface(textSurface);
 

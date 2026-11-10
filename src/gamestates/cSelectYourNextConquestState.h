@@ -17,10 +17,12 @@
 
 #include "definitions.h"
 #include "cGameState.h"
+#include "gamestates/CampaignMapLayout.hpp"
 
 #include <array>
 #include <memory>
 #include <string>
+#include <SDL3/SDL.h>
 
 
 class GuiButton;
@@ -160,7 +162,13 @@ private:
 
     void drawStateIntroduction() const;
 
-    void drawLogoInFourCorners(int iHouse) const;
+    void drawHdBackground() const;
+    void drawHdChrome() const;
+    void drawHdMapBase(Uint8 opacity = 255) const;
+    void drawHdMapBorders(Uint8 opacity = 255) const;
+    void drawHdMessage() const;
+    Texture* createHdRegionTintTexture(int regionIndex, int house) const;
+    Texture* createHdRegionBordersTexture() const;
 
     void transitionToNextRegionSceneState(eRegionSceneState newSceneState);
 
@@ -176,5 +184,10 @@ private:
     void loadScenarioAndTransitionToNextState(int iMission);
 
     bool onMouseLeftButtonClicked(const s_MouseEvent &event);
-    mutable std::array<cRegion, MAX_REGIONS> world;
+    mutable std::array<cRegion, MAX_REGIONS> world{};
+    CampaignMapLayout m_hdCampaignLayout;
+    Texture* m_hdBackground = nullptr;
+    Texture* m_hdCampaignMap = nullptr;
+    Texture* m_hdRegionBorders = nullptr;
+    Texture* m_hdHouseCrest = nullptr;
 };

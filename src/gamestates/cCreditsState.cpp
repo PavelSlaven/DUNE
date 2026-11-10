@@ -27,11 +27,14 @@
 #include "context/GraphicsContext.hpp"
 #include "game/GameStateTransition.hpp"
 #include "controls/cMouse.h"
+#include "utils/HdUiTextureLoader.hpp"
 
 #include "include/cAssert.h"
 #include "context/TextContext.hpp"
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
+
+#include <algorithm>
 
 cCreditsState::cCreditsState(sGameServices* services) :
     cGameState(services),
@@ -47,11 +50,25 @@ cCreditsState::cCreditsState(sGameServices* services) :
     auto *gfxinter = m_ctx->getGraphicsContext()->gfxinter.get();
     d2tm_assert(gfxinter != nullptr);
 
-    m_duneBmp = gfxinter->getTexture(BMP_GAME_DUNE);
-    m_titleBmp = gfxinter->getTexture(BMP_D2TM);
-    int duneAtTheRight = m_settings->getScreenW() - (m_duneBmp->w * 1.1f);
-    int duneAlmostAtBottom = m_settings->getScreenH() - (m_duneBmp->h * 1.1f);
-    m_duneCoordinates = cPoint(duneAtTheRight, duneAlmostAtBottom);
+    m_teamBmp = loadHdUiTexture(
+        m_sdlDrawer->getRenderer(),
+        "credits_team.png",
+        "HD credits team photo");
+    m_titleBmp = loadHdUiTexture(
+        m_sdlDrawer->getRenderer(),
+        "credits_title.png",
+        "HD credits title");
+    m_ownsTeamBmp = m_teamBmp != nullptr;
+    m_ownsTitleBmp = m_titleBmp != nullptr;
+    if (!m_teamBmp) {
+        m_teamBmp = gfxinter->getTexture(CREDITS_DUNE2_CORE_TEAM);
+    }
+    if (!m_titleBmp) {
+        m_titleBmp = gfxinter->getTexture(D2TM_TITLE);
+    }
+    const int teamAtTheRight = m_settings->getScreenW() - (m_teamBmp->w * 1.1f);
+    const int teamAlmostAtBottom = m_settings->getScreenH() - (m_teamBmp->h * 1.1f);
+    m_teamCoordinates = cPoint(teamAtTheRight, teamAlmostAtBottom);
 
     int titleWidth = m_titleBmp->w;
     m_titleHeight = m_titleBmp->h;
@@ -61,18 +78,18 @@ cCreditsState::cCreditsState(sGameServices* services) :
     m_titleX = centerOfScreen - (titleWidth / 2);
     resetCrawler();
 
-    int backButtonWidth = m_textDrawer->getTextLength(" Back");
-    int backButtonHeight = 21;
-    int backButtonY = m_settings->getScreenH() - 21;
-    int backButtonX = 0;
+    const int backButtonWidth = std::max(140, m_textDrawer->getTextLength("Back") + 24);
+    const int backButtonHeight = std::max(36, m_textDrawer->getFontHeight() + 10);
+    const int backButtonY = m_settings->getScreenH() - backButtonHeight;
+    const int backButtonX = 0;
     cRectangle backButtonRect(backButtonX, backButtonY, backButtonWidth, backButtonHeight);
     backButton = GuiButtonBuilder()
             .withRect(backButtonRect)
             .withLabel("Back")
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
-            .withTheme(cGuiThemeBuilder().light().build())
-            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTheme(GuiTheme::Remaster())
+            .withKind(GuiRenderKind::REMASTER_BUTTON)
             .onClick([this]() {
                 m_stateTransitions->setNextStateWithFade(GAME_MENU);
             })
@@ -397,7 +414,13 @@ void cCreditsState::resetCrawler()
 
 cCreditsState::~cCreditsState()
 {
-    m_duneBmp = nullptr;
+    if (m_ownsTeamBmp) {
+        delete m_teamBmp;
+    }
+    if (m_ownsTitleBmp) {
+        delete m_titleBmp;
+    }
+    m_teamBmp = nullptr;
     m_titleBmp = nullptr;
 }
 
@@ -417,7 +440,7 @@ void cCreditsState::thinkFast()
 
 void cCreditsState::draw() const
 {
-    m_sdlDrawer->renderSprite(m_duneBmp, m_duneCoordinates.x, m_duneCoordinates.y);
+    m_sdlDrawer->renderSprite(m_teamBmp, m_teamCoordinates.x, m_teamCoordinates.y);
 
     int halfScreen = m_settings->getScreenW() / 2;
 

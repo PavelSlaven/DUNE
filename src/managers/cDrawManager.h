@@ -103,6 +103,8 @@ public:
 
     void setMessage(std::string msg, bool keepMessage = false);
 
+    [[nodiscard]] std::string getMessage() const;
+
     void setKeepMessage(bool value);
 
     void regionInit(int offsetX, int offsetY);

@@ -170,6 +170,7 @@ set(D2TM_SOURCES
     utils/d2tm_math.cpp
     utils/Graphics.cpp
     utils/RenderScale.cpp
+    utils/HdUiTextureLoader.cpp
     utils/ini.cpp
     utils/IniParsing.cpp
     utils/CrashHandler.cpp
