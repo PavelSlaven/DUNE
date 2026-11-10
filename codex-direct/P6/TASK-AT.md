@@ -6,7 +6,7 @@
 
 ## Цель
 
-Написать приёмочные тесты шага П6 по контракту API ниже, получить красный прогон по заявленной причине и заморозить тесты хэшем. Код игры не менять.
+Написать приёмочные тесты шага П6 по контракту API ниже, получить красный прогон по заявленной причине и заморозить тесты хэшем. Код игры не менять, кроме временных правок прогона B (шаг 2), которые убираются сразу после него.
 
 ## Что уже решено
 
@@ -23,7 +23,8 @@
 - `src/utils/Graphics.hpp`, `src/utils/Color.hpp`, `src/include/Texture.hpp`, `src/utils/WindTrapFlag.hpp`;
 - строки 98–132 файла `src/include/definitions.h` — номера Домов и типов зданий;
 - вывод `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tests/FactionTintTests.cpp` и `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tests/TerrainVariationTests.cpp` — тесты форка, которые переносишь;
-- вывод `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/FactionTint.hpp` и `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/TerrainVariation.hpp` — заголовки форка.
+- вывод `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/FactionTint.hpp` и `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/TerrainVariation.hpp` — заголовки форка;
+- вывод `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp | sed -n '360,450p'` — алгоритм окраски маской форка, на который ссылается пункт 2 контракта.
 
 Перед командами Git: `export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH`.
 
@@ -83,7 +84,7 @@
    Texture *getHouseTexture(const std::string &name, int houseId, const Color &houseColor);
    ```
    - `createHouseTexture`: если поверхность `reference` загружена из пака этого объекта `Graphics` и в паке есть запись `HM_<имя записи reference>`, возвращает новую текстуру, которой владеет вызывающий код: копия `reference` в формате `SDL_PIXELFORMAT_RGBA32`, окрашенная `applyHouseMaskTint` с поверхностью этой записи и `houseColor`; размеры текстуры в пикселях равны размерам `reference`, плотность — `getDensity()`, масштабирование `SDL_SCALEMODE_LINEAR` при `getDensity() > 1`. В остальных случаях — `nullptr`.
-   - `getHouseTexture`: индекс записи `name` в паке меньше 0 — `nullptr`. Иначе текстура `createHouseTexture(<поверхность записи name>, houseColor)`, которую хранит и удаляет сам объект `Graphics`; повторный вызов с тем же `name` и тем же `houseId` возвращает тот же указатель. Если `createHouseTexture` вернула `nullptr` — результат `getTexture(name)`.
+   - `getHouseTexture`: индекс записи `name` в паке меньше 0 — `nullptr`. Иначе текстура `createHouseTexture(<поверхность записи name>, houseColor)`, которую хранит и удаляет сам объект `Graphics`; повторный вызов с тем же `name` и тем же `houseId` возвращает тот же указатель, даже если `houseColor` другой. Если `createHouseTexture` вернула `nullptr` — результат `getTexture(name)`.
 
 ## Шаг 1. Тесты — корневая нить сама
 
@@ -93,26 +94,36 @@ Catch2 3, как остальные файлы `tests/`. У каждого `TEST
 
 1. **`P6 faction tint keeps one tone for dark and light assets`.** Перенос `tests/FactionTintTests.cpp` форка: `applyFactionTintChannel(255, 0.40F, 0.40F)` = 166; `applyFactionTintChannel(255, 1.20F, 1.20F)` = 166; `applyFactionTintChannel(255, 0.40F, 0.65F)` < `applyFactionTintChannel(255, 0.90F, 0.65F)`; `applyFactionTintChannel(0, 1.0F, 1.0F)` = 0. Четыре проверки.
 2. **`P6 terrain variation picks deterministic variants`.** Перенос `tests/TerrainVariationTests.cpp` форка: каждый `assert(<условие>)` — `CHECK(<условие>)` с тем же выражением, на том же месте, в тех же циклах; массив `seen` и цикл по 4096 ячейкам — как в тесте форка.
-3. **`P6 house mask target keeps fork purple for Sardaukar`.** `houseMaskTargetColor(SARDAUKAR, Color{101, 12, 101})` даёт `r` = 255, `g` = 0, `b` = 255. Для `HARKONNEN` с `Color{255, 0, 0}`, `ATREIDES` с `Color{0, 0, 255}` и `ORDOS` с `Color{0, 255, 0}` результат по `r`, `g`, `b` равен переданному цвету. Двенадцать проверок.
-4. **`P6 house mask tint colors only masked pixels`.** Поверхность `target` 5×1 и поверхность `mask` 5×1, обе `SDL_PIXELFORMAT_RGBA32` (`SDL_CreateSurface`, `REQUIRE` на каждую). Пиксели задаются и читаются функциями `SDL_MapSurfaceRGBA` и `SDL_GetRGBA` по `x` = 0..4:
+3. **`P6 house mask target keeps fork purple for Sardaukar`.** `houseMaskTargetColor(SARDAUKAR, Color{101, 12, 101, 255})` даёт `r` = 255, `g` = 0, `b` = 255, `a` = 255. Для `HARKONNEN` с `Color{255, 0, 0, 255}`, `ATREIDES` с `Color{0, 0, 255, 255}`, `ORDOS` с `Color{0, 255, 0, 255}` и `FREMEN` с `Color{194, 125, 60, 200}` результат по каждому из каналов `r`, `g`, `b`, `a` равен переданному цвету. Двадцать проверок.
+4. **`P6 house mask tint colors only masked pixels`.** Поверхность `target` 9×1 и поверхность `mask` 9×1, обе `SDL_PIXELFORMAT_RGBA32` (`SDL_CreateSurface`, `REQUIRE` на каждую). Пиксели задаются функциями `SDL_MapSurfaceRGBA` и `SDL_WriteSurfacePixel` или записью в `pixels`, читаются `SDL_ReadSurfacePixel`, по `x` = 0..8:
 
    | `x` | `target` (r, g, b, a) | `mask` (r, g, b, a) | ожидаемый `target` после окраски |
    |---|---|---|---|
-   | 0 | 200, 200, 200, 255 | 255, 255, 255, 255 | 221, 0, 221, 255 |
-   | 1 | 100, 100, 100, 255 | 255, 255, 255, 255 | 111, 0, 111, 255 |
-   | 2 | 150, 150, 150, 0 | 255, 255, 255, 255 | 150, 150, 150, 0 |
+   | 0 | 200, 200, 200, 255 | 255, 255, 255, 255 | 229, 29, 115, 255 |
+   | 1 | 110, 110, 110, 128 | 255, 255, 255, 255 | 126, 16, 63, 128 |
+   | 2 | 40, 40, 40, 0 | 255, 255, 255, 255 | 40, 40, 40, 0 |
    | 3 | 80, 90, 100, 255 | 0, 0, 0, 0 | 80, 90, 100, 255 |
-   | 4 | 120, 120, 120, 255 | 128, 128, 128, 255 | 126, 59, 126, 255 |
+   | 4 | 120, 120, 120, 255 | 128, 128, 128, 255 | 128, 68, 94, 255 |
+   | 5 | 90, 90, 90, 255 | 0, 0, 255, 255 | 103, 13, 52, 255 |
+   | 6 | 60, 70, 80, 255 | 255, 255, 255, 0 | 60, 70, 80, 255 |
+   | 7 | 180, 180, 180, 255 | 253, 0, 0, 255 | 205, 27, 103, 255 |
+   | 8 | 160, 160, 160, 255 | 250, 250, 250, 255 | 182, 25, 93, 255 |
 
-   `applyHouseMaskTint(target, mask, Color{255, 0, 255})` = `true`; затем по каждому пикселю четыре проверки каналов — всего 21 проверка.
-5. **`P6 house mask tint ignores a mask of another size`.** `target` 5×1 RGBA32 с пикселями из столбца `target` таблицы пункта 4, `mask` 2×1 RGBA32, оба пикселя маски 255, 255, 255, 255. `applyHouseMaskTint(target, mask, Color{255, 0, 255})` = `false`; все 20 каналов `target` равны исходным.
-6. **`P6 HD house flags cover twelve buildings`.** Для каждой строки таблицы пункта 3 контракта: `REQUIRE(findHdHouseFlag(<тип>) != nullptr)`, затем `structureType`, `std::string(textureName)`, `frameWidth`, `frameHeight` равны значениям строки. Для `TURRET`, `RTURRET`, `REPAIR`, `HEAVYFACTORY` и `SLAB1` — `findHdHouseFlag(<тип>)` = `nullptr`.
-7. **`P6 Graphics creates house textures from HD4 masks`.**
+   `applyHouseMaskTint(target, mask, Color{255, 32, 128, 255})` = `true`; затем по каждому пикселю четыре проверки каналов. Второй случай — поверхности 1×1 RGBA32: `target` 100, 100, 100, 255, `mask` 128, 128, 128, 255 (полной силы маски нет, средняя яркость — `FactionTintReferenceLuminance`); `applyHouseMaskTint(target, mask, Color{255, 32, 128, 255})` = `true`, пиксель после окраски — 149, 62, 100, 255. Всего 42 проверки. Ожидаемые значения посчитаны по алгоритму пункта 2 контракта в арифметике `float`.
+5. **`P6 house mask tint rejects unusable surfaces`.** `target` 5×1 RGBA32 с пикселями `x` = 0..4 из столбца `target` таблицы пункта 4. Каждый вызов ниже возвращает `false`: маска 2×1 RGBA32; маска 5×2 RGBA32; `applyHouseMaskTint(nullptr, <маска 5×1 RGBA32>, Color{255, 32, 128, 255})`; `applyHouseMaskTint(target, nullptr, Color{255, 32, 128, 255})`. Все пиксели масок — 255, 255, 255, 255. После этих вызовов все 20 каналов `target` равны исходным. Отдельно — `target` 5×1 в формате `SDL_PIXELFORMAT_ARGB8888` с теми же пикселями и маска 5×1 RGBA32: результат `false`, все 20 каналов этого `target` равны исходным.
+6. **`P6 HD house flags cover twelve buildings`.** Для каждой строки таблицы пункта 3 контракта: `REQUIRE(findHdHouseFlag(<тип>) != nullptr)`, затем `structureType`, `std::string(textureName)`, `frameWidth`, `frameHeight` равны значениям строки. Для каждого целого `t` от −1 до 30, которого нет в столбце `structureType` таблицы, — `findHdHouseFlag(t)` = `nullptr` (проверка в цикле, перед ней `INFO` со значением `t`).
+7. **`P6 Graphics creates house textures from HD4 masks`.** В паке `sdl_data_hd4.dat` ревизии `PORT` есть записи `UNIT_QUAD` и `HM_UNIT_QUAD` (обе 1024×128 пикселей), `BUILD_WINDTRAP_FLAG` и `HM_BUILD_WINDTRAP_FLAG` и нет записи `HM_TERRAIN_SAND` (`tests/data/hd4_packs_expected.tsv`).
    - Правило для файлов Git LFS (ниже) для файла `<D2TM_SOURCE_DIR>/resources/bin/data/sdl_data_hd4.dat`.
-   - Как в тесте `P3 Graphics loads HD4 data pack with density 4`: `SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "dummy")`, `REQUIRE(SDL_Init(SDL_INIT_VIDEO))`, программный рендерер 8×8 (свой класс по образцу `SoftwareRenderer` из `tests/utils/test_Hd4Loading.cpp`, строки 20–45), `Graphics gfx(<рендерер>, <путь пака>, 4)`.
-   - `SDL_Surface *quad = gfx.getSurface("UNIT_QUAD");` — `REQUIRE(quad != nullptr)`. `std::unique_ptr<Texture> tinted(gfx.createHouseTexture(quad, Color{255, 0, 255}));` — `REQUIRE(tinted != nullptr)`; `tinted->pixelW` = `quad->w`; `tinted->pixelH` = `quad->h`; `tinted->density` = 4.
-   - `SDL_Surface *sand = gfx.getSurface("TERRAIN_SAND");` — `REQUIRE(sand != nullptr)`; `gfx.createHouseTexture(sand, Color{255, 0, 255})` = `nullptr`.
-   - `Texture *flag = gfx.getHouseTexture("BUILD_WINDTRAP_FLAG", SARDAUKAR, Color{255, 0, 255});` — `REQUIRE(flag != nullptr)`; повторный вызов с теми же аргументами возвращает `flag`; `flag` не равен `gfx.getTexture("BUILD_WINDTRAP_FLAG")`; `gfx.getHouseTexture("P6_NO_SUCH_ENTRY", SARDAUKAR, Color{255, 0, 255})` = `nullptr`.
+   - Как в тесте `P3 Graphics loads HD4 data pack with density 4`: `SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "dummy")`, `REQUIRE(SDL_Init(SDL_INIT_VIDEO))`; программный рендерер 1024×128 на поверхности `SDL_PIXELFORMAT_RGBA32` (свой класс по образцу `SoftwareRenderer` из `tests/utils/test_Hd4Loading.cpp`, строки 20–45); `Graphics gfx(<рендерер>, <путь пака>, 4)`.
+   - `SDL_Surface *quad = gfx.getSurface("UNIT_QUAD");` — `REQUIRE(quad != nullptr)`, `REQUIRE(quad->w == 1024)`, `REQUIRE(quad->h == 128)`.
+   - Для каждого из двух цветов `Color{255, 0, 255, 255}` и `Color{0, 255, 0, 255}`:
+     - `std::unique_ptr<Texture> tinted(gfx.createHouseTexture(quad, <цвет>));` — `REQUIRE(tinted != nullptr)`; `tinted->pixelW` = 1024; `tinted->pixelH` = 128; `tinted->density` = 4; режим масштабирования текстуры (`SDL_GetTextureScaleMode`) — `SDL_SCALEMODE_LINEAR`.
+     - Ожидаемая поверхность: `SDL_ConvertSurface(quad, SDL_PIXELFORMAT_RGBA32)` (`REQUIRE`), затем `REQUIRE(applyHouseMaskTint(<она>, gfx.getSurface("HM_UNIT_QUAD"), <цвет>))`.
+     - Снимок текстуры: `SDL_SetTextureBlendMode(tinted->tex.get(), SDL_BLENDMODE_NONE)`, `SDL_SetRenderDrawColor(<рендерер>, 0, 0, 0, 0)`, `SDL_RenderClear`, `SDL_RenderTexture(<рендерер>, tinted->tex.get(), nullptr, nullptr)`, `SDL_Surface *shot = SDL_RenderReadPixels(<рендерер>, nullptr)` (`REQUIRE`).
+     - По пикселям, у которых альфа ожидаемой поверхности 255 (`SDL_ReadSurfacePixel`): число таких пикселей больше 0 (`REQUIRE`); число пикселей, у которых `r`, `g` или `b` снимка отличается от ожидаемой поверхности, — `CHECK` = 0; число пикселей, у которых `r`, `g` или `b` ожидаемой поверхности отличается от `quad`, переведённой в RGBA32, — `CHECK` > 0.
+     - Временные поверхности освобождаются `SDL_DestroySurface`.
+   - `SDL_Surface *sand = gfx.getSurface("TERRAIN_SAND");` — `REQUIRE(sand != nullptr)`; `gfx.createHouseTexture(sand, Color{255, 0, 255, 255})` = `nullptr`.
+   - `Texture *flag = gfx.getHouseTexture("BUILD_WINDTRAP_FLAG", SARDAUKAR, Color{255, 0, 255, 255});` — `REQUIRE(flag != nullptr)`. Затем: тот же вызов ещё раз возвращает `flag`; `gfx.getHouseTexture("BUILD_WINDTRAP_FLAG", SARDAUKAR, Color{0, 255, 0, 255})` возвращает `flag`; `gfx.getHouseTexture("BUILD_WINDTRAP_FLAG", ATREIDES, Color{0, 0, 255, 255})` не равен `flag`; `flag` не равен `gfx.getTexture("BUILD_WINDTRAP_FLAG")`; `gfx.getHouseTexture("TERRAIN_SAND", SARDAUKAR, Color{255, 0, 255, 255})` равен `gfx.getTexture("TERRAIN_SAND")`; `gfx.getHouseTexture("P6_NO_SUCH_ENTRY", SARDAUKAR, Color{255, 0, 255, 255})` = `nullptr`.
 
 Правило для файлов Git LFS: GitHub CI берёт репозиторий без Git LFS, и там паки — текстовые указатели. Тест 7 первым действием читает первую строку файла пака и при строке `version https://git-lfs.github.com/spec/v1` вызывает `SKIP` с именем файла — как тест `P3 Graphics loads HD4 data pack with density 4`. Тесты 1–6 файлов не читают.
 
@@ -152,9 +163,9 @@ DUNE_DEPS_DIR=$PWD/.tmp/deps DUNE_OUT_DIR=$PWD/.tmp/out bash tools/upstream/buil
   - файл `src/utils/HdHouseFlag.hpp` с объявлением `struct HdHouseFlag` из пункта 3 контракта и заглушкой `inline const HdHouseFlag *findHdHouseFlag(int) { return nullptr; }`;
   - копия `cp src/utils/Graphics.hpp .tmp/p6at/Graphics.hpp.orig`, затем в `src/utils/Graphics.hpp` — строка `#include "utils/Color.hpp"` после строки `#include <unordered_map>` и в открытой части класса `Graphics` сразу после объявления `Texture *getTexture(const std::string &name);` две заглушки: `Texture *createHouseTexture(SDL_Surface *, const Color &) { return nullptr; }` и `Texture *getHouseTexture(const std::string &, int, const Color &) { return nullptr; }`.
 
-  `src/CMakeLists.txt` не меняется. Сразу после прогона B субагент убирает временные правки командами `rm src/drawers/TerrainVariation.hpp src/utils/FactionTint.hpp src/utils/HouseMaskTint.hpp src/utils/HouseMaskTint.cpp src/utils/HdHouseFlag.hpp` и `cp .tmp/p6at/Graphics.hpp.orig src/utils/Graphics.hpp`; проверка уборки — `git show HEAD:src/utils/Graphics.hpp | cmp - src/utils/Graphics.hpp` с кодом выхода 0, иначе блок `## Q-P6AT-05` и стоп. Ожидается: строк `error:` нет; код выхода не 0; в `ctest.log` провалены ровно четыре теста — `P6 house mask target keeps fork purple for Sardaukar`, `P6 house mask tint colors only masked pixels`, `P6 HD house flags cover twelve buildings`, `P6 Graphics creates house textures from HD4 masks`; тесты `P6 faction tint keeps one tone for dark and light assets`, `P6 terrain variation picks deterministic variants` и `P6 house mask tint ignores a mask of another size` — `Passed`; остальные тесты — `Passed`.
+  `src/CMakeLists.txt` не меняется. Сразу после прогона B субагент убирает временные правки командами `rm src/drawers/TerrainVariation.hpp src/utils/FactionTint.hpp src/utils/HouseMaskTint.hpp src/utils/HouseMaskTint.cpp src/utils/HdHouseFlag.hpp` и `cp .tmp/p6at/Graphics.hpp.orig src/utils/Graphics.hpp`; проверка уборки — `git show HEAD:src/utils/Graphics.hpp | cmp - src/utils/Graphics.hpp` с кодом выхода 0, иначе блок `## Q-P6AT-05` и стоп. Ожидается: строк `error:` нет; код выхода не 0; в `ctest.log` провалены ровно четыре теста — `P6 house mask target keeps fork purple for Sardaukar`, `P6 house mask tint colors only masked pixels`, `P6 HD house flags cover twelve buildings`, `P6 Graphics creates house textures from HD4 masks`; тесты `P6 faction tint keeps one tone for dark and light assets`, `P6 terrain variation picks deterministic variants` и `P6 house mask tint rejects unusable surfaces` — `Passed`; остальные тесты — `Passed`.
 
-Ошибка другого рода в файле теста (опечатка, неверный тип, неверный заголовок проекта) — корневая нить исправляет тест и повторяет прогон. Ошибки вне `tests/utils/test_FactionTintTerrain.cpp` и `tests/CMakeLists.txt` или провал другого теста в прогоне B — блок `## Q-P6AT-02` с этими строками и стоп.
+Ошибка другого рода в файле теста (опечатка, неверный тип, неверный заголовок проекта) — корневая нить исправляет тест и повторяет прогон. Ошибки вне `tests/utils/test_FactionTintTerrain.cpp` и `tests/CMakeLists.txt`, провал другого теста в прогоне B или любой из четырёх ожидаемо проваленных тестов со статусом `Passed` или `Skipped` — блок `## Q-P6AT-02` с этими строками и стоп.
 
 ## Шаг 3. Заморозка — корневая нить
 
