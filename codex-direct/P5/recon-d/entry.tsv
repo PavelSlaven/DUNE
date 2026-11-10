@@ -1,0 +1,30 @@
+ревизия	что	путь@ревизия:строка	значение или формат
+FORK1	аргумент --ui-audit-list	src/debug/UiAuditArguments.cpp@9208dcf:23	Устанавливает Options.list=true; режим активируется при true и печатает JSON-каталог сцен в stdout с ключом scenes.
+FORK1	аргумент --ui-audit-scales <WxH>	src/debug/UiAuditArguments.cpp@9208dcf:26	Сохраняет строку разрешения; ранний вывод JSON содержит resolution, render и world.
+FORK1	аргумент --ui-audit-scene <id>	src/debug/UiAuditArguments.cpp@9208dcf:29	Сохраняет идентификатор сцены; нужен вместе с непустым каталогом out для активности режима.
+FORK1	аргумент --ui-audit-out <каталог>	src/debug/UiAuditArguments.cpp@9208dcf:32	Сохраняет каталог выходных файлов; пара с непустым scene активирует режим снимка.
+FORK1	переменные среды	src/debug/UiAuditArguments.cpp@9208dcf:18	Чтение переменных среды в src не найдено: git grep -n -E 'getenv|SDL_getenv' ... -- src не вывел строк.
+FORK1	ключи файлов настроек	src/debug/UiAuditArguments.cpp@9208dcf:18	Ключи настройки ui-audit не разбираются; consumeArguments читает argv, а поиск ui-audit в исходниках режима вывел только четыре аргумента и диагностические сообщения.
+FORK1	справка командной строки	src/debug/UiAuditArguments.cpp@9208dcf:23	Отдельной строки справки для --ui-audit-* нет; строки распознавания аргументов не печатают справку.
+FORK1	JSON списка сцен в stdout	src/debug/UiAuditCapture.cpp@9208dcf:396	{"scenes":[{"id","group","state","screen","game_screen","house","hud","hd_only","hover","readiness"},...]}
+FORK1	JSON списка масштабов в stdout	src/debug/UiAuditCapture.cpp@9208dcf:379	{"resolution":"<w>x<h>","render":[0,...],"world":[0,...]}
+FORK1	файл PNG	src/debug/UiAuditCapture.cpp@9208dcf:247	<каталог --ui-audit-out>/<scene-id>.png; PNG формируется IMG_SavePNG.
+FORK1	файл геометрии JSONL, заголовок	src/debug/UiAuditCapture.cpp@9208dcf:161	<каталог --ui-audit-out>/<scene-id>.geometry.jsonl; строка header содержит k, scene, resolution, language, graphics, canvas.w, canvas.h, game_screen, render_scale, world_scale, необязательный map_viewport (x,y,w,h), version.
+FORK1	файл геометрии JSONL, text	src/debug/UiAuditCapture.cpp@9208dcf:177	Объект text: k, s, x, y, w, h, box.
+FORK1	файл геометрии JSONL, gui	src/debug/UiAuditCapture.cpp@9208dcf:188	Объект gui: k, t, x, y, w, h.
+FORK1	файл геометрии JSONL, area	src/debug/UiAuditCapture.cpp@9208dcf:192	Объект area: k, n, x, y, w, h.
+FORK1	файл геометрии JSONL, label	src/debug/UiAuditCapture.cpp@9208dcf:196	Объект label: k, kind, obj, type, x, y, w, h, owner(x,y,w,h).
+FORK1	файл геометрии JSONL, click	src/debug/UiAuditCapture.cpp@9208dcf:201	Объект click: k, name, x, y, w, h.
+FORK1	файл геометрии JSONL, credit	src/debug/UiAuditCapture.cpp@9208dcf:205	Объект credit: k, name, s.
+FORK1	журнал-файл	src/debug/UiAuditCapture.cpp@9208dcf:140	Отдельный файл журнала не открывается; ошибки режима печатаются в stderr с префиксом ui-audit:.
+FORK1	тестовые игровые сохранения	src/debug/UiAuditAccess.cpp@9208dcf:138; src/save/SaveGameManager.cpp@9208dcf:1349	Создаются saves/quicksave.d2s, saves/save02.d2s, saves/save05.d2s; saves/save03.d2s содержит текст not a save file; saves/save06.d2s создаётся как каталог.
+FORK1	удаление saves при подготовке сцены	src/debug/UiAuditCapture.cpp@9208dcf:443	Перед подготовкой сцены вызывается remove_all("saves").
+FORK1	вызов consumeArguments из main	src/main.cpp@9208dcf:86	consumeArguments(argc, argv).
+FORK1	вызов handleEarlyExit из main	src/main.cpp@9208dcf:88	handleEarlyExit(uiAuditExitCode), затем возможен ранний return.
+FORK1	вызов onSetupDone из main	src/main.cpp@9208dcf:115	onSetupDone(game) после успешного setupGame().
+FORK1	вызов failed из main	src/main.cpp@9208dcf:132	failed() участвует в коде выхода 1.
+FORK1	вызов beginFrame из cGame_logic	src/cGame_logic.cpp@9208dcf:772	beginFrame(*this) перед drawState().
+FORK1	вызов onFramePresented из cGame_logic	src/cGame_logic.cpp@9208dcf:781	onFramePresented(*this) после presentFrame().
+PORT	файл разбора аргументов	src/utils/cHandleArgument.cpp@7eb119b:45	cHandleArgument::handleArguments(int argc, char *argv[], InitialGameSettings *settings), тело 45–136.
+PORT	таблица аргументов	src/utils/cHandleArgument.cpp@7eb119b:21	21 запись в optionStrings (строки 21–43 включительно).
+PORT	место вызова разбора аргументов в main	src/main.cpp@7eb119b:94	handleArg.handleArguments(argc, argv, settings.get()) после чтения настроек.
