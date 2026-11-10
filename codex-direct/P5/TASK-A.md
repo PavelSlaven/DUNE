@@ -106,8 +106,8 @@
    Иначе — блок `## Q-P5A-04` с найденными строками и стоп.
 4. Греп и сверки, каждая своей командой:
    - `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/CampaignMapLayout.hpp | cmp - src/gamestates/CampaignMapLayout.hpp` и то же для `src/utils/OutcomeScreenLayout.hpp` и `src/utils/TextAlignment.hpp` — код выхода 0;
-   - `git grep -l "loadHdUiTexture(" -- src` — ровно восемь файлов: `src/utils/HdUiTextureLoader.hpp`, `src/utils/HdUiTextureLoader.cpp` и `.cpp` шести экранов таблицы «Экраны» с HD-картинками (все, кроме настройки схватки);
-   - `git grep -n -E "command_bar|_ru\.png" -- src` — пустой вывод, код выхода 1;
+   - `git grep --untracked -l "loadHdUiTexture(" -- src` — ровно восемь файлов: `src/utils/HdUiTextureLoader.hpp`, `src/utils/HdUiTextureLoader.cpp` и `.cpp` шести экранов таблицы «Экраны» с HD-картинками (все, кроме настройки схватки);
+   - `git grep --untracked -n -E "command_bar|_ru\.png" -- src` — пустой вывод, код выхода 1;
    - `git diff --quiet a6f04cad3359759dbf839ce34de80cf7ce8f812b -- .gitattributes resources/bin/data/hd4` — код выхода 0.
    Иначе — блок `## Q-P5A-05` с выводом и стоп.
 5. `git -c lfs.storage=$PWD/.tmp/p5a/lfs status --short` — только строки ` M ` для файлов из рамки правок и строки `?? ` для `src/gamestates/CampaignMapLayout.hpp`, `src/utils/OutcomeScreenLayout.hpp`, `src/utils/TextAlignment.hpp`, `src/utils/HdUiTextureLoader.hpp`, `src/utils/HdUiTextureLoader.cpp`. Строки `__pycache__` допустимы. Другие строки — блок `## Q-P5A-06` с выводом и стоп.
