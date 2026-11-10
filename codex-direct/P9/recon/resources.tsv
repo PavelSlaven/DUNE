@@ -1,0 +1,23 @@
+путь	статус	размер объекта Git	Git LFS	размер содержимого Git LFS	есть в PORT	объект совпадает	категория
+resources/bin/music/briefing/atreides/18_MENTAT_ATR.wav	A	133	да	21243052	нет	-	BriefingAtreides
+resources/bin/music/briefing/harkonnen/19_MENTAT_HAR.wav	A	133	да	41164972	нет	-	BriefingHarkonnen
+resources/bin/music/briefing/ordos/20_MENTAT_ORD.wav	A	133	да	27817132	нет	-	BriefingOrdos
+resources/bin/music/conquest/22_SCENARIO.wav	A	133	да	25252012	нет	-	Conquest
+resources/bin/music/defeat/15_LOSE1.wav	A	133	да	27417772	нет	-	Defeat
+resources/bin/music/defeat/16_LOSE2.wav	A	133	да	20751532	нет	-	Defeat
+resources/bin/music/defeat/17_LOSE3.wav	A	133	да	24484012	нет	-	Defeat
+resources/bin/music/gameplay/Track 1.wav	A	133	да	14876332	нет	-	Gameplay
+resources/bin/music/gameplay/Track 10.wav	A	133	да	17740972	нет	-	Gameplay
+resources/bin/music/gameplay/Track 11.wav	A	133	да	11474092	нет	-	Gameplay
+resources/bin/music/gameplay/Track 2.wav	A	133	да	28600492	нет	-	Gameplay
+resources/bin/music/gameplay/Track 3.wav	A	133	да	27625132	нет	-	Gameplay
+resources/bin/music/gameplay/Track 4.wav	A	133	да	25866412	нет	-	Gameplay
+resources/bin/music/gameplay/Track 5.wav	A	133	да	28723372	нет	-	Gameplay
+resources/bin/music/gameplay/Track 6.wav	A	133	да	30213292	нет	-	Gameplay
+resources/bin/music/gameplay/Track 7.wav	A	133	да	31541932	нет	-	Gameplay
+resources/bin/music/gameplay/Track 8 .wav	A	133	да	24553132	нет	-	Gameplay
+resources/bin/music/gameplay/Track 9.wav	A	133	да	36787372	нет	-	Gameplay
+resources/bin/music/menu/21_MENU.wav	A	133	да	19138732	нет	-	Menu
+resources/bin/music/victory/23_WIN01.wav	A	133	да	16949932	нет	-	Victory
+resources/bin/music/victory/24_WIN02.wav	A	133	да	14361772	нет	-	Victory
+resources/bin/music/victory/25_WIN03.wav	A	133	да	16251052	нет	-	Victory

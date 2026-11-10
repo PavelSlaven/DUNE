@@ -1,0 +1,84 @@
+путь	символ	путь@9208dcf:строка	входы	выходы	что делает
+src/audio/MusicController.h	cSoundPlayer (forward declaration)	src/audio/MusicController.h@9208dcf:10	—	неполное объявление типа	Позволяет объявить зависимость контроллера от проигрывателя
+src/audio/MusicController.h	MusicCategory (enum class)	src/audio/MusicController.h@9208dcf:12	—	тип категорий	Задаёт индексы пулов Gameplay, Menu, Conquest, BriefingAtreides, BriefingHarkonnen, BriefingOrdos, Victory, Defeat и Count
+src/audio/MusicController.h	MusicCategory::Gameplay	src/audio/MusicController.h@9208dcf:13	—	значение категории	Категория игрового процесса
+src/audio/MusicController.h	MusicCategory::Menu	src/audio/MusicController.h@9208dcf:14	—	значение категории	Категория меню
+src/audio/MusicController.h	MusicCategory::Conquest	src/audio/MusicController.h@9208dcf:15	—	значение категории	Категория завоевания
+src/audio/MusicController.h	MusicCategory::BriefingAtreides	src/audio/MusicController.h@9208dcf:16	—	значение категории	Категория брифинга Атрейдес
+src/audio/MusicController.h	MusicCategory::BriefingHarkonnen	src/audio/MusicController.h@9208dcf:17	—	значение категории	Категория брифинга Харконненов
+src/audio/MusicController.h	MusicCategory::BriefingOrdos	src/audio/MusicController.h@9208dcf:18	—	значение категории	Категория брифинга Ордосов
+src/audio/MusicController.h	MusicCategory::Victory	src/audio/MusicController.h@9208dcf:19	—	значение категории	Категория победы
+src/audio/MusicController.h	MusicCategory::Defeat	src/audio/MusicController.h@9208dcf:20	—	значение категории	Категория поражения
+src/audio/MusicController.h	MusicCategory::Count	src/audio/MusicController.h@9208dcf:21	—	значение границы массива	Число категорий задаёт размер массива состояний
+src/audio/MusicController.h	MusicController (class)	src/audio/MusicController.h@9208dcf:24	cSoundPlayer и каталог игры	API управления пулами	Хранит плейлисты категорий и вызывает проигрыватель; UiAuditAccess объявлен другом класса
+src/audio/MusicController.cpp	indexOf	src/audio/MusicController.cpp@9208dcf:9	MusicCategory	std::size_t	Преобразует категорию в индекс массива
+src/audio/MusicController.cpp	utf8String	src/audio/MusicController.cpp@9208dcf:14	filesystem::path	std::string	Преобразует UTF-8-представление пути в строку для журнала
+src/audio/MusicController.cpp	MusicController::MusicController	src/audio/MusicController.cpp@9208dcf:21	указатель cSoundPlayer, каталог игры	новый MusicController	Сохраняет проигрыватель и каталог; пустой каталог заменяет текущим рабочим каталогом
+src/audio/MusicController.cpp	MusicController::configure	src/audio/MusicController.cpp@9208dcf:26	категория, относительный каталог, vector<int> встроенных ID	void	Запоминает пользовательский каталог и fallback; сканирует файлы с неподдерживаемым расширением для предупреждений, находит внешние треки и выбирает внешний список либо fallback
+src/audio/MusicController.cpp	MusicController::activate	src/audio/MusicController.cpp@9208dcf:67	категория, advanceOnRepeatedEntry	void	Устанавливает активную категорию и запускает следующий трек при новой категории, разрешённом продвижении или остановленном проигрывателе
+src/audio/MusicController.cpp	MusicController::update	src/audio/MusicController.cpp@9208dcf:77	состояние проигрывателя	void	Запускает следующий трек активной категории, если музыка закончилась
+src/audio/MusicController.cpp	MusicController::next	src/audio/MusicController.cpp@9208dcf:84	активная категория	void	Переходит к следующему треку при наличии активной категории
+src/audio/MusicController.cpp	MusicController::previous	src/audio/MusicController.cpp@9208dcf:91	активная категория	void	Переходит к предыдущей позиции истории при наличии активной категории
+src/audio/MusicController.cpp	MusicController::replayCurrent	src/audio/MusicController.cpp@9208dcf:98	активная категория и текущий трек	void	Повторно запускает текущий трек; при отсутствии или ошибке запускает следующий доступный
+src/audio/MusicController.cpp	MusicController::stop	src/audio/MusicController.cpp@9208dcf:109	—	void	Останавливает музыку через cSoundPlayer
+src/audio/MusicController.cpp	MusicController::currentDisplayName	src/audio/MusicController.cpp@9208dcf:114	активная категория и текущий трек	std::string	Возвращает отображаемое имя текущего трека либо пустую строку
+src/audio/MusicController.h	MusicController::hasActiveCategory	src/audio/MusicController.h@9208dcf:42	состояние контроллера	bool	Возвращает флаг наличия активной категории
+src/audio/MusicController.cpp	MusicController::play	src/audio/MusicController.cpp@9208dcf:123	MusicTrack pointer	bool	Запускает встроенный ID или внешний файл; при ошибке внешнего файла журналирует предупреждение и возвращает false
+src/audio/MusicController.cpp	MusicController::playNextAvailable	src/audio/MusicController.cpp@9208dcf:145	направление перехода	void	Перебирает плейлист; удаляет неиграбельный текущий трек, затем при исчерпании пользовательских треков включает встроенный fallback, иначе останавливает музыку
+src/audio/MusicController.cpp	MusicController::switchToFallback	src/audio/MusicController.cpp@9208dcf:172	CategoryState reference	void	Выбирает встроенный список и сбрасывает состояние плейлиста
+src/audio/MusicController.cpp	MusicController::activeState	src/audio/MusicController.cpp@9208dcf:178	активная категория	CategoryState reference	Возвращает изменяемое состояние активной категории
+src/audio/MusicController.cpp	MusicController::activeState const	src/audio/MusicController.cpp@9208dcf:183	активная категория	const CategoryState reference	Возвращает неизменяемое состояние активной категории
+src/audio/MusicController.h	MusicController::CategoryState (nested struct)	src/audio/MusicController.h@9208dcf:45	—	состояние одного пула	Содержит плейлист, встроенный fallback, флаг пользовательских треков и каталог
+src/audio/MusicPlaylist.h	MusicTrack (struct)	src/audio/MusicPlaylist.h@9208dcf:10	встроенный ID и/или внешний путь	значение трека	Представляет встроенный или внешний музыкальный трек
+src/audio/MusicPlaylist.h	MusicTrack::builtInId	src/audio/MusicPlaylist.h@9208dcf:11	—	int, начальное значение -1	ID встроенного трека
+src/audio/MusicPlaylist.h	MusicTrack::externalPath	src/audio/MusicPlaylist.h@9208dcf:12	—	filesystem::path	Путь внешнего трека
+src/audio/MusicPlaylist.h	MusicTrack::isExternal	src/audio/MusicPlaylist.h@9208dcf:14	externalPath	bool	Проверяет, задан ли внешний путь
+src/audio/MusicPlaylist.cpp	MusicTrack::key	src/audio/MusicPlaylist.cpp@9208dcf:23	поля MusicTrack	std::string	Возвращает нормализованный путь внешнего файла или строковый встроенный ID
+src/audio/MusicPlaylist.cpp	MusicTrack::displayName	src/audio/MusicPlaylist.cpp@9208dcf:28	поля MusicTrack	std::string	Возвращает имя файла без расширения или Dune II с номером встроенного трека
+src/audio/MusicPlaylist.h	MusicPlaylist (class)	src/audio/MusicPlaylist.h@9208dcf:19	seed генератора	API списка воспроизведения	Хранит треки, мешок случайного порядка, историю и генератор Mersenne Twister
+src/audio/MusicPlaylist.cpp	MusicPlaylist::MusicPlaylist	src/audio/MusicPlaylist.cpp@9208dcf:36	uint32_t seed	новый MusicPlaylist	Инициализирует генератор заданным seed
+src/audio/MusicPlaylist.cpp	MusicPlaylist::setTracks	src/audio/MusicPlaylist.cpp@9208dcf:40	vector<MusicTrack>	void	Заменяет список треков и очищает мешок и историю
+src/audio/MusicPlaylist.h	MusicPlaylist::empty	src/audio/MusicPlaylist.h@9208dcf:24	список треков	bool	Проверяет отсутствие треков
+src/audio/MusicPlaylist.h	MusicPlaylist::size	src/audio/MusicPlaylist.h@9208dcf:25	список треков	std::size_t	Возвращает число треков
+src/audio/MusicPlaylist.cpp	MusicPlaylist::refillBag	src/audio/MusicPlaylist.cpp@9208dcf:49	список треков, текущая история, генератор	void	Создаёт случайную перестановку индексов и переставляет крайние элементы, если следующий совпадает с последним сыгранным и треков больше одного
+src/audio/MusicPlaylist.cpp	MusicPlaylist::next	src/audio/MusicPlaylist.cpp@9208dcf:62	список, история и мешок	const MusicTrack pointer или nullptr	Сначала проходит вперёд по имеющейся истории, затем извлекает следующий индекс из мешка и дописывает его в историю
+src/audio/MusicPlaylist.cpp	MusicPlaylist::previous	src/audio/MusicPlaylist.cpp@9208dcf:84	история и позиция	const MusicTrack pointer или nullptr	Сдвигает позицию истории назад, если она больше нуля, и возвращает текущий трек
+src/audio/MusicPlaylist.cpp	MusicPlaylist::current	src/audio/MusicPlaylist.cpp@9208dcf:95	история и позиция	const MusicTrack pointer или nullptr	Возвращает трек по текущей позиции после проверки границ
+src/audio/MusicPlaylist.cpp	MusicPlaylist::discardCurrent	src/audio/MusicPlaylist.cpp@9208dcf:104	текущий трек и его key	void	Удаляет все треки с тем же key и очищает мешок и историю
+src/audio/MusicPlaylist.cpp	MusicPlaylist::discoverExternalTracks	src/audio/MusicPlaylist.cpp@9208dcf:122	каталог	vector<MusicTrack>	Сканирует только обычные файлы верхнего уровня, оставляет поддерживаемые расширения и сортирует по ключу без учёта ASCII-регистра
+src/audio/MusicPlaylist.cpp	MusicPlaylist::isSupportedMusicFile	src/audio/MusicPlaylist.cpp@9208dcf:144	путь файла	bool	Сравнивает расширение без учёта регистра с .ogg, .mp3, .wav и .flac
+src/audio/MusicPlaylist.cpp	utf8String	src/audio/MusicPlaylist.cpp@9208dcf:8	filesystem::path	std::string	Преобразует UTF-8-представление пути в строку
+src/audio/MusicPlaylist.cpp	lowerAscii	src/audio/MusicPlaylist.cpp@9208dcf:14	std::string	std::string	Переводит ASCII-символы строки в нижний регистр
+src/audio/MusicTransitionPolicy.hpp	shouldAdvanceRepeatedMusicCategory	src/audio/MusicTransitionPolicy.hpp@9208dcf:3	повторная категория и playingState (не используется)	bool	Возвращает отрицание repeatedCategory
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout (struct)	src/sidebar/MusicControlsLayout.hpp@9208dcf:7	—	разметка панели	Хранит видимость и прямоугольники общей панели, музыки и скорости
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::visible	src/sidebar/MusicControlsLayout.hpp@9208dcf:8	—	bool, начальное значение false	Флаг видимости
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::panel	src/sidebar/MusicControlsLayout.hpp@9208dcf:9	—	cRectangle	Внешняя панель
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::musicPanel	src/sidebar/MusicControlsLayout.hpp@9208dcf:10	—	cRectangle	Панель музыки
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::previous	src/sidebar/MusicControlsLayout.hpp@9208dcf:11	—	cRectangle	Область кнопки предыдущего трека
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::label	src/sidebar/MusicControlsLayout.hpp@9208dcf:12	—	cRectangle	Область названия трека
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::next	src/sidebar/MusicControlsLayout.hpp@9208dcf:13	—	cRectangle	Область кнопки следующего трека
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::speedPanel	src/sidebar/MusicControlsLayout.hpp@9208dcf:14	—	cRectangle	Панель скорости
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::speedLabel	src/sidebar/MusicControlsLayout.hpp@9208dcf:15	—	cRectangle	Область подписи скорости
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::speedSlider	src/sidebar/MusicControlsLayout.hpp@9208dcf:16	—	cRectangle	Область слайдера скорости
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::create	src/sidebar/MusicControlsLayout.hpp@9208dcf:18	левая и правая границы, зарезервированная ширина сообщения	MusicControlsLayout	Скрывает панель ниже минимума ширины, иначе вычисляет панели музыки и скорости с ограничением общей ширины
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::create::MinimumWidth	src/sidebar/MusicControlsLayout.hpp@9208dcf:23	—	constexpr int 200	Минимальная ширина видимой панели
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::create::MaximumWidth	src/sidebar/MusicControlsLayout.hpp@9208dcf:24	—	constexpr int 520	Максимальная ширина панели
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::create::buttonSize	src/sidebar/MusicControlsLayout.hpp@9208dcf:34	—	constexpr int 33	Размер кнопок по ширине и высоте
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::create::y	src/sidebar/MusicControlsLayout.hpp@9208dcf:35	—	constexpr int 4	Координата панели по вертикали
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::create::sectionGap	src/sidebar/MusicControlsLayout.hpp@9208dcf:37	—	constexpr int 8	Расстояние между секциями
+src/sidebar/MusicControlsLayout.hpp	MusicControlsLayout::showsLabel	src/sidebar/MusicControlsLayout.hpp@9208dcf:61	ширина label	bool	Возвращает true при ширине подписи не менее 80 пикселей
+src/audio/MusicController.h	MusicController::CategoryState::playlist	src/audio/MusicController.h@9208dcf:46	—	MusicPlaylist	Плейлист треков категории
+src/audio/MusicController.h	MusicController::CategoryState::fallback	src/audio/MusicController.h@9208dcf:47	—	vector<MusicTrack>	Встроенный резервный список
+src/audio/MusicController.h	MusicController::CategoryState::usingCustom	src/audio/MusicController.h@9208dcf:48	—	bool, начальное значение false	Флаг выбора пользовательского списка
+src/audio/MusicController.h	MusicController::CategoryState::directory	src/audio/MusicController.h@9208dcf:49	—	filesystem::path	Путь папки пользовательского пула
+src/audio/MusicController.h	MusicController::m_soundPlayer	src/audio/MusicController.h@9208dcf:58	—	cSoundPlayer pointer	Проигрыватель, управляемый контроллером
+src/audio/MusicController.h	MusicController::m_gameDirectory	src/audio/MusicController.h@9208dcf:59	—	filesystem::path	Базовый каталог пользовательских папок музыки
+src/audio/MusicController.h	MusicController::m_categories	src/audio/MusicController.h@9208dcf:60	—	array<CategoryState, MusicCategory::Count>	Состояние всех пулов
+src/audio/MusicController.h	MusicController::m_activeCategory	src/audio/MusicController.h@9208dcf:61	—	MusicCategory, начальное значение Menu	Текущая категория
+src/audio/MusicController.h	MusicController::m_hasActiveCategory	src/audio/MusicController.h@9208dcf:62	—	bool, начальное значение false	Флаг активной категории
+src/audio/MusicPlaylist.h	MusicPlaylist::m_tracks	src/audio/MusicPlaylist.h@9208dcf:38	—	vector<MusicTrack>	Текущий список треков
+src/audio/MusicPlaylist.h	MusicPlaylist::m_bag	src/audio/MusicPlaylist.h@9208dcf:39	—	vector<size_t>	Перестановка ещё не выбранных индексов
+src/audio/MusicPlaylist.h	MusicPlaylist::m_history	src/audio/MusicPlaylist.h@9208dcf:40	—	vector<size_t>	Последовательность выбранных индексов
+src/audio/MusicPlaylist.h	MusicPlaylist::m_historyPosition	src/audio/MusicPlaylist.h@9208dcf:41	—	size_t, начальное значение 0	Позиция текущего трека в истории
+src/audio/MusicPlaylist.h	MusicPlaylist::m_hasHistoryPosition	src/audio/MusicPlaylist.h@9208dcf:42	—	bool, начальное значение false	Флаг валидной позиции в истории
+src/audio/MusicPlaylist.h	MusicPlaylist::m_rng	src/audio/MusicPlaylist.h@9208dcf:43	—	std::mt19937	Генератор порядка треков
