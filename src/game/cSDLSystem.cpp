@@ -17,6 +17,7 @@
 
 #include "utils/Graphics.hpp"
 #include "utils/Log.h"
+#include "utils/RenderScale.hpp"
 
 #include <SDL3/SDL.h>
 #include <SDL3_mixer/SDL_mixer.h>
@@ -42,45 +43,41 @@ void cSDLSystem::applyFullscreenPresentation()
     // by the logical presentation already in effect, and always report a scale of 1.
     SDL_GetRenderOutputSize(renderer, &renderW, &renderH);
 
-    if (m_scalingMode == eScalingMode::INTEGER_SCALE) {
-        // Every game pixel maps to the same-sized block on screen (1x, 2x, 3x ...). If the screen
-        // is larger than an exact multiple, the remainder appears as black borders. This avoids
-        // fractional scaling (LETTERBOX at e.g. 1.167x) which produces jagged, uneven pixels even
-        // with nearest-neighbour filtering. renderResolution is already capped to the logical
-        // screen size in adaptResolution, so the scale is always >= 1.
-        int intScale = std::min(renderW / renderResolution.width, renderH / renderResolution.height);
+    float scaleToFillScreen = std::min(static_cast<float>(renderW) / static_cast<float>(canvasResolution.width),
+                                       static_cast<float>(renderH) / static_cast<float>(canvasResolution.height));
 
-        SDL_SetRenderLogicalPresentation(renderer, renderResolution.width, renderResolution.height, SDL_LOGICAL_PRESENTATION_INTEGER_SCALE);
-        SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
+    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
 
-        Logger::info(COMP_SDL2, "desktop", "Renderer output size : {}x{}", renderW, renderH);
-        Logger::info(COMP_SDL2, "desktop", "Presentation mode : INTEGER_SCALE (integer scale = {})", intScale);
-    } else {
-        // Fullscreen fills the screen edge to edge instead of adding bars, at the cost of a
-        // fractional scale (at 1.5x, one game pixel covers 1 or 2 screen pixels).
-        float scaleToFillScreen = std::min(static_cast<float>(renderW) / static_cast<float>(renderResolution.width),
-                                           static_cast<float>(renderH) / static_cast<float>(renderResolution.height));
-
-        SDL_SetRenderLogicalPresentation(renderer, renderResolution.width, renderResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
-        SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
-
-        Logger::info(COMP_SDL2, "desktop", "Renderer output size : {}x{}", renderW, renderH);
-        Logger::info(COMP_SDL2, "desktop", "Presentation mode : LETTERBOX (scale = {})", scaleToFillScreen);
-    }
+    Logger::info(COMP_SDL2, "desktop", "Renderer output size : {}x{}", renderW, renderH);
+    Logger::info(COMP_SDL2, "desktop", "Presentation mode : LETTERBOX (scale = {})", scaleToFillScreen);
     float scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
     Logger::info(COMP_SDL2, "DPI", "Display content scale : {}", scale);
 }
 
-void cSDLSystem::toggleScalingMode()
+void cSDLSystem::applyRenderScale(int renderScalePercent)
 {
-    m_scalingMode = (m_scalingMode == eScalingMode::LETTERBOX) ? eScalingMode::INTEGER_SCALE : eScalingMode::LETTERBOX;
-    Logger::info(COMP_SDL2, "desktop", "Scaling mode toggled to {}",
-                 m_scalingMode == eScalingMode::INTEGER_SCALE ? "INTEGER_SCALE" : "LETTERBOX");
-    if (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN) {
-        applyFullscreenPresentation();
+    int outputWidth = 0;
+    int outputHeight = 0;
+    SDL_GetRenderOutputSize(renderer, &outputWidth, &outputHeight);
+    outputResolution = {outputWidth, outputHeight};
+
+    int selectedScale = renderScalePercent;
+    if (selectedScale != AutomaticRenderScale && !isManualRenderScaleAvailable(outputWidth, outputHeight, selectedScale)) {
+        Logger::warn(COMP_SDL2, "Render scale", "{}% is unavailable for {}x{}; using Auto", selectedScale, outputWidth, outputHeight);
+        selectedScale = AutomaticRenderScale;
     }
+
+    const RenderCanvasSize canvas = calculateRenderCanvasSize(outputWidth, outputHeight, selectedScale);
+    canvasResolution = {canvas.width, canvas.height};
+    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+
+    const std::string scaleText = selectedScale == AutomaticRenderScale
+        ? std::format("Auto ({}%)", calculateAutomaticRenderScalePercent(outputWidth, outputHeight))
+        : std::format("{}%", selectedScale);
+    Logger::info(COMP_SDL2, "Resolution", "Output {}x{}, render scale {}, logical canvas {}x{}",
+                 outputWidth, outputHeight, scaleText, canvasResolution.width, canvasResolution.height);
 }
 
 void cSDLSystem::setFullScreenMode()
@@ -107,7 +104,7 @@ void cSDLSystem::setWindowMode()
     SDL_SetWindowFullscreen(window, false);
     SDL_SetWindowSize(window, renderResolution.width, renderResolution.height);
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-    SDL_SetRenderLogicalPresentation(renderer, renderResolution.width, renderResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
     Logger::info(COMP_SDL2, "desktop", "Windowed desktop");
 }
 
@@ -254,11 +251,10 @@ int cSDLSystem::frameDensity() const
         return 1;
     }
 
-    return calculateFrameDensity(rect.w, rect.h, renderResolution.width, renderResolution.height);
+    return calculateFrameDensity(rect.w, rect.h, canvasResolution.width, canvasResolution.height);
 }
 
-cSDLSystem::cSDLSystem(int desiredWidth, int desiredHeight, const std::string &title, bool windowed, eScalingMode scalingMode)
-    : m_scalingMode(scalingMode)
+cSDLSystem::cSDLSystem(int desiredWidth, int desiredHeight, const std::string &title, bool windowed)
 {
     Logger::info(COMP_SDL2, "cSDLSystem", "=== SDL ===");
 
@@ -337,5 +333,6 @@ cSDLSystem::cSDLSystem(int desiredWidth, int desiredHeight, const std::string &t
         // render resolution must not be pinned to the size of this temporary window.
         syncRenderResolutionToWindow();
     }
-    SDL_SetRenderLogicalPresentation(renderer, renderResolution.width, renderResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    canvasResolution = renderResolution;
+    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 }

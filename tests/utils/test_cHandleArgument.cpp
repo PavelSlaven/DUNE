@@ -32,7 +32,7 @@ std::vector<std::string> changedFields(const InitialGameSettings &s)
     check("screenW", s.screenW != d.screenW);
     check("screenH", s.screenH != d.screenH);
     check("windowed", s.windowed != d.windowed);
-    check("scalingMode", s.scalingMode != d.scalingMode);
+    check("renderScalePercent", s.renderScalePercent != d.renderScalePercent);
     check("playMusic", s.playMusic != d.playMusic);
     check("playSound", s.playSound != d.playSound);
     check("debugMode", s.debugMode != d.debugMode);
@@ -57,7 +57,7 @@ TEST_CASE("cHandleArgument - no arguments leaves every setting at its default", 
     REQUIRE(settings.screenW == 800);
     REQUIRE(settings.screenH == 600);
     REQUIRE_FALSE(settings.windowed);
-    REQUIRE(settings.scalingMode == eScalingMode::INTEGER_SCALE);
+    REQUIRE(settings.renderScalePercent == 0);
     REQUIRE(settings.playMusic);
     REQUIRE(settings.playSound);
     REQUIRE_FALSE(settings.debugMode);
@@ -175,13 +175,11 @@ TEST_CASE("cHandleArgument - -windowed and -fullscreen: last one wins", "[argume
     REQUIRE_FALSE(settings.windowed);
 }
 
-TEST_CASE("cHandleArgument - scaling mode flags", "[arguments]")
+TEST_CASE("cHandleArgument - removed scaling mode flags are unknown options", "[arguments]")
 {
     InitialGameSettings settings;
-    run({"-letterbox"}, settings);
-    REQUIRE(settings.scalingMode == eScalingMode::LETTERBOX);
-    run({"-integerscale"}, settings);
-    REQUIRE(settings.scalingMode == eScalingMode::INTEGER_SCALE);
+    REQUIRE_THROWS_AS(run({"-letterbox"}, settings), std::runtime_error);
+    REQUIRE_THROWS_AS(run({"-integerscale"}, settings), std::runtime_error);
 }
 
 TEST_CASE("cHandleArgument - options with a value consume it", "[arguments]")

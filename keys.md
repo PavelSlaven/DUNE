@@ -11,7 +11,6 @@
 | KP + | Increase game speed |
 | KP - | Decrease game speed |
 | ALT + ENTER | Toggle fullscreen |
-| ALT + L | Toggle fullscreen scaling mode (integer scale / letterbox) |
 | ALT + C | Toggle cheat/debug mode |
 
 ---

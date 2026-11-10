@@ -32,7 +32,7 @@ public:
         return m_screenH;
     }
     float getWorldScaleFactor() const {
-        return worldScaleZoom(m_worldScalePercent, m_screenH);
+        return worldScaleZoom(m_worldScalePercent, m_outputH);
     }
     bool isDisableAI() const {
         return m_disableAI;
@@ -144,6 +144,8 @@ private:
     int m_screenW;
     int m_screenH;
     int m_worldScalePercent = 0;
+    int m_renderScalePercent = 0;
+    int m_outputH = 0;
 
     bool m_disableAI;  
     bool m_oneAi;      
