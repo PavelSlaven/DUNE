@@ -62,10 +62,8 @@ void readSettings(const cSection &section, InitialGameSettings &settings)
     if (section.hasValue("CameraEdgeMove")) {
         settings.cameraEdgeMove = section.getBoolean("CameraEdgeMove");
     }
-    if (section.hasValue("ScalingMode")) {
-        settings.scalingMode = section.getStringValue("ScalingMode") == "Letterbox"
-            ? eScalingMode::LETTERBOX
-            : eScalingMode::INTEGER_SCALE;
+    if (section.hasValue("RenderScale")) {
+        settings.renderScalePercent = section.getInt("RenderScale");
     }
     if (section.hasValue("WorldScale")) {
         settings.worldScalePercent = section.getInt("WorldScale");
@@ -162,7 +160,7 @@ bool save(const std::filesystem::path &file, const InitialGameSettings &settings
     set(ini, "CameraBorderOrKeyMoveSpeed", std::to_string(settings.cameraBorderOrKeyMoveSpeed));
     set(ini, "FullScreen", toText(!settings.windowed));
     set(ini, "CameraEdgeMove", toText(settings.cameraEdgeMove));
-    set(ini, "ScalingMode", settings.scalingMode == eScalingMode::LETTERBOX ? "Letterbox" : "IntegerScale");
+    set(ini, "RenderScale", std::to_string(settings.renderScalePercent));
     set(ini, "AllowRepeatingReinforcements", toText(settings.allowRepeatingReinforcements));
     set(ini, "AllTurretsDownOnLowPower", toText(settings.turretsDownOnLowPower));
     set(ini, "RocketTurretsDownOnLowPower", toText(settings.rocketTurretsDownOnLowPower));

@@ -152,7 +152,6 @@ cGame::cGame()
     m_currentState = nullptr;
 
     m_windowed = false;
-    m_scalingMode = eScalingMode::INTEGER_SCALE;
     context = nullptr;
     ctx = nullptr;
     m_pauseWhenLosingFocus = false;
@@ -302,6 +301,7 @@ void cGame::applySettings(std::unique_ptr<InitialGameSettings> gs)
 {
     m_gameSettings->m_screenW = gs->screenW;
     m_gameSettings->m_worldScalePercent = gs->worldScalePercent;
+    m_gameSettings->m_renderScalePercent = gs->renderScalePercent;
 
     m_gameSettings->m_screenH = gs->screenH;
 
@@ -309,7 +309,6 @@ void cGame::applySettings(std::unique_ptr<InitialGameSettings> gs)
     m_cameraBorderOrKeyMoveSpeed = gs->cameraBorderOrKeyMoveSpeed;
     m_cameraEdgeMove = gs->cameraEdgeMove;
     m_windowed = gs->windowed;
-    m_scalingMode = gs->scalingMode;
 
     m_gameSettings->m_allowRepeatingReinforcements = gs->allowRepeatingReinforcements;
     m_gameSettings->setTurretsDownOnLowPower(gs->turretsDownOnLowPower);
@@ -344,13 +343,13 @@ void cGame::applySettings(std::unique_ptr<InitialGameSettings> gs)
 InitialGameSettings cGame::currentSettings() const
 {
     InitialGameSettings gs;
-    gs.screenW = m_gameSettings->m_screenW;
-    gs.screenH = m_gameSettings->m_screenH;
+    gs.screenW = m_initialGameSettings->screenW;
+    gs.screenH = m_initialGameSettings->screenH;
     gs.cameraDragMoveSpeed = m_cameraDragMoveSpeed;
     gs.cameraBorderOrKeyMoveSpeed = m_cameraBorderOrKeyMoveSpeed;
     gs.cameraEdgeMove = m_cameraEdgeMove;
     gs.windowed = m_windowed;
-    gs.scalingMode = m_scalingMode;
+    gs.renderScalePercent = m_gameSettings->m_renderScalePercent;
     gs.worldScalePercent = m_gameSettings->m_worldScalePercent;
     gs.allowRepeatingReinforcements = m_gameSettings->m_allowRepeatingReinforcements;
     gs.turretsDownOnLowPower = m_gameSettings->isTurretsDownOnLowPower();
@@ -750,10 +749,11 @@ bool cGame::setupGame()
     }
     Logger::info(COMP_INIT, "Initializing Key Bindings", "Loaded from [KEYS] section");
 
-    m_Screen = std::make_unique<cSDLSystem>(m_gameSettings->m_screenW, m_gameSettings->m_screenH, title, m_windowed, m_scalingMode);
+    m_Screen = std::make_unique<cSDLSystem>(m_gameSettings->m_screenW, m_gameSettings->m_screenH, title, m_windowed);
     if (!m_windowed) {
         m_Screen->setFullScreenMode();
     }
+    m_Screen->applyRenderScale(m_gameSettings->m_renderScalePercent);
 
     const auto progressFile = PreferencesPath::file("campaign-progress.ini");
     if (!progressFile) {
@@ -770,6 +770,8 @@ bool cGame::setupGame()
 
     m_gameSettings->m_screenW = m_Screen->Width();
     m_gameSettings->m_screenH = m_Screen->Height();
+    m_gameSettings->m_outputH = m_Screen->OutputHeight();
+    Logger::info(COMP_SDL2, "Resolution", "World scale zoom {}", m_gameSettings->getWorldScaleFactor());
     window = m_Screen->getWindows();
     renderer = m_Screen->getRenderer();
 
@@ -1553,13 +1555,6 @@ void cGame::onKeyPressedGame(const cKeyboardEvent &event)
             m_Screen->setWindowMode();
             m_windowed = true;
         }
-    }
-
-    if (event.isAction(eKeyAction::TOGGLE_SCALING_MODE)) {
-        m_Screen->toggleScalingMode();
-        m_scalingMode = m_Screen->getScalingMode();
-        auto message = std::format("Scaling mode: {}", m_scalingMode == eScalingMode::INTEGER_SCALE ? "Integer scale" : "Letterbox");
-        m_notificationArea->addNotification(message, eNotificationType::NEUTRAL);
     }
 
     if (event.isAction(eKeyAction::TOGGLE_CHEAT)) {
