@@ -16,6 +16,7 @@
 #pragma once
 
 #include "utils/Color.hpp"
+#include "utils/TextAlignment.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
@@ -47,6 +48,7 @@ struct textCacheEntry {
     SDL_Texture *shadowsTexture;
     int width;
     int height;
+    TextInkBounds inkBounds;
     int lifeCounter;
 };
 

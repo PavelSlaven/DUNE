@@ -32,6 +32,7 @@
 #include "data/gfxinter.h"
 #include "context/GraphicsContext.hpp"
 #include "utils/Graphics.hpp"
+#include "utils/HdUiTextureLoader.hpp"
 
 #include "include/cAssert.h"
 #include "context/TextContext.hpp"
@@ -70,14 +71,19 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
         : CampaignProgress::LAST_MISSION;
     const bool campaignCompleted = services->campaignProgress &&
         services->campaignProgress->nextMission(house) == CampaignProgress::COMPLETED;
-    const int mainMenuFrameX = (m_settings->getScreenW() - 640) / 2;
-    const int mainMenuFrameY = (m_settings->getScreenH() - 480) / 2;
-    const int mainMenuWidth = 640;
-    const int mainMenuHeight = 480;
+    m_hdBackground = loadHdUiTexture(
+        m_sdlDrawer->getRenderer(),
+        "main_menu_background.png",
+        "HD mission selection");
+
+    const int mainMenuWidth = std::clamp(m_settings->getScreenW() - 64, 440, 600);
+    const int mainMenuHeight = std::min(m_settings->getScreenH() - 64, 500);
+    const int mainMenuFrameX = (m_settings->getScreenW() - mainMenuWidth) / 2;
+    const int mainMenuFrameY = (m_settings->getScreenH() - mainMenuHeight) / 2;
 
     const cRectangle window(mainMenuFrameX, mainMenuFrameY, mainMenuWidth, mainMenuHeight);
     gui_window = std::make_unique<GuiWindow>(m_sdlDrawer, window, m_textDrawer);
-    gui_window->setTheme(cGuiThemeBuilder().light().build());
+    gui_window->setTheme(GuiTheme::Remaster());
 
     gui_window->setTitle(humanPlayer->getHouseName() + " Campaign");
 
@@ -94,7 +100,7 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
     const int buttonHeight = std::max(30, m_textDrawer->getFontHeight() + 12);
     const int buttonWidth = 270;
     const int leftButtonX = mainMenuFrameX + 25;
-    const int rightButtonX = mainMenuFrameX + 345;
+    const int rightButtonX = mainMenuFrameX + mainMenuWidth - 25 - buttonWidth;
     m_headerX = rightButtonX;
     m_headerWidth = buttonWidth;
     m_headerY = mainMenuFrameY + 42;
@@ -107,9 +113,8 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
         .withLabel("CONTINUE")
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
-        .withTheme(campaignCompleted
-                       ? cGuiThemeBuilder().inactive().build()
-                       : cGuiThemeBuilder().light().build())
+        .withTheme(GuiTheme::Remaster())
+        .withKind(GuiRenderKind::REMASTER_BUTTON)
         .onClick([this, campaignCompleted, highestUnlockedMission]() {
             if (campaignCompleted) {
                 return;
@@ -131,7 +136,8 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
             .withLabel(std::format("MISSION {}", i))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
-            .withTheme(cGuiThemeBuilder().light().build())
+            .withTheme(GuiTheme::Remaster())
+            .withKind(GuiRenderKind::REMASTER_BUTTON)
             .onClick([this, i]() {
                 m_missionFlow->jumpToSelectYourNextConquest(i);
                 m_stateTransitions->setNextStateWithFade(i == CampaignProgress::FIRST_MISSION ? GAME_BRIEFING : GAME_REGION);
@@ -140,13 +146,19 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
         gui_window->addGuiObject(std::move(btnMission));
     }
 
-    const cRectangle backRect = gui_window->getRelativeRect(570, 450, 55, 22);
+    const int backButtonHeight = std::max(36, m_textDrawer->getFontHeight() + 10);
+    const cRectangle backRect = gui_window->getRelativeRect(
+        8,
+        mainMenuHeight - (backButtonHeight + 8),
+        mainMenuWidth - 16 - 8,
+        backButtonHeight);
     auto gui_btn_Back = GuiButtonBuilder()
             .withRect(backRect)
             .withLabel("Back")
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
-            .withTheme(cGuiThemeBuilder().light().build())
+            .withTheme(GuiTheme::Remaster())
+            .withKind(GuiRenderKind::REMASTER_BUTTON)
             .onClick([this,prevState]() {
                 m_stateTransitions->setNextState(prevState);
             })
@@ -156,7 +168,7 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
 
 cSelectMissionState::~cSelectMissionState()
 {
-    // Smart pointers handle cleanup
+    delete m_hdBackground;
 }
 
 void cSelectMissionState::thinkFast()
@@ -166,6 +178,37 @@ void cSelectMissionState::thinkFast()
 
 void cSelectMissionState::draw() const
 {
+    m_sdlDrawer->renderClearToColor(Color{10, 12, 14, 255});
+    if (m_hdBackground) {
+        const float sourceAspect = static_cast<float>(m_hdBackground->w) /
+            std::max(1, m_hdBackground->h);
+        const float screenAspect = static_cast<float>(m_settings->getScreenW()) /
+            std::max(1, m_settings->getScreenH());
+        cRectangle destination;
+        if (sourceAspect > screenAspect) {
+            const int width = static_cast<int>(m_settings->getScreenH() * sourceAspect);
+            destination = cRectangle(
+                (m_settings->getScreenW() - width) / 2,
+                0,
+                width,
+                m_settings->getScreenH());
+        } else {
+            const int height = static_cast<int>(m_settings->getScreenW() / sourceAspect);
+            destination = cRectangle(
+                0,
+                (m_settings->getScreenH() - height) / 2,
+                m_settings->getScreenW(),
+                height);
+        }
+        m_sdlDrawer->renderStrechFullSprite(m_hdBackground, destination);
+        m_sdlDrawer->renderRectFillColor(
+            0,
+            0,
+            m_settings->getScreenW(),
+            m_settings->getScreenH(),
+            Color{3, 6, 8, 150});
+    }
+
     gui_window->draw();
     m_sdlDrawer->renderTexture(
         m_houseFlag->tex.get(), m_flagX, m_flagY, m_flagWidth, m_flagHeight);

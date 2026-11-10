@@ -25,6 +25,7 @@ class cGameSettings;
 class MissionFlow;
 class GameStateTransition;
 class cMouse;
+class cTextDrawer;
 
 enum class Outcome : char {Win, Lose};
 
@@ -44,11 +45,13 @@ public:
 
 private:
     cGameSettings* m_settings = nullptr;
+    cTextDrawer* m_textDrawer = nullptr;
     MissionFlow* m_missionFlow = nullptr;
     GameStateTransition* m_stateTransitions = nullptr;
     cMouse* m_mouse = nullptr;
     Texture *const *m_backgroundTexture = nullptr;
     Texture *m_tex = nullptr;
+    Texture *m_hdOutcomeTexture = nullptr;
     Outcome m_statement;
     void onMouseLeftButtonClicked(const s_MouseEvent &event) const;
 };

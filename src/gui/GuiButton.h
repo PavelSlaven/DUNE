@@ -55,6 +55,8 @@ public:
 
     void setRenderKind(GuiRenderKind value);
     void setTexture(Texture *tex);
+    void setTextScale(float scale);
+    void setTextOffsetY(int offset);
 
     void nextRenderKind();
 
@@ -74,6 +76,8 @@ private:
     // pressed state
     bool m_pressed;
     bool m_enabled;
+    float m_textScale = 1.0F;
+    int m_textOffsetY = 0;
     VisualState m_visualState = VisualState::Normal;
 
     // Functions
@@ -140,13 +144,31 @@ public:
         return *this;
     }
 
+    GuiButtonBuilder& withTextScale(float scale) {
+        this->m_textScale = scale;
+        return *this;
+    }
+
+    GuiButtonBuilder& withTextOffsetY(int offset) {
+        this->m_textOffsetY = offset;
+        return *this;
+    }
+
+    GuiButtonBuilder& withEnabled(bool enabled) {
+        this->m_enabled = enabled;
+        return *this;
+    }
+
     std::unique_ptr<GuiButton> build() const {
         auto btn = std::make_unique<GuiButton>(m_renderer, m_rect, m_label);
         btn->setTextDrawer(m_drawer);
         btn->setRenderKind(m_kind);
         btn->setTheme(m_theme);
         btn->setTextAlignHorizontal(m_align);
+        btn->setTextScale(m_textScale);
+        btn->setTextOffsetY(m_textOffsetY);
         btn->setTexture(m_tex);
+        btn->setEnabled(m_enabled);
         if (m_onLeftClick) {
             btn->setOnLeftMouseButtonClickedAction(m_onLeftClick);
         }
@@ -168,4 +190,7 @@ private:
     std::function<void()> m_onLeftClick = nullptr;
     std::function<void()> m_onRightClick = nullptr;
     Texture *m_tex = nullptr;
+    float m_textScale = 1.0F;
+    int m_textOffsetY = 0;
+    bool m_enabled = true;
 };

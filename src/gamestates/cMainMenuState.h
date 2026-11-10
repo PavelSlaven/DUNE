@@ -46,6 +46,9 @@ public:
     eGameStateType getType() override;
 
 private:
+    void buildHdMenu();
+    void drawHdBackground() const;
+
     cGameSettings * m_settings = nullptr;
     cTextDrawer* m_textDrawer = nullptr;
     MissionFlow* m_missionFlow = nullptr;
@@ -60,10 +63,13 @@ private:
     int mainMenuFrameY;
     int mainMenuWidth;
     int mainMenuHeight;
+    cRectangle m_logoRect;
 
     std::unique_ptr<GuiWindow> gui_window;
     std::unique_ptr<GuiButton> gui_btn_credits;
 
     Texture *bmp_D2TM_Title;
+    Texture *m_hdMenuBackground = nullptr;
+    Texture *m_hdMenuLogo = nullptr;
     std::unique_ptr<Texture> backGroundDebug;
 };

@@ -36,6 +36,39 @@ struct GuiTheme {
     Color disabledBorderLight;
     Color disabledBorderDark;
 
+    static GuiTheme Remaster() {
+        GuiTheme theme{};
+        theme.fillColor = Color{24, 29, 33, 238};
+        theme.borderLight = Color{190, 145, 58, 255};
+        theme.borderDark = Color{71, 50, 24, 255};
+        theme.background = Color{32, 32, 32, 255};
+        theme.textColor = Color{236, 229, 202, 255};
+        theme.textDarkColor = Color{225, 177, 21, 255};
+        theme.textColorHover = Color{255, 202, 83, 255};
+        theme.textColorShadow = Color{4, 6, 7, 220};
+        theme.disabledTextColor = Color{132, 132, 124, 255};
+        theme.disabledFillColor = Color{20, 24, 27, 220};
+        theme.disabledBorderLight = Color{91, 84, 66, 255};
+        theme.disabledBorderDark = Color{46, 42, 34, 255};
+        return theme;
+    }
+
+    static GuiTheme RemasterInactive() {
+        GuiTheme theme{};
+        theme.fillColor = Color{20, 24, 27, 220};
+        theme.borderLight = Color{91, 84, 66, 255};
+        theme.borderDark = Color{46, 42, 34, 255};
+        theme.background = Color{32, 32, 32, 255};
+        theme.textColor = Color{132, 132, 124, 255};
+        theme.textDarkColor = Color{225, 177, 21, 255};
+        theme.textColorHover = Color{154, 146, 124, 255};
+        theme.textColorShadow = Color{4, 6, 7, 220};
+        theme.disabledTextColor = Color{132, 132, 124, 255};
+        theme.disabledFillColor = Color{20, 24, 27, 220};
+        theme.disabledBorderLight = Color{91, 84, 66, 255};
+        theme.disabledBorderDark = Color{46, 42, 34, 255};
+        return theme;
+    }
 };
 
 class cGuiThemeBuilder {

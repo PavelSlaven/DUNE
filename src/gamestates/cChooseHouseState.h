@@ -20,6 +20,8 @@ class cKeyboardEvent;
 struct s_MouseEvent;
 #include "utils/cRectangle.h"
 
+#include <string>
+
 struct SDL_Surface;
 class Texture;
 class GameContext;
@@ -27,6 +29,7 @@ class GameStateTransition;
 class MentatFlow;
 class cMouse;
 class cTextDrawer;
+class cGameSettings;
 class Graphics;
 
 class cChooseHouseState : public cGameState {
@@ -43,6 +46,7 @@ public:
     eGameStateType getType() override;
 
 private:
+    cGameSettings* m_settings = nullptr;
     cTextDrawer* m_textDrawer = nullptr;
     Graphics *m_gfxinter = nullptr;
     GameStateTransition* m_stateTransitions = nullptr;
@@ -50,14 +54,12 @@ private:
     cMouse* m_mouse = nullptr;
     cRectangle backButtonRect;
 
-    Texture *bmp_Dune;
-    Texture *bmp_SelectYourHouseTitle;
-
     // TODO: abstract away the selectable houses
     Texture *bmp_HouseAtreides;
     Texture *bmp_HouseOrdos;
     Texture *bmp_HouseHarkonnen;
     Texture *bmp_HouseSardaukar;
+    Texture *m_hdBackground = nullptr;
 
     // Click areas of house emblems
     cRectangle houseAtreides;
@@ -65,14 +67,15 @@ private:
     cRectangle houseHarkonnen;
     cRectangle houseSardaukar;
 
-    int selectYourHouseXCentered;
-    cPoint coords_Dune;
-    cPoint coords_SelectYourHouseTitle;
-
     // Functions
     bool hoversOverBackButton;
 
     void onMouseLeftButtonClicked(const s_MouseEvent &event) const;
 
     void onMouseMoved(const s_MouseEvent &event);
+    void drawHdBackground() const;
+    void drawHdHouseCard(
+        const cRectangle &card,
+        Texture *emblem,
+        const std::string &name) const;
 };

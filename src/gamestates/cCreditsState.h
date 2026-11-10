@@ -67,9 +67,11 @@ private:
 
     std::vector<s_CreditLine> m_lines;
 
-    cPoint m_duneCoordinates;
-    Texture *m_duneBmp;
-    Texture *m_titleBmp;
+    cPoint m_teamCoordinates;
+    Texture *m_teamBmp = nullptr;
+    Texture *m_titleBmp = nullptr;
+    bool m_ownsTeamBmp = false;
+    bool m_ownsTitleBmp = false;
     std::unique_ptr<GuiButton> backButton;
 
     void resetCrawler();

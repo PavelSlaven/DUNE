@@ -17,7 +17,10 @@
 
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
+#include "drawers/cTextDrawer.h"
 #include "utils/Graphics.hpp"
+#include "utils/HdUiTextureLoader.hpp"
+#include "utils/OutcomeScreenLayout.hpp"
 #include "context/GameContext.hpp"
 #include "game/GameStateTransition.hpp"
 #include "game/MissionFlow.hpp"
@@ -35,6 +38,7 @@
 cWinLoseState::cWinLoseState(sGameServices* services, Outcome value) : 
     cGameState(services),
     m_settings(services->settings),
+    m_textDrawer(m_ctx->getTextContext()->getBeneTextDrawer()),
     m_statement(value)
 {
     d2tm_assert(services != nullptr);
@@ -50,6 +54,15 @@ cWinLoseState::cWinLoseState(sGameServices* services, Outcome value) :
     auto gfxinter = ctx->getGraphicsContext()->gfxinter;
     d2tm_assert(gfxinter != nullptr);
 
+    const char *outcomeFile = m_statement == Outcome::Lose
+        ? "outcome_defeat_en.png"
+        : "outcome_victory_en.png";
+    m_hdOutcomeTexture = loadHdUiTexture(
+        m_sdlDrawer->getRenderer(),
+        outcomeFile,
+        m_statement == Outcome::Lose ? "HD defeat screen" : "HD victory screen"
+    );
+
     m_backgroundTexture = &services->screenTexture;
     
     if (m_statement == Outcome::Lose) {
@@ -61,6 +74,7 @@ cWinLoseState::cWinLoseState(sGameServices* services, Outcome value) :
 
 cWinLoseState::~cWinLoseState()
 {
+    delete m_hdOutcomeTexture;
 }
 
 void cWinLoseState::thinkFast()
@@ -69,12 +83,32 @@ void cWinLoseState::thinkFast()
 
 void cWinLoseState::draw() const
 {
-    if (m_backgroundTexture && *m_backgroundTexture)
-        m_sdlDrawer->renderSprite(*m_backgroundTexture,0,0);
+    if (m_hdOutcomeTexture) {
+        const std::string prompt = "Click to continue";
+        const OutcomeScreenLayout layout = calculateOutcomeScreenLayout(
+            m_settings->getScreenW(),
+            m_settings->getScreenH(),
+            m_hdOutcomeTexture->pixelW,
+            m_hdOutcomeTexture->pixelH,
+            m_textDrawer->getTextLength(prompt)
+        );
+        m_sdlDrawer->renderStrechFullSprite(m_hdOutcomeTexture, layout.image);
+        m_textDrawer->drawTextScaledCenteredInBox(
+            prompt,
+            layout.prompt,
+            layout.promptTextScale,
+            Color{255, 224, 164, 255}
+        );
+    }
+    else {
+        if (m_backgroundTexture && *m_backgroundTexture) {
+            m_sdlDrawer->renderSprite(*m_backgroundTexture, 0, 0);
+        }
 
-    int posW = (m_settings->getScreenW()-m_tex->w)/2;
-    int posH = (m_settings->getScreenH()-m_tex->h)/2;
-    m_sdlDrawer->renderSprite(m_tex,posW, posH);
+        const int posW = (m_settings->getScreenW() - m_tex->w) / 2;
+        const int posH = (m_settings->getScreenH() - m_tex->h) / 2;
+        m_sdlDrawer->renderSprite(m_tex, posW, posH);
+    }
 
     m_mouse->draw();
 }
