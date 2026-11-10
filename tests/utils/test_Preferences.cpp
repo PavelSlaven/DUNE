@@ -107,3 +107,86 @@ TEST_CASE("Preferences - the low power icon is off unless the preferences enable
     REQUIRE(Preferences::load(file, loaded, error));
     REQUIRE_FALSE(loaded.showLowPowerIcon);
 }
+
+TEST_CASE("P5B preferences save and load WorldScale", "[P5B]")
+{
+    CHECK(std::string(Preferences::FILE_NAME) == "preferences.ini");
+    const auto file = freshDirectory("d2tm_p5b_prefs_world") / "preferences.ini";
+    InitialGameSettings saved;
+    saved.renderScalePercent = 150;
+    saved.worldScalePercent = 125;
+    std::string error;
+    REQUIRE(Preferences::save(file, saved, error));
+
+    InitialGameSettings loaded;
+    REQUIRE(Preferences::load(file, loaded, error));
+    CHECK(loaded.renderScalePercent == 150);
+    CHECK(loaded.worldScalePercent == 125);
+}
+
+TEST_CASE("P5B preferences saveScales keeps the other keys", "[P5B]")
+{
+    const auto file = freshDirectory("d2tm_p5b_prefs_keep") / "preferences.ini";
+    InitialGameSettings saved;
+    saved.playMusic = false;
+    saved.fogOfWarEnabled = true;
+    saved.renderScalePercent = 100;
+    saved.worldScalePercent = 100;
+    std::string error;
+    REQUIRE(Preferences::save(file, saved, error));
+    REQUIRE(Preferences::saveScales(file, 175, 110, error));
+
+    InitialGameSettings loaded;
+    REQUIRE(Preferences::load(file, loaded, error));
+    CHECK(loaded.renderScalePercent == 175);
+    CHECK(loaded.worldScalePercent == 110);
+    CHECK(loaded.playMusic == false);
+    CHECK(loaded.fogOfWarEnabled == true);
+}
+
+TEST_CASE("P5B preferences saveScales creates a missing file", "[P5B]")
+{
+    const auto file = freshDirectory("d2tm_p5b_prefs_new") / "nested" / "preferences.ini";
+    std::string error;
+    REQUIRE(Preferences::saveScales(file, 150, 125, error));
+    CHECK(std::filesystem::exists(file) == true);
+
+    InitialGameSettings loaded;
+    REQUIRE(Preferences::load(file, loaded, error));
+    CHECK(loaded.renderScalePercent == 150);
+    CHECK(loaded.worldScalePercent == 125);
+    CHECK(loaded.screenW == 800);
+    CHECK(loaded.playMusic == true);
+    CHECK(loaded.fogOfWarEnabled == false);
+}
+
+TEST_CASE("P5B preferences loadScales reads only the scale keys", "[P5B]")
+{
+    const auto file = freshDirectory("d2tm_p5b_prefs_scales") / "preferences.ini";
+    InitialGameSettings saved;
+    saved.screenW = 1280;
+    saved.playMusic = false;
+    saved.fogOfWarEnabled = true;
+    saved.renderScalePercent = 125;
+    saved.worldScalePercent = 150;
+    std::string error;
+    REQUIRE(Preferences::save(file, saved, error));
+
+    InitialGameSettings loaded;
+    REQUIRE(Preferences::loadScales(file, loaded, error));
+    CHECK(loaded.renderScalePercent == 125);
+    CHECK(loaded.worldScalePercent == 150);
+    CHECK(loaded.screenW == 800);
+    CHECK(loaded.playMusic == true);
+    CHECK(loaded.fogOfWarEnabled == false);
+
+    const auto missingFile = freshDirectory("d2tm_p5b_prefs_missing") / "preferences.ini";
+    InitialGameSettings untouched;
+    untouched.renderScalePercent = 100;
+    untouched.worldScalePercent = 110;
+    std::string missingError;
+    CHECK(Preferences::loadScales(missingFile, untouched, missingError) == false);
+    CHECK(missingError.empty() == false);
+    CHECK(untouched.renderScalePercent == 100);
+    CHECK(untouched.worldScalePercent == 110);
+}
