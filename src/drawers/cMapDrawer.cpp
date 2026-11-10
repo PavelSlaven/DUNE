@@ -19,6 +19,7 @@
 #include "data/gfxdata.h"
 #include "context/GameContext.hpp"
 #include "include/sGameServices.h"
+#include "drawers/TerrainVariation.hpp"
 #include "drawers/SDLDrawer.hpp"
 #include "drawers/cTextDrawer.h"
 #include "gameobjects/players/cPlayer.h"
@@ -250,7 +251,13 @@ void cMapDrawer::drawTerrainCells(bool fogged)
                 // valid type
                 const cRectangle src_pos = {terrainTile * 32, 0,32, 32};
                 cRectangle dest_pos = {iDrawX, iDrawY, iTileWidth, iTileHeight};
-                m_sdlDrawer->renderStrechSprite(m_gfxdata->getTexture(terrainType), src_pos, dest_pos);
+                Texture *terrainTexture = m_gfxdata->getTexture(terrainType);
+                const char *variantName = hdTerrainVariantName(terrainType, terrainTile, hdTerrainVariantIndex(iCell, terrainType));
+                if (variantName != nullptr) {
+                    Texture *variantTexture = m_gfxdata->getTexture(variantName);
+                    if (variantTexture != nullptr) terrainTexture = variantTexture;
+                }
+                m_sdlDrawer->renderStrechSprite(terrainTexture, src_pos, dest_pos);
             }
 
             // draw Smudge if necessary

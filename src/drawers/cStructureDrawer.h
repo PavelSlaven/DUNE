@@ -71,5 +71,5 @@ private:
     void renderIconOfUnitBeingRepaired(cAbstractStructure *structure) const;
     void renderIconThatStructureIsBeingRepaired(cAbstractStructure *structure) const;
     void renderIconThatPowerIsLow(cAbstractStructure *structure) const;
-    bool drawHdWindTrapFlag(cAbstractStructure *structure);
+    bool drawHdHouseFlag(cAbstractStructure *structure);
 };

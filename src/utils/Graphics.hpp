@@ -18,9 +18,12 @@
 #include <SDL3/SDL.h>
 #include <algorithm>
 #include <cmath>
+#include "utils/Color.hpp"
 #include <string>
 #include <memory>
+#include <map>
 #include <unordered_map>
+#include <utility>
 
 class Texture;
 
@@ -43,6 +46,8 @@ public:
     Texture *getTexture(int index);
     // return a texture from his name
     Texture *getTexture(const std::string &name);
+    Texture *createHouseTexture(SDL_Surface *reference, const Color &houseColor);
+    Texture *getHouseTexture(const std::string &name, int houseId, const Color &houseColor);
     // return number of file in Pack
     int getNumberOfFiles();
     int getDensity() const {
@@ -53,6 +58,7 @@ private:
     int assetDensity;
     std::unique_ptr<DataPack> dataPack;
     std::unordered_map<int, std::unique_ptr<Texture>> texCache;
+    std::map<std::pair<int, int>, std::unique_ptr<Texture>> houseTexCache;
 };
 
 inline constexpr int kHd4AssetDensity = 4;

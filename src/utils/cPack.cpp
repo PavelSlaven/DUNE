@@ -136,6 +136,14 @@ int ReaderPack::getIndexFromName(const std::string &fileId) const
         return -1;
 }
 
+std::string ReaderPack::getNameFromIndex(int index) const
+{
+    if (index < 0 || index >= static_cast<int>(fileInPack.size())) {
+        return {};
+    }
+    return fileInPack[index].fileId;
+}
+
 SDL_IOStream *ReaderPack::getData(unsigned int index)
 {
     if (index >= fileInPack.size()) {

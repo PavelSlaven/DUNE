@@ -15,6 +15,7 @@
 
 #include "Graphics.hpp"
 #include "utils/cDataPack.hpp"
+#include "utils/HouseMaskTint.hpp"
 #include "include/Texture.hpp"
 #include <iostream>
 #include "include/cAssert.h"
@@ -70,6 +71,62 @@ Texture *Graphics::getTexture(const std::string &name)
 {
     int index = dataPack->getIndexFromName(name);
     return this->getTexture(index);
+}
+
+Texture *Graphics::createHouseTexture(SDL_Surface *reference, const Color &houseColor)
+{
+    const int index = dataPack->getIndexFromSurface(reference);
+    if (index < 0) {
+        return nullptr;
+    }
+
+    const int maskIndex = dataPack->getIndexFromName("HM_" + dataPack->getNameFromIndex(index));
+    if (maskIndex < 0) {
+        return nullptr;
+    }
+
+    SDL_Surface *copy = SDL_ConvertSurface(reference, SDL_PIXELFORMAT_RGBA32);
+    if (!copy) {
+        return nullptr;
+    }
+
+    if (!applyHouseMaskTint(copy, dataPack->getSurface(maskIndex), houseColor)) {
+        SDL_DestroySurface(copy);
+        return nullptr;
+    }
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, copy);
+    const int width = copy->w;
+    const int height = copy->h;
+    SDL_DestroySurface(copy);
+    if (!texture) {
+        return nullptr;
+    }
+
+    SDL_SetTextureScaleMode(texture, getDensity() > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+    return new Texture(texture, width, height, false, getDensity());
+}
+
+Texture *Graphics::getHouseTexture(const std::string &name, int houseId, const Color &houseColor)
+{
+    const int index = dataPack->getIndexFromName(name);
+    if (index < 0) {
+        return nullptr;
+    }
+
+    const auto key = std::make_pair(index, houseId);
+    const auto cached = houseTexCache.find(key);
+    if (cached != houseTexCache.end()) {
+        return cached->second.get();
+    }
+
+    std::unique_ptr<Texture> texture(createHouseTexture(dataPack->getSurface(index), houseColor));
+    if (texture) {
+        Texture *result = texture.get();
+        houseTexCache.emplace(key, std::move(texture));
+        return result;
+    }
+    return getTexture(index);
 }
 
 int Graphics::getNumberOfFiles()

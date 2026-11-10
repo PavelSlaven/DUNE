@@ -38,6 +38,8 @@
 #include "context/cInfoContext.h"
 #include "context/cGameObjectContext.h"
 #include "utils/d2tm_math.h"
+#include "utils/HdHouseFlag.hpp"
+#include "utils/HouseMaskTint.hpp"
 #include "utils/LowPowerBlink.hpp"
 #include "utils/WindTrapFlag.hpp"
 #include "data/gfxinter.h"
@@ -286,17 +288,22 @@ void cStructureDrawer::drawStructureAnimationRefinery(cAbstractStructure *struct
     drawStructureAnimation(structure);
 }
 
-bool cStructureDrawer::drawHdWindTrapFlag(cAbstractStructure *structure)
+bool cStructureDrawer::drawHdHouseFlag(cAbstractStructure *structure)
 {
-    if (structure->getType() != WINDTRAP) return false;
+    const HdHouseFlag *houseFlag = findHdHouseFlag(structure->getType());
+    if (houseFlag == nullptr) return false;
 
-    Texture *flag = m_gfxdata->getTexture("BUILD_WINDTRAP_FLAG");
+    cPlayer *owner = structure->getPlayer();
+    Texture *flag = m_gfxdata->getHouseTexture(
+        houseFlag->textureName,
+        owner->getHouse(),
+        houseMaskTargetColor(owner->getHouse(), owner->getMinimapColor()));
     if (!flag) return false;
 
     const int frame = windTrapFlagFrame(SDL_GetTicks());
     m_sdlDrawer->renderStrechSprite(
         flag,
-        cRectangle{0, frame * kWindTrapFlagFrameSize, kWindTrapFlagFrameSize, kWindTrapFlagFrameSize},
+        cRectangle{0, frame * houseFlag->frameHeight, houseFlag->frameWidth, houseFlag->frameHeight},
         structure->getDrawRectangle());
     return true;
 }
@@ -334,7 +341,7 @@ void cStructureDrawer::drawStructureForLayer(cAbstractStructure *structure, int 
             else {
                 drawStructureAnimation(structure);
             }
-            if (!drawHdWindTrapFlag(structure)) {
+            if (!drawHdHouseFlag(structure)) {
                 structure->drawFlags();
             }
         }

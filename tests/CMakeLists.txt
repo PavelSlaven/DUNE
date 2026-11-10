@@ -25,6 +25,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Packs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Loading.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_HdRender.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_FactionTintTerrain.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_RenderScale.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_AdaptiveMenus.cpp
 )
@@ -56,6 +57,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/utils/cDataPack.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cPack.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Graphics.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/HouseMaskTint.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/RenderScale.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/HdUiTextureLoader.cpp
 )
