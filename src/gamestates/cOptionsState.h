@@ -58,5 +58,5 @@ private:
     std::unique_ptr<GuiWindow> m_guiWindow;
 
     void constructWindow(int prevState);
-    Texture *m_backgroundTexture = nullptr;
+    Texture *const *m_backgroundTexture = nullptr;
 };

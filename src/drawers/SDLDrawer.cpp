@@ -306,18 +306,35 @@ void SDLDrawer::renderChangeColor(Color color)
 }
 
 // Creates a render texture
-Texture* SDLDrawer::createRenderTargetTexture(int width, int height)
+Texture* SDLDrawer::createRenderTargetTexture(int width, int height, int density)
 {
+    const int d = std::max(1, density);
     SDL_Texture* texture = SDL_CreateTexture(renderer,
                                               SDL_PIXELFORMAT_RGBA8888,
                                               SDL_TEXTUREACCESS_TARGET,
-                                              width,
-                                              height);
+                                              width * d,
+                                              height * d);
     if (!texture) {
         throw std::runtime_error("Error creating render texture: " + std::string(SDL_GetError()));
     }
-    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
-    return new Texture(texture, width, height, true);
+    SDL_SetTextureScaleMode(texture, d > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+    if (d > 1) {
+        SDL_Texture *previousTarget = SDL_GetRenderTarget(renderer);
+        SDL_SetRenderTarget(renderer, texture);
+        SDL_SetRenderLogicalPresentation(renderer, width, height, SDL_LOGICAL_PRESENTATION_STRETCH);
+        SDL_SetRenderTarget(renderer, previousTarget);
+    }
+    return new Texture(texture, width * d, height * d, true, d);
+}
+
+void SDLDrawer::setFrameDensity(int density)
+{
+    frameDensity = std::max(1, density);
+}
+
+int SDLDrawer::getFrameDensity() const
+{
+    return frameDensity;
 }
 
 // Sets a texture as a render target.

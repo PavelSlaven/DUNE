@@ -16,6 +16,7 @@
 #pragma once
 
 #include "include/definitions.h"
+#include "utils/WorldScale.hpp"
 
 #include <optional>
 
@@ -29,6 +30,9 @@ public:
     }
     int getScreenH() const {
         return m_screenH;
+    }
+    float getWorldScaleFactor() const {
+        return worldScaleZoom(m_worldScalePercent, m_screenH);
     }
     bool isDisableAI() const {
         return m_disableAI;
@@ -139,6 +143,7 @@ private:
     // resolution of the game
     int m_screenW;
     int m_screenH;
+    int m_worldScalePercent = 0;
 
     bool m_disableAI;  
     bool m_oneAi;      

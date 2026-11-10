@@ -47,7 +47,7 @@ cSideBarDrawer::cSideBarDrawer(GameContext *ctx, cPlayer *player, sGameServices 
     d2tm_assert(ctx != nullptr);
     d2tm_assert(services != nullptr);
 
-    m_candiBarRenderer = m_sdlDrawer->createRenderTargetTexture(cSideBar::SidebarWidth, m_services->settings->getScreenH()-40);
+    m_candiBarRenderer = m_sdlDrawer->createRenderTargetTexture(cSideBar::SidebarWidth, m_services->settings->getScreenH()-40, m_sdlDrawer->getFrameDensity());
     createPlayerCandyBar();
 }
 
@@ -110,6 +110,10 @@ void cSideBarDrawer::createPlayerCandyBar()
     m_candyHorizonBar.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_sdlDrawer,
         m_player, m_gfxinter->getSurface(HORIZONTAL_CANDYBAR), TransparentColorIndex, m_gfxinter->getDensity()));
 
+    if (m_candiBarRenderer->density != m_sdlDrawer->getFrameDensity()) {
+        delete m_candiBarRenderer;
+        m_candiBarRenderer = m_sdlDrawer->createRenderTargetTexture(cSideBar::SidebarWidth, m_services->settings->getScreenH()-40, m_sdlDrawer->getFrameDensity());
+    }
     m_sdlDrawer->beginDrawingToTexture(m_candiBarRenderer);
     createCandyBar();
     m_sdlDrawer->endDrawingToTexture();
@@ -227,6 +231,10 @@ void cSideBarDrawer::drawCapacities()
 
 void cSideBarDrawer::drawCandybar()
 {
+    if (m_candiBarRenderer->density != m_sdlDrawer->getFrameDensity()) {
+        createPlayerCandyBar();
+    }
+
     m_sdlDrawer->renderSprite(m_candiBarRenderer,m_services->settings->getScreenW() - cSideBar::SidebarWidth,40);
 }
 

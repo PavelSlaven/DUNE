@@ -24,6 +24,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicJukeBox.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Packs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Loading.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_HdRender.cpp
 )
 
 # Production source files the tests depend on.

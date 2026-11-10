@@ -52,6 +52,8 @@ public:
         return renderResolution.height;
     }
 
+    int frameDensity() const;
+
     SDL_Window *getWindows() const {
         return window;
     }

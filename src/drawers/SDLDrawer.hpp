@@ -64,7 +64,9 @@ public:
         return renderer;
     }
 
-    Texture *createRenderTargetTexture(int width, int height);
+    Texture *createRenderTargetTexture(int width, int height, int density = 1);
+    void setFrameDensity(int density);
+    int getFrameDensity() const;
     void beginDrawingToTexture(Texture* targetTexture);
     void endDrawingToTexture();
     Texture *createTextureFromIndexedSurfaceWithPalette(SDL_Surface *referenceSurface, int paletteIndexForTransparency, const HouseColors& houseColors, int assetDensity = 1);
@@ -72,6 +74,7 @@ private:
     void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel_color);
 
     SDL_Renderer *renderer=nullptr;
+    int frameDensity = 1;
     Uint32 transparentColorKey;
     void renderChangeColor(Color color);
     std::stack<SDL_Texture*> renderTargetStack;

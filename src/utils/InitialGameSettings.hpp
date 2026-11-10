@@ -26,6 +26,7 @@ struct InitialGameSettings {
     bool cameraEdgeMove = true;
     bool windowed = false;
     eScalingMode scalingMode = eScalingMode::INTEGER_SCALE;
+    int worldScalePercent = 0;
     bool allowRepeatingReinforcements = false;
     bool turretsDownOnLowPower = false;
     bool rocketTurretsDownOnLowPower = false;

@@ -231,6 +231,7 @@ private:
 
     void transitionStateIfRequired();
     void setState(int newState);
+    void ensureFrameTargets();
 
     void updateMouseAndKeyboardState();
     bool shouldCaptureTextInput() const;

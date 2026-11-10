@@ -66,3 +66,13 @@ inline int scaleToBitmap(int logical, int logicalExtent, int bitmapExtent)
 {
     return static_cast<int>(std::round(logical * static_cast<double>(bitmapExtent) / logicalExtent));
 }
+
+inline int calculateFrameDensity(float presentationWidth, float presentationHeight, int logicalWidth, int logicalHeight)
+{
+    if (logicalWidth <= 0 || logicalHeight <= 0) {
+        return 1;
+    }
+
+    const float scale = std::min(presentationWidth / logicalWidth, presentationHeight / logicalHeight);
+    return std::clamp(static_cast<int>(std::ceil(scale - 0.01f)), 1, kHd4AssetDensity);
+}

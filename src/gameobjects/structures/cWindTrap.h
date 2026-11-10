@@ -46,7 +46,5 @@ public:
     std::string getStatusForMessageBar() const override;
 
     void onNotifyGameEvent(const s_GameEvent &) override {}
-private:
-    bool m_flagDir = true;      // Fading direction (TRUE -> up, FALSE -> down)
 };
 

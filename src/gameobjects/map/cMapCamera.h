@@ -50,11 +50,7 @@ public:
 
     void thinkFast();
 
-    void resetZoom() {
-        m_zoomLevel = 1.0f;
-        calibrate();
-        keepViewportWithinReasonableBounds();
-    }
+    void resetZoom();
 
     void setZoomLevel(float zoom);
 

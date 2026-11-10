@@ -39,6 +39,7 @@
 #include "context/cGameObjectContext.h"
 #include "utils/d2tm_math.h"
 #include "utils/LowPowerBlink.hpp"
+#include "utils/WindTrapFlag.hpp"
 #include "data/gfxinter.h"
 #include <SDL3/SDL.h>
 #include "include/cAssert.h"
@@ -285,6 +286,21 @@ void cStructureDrawer::drawStructureAnimationRefinery(cAbstractStructure *struct
     drawStructureAnimation(structure);
 }
 
+bool cStructureDrawer::drawHdWindTrapFlag(cAbstractStructure *structure)
+{
+    if (structure->getType() != WINDTRAP) return false;
+
+    Texture *flag = m_gfxdata->getTexture("BUILD_WINDTRAP_FLAG");
+    if (!flag) return false;
+
+    const int frame = windTrapFlagFrame(SDL_GetTicks());
+    m_sdlDrawer->renderStrechSprite(
+        flag,
+        cRectangle{0, frame * kWindTrapFlagFrameSize, kWindTrapFlagFrameSize, kWindTrapFlagFrameSize},
+        structure->getDrawRectangle());
+    return true;
+}
+
 void cStructureDrawer::drawStructureForLayer(cAbstractStructure *structure, int layer)
 {
     d2tm_assert(structure);
@@ -318,7 +334,9 @@ void cStructureDrawer::drawStructureForLayer(cAbstractStructure *structure, int 
             else {
                 drawStructureAnimation(structure);
             }
-            structure->drawFlags();
+            if (!drawHdWindTrapFlag(structure)) {
+                structure->drawFlags();
+            }
         }
         else {
             drawStructurePrebuildAnimation(structure);

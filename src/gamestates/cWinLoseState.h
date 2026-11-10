@@ -47,7 +47,7 @@ private:
     MissionFlow* m_missionFlow = nullptr;
     GameStateTransition* m_stateTransitions = nullptr;
     cMouse* m_mouse = nullptr;
-    Texture *m_backgroundTexture = nullptr;
+    Texture *const *m_backgroundTexture = nullptr;
     Texture *m_tex = nullptr;
     Outcome m_statement;
     void onMouseLeftButtonClicked(const s_MouseEvent &event) const;

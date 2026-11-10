@@ -51,7 +51,7 @@ cOptionsState::cOptionsState(sGameServices* services, int prevState)
     d2tm_assert(m_mouse != nullptr);
 
     refresh();
-    m_backgroundTexture = services->screenTexture;
+    m_backgroundTexture = &services->screenTexture;
 }
 
 void cOptionsState::constructWindow(int prevState)
@@ -338,8 +338,8 @@ void cOptionsState::thinkFast()
 
 void cOptionsState::draw() const
 {
-    if (m_backgroundTexture) {
-        m_sdlDrawer->renderSprite(m_backgroundTexture,0,0);
+    if (m_backgroundTexture && *m_backgroundTexture) {
+        m_sdlDrawer->renderSprite(*m_backgroundTexture,0,0);
     }
     m_guiWindow->draw();
 

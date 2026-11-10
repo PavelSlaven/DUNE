@@ -20,6 +20,7 @@ class cFlag;
 #include "observers/cScenarioObserver.h"
 #include "gameobjects/structures/cStructureInfo.h"
 #include "include/enums/BuildEnums.h"
+#include "utils/cRectangle.h"
 
 #include <vector>
 #include <string>
@@ -140,6 +141,7 @@ public:
     // drawing
     int iDrawX();
     int iDrawY();
+    cRectangle getDrawRectangle();
 
     // Functionality
     int getNonOccupiedCellAroundStructure();
