@@ -159,14 +159,14 @@ void cMainMenuState::buildHdMenu()
         m_missionFlow->init();
         m_stateTransitions->setNextStateWithFade(GAME_SETUPSKIRMISH);
     });
-    addButton("Load", true, [this]() { m_stateTransitions->fadeOut(); });
+    addButton("Load", false, nullptr);
     addButton("Map Editor", true, [this]() {
         m_stateTransitions->setNextStateWithFade(GAME_NEW_MAP_EDITOR);
     });
     addButton("Options", true, [this]() {
         m_stateTransitions->setNextState(GAME_OPTIONS);
     });
-    addButton("Hall of Fame", true, [this]() { m_stateTransitions->fadeOut(); });
+    addButton("Hall of Fame", false, nullptr);
 
     const std::string introMoviePack = "intro.pak";
     const bool hasIntroMoviePack = std::filesystem::exists(introMoviePack);
