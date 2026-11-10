@@ -644,11 +644,18 @@ void cGame::ensureFrameTargets()
         return;
     }
 
+    Texture *previousScreenTexture = screenTexture;
     delete actualRenderer;
-    delete screenTexture;
 
     actualRenderer = m_sdlDrawer->createRenderTargetTexture(m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);
     screenTexture = m_sdlDrawer->createRenderTargetTexture(m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);
+    if (previousScreenTexture != nullptr) {
+        m_sdlDrawer->beginDrawingToTexture(screenTexture);
+        m_sdlDrawer->renderClearToColor();
+        m_sdlDrawer->renderSprite(previousScreenTexture, 0, 0);
+        m_sdlDrawer->endDrawingToTexture();
+        delete previousScreenTexture;
+    }
     m_services->screenTexture = screenTexture;
 
     Logger::info(COMP_SDL2, "frame", "Frame targets {}x{} at density {}", m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);

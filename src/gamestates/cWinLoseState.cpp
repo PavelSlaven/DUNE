@@ -50,7 +50,7 @@ cWinLoseState::cWinLoseState(sGameServices* services, Outcome value) :
     auto gfxinter = ctx->getGraphicsContext()->gfxinter;
     d2tm_assert(gfxinter != nullptr);
 
-    m_backgroundTexture = services->screenTexture;
+    m_backgroundTexture = &services->screenTexture;
     
     if (m_statement == Outcome::Lose) {
         m_tex = gfxinter->getTexture(BMP_LOSING);
@@ -69,8 +69,8 @@ void cWinLoseState::thinkFast()
 
 void cWinLoseState::draw() const
 {
-    if (m_backgroundTexture)
-        m_sdlDrawer->renderSprite(m_backgroundTexture,0,0);
+    if (m_backgroundTexture && *m_backgroundTexture)
+        m_sdlDrawer->renderSprite(*m_backgroundTexture,0,0);
 
     int posW = (m_settings->getScreenW()-m_tex->w)/2;
     int posH = (m_settings->getScreenH()-m_tex->h)/2;

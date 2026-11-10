@@ -231,6 +231,10 @@ void cSideBarDrawer::drawCapacities()
 
 void cSideBarDrawer::drawCandybar()
 {
+    if (m_candiBarRenderer->density != m_sdlDrawer->getFrameDensity()) {
+        createPlayerCandyBar();
+    }
+
     m_sdlDrawer->renderSprite(m_candiBarRenderer,m_services->settings->getScreenW() - cSideBar::SidebarWidth,40);
 }
 
