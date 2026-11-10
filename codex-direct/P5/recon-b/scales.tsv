@@ -1,0 +1,41 @@
+ревизия	путь	символ	путь@ревизия:строка	входы	выходы
+FORK1	src/utils/RenderScale.hpp + .cpp	RenderCanvasSize	src/utils/RenderScale.hpp@9208dcf:5	width:int, height:int	структура с шириной и высотой canvas; operator== default-сравнение: src/utils/RenderScale.hpp@9208dcf:9
+FORK1	src/utils/RenderScale.hpp	MinimumRenderWidth	src/utils/RenderScale.hpp@9208dcf:12	—	800 пикселей, нижняя граница нормализованной ширины canvas
+FORK1	src/utils/RenderScale.hpp	MinimumRenderHeight	src/utils/RenderScale.hpp@9208dcf:13	—	600 пикселей, нижняя граница нормализованной высоты canvas
+FORK1	src/utils/RenderScale.hpp	AutomaticRenderScale	src/utils/RenderScale.hpp@9208dcf:14	—	0 обозначает автоматический масштаб
+FORK1	src/utils/RenderScale.hpp	ManualRenderScales	src/utils/RenderScale.hpp@9208dcf:15	—	100, 125, 150, 175, 200 процентов
+FORK1	src/utils/RenderScale.hpp + .cpp	renderScalePercent: допустимые значения	src/utils/RenderScale.hpp@9208dcf:14; src/utils/RenderScale.hpp@9208dcf:15; src/utils/RenderScale.cpp@9208dcf:32	выходные ширина и высота; ручное значение проверяется на доступность	0 = Auto; 100, 125, 150, 175, 200 = ручные значения, доступные только если выходной размер позволяет сохранить минимум 800×600
+FORK1	src/utils/RenderScale.hpp	RenderCanvasSize::operator==	src/utils/RenderScale.hpp@9208dcf:9	rhs: const RenderCanvasSize&	bool, сравнивает поля width и height
+FORK1	src/utils/RenderScale.cpp	normalizedOutputWidth	src/utils/RenderScale.cpp@9208dcf:7	outputWidth:int	max(outputWidth, MinimumRenderWidth)
+FORK1	src/utils/RenderScale.cpp	normalizedOutputHeight	src/utils/RenderScale.cpp@9208dcf:12	outputHeight:int	max(outputHeight, MinimumRenderHeight)
+FORK1	src/utils/RenderScale.cpp	automaticRenderScale	src/utils/RenderScale.cpp@9208dcf:17	outputWidth:int, outputHeight:int	double: минимум нормализованных горизонтального и вертикального коэффициентов относительно 800×600
+FORK1	src/utils/RenderScale.hpp + .cpp	calculateAutomaticRenderScalePercent	src/utils/RenderScale.hpp@9208dcf:17; src/utils/RenderScale.cpp@9208dcf:27	outputWidth:int, outputHeight:int	int: automaticRenderScale × 100, округлённое std::lround
+FORK1	src/utils/RenderScale.hpp + .cpp	isManualRenderScaleAvailable	src/utils/RenderScale.hpp@9208dcf:18; src/utils/RenderScale.cpp@9208dcf:32	outputWidth:int, outputHeight:int, renderScalePercent:int	bool: false, если процент не в ManualRenderScales; иначе проверяет, что нормализованные размеры при данном проценте дают минимум 800×600
+FORK1	src/utils/RenderScale.hpp + .cpp	calculateRenderCanvasSize	src/utils/RenderScale.hpp@9208dcf:23; src/utils/RenderScale.cpp@9208dcf:51	outputWidth:int, outputHeight:int, renderScalePercent:int	RenderCanvasSize: доступный ручной процент или автоматический коэффициент; ширина и высота округляются и ограничиваются снизу 800×600
+FORK1	src/utils/WorldScale.hpp	AutomaticWorldScale	src/utils/WorldScale.hpp@9208dcf:5	—	0 обозначает автоматический масштаб
+FORK1	src/utils/WorldScale.hpp	ManualWorldScales	src/utils/WorldScale.hpp@9208dcf:6	—	100, 110, 125, 150 процентов
+FORK1	src/utils/WorldScale.hpp	worldScalePercent: допустимые значения	src/utils/WorldScale.hpp@9208dcf:5; src/utils/WorldScale.hpp@9208dcf:6	selectedWorldScalePercent:int	0 = Auto; 100, 110, 125, 150 = ручные значения; прочие значения не поддерживаются и разрешаются в Auto
+FORK1	src/utils/WorldScale.hpp + .cpp	isWorldScaleSupported	src/utils/WorldScale.hpp@9208dcf:8; src/utils/WorldScale.cpp@9208dcf:6	worldScalePercent:int	bool: true для 0 и ManualWorldScales; иначе false
+FORK1	src/utils/WorldScale.hpp + .cpp	calculateAutomaticWorldScalePercent	src/utils/WorldScale.hpp@9208dcf:9; src/utils/WorldScale.cpp@9208dcf:13	outputHeight:int	int: 100 при высоте ≤768; 110 при ≤1080; 125 при ≤1600; иначе 150
+FORK1	src/utils/WorldScale.hpp + .cpp	resolveWorldScalePercent	src/utils/WorldScale.hpp@9208dcf:10; src/utils/WorldScale.cpp@9208dcf:27	selectedWorldScalePercent:int, outputHeight:int	int: выбранный поддерживаемый ручной процент; для Auto или неподдерживаемого значения — автоматический процент
+PORT	src/utils/RenderScale.hpp + .cpp	RenderCanvasSize	src/utils/RenderScale.hpp@616280c:5	width:int, height:int	структура с шириной и высотой canvas; operator== default-сравнение: src/utils/RenderScale.hpp@616280c:9
+PORT	src/utils/RenderScale.hpp	MinimumRenderWidth	src/utils/RenderScale.hpp@616280c:12	—	800 пикселей, нижняя граница нормализованной ширины canvas
+PORT	src/utils/RenderScale.hpp	MinimumRenderHeight	src/utils/RenderScale.hpp@616280c:13	—	600 пикселей, нижняя граница нормализованной высоты canvas
+PORT	src/utils/RenderScale.hpp	AutomaticRenderScale	src/utils/RenderScale.hpp@616280c:14	—	0 обозначает автоматический масштаб
+PORT	src/utils/RenderScale.hpp	ManualRenderScales	src/utils/RenderScale.hpp@616280c:15	—	100, 125, 150, 175, 200 процентов
+PORT	src/utils/RenderScale.hpp + .cpp	renderScalePercent: допустимые значения	src/utils/RenderScale.hpp@616280c:14; src/utils/RenderScale.hpp@616280c:15; src/utils/RenderScale.cpp@616280c:32	выходные ширина и высота; ручное значение проверяется на доступность	0 = Auto; 100, 125, 150, 175, 200 = ручные значения, доступные только если выходной размер позволяет сохранить минимум 800×600
+PORT	src/utils/RenderScale.hpp	RenderCanvasSize::operator==	src/utils/RenderScale.hpp@616280c:9	rhs: const RenderCanvasSize&	bool, сравнивает поля width и height
+PORT	src/utils/RenderScale.cpp	normalizedOutputWidth	src/utils/RenderScale.cpp@616280c:7	outputWidth:int	max(outputWidth, MinimumRenderWidth)
+PORT	src/utils/RenderScale.cpp	normalizedOutputHeight	src/utils/RenderScale.cpp@616280c:12	outputHeight:int	max(outputHeight, MinimumRenderHeight)
+PORT	src/utils/RenderScale.cpp	automaticRenderScale	src/utils/RenderScale.cpp@616280c:17	outputWidth:int, outputHeight:int	double: минимум нормализованных горизонтального и вертикального коэффициентов относительно 800×600
+PORT	src/utils/RenderScale.hpp + .cpp	calculateAutomaticRenderScalePercent	src/utils/RenderScale.hpp@616280c:17; src/utils/RenderScale.cpp@616280c:27	outputWidth:int, outputHeight:int	int: automaticRenderScale × 100, округлённое std::lround
+PORT	src/utils/RenderScale.hpp + .cpp	isManualRenderScaleAvailable	src/utils/RenderScale.hpp@616280c:18; src/utils/RenderScale.cpp@616280c:32	outputWidth:int, outputHeight:int, renderScalePercent:int	bool: false, если процент не в ManualRenderScales; иначе проверяет, что нормализованные размеры при данном проценте дают минимум 800×600
+PORT	src/utils/RenderScale.hpp + .cpp	calculateRenderCanvasSize	src/utils/RenderScale.hpp@616280c:23; src/utils/RenderScale.cpp@616280c:51	outputWidth:int, outputHeight:int, renderScalePercent:int	RenderCanvasSize: доступный ручной процент или автоматический коэффициент; ширина и высота округляются и ограничиваются снизу 800×600
+PORT	src/utils/WorldScale.hpp	AutomaticWorldScale	src/utils/WorldScale.hpp@616280c:6	—	0 обозначает автоматический масштаб
+PORT	src/utils/WorldScale.hpp	ManualWorldScales	src/utils/WorldScale.hpp@616280c:7	—	100, 110, 125, 150 процентов
+PORT	src/utils/WorldScale.hpp	worldScalePercent: допустимые значения	src/utils/WorldScale.hpp@616280c:6; src/utils/WorldScale.hpp@616280c:7	selectedWorldScalePercent:int	0 = Auto; 100, 110, 125, 150 = ручные значения; прочие значения не поддерживаются и разрешаются в Auto
+PORT	src/utils/WorldScale.hpp	isWorldScaleSupported	src/utils/WorldScale.hpp@616280c:9	worldScalePercent:int	bool: true для 0 и ManualWorldScales; иначе false
+PORT	src/utils/WorldScale.hpp	calculateAutomaticWorldScalePercent	src/utils/WorldScale.hpp@616280c:15	outputHeight:int	int: 100 при высоте ≤768; 110 при ≤1080; 125 при ≤1600; иначе 150
+PORT	src/utils/WorldScale.hpp	resolveWorldScalePercent	src/utils/WorldScale.hpp@616280c:29	selectedWorldScalePercent:int, outputHeight:int	int: выбранный поддерживаемый ручной процент; для Auto или неподдерживаемого значения — автоматический процент
+PORT	src/utils/WorldScale.hpp	worldScaleZoom	src/utils/WorldScale.hpp@616280c:37	selectedWorldScalePercent:int, outputHeight:int	float: resolveWorldScalePercent(...) / 100.0f
+PORT	src/utils/WorldScale.cpp	файл	src/utils/WorldScale.cpp@616280c:нет файла	—	нет файла; функции WorldScale реализованы inline в WorldScale.hpp

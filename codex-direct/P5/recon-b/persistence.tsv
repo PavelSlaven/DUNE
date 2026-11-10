@@ -1,0 +1,58 @@
+ревизия	файл настроек	секция	ключ	чтение	запись	что задаёт одной строкой
+FORK1	settings.ini	SETTINGS	ScreenWidth	src/utils/common.cpp@9208dcf:60	src/utils/common.cpp@9208dcf:356	ширину экрана
+FORK1	settings.ini	SETTINGS	ScreenHeight	src/utils/common.cpp@9208dcf:62	src/utils/common.cpp@9208dcf:357	высоту экрана
+FORK1	settings.ini	SETTINGS	FullScreen	src/utils/common.cpp@9208dcf:74	src/utils/common.cpp@9208dcf:358	полноэкранный режим; чтение инвертируется в windowed
+FORK1	settings.ini	SETTINGS	RenderScale	src/utils/common.cpp@9208dcf:64	src/utils/common.cpp@9208dcf:359	процент масштаба canvas рендеринга
+FORK1	settings.ini	SETTINGS	WorldScale	src/utils/common.cpp@9208dcf:66	src/utils/common.cpp@9208dcf:360	процент масштаба игрового мира
+FORK1	settings.ini	SETTINGS	CameraDragMoveSpeed	src/utils/common.cpp@9208dcf:68	src/utils/common.cpp@9208dcf:361	скорость перемещения камеры перетаскиванием
+FORK1	settings.ini	SETTINGS	CameraBorderOrKeyMoveSpeed	src/utils/common.cpp@9208dcf:70	src/utils/common.cpp@9208dcf:362	скорость перемещения камеры у края или клавишами
+FORK1	settings.ini	SETTINGS	CameraEdgeMove	src/utils/common.cpp@9208dcf:72	src/utils/common.cpp@9208dcf:363	перемещение камеры у края экрана
+FORK1	settings.ini	SETTINGS	AllowRepeatingReinforcements	src/utils/common.cpp@9208dcf:76	src/utils/common.cpp@9208dcf:364	повторяющиеся подкрепления
+FORK1	settings.ini	SETTINGS	AllTurretsDownOnLowPower	src/utils/common.cpp@9208dcf:78	src/utils/common.cpp@9208dcf:365	отключение всех турелей при низком энергоснабжении
+FORK1	settings.ini	SETTINGS	RocketTurretsDownOnLowPower	src/utils/common.cpp@9208dcf:80	src/utils/common.cpp@9208dcf:366	отключение ракетных турелей при низком энергоснабжении
+FORK1	settings.ini	SETTINGS	GameRules	src/utils/common.cpp@9208dcf:82	src/utils/common.cpp@9208dcf:367	имя файла игровых правил
+FORK1	settings.ini	SETTINGS	NoAI	src/utils/common.cpp@9208dcf:84	src/utils/common.cpp@9208dcf:368	отключение ИИ
+FORK1	settings.ini	SETTINGS	Debug	src/utils/common.cpp@9208dcf:86	src/utils/common.cpp@9208dcf:369	режим отладки
+FORK1	settings.ini	SETTINGS	playMusic	src/utils/common.cpp@9208dcf:89	src/utils/common.cpp@9208dcf:370	воспроизведение музыки
+FORK1	settings.ini	SETTINGS	playSound	src/utils/common.cpp@9208dcf:91	src/utils/common.cpp@9208dcf:371	воспроизведение звуков
+FORK1	settings.ini	SETTINGS	drawUnitDebug	src/utils/common.cpp@9208dcf:94	src/utils/common.cpp@9208dcf:372	отображение отладочных данных юнитов
+FORK1	settings.ini	SETTINGS	oneAi	src/utils/common.cpp@9208dcf:96	src/utils/common.cpp@9208dcf:373	режим одного ИИ
+FORK1	settings.ini	SETTINGS	disableWormAi	src/utils/common.cpp@9208dcf:98	src/utils/common.cpp@9208dcf:374	отключение ИИ червя
+FORK1	settings.ini	SETTINGS	disableReinforcements	src/utils/common.cpp@9208dcf:101	src/utils/common.cpp@9208dcf:375	отключение подкреплений
+FORK1	settings.ini	SETTINGS	noAiRest	src/utils/common.cpp@9208dcf:103	src/utils/common.cpp@9208dcf:376	отключение остальных ИИ
+FORK1	settings.ini	SETTINGS	drawUsages	src/utils/common.cpp@9208dcf:105	src/utils/common.cpp@9208dcf:377	отображение расхода ресурсов
+FORK1	settings.ini	SETTINGS	pauseWhenLosingFocus	src/utils/common.cpp@9208dcf:107	src/utils/common.cpp@9208dcf:378	пауза при потере фокуса
+FORK1	settings.ini	SETTINGS	Language	src/utils/common.cpp@9208dcf:109	src/utils/common.cpp@9208dcf:379	язык интерфейса
+FORK1	settings.ini	SETTINGS	KeyAttack	src/utils/common.cpp@9208dcf:112	src/utils/common.cpp@9208dcf:380	привязка действия Attack
+FORK1	settings.ini	SETTINGS	KeyRepair	src/utils/common.cpp@9208dcf:115	src/utils/common.cpp@9208dcf:381	привязка действия Repair
+FORK1	settings.ini	SETTINGS	KeyUnload	src/utils/common.cpp@9208dcf:118	src/utils/common.cpp@9208dcf:382	привязка действия Unload
+FORK1	settings.ini	SETTINGS	KeyDeploy	src/utils/common.cpp@9208dcf:121	src/utils/common.cpp@9208dcf:383	привязка действия Deploy
+FORK1	settings.ini	SETTINGS	KeyRally	src/utils/common.cpp@9208dcf:124	src/utils/common.cpp@9208dcf:384	привязка действия Rally
+FORK1	settings.ini	SETTINGS	KeyRelease	src/utils/common.cpp@9208dcf:127	src/utils/common.cpp@9208dcf:385	привязка действия Release
+PORT	preferences.ini	SETTINGS	ScreenWidth	src/game/Preferences.cpp@616280c:48	src/game/Preferences.cpp@616280c:157	ширину экрана
+PORT	preferences.ini	SETTINGS	ScreenHeight	src/game/Preferences.cpp@616280c:51	src/game/Preferences.cpp@616280c:158	высоту экрана
+PORT	preferences.ini	SETTINGS	CameraDragMoveSpeed	src/game/Preferences.cpp@616280c:54	src/game/Preferences.cpp@616280c:159	скорость перемещения камеры перетаскиванием
+PORT	preferences.ini	SETTINGS	CameraBorderOrKeyMoveSpeed	src/game/Preferences.cpp@616280c:57	src/game/Preferences.cpp@616280c:160	скорость перемещения камеры у края или клавишами
+PORT	preferences.ini	SETTINGS	FullScreen	src/game/Preferences.cpp@616280c:60	src/game/Preferences.cpp@616280c:161	полноэкранный режим; чтение инвертируется в windowed
+PORT	preferences.ini	SETTINGS	CameraEdgeMove	src/game/Preferences.cpp@616280c:63	src/game/Preferences.cpp@616280c:162	перемещение камеры у края экрана
+PORT	preferences.ini	SETTINGS	RenderScale	src/game/Preferences.cpp@616280c:66	src/game/Preferences.cpp@616280c:163	процент масштаба canvas рендеринга
+PORT	preferences.ini	SETTINGS	WorldScale	src/game/Preferences.cpp@616280c:69	не записывается	процент масштаба игрового мира (код чтения есть, записи в Preferences::save нет)
+PORT	preferences.ini	SETTINGS	AllowRepeatingReinforcements	src/game/Preferences.cpp@616280c:72	src/game/Preferences.cpp@616280c:164	повторяющиеся подкрепления
+PORT	preferences.ini	SETTINGS	AllTurretsDownOnLowPower	src/game/Preferences.cpp@616280c:75	src/game/Preferences.cpp@616280c:165	отключение всех турелей при низком энергоснабжении
+PORT	preferences.ini	SETTINGS	ShowLowPowerIcon	src/game/Preferences.cpp@616280c:78	src/game/Preferences.cpp@616280c:167	показ значка низкого энергоснабжения
+PORT	preferences.ini	SETTINGS	RocketTurretsDownOnLowPower	src/game/Preferences.cpp@616280c:81	src/game/Preferences.cpp@616280c:166	отключение ракетных турелей при низком энергоснабжении
+PORT	preferences.ini	SETTINGS	GameRules	src/game/Preferences.cpp@616280c:84	src/game/Preferences.cpp@616280c:168	имя файла игровых правил
+PORT	preferences.ini	SETTINGS	NoAI	src/game/Preferences.cpp@616280c:87	src/game/Preferences.cpp@616280c:169	отключение ИИ
+PORT	preferences.ini	SETTINGS	Debug	src/game/Preferences.cpp@616280c:90	src/game/Preferences.cpp@616280c:170	режим отладки
+PORT	preferences.ini	SETTINGS	playMusic	src/game/Preferences.cpp@616280c:93	src/game/Preferences.cpp@616280c:171	воспроизведение музыки
+PORT	preferences.ini	SETTINGS	customMusic	src/game/Preferences.cpp@616280c:96	src/game/Preferences.cpp@616280c:172	пользовательская музыка
+PORT	preferences.ini	SETTINGS	playSound	src/game/Preferences.cpp@616280c:99	src/game/Preferences.cpp@616280c:173	воспроизведение звуков
+PORT	preferences.ini	SETTINGS	playCreditsSound	src/game/Preferences.cpp@616280c:102	src/game/Preferences.cpp@616280c:174	звук титров
+PORT	preferences.ini	SETTINGS	drawUnitDebug	src/game/Preferences.cpp@616280c:105	src/game/Preferences.cpp@616280c:175	отображение отладочных данных юнитов
+PORT	preferences.ini	SETTINGS	oneAi	src/game/Preferences.cpp@616280c:108	src/game/Preferences.cpp@616280c:176	режим одного ИИ
+PORT	preferences.ini	SETTINGS	disableWormAi	src/game/Preferences.cpp@616280c:111	src/game/Preferences.cpp@616280c:177	отключение ИИ червя
+PORT	preferences.ini	SETTINGS	disableReinforcements	src/game/Preferences.cpp@616280c:114	src/game/Preferences.cpp@616280c:178	отключение подкреплений
+PORT	preferences.ini	SETTINGS	noAiRest	src/game/Preferences.cpp@616280c:117	src/game/Preferences.cpp@616280c:179	отключение остальных ИИ
+PORT	preferences.ini	SETTINGS	drawUsages	src/game/Preferences.cpp@616280c:120	src/game/Preferences.cpp@616280c:180	отображение расхода ресурсов
+PORT	preferences.ini	SETTINGS	pauseWhenLosingFocus	src/game/Preferences.cpp@616280c:123	src/game/Preferences.cpp@616280c:181	пауза при потере фокуса
+PORT	preferences.ini	SETTINGS	fogOfWarEnabled	src/game/Preferences.cpp@616280c:126	src/game/Preferences.cpp@616280c:182	туман войны
