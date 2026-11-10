@@ -301,6 +301,7 @@ cGame::cGame()
 void cGame::applySettings(std::unique_ptr<InitialGameSettings> gs)
 {
     m_gameSettings->m_screenW = gs->screenW;
+    m_gameSettings->m_worldScalePercent = gs->worldScalePercent;
 
     m_gameSettings->m_screenH = gs->screenH;
 
@@ -350,6 +351,7 @@ InitialGameSettings cGame::currentSettings() const
     gs.cameraEdgeMove = m_cameraEdgeMove;
     gs.windowed = m_windowed;
     gs.scalingMode = m_scalingMode;
+    gs.worldScalePercent = m_gameSettings->m_worldScalePercent;
     gs.allowRepeatingReinforcements = m_gameSettings->m_allowRepeatingReinforcements;
     gs.turretsDownOnLowPower = m_gameSettings->isTurretsDownOnLowPower();
     gs.rocketTurretsDownOnLowPower = m_gameSettings->isRocketTurretsDownOnLowPower();
@@ -567,9 +569,7 @@ void cGame::drawState()
 */
 void cGame::run()
 {
-    actualRenderer = m_sdlDrawer->createRenderTargetTexture(m_gameSettings->m_screenW, m_gameSettings->m_screenH);
-    screenTexture = m_sdlDrawer->createRenderTargetTexture(m_gameSettings->m_screenW, m_gameSettings->m_screenH);
-    m_services->screenTexture = screenTexture;
+    ensureFrameTargets();
     SDL_Event event;
     while (m_gameSettings->m_playing) {
         if (m_focusManager->isGameWindowActive()) {
@@ -620,6 +620,7 @@ void cGame::run()
         m_currentState->update();
         //Logger::print(LOG_INFO , COMP_NONE, "m_currentState", "m_currentState {}", gameStateToString(m_currentState->getType()));
 
+        ensureFrameTargets();
         m_sdlDrawer->beginDrawingToTexture(actualRenderer);
         m_sdlDrawer->renderClearToColor();
         drawState(); // run game state, includes interaction + drawing
@@ -632,6 +633,25 @@ void cGame::run()
         SDL_RenderPresent(renderer);
         m_timeManager->waitForCPU(); // wait for CPU to catch up, so we don't run too fast
     }
+}
+
+void cGame::ensureFrameTargets()
+{
+    const int density = m_Screen->frameDensity();
+    m_sdlDrawer->setFrameDensity(density);
+
+    if (actualRenderer != nullptr && actualRenderer->density == density) {
+        return;
+    }
+
+    delete actualRenderer;
+    delete screenTexture;
+
+    actualRenderer = m_sdlDrawer->createRenderTargetTexture(m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);
+    screenTexture = m_sdlDrawer->createRenderTargetTexture(m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);
+    m_services->screenTexture = screenTexture;
+
+    Logger::info(COMP_SDL2, "frame", "Frame targets {}x{} at density {}", m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);
 }
 
 /**

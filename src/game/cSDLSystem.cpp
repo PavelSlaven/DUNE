@@ -15,6 +15,7 @@
 
 #include "game/cSDLSystem.h"
 
+#include "utils/Graphics.hpp"
 #include "utils/Log.h"
 
 #include <SDL3/SDL.h>
@@ -244,6 +245,16 @@ cSDLSystem::~cSDLSystem()
         SDL_Quit();
     }
     Logger::info(COMP_SDL2, "SDL shutdown", "Thanks for playing!");
+}
+
+int cSDLSystem::frameDensity() const
+{
+    SDL_FRect rect{};
+    if (!SDL_GetRenderLogicalPresentationRect(renderer, &rect)) {
+        return 1;
+    }
+
+    return calculateFrameDensity(rect.w, rect.h, renderResolution.width, renderResolution.height);
 }
 
 cSDLSystem::cSDLSystem(int desiredWidth, int desiredHeight, const std::string &title, bool windowed, eScalingMode scalingMode)

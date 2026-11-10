@@ -41,6 +41,8 @@ struct s_UnitInfo {
 
     int    bmp_width;     // width of each unit frame (in pixels).
     int    bmp_height;    // Height of the unit, for each animating frame.
+    int hd_frame_width = 0;
+    int hd_frame_height = 0;
     int    bmp_frames;
     int    bmp_startpixel; // The X axis starting pixel (i.e. for the harvester)
 

@@ -42,7 +42,7 @@ cMapCamera::cMapCamera(cMap *theMap, float moveSpeedDrag, float moveSpeedBorderO
     d2tm_assert(gameSettings != nullptr);
     d2tm_assert(mouse != nullptr);
     m_viewportStartX = m_viewportStartY = 32;
-    m_zoomLevel = 1.0f;
+    m_zoomLevel = std::clamp(m_gameSettings->getWorldScaleFactor(), 0.25f, 4.0f);
 
     int widthOfSidebar = cSideBar::SidebarWidth;
     m_heightOfTopBar = cSideBar::TopBarHeight;
@@ -66,6 +66,11 @@ cMapCamera::cMapCamera(cMap *theMap, float moveSpeedDrag, float moveSpeedBorderO
 
 cMapCamera::~cMapCamera()
 {
+}
+
+void cMapCamera::resetZoom()
+{
+    setZoomLevel(m_gameSettings->getWorldScaleFactor());
 }
 
 void cMapCamera::trackToAbsPosition(float absX, float absY)

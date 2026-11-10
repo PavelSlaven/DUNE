@@ -284,6 +284,8 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[SIEGETANK].bmp_width = 18 * 2;
     unitInfos[SIEGETANK].bmp_startpixel = 1;
     unitInfos[SIEGETANK].bmp_height = 18 * 2;
+    unitInfos[SIEGETANK].hd_frame_width = 176;
+    unitInfos[SIEGETANK].hd_frame_height = 176;
     unitInfos[SIEGETANK].bmp_frames = 0;
     unitInfos[SIEGETANK].bulletType = BULLET_SIEGE;
     unitInfos[SIEGETANK].fireTwice = true;

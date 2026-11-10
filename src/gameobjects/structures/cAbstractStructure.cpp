@@ -919,6 +919,13 @@ void cAbstractStructure::addFlag(std::unique_ptr<cFlag> flag)
     flags.push_back(std::move(flag));
 }
 
+cRectangle cAbstractStructure::getDrawRectangle()
+{
+    int scaledWidth = m_mapCamera->factorZoomLevel(getWidthInPixels());
+    int scaledHeight = m_mapCamera->factorZoomLevel(getHeightInPixels());
+    return {iDrawX(), iDrawY(), scaledWidth, scaledHeight};
+}
+
 void cAbstractStructure::drawWithShadow()
 {
     int pixelWidth = getWidthInPixels();
@@ -928,16 +935,10 @@ void cAbstractStructure::drawWithShadow()
     // what frame is being drawn. So multiply the height of the structure size times frame
     int iSourceY = pixelHeight * iFrame;
 
-    int drawX = iDrawX();
-    int drawY = iDrawY();
-
-    int scaledWidth = m_mapCamera->factorZoomLevel(pixelWidth);
-    int scaledHeight = m_mapCamera->factorZoomLevel(pixelHeight);
-
     Texture *bitmapToDraw = getBitmap();
 
     cRectangle src =  {0, iSourceY, pixelWidth, pixelHeight};
-    cRectangle dest =  {drawX, drawY, scaledWidth, scaledHeight};
+    cRectangle dest = getDrawRectangle();
     Texture *shadow = getShadowBitmap();
     if (shadow) {
         m_renderer->renderStrechSprite(shadow, src, dest, ShadowTrans);
