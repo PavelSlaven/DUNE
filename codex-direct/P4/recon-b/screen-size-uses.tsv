@@ -1,0 +1,250 @@
+путь@ce0cacf:строка	символ	что вычисляется	когда читается
+src/controls/cGameControlsContext.cpp@ce0cacf:83	cGameControlsContext::m_mapViewport [запись-алиас]	сохраняет ссылку на общий логический viewport из сервисов	при создании объекта: создание контекста управления
+src/controls/cGameControlsContext.cpp@ce0cacf:100	getScreenW()	if (coords.x > (m_settings->getScreenW() - cSideBar::SidebarWidth)) {	при событии: движение мыши
+src/controls/cGameControlsContext.h@ce0cacf:158	cGameControlsContext::m_mapViewport [поле cRectangle*]	хранит ссылку на общий логический viewport для преобразования координат/контролов	при создании объекта: поле выделено; получает указатель при создании контекста
+src/controls/cMouse.cpp@ce0cacf:288	getScreenW()	if (m_coords.x > m_settings->getScreenW() - cSideBar::SidebarWidth) {	при событии: движение мыши при рамочном выборе
+src/controls/cMouse.cpp@ce0cacf:289	getScreenW()	m_mouseCoX2 = m_settings->getScreenW() - cSideBar::SidebarWidth - 1;	при событии: движение мыши при рамочном выборе
+src/controls/cMouse.h@ce0cacf:140	cMouse::m_mouseCoX2 [поле]	хранит конечную X-координату выделения, ограниченную логической шириной и sidebar	при создании объекта: поле выделено; значение меняется при движении мыши
+src/drawers/CreditsDrawer.cpp@ce0cacf:74	getScreenW()	m_drawX = settings->getScreenW() - (cSideBar::SidebarWidthWithoutCandyBar / 2) - (widthCreditsBar / 2);	при создании объекта
+src/drawers/CreditsDrawer.h@ce0cacf:88	CreditsDrawer::m_drawX [поле]	хранит горизонтальную позицию панели credits, рассчитанную от screenW	при создании объекта: поле выделено; значение задаёт конструктор
+src/drawers/SDLDrawer.cpp@ce0cacf:315	SDL_Texture width * density	создаёт backing texture шириной в физических пикселях для render target	при событии: создание render target
+src/drawers/SDLDrawer.cpp@ce0cacf:316	SDL_Texture height * density	создаёт backing texture высотой в физических пикселях для render target	при событии: создание render target
+src/drawers/SDLDrawer.cpp@ce0cacf:327	Texture(width * d, height * d, density)	сохраняет логические w/h, pixelW/pixelH и density созданного render target	при событии: создание render target
+src/drawers/SDLDrawer.cpp@ce0cacf:332	SDLDrawer::frameDensity [запись]	сохраняет новую плотность, рассчитанную cSDLSystem::frameDensity()	при событии: обновление плотности кадра
+src/drawers/SDLDrawer.hpp@ce0cacf:77	SDLDrawer::frameDensity [поле]	хранит плотность текущего кадра для последующих render-target текстур	при создании объекта SDLDrawer
+src/drawers/cBuildingListDrawer.cpp@ce0cacf:154	getScreenW()	return (m_settings->getScreenW() - cSideBar::SidebarWidthWithoutCandyBar) + 2;	каждый кадр
+src/drawers/cMessageDrawer.cpp@ce0cacf:151	getScreenW()	int desiredWidth = m_services->settings->getScreenW() - (cSideBar::SidebarWidth + widthOfOptionsButton);	при событии: сообщение переходит в режим COMBAT
+src/drawers/cMiniMapDrawer.cpp@ce0cacf:74	getScreenW()	int topLeftX = settings->getScreenW() - cSideBar::WidthOfMinimap;	при создании объекта
+src/drawers/cMiniMapDrawer.cpp@ce0cacf:75	cMiniMapDrawer::m_drawX [поле]	сохраняет горизонтальное положение миникарты, полученное от screenW	при создании объекта
+src/drawers/cMiniMapDrawer.cpp@ce0cacf:82	cMiniMapDrawer::m_centerX [поле]	сохраняет центр карты относительно screenW и рамки миникарты	при создании объекта
+src/drawers/cMiniMapDrawer.cpp@ce0cacf:85	cMiniMapDrawer::m_RectMinimap [cRectangle]	сохраняет hit-test прямоугольник миникарты в логических координатах	при создании объекта
+src/drawers/cMiniMapDrawer.cpp@ce0cacf:86	cMiniMapDrawer::m_RectFullMinimap [cRectangle]	сохраняет логический прямоугольник миникарты/sidebar	при создании объекта
+src/drawers/cMiniMapDrawer.h@ce0cacf:111	cMiniMapDrawer::m_RectMinimap [поле cRectangle]	хранит логическую hit-test область карты миникарты	при создании объекта: поле выделено; значение задаёт конструктор
+src/drawers/cMiniMapDrawer.h@ce0cacf:112	cMiniMapDrawer::m_RectFullMinimap [поле cRectangle]	хранит логическую hit-test область полного окна миникарты/sidebar	при создании объекта: поле выделено; значение задаёт конструктор
+src/drawers/cMiniMapDrawer.h@ce0cacf:123	cMiniMapDrawer::m_drawX [поле]	хранит логическую X-позицию миникарты	при создании объекта: поле выделено; значение задаёт конструктор
+src/drawers/cMiniMapDrawer.h@ce0cacf:124	cMiniMapDrawer::m_centerX [поле]	хранит логическую X-координату центра карты миникарты	при создании объекта: поле выделено; значение задаёт конструктор
+src/drawers/cMouseDrawer.cpp@ce0cacf:58	getScreenW()	int diffX = (x + width) - m_settings->getScreenW();	каждый кадр
+src/drawers/cMouseDrawer.cpp@ce0cacf:70	getScreenH()	int diffY = (y + height) - m_settings->getScreenH();	каждый кадр
+src/drawers/cOrderDrawer.cpp@ce0cacf:46	getScreenW()	m_buttonRect = cRectangle((services->settings->getScreenW() - halfOfSidebar) - halfOfButton,	при создании объекта
+src/drawers/cOrderDrawer.cpp@ce0cacf:47	getScreenH()	(services->settings->getScreenH() - halfOfHeightLeftForButton) - halfOfButtonHeight,	при создании объекта
+src/drawers/cOrderDrawer.h@ce0cacf:53	cOrderDrawer::m_buttonRect [поле cRectangle]	хранит прямоугольник кнопки, позиция которого вычисляется от screenW	при создании объекта: поле выделено; прямоугольник строится в конструкторе
+src/drawers/cSideBarDrawer.cpp@ce0cacf:50	getScreenH()	m_candiBarRenderer = m_sdlDrawer->createRenderTargetTexture(cSideBar::SidebarWidth, m_services->settings->getScreenH()-40, m_sdlDrawer->getFrameDensity());	при создании объекта
+src/drawers/cSideBarDrawer.cpp@ce0cacf:84	getScreenH()	m_sdlDrawer->renderRectFillColor((m_services->settings->getScreenW() - cSideBar::SidebarWidth), 0, cSideBar::SidebarWidth, m_services->settings->getScreenH(), Color{0, 0, 0,255});	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:84	getScreenW()	m_sdlDrawer->renderRectFillColor((m_services->settings->getScreenW() - cSideBar::SidebarWidth), 0, cSideBar::SidebarWidth, m_services->settings->getScreenH(), Color{0, 0, 0,255});	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:115	getScreenH()	m_candiBarRenderer = m_sdlDrawer->createRenderTargetTexture(cSideBar::SidebarWidth, m_services->settings->getScreenH()-40, m_sdlDrawer->getFrameDensity());	при событии: смена дома игрока или плотности кадра
+src/drawers/cSideBarDrawer.cpp@ce0cacf:143	getScreenW()	int drawX = m_services->settings->getScreenW() - cSideBar::SidebarWidthWithoutCandyBar + 1;	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:148	getScreenW()	for (; drawX < m_services->settings->getScreenW(); drawX += backgroundSprite->w) {	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:149	getScreenH()	for (int drawY=startY; drawY < m_services->settings->getScreenH(); drawY += backgroundSprite->h) {	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:168	getScreenH()	int endY = m_services->settings->getScreenH();	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:172	getScreenH()	endY = m_services->settings->getScreenH() - 50; // leave room for button "order" at bottom sidebar	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:185	getScreenW()	m_sdlDrawer->renderLine( iDrawX, barY-1, m_services->settings->getScreenW(), barY - 1, darker);	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:186	getScreenW()	m_sdlDrawer->renderLine( iDrawX, barY, m_services->settings->getScreenW(), barY, veryDark);	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:191	getScreenH()	m_sdlDrawer->renderRectFillColor(iDrawX, endY, m_services->settings->getScreenW()-iDrawX, m_services->settings->getScreenH()-endY, m_sidebarColor);	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:191	getScreenW()	m_sdlDrawer->renderRectFillColor(iDrawX, endY, m_services->settings->getScreenW()-iDrawX, m_services->settings->getScreenH()-endY, m_sidebarColor);	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:196	getScreenH()	m_sdlDrawer->renderLine( iDrawX - 1, iDrawY-38, iDrawX-1, m_services->settings->getScreenH(), Color{255, 211, 125,255}); // left	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:197	getScreenW()	m_sdlDrawer->renderLine( m_services->settings->getScreenW() - 1, iDrawY - 38, m_services->settings->getScreenW() - 1, endY, Color{209, 150, 28,255}); // right	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:238	getScreenW()	m_sdlDrawer->renderSprite(m_candiBarRenderer,m_services->settings->getScreenW() - cSideBar::SidebarWidth,40);	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:244	getScreenW()	int drawX = (m_services->settings->getScreenW() - sprite->w) + 1;	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:262	getScreenW()	m_sdlDrawer->renderRectFillColor(drawX + 1, cSideBar::TopBarHeight + 1,m_services->settings->getScreenW()-(drawX + 1), drawY-(cSideBar::TopBarHeight + 1),	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:305	getScreenH()	int heightInPixels = (m_services->settings->getScreenH() - cSideBar::TopBarHeight);	при событии: создание или пересоздание текстуры candybar
+src/drawers/cSideBarDrawer.cpp@ce0cacf:340	getScreenH()	int barTotalHeight = m_services->settings->getScreenH() - (cSideBar::TotalHeightBeforePowerBarStarts + cSideBar::PowerBarMarginHeight);	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:341	getScreenW()	int barX = (m_services->settings->getScreenW() - cSideBar::SidebarWidth) + (cSideBar::VerticalCandyBarWidth / 3);	каждый кадр
+src/drawers/cSideBarDrawer.cpp@ce0cacf:396	getScreenW()	int barX = (m_services->settings->getScreenW() - cSideBar::SidebarWidth) + (cSideBar::VerticalCandyBarWidth / 3);	каждый кадр
+src/drawers/cSideBarDrawer.h@ce0cacf:81	cSideBarDrawer::m_candiBarRenderer [поле Texture*]	удерживает отдельный render target candybar с высотой screenH−40 и текущим density	при создании объекта и событии: смена дома/плотности
+src/drawers/cStructureDrawer.cpp@ce0cacf:466	getScreenW()	m_sdlDrawer->renderRectFillColor((m_settings->getScreenW() - cSideBar::SidebarWidth), 0,	каждый кадр
+src/drawers/cStructureDrawer.cpp@ce0cacf:467	getScreenH()	cSideBar::SidebarWidth, m_settings->getScreenH(), 0, 0, 0,255);	каждый кадр
+src/drawers/cTextDrawer.cpp@ce0cacf:73	getScreenW()	int xPos = (m_settings->getScreenW() / 2) - half;	каждый кадр
+src/drawers/cTextDrawer.cpp@ce0cacf:129	getScreenW()	int x = m_settings->getScreenW() - lenghtInPixels-margin;	каждый кадр
+src/drawers/cTextDrawer.cpp@ce0cacf:130	getScreenH()	int y = m_settings->getScreenH() - getFontHeight()-20-margin;	каждый кадр
+src/drawers/cTextDrawer.cpp@ce0cacf:144	getScreenH()	int y = m_settings->getScreenH() - h-20-margin;	каждый кадр
+src/game/Preferences.cpp@ce0cacf:48	InitialGameSettings::screenW [запись из INI]	сохраняет ScreenWidth из settings.ini или preferences.ini в поле настроек	при создании объекта: чтение настроек из INI
+src/game/Preferences.cpp@ce0cacf:51	InitialGameSettings::screenH [запись из INI]	сохраняет ScreenHeight из settings.ini или preferences.ini в поле настроек	при создании объекта: чтение настроек из INI
+src/game/Preferences.cpp@ce0cacf:159	preferences.ini: ScreenWidth [постоянное хранение]	сериализует логическую ширину в файл пользовательских параметров	при событии: сохранение настроек при завершении игры
+src/game/Preferences.cpp@ce0cacf:160	preferences.ini: ScreenHeight [постоянное хранение]	сериализует логическую высоту в файл пользовательских параметров	при событии: сохранение настроек при завершении игры
+src/game/cGame.h@ce0cacf:101	cGame::m_mapViewport [поле cRectangle]	удерживает логический прямоугольник игровой области карты	при создании объекта: cGame::setupGame() строит прямоугольник из screenW/H
+src/game/cGame.h@ce0cacf:200	cGame::m_initialGameSettings [поле unique_ptr]	удерживает исходный набор InitialGameSettings со значениями screenW/screenH	при создании объекта: сохранение начального набора параметров
+src/game/cGame.h@ce0cacf:209	cGame::screenTexture [поле Texture*]	удерживает screen-sized target для фона переходов/состояний	при событии: создание или смена плотности frame targets
+src/game/cGame.h@ce0cacf:210	cGame::actualRenderer [поле Texture*]	удерживает screen-sized target для текущего кадра	при событии: создание или смена плотности frame targets
+src/game/cGameSettings.h@ce0cacf:144	cGameSettings::m_screenW [поле]	хранит текущую логическую ширину игры	при создании объекта: выделение поля; значение задаёт applySettings()
+src/game/cGameSettings.h@ce0cacf:145	cGameSettings::m_screenH [поле]	хранит текущую логическую высоту игры	при создании объекта: выделение поля; значение задаёт applySettings()
+src/game/cGame_logic.cpp@ce0cacf:303	cGameSettings::m_screenW [запись из InitialGameSettings]	копирует запрошенную логическую ширину в текущее поле игры	при создании объекта: applySettings()
+src/game/cGame_logic.cpp@ce0cacf:306	cGameSettings::m_screenH [запись из InitialGameSettings]	копирует запрошенную логическую высоту в текущее поле игры	при создании объекта: applySettings()
+src/game/cGame_logic.cpp@ce0cacf:340	cGame::m_initialGameSettings [объект настроек]	удерживает исходный объект InitialGameSettings вместе с его screenW/screenH	при создании объекта: сохранение начального набора параметров
+src/game/cGame_logic.cpp@ce0cacf:347	m_screenW	gs.screenW = m_gameSettings->m_screenW;	при событии: завершение игры и сохранение параметров
+src/game/cGame_logic.cpp@ce0cacf:348	m_screenH	gs.screenH = m_gameSettings->m_screenH;	при событии: завершение игры и сохранение параметров
+src/game/cGame_logic.cpp@ce0cacf:563	getScreenH()	m_notificationArea->draw(m_textDrawer, 14, m_gameSettings->getScreenH() - 64);	каждый кадр
+src/game/cGame_logic.cpp@ce0cacf:650	m_screenH	actualRenderer = m_sdlDrawer->createRenderTargetTexture(m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);	при событии: запуск или изменение плотности кадра
+src/game/cGame_logic.cpp@ce0cacf:650	m_screenW	actualRenderer = m_sdlDrawer->createRenderTargetTexture(m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);	при событии: запуск или изменение плотности кадра
+src/game/cGame_logic.cpp@ce0cacf:651	m_screenH	screenTexture = m_sdlDrawer->createRenderTargetTexture(m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);	при событии: запуск или изменение плотности кадра
+src/game/cGame_logic.cpp@ce0cacf:651	m_screenW	screenTexture = m_sdlDrawer->createRenderTargetTexture(m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);	при событии: запуск или изменение плотности кадра
+src/game/cGame_logic.cpp@ce0cacf:659	sGameServices::screenTexture [запись-алиас]	передаёт screen-sized target из cGame в сервисы для состояний	при событии: создание frame targets
+src/game/cGame_logic.cpp@ce0cacf:661	m_screenH	Logger::info(COMP_SDL2, "frame", "Frame targets {}x{} at density {}", m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);	при событии: запуск или изменение плотности кадра
+src/game/cGame_logic.cpp@ce0cacf:661	m_screenW	Logger::info(COMP_SDL2, "frame", "Frame targets {}x{} at density {}", m_gameSettings->m_screenW, m_gameSettings->m_screenH, density);	при событии: запуск или изменение плотности кадра
+src/game/cGame_logic.cpp@ce0cacf:753	m_screenH	m_Screen = std::make_unique<cSDLSystem>(m_gameSettings->m_screenW, m_gameSettings->m_screenH, title, m_windowed, m_scalingMode);	при создании объекта
+src/game/cGame_logic.cpp@ce0cacf:753	m_screenW	m_Screen = std::make_unique<cSDLSystem>(m_gameSettings->m_screenW, m_gameSettings->m_screenH, title, m_windowed, m_scalingMode);	при создании объекта
+src/game/cGame_logic.cpp@ce0cacf:771	cGameSettings::m_screenW [запись из cSDLSystem::Width()]	заменяет запрос на итоговую логическую ширину, принятую SDL	при создании объекта: после создания окна и renderer
+src/game/cGame_logic.cpp@ce0cacf:772	cGameSettings::m_screenH [запись из cSDLSystem::Height()]	заменяет запрос на итоговую логическую высоту, принятую SDL	при создании объекта: после создания окна и renderer
+src/game/cGame_logic.cpp@ce0cacf:806	getScreenW()	m_gameSettings->getScreenW(),	при создании объекта: установка размеров консоли и viewport после SDL
+src/game/cGame_logic.cpp@ce0cacf:807	getScreenH()	m_gameSettings->getScreenH());	при создании объекта: установка размеров консоли и viewport после SDL
+src/game/cGame_logic.cpp@ce0cacf:821	getScreenH()	m_mapViewport = std::make_unique<cRectangle>(0, cSideBar::TopBarHeight, m_gameSettings->getScreenW() - cSideBar::SidebarWidth, m_gameSettings->getScreenH() - cSideBar::TopBarHeight);	при создании объекта: установка размеров консоли и viewport после SDL
+src/game/cGame_logic.cpp@ce0cacf:821	getScreenW()	m_mapViewport = std::make_unique<cRectangle>(0, cSideBar::TopBarHeight, m_gameSettings->getScreenW() - cSideBar::SidebarWidth, m_gameSettings->getScreenH() - cSideBar::TopBarHeight);	при создании объекта: установка размеров консоли и viewport после SDL
+src/game/cGame_logic.cpp@ce0cacf:863	sGameServices::mapViewport [запись-алиас]	передаёт в сервисы ссылку на общий логический viewport cGame::m_mapViewport	при событии: setupGame
+src/game/cGame_logic.cpp@ce0cacf:1303	getScreenH()	setMousePosition(m_gameSettings->getScreenW() / 2, m_gameSettings->getScreenH() / 2);	при событии: переход из briefing в игровой экран
+src/game/cGame_logic.cpp@ce0cacf:1303	getScreenW()	setMousePosition(m_gameSettings->getScreenW() / 2, m_gameSettings->getScreenH() / 2);	при событии: переход из briefing в игровой экран
+src/game/cGame_logic.cpp@ce0cacf:1503	m_screenH	bool saved = cScreenShotSaver::saveScreen(renderer, m_gameSettings->m_screenW, m_gameSettings->m_screenH);	при событии: запрос снимка экрана
+src/game/cGame_logic.cpp@ce0cacf:1503	m_screenW	bool saved = cScreenShotSaver::saveScreen(renderer, m_gameSettings->m_screenW, m_gameSettings->m_screenH);	при событии: запрос снимка экрана
+src/game/cSDLSystem.cpp@ce0cacf:164	renderResolution.width [запись]	сохраняет ширину после подгонки окна под usable bounds	при создании объекта: оконный режим
+src/game/cSDLSystem.cpp@ce0cacf:165	renderResolution.height [запись]	сохраняет высоту после подгонки окна под usable bounds	при создании объекта: оконный режим
+src/game/cSDLSystem.cpp@ce0cacf:196	renderResolution.width [запись]	сохраняет фактическую ширину renderer output, полученную от SDL	при создании объекта: синхронизация размера оконного renderer
+src/game/cSDLSystem.cpp@ce0cacf:197	renderResolution.height [запись]	сохраняет фактическую высоту renderer output, полученную от SDL	при создании объекта: синхронизация размера оконного renderer
+src/game/cSDLSystem.cpp@ce0cacf:210	renderResolution.height [запись]	сохраняет желаемую высоту в ветви подбора пропорций	при создании объекта: adaptResolution()
+src/game/cSDLSystem.cpp@ce0cacf:211	renderResolution.width [запись]	сохраняет вычисленную ширину в ветви подбора пропорций	при создании объекта: adaptResolution()
+src/game/cSDLSystem.cpp@ce0cacf:213	renderResolution.width [запись]	сохраняет желаемую ширину в ветви подбора пропорций	при создании объекта: adaptResolution()
+src/game/cSDLSystem.cpp@ce0cacf:214	renderResolution.height [запись]	сохраняет вычисленную высоту в ветви подбора пропорций	при создании объекта: adaptResolution()
+src/game/cSDLSystem.cpp@ce0cacf:222	renderResolution.width [запись]	ограничивает сохранённую логическую ширину bounds дисплея	при создании объекта: ограничение в adaptResolution()
+src/game/cSDLSystem.cpp@ce0cacf:223	renderResolution.height [запись]	ограничивает сохранённую логическую высоту bounds дисплея	при создании объекта: ограничение в adaptResolution()
+src/game/cSDLSystem.h@ce0cacf:71	cSDLSystem::renderResolution [поле DisplayResolution]	хранит итоговый logical render size; Width()/Height() возвращают его компоненты	при создании объекта: поле заполняется adaptResolution()
+src/gameobjects/cFlag.cpp@ce0cacf:50	getScreenH()	if ((drawX >= 0 && drawX < m_settings->getScreenW()) && (drawY >= 0 && drawY < m_settings->getScreenH())) {	каждый кадр
+src/gameobjects/cFlag.cpp@ce0cacf:50	getScreenW()	if ((drawX >= 0 && drawX < m_settings->getScreenW()) && (drawY >= 0 && drawY < m_settings->getScreenH())) {	каждый кадр
+src/gameobjects/map/cMap.cpp@ce0cacf:102	cMap::m_mapViewport [запись-алиас]	сохраняет ссылку на общий логический viewport из сервисов	при создании объекта: создание карты
+src/gameobjects/map/cMap.h@ce0cacf:491	cMap::m_mapViewport [поле cRectangle*]	хранит ссылку на общий логический viewport для вычислений карты	при создании объекта: поле выделено; получает указатель при создании карты
+src/gameobjects/map/cMapCamera.cpp@ce0cacf:45	getWorldScaleFactor() → m_screenH	начальный масштаб камеры от высоты логического экрана: getWorldScaleFactor()	при создании объекта
+src/gameobjects/map/cMapCamera.cpp@ce0cacf:50	getScreenW()	m_windowWidth= m_gameSettings->getScreenW() - widthOfSidebar;	при создании объекта
+src/gameobjects/map/cMapCamera.cpp@ce0cacf:51	getScreenH()	m_windowHeight= m_gameSettings->getScreenH() - m_heightOfTopBar;	при создании объекта
+src/gameobjects/map/cMapCamera.cpp@ce0cacf:53	cMapCamera::m_viewportWidth [запись]	инициализирует видимую ширину значением m_windowWidth	при создании объекта
+src/gameobjects/map/cMapCamera.cpp@ce0cacf:54	cMapCamera::m_viewportHeight [запись]	инициализирует видимую высоту значением m_windowHeight	при создании объекта
+src/gameobjects/map/cMapCamera.cpp@ce0cacf:73	getWorldScaleFactor() → m_screenH	масштаб камеры после сброса от высоты логического экрана: getWorldScaleFactor()	при событии: сброс масштаба карты
+src/gameobjects/map/cMapCamera.cpp@ce0cacf:143	cMapCamera::m_viewportWidth [запись]	сохраняет ширину viewport после пересчёта с учётом zoom	при событии: пересчёт zoom камеры
+src/gameobjects/map/cMapCamera.cpp@ce0cacf:144	cMapCamera::m_viewportHeight [запись]	сохраняет высоту viewport после пересчёта с учётом zoom	при событии: пересчёт zoom камеры
+src/gameobjects/map/cMapCamera.cpp@ce0cacf:297	getScreenW()	else if (mouseX >= (m_gameSettings->getScreenW() - 2)) {	при событии: движение мыши у края экрана
+src/gameobjects/map/cMapCamera.cpp@ce0cacf:311	getScreenH()	else if (mouseY >= (m_gameSettings->getScreenH() - 2)) {	при событии: движение мыши у края экрана
+src/gameobjects/map/cMapCamera.h@ce0cacf:220	cMapCamera::m_viewportWidth [поле]	удерживает ширину видимой области карты в мировых координатах	при создании объекта и событии: пересчёт камеры/zoom
+src/gameobjects/map/cMapCamera.h@ce0cacf:221	cMapCamera::m_viewportHeight [поле]	удерживает высоту видимой области карты в мировых координатах	при создании объекта и событии: пересчёт камеры/zoom
+src/gameobjects/map/cMapCamera.h@ce0cacf:236	cMapCamera::m_windowWidth [поле]	удерживает логическую ширину игровой области после вычитания sidebar	при создании объекта: сохранение screenW минус sidebar
+src/gameobjects/map/cMapCamera.h@ce0cacf:237	cMapCamera::m_windowHeight [поле]	удерживает логическую высоту игровой области после вычитания top bar	при создании объекта: сохранение screenH минус top bar
+src/gameobjects/mentat/AbstractMentat.cpp@ce0cacf:42	MENTAT_SCREEN_W [static constexpr]	хранит фиксированную ширину logical canvas artwork Mentat, не размер дисплея	при событии: инициализация static constexpr
+src/gameobjects/mentat/AbstractMentat.cpp@ce0cacf:43	MENTAT_SCREEN_H [static constexpr]	хранит фиксированную высоту logical canvas artwork Mentat, не размер дисплея	при событии: инициализация static constexpr
+src/gameobjects/mentat/AbstractMentat.cpp@ce0cacf:83	getScreenW()	const cRectangle &toMissionSelectRect = m_textDrawer->getAsRectangle(settings->getScreenW() - length,	при создании объекта
+src/gameobjects/mentat/AbstractMentat.cpp@ce0cacf:84	getScreenH()	settings->getScreenH() - m_textDrawer->getFontHeight(),	при создании объекта
+src/gameobjects/mentat/AbstractMentat.cpp@ce0cacf:106	getScreenW()	offsetX = (settings->getScreenW() - MENTAT_SCREEN_W) / 2;	при создании объекта
+src/gameobjects/mentat/AbstractMentat.cpp@ce0cacf:107	getScreenH()	offsetY = (settings->getScreenH() - MENTAT_SCREEN_H) / 2;	при создании объекта
+src/gameobjects/mentat/AbstractMentat.cpp@ce0cacf:108	AbstractMentat::movieTopleftX [поле]	сохраняет позицию видео после применения screen-derived offsetX	при создании объекта
+src/gameobjects/mentat/AbstractMentat.cpp@ce0cacf:109	AbstractMentat::movieTopleftY [поле]	сохраняет позицию видео после применения screen-derived offsetY	при создании объекта
+src/gameobjects/mentat/AbstractMentat.h@ce0cacf:118	AbstractMentat::offsetX [поле]	хранит горизонтальное смещение, вычисленное от screenW	при создании объекта: поле выделено; значение задаёт конструктор
+src/gameobjects/mentat/AbstractMentat.h@ce0cacf:119	AbstractMentat::offsetY [поле]	хранит вертикальное смещение, вычисленное от screenH	при создании объекта: поле выделено; значение задаёт конструктор
+src/gameobjects/mentat/AbstractMentat.h@ce0cacf:120	AbstractMentat::movieTopleftX [поле]	хранит горизонтальную позицию видео после применения screen-derived offsetX	при создании объекта: поле выделено; значение задаёт конструктор
+src/gameobjects/mentat/AbstractMentat.h@ce0cacf:121	AbstractMentat::movieTopleftY [поле]	хранит вертикальную позицию видео после применения screen-derived offsetY	при создании объекта: поле выделено; значение задаёт конструктор
+src/gameobjects/projectiles/bullet.cpp@ce0cacf:121	getScreenW()	if (x < -getBulletBmpWidth() || x > (m_settings->getScreenW() + getBulletBmpWidth()))	каждый кадр
+src/gameobjects/projectiles/bullet.cpp@ce0cacf:124	getScreenH()	if (y < getBulletBmpHeight() || y > m_settings->getScreenH() + getBulletBmpHeight())	каждый кадр
+src/gamestates/cChooseHouseState.cpp@ce0cacf:51	getScreenH()	backButtonRect = m_textDrawer->getAsRectangle(0, settings->getScreenH() - m_textDrawer->getFontHeight(), " Back");	при создании объекта
+src/gamestates/cChooseHouseState.cpp@ce0cacf:54	getScreenW()	int duneAtTheRight = settings->getScreenW() - bmp_Dune->w;	при создании объекта
+src/gamestates/cChooseHouseState.cpp@ce0cacf:55	getScreenH()	int duneAlmostAtBottom = settings->getScreenH() - (bmp_Dune->h * 0.90);	при создании объекта
+src/gamestates/cChooseHouseState.cpp@ce0cacf:60	getScreenW()	selectYourHouseXCentered = (settings->getScreenW() / 2) - bmp_SelectYourHouseTitle->w / 2;	при создании объекта
+src/gamestates/cChooseHouseState.cpp@ce0cacf:68	getScreenH()	int selectYourHouseY = settings->getScreenH() * 0.25f;	при создании объекта
+src/gamestates/cChooseHouseState.cpp@ce0cacf:70	getScreenW()	int columnWidth = settings->getScreenW() / 9; // empty, atr, empty, har, empty, ord, empty, sar, empty (9 columns)	при создании объекта
+src/gamestates/cChooseHouseState.h@ce0cacf:51	cChooseHouseState::backButtonRect [поле cRectangle]	хранит прямоугольник кнопки возврата с Y, вычисленной от screenH	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cChooseHouseState.h@ce0cacf:63	cChooseHouseState::houseAtreides [поле cRectangle]	хранит hit-test прямоугольник дома Atreides в раскладке от screenW/H	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cChooseHouseState.h@ce0cacf:64	cChooseHouseState::houseOrdos [поле cRectangle]	хранит hit-test прямоугольник дома Ordos в раскладке от screenW/H	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cChooseHouseState.h@ce0cacf:65	cChooseHouseState::houseHarkonnen [поле cRectangle]	хранит hit-test прямоугольник дома Harkonnen в раскладке от screenW/H	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cChooseHouseState.h@ce0cacf:66	cChooseHouseState::houseSardaukar [поле cRectangle]	хранит hit-test прямоугольник дома Sardaukar в раскладке от screenW/H	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cChooseHouseState.h@ce0cacf:68	cChooseHouseState::selectYourHouseXCentered [поле]	хранит центрированную X-позицию заголовка относительно screenW	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cChooseHouseState.h@ce0cacf:69	cChooseHouseState::coords_Dune [поле cPoint]	хранит координату декорации, вычисленную от screenW/H	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cChooseHouseState.h@ce0cacf:70	cChooseHouseState::coords_SelectYourHouseTitle [поле cPoint]	хранит координату заголовка, вычисленную от screenW	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cCreditsState.cpp@ce0cacf:52	getScreenW()	int duneAtTheRight = m_settings->getScreenW() - (m_duneBmp->w * 1.1f);	при создании объекта
+src/gamestates/cCreditsState.cpp@ce0cacf:53	getScreenH()	int duneAlmostAtBottom = m_settings->getScreenH() - (m_duneBmp->h * 1.1f);	при создании объекта
+src/gamestates/cCreditsState.cpp@ce0cacf:54	cCreditsState::m_duneCoordinates [поле cPoint]	сохраняет позицию декорации, рассчитанную от screenW/H	при создании объекта
+src/gamestates/cCreditsState.cpp@ce0cacf:59	getScreenW()	int centerOfScreen = m_settings->getScreenW() / 2;	при создании объекта
+src/gamestates/cCreditsState.cpp@ce0cacf:61	cCreditsState::m_titleX [поле]	сохраняет горизонтальный центр заголовка относительно screenW	при создании объекта
+src/gamestates/cCreditsState.cpp@ce0cacf:66	getScreenH()	int backButtonY = m_settings->getScreenH() - 21;	при создании объекта
+src/gamestates/cCreditsState.cpp@ce0cacf:68	backButtonRect [локальная переменная]	временно хранит геометрию back button с Y, рассчитанной от screenH; затем используется при создании GuiButton	при создании объекта: локальная геометрия до сборки кнопки
+src/gamestates/cCreditsState.cpp@ce0cacf:69	cCreditsState::backButton [создание GuiButton]	создаёт кнопку с backButtonRect, чья Y-координата рассчитана от screenH	при создании объекта
+src/gamestates/cCreditsState.cpp@ce0cacf:395	getScreenH()	m_crawlerY = m_settings->getScreenH() + 1;	при событии: начало или перезапуск прокрутки титров
+src/gamestates/cCreditsState.cpp@ce0cacf:422	getScreenW()	int halfScreen = m_settings->getScreenW() / 2;	каждый кадр
+src/gamestates/cCreditsState.h@ce0cacf:62	cCreditsState::m_titleX [поле]	хранит горизонтальный центр заголовка credits, вычисленный от screenW	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cCreditsState.h@ce0cacf:63	cCreditsState::m_crawlerY [поле]	хранит текущую вертикальную позицию прокрутки credits, начально заданную от screenH	при создании объекта: поле выделено; значение задаёт событие начала прокрутки
+src/gamestates/cCreditsState.h@ce0cacf:70	cCreditsState::m_duneCoordinates [поле cPoint]	хранит координату декорации, рассчитанную от screenW/H	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cCreditsState.h@ce0cacf:73	cCreditsState::backButton [поле unique_ptr<GuiButton>]	хранит кнопку, геометрия которой рассчитана с учётом screenH	при создании объекта: поле выделено; кнопка создаётся в конструкторе
+src/gamestates/cEditorState.cpp@ce0cacf:81	getScreenW()	const cRectangle &selectRect = cRectangle(0, 0, m_settings->getScreenW(), heightBarSize);	при создании объекта
+src/gamestates/cEditorState.cpp@ce0cacf:82	getScreenH()	const cRectangle &modifRect = cRectangle(m_settings->getScreenW()-heightBarSize, heightBarSize, heightBarSize, m_settings->getScreenH()-heightBarSize);	при создании объекта
+src/gamestates/cEditorState.cpp@ce0cacf:82	getScreenW()	const cRectangle &modifRect = cRectangle(m_settings->getScreenW()-heightBarSize, heightBarSize, heightBarSize, m_settings->getScreenH()-heightBarSize);	при создании объекта
+src/gamestates/cEditorState.cpp@ce0cacf:83	getScreenH()	mapSizeArea = cRectangle(0,heightBarSize,m_settings->getScreenW()-heightBarSize,m_settings->getScreenH()-heightBarSize);	при создании объекта
+src/gamestates/cEditorState.cpp@ce0cacf:83	getScreenW()	mapSizeArea = cRectangle(0,heightBarSize,m_settings->getScreenW()-heightBarSize,m_settings->getScreenH()-heightBarSize);	при создании объекта
+src/gamestates/cEditorState.cpp@ce0cacf:149	getScreenW()	rectGui = cRectangle(m_settings->getScreenW()-heightButtonSize*3, (heightBarSize-heightButtonSize)/2, heightButtonSize, heightButtonSize);	при создании объекта
+src/gamestates/cEditorState.cpp@ce0cacf:1356	getScreenH()	if (x + tileLenSize > 0 && x < m_settings->getScreenW() &&y + tileLenSize > heightBarSize && y < m_settings->getScreenH()) {	каждый кадр
+src/gamestates/cEditorState.cpp@ce0cacf:1356	getScreenW()	if (x + tileLenSize > 0 && x < m_settings->getScreenW() &&y + tileLenSize > heightBarSize && y < m_settings->getScreenH()) {	каждый кадр
+src/gamestates/cGamePlaying.cpp@ce0cacf:101	cGamePlaying::m_mapViewport [запись-алиас]	сохраняет ссылку на общий логический viewport из сервисов	при создании объекта: создание игрового состояния
+src/gamestates/cGamePlaying.cpp@ce0cacf:482	getScreenW()	m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1, Color::White, time);	каждый кадр
+src/gamestates/cGamePlaying.cpp@ce0cacf:484	getScreenW()	m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1 + 15, Color::White, time);	каждый кадр
+src/gamestates/cGamePlaying.h@ce0cacf:87	cGamePlaying::m_mapViewport [поле cRectangle*]	хранит ссылку на общий логический viewport состояния игры	при создании объекта: поле выделено; получает указатель при создании состояния
+src/gamestates/cMainMenuState.cpp@ce0cacf:67	getScreenW()	int centerOfScreen = m_settings->getScreenW() / 2;	при создании объекта
+src/gamestates/cMainMenuState.cpp@ce0cacf:69	cMainMenuState::logoX [поле раскладки]	сохраняет горизонтальную позицию логотипа относительно screenW	при создании объекта
+src/gamestates/cMainMenuState.cpp@ce0cacf:77	cMainMenuState::mainMenuFrameX [поле раскладки]	сохраняет горизонтальную позицию рамки меню относительно screenW	при создании объекта
+src/gamestates/cMainMenuState.cpp@ce0cacf:88	getScreenW()	int creditsX = (m_settings->getScreenW() / 2) - buttonWidth;	при создании объекта
+src/gamestates/cMainMenuState.cpp@ce0cacf:118	cMainMenuState::gui_window [GuiWindow]	сохраняет основную раскладку меню, собранную с использованием screenW	при создании объекта
+src/gamestates/cMainMenuState.cpp@ce0cacf:242	getScreenH()	backGroundDebug.reset(m_sdlDrawer->createRenderTargetTexture(m_settings->getScreenW(), m_settings->getScreenH()));	при создании объекта
+src/gamestates/cMainMenuState.cpp@ce0cacf:242	getScreenW()	backGroundDebug.reset(m_sdlDrawer->createRenderTargetTexture(m_settings->getScreenW(), m_settings->getScreenH()));	при создании объекта
+src/gamestates/cMainMenuState.cpp@ce0cacf:244	getScreenW()	for (int x = 0; x < m_settings->getScreenW(); x += 60) {	при создании объекта
+src/gamestates/cMainMenuState.cpp@ce0cacf:245	getScreenH()	for (int y = 0; y < m_settings->getScreenH(); y += 20) {	при создании объекта
+src/gamestates/cMainMenuState.cpp@ce0cacf:275	getScreenW()	int versionX = m_settings->getScreenW() - m_textDrawer->getTextLength(D2TM_VERSION) - 20;	каждый кадр
+src/gamestates/cMainMenuState.cpp@ce0cacf:276	getScreenH()	int versionY = m_settings->getScreenH() - fontH * 2 - 42;	каждый кадр
+src/gamestates/cMainMenuState.h@ce0cacf:56	cMainMenuState::logoX [поле раскладки]	хранит X-позицию логотипа относительно screenW	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cMainMenuState.h@ce0cacf:59	cMainMenuState::mainMenuFrameX [поле раскладки]	хранит X-позицию рамки меню относительно screenW	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cMainMenuState.h@ce0cacf:64	cMainMenuState::gui_window [поле unique_ptr<GuiWindow>]	хранит GUI раскладку главного меню, построенную с учётом screenW/H	при создании объекта: поле выделено; окно строится в конструкторе
+src/gamestates/cNewMapEditorState.h@ce0cacf:60	cNewMapEditorState::m_guiWindow [поле unique_ptr<GuiWindow>]	хранит GUI раскладку редактора новой карты, построенную с учётом screenW/H	при создании объекта: поле выделено; окно строится в конструкторе
+src/gamestates/cNewmapEditorState.cpp@ce0cacf:70	getScreenH()	int margin = m_settings->getScreenH() * 0.3;	при создании объекта
+src/gamestates/cNewmapEditorState.cpp@ce0cacf:73	getScreenW()	int mainMenuWidth = m_settings->getScreenW() - (margin * 2);	при создании объекта
+src/gamestates/cNewmapEditorState.cpp@ce0cacf:74	getScreenH()	int mainMenuHeight = m_settings->getScreenH() - (margin * 2);	при создании объекта
+src/gamestates/cNewmapEditorState.cpp@ce0cacf:81	cNewMapEditorState::m_guiWindow [GuiWindow]	сохраняет окно и GUI rectangles, созданные из screenW/H	при создании объекта
+src/gamestates/cOptionsState.cpp@ce0cacf:59	getScreenH()	int margin = m_settings->getScreenH() * 0.3;	при событии: создание или перестроение окна опций
+src/gamestates/cOptionsState.cpp@ce0cacf:62	getScreenW()	int mainMenuWidth = m_settings->getScreenW() - (margin * 2);	при событии: создание или перестроение окна опций
+src/gamestates/cOptionsState.cpp@ce0cacf:63	getScreenH()	int mainMenuHeight = m_settings->getScreenH() - (margin * 2);	при событии: создание или перестроение окна опций
+src/gamestates/cOptionsState.cpp@ce0cacf:70	cOptionsState::m_guiWindow [GuiWindow]	сохраняет окно и GUI rectangles, созданные из screenW/H	при создании объекта или событии: перестроение окна опций
+src/gamestates/cOptionsState.h@ce0cacf:58	cOptionsState::m_guiWindow [поле unique_ptr<GuiWindow>]	хранит GUI раскладку окна опций, построенную с учётом screenW/H	при создании объекта: поле выделено; окно создаётся или перестраивается при событии
+src/gamestates/cScoringState.cpp@ce0cacf:109	getScreenH()	m_textDrawer->drawTextCentered("Click to continue", m_settings->getScreenH() - lineHeight - 8, Color::White);	каждый кадр
+src/gamestates/cSelectMissionState.cpp@ce0cacf:73	getScreenW()	const int mainMenuFrameX = (m_settings->getScreenW() - 640) / 2;	при создании объекта
+src/gamestates/cSelectMissionState.cpp@ce0cacf:74	getScreenH()	const int mainMenuFrameY = (m_settings->getScreenH() - 480) / 2;	при создании объекта
+src/gamestates/cSelectMissionState.cpp@ce0cacf:79	cSelectMissionState::gui_window [GuiWindow]	сохраняет рамку кампании и вложенную раскладку, центрированную по screenW/H	при создании объекта
+src/gamestates/cSelectMissionState.h@ce0cacf:62	cSelectMissionState::gui_window [поле unique_ptr<GuiWindow>]	хранит GUI раскладку выбора кампании, центрированную по screenW/H	при создании объекта: поле выделено; окно строится в конструкторе
+src/gamestates/cSelectYourNextConquestState.cpp@ce0cacf:125	getScreenW()	const cRectangle &toMissionSelectRect = m_textDrawer->getAsRectangle(m_settings->getScreenW() - length,	при создании объекта
+src/gamestates/cSelectYourNextConquestState.cpp@ce0cacf:126	getScreenH()	m_settings->getScreenH() - m_textDrawer->getFontHeight(),	при создании объекта
+src/gamestates/cSelectYourNextConquestState.cpp@ce0cacf:142	getScreenW()	offsetX = (m_settings->getScreenW() - 640) / 2;	при событии: создание или пересчёт раскладки карты
+src/gamestates/cSelectYourNextConquestState.cpp@ce0cacf:143	getScreenH()	offsetY = (m_settings->getScreenH() - 480) / 2; // same goes for offsetY (but then for 480 height).	при событии: создание или пересчёт раскладки карты
+src/gamestates/cSelectYourNextConquestState.h@ce0cacf:139	cSelectYourNextConquestState::offsetX [поле]	хранит горизонтальную позицию элементов выбора относительно screenW	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cSelectYourNextConquestState.h@ce0cacf:140	cSelectYourNextConquestState::offsetY [поле]	хранит вертикальную позицию элементов выбора относительно screenH	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cSetupSkirmishState.cpp@ce0cacf:148	getScreenW()	screen_x = m_settings->getScreenW();	при создании объекта
+src/gamestates/cSetupSkirmishState.cpp@ce0cacf:149	getScreenH()	screen_y = m_settings->getScreenH();	при создании объекта
+src/gamestates/cSetupSkirmishState.h@ce0cacf:129	cSetupSkirmishState::screen_x/screen_y [поля]	хранит экранные координаты раскладки skirmish, начальные значения которой зависят от screenW/H	при создании объекта: поля выделены; значения задаёт конструктор
+src/gamestates/cVideoState.cpp@ce0cacf:35	VIDEO_WIDTH [constexpr]	хранит базовую ширину целевого прямоугольника cutscene, не размер экрана	при событии: инициализация constexpr
+src/gamestates/cVideoState.cpp@ce0cacf:36	VIDEO_MAX_HEIGHT [constexpr]	хранит базовую максимальную высоту целевого прямоугольника cutscene, не размер экрана	при событии: инициализация constexpr
+src/gamestates/cVideoState.cpp@ce0cacf:60	getScreenW()	m_offsetX = (m_settings->getScreenW() - VIDEO_WIDTH) / 2 - VIDEO_CENTER_SHIFT;	при создании объекта
+src/gamestates/cVideoState.cpp@ce0cacf:61	getScreenH()	m_offsetY = (m_settings->getScreenH() - VIDEO_MAX_HEIGHT) / 2 - VIDEO_CENTER_SHIFT;	при создании объекта
+src/gamestates/cVideoState.h@ce0cacf:48	cVideoState::m_offsetX [поле]	хранит горизонтальное смещение target cutscene, вычисленное от screenW	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cVideoState.h@ce0cacf:49	cVideoState::m_offsetY [поле]	хранит вертикальное смещение target cutscene, вычисленное от screenH	при создании объекта: поле выделено; значение задаёт конструктор
+src/gamestates/cWinLoseState.cpp@ce0cacf:75	getScreenW()	int posW = (m_settings->getScreenW()-m_tex->w)/2;	каждый кадр
+src/gamestates/cWinLoseState.cpp@ce0cacf:76	getScreenH()	int posH = (m_settings->getScreenH()-m_tex->h)/2;	каждый кадр
+src/gui/GuiConsole.cpp@ce0cacf:38	GuiConsole::m_window [GuiWindow]	сохраняет прямоугольник консоли, рассчитанный из screenWidth/screenHeight	при создании объекта GuiConsole
+src/gui/GuiConsole.h@ce0cacf:50	GuiConsole::m_window [поле unique_ptr<GuiWindow>]	хранит окно консоли с прямоугольником, рассчитанным из screenW/H	при создании объекта: поле выделено; окно строится в конструкторе
+src/include/Texture.hpp@ce0cacf:34	Texture::w [поле]	хранит логическую ширину текстуры (для RT делится на density)	при создании объекта Texture
+src/include/Texture.hpp@ce0cacf:35	Texture::h [поле]	хранит логическую высоту текстуры (для RT делится на density)	при создании объекта Texture
+src/include/Texture.hpp@ce0cacf:36	Texture::pixelW [поле]	хранит физическую ширину backing texture	при создании объекта Texture
+src/include/Texture.hpp@ce0cacf:37	Texture::pixelH [поле]	хранит физическую высоту backing texture	при создании объекта Texture
+src/include/Texture.hpp@ce0cacf:38	Texture::density [поле]	хранит множитель плотности, по которому различаются RT	при создании объекта Texture
+src/include/sGameServices.h@ce0cacf:52	sGameServices::mapViewport [поле cRectangle*]	хранит ссылку на общий логический viewport, построенный из screenW/H	при создании объекта: поле выделено; получает указатель при событии setupGame
+src/include/sGameServices.h@ce0cacf:60	sGameServices::screenTexture [поле Texture*]	хранит ссылку на screen-sized render target для переходов состояний	при создании объекта: выделение поля; назначается при создании frame targets
+src/managers/cDrawManager.cpp@ce0cacf:69	cDrawManager::m_mapViewport [инициализация-алиас]	сохраняет ссылку на общий логический viewport из сервисов	при создании объекта: создание менеджера отрисовки
+src/managers/cDrawManager.cpp@ce0cacf:123	getScreenH()	m_sdlDrawer->setClippingFor(0, cSideBar::TopBarHeight, m_mapCamera->getWindowWidth(), m_gameSettings->getScreenH());	каждый кадр
+src/managers/cDrawManager.cpp@ce0cacf:258	getScreenH()	m_sdlDrawer->setClippingFor(m_gameSettings->getScreenW() - cSideBar::SidebarWidth, 0, m_gameSettings->getScreenW(), m_gameSettings->getScreenH());	каждый кадр
+src/managers/cDrawManager.cpp@ce0cacf:258	getScreenW()	m_sdlDrawer->setClippingFor(m_gameSettings->getScreenW() - cSideBar::SidebarWidth, 0, m_gameSettings->getScreenW(), m_gameSettings->getScreenH());	каждый кадр
+src/managers/cDrawManager.cpp@ce0cacf:304	getScreenW()	for (int x = 0; x < m_gameSettings->getScreenW(); x+= topbarPiece->w) {	каждый кадр
+src/managers/cDrawManager.cpp@ce0cacf:336	getScreenW()	m_sdlDrawer->renderRectFillColor(0, 0, m_gameSettings->getScreenW(), cSideBar::TopBarHeight, Color{0, 0, 0,255});	каждый кадр
+src/managers/cDrawManager.cpp@ce0cacf:337	getScreenW()	m_sdlDrawer->renderRectFillColor(0,m_gameSettings->getScreenW(), 40,32, Color{214,149,20,255});	каждый кадр
+src/managers/cDrawManager.cpp@ce0cacf:339	getScreenW()	for (int w = 0; w < (m_gameSettings->getScreenW() + 800); w += 789) {	каждый кадр
+src/managers/cDrawManager.h@ce0cacf:156	cDrawManager::m_mapViewport [поле cRectangle*]	хранит ссылку на общий логический viewport для отрисовки	при создании объекта: поле выделено; получает указатель при создании менеджера
+src/sidebar/cBuildingListFactory.cpp@ce0cacf:32	getScreenW()	return (m_settings->getScreenW() - 200) + 2;	при событии: создание или переинициализация списка строительства
+src/sidebar/cSideBar.cpp@ce0cacf:182	getScreenW()	m_isMouseOverSidebarValue = event.coords.x > (m_settings->getScreenW() - cSideBar::SidebarWidth);	при событии: движение мыши над боковой панелью
+src/utils/InitialGameSettings.hpp@ce0cacf:22	InitialGameSettings::screenW [поле/значение по умолчанию]	хранит запрошенную логическую ширину, исходное значение 800	при создании объекта: инициализация поля
+src/utils/InitialGameSettings.hpp@ce0cacf:23	InitialGameSettings::screenH [поле/значение по умолчанию]	хранит запрошенную логическую высоту, исходное значение 600	при создании объекта: инициализация поля
+src/utils/cHandleArgument.cpp@ce0cacf:116	InitialGameSettings::screenW [запись из CLI]	сохраняет значение аргумента -screenWidth в поле настроек	при событии: обработка аргумента -screenWidth при запуске
+src/utils/cHandleArgument.cpp@ce0cacf:124	InitialGameSettings::screenH [запись из CLI]	сохраняет значение аргумента -screenHeight в поле настроек	при событии: обработка аргумента -screenHeight при запуске
+src/utils/cStructureUtils.cpp@ce0cacf:278	getScreenW()	return (drawX + width  >= 0 && drawX < m_settings->getScreenW()) &&	каждый кадр
+src/utils/cStructureUtils.cpp@ce0cacf:279	getScreenH()	(drawY + height >= 0 && drawY < m_settings->getScreenH());	каждый кадр
