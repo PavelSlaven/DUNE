@@ -67,6 +67,9 @@ void readSettings(const cSection &section, InitialGameSettings &settings)
             ? eScalingMode::LETTERBOX
             : eScalingMode::INTEGER_SCALE;
     }
+    if (section.hasValue("WorldScale")) {
+        settings.worldScalePercent = section.getInt("WorldScale");
+    }
     if (section.hasValue("AllowRepeatingReinforcements")) {
         settings.allowRepeatingReinforcements = section.getBoolean("AllowRepeatingReinforcements");
     }
