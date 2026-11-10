@@ -29,6 +29,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_RenderScale.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_AdaptiveMenus.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_OptionsMenu.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_HudLayout.cpp
 )
 
 # Production source files the tests depend on.
