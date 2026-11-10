@@ -1,0 +1,82 @@
+ревизия	путь	путь@ревизия:строка	действие	что копируется или пакуется
+FORK1	create_release.sh	create_release.sh@9208dcf:8	mkdir	создать корень пакета bin
+FORK1	create_release.sh	create_release.sh@9208dcf:10	mkdir	создать bin/campaign
+FORK1	create_release.sh	create_release.sh@9208dcf:11	mkdir	создать bin/campaign/atreides
+FORK1	create_release.sh	create_release.sh@9208dcf:12	mkdir	создать bin/campaign/ordos
+FORK1	create_release.sh	create_release.sh@9208dcf:13	mkdir	создать bin/campaign/harkonnen
+FORK1	create_release.sh	create_release.sh@9208dcf:14	mkdir	создать bin/campaign/maps
+FORK1	create_release.sh	create_release.sh@9208dcf:15	mkdir	создать bin/campaign/maps/seed
+FORK1	create_release.sh	create_release.sh@9208dcf:16	mkdir	создать bin/campaign/briefings
+FORK1	create_release.sh	create_release.sh@9208dcf:18	cp	resources/bin/campaign/atreides/*.* → bin/campaign/atreides
+FORK1	create_release.sh	create_release.sh@9208dcf:19	cp	resources/bin/campaign/ordos/*.* → bin/campaign/ordos
+FORK1	create_release.sh	create_release.sh@9208dcf:20	cp	resources/bin/campaign/harkonnen/*.* → bin/campaign/harkonnen
+FORK1	create_release.sh	create_release.sh@9208dcf:21	cp	resources/bin/campaign/maps/*.* → bin/campaign/maps
+FORK1	create_release.sh	create_release.sh@9208dcf:22	cp	resources/bin/campaign/maps/seed/*.* → bin/campaign/maps/seed
+FORK1	create_release.sh	create_release.sh@9208dcf:23	cp	resources/bin/campaign/briefings/*.* → bin/campaign/briefings
+FORK1	create_release.sh	create_release.sh@9208dcf:24	cp	resources/bin/campaign/info.txt → bin/campaign/info.txt
+FORK1	create_release.sh	create_release.sh@9208dcf:26	mkdir	создать bin/data
+FORK1	create_release.sh	create_release.sh@9208dcf:27	mkdir	создать bin/data/scenes
+FORK1	create_release.sh	create_release.sh@9208dcf:28	mkdir	создать bin/data/bmp
+FORK1	create_release.sh	create_release.sh@9208dcf:30	cp	resources/bin/data/sdl_audio.dat → bin/data
+FORK1	create_release.sh	create_release.sh@9208dcf:31	cp	resources/bin/data/*_hd4.dat → bin/data
+FORK1	create_release.sh	create_release.sh@9208dcf:32	cp	resources/bin/data/*.fon → bin/data
+FORK1	create_release.sh	create_release.sh@9208dcf:33	cp	resources/bin/data/*.ttf → bin/data
+FORK1	create_release.sh	create_release.sh@9208dcf:35	mkdir	создать bin/data/scenes/hd4
+FORK1	create_release.sh	create_release.sh@9208dcf:36	cp	resources/bin/data/scenes/hd4/*.dat → bin/data/scenes/hd4
+FORK1	create_release.sh	create_release.sh@9208dcf:37	mkdir	создать bin/data/hd4
+FORK1	create_release.sh	create_release.sh@9208dcf:38	cp	resources/bin/data/hd4/*.* → bin/data/hd4
+FORK1	create_release.sh	create_release.sh@9208dcf:40	mkdir	создать bin/save
+FORK1	create_release.sh	create_release.sh@9208dcf:41	mkdir	создать bin/save/atreides
+FORK1	create_release.sh	create_release.sh@9208dcf:42	mkdir	создать bin/save/harkonnen
+FORK1	create_release.sh	create_release.sh@9208dcf:43	mkdir	создать bin/save/ordos
+FORK1	create_release.sh	create_release.sh@9208dcf:44	mkdir	создать bin/save/skirmish
+FORK1	create_release.sh	create_release.sh@9208dcf:46	mkdir	создать bin/skirmish
+FORK1	create_release.sh	create_release.sh@9208dcf:47	cp	resources/bin/skirmish/*.ini → bin/skirmish
+FORK1	create_release.sh	create_release.sh@9208dcf:49	TODO	сообщение TODO TODO TODO на этапе DLL; строк копирования библиотек нет
+FORK1	create_release.sh	create_release.sh@9208dcf:51	cp	build/d2tm → bin
+FORK1	create_release.sh	create_release.sh@9208dcf:53	cp	resources/game.ini.org → bin/game.ini
+FORK1	create_release.sh	create_release.sh@9208dcf:54	cp	resources/bin/settings.ini → bin
+FORK1	create_release.sh	create_release.sh@9208dcf:56	cp	resources/doc/versionhistory.txt → bin
+FORK1	create_release.sh	create_release.sh@9208dcf:57	cp	resources/doc/controls.txt → bin
+FORK1	create_release.sh	create_release.sh@9208dcf:58	cp	resources/bin/d2tm.cfg → bin
+FORK1	packaging/WINDOWS_README.txt	packaging/WINDOWS_README.txt@9208dcf:8	runtime dependencies	README states MinGW and SDL2 DLLs are included in the platform archive; copy source is not given by create_release.sh
+FORK1	packaging/LINUX_README.txt	packaging/LINUX_README.txt@9208dcf:10-11	runtime dependencies	SDL2 runtime packages are installed with apt-get (libsdl2-2.0-0, libsdl2-image-2.0-0, libsdl2-ttf-2.0-0, libsdl2-mixer-2.0-0)
+FORK1	packaging/MACOS_README.txt	packaging/MACOS_README.txt@9208dcf:9	runtime dependencies	SDL2 runtime packages are installed with Homebrew (sdl2, sdl2_image, sdl2_ttf, sdl2_mixer)
+PORT	create_release.sh	create_release.sh@7eb119b:11	mkdir	создать корень пакета bin
+PORT	create_release.sh	create_release.sh@7eb119b:13	mkdir	создать bin/campaign
+PORT	create_release.sh	create_release.sh@7eb119b:14	mkdir	создать bin/campaign/atreides
+PORT	create_release.sh	create_release.sh@7eb119b:15	mkdir	создать bin/campaign/ordos
+PORT	create_release.sh	create_release.sh@7eb119b:16	mkdir	создать bin/campaign/harkonnen
+PORT	create_release.sh	create_release.sh@7eb119b:17	mkdir	создать bin/campaign/sardaukar
+PORT	create_release.sh	create_release.sh@7eb119b:18	mkdir	создать bin/campaign/maps
+PORT	create_release.sh	create_release.sh@7eb119b:19	mkdir	создать bin/campaign/briefings
+PORT	create_release.sh	create_release.sh@7eb119b:21	cp	resources/bin/campaign/atreides/*.* → bin/campaign/atreides
+PORT	create_release.sh	create_release.sh@7eb119b:22	cp	resources/bin/campaign/ordos/*.* → bin/campaign/ordos
+PORT	create_release.sh	create_release.sh@7eb119b:23	cp	resources/bin/campaign/harkonnen/*.* → bin/campaign/harkonnen
+PORT	create_release.sh	create_release.sh@7eb119b:24	cp	resources/bin/campaign/sardaukar/*.* → bin/campaign/sardaukar
+PORT	create_release.sh	create_release.sh@7eb119b:25	cp	resources/bin/campaign/maps/*.* → bin/campaign/maps
+PORT	create_release.sh	create_release.sh@7eb119b:26	cp	resources/bin/campaign/briefings/*.* → bin/campaign/briefings
+PORT	create_release.sh	create_release.sh@7eb119b:27	cp	resources/bin/campaign/info.txt → bin/campaign/info.txt
+PORT	create_release.sh	create_release.sh@7eb119b:29	mkdir	создать bin/data
+PORT	create_release.sh	create_release.sh@7eb119b:30	mkdir	создать bin/data/scenes
+PORT	create_release.sh	create_release.sh@7eb119b:31	mkdir	создать bin/data/bmp
+PORT	create_release.sh	create_release.sh@7eb119b:33	cp	resources/bin/data/*.dat → bin/data
+PORT	create_release.sh	create_release.sh@7eb119b:34	cp	resources/bin/data/*.fon → bin/data
+PORT	create_release.sh	create_release.sh@7eb119b:35	cp	resources/bin/data/*.ttf → bin/data
+PORT	create_release.sh	create_release.sh@7eb119b:37	cp	resources/bin/data/scenes/*.* → bin/data/scenes
+PORT	create_release.sh	create_release.sh@7eb119b:39	mkdir	создать bin/save
+PORT	create_release.sh	create_release.sh@7eb119b:40	mkdir	создать bin/save/atreides
+PORT	create_release.sh	create_release.sh@7eb119b:41	mkdir	создать bin/save/harkonnen
+PORT	create_release.sh	create_release.sh@7eb119b:42	mkdir	создать bin/save/ordos
+PORT	create_release.sh	create_release.sh@7eb119b:43	mkdir	создать bin/save/skirmish
+PORT	create_release.sh	create_release.sh@7eb119b:45	mkdir	создать bin/skirmish
+PORT	create_release.sh	create_release.sh@7eb119b:46	cp	resources/bin/skirmish/*.ini → bin/skirmish
+PORT	create_release.sh	create_release.sh@7eb119b:48	TODO	сообщение TODO TODO TODO на этапе DLL; строк копирования библиотек нет
+PORT	create_release.sh	create_release.sh@7eb119b:50	cp -p	build/d2tm → bin (с сохранением атрибутов)
+PORT	create_release.sh	create_release.sh@7eb119b:52	cp	resources/game.ini.org → bin/game.ini
+PORT	create_release.sh	create_release.sh@7eb119b:53	cp	resources/bin/settings.ini → bin
+PORT	create_release.sh	create_release.sh@7eb119b:55	cp	resources/doc/versionhistory.txt → bin
+PORT	create_release.sh	create_release.sh@7eb119b:56	cp	resources/doc/controls.txt → bin
+PORT	packaging/*	нет строки	нет файла	git ls-tree -r --name-only PORT -- packaging вывел пустой вывод
+FORK1	packaging/RELEASE_NOTES.md	packaging/RELEASE_NOTES.md@9208dcf:33-35	release description	README says common archive includes bilingual campaigns, HD4 graphics, fonts and refreshed music pools; script does not create that archive
+FORK1	packaging/RELEASE_NOTES.md	packaging/RELEASE_NOTES.md@9208dcf:37-40	runtime dependencies	README says Windows archive contains runtime DLLs, Linux requires distro SDL2 packages, and macOS requires SDL2 from Homebrew; library copy source is not given by create_release.sh
