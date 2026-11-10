@@ -31,6 +31,22 @@ public:
     int getScreenH() const {
         return m_screenH;
     }
+    int getOutputW() const {
+        return m_outputW;
+    }
+    int getOutputH() const {
+        return m_outputH;
+    }
+    int getSavedRenderScalePercent() const {
+        return m_savedRenderScalePercent;
+    }
+    int getSavedWorldScalePercent() const {
+        return m_savedWorldScalePercent;
+    }
+    void setSavedScalePercents(int renderScalePercent, int worldScalePercent) {
+        m_savedRenderScalePercent = renderScalePercent;
+        m_savedWorldScalePercent = worldScalePercent;
+    }
     float getWorldScaleFactor() const {
         return worldScaleZoom(m_worldScalePercent, m_outputH);
     }
@@ -146,6 +162,10 @@ private:
     int m_worldScalePercent = 0;
     int m_renderScalePercent = 0;
     int m_outputH = 0;
+    int m_outputW = 0;
+    // written to preferences.ini; the running game keeps m_renderScalePercent and m_worldScalePercent until restart
+    int m_savedRenderScalePercent = 0;
+    int m_savedWorldScalePercent = 0;
 
     bool m_disableAI;  
     bool m_oneAi;      

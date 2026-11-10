@@ -51,8 +51,6 @@ static void attachParentConsole()
 }
 #endif
 
-constexpr const char *PREFERENCES_FILE = "preferences.ini";
-
 int main(int argc, char **argv)
 {
 #ifdef _WIN32
@@ -72,11 +70,17 @@ int main(int argc, char **argv)
     cGame game;
 
     std::unique_ptr<InitialGameSettings> settings = loadSettingsFromIni("settings.ini");
+
+    // the scales chosen in the options menu apply on every start, the other preferences only with -prefs
+    if (const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME)) {
+        std::string scalesError;
+        Preferences::loadScales(*prefsFile, *settings, scalesError);
+    }
     
     // -prefs: start from the options saved at the end of the previous run, the other arguments still override them
     if (std::any_of(argv + 1, argv + argc, [](const char *arg) { return std::string_view(arg) == "-prefs"; })) {
         std::string prefsError;
-        const auto prefsFile = PreferencesPath::file(PREFERENCES_FILE);
+        const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME);
         if (!prefsFile) {
             Logger::warn(COMP_GAMERULES, "Preferences", "Could not get the user data directory, preferences are not loaded");
         } else if (!Preferences::load(*prefsFile, *settings, prefsError)) {
@@ -110,7 +114,7 @@ int main(int argc, char **argv)
         if (game.setupGame()) {
             game.run();
 
-            if (const auto prefsFile = PreferencesPath::file(PREFERENCES_FILE)) {
+            if (const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME)) {
                 std::string prefsError;
                 if (!Preferences::save(*prefsFile, game.currentSettings(), prefsError)) {
                     Logger::warn(COMP_GAMERULES, "Preferences", "Could not save preferences: {}", prefsError);
