@@ -1,0 +1,4 @@
+# Поправки ведущего к разведке P5-R
+
+1. `screens.tsv`, строка «Настройка схватки», и `RECON.md`, раздел 2, пункт о схватке и раздел «Другие развилки»: вывод о выходе превью карты за правый край на 115, 235 и 475 пикселей неверен. В `src/gamestates/cSetupSkirmishState.cpp@0a33444e9` строка 204 — `previewMap = cRectangle(previewMapX, previewMapY, widthOfRightColumn + 2, heightOfRightColumn)`: ширина превью — `widthOfRightColumn + 2` = 302 (строка 143 `widthOfRightColumn = 300`), а не `heightOfRightColumn + 2`; `previewMapX = screen_x - widthOfSidebar` = `W − 302` (строки 158, 202). Превью стоит вплотную к правому краю холста. Строка 207: ширина `selectArea` = `W − 302`. Нижний край превью — `previewMapY + heightOfRightColumn` (строки 201, 203); выход за нижний край разведка не проверяла заново и в задание не переносится.
+   Команда: `git show 0a33444e9:src/gamestates/cSetupSkirmishState.cpp | nl -ba | sed -n '140,207p'`.
