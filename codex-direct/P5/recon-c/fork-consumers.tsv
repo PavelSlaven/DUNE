@@ -1,0 +1,25 @@
+функция	строки	область	есть в BASE	путь в PORT	функция в PORT
+cSideBarDrawer::drawHdSidebar	src/drawers/cSideBarDrawer.cpp@9208dcf:75-109	боковая панель	нет	да: src/drawers/cSideBarDrawer.cpp	нет
+cSideBarDrawer::drawHdRadarPanel	src/drawers/cSideBarDrawer.cpp@9208dcf:139-234	мини-карта	нет	да: src/drawers/cSideBarDrawer.cpp	нет
+cSideBarDrawer::drawHdCapacities	src/drawers/cSideBarDrawer.cpp@9208dcf:306-331	другое — шкалы энергии и пряности	нет	да: src/drawers/cSideBarDrawer.cpp	нет
+cSideBarDrawer::drawHdBuildingLists	src/drawers/cSideBarDrawer.cpp@9208dcf:333-404	список построек	нет	да: src/drawers/cSideBarDrawer.cpp	нет
+CreditsDrawer::draw	src/drawers/CreditsDrawer.cpp@9208dcf:186-247	полоса кредитов	да	да: src/drawers/CreditsDrawer.cpp	src/drawers/CreditsDrawer.cpp@832c953:209
+cBuildingListDrawer::getDrawX	src/drawers/cBuildingListDrawer.cpp@9208dcf:191-194	список построек	да	да: src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@832c953:152
+cBuildingListDrawer::getDrawY	src/drawers/cBuildingListDrawer.cpp@9208dcf:196-199	список построек	да	да: src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@832c953:157
+cBuildingListDrawer::drawList(cBuildingList*, bool)	src/drawers/cBuildingListDrawer.cpp@9208dcf:206-468	список построек	да	да: src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@832c953:165
+cBuildingListDrawer::isOverItemCoordinates	src/drawers/cBuildingListDrawer.cpp@9208dcf:515-539	список построек	да	да: src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@832c953:435
+cBuildingListDrawer::getCardWidth	src/drawers/cBuildingListDrawer.cpp@9208dcf:541-544	список построек	нет	да: src/drawers/cBuildingListDrawer.cpp	нет
+cBuildingListDrawer::getCardHeight	src/drawers/cBuildingListDrawer.cpp@9208dcf:546-549	список построек	нет	да: src/drawers/cBuildingListDrawer.cpp	нет
+cBuildingListDrawer::getLayout	src/drawers/cBuildingListDrawer.cpp@9208dcf:723-733	список построек	нет	да: src/drawers/cBuildingListDrawer.cpp	нет
+cBuildingListDrawer::getScrollRow	src/drawers/cBuildingListDrawer.cpp@9208dcf:735-749	список построек	нет	да: src/drawers/cBuildingListDrawer.cpp	нет
+cBuildingListDrawer::setScrollRow	src/drawers/cBuildingListDrawer.cpp@9208dcf:751-765	список построек	нет	да: src/drawers/cBuildingListDrawer.cpp	нет
+cBuildingListDrawer::drawHdScrollbar	src/drawers/cBuildingListDrawer.cpp@9208dcf:781-817	список построек	нет	да: src/drawers/cBuildingListDrawer.cpp	нет
+cBuildingListDrawer::onNotifyMouseEvent	src/drawers/cBuildingListDrawer.cpp@9208dcf:819-865	список построек	да	да: src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@832c953:472
+cMiniMapDrawer::cMiniMapDrawer	src/drawers/cMiniMapDrawer.cpp@9208dcf:22-61	мини-карта	да	да: src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@832c953:48
+cMessageDrawer::draw	src/drawers/cMessageDrawer.cpp@9208dcf:39-126	строка сообщений	да	да: src/drawers/cMessageDrawer.cpp	src/drawers/cMessageDrawer.cpp@832c953:58
+cDrawManager::drawTopBarMusicControls	src/managers/cDrawManager.cpp@9208dcf:288-295	другое — музыкальные элементы верхней строки	нет	да: src/managers/cDrawManager.cpp	нет
+cBuildingListFactory::getButtonDrawY	src/sidebar/cBuildingListFactory.cpp@9208dcf:22-27	список построек	да	да: src/sidebar/cBuildingListFactory.cpp	src/sidebar/cBuildingListFactory.cpp@832c953:23
+cBuildingListFactory::getButtonDrawXStart	src/sidebar/cBuildingListFactory.cpp@9208dcf:30-35	список построек	да	да: src/sidebar/cBuildingListFactory.cpp	src/sidebar/cBuildingListFactory.cpp@832c953:30
+cBuildingListFactory::initializeList	src/sidebar/cBuildingListFactory.cpp@9208dcf:39-113	список построек	да	да: src/sidebar/cBuildingListFactory.cpp	src/sidebar/cBuildingListFactory.cpp@832c953:36
+UiAuditAccess::recordSidebarClicks	src/debug/UiAuditAccess.cpp@9208dcf:350-399	список построек	нет	нет файла	нет
+UiAuditAccess::prepareGameScreen	src/debug/UiAuditAccess.cpp@9208dcf:780-934	список построек	нет	нет файла	нет
