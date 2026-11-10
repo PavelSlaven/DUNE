@@ -33,7 +33,7 @@ TEST_CASE("Preferences - saved settings load back identical", "[preferences]")
     saved.cameraBorderOrKeyMoveSpeed = 0.25f;
     saved.cameraEdgeMove = false;
     saved.windowed = true;
-    saved.scalingMode = eScalingMode::LETTERBOX;
+    saved.renderScalePercent = 150;
     saved.allowRepeatingReinforcements = true;
     saved.turretsDownOnLowPower = true;
     saved.rocketTurretsDownOnLowPower = true;
@@ -63,7 +63,7 @@ TEST_CASE("Preferences - saved settings load back identical", "[preferences]")
     REQUIRE(loaded.cameraBorderOrKeyMoveSpeed == 0.25f);
     REQUIRE_FALSE(loaded.cameraEdgeMove);
     REQUIRE(loaded.windowed);
-    REQUIRE(loaded.scalingMode == eScalingMode::LETTERBOX);
+    REQUIRE(loaded.renderScalePercent == 150);
     REQUIRE(loaded.allowRepeatingReinforcements);
     REQUIRE(loaded.turretsDownOnLowPower);
     REQUIRE(loaded.rocketTurretsDownOnLowPower);
