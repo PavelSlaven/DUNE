@@ -47,6 +47,7 @@ public:
     SDL_IOStream *getData(unsigned int index);
     //! get index from ressource named fileId
     int getIndexFromName(const std::string &fileId) const;
+    std::string getNameFromIndex(int index) const;
     //! print all files in Pack
     void displayPackFile();
     //! get the number of files in the pack

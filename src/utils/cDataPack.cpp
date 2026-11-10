@@ -55,6 +55,25 @@ int DataPack::getIndexFromName(const std::string &name)
     return reader->getIndexFromName(name);
 }
 
+int DataPack::getIndexFromSurface(const SDL_Surface *surface) const
+{
+    if (!surface) {
+        return -1;
+    }
+
+    for (const auto &[index, cachedSurface] : surfaceCache) {
+        if (cachedSurface == surface) {
+            return index;
+        }
+    }
+    return -1;
+}
+
+std::string DataPack::getNameFromIndex(int index) const
+{
+    return reader->getNameFromIndex(index);
+}
+
 SDL_Surface *DataPack::getSurface(int index)
 {
     if (index < 0 || index >= reader->getNumberOfFiles()) {

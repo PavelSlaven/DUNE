@@ -60,6 +60,8 @@ public:
     SDL_Surface *getSurface(const std::string &name);
     // return index of a surface or audio
     int getIndexFromName(const std::string &name);
+    int getIndexFromSurface(const SDL_Surface *surface) const;
+    std::string getNameFromIndex(int index) const;
     // return audio from his index in pack (music or sfx)
     MIX_Audio *getAudio(int index);
     // return audio from his name
