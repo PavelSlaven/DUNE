@@ -40,6 +40,45 @@ void set(cIniFile &ini, const char *key, const std::string &value)
 {
     ini.setValue(SECTION, key, value);
 }
+
+bool loadIni(const std::filesystem::path &file, cIniFile &ini, std::string &error)
+{
+    std::error_code filesystemError;
+    if (!std::filesystem::exists(file, filesystemError)) {
+        error = "No preferences file found at " + utf8FileName(file);
+        return false;
+    }
+
+    if (!ini.load(utf8FileName(file)) || !ini.hasSection(SECTION)) {
+        error = "Preferences file is unusable: " + utf8FileName(file);
+        return false;
+    }
+    return true;
+}
+
+bool writeIni(const cIniFile &ini, const std::filesystem::path &file, std::string &error)
+{
+    std::error_code filesystemError;
+    std::filesystem::create_directories(file.parent_path(), filesystemError);
+    if (filesystemError) {
+        error = "Could not create preferences directory: " + filesystemError.message();
+        return false;
+    }
+
+    // write to a temporary file first, so a crash while writing cannot leave a half written file
+    std::filesystem::path tempPath = file;
+    tempPath += ".tmp";
+    if (!ini.save(utf8FileName(tempPath))) {
+        error = "Could not write preferences file";
+        return false;
+    }
+    std::filesystem::rename(tempPath, file, filesystemError);
+    if (filesystemError) {
+        error = "Could not replace preferences file: " + filesystemError.message();
+        return false;
+    }
+    return true;
+}
 }
 
 void readSettings(const cSection &section, InitialGameSettings &settings)
@@ -129,15 +168,8 @@ void readSettings(const cSection &section, InitialGameSettings &settings)
 
 bool load(const std::filesystem::path &file, InitialGameSettings &settings, std::string &error)
 {
-    std::error_code filesystemError;
-    if (!std::filesystem::exists(file, filesystemError)) {
-        error = "No preferences file found at " + utf8FileName(file);
-        return false;
-    }
-
     cIniFile ini;
-    if (!ini.load(utf8FileName(file)) || !ini.hasSection(SECTION)) {
-        error = "Preferences file is unusable: " + utf8FileName(file);
+    if (!loadIni(file, ini, error)) {
         return false;
     }
     readSettings(ini.getSection(SECTION), settings);
@@ -146,13 +178,6 @@ bool load(const std::filesystem::path &file, InitialGameSettings &settings, std:
 
 bool save(const std::filesystem::path &file, const InitialGameSettings &settings, std::string &error)
 {
-    std::error_code filesystemError;
-    std::filesystem::create_directories(file.parent_path(), filesystemError);
-    if (filesystemError) {
-        error = "Could not create preferences directory: " + filesystemError.message();
-        return false;
-    }
-
     cIniFile ini;
     set(ini, "ScreenWidth", std::to_string(settings.screenW));
     set(ini, "ScreenHeight", std::to_string(settings.screenH));
@@ -161,6 +186,7 @@ bool save(const std::filesystem::path &file, const InitialGameSettings &settings
     set(ini, "FullScreen", toText(!settings.windowed));
     set(ini, "CameraEdgeMove", toText(settings.cameraEdgeMove));
     set(ini, "RenderScale", std::to_string(settings.renderScalePercent));
+    set(ini, "WorldScale", std::to_string(settings.worldScalePercent));
     set(ini, "AllowRepeatingReinforcements", toText(settings.allowRepeatingReinforcements));
     set(ini, "AllTurretsDownOnLowPower", toText(settings.turretsDownOnLowPower));
     set(ini, "RocketTurretsDownOnLowPower", toText(settings.rocketTurretsDownOnLowPower));
@@ -181,17 +207,37 @@ bool save(const std::filesystem::path &file, const InitialGameSettings &settings
     set(ini, "pauseWhenLosingFocus", toText(settings.pauseWhenLosingFocus));
     set(ini, "fogOfWarEnabled", toText(settings.fogOfWarEnabled));
 
-    // write to a temporary file first, so a crash while writing cannot leave a half written file
-    std::filesystem::path tempPath = file;
-    tempPath += ".tmp";
-    if (!ini.save(utf8FileName(tempPath))) {
-        error = "Could not write preferences file";
+    return writeIni(ini, file, error);
+}
+
+bool saveScales(
+    const std::filesystem::path &file,
+    int renderScalePercent,
+    int worldScalePercent,
+    std::string &error)
+{
+    cIniFile loaded;
+    std::string loadError;
+    cIniFile fresh;
+    cIniFile &ini = loadIni(file, loaded, loadError) ? loaded : fresh;
+    set(ini, "RenderScale", std::to_string(renderScalePercent));
+    set(ini, "WorldScale", std::to_string(worldScalePercent));
+    return writeIni(ini, file, error);
+}
+
+bool loadScales(const std::filesystem::path &file, InitialGameSettings &settings, std::string &error)
+{
+    cIniFile ini;
+    if (!loadIni(file, ini, error)) {
         return false;
     }
-    std::filesystem::rename(tempPath, file, filesystemError);
-    if (filesystemError) {
-        error = "Could not replace preferences file: " + filesystemError.message();
-        return false;
+
+    const cSection section = ini.getSection(SECTION);
+    if (section.hasValue("RenderScale")) {
+        settings.renderScalePercent = section.getInt("RenderScale");
+    }
+    if (section.hasValue("WorldScale")) {
+        settings.worldScalePercent = section.getInt("WorldScale");
     }
     return true;
 }

@@ -302,6 +302,7 @@ void cGame::applySettings(std::unique_ptr<InitialGameSettings> gs)
     m_gameSettings->m_screenW = gs->screenW;
     m_gameSettings->m_worldScalePercent = gs->worldScalePercent;
     m_gameSettings->m_renderScalePercent = gs->renderScalePercent;
+    m_gameSettings->setSavedScalePercents(gs->renderScalePercent, gs->worldScalePercent);
 
     m_gameSettings->m_screenH = gs->screenH;
 
@@ -349,8 +350,8 @@ InitialGameSettings cGame::currentSettings() const
     gs.cameraBorderOrKeyMoveSpeed = m_cameraBorderOrKeyMoveSpeed;
     gs.cameraEdgeMove = m_cameraEdgeMove;
     gs.windowed = m_windowed;
-    gs.renderScalePercent = m_gameSettings->m_renderScalePercent;
-    gs.worldScalePercent = m_gameSettings->m_worldScalePercent;
+    gs.renderScalePercent = m_gameSettings->getSavedRenderScalePercent();
+    gs.worldScalePercent = m_gameSettings->getSavedWorldScalePercent();
     gs.allowRepeatingReinforcements = m_gameSettings->m_allowRepeatingReinforcements;
     gs.turretsDownOnLowPower = m_gameSettings->isTurretsDownOnLowPower();
     gs.rocketTurretsDownOnLowPower = m_gameSettings->isRocketTurretsDownOnLowPower();
@@ -770,6 +771,7 @@ bool cGame::setupGame()
 
     m_gameSettings->m_screenW = m_Screen->Width();
     m_gameSettings->m_screenH = m_Screen->Height();
+    m_gameSettings->m_outputW = m_Screen->OutputWidth();
     m_gameSettings->m_outputH = m_Screen->OutputHeight();
     Logger::info(COMP_SDL2, "Resolution", "World scale zoom {}", m_gameSettings->getWorldScaleFactor());
     window = m_Screen->getWindows();

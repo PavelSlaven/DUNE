@@ -45,6 +45,9 @@ public:
     int Height() const {
         return canvasResolution.height;
     }
+    int OutputWidth() const {
+        return outputResolution.width;
+    }
     int OutputHeight() const {
         return outputResolution.height;
     }

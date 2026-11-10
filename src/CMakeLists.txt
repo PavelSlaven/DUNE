@@ -171,6 +171,7 @@ set(D2TM_SOURCES
     utils/Graphics.cpp
     utils/HouseMaskTint.cpp
     utils/RenderScale.cpp
+    utils/ScaleChoices.cpp
     utils/HdUiTextureLoader.cpp
     utils/ini.cpp
     utils/IniParsing.cpp

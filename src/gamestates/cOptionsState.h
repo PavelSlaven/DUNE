@@ -20,13 +20,17 @@ class cKeyboardEvent;
 struct s_MouseEvent;
 #include "include/Texture.hpp"
 
+#include <cstddef>
 #include <memory>
+#include <vector>
 
 struct SDL_Surface;
 
 class GameContext;
 class cTextDrawer;
 class GuiWindow;
+class GuiButton;
+class GuiLabel;
 class GameStateTransition;
 class cMouse;
 class cGameSettings;
@@ -55,8 +59,21 @@ private:
 
     int m_prevState;
 
+    std::vector<int> m_renderScaleChoices;
+    std::vector<int> m_worldScaleChoices;
+    std::size_t m_selectedRenderScaleIndex = 0;
+    std::size_t m_selectedWorldScaleIndex = 0;
+    GuiLabel *m_renderScaleValueLabel = nullptr;
+    GuiLabel *m_worldScaleValueLabel = nullptr;
+    GuiLabel *m_statusLabel = nullptr;
+    GuiButton *m_applyButton = nullptr;
+
     std::unique_ptr<GuiWindow> m_guiWindow;
 
     void constructWindow(int prevState);
+    void selectRenderScale(int step);
+    void selectWorldScale(int step);
+    void updateScaleControls();
+    void applyScaleSettings();
     Texture *const *m_backgroundTexture = nullptr;
 };
