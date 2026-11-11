@@ -6,7 +6,7 @@
 
 ## Цель
 
-Перенести в порт выбор языка и русские шрифты форка по плану `PLAN-P7A` ниже. Игрок выбирает в окне настроек русский или английский язык; после перезапуска игры русский текст рисует шрифт `Sangyo-Regular.otf`, а знаки, которых нет в основном шрифте, в обоих языках рисует запасной шрифт `PTMono-Regular.ttf`. Режим отладки интерфейса работает на английском, если не задан аргумент `--ui-audit-language ru`. Готово, когда сборка со всеми тестами, включая новые тесты T1–T3, четырнадцать скриптов Python проверки 4 и набор `tools/ui-audit/tests` зелёные.
+Перенести в порт выбор языка и русские шрифты форка по плану `PLAN-P7A` ниже. Игрок выбирает в окне настроек русский или английский язык; после перезапуска игры русский текст рисует шрифт `Sangyo-Regular.otf` (не открылся файл — шрифты `settings.ini` с запасным PTMono), а знаки, которых нет в основном шрифте, в обоих языках рисует запасной шрифт `PTMono-Regular.ttf`. Режим отладки интерфейса работает на английском, если не задан аргумент `--ui-audit-language ru`. Готово, когда сборка со всеми тестами, включая новые тесты T1–T3, четырнадцать скриптов Python проверки 4 и набор `tools/ui-audit/tests` зелёные.
 
 ## Что уже решено
 
@@ -66,12 +66,12 @@
    - Новая функция `Preferences::saveLanguage(file, language, error)` устроена как `saveScales`: пишет `Language`; у годного файла сохраняет остальные ключи, иначе создаёт файл.
 3. **Запуск.**
    - `src/main.cpp` вызывает `Preferences::loadLanguage` в том же блоке, что `Preferences::loadScales` (строки 82–85), — при каждом запуске.
-   - Перед `game.applySettings` (строка 118) `src/main.cpp` вызывает `localization::setLanguage`. Значение — `uiaudit::options().language` (см. ниже), когда `uiaudit::isEnabled()` истинно и `options().language` не пусто; `en`, когда режим включён, а `language` пусто; `settings->language`, когда режим выключен.
+   - Перед `game.applySettings` (строка 118) `src/main.cpp` при `uiaudit::isEnabled()` присваивает `settings->language` значение `uiaudit::options().language` (см. ниже), а при пустом `options().language` — `en`; при выключенном режиме `settings->language` не меняется. Затем `src/main.cpp` вызывает `localization::setLanguage(settings->language)`. Так язык процесса и сохранённый язык окна настроек (пункт 6) в режиме отладки интерфейса совпадают.
    - Аргумент `--ui-audit-language <значение>` разбирается в `uiaudit::consumeArguments` (`src/debug/UiAuditArguments.cpp`) так же, как `--ui-audit-frames`, в новое поле `std::string language` структуры `Options` (`src/debug/UiAuditArguments.hpp`).
    - В `uiaudit::handleEarlyExit` (`src/debug/UiAuditCapture.cpp`) сразу после проверки `frames` (строки 427–431): непустое `options().language`, не равное `en` или `ru`, — строка `ui-audit: bad language <значение>` в `std::cerr` и код выхода 2.
 4. **Шрифты.** В `ContextCreator::ContextCreator`:
    - папка шрифтов — папка файла шрифта `BENEGESS` (`std::filesystem::path(settingsValidator->getFullName(eGameDirFileName::BENEGESS)).parent_path()`);
-   - при `!localization::isEnglish()` и открывшемся `Sangyo-Regular.otf` из этой папки игровой, диалоговый и мелкий шрифты — `Sangyo-Regular.otf` размером 12;
+   - при `!localization::isEnglish()` и открывшемся `Sangyo-Regular.otf` из этой папки игровой, диалоговый и мелкий шрифты — три отдельно открытых экземпляра `Sangyo-Regular.otf` размером 12;
    - при английском — шрифты из `settings.ini` размером 12, тем же кодом, что в строках 78–100;
    - не открылся `Sangyo-Regular.otf` при русском — предупреждение в лог и шрифты из `settings.ini`;
    - затем один `PTMono-Regular.ttf` из той же папки размером 12 открывается в новое поле `symbol_fallback_font` класса `ContextCreator` и подключается `TTF_AddFallbackFont` к каждому из трёх открытых шрифтов, в обоих языках; не открылся — предупреждение в лог, без запасного шрифта;
@@ -81,7 +81,7 @@
    - **Подпись:** `GuiLabelBuilder` с текстом `localization::text("Language", "Язык")`, прямоугольник `rect(contentX, contentRowY(8), displayLabelWidth, buttonHeight)`. Вид, тема и выравнивание — как у подписи масштаба рисования (строки 377–387).
    - **Кнопка:** `GuiButtonBuilder`, прямоугольник `rect(selectorX, contentRowY(8), arrowWidth + margin + scaleValueWidth + margin + arrowWidth, buttonHeight)`, тема и вид — как у кнопок масштаба. Текст — `English` при выбранном `en`, `Русский` при `ru`. Нажатие меняет выбор `en` ↔ `ru`, стирает строку состояния и вызывает `updateScaleControls()`.
    - **`updateScaleControls()`** ставит текст кнопки языка и включает «Apply», когда масштаб рисования, масштаб мира или язык отличаются от сохранённых.
-   - **«Apply» (`applyScaleSettings()`)** вызывает `Preferences::saveScales` и `Preferences::saveLanguage`. Обе успешны — `setSavedScalePercents`, `setSavedLanguage` и строка `Saved. Restart the game.`. Иначе — строка `Could not save preferences.ini` и предупреждение в лог тем же кодом, что в строках 580–583.
+   - **«Apply» (`applyScaleSettings()`)** вызывает обе функции, `Preferences::saveScales` и `Preferences::saveLanguage`, затем проверяет оба результата. Обе вернули `true` — `setSavedScalePercents`, `setSavedLanguage` и строка `Saved. Restart the game.`. Иначе — строка `Could not save preferences.ini` и предупреждение в лог тем же кодом, что в строках 580–583.
    - Начальный выбор — `m_settings->getSavedLanguage()`, нормализованный: `en` или `EN` → `en`, иное → `ru`.
    - Язык идущей игры до перезапуска не меняется. Имена функций `updateScaleControls` и `applyScaleSettings` не меняются.
 6. **Сохранённый язык.**
@@ -113,7 +113,7 @@
   - `CHECK` для `150%` (у Sangyo или у PTMono);
   - новые `CHECK`: знаки `<` (U+003C), `>` (U+003E) и `…` (U+2026) есть у PTMono.
 
-  Шрифты закрываются, затем `TTF_Quit`. Итого 104 проверки.
+  Шрифты закрываются, затем `TTF_Quit`. Итого 104 выполненных проверки; в коде проверки знаков строки можно делать циклом по строке.
 - **T2 — `tests/utils/test_Localization.cpp`.** Пункт 1 контракта:
   - `setLanguage("en")` и `setLanguage("EN")` — `isEnglish()` истинно, `text("A", "Б") == "A"`;
   - `setLanguage("ru")` и `setLanguage("de")` — ложно, `"Б"`;
@@ -137,14 +137,14 @@
 
   Код выхода скрипта — 0, если все три случая прошли, иначе 1 с строкой о первом непрошедшем.
 
-В `tests/CMakeLists.txt` в список исходников `d2tm_tests` добавляются `utils/test_FontCoverage.cpp` и `utils/test_Localization.cpp`. Другие строки файла не меняются.
+В `tests/CMakeLists.txt` в список исходников `d2tm_tests` помощник A добавляет обе строки — `utils/test_FontCoverage.cpp` и `utils/test_Localization.cpp`. Другие строки файла не меняются.
 
 ## PLAN-P7A
 
 | шаг | файлы | что сделать | кто |
 |---|---|---|---|
 | 1 | T1–T4, `tests/CMakeLists.txt` | Написать тесты раздела «Тесты». Дорожки: T1 — помощник A; T2 и T3 — помощник B; T4 — помощник C. | помощники A, B, C |
-| 2 | — | Красный прогон: сначала T4 на имеющейся сборке `.tmp/out/run/bin` командой проверки 4 — `exit=1`; затем сборка командой проверки 1 — код выхода не 0, в `.tmp/p7a/build.log` ошибки компиляции о `Localization.hpp`, `FontSupport.hpp` или `loadLanguage`. Логи — `.tmp/p7a/red-t4.log` и `.tmp/p7a/build-red.log`. | помощник C, затем помощник A |
+| 2 | — | Красный прогон: сначала T4 на имеющейся сборке `.tmp/out/run/bin` командой проверки 4, у которой вместо `.tmp/p7a/run-<скрипт>.log` стоит `.tmp/p7a/red-t4.log`, — `exit=1`; затем сборка командой проверки 1, у которой вместо `.tmp/p7a/build.log` стоит `.tmp/p7a/build-red.log`, — код выхода не 0, в `.tmp/p7a/build-red.log` ошибки компиляции о `Localization.hpp`, `FontSupport.hpp` или `loadLanguage`. Логи — `.tmp/p7a/red-t4.log` и `.tmp/p7a/build-red.log`. | помощник C, затем помощник A |
 | 3 | файлы пункта 8 контракта, `src/utils/FontSupport.hpp` | Пункты 7 и 8 контракта. | помощник A |
 | 4 | `src/utils/Localization.hpp`, `src/utils/InitialGameSettings.hpp`, `src/game/Preferences.hpp`, `src/game/Preferences.cpp`, `src/game/cGameSettings.h`, `src/game/cGame_logic.cpp`, `src/main.cpp`, `src/debug/UiAuditArguments.hpp`, `src/debug/UiAuditArguments.cpp`, `src/debug/UiAuditCapture.cpp` | Пункты 1, 2, 3 и 6 контракта. | помощник B |
 | 5 | `src/context/ContextCreator.hpp`, `src/context/ContextCreator.cpp` | Пункт 4 контракта. | корневая нить |
