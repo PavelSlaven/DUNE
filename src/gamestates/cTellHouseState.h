@@ -30,6 +30,7 @@ class GameStateTransition;
 class MissionFlow;
 
 class cTellHouseState : public cGameState {
+    friend class UiAuditAccess;
 public:
     cTellHouseState(sGameServices* services, cIni *ini, s_DataCampaign* dataCampaign);
     ~cTellHouseState() override;

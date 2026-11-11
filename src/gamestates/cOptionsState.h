@@ -36,6 +36,7 @@ class cMouse;
 class cGameSettings;
 
 class cOptionsState : public cGameState {
+    friend class UiAuditAccess;
 public:
     explicit cOptionsState(sGameServices* services, int prevState);
     ~cOptionsState() override;

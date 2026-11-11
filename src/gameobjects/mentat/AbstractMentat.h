@@ -42,6 +42,7 @@ enum eMentatState {
 };
 
 class AbstractMentat : public cInputObserver {
+    friend class UiAuditAccess;
 public:
     AbstractMentat(GameContext* ctx, cGameSettings* settings, GameStateTransition* stateTransitions, MentatFlow* mentatFlow, bool canMissionSelect);
     virtual ~AbstractMentat();

@@ -31,6 +31,7 @@
 #include "context/TextContext.hpp"
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
+#include "debug/UiAudit.hpp"
 
 #include "utils/HdUiTextureLoader.hpp"
 
@@ -110,6 +111,14 @@ void cChooseHouseState::thinkFast()
 
 void cChooseHouseState::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordClick("house-atreides", houseAtreides.getX(), houseAtreides.getY(), houseAtreides.getWidth(), houseAtreides.getHeight());
+        uiaudit::recordClick("house-ordos", houseOrdos.getX(), houseOrdos.getY(), houseOrdos.getWidth(), houseOrdos.getHeight());
+        uiaudit::recordClick("house-harkonnen", houseHarkonnen.getX(), houseHarkonnen.getY(), houseHarkonnen.getWidth(), houseHarkonnen.getHeight());
+        uiaudit::recordClick("house-sardaukar", houseSardaukar.getX(), houseSardaukar.getY(), houseSardaukar.getWidth(), houseSardaukar.getHeight());
+        uiaudit::recordClick("house-back", backButtonRect.getX(), backButtonRect.getY(), backButtonRect.getWidth(), backButtonRect.getHeight());
+    }
+
     drawHdBackground();
 
     const std::string title = "CHOOSE YOUR HOUSE";

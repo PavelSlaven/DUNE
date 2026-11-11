@@ -38,6 +38,7 @@ enum class MentatMode {
 };
 
 class cMentatState : public cGameState {
+    friend class UiAuditAccess;
 public:
     cMentatState(sGameServices* services, MentatMode mode, cIni* cini, s_DataCampaign* dataCampaign);
     ~cMentatState() override;

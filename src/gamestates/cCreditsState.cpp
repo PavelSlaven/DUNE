@@ -33,6 +33,7 @@
 #include "context/TextContext.hpp"
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
+#include "debug/UiAudit.hpp"
 
 #include <algorithm>
 
@@ -440,6 +441,10 @@ void cCreditsState::thinkFast()
 
 void cCreditsState::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordCanvasClick("credits-speed-up");
+    }
+
     m_sdlDrawer->renderSprite(m_teamBmp, m_teamCoordinates.x, m_teamCoordinates.y);
 
     int halfScreen = m_settings->getScreenW() / 2;

@@ -57,6 +57,7 @@ struct s_SkirmishPlayer {
 };
 
 class cSetupSkirmishState : public cGameState {
+    friend class UiAuditAccess;
 
 public:
     explicit cSetupSkirmishState(sGameServices* services, cPreviewMaps* previewMaps, s_DataCampaign* dataCompaign);

@@ -27,7 +27,7 @@ namespace {
 constexpr int kReadinessTimeoutFrames = 900;
 constexpr int kOffscreenCursor = -300;
 
-enum class Kind { Text, Gui, Click };
+enum class Kind { Text, Gui, Click, Credit };
 
 struct Entry {
     Kind kind;
@@ -35,6 +35,7 @@ struct Entry {
     Rect rect;
     bool hasBox;
     Rect box;
+    std::string name;
 };
 
 std::vector<Entry> g_entries;
@@ -47,6 +48,7 @@ int g_settled = 0;
 int g_stateAtBegin = -1;
 const cGameState *g_currentStateAtBegin = nullptr;
 bool g_fadeAtBegin = false;
+bool g_clipText = false;
 int g_canvasW = 0;
 int g_canvasH = 0;
 SDL_Renderer *g_renderer = nullptr;
@@ -131,6 +133,10 @@ bool writeGeometry(cGame &currentGame, const std::filesystem::path &path, int ou
                 file << "{\"k\":\"click\",\"name\":\"" << escapeJson(entry.label) << "\"," << rectJson(entry.rect)
                      << "}\n";
                 break;
+            case Kind::Credit:
+                file << "{\"k\":\"credit\",\"name\":\"" << escapeJson(entry.name) << "\",\"s\":\""
+                     << escapeJson(entry.label) << "\"}\n";
+                break;
         }
     }
     return static_cast<bool>(file);
@@ -177,6 +183,9 @@ void capture(cGame &currentGame)
         fail("cannot write " + png.string() + ": " + SDL_GetError());
         return;
     }
+    if (std::string(g_scene->group) == "credits") {
+        UiAuditAccess::recordCreditLines(currentGame);
+    }
     const fs::path log = outDir / (std::string(g_scene->id) + ".geometry.jsonl");
     if (!writeGeometry(currentGame, log, outputW, outputH)) {
         fail("cannot write " + log.string());
@@ -187,9 +196,17 @@ void capture(cGame &currentGame)
 
 }
 
+void setVerticalClipText(bool enabled)
+{
+    g_clipText = enabled;
+}
+
 void recordText(const std::string &text, int x, int y, int w, int h, const Rect *box)
 {
-    Entry entry{Kind::Text, text, {x, y, w, h}, false, {}};
+    if (g_clipText && (y < 0 || y + h > g_canvasH)) {
+        return;
+    }
+    Entry entry{Kind::Text, text, {x, y, w, h}, false, {}, {}};
     if (box != nullptr) {
         entry.hasBox = true;
         entry.box = *box;
@@ -203,12 +220,22 @@ void recordText(const std::string &text, int x, int y, int w, int h, const Rect 
 
 void recordGui(const char *type, int x, int y, int w, int h)
 {
-    g_entries.push_back({Kind::Gui, type, {x, y, w, h}, false, {}});
+    g_entries.push_back({Kind::Gui, type, {x, y, w, h}, false, {}, {}});
 }
 
 void recordClick(const char *name, int x, int y, int w, int h)
 {
-    g_entries.push_back({Kind::Click, name, {x, y, w, h}, false, {}});
+    g_entries.push_back({Kind::Click, name, {x, y, w, h}, false, {}, {}});
+}
+
+void recordCanvasClick(const char *name)
+{
+    recordClick(name, 0, 0, g_canvasW, g_canvasH);
+}
+
+void recordCreditLine(const std::string &name, const std::string &text)
+{
+    g_entries.push_back({Kind::Credit, text, {0, 0, 0, 0}, false, {}, name});
 }
 
 BoxScope::BoxScope(int x, int y, int w, int h)
@@ -283,6 +310,7 @@ void onSetupDone(cGame &currentGame)
     g_frame = 0;
     g_settled = 0;
     g_done = false;
+    g_clipText = false;
     currentGame.m_gameSettings->setPlayMusic(false);
     UiAuditAccess::freezeClock(currentGame);
     const bool prepared = g_scene != nullptr && g_scene->prepare(currentGame);
