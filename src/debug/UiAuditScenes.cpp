@@ -82,6 +82,12 @@ Scene hdOnly(Scene value)
     return value;
 }
 
+Scene withHud(Scene value)
+{
+    value.hud = true;
+    return value;
+}
+
 template <int House, int Kind>
 bool prepareMentat(cGame &game)
 {
@@ -266,6 +272,13 @@ bool prepareStructureLabel(cGame &game)
     return UiAuditAccess::enterPlaying(game, ATREIDES, 1) && UiAuditAccess::placeStructure(game, Edge);
 }
 
+template <int House, int Kind>
+bool prepareGame(cGame &game)
+{
+    resetSteps();
+    return UiAuditAccess::prepareGameScreen(game, House, Kind);
+}
+
 const std::vector<Scene> g_catalog = {
     scene("main-menu", "main-menu", "", "StateSettled", prepareMainMenu),
     scene("region-atreides-intro-1", "region", "atreides", "RegionIntroScene", prepareRegion<ATREIDES, 1, false>, readyRegionIntro<1>),
@@ -403,6 +416,41 @@ const std::vector<Scene> g_catalog = {
     onGameScreen(scene("units-label-unit-fremen-one", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<UNIT_FREMEN_ONE>), false),
     onGameScreen(scene("units-label-unit-fremen-three", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<UNIT_FREMEN_THREE>), false),
     onGameScreen(scene("units-label-saboteur", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<SABOTEUR>), false),
+    withHud(onGameScreen(scene("game-hud", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::Hud>), false)),
+    onGameScreen(scene("game-structure-selected", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::Structure>), false),
+    onGameScreen(scene("game-list-build", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ListBuild>), false),
+    onGameScreen(scene("game-list-infantry", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ListInfantry>), false),
+    onGameScreen(scene("game-list-vehicles", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ListVehicles>), false),
+    onGameScreen(scene("game-list-starport", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ListStarport>), false),
+    onGameScreen(scene("game-list-palace", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ListPalace>), false),
+    onGameScreen(scene("game-list-upgrades", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ListUpgrades>), false),
+    onGameScreen(scene("game-radar-none", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::RadarNone>), false),
+    onGameScreen(scene("game-radar-nopower", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::RadarNoPower>), false),
+    onGameScreen(scene("game-place-allowed", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::PlaceAllowed>), true),
+    onGameScreen(scene("game-place-forbidden", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::PlaceForbidden>), true),
+    onGameScreen(scene("game-group-select", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::GroupSelect>), true),
+    onGameScreen(scene("game-messages", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::Messages>), false),
+    onGameScreen(scene("game-item-hover", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ItemHover>), true),
+    hdOnly(onGameScreen(scene("game-list-scroll-end", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ScrollEnd>), false)),
+    onGameScreen(scene("game-rally-point", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::Rally>), false),
+    onGameScreen(scene("game-harkonnen-list-build", "game-playing", "harkonnen", kFixedGameFrames, prepareGame<HARKONNEN, uiaudit::ListBuild>), false),
+    onGameScreen(scene("game-harkonnen-list-infantry", "game-playing", "harkonnen", kFixedGameFrames, prepareGame<HARKONNEN, uiaudit::ListInfantry>), false),
+    onGameScreen(scene("game-harkonnen-list-vehicles", "game-playing", "harkonnen", kFixedGameFrames, prepareGame<HARKONNEN, uiaudit::ListVehicles>), false),
+    onGameScreen(scene("game-harkonnen-list-starport", "game-playing", "harkonnen", kFixedGameFrames, prepareGame<HARKONNEN, uiaudit::ListStarport>), false),
+    onGameScreen(scene("game-harkonnen-list-palace", "game-playing", "harkonnen", kFixedGameFrames, prepareGame<HARKONNEN, uiaudit::ListPalace>), false),
+    onGameScreen(scene("game-harkonnen-list-upgrades", "game-playing", "harkonnen", kFixedGameFrames, prepareGame<HARKONNEN, uiaudit::ListUpgrades>), false),
+    onGameScreen(scene("game-ordos-list-build", "game-playing", "ordos", kFixedGameFrames, prepareGame<ORDOS, uiaudit::ListBuild>), false),
+    onGameScreen(scene("game-ordos-list-infantry", "game-playing", "ordos", kFixedGameFrames, prepareGame<ORDOS, uiaudit::ListInfantry>), false),
+    onGameScreen(scene("game-ordos-list-vehicles", "game-playing", "ordos", kFixedGameFrames, prepareGame<ORDOS, uiaudit::ListVehicles>), false),
+    onGameScreen(scene("game-ordos-list-starport", "game-playing", "ordos", kFixedGameFrames, prepareGame<ORDOS, uiaudit::ListStarport>), false),
+    onGameScreen(scene("game-ordos-list-palace", "game-playing", "ordos", kFixedGameFrames, prepareGame<ORDOS, uiaudit::ListPalace>), false),
+    onGameScreen(scene("game-ordos-list-upgrades", "game-playing", "ordos", kFixedGameFrames, prepareGame<ORDOS, uiaudit::ListUpgrades>), false),
+    onGameScreen(scene("game-sardaukar-list-build", "game-playing", "sardaukar", kFixedGameFrames, prepareGame<SARDAUKAR, uiaudit::ListBuild>), false),
+    onGameScreen(scene("game-sardaukar-list-infantry", "game-playing", "sardaukar", kFixedGameFrames, prepareGame<SARDAUKAR, uiaudit::ListInfantry>), false),
+    onGameScreen(scene("game-sardaukar-list-vehicles", "game-playing", "sardaukar", kFixedGameFrames, prepareGame<SARDAUKAR, uiaudit::ListVehicles>), false),
+    onGameScreen(scene("game-sardaukar-list-starport", "game-playing", "sardaukar", kFixedGameFrames, prepareGame<SARDAUKAR, uiaudit::ListStarport>), false),
+    onGameScreen(scene("game-sardaukar-list-palace", "game-playing", "sardaukar", kFixedGameFrames, prepareGame<SARDAUKAR, uiaudit::ListPalace>), false),
+    onGameScreen(scene("game-sardaukar-list-upgrades", "game-playing", "sardaukar", kFixedGameFrames, prepareGame<SARDAUKAR, uiaudit::ListUpgrades>), false),
 };
 
 }

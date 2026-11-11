@@ -27,6 +27,7 @@ class cInputObserver;
 class cGameSettings;
 
 class cMouse {
+    friend class UiAuditAccess;
 
 public:
     cMouse(GameContext *ctx);

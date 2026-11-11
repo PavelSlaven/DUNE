@@ -14,6 +14,7 @@
  */
 
 #include "cBuildingListDrawer.h"
+#include "debug/UiAudit.hpp"
 #include "include/sGameServices.h"
 #include "drawers/SDLDrawer.hpp"
 #include "data/gfxinter.h"
@@ -551,6 +552,7 @@ void cBuildingListDrawer::drawList(cBuildingList *list, const bool shouldDrawStr
         }
 
         if (isOverItemCoordinates_Boolean(m_mouse->getX(), m_mouse->getY(), iDrawX, iDrawY)) {
+            if (uiaudit::isEnabled()) { uiaudit::recordLabel("card-hover", i, "ITEM", iDrawX, iDrawY, iDrawXEnd - iDrawX, iDrawYEnd - iDrawY, uiaudit::Rect{card.getX(), card.getY(), card.getWidth(), card.getHeight()}); }
             m_sdlDrawer->renderRectColor(
                 iDrawX + 1,
                 iDrawY + 1,
