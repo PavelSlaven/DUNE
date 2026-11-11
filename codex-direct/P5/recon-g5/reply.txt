@@ -1,0 +1,26 @@
+## RECON-P5G5 | 2026-11-11 17:47:49 UTC
+
+Отчёт: [.tmp/p5g5/RECON.md](/srv/dune/worktrees/u35/.tmp/p5g5/RECON.md).
+
+Строки вывода `git grep` и тексты функций по пунктам: 1 — 4 и 1; 2 — 5 и 7; 3 — 30 и 10; 4 — 65 и 7; 5 — 17 и 0.
+
+### Чтение
+
+Целиком, отдельным вызовом прочитан `.tmp/p7s/RECON.md`. Дополнительных ссылок на правила, нормы или контракты, требующих чтения, в задании и образце нет.
+
+### Не проверено
+
+Сборки, CTest и запуск игры не выполнялись. Коммитов нет.
+
+### Рабочие места
+
+`.tmp/p5g5` — **оставить — разведка для ведущего**.
+
+```text
+python3 /srv/dune/tools/task-places.py inventory .tmp/p5g5 --size
+```
+
+```text
+path	kind	branch	head_date	size	dirty	untracked	unpushed	worktrees	procs	refs
+/srv/dune/worktrees/u35/.tmp/p5g5	dir	-	-	68788	-	-	-	-	0	0
+```
