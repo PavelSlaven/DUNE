@@ -14,6 +14,7 @@
  */
 
 #include "gui/GuiStateButton.h"
+#include "debug/UiAudit.hpp"
 #include "gui/GuiButtonGroup.h"
 
 GuiStateButton::GuiStateButton(SDLDrawer* drawer, const cRectangle &rect)
@@ -65,6 +66,12 @@ void GuiStateButton::changeState(GuiState newState)
 
 void GuiStateButton::draw() const 
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiStateButton");
+        if (m_enabled) {
+            auditClick("GuiStateButton");
+        }
+    }
     m_sdlDrawer->renderStrechSprite(m_tex, *m_currentRectState, m_rect);
 }
 

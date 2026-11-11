@@ -54,6 +54,9 @@ const GroupScreen kGroupScreens[] = {
     {"skirmish-setup", "GAME_SETUPSKIRMISH", "cSetupSkirmishState"},
     {"game-playing", "GAME_PLAYING", "cGamePlaying"},
     {"options-game", "GAME_OPTIONS", "cOptionsState"},
+    {"scoring", "GAME_SCORING", "cScoringState"},
+    {"new-map-editor", "GAME_NEW_MAP_EDITOR", "cNewMapEditorState"},
+    {"editor", "GAME_EDITOR", "cEditorState"},
 };
 
 Scene scene(const char *id, const char *group, const char *house, const char *readiness,
@@ -121,6 +124,31 @@ bool readyOutcome(cGame &game)
         return false;
     }
     return pause(3);
+}
+
+bool readyScoring(cGame &game)
+{
+    if (g_step == 0) {
+        if (!pause(3)) {
+            return false;
+        }
+        UiAuditAccess::setState(game, GAME_SCORING);
+        g_step = 1;
+        return false;
+    }
+    return pause(3);
+}
+
+bool prepareNewMapEditor(cGame &game)
+{
+    UiAuditAccess::setState(game, GAME_NEW_MAP_EDITOR);
+    return true;
+}
+
+template <int Bar>
+bool prepareEditor(cGame &game)
+{
+    return UiAuditAccess::openEditor(game, Bar);
 }
 
 bool prepareMainMenu(cGame &game)
@@ -392,6 +420,11 @@ const std::vector<Scene> g_catalog = {
                      readyOutcome<true>), "GAME_WINNING", "cWinLoseState"),
     withScreen(scene("outcome-lose", "outcome", "atreides", "FixedFrames(8, no readiness flag)", prepareOutcome<false>,
                      readyOutcome<false>), "GAME_LOSING", "cWinLoseState"),
+    scene("scoring", "scoring", "atreides", "FixedFrames(8, no readiness flag)", prepareOutcome<true>, readyScoring),
+    scene("editor-new-map", "new-map-editor", "", "StateSettled", prepareNewMapEditor),
+    scene("editor-topology", "editor", "", "StateSettled", prepareEditor<0>),
+    scene("editor-start-cells", "editor", "", "StateSettled", prepareEditor<1>),
+    scene("editor-symmetry", "editor", "", "StateSettled", prepareEditor<2>),
     scene("options-game-main-nosaves", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsMenu<0>),
     scene("options-game-applied", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsMenu<1>),
     onGameScreen(scene("structure-label-top", "game-playing", "atreides", kFixedGameFrames, prepareStructureLabel<0>,

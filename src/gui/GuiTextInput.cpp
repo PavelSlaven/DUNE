@@ -14,6 +14,7 @@
  */
 
 #include "gui/GuiTextInput.h"
+#include "debug/UiAudit.hpp"
 #include "drawers/cTextDrawer.h"
 #include "include/cAssert.h"
 
@@ -51,6 +52,10 @@ GuiTextInput::GuiTextInput(SDLDrawer* drawer,const cRectangle& rect, cTextDrawer
 
 void GuiTextInput::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiTextInput");
+        auditClick("GuiTextInput");
+    }
     m_sdlDrawer->renderRectFillColor(m_rect, m_theme.background);
     if (m_focused) {
         cRectangle focusRect(m_rect.getX() - 3, m_rect.getY() - 3, m_rect.getWidth() + 6, m_rect.getHeight() + 6);

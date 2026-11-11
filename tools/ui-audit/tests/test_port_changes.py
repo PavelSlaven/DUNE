@@ -32,6 +32,8 @@ EXCLUSIONS = (
     "cMentatState\tэкран брифинга ментата; сцены режима названы классами ментатов AtreidesMentat, HarkonnenMentat, OrdosMentat, SardaukarMentat\n"
     "cTellHouseState\tэкран рассказа о Доме; сцены режима названы классом ментата BeneMentat\n"
     "cCreatorState\tсоздаёт и хранит состояния игры, не экран\n"
+    "GAME_VIDEO\tсостояние показа видеоролика; его экран cVideoState рисует только кадры видео, элементов интерфейса нет\n"
+    "cVideoState\tэкран видеоролика: рисует только кадры видео и курсор, элементов интерфейса нет\n"
 )
 
 

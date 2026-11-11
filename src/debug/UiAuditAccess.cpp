@@ -13,6 +13,7 @@
 #include "gameobjects/map/MapGeometry.hpp"
 #include "gameobjects/map/cMap.h"
 #include "gameobjects/map/cMapCamera.h"
+#include "gameobjects/map/cPreviewMaps.h"
 #include "gameobjects/players/cPlayer.h"
 #include "gameobjects/structures/cStructureFactory.h"
 #include "gameobjects/units/cUnit.h"
@@ -20,6 +21,8 @@
 #include "gameobjects/units/cUnits.h"
 #include "gui/GuiLabel.hpp"
 #include "gamestates/cCreditsState.h"
+#include "gamestates/cCreatorState.h"
+#include "gamestates/cEditorState.h"
 #include "gamestates/cGameState.h"
 #include "gamestates/cMentatState.h"
 #include "gamestates/cOptionsState.h"
@@ -482,6 +485,18 @@ bool UiAuditAccess::enterPlaying(cGame &currentGame, int house, int region)
     currentGame.transitionStateIfRequired();
     return currentGame.m_gameObjectsContext->getMap()->getGeometry()->getWidth() > 0 &&
            currentGame.m_state == GAME_PLAYING;
+}
+
+bool UiAuditAccess::openEditor(cGame &currentGame, int bar)
+{
+    // 64 cells plus the one-cell border on each side, as the new map window adds it
+    const int side = 64 + 2;
+    currentGame.m_gameObjectsContext->getPreviewMaps()->createEmptyMap("UI audit", "UI audit", "UI audit", side, side);
+    currentGame.loadMapFromEditor(-1);
+    auto *editor = dynamic_cast<cEditorState *>(currentGame.m_creatorState->getState(eGameState::EDITOR));
+    GuiBar *bars[] = {editor->m_topologyBar.get(), editor->m_startCellBar.get(), editor->m_symmetricBar.get()};
+    editor->setCurrentBar(bars[bar]);
+    return currentGame.m_state == GAME_EDITOR;
 }
 
 bool UiAuditAccess::placeLabelUnits(cGame &currentGame, int unitType)

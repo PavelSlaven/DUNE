@@ -96,6 +96,7 @@ public:
     static void missionOutcome(cGame &game, bool victory);
     static void recordSidebarClicks(cSideBarDrawer &drawer);
     static bool enterPlaying(cGame &game, int house, int region);
+    static bool openEditor(cGame &game, int bar);
     static bool placeLabelUnits(cGame &game, int unitType);
     static bool placeStructure(cGame &game, int edge);
     static bool prepareGameScreen(cGame &game, int house, int kind);
