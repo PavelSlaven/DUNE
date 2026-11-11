@@ -30,6 +30,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_AdaptiveMenus.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_OptionsMenu.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_HudLayout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_UiAuditArguments.cpp
 )
 
 # Production source files the tests depend on.
@@ -63,6 +64,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/utils/RenderScale.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/ScaleChoices.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/HdUiTextureLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/debug/UiAuditArguments.cpp
 )
 
 add_executable(d2tm_tests
