@@ -29,6 +29,9 @@ EXCLUSIONS = (
     "AbstractMentat\tабстрактный базовый класс брифингов\n"
     "GAME_SKIRMISH\tопределение состояния нигде не используется в коде; игра по схватке идёт в состоянии GAME_PLAYING\n"
     "cRegion\tкласс данных области на карте завоевания, не экран; отрисовывается внутри cSelectYourNextConquestState\n"
+    "cMentatState\tэкран брифинга ментата; сцены режима названы классами ментатов AtreidesMentat, HarkonnenMentat, OrdosMentat, SardaukarMentat\n"
+    "cTellHouseState\tэкран рассказа о Доме; сцены режима названы классом ментата BeneMentat\n"
+    "cCreatorState\tсоздаёт и хранит состояния игры, не экран\n"
 )
 
 

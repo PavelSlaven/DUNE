@@ -8,6 +8,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
+#include <algorithm>
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
@@ -27,7 +28,7 @@ namespace {
 constexpr int kReadinessTimeoutFrames = 900;
 constexpr int kOffscreenCursor = -300;
 
-enum class Kind { Text, Gui, Click, Credit };
+enum class Kind { Text, Gui, Click, Credit, Area, Label };
 
 struct Entry {
     Kind kind;
@@ -36,11 +37,14 @@ struct Entry {
     bool hasBox;
     Rect box;
     std::string name;
+    int obj;
 };
 
 std::vector<Entry> g_entries;
 std::vector<Rect> g_boxes;
 const Scene *g_scene = nullptr;
+int g_hoverX = 0;
+int g_hoverY = 0;
 bool g_failed = false;
 bool g_done = false;
 int g_frame = 0;
@@ -52,6 +56,52 @@ bool g_clipText = false;
 int g_canvasW = 0;
 int g_canvasH = 0;
 SDL_Renderer *g_renderer = nullptr;
+bool g_collecting = false;
+bool g_collected = false;
+Rect g_union{0, 0, 0, 0};
+
+Rect clipped(const Rect &rect)
+{
+    if (g_renderer == nullptr || !SDL_RenderClipEnabled(g_renderer)) {
+        return rect;
+    }
+    SDL_Rect clip{};
+    SDL_GetRenderClipRect(g_renderer, &clip);
+    const int left = std::max(rect.x, clip.x);
+    const int top = std::max(rect.y, clip.y);
+    const int right = std::min(rect.x + rect.w, clip.x + clip.w);
+    const int bottom = std::min(rect.y + rect.h, clip.y + clip.h);
+    return {left, top, std::max(0, right - left), std::max(0, bottom - top)};
+}
+
+const char *unitTypeName(int unitType)
+{
+    switch (unitType) {
+        case 0: return "SOLDIER";
+        case 1: return "TROOPER";
+        case 2: return "INFANTRY";
+        case 3: return "TROOPERS";
+        case 4: return "TRIKE";
+        case 5: return "RAIDER";
+        case 6: return "QUAD";
+        case 7: return "TANK";
+        case 8: return "LAUNCHER";
+        case 9: return "SIEGETANK";
+        case 10: return "DEVASTATOR";
+        case 11: return "DEVIATOR";
+        case 12: return "SONICTANK";
+        case 13: return "HARVESTER";
+        case 14: return "MCV";
+        case 15: return "CARRYALL";
+        case 16: return "ORNITHOPTER";
+        case 17: return "SANDWORM";
+        case 19: return "SABOTEUR";
+        case 20: return "UNIT_FREMEN_ONE";
+        case 21: return "UNIT_FREMEN_THREE";
+        case 29: return "FRIGATE";
+        default: return "UNIT";
+    }
+}
 
 std::string escapeJson(const std::string &text)
 {
@@ -90,12 +140,12 @@ void fail(const std::string &message)
     g_failed = true;
 }
 
-void moveCursor(int x, int y)
+void moveCursor(float x, float y)
 {
     SDL_Event event{};
     event.type = SDL_EVENT_MOUSE_MOTION;
-    event.motion.x = static_cast<float>(x);
-    event.motion.y = static_cast<float>(y);
+    event.motion.x = x;
+    event.motion.y = y;
     SDL_PushEvent(&event);
 }
 
@@ -110,8 +160,15 @@ bool writeGeometry(cGame &currentGame, const std::filesystem::path &path, int ou
          << currentGame.m_gameSettings->getScreenW() << ",\"h\":" << currentGame.m_gameSettings->getScreenH()
          << "},\"game_screen\":" << (g_scene->gameScreen ? "true" : "false")
          << ",\"render_scale\":" << UiAuditAccess::renderScale(currentGame)
-         << ",\"world_scale\":" << UiAuditAccess::worldScale(currentGame)
-         << ",\"version\":\"" << escapeJson(D2TM_VERSION) << "\"}\n";
+         << ",\"world_scale\":" << UiAuditAccess::worldScale(currentGame);
+    int viewX = 0;
+    int viewY = 0;
+    int viewW = 0;
+    int viewH = 0;
+    if (g_scene->gameScreen && UiAuditAccess::mapViewport(currentGame, viewX, viewY, viewW, viewH)) {
+        file << ",\"map_viewport\":{" << rectJson({viewX, viewY, viewW, viewH}) << '}';
+    }
+    file << ",\"version\":\"" << escapeJson(D2TM_VERSION) << "\"}\n";
     for (const Entry &entry : g_entries) {
         switch (entry.kind) {
             case Kind::Text:
@@ -128,6 +185,15 @@ bool writeGeometry(cGame &currentGame, const std::filesystem::path &path, int ou
             case Kind::Gui:
                 file << "{\"k\":\"gui\",\"t\":\"" << escapeJson(entry.label) << "\"," << rectJson(entry.rect)
                      << "}\n";
+                break;
+            case Kind::Area:
+                file << "{\"k\":\"area\",\"n\":\"" << escapeJson(entry.label) << "\"," << rectJson(entry.rect)
+                     << "}\n";
+                break;
+            case Kind::Label:
+                file << "{\"k\":\"label\",\"kind\":\"" << escapeJson(entry.label) << "\",\"obj\":" << entry.obj
+                     << ",\"type\":\"" << escapeJson(entry.name) << "\"," << rectJson(entry.rect)
+                     << ",\"owner\":{" << rectJson(entry.box) << "}}\n";
                 break;
             case Kind::Click:
                 file << "{\"k\":\"click\",\"name\":\"" << escapeJson(entry.label) << "\"," << rectJson(entry.rect)
@@ -203,10 +269,24 @@ void setVerticalClipText(bool enabled)
 
 void recordText(const std::string &text, int x, int y, int w, int h, const Rect *box)
 {
+    if (g_collecting) {
+        if (!g_collected) {
+            g_union = {x, y, w, h};
+            g_collected = true;
+        }
+        else {
+            const int left = std::min(g_union.x, x);
+            const int top = std::min(g_union.y, y);
+            const int right = std::max(g_union.x + g_union.w, x + w);
+            const int bottom = std::max(g_union.y + g_union.h, y + h);
+            g_union = {left, top, right - left, bottom - top};
+        }
+        return;
+    }
     if (g_clipText && (y < 0 || y + h > g_canvasH)) {
         return;
     }
-    Entry entry{Kind::Text, text, {x, y, w, h}, false, {}, {}};
+    Entry entry{Kind::Text, text, {x, y, w, h}, false, {}, {}, 0};
     if (box != nullptr) {
         entry.hasBox = true;
         entry.box = *box;
@@ -220,12 +300,17 @@ void recordText(const std::string &text, int x, int y, int w, int h, const Rect 
 
 void recordGui(const char *type, int x, int y, int w, int h)
 {
-    g_entries.push_back({Kind::Gui, type, {x, y, w, h}, false, {}, {}});
+    g_entries.push_back({Kind::Gui, type, {x, y, w, h}, false, {}, {}, 0});
+}
+
+void recordArea(const char *name, int x, int y, int w, int h)
+{
+    g_entries.push_back({Kind::Area, name, {x, y, w, h}, false, {}, {}, 0});
 }
 
 void recordClick(const char *name, int x, int y, int w, int h)
 {
-    g_entries.push_back({Kind::Click, name, {x, y, w, h}, false, {}, {}});
+    g_entries.push_back({Kind::Click, name, {x, y, w, h}, false, {}, {}, 0});
 }
 
 void recordCanvasClick(const char *name)
@@ -233,9 +318,33 @@ void recordCanvasClick(const char *name)
     recordClick(name, 0, 0, g_canvasW, g_canvasH);
 }
 
+void recordLabel(const char *kind, int obj, const char *type, int x, int y, int w, int h, const Rect &owner)
+{
+    g_entries.push_back({Kind::Label, kind, clipped({x, y, w, h}), true, owner, type, obj});
+}
+
+void recordUnitLabel(const char *kind, int obj, int unitType, int x, int y, int w, int h, const Rect &owner)
+{
+    recordLabel(kind, obj, unitTypeName(unitType), x, y, w, h, owner);
+}
+
+void beginLabelText()
+{
+    g_collecting = true;
+    g_collected = false;
+}
+
+void endLabelText(const char *kind, int obj, int unitType, const Rect &owner)
+{
+    g_collecting = false;
+    if (g_collected) {
+        recordUnitLabel(kind, obj, unitType, g_union.x, g_union.y, g_union.w, g_union.h, owner);
+    }
+}
+
 void recordCreditLine(const std::string &name, const std::string &text)
 {
-    g_entries.push_back({Kind::Credit, text, {0, 0, 0, 0}, false, {}, name});
+    g_entries.push_back({Kind::Credit, text, {0, 0, 0, 0}, false, {}, name, 0});
 }
 
 BoxScope::BoxScope(int x, int y, int w, int h)
@@ -303,15 +412,24 @@ bool handleEarlyExit(int &exitCode)
     return false;
 }
 
+void setHover(int x, int y)
+{
+    g_hoverX = x;
+    g_hoverY = y;
+}
+
 void onSetupDone(cGame &currentGame)
 {
     g_scene = findScene(options().scene);
+    g_hoverX = g_scene != nullptr ? g_scene->hoverX : 0;
+    g_hoverY = g_scene != nullptr ? g_scene->hoverY : 0;
     g_entries.clear();
     g_frame = 0;
     g_settled = 0;
     g_done = false;
     g_clipText = false;
     currentGame.m_gameSettings->setPlayMusic(false);
+    UiAuditAccess::stopCameraEdgeMove(currentGame);
     UiAuditAccess::freezeClock(currentGame);
     const bool prepared = g_scene != nullptr && g_scene->prepare(currentGame);
     UiAuditAccess::resumeClock(currentGame);
@@ -329,10 +447,20 @@ void beginFrame(cGame &currentGame)
     g_canvasW = currentGame.m_gameSettings->getScreenW();
     g_canvasH = currentGame.m_gameSettings->getScreenH();
     g_renderer = UiAuditAccess::renderer(currentGame);
+    g_collecting = false;
     g_stateAtBegin = UiAuditAccess::state(currentGame);
     g_currentStateAtBegin = UiAuditAccess::currentState(currentGame);
     g_fadeAtBegin = UiAuditAccess::notFadingOut(currentGame);
-    moveCursor(kOffscreenCursor, kOffscreenCursor);
+    if (g_scene != nullptr && g_scene->hover) {
+        float windowX = 0.0f;
+        float windowY = 0.0f;
+        SDL_RenderCoordinatesToWindow(g_renderer, static_cast<float>(g_hoverX), static_cast<float>(g_hoverY), &windowX,
+                                      &windowY);
+        moveCursor(windowX, windowY);
+    }
+    else {
+        moveCursor(static_cast<float>(kOffscreenCursor), static_cast<float>(kOffscreenCursor));
+    }
 }
 
 void onFramePresented(cGame &currentGame)

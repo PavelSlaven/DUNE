@@ -34,6 +34,8 @@ class cMouse;
 struct sGameServices;
 
 class cSideBarDrawer : cInputObserver {
+    friend class UiAuditAccess;
+
 public:
     explicit cSideBarDrawer(GameContext *ctx, cPlayer *player, sGameServices *services);
     ~cSideBarDrawer() override;

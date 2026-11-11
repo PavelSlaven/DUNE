@@ -28,6 +28,15 @@ bool pause(int frames)
     return false;
 }
 
+const char *const kFixedGameFrames = "FixedFrames(5, no readiness flag)";
+
+Scene onGameScreen(Scene value, bool hovering)
+{
+    value.gameScreen = true;
+    value.hover = hovering;
+    return value;
+}
+
 struct GroupScreen {
     const char *group;
     const char *state;
@@ -43,6 +52,8 @@ const GroupScreen kGroupScreens[] = {
     {"options-menu", "GAME_OPTIONS", "cOptionsState"},
     {"credits", "GAME_CREDITS", "cCreditsState"},
     {"skirmish-setup", "GAME_SETUPSKIRMISH", "cSetupSkirmishState"},
+    {"game-playing", "GAME_PLAYING", "cGamePlaying"},
+    {"options-game", "GAME_OPTIONS", "cOptionsState"},
 };
 
 Scene scene(const char *id, const char *group, const char *house, const char *readiness,
@@ -83,6 +94,27 @@ bool prepareSkirmishSetup(cGame &game)
 {
     resetSteps();
     return UiAuditAccess::prepareSkirmish(game, Variant);
+}
+
+template <bool Victory>
+bool prepareOutcome(cGame &game)
+{
+    resetSteps();
+    return UiAuditAccess::enterPlaying(game, ATREIDES, 1);
+}
+
+template <bool Victory>
+bool readyOutcome(cGame &game)
+{
+    if (g_step == 0) {
+        if (!pause(3)) {
+            return false;
+        }
+        UiAuditAccess::missionOutcome(game, Victory);
+        g_step = 1;
+        return false;
+    }
+    return pause(3);
 }
 
 bool prepareMainMenu(cGame &game)
@@ -214,6 +246,26 @@ bool readyRegionConquer(cGame &game)
     return true;
 }
 
+bool prepareGameOptions(cGame &game)
+{
+    resetSteps();
+    return UiAuditAccess::enterPlaying(game, ATREIDES, 1);
+}
+
+template <int Type>
+bool prepareUnitLabels(cGame &game)
+{
+    resetSteps();
+    return UiAuditAccess::enterPlaying(game, ATREIDES, 1) && UiAuditAccess::placeLabelUnits(game, Type);
+}
+
+template <int Edge>
+bool prepareStructureLabel(cGame &game)
+{
+    resetSteps();
+    return UiAuditAccess::enterPlaying(game, ATREIDES, 1) && UiAuditAccess::placeStructure(game, Edge);
+}
+
 const std::vector<Scene> g_catalog = {
     scene("main-menu", "main-menu", "", "StateSettled", prepareMainMenu),
     scene("region-atreides-intro-1", "region", "atreides", "RegionIntroScene", prepareRegion<ATREIDES, 1, false>, readyRegionIntro<1>),
@@ -323,6 +375,34 @@ const std::vector<Scene> g_catalog = {
     scene("credits-3", "credits", "", "CreditsScrollPosition", prepareCredits, readyCredits<3>),
     hdOnly(scene("credits-4", "credits", "", "CreditsScrollPosition", prepareCredits, readyCredits<4>)),
     hdOnly(scene("credits-5", "credits", "", "CreditsScrollPosition", prepareCredits, readyCredits<5>)),
+    withScreen(scene("outcome-win", "outcome", "atreides", "FixedFrames(8, no readiness flag)", prepareOutcome<true>,
+                     readyOutcome<true>), "GAME_WINNING", "cWinLoseState"),
+    withScreen(scene("outcome-lose", "outcome", "atreides", "FixedFrames(8, no readiness flag)", prepareOutcome<false>,
+                     readyOutcome<false>), "GAME_LOSING", "cWinLoseState"),
+    scene("options-game-main-nosaves", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsMenu<0>),
+    scene("options-game-applied", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsMenu<1>),
+    onGameScreen(scene("structure-label-top", "game-playing", "atreides", kFixedGameFrames, prepareStructureLabel<0>,
+                       nullptr, 5), true),
+    onGameScreen(scene("structure-label-right", "game-playing", "atreides", kFixedGameFrames, prepareStructureLabel<1>,
+                       nullptr, 5), true),
+    onGameScreen(scene("units-label-trike", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<TRIKE>), false),
+    onGameScreen(scene("units-label-raider", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<RAIDER>), false),
+    onGameScreen(scene("units-label-quad", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<QUAD>), false),
+    onGameScreen(scene("units-label-tank", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<TANK>), false),
+    onGameScreen(scene("units-label-siegetank", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<SIEGETANK>), false),
+    onGameScreen(scene("units-label-launcher", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<LAUNCHER>), false),
+    onGameScreen(scene("units-label-deviator", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<DEVIATOR>), false),
+    onGameScreen(scene("units-label-sonictank", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<SONICTANK>), false),
+    onGameScreen(scene("units-label-devastator", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<DEVASTATOR>), false),
+    onGameScreen(scene("units-label-harvester", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<HARVESTER>), false),
+    onGameScreen(scene("units-label-mcv", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<MCV>), false),
+    onGameScreen(scene("units-label-soldier", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<SOLDIER>), false),
+    onGameScreen(scene("units-label-infantry", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<INFANTRY>), false),
+    onGameScreen(scene("units-label-trooper", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<TROOPER>), false),
+    onGameScreen(scene("units-label-troopers", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<TROOPERS>), false),
+    onGameScreen(scene("units-label-unit-fremen-one", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<UNIT_FREMEN_ONE>), false),
+    onGameScreen(scene("units-label-unit-fremen-three", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<UNIT_FREMEN_THREE>), false),
+    onGameScreen(scene("units-label-saboteur", "game-playing", "atreides", kFixedGameFrames, prepareUnitLabels<SABOTEUR>), false),
 };
 
 }

@@ -7,3 +7,6 @@ cGameState	абстрактный базовый класс состояний
 AbstractMentat	абстрактный базовый класс брифингов
 GAME_SKIRMISH	определение состояния нигде не используется в коде; игра по схватке идёт в состоянии GAME_PLAYING
 cRegion	класс данных области на карте завоевания, не экран; отрисовывается внутри cSelectYourNextConquestState
+cMentatState	экран брифинга ментата; сцены режима названы классами ментатов AtreidesMentat, HarkonnenMentat, OrdosMentat, SardaukarMentat
+cTellHouseState	экран рассказа о Доме; сцены режима названы классом ментата BeneMentat
+cCreatorState	создаёт и хранит состояния игры, не экран
