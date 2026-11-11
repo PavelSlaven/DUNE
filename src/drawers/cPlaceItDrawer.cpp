@@ -14,6 +14,7 @@
  */
 
 #include "cPlaceItDrawer.h"
+#include "debug/UiAudit.hpp"
 #include "utils/cStructureUtils.h"
 
 #include "include/sGameServices.h"
@@ -139,6 +140,7 @@ void cPlaceItDrawer::drawStatusOfStructureAtCell(cBuildingListItem *itemToPlace,
         for (int iX=0; iX < cellWidth; iX++) {
             for (int iY=0; iY < cellHeight; iY++) {
                 itemToPlaceColor = Color::PlaceNeutral;
+                const char *auditType = "NEUTRAL";
 
                 int cellX = iCellX + iX;
                 int cellY = iCellY + iY;
@@ -151,16 +153,19 @@ void cPlaceItDrawer::drawStatusOfStructureAtCell(cBuildingListItem *itemToPlace,
 
                 if (!m_objects->getMap()->isCellPassable(iCll) || m_objects->getMap()->getCellType(iCll) != TERRAIN_ROCK) {
                     itemToPlaceColor = Color::PlaceBad;
+                    auditType = "BAD";
                 }
 
                 if (m_objects->getMap()->getCellType(iCll) == TERRAIN_SLAB) {
                     itemToPlaceColor = Color::PlaceGood;
+                    auditType = "GOOD";
                 }
 
                 // occupied by units or structures
                 int idOfStructureAtCell = m_objects->getMap()->getCellIdStructuresLayer(iCll);
                 if (idOfStructureAtCell > -1) {
                     itemToPlaceColor = Color::PlaceBad;
+                    auditType = "BAD";
                 }
 
                 int unitIdOnMap = m_objects->getMap()->getCellIdUnitLayer(iCll);
@@ -168,6 +173,7 @@ void cPlaceItDrawer::drawStatusOfStructureAtCell(cBuildingListItem *itemToPlace,
                     // temporarily dead units do not block, but alive units (non-dead) do block placement
                     if (!m_objects->getUnit(unitIdOnMap)->isDead()) {
                         itemToPlaceColor = Color::PlaceBad;
+                        auditType = "BAD";
                     }
                     // TODO: Allow placement, let units move aside when clicking before placement?
                 }
@@ -178,6 +184,7 @@ void cPlaceItDrawer::drawStatusOfStructureAtCell(cBuildingListItem *itemToPlace,
                 float posX = iX * desiredWidth;
                 float posY = iY * desiredHeight;
                 // cRectangle rectangle = cRectangle(posX, posY, desiredWidth, desiredHeight);
+                if (uiaudit::isEnabled()) { uiaudit::recordLabel("place-cell", structureId, auditType, static_cast<int>(iDrawX + posX), static_cast<int>(iDrawY + posY), static_cast<int>(desiredWidth), static_cast<int>(desiredHeight), uiaudit::Rect{iDrawX, iDrawY, static_cast<int>(cellWidth * desiredWidth), static_cast<int>(cellHeight * desiredHeight)}); }
                 m_sdlDrawer->renderRectFillColor(iDrawX+posX, iDrawY+posY, desiredWidth, desiredHeight,itemToPlaceColor);
             }
         }

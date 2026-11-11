@@ -14,6 +14,7 @@
  */
 
 #include "gamestates/cGamePlaying.h"
+#include "debug/UiAudit.hpp"
 #include "include/definitions.h"
 #include "building/cItemBuilder.h"
 #include "gameobjects/structures/cStructureFactory.h"
@@ -458,6 +459,7 @@ void cGamePlaying::evaluatePlayerStatus()
 void cGamePlaying::drawCombatMouse() const
 {
     if (m_mouse->isBoxSelecting()) {
+        if (uiaudit::isEnabled()) { const cRectangle box = m_mouse->getBoxSelectRectangle(); uiaudit::recordArea("selection-box", box.getX(), box.getY(), box.getWidth(), box.getHeight()); }
         m_sdlDrawer->renderRectColor(m_mouse->getBoxSelectRectangle(), m_screenFader->getColorFadeSelectedLimited(Color::White, 0.5f));
     }
 

@@ -33,6 +33,16 @@
 #include "sidebar/HudLayout.hpp"
 #include "sidebar/cBuildingList.h"
 #include "sidebar/cSideBar.h"
+#include "controls/cMouse.h"
+#include "controls/mousestates/eMouseStates.h"
+#include "data/gfxdata.h"
+#include "drawers/cMiniMapDrawer.h"
+#include "game/cNotificationArea.h"
+#include "gameobjects/structures/cAbstractStructure.h"
+#include "gameobjects/structures/cStructures.h"
+#include "include/eNotificationType.h"
+#include "sidebar/cBuildingListItem.h"
+#include "sidebar/cBuildingListUpdater.h"
 #include "utils/cRectangle.h"
 
 #include <algorithm>
@@ -574,4 +584,267 @@ bool UiAuditAccess::placeStructure(cGame &currentGame, int edge)
         }
     }
     return false;
+}
+
+namespace {
+
+struct BaseSpot {
+    int type;
+    int column;
+    int row;
+};
+
+constexpr BaseSpot kBaseSpots[] = {
+    {WINDTRAP, 24, 25}, {WINDTRAP, 26, 25}, {WINDTRAP, 35, 25}, {REFINERY, 32, 25},
+    {LIGHTFACTORY, 24, 28}, {RADAR, 30, 28}, {BARRACKS, 28, 25}, {WOR, 32, 28},
+    {HEAVYFACTORY, 26, 28}, {HIGHTECH, 32, 22}, {REPAIR, 35, 28}, {STARPORT, 28, 22},
+    {IX, 35, 22}, {PALACE, 24, 22},
+};
+
+constexpr int kStreetRow = 27;
+constexpr int kConstyardColumn = 30;
+constexpr int kConstyardRow = 25;
+
+struct BaseResult {
+    int factoryId = -1;
+    int tankId = -1;
+    int harvesterId = -1;
+    int mcvId = -1;
+};
+
+bool footprintFree(cGame &currentGame, int type, int column, int row)
+{
+    const int w = currentGame.m_infoContext->getStructureInfo(type).bmp_width / TILESIZE_WIDTH_PIXELS;
+    const int h = currentGame.m_infoContext->getStructureInfo(type).bmp_height / TILESIZE_HEIGHT_PIXELS;
+    for (int dy = 0; dy < h; dy++) {
+        for (int dx = 0; dx < w; dx++) {
+            const int cell = cellAt(currentGame, column + dx, row + dy);
+            if (!currentGame.m_gameObjectsContext->getMap()->getGeometry()->isValidCell(cell) ||
+                currentGame.m_gameObjectsContext->getMap()->getCellIdStructuresLayer(cell) > -1) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+int buildStructure(cGame &currentGame, int type, int column, int row)
+{
+    if (!footprintFree(currentGame, type, column, row)) {
+        return -1;
+    }
+    cAbstractStructure *created = currentGame.m_gameObjectsContext->getStructureFactory()->createStructure(
+        cellAt(currentGame, column, row), type, HUMAN, 100);
+    if (created == nullptr) {
+        return -1;
+    }
+    created->setBuildingFase(10);
+    return created->getStructureId();
+}
+
+int spawnUnit(cGame &currentGame, cEventEmitter *events, int type, int column, int row, float hpFraction)
+{
+    const int id = cUnits::unitCreate(currentGame.m_gameObjectsContext.get(), currentGame.m_infoContext.get(), events,
+                                      cellAt(currentGame, column, row), type, HUMAN, true, false, hpFraction);
+    return id;
+}
+
+bool buildBase(cGame &currentGame, cEventEmitter *events, bool withRadar, BaseResult &result)
+{
+    cPlayer *player = currentGame.m_gameObjectsContext->getPlayer(HUMAN);
+    player->setTechLevel(9);
+    player->getBuildingListUpdater()->onStructureCreated(CONSTYARD);
+
+    revealAround(currentGame, kConstyardColumn, kConstyardRow, 16);
+
+    for (const BaseSpot &spot : kBaseSpots) {
+        if (spot.type == RADAR && !withRadar) {
+            continue;
+        }
+        const int id = buildStructure(currentGame, spot.type, spot.column, spot.row);
+        if (id < 0) {
+            return false;
+        }
+        if (spot.type == LIGHTFACTORY) {
+            result.factoryId = id;
+        }
+    }
+
+    player->update();
+    for (int column = 24; column <= 38 && !player->bEnoughPower(); column += 2) {
+        if (buildStructure(currentGame, WINDTRAP, column, 30) < 0) {
+            return false;
+        }
+        player->update();
+    }
+    if (!player->bEnoughPower()) {
+        return false;
+    }
+
+    result.tankId = spawnUnit(currentGame, events, TANK, 25, kStreetRow, 1.0f);
+    result.harvesterId = spawnUnit(currentGame, events, HARVESTER, 29, kStreetRow, 1.0f);
+    result.mcvId = spawnUnit(currentGame, events, MCV, 33, kStreetRow, 1.0f);
+    const int others[3] = {spawnUnit(currentGame, events, SOLDIER, 27, kStreetRow, 1.0f),
+                           spawnUnit(currentGame, events, TRIKE, 31, kStreetRow, 1.0f),
+                           spawnUnit(currentGame, events, QUAD, 35, kStreetRow, 1.0f)};
+    if (result.tankId < 0 || result.harvesterId < 0 || result.mcvId < 0 ||
+        others[0] < 0 || others[1] < 0 || others[2] < 0) {
+        return false;
+    }
+    currentGame.m_gameObjectsContext->getUnit(result.harvesterId)->iCredits =
+        currentGame.m_gameObjectsContext->getUnit(result.harvesterId)->getUnitInfo().credit_capacity;
+    return true;
+}
+
+void hoverOnCell(cGame &currentGame, int column, int row)
+{
+    const int cell = cellAt(currentGame, column, row);
+    const int half = static_cast<int>(currentGame.m_mapCamera->factorZoomLevel(kTile)) / 2;
+    uiaudit::setHover(currentGame.m_mapCamera->getWindowXPositionFromCell(cell) + half,
+                      currentGame.m_mapCamera->getWindowYPositionFromCell(cell) + half);
+}
+
+eListType listForKind(int kind)
+{
+    switch (kind) {
+        case uiaudit::GameKind::ListBuild: return eListType::LIST_CONSTYARD;
+        case uiaudit::GameKind::ListInfantry: return eListType::LIST_FOOT_UNITS;
+        case uiaudit::GameKind::ListVehicles: return eListType::LIST_UNITS;
+        case uiaudit::GameKind::ListStarport: return eListType::LIST_STARPORT;
+        case uiaudit::GameKind::ListPalace: return eListType::LIST_PALACE;
+        case uiaudit::GameKind::ListUpgrades: return eListType::LIST_UPGRADES;
+        default: return eListType::LIST_NONE;
+    }
+}
+
+}
+
+bool UiAuditAccess::prepareGameScreen(cGame &currentGame, int house, int kind)
+{
+    using uiaudit::GameKind;
+    if (!enterPlaying(currentGame, house, 22)) {
+        return false;
+    }
+    cPlayer *player = currentGame.m_gameObjectsContext->getPlayer(HUMAN);
+    BaseResult base;
+    const bool withRadar = kind != GameKind::RadarNone;
+    if (!buildBase(currentGame, currentGame.m_eventEmitter.get(), withRadar, base)) {
+        return false;
+    }
+    if (kind == GameKind::RadarNoPower) {
+        for (int i = 0; i < MAX_STRUCTURES; i++) {
+            cAbstractStructure *s = currentGame.m_gameObjectsContext->getStructures()[i];
+            if (s != nullptr && s->isValid() && s->getOwner() == HUMAN && s->getType() == WINDTRAP) {
+                s->setHitPoints(1);
+            }
+        }
+        player->update();
+        if (player->bEnoughPower()) {
+            return false;
+        }
+    }
+    for (int i = 0; i < 40; i++) {
+        currentGame.m_drawManager->getMiniMapDrawer()->think();
+    }
+
+    const bool lists = listForKind(kind) != eListType::LIST_NONE;
+    const int centerColumn = (kind == GameKind::PlaceAllowed || kind == GameKind::PlaceForbidden) ? 28 : 30;
+    currentGame.m_mapCamera->centerAndJumpViewPortToCell(cellAt(currentGame, centerColumn, 26));
+    cSideBar *sidebar = player->getSideBar();
+    if (sidebar == nullptr) {
+        return false;
+    }
+    cBuildingListDrawer *items = currentGame.m_drawManager->getBuildingListDrawer();
+
+    if (lists) {
+        sidebar->setSelectedListId(listForKind(kind));
+        cBuildingList *list = sidebar->getList(sidebar->getSelectedListID());
+        return list != nullptr && list->isAvailable() && list->getItemCount() > 0;
+    }
+
+    switch (kind) {
+        case GameKind::Hud:
+        case GameKind::RadarNone:
+        case GameKind::RadarNoPower:
+            return true;
+        case GameKind::Structure:
+            player->selected_structure = base.factoryId;
+            return true;
+        case GameKind::Rally:
+            player->selected_structure = base.factoryId;
+            currentGame.m_gameObjectsContext->getStructures()[base.factoryId]->setRallyPoint(
+                cellAt(currentGame, 28, 32));
+            return currentGame.m_gameObjectsContext->getStructures()[base.factoryId]->getRallyPoint() >= 0;
+        case GameKind::PlaceAllowed:
+        case GameKind::PlaceForbidden: {
+            cBuildingList *list = sidebar->getList(eListType::LIST_CONSTYARD);
+            cBuildingListItem *item = list == nullptr ? nullptr : list->getItemByBuildId(WINDTRAP);
+            if (item == nullptr) {
+                return false;
+            }
+            item->setPlaceIt(true);
+            player->setContextMouseState(eMouseState::MOUSESTATE_PLACE);
+            if (kind == GameKind::PlaceAllowed) {
+                for (int dy = 0; dy < 2; dy++) {
+                    for (int dx = 0; dx < 2; dx++) {
+                        currentGame.m_gameObjectsContext->getMap()->cellChangeType(
+                            cellAt(currentGame, 22 + dx, 25 + dy), TERRAIN_ROCK);
+                    }
+                }
+                hoverOnCell(currentGame, 22, 25);
+            }
+            else {
+                hoverOnCell(currentGame, 29, 24);
+            }
+            return true;
+        }
+        case GameKind::GroupSelect: {
+            const int cell1 = cellAt(currentGame, 24, 26);
+            const int cell2 = cellAt(currentGame, 31, 29);
+            cMouse *mouse = currentGame.m_mouse.get();
+            mouse->m_mouseCoX1 = currentGame.m_mapCamera->getWindowXPositionFromCell(cell1);
+            mouse->m_mouseCoY1 = currentGame.m_mapCamera->getWindowYPositionFromCell(cell1);
+            mouse->m_mouseCoX2 = currentGame.m_mapCamera->getWindowXPositionFromCell(cell2);
+            mouse->m_mouseCoY2 = currentGame.m_mapCamera->getWindowYPositionFromCell(cell2);
+            uiaudit::setHover(mouse->m_mouseCoX2, mouse->m_mouseCoY2);
+            return mouse->isBoxSelecting();
+        }
+        case GameKind::Messages: {
+            currentGame.m_drawManager->setMessage("Construction complete: the Windtrap is ready to be placed", true);
+            for (int i = 0; i < 90; i++) {
+                currentGame.m_drawManager->thinkFast();
+            }
+            currentGame.m_notificationArea->addNotification("Neutral notification", eNotificationType::NEUTRAL);
+            currentGame.m_notificationArea->addNotification("Priority notification: Harvester is full",
+                                                            eNotificationType::PRIORITY);
+            currentGame.m_notificationArea->addNotification("Bad news: a structure is under attack",
+                                                            eNotificationType::BAD);
+            return true;
+        }
+        case GameKind::ItemHover:
+        case GameKind::ScrollEnd: {
+            sidebar->setSelectedListId(eListType::LIST_CONSTYARD);
+            cBuildingList *list = sidebar->getList(eListType::LIST_CONSTYARD);
+            if (list == nullptr || list->getItemCount() < 3) {
+                return false;
+            }
+            if (kind == GameKind::ScrollEnd) {
+                items->setScrollRow(list, 1000);
+                return true;
+            }
+            const int index = 2;
+            const HudLayout layout = items->getLayout(list);
+            const cRectangle card = layout.cardRect(index, items->getScrollRow(list));
+            const int x = card.getX() + card.getWidth() / 2;
+            const int y = card.getY() + card.getHeight() / 2;
+            currentGame.m_drawManager->setMessage(list->getItem(index)->getInfo(), true);
+            for (int i = 0; i < 90; i++) {
+                currentGame.m_drawManager->thinkFast();
+            }
+            uiaudit::setHover(x, y);
+            return true;
+        }
+        default:
+            return false;
+    }
 }

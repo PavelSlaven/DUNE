@@ -225,6 +225,8 @@ void cDrawManager::drawRallyPoint()
     if (m_player->selected_structure < 0) return;
     cAbstractStructure *theStructure = m_objects->getStructures()[m_player->selected_structure];
     if (!theStructure) return;
+    const uiaudit::Rect auditStructure{theStructure->iDrawX(), theStructure->iDrawY(), static_cast<int>(m_mapCamera->factorZoomLevel(theStructure->getWidthInPixels())), static_cast<int>(m_mapCamera->factorZoomLevel(theStructure->getHeightInPixels()))};
+    if (uiaudit::isEnabled() && m_mapViewport->getX() < auditStructure.x + auditStructure.w && auditStructure.x < m_mapViewport->getX() + m_mapViewport->getWidth() && m_mapViewport->getY() < auditStructure.y + auditStructure.h && auditStructure.y < m_mapViewport->getY() + m_mapViewport->getHeight()) { uiaudit::recordLabel("structure-selected", m_player->selected_structure, "STRUCTURE", auditStructure.x, auditStructure.y, auditStructure.w, auditStructure.h, auditStructure); }
     int rallyPointCell = theStructure->getRallyPoint();
     if (rallyPointCell < 0) return;
 
@@ -236,6 +238,7 @@ void cDrawManager::drawRallyPoint()
     int rallyPointWidthScaled = m_mapCamera->factorZoomLevel(mouseMoveBitmap->w);
     int rallyPointHeightScaled = m_mapCamera->factorZoomLevel(mouseMoveBitmap->h);
     cRectangle dest = {drawX, drawY, rallyPointWidthScaled, rallyPointHeightScaled};
+    if (uiaudit::isEnabled()) { uiaudit::recordLabel("rally-point", m_player->selected_structure, "STRUCTURE", dest.getX(), dest.getY(), dest.getWidth(), dest.getHeight(), auditStructure); }
     m_sdlDrawer->renderStrechFullSprite(m_gfxdata->getTexture(MOUSE_MOVE), dest);
 
     int startX = theStructure->iDrawX() + m_mapCamera->factorZoomLevel(theStructure->getWidthInPixels() / 2);

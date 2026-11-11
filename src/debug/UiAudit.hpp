@@ -11,6 +11,26 @@ struct SDL_Renderer;
 
 namespace uiaudit {
 
+enum GameKind {
+    Hud,
+    Structure,
+    ListBuild,
+    ListInfantry,
+    ListVehicles,
+    ListStarport,
+    ListPalace,
+    ListUpgrades,
+    RadarNone,
+    RadarNoPower,
+    PlaceAllowed,
+    PlaceForbidden,
+    GroupSelect,
+    Messages,
+    ItemHover,
+    ScrollEnd,
+    Rally
+};
+
 struct Rect {
     int x;
     int y;
@@ -78,4 +98,5 @@ public:
     static bool enterPlaying(cGame &game, int house, int region);
     static bool placeLabelUnits(cGame &game, int unitType);
     static bool placeStructure(cGame &game, int edge);
+    static bool prepareGameScreen(cGame &game, int house, int kind);
 };
