@@ -39,6 +39,7 @@ class cGameSettings;
 class cMouse;
 
 class cMapCamera : cInputObserver {
+    friend class UiAuditAccess;
 
 public:
     cMapCamera(cMap *theMap, float moveSpeedDrag, float moveSpeedKeys, bool cameraEdgeMove, cGameSettings* gameSettings, cMouse* mouse);

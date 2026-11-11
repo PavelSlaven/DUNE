@@ -14,6 +14,7 @@
  */
 
 #include "cUnitDrawer.h"
+#include "debug/UiAudit.hpp"
 
 #include "gameobjects/units/cUnit.h"
 #include "gameobjects/map/cMapCamera.h"
@@ -36,6 +37,20 @@
 #include <cmath>
 #include <format>
 
+namespace {
+
+uiaudit::Rect auditOwner(cUnit &unit)
+{
+    return {
+        unit.draw_x(),
+        unit.draw_y(),
+        static_cast<int>(unit.getMapCamera()->factorZoomLevel(unit.getBmpWidth())),
+        static_cast<int>(unit.getMapCamera()->factorZoomLevel(unit.getBmpHeight()))
+    };
+}
+
+}
+
 cUnitDrawer::cUnitDrawer(cUnit &unit, SDLDrawer *renderer, Graphics *gfxdata) :
     m_unit(unit),
     m_renderer(renderer),
@@ -54,6 +69,10 @@ void cUnitDrawer::draw_spice()
 
     int max = m_unit.getUnitInfo().credit_capacity;
     int w = healthBar(width_x, m_unit.iCredits, max);
+
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordUnitLabel("spice", m_unit.iID, m_unit.iType, drawx, drawy, static_cast<int>(width_x), height_y, auditOwner(m_unit));
+    }
 
     // bar itself
     m_renderer->renderRectFillColor(drawx, drawy, width_x, height_y, 0, 0, 0,ShadowTrans);
@@ -82,6 +101,10 @@ void cUnitDrawer::draw_health()
     int g = healthNormalized * 255;
 
     if (r > 255) r = 255;
+
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordUnitLabel("health", m_unit.iID, m_unit.iType, drawx, drawy, static_cast<int>(width_x), height_y, auditOwner(m_unit));
+    }
 
     // bar itself
     m_renderer->renderRectFillColor(drawx, drawy, width_x, height_y, 0, 0, 0,ShadowTrans);
@@ -114,8 +137,14 @@ void cUnitDrawer::draw_group(cTextDrawer* textDrawer)
         }
 
         if (!groups.empty()) {
+            if (uiaudit::isEnabled()) {
+                uiaudit::beginLabelText();
+            }
             textDrawer->drawText(drawx + 26, drawy - 11, Color::Black, groups);
             textDrawer->drawText(drawx + 26, drawy - 12, Color::White, groups);
+            if (uiaudit::isEnabled()) {
+                uiaudit::endLabelText("group", m_unit.iID, m_unit.iType, auditOwner(m_unit));
+            }
         }
     }
 }
@@ -149,6 +178,12 @@ void cUnitDrawer::draw_experience()
 
     int drawx = m_unit.draw_x() + 3;
     int drawy = m_unit.draw_y() - 19;
+    if (uiaudit::isEnabled()) {
+        const Texture *star = m_gfxdata->getTexture(OBJECT_STAR_01 + iStarType);
+        if (star != nullptr) {
+            uiaudit::recordUnitLabel("experience", m_unit.iID, m_unit.iType, drawx, drawy, (iStars - 1) * 9 + star->w, star->h, auditOwner(m_unit));
+        }
+    }
     // 1 star = 1 experience
     for (int i = 0; i < iStars; i++) {
         m_renderer->renderSprite(m_gfxdata->getTexture(OBJECT_STAR_01 + iStarType), drawx + i * 9, drawy, ShadowTrans);

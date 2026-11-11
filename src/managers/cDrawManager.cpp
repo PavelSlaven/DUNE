@@ -14,6 +14,7 @@
  */
 
 #include "cDrawManager.h"
+#include "debug/UiAudit.hpp"
 
 #include "controls/cGameControlsContext.h"
 #include "gameobjects/particles/cParticles.h"
@@ -297,6 +298,9 @@ void cDrawManager::drawMouse()
 
 void cDrawManager::drawTopBarBackground()
 {
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("top-panel", 0, 0, m_gameSettings->getScreenW(), cSideBar::TopBarHeight);
+    }
     const Color panel{17, 21, 23, 255};
     const Color border{151, 113, 43, 255};
     const Color text{232, 222, 188, 255};
@@ -331,6 +335,9 @@ void cDrawManager::drawTopBarBackground()
         border
     );
     m_textDrawer->drawTextCenteredInBox("OPTIONS", optionsRect, text);
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordClick("top-options", optionsRect.getX(), optionsRect.getY(), optionsRect.getWidth(), optionsRect.getHeight());
+    }
     if (m_mouse->isLeftButtonClicked() &&
         m_mouse->isOverRectangle(
             optionsRect.getX(),

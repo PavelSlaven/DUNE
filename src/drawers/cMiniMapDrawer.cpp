@@ -14,6 +14,7 @@
  */
 
 #include "cMiniMapDrawer.h"
+#include "debug/UiAudit.hpp"
 #include "include/sGameServices.h"
 #include "drawers/SDLDrawer.hpp"
 #include "gameobjects/structures/cStructures.h"
@@ -109,6 +110,9 @@ void cMiniMapDrawer::serviceInit(sGameServices* services)
 
 void cMiniMapDrawer::draw()
 {
+    if (uiaudit::isEnabled() && m_player->hasAtleastOneStructure(RADAR)) {
+        uiaudit::recordClick("minimap", m_RectFullMinimap.getX(), m_RectFullMinimap.getY(), m_RectFullMinimap.getWidth(), m_RectFullMinimap.getHeight());
+    }
     if (!m_map) {
         return;
     }
@@ -117,6 +121,9 @@ void cMiniMapDrawer::draw()
         return;
     }
 
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("minimap", m_RectFullMinimap.getX(), m_RectFullMinimap.getY(), m_RectFullMinimap.getWidth(), m_RectFullMinimap.getHeight());
+    }
     m_sdlDrawer->renderRectFillColor(m_RectFullMinimap, Color::Black);
 
     if (m_status == eMinimapStatus::POWERUP || m_status == eMinimapStatus::RENDERMAP || m_status == eMinimapStatus::POWERDOWN) {

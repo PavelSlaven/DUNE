@@ -6,6 +6,7 @@
 
 class cGame;
 class cGameState;
+class cSideBarDrawer;
 struct SDL_Renderer;
 
 namespace uiaudit {
@@ -19,8 +20,13 @@ struct Rect {
 
 void recordText(const std::string &text, int x, int y, int w, int h, const Rect *box = nullptr);
 void recordGui(const char *type, int x, int y, int w, int h);
+void recordArea(const char *name, int x, int y, int w, int h);
 void recordClick(const char *name, int x, int y, int w, int h);
 void recordCanvasClick(const char *name);
+void recordLabel(const char *kind, int obj, const char *type, int x, int y, int w, int h, const Rect &owner);
+void recordUnitLabel(const char *kind, int obj, int unitType, int x, int y, int w, int h, const Rect &owner);
+void beginLabelText();
+void endLabelText(const char *kind, int obj, int unitType, const Rect &owner);
 
 class BoxScope {
 public:
@@ -38,6 +44,7 @@ void onSetupDone(cGame &game);
 void beginFrame(cGame &game);
 void onFramePresented(cGame &game);
 bool failed();
+void setHover(int x, int y);
 
 }
 
@@ -64,4 +71,11 @@ public:
     static int regionScene(const cGame &game);
     static int regionSceneAlpha(const cGame &game);
     static bool hasMessage(const cGame &game);
+    static bool mapViewport(const cGame &game, int &x, int &y, int &w, int &h);
+    static void stopCameraEdgeMove(cGame &game);
+    static void missionOutcome(cGame &game, bool victory);
+    static void recordSidebarClicks(cSideBarDrawer &drawer);
+    static bool enterPlaying(cGame &game, int house, int region);
+    static bool placeLabelUnits(cGame &game, int unitType);
+    static bool placeStructure(cGame &game, int edge);
 };

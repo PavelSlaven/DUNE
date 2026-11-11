@@ -14,6 +14,7 @@
  */
 
 #include "cStructureDrawer.h"
+#include "debug/UiAudit.hpp"
 #include "include/sGameServices.h"
 #include "drawers/SDLDrawer.hpp"
 #include "drawers/cTextDrawer.h"
@@ -500,6 +501,11 @@ void cStructureDrawer::drawStructureHealthBar(int iStructure)
     int g = healthNormalized * 255;
 
     if (r > 255) r = 255;
+
+    if (uiaudit::isEnabled()) {
+        const int heightBmp = m_mapCamera->factorZoomLevel(theStructure->getStructureInfo().bmp_height);
+        uiaudit::recordLabel("structure-health", iStructure, "STRUCTURE", draw_x, draw_y, width_x + 1, height_y + 1, uiaudit::Rect{theStructure->iDrawX(), theStructure->iDrawY(), widthBmp, heightBmp});
+    }
 
     // bar itself
     m_sdlDrawer->renderRectFillColor(draw_x, draw_y, width_x+1, height_y+1, 0,0,0,255);

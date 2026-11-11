@@ -14,6 +14,7 @@
  */
 
 #include "cSideBarDrawer.h"
+#include "debug/UiAudit.hpp"
 #include "include/sGameServices.h"
 #include "data/gfxdata.h"
 #include "data/gfxinter.h"
@@ -97,6 +98,9 @@ void cSideBarDrawer::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 
 void cSideBarDrawer::draw()
 {
+    if (uiaudit::isEnabled()) {
+        UiAuditAccess::recordSidebarClicks(*this);
+    }
     drawHdSidebar();
 }
 
@@ -112,6 +116,9 @@ void cSideBarDrawer::drawHdSidebar()
         m_services->settings->getScreenW(),
         m_services->settings->getScreenH()
     );
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("sidebar", layout.sidebar.getX(), cSideBar::TopBarHeight, layout.sidebar.getWidth(), layout.sidebar.getHeight() - cSideBar::TopBarHeight);
+    }
     m_sdlDrawer->renderRectFillColor(
         layout.sidebar.getX(),
         layout.sidebar.getY(),
@@ -400,6 +407,9 @@ void cSideBarDrawer::drawHdBuildingLists()
         );
     }
 
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("build-list", layout.catalog.getX(), layout.catalog.getY(), layout.catalog.getWidth(), layout.catalog.getHeight());
+    }
     m_sdlDrawer->renderRectFillColor(
         layout.catalog.getX(),
         layout.catalog.getY(),
