@@ -199,3 +199,96 @@ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH && git show acddd297b21e
 ```
 
 Итог: **совпало**.
+
+## Пункт 5
+
+### 1. `src/include/sDataCampaign.h@acddd29:18-24` — последний номер кампании равен 9; `s_DataCampaign` содержит поля `housePlayer`, `region` и `mission`.
+
+Команда:
+
+```sh
+export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH && git show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/include/sDataCampaign.h | sed -n '18,24p'
+```
+
+Вывод:
+
+```text
+static constexpr int LAST_CAMPAIGN_MISSION = 9;
+
+struct s_DataCampaign {
+    int housePlayer;
+    int region;                   // what region is selected?
+    int mission;		            // what mission are we playing?
+};
+```
+
+Итог: **совпало**.
+
+### 2. `src/include/sGameServices.h@acddd29:59-64` — сервисы содержат указатели на `CampaignProgress`, `GameStateTransition`, `MentatFlow`, `MissionFlow` и `ScenarioFlow`.
+
+Команда:
+
+```sh
+export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH && git show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/include/sGameServices.h | sed -n '59,64p'
+```
+
+Вывод:
+
+```text
+    CampaignProgress *campaignProgress = nullptr;
+    Texture *screenTexture = nullptr; // set in cGame::run(), before any state transition
+    GameStateTransition *stateTransitions = nullptr;
+    MentatFlow *mentatFlow = nullptr;
+    MissionFlow *missionFlow = nullptr;
+    ScenarioFlow *scenarioFlow = nullptr;
+```
+
+Итог: **совпало**.
+
+### 3. `src/game/CampaignProgress.hpp@acddd29:31-44` — миссии нумеруются с 1 до 9, `COMPLETED` равен `LAST_MISSION + 1`; объявлены операции загрузки, сохранения и обновления прогресса кампании.
+
+Команда:
+
+```sh
+export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH && git show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/game/CampaignProgress.hpp | sed -n '31,44p'
+```
+
+Вывод:
+
+```text
+    static constexpr int FIRST_MISSION = 1;
+    static constexpr int LAST_MISSION = 9;
+    static constexpr int COMPLETED = LAST_MISSION + 1;
+
+    explicit CampaignProgress(std::filesystem::path filePath);
+
+    CampaignProgressLoadResult load(std::string& error);
+    bool save(std::string& error) const;
+
+    int nextMission(int house) const;
+    int highestUnlockedMission(int house) const;
+    static bool supportsHouse(int house);
+    bool markStarted(int house);
+    bool recordMissionVictory(int house, int mission);
+```
+
+Итог: **совпало**.
+
+### 4. `src/gamestates/cMentatState.cpp@acddd29:70-73` — `cMentatState::getType` возвращает `eGameStateType::GAMESTATE_MENTAT`.
+
+Команда:
+
+```sh
+export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH && git show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/gamestates/cMentatState.cpp | sed -n '70,73p'
+```
+
+Вывод:
+
+```text
+eGameStateType cMentatState::getType()
+{
+    return eGameStateType::GAMESTATE_MENTAT;
+}
+```
+
+Итог: **совпало**.

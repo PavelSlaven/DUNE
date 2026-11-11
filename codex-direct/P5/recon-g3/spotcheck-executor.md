@@ -235,3 +235,83 @@ git show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/game/cNotificationArea.h |
 ```
 
 Итог: **совпало**.
+
+## Пункт 4
+
+Для каждого факта команда `git show` выполнена отдельно после установки PATH. Проверенные номера строк взяты из `.tmp/p5g3r/drawers.md`.
+
+### 1. `src/drawers/cUnitDrawer.cpp@acddd29:56`
+
+Факт: вызов `healthBar` принимает ширину, текущие кредиты юнита и `max`, а результат записывается в `w`.
+
+Команда:
+
+```sh
+export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH
+git show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/drawers/cUnitDrawer.cpp | sed -n '56p'
+```
+
+Дословный вывод:
+
+```text
+    int w = healthBar(width_x, m_unit.iCredits, max);
+```
+
+Итог: **совпало**.
+
+### 2. `src/gamestates/cWinLoseState.cpp@acddd29:95`
+
+Факт: HD-текстура исхода отрисовывается как растянутый спрайт в области `layout.image`.
+
+Команда:
+
+```sh
+export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH
+git show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/gamestates/cWinLoseState.cpp | sed -n '95p'
+```
+
+Дословный вывод:
+
+```text
+        m_sdlDrawer->renderStrechFullSprite(m_hdOutcomeTexture, layout.image);
+```
+
+Итог: **совпало**.
+
+### 3. `src/managers/cDrawManager.cpp@acddd29:146`
+
+Факт: `drawCombatState` вызывает отрисовку полос здоровья построек.
+
+Команда:
+
+```sh
+export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH
+git show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/managers/cDrawManager.cpp | sed -n '146p'
+```
+
+Дословный вывод:
+
+```text
+    m_structureDrawer->drawStructuresHealthBars();
+```
+
+Итог: **совпало**.
+
+### 4. `src/gamestates/cGamePlaying.cpp@acddd29:302`
+
+Факт: `cGamePlaying::draw` вызывает `drawCombatState` у менеджера отрисовки.
+
+Команда:
+
+```sh
+export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH
+git show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/gamestates/cGamePlaying.cpp | sed -n '302p'
+```
+
+Дословный вывод:
+
+```text
+    m_drawManager->drawCombatState();
+```
+
+Итог: **совпало**.

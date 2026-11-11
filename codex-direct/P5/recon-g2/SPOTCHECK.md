@@ -259,3 +259,79 @@ git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2
 Итог: 13 из 15 совпало
 
 Не выбрано фактов (подходящих строк нет): 2; проверено: 13, из них совпало: 13.
+
+## Пункт 5 — states.md (Haiku)
+
+Правило выбора: порог = ceil(1739 × p), берётся первая строка отчёта `<номер>\t<текст>` с непустым текстом на позиции не меньше порога.
+
+## Факт 1. states.md, строка отчёта 174 (порог 10 %, порог 174)
+
+- Путь и строка исходника: `src/gamestates/cCreatorState.h:19` (заголовок отчёта, строка 149)
+- Текст строки отчёта: `#include "gamestates/cGameState.h"`
+- Команда:
+```
+git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/gamestates/cCreatorState.h | sed -n '19p'
+```
+- Вывод:
+```
+#include "gamestates/cGameState.h"
+```
+- Итог: совпало
+
+## Факт 2. states.md, строка отчёта 523 (порог 30 %, порог 522, взята следующая подходящая строка)
+
+- Путь и строка исходника: `src/gameobjects/mentat/AbstractMentat.cpp:204` (заголовок отчёта, строка 313)
+- Текст строки отчёта: `        // its the same` (без пробелов по краям: `// its the same`)
+- Команда:
+```
+git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/gameobjects/mentat/AbstractMentat.cpp | sed -n '204p'
+```
+- Вывод:
+```
+        // its the same
+```
+- Итог: совпало
+
+## Факт 3. states.md, строка отчёта 873 (порог 50 %, порог 870, взята следующая подходящая строка)
+
+- Путь и строка исходника: `src/game/CampaignProgress.hpp:1` (заголовок отчёта, строка 866)
+- Текст строки отчёта: `/**`
+- Команда:
+```
+git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/game/CampaignProgress.hpp | sed -n '1p'
+```
+- Вывод:
+```
+/**
+```
+- Итог: совпало
+
+## Факт 4. states.md, строка отчёта 1218 (порог 70 %, порог 1218)
+
+- Путь и строка исходника: `src/gamestates/cMentatState.cpp:126` (заголовок отчёта, строка 1160)
+- Текст строки отчёта: `m_mentat = std::make_unique<BeneMentat>(m_ctx, m_settings, m_stateTransitions, m_missionFlow, humanPlayer, m_dataCampaign);` (с отступом 16 пробелов)
+- Команда:
+```
+git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/gamestates/cMentatState.cpp | sed -n '126p'
+```
+- Вывод:
+```
+                m_mentat = std::make_unique<BeneMentat>(m_ctx, m_settings, m_stateTransitions, m_missionFlow, humanPlayer, m_dataCampaign);
+```
+- Итог: совпало
+
+## Факт 5. states.md, строка отчёта 1576 (порог 90 %, порог 1566, взята следующая подходящая строка)
+
+- Путь и строка исходника: `src/gamestates/cSelectYourNextConquestState.cpp:923` (заголовок отчёта, строка 1569)
+- Текст строки отчёта: `void cSelectYourNextConquestState::installWorld()`
+- Команда:
+```
+git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/gamestates/cSelectYourNextConquestState.cpp | sed -n '923p'
+```
+- Вывод:
+```
+void cSelectYourNextConquestState::installWorld()
+```
+- Итог: совпало
+
+Итог пункта 5: 5 из 5 совпало

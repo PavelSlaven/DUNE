@@ -124,3 +124,30 @@
 - Итог: совпало
 
 Итог: 15 из 15 совпало
+
+## Пункт 4 — drawers.md (Haiku)
+
+Выборка: 953 строки отчёта; позиции 10/30/50/70/90 % → строки отчёта 96, 286, 480, 669, 858 (первые строки вида `<номер>\t<текст>` с непустым текстом от позиции). Путь — из ближайшего заголовка `###` выше строки.
+
+- Факт 1 — строка отчёта 96, `src/gamestates/cWinLoseState.h`, строка исходника 46.
+  - Команда: `git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/gamestates/cWinLoseState.h | sed -n '46p'`
+  - Вывод: `private:`
+  - Строка отчёта: `private:`. Итог: совпало.
+- Факт 2 — строка отчёта 286, `src/drawers/cUnitDrawer.cpp`, строка исходника 93.
+  - Команда: `git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/drawers/cUnitDrawer.cpp | sed -n '93p'`
+  - Вывод: `    }`
+  - Строка отчёта: `    }` (без пробелов по краям: `}`). Итог: совпало.
+- Факт 3 — строка отчёта 480, `src/gamestates/cWinLoseState.cpp`, строка исходника 127.
+  - Команда: `git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/gamestates/cWinLoseState.cpp | sed -n '127p'`
+  - Вывод: `eGameStateType cWinLoseState::getType()`
+  - Строка отчёта: `eGameStateType cWinLoseState::getType()`. Итог: совпало.
+- Факт 4 — строка отчёта 669, `src/managers/cDrawManager.cpp`, строка исходника 253.
+  - Команда: `git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/managers/cDrawManager.cpp | sed -n '253p'`
+  - Вывод: `void cDrawManager::drawSidebar()`
+  - Строка отчёта: `void cDrawManager::drawSidebar()`. Итог: совпало.
+- Факт 5 — строка отчёта 858, `src/gamestates/cGamePlaying.cpp`, строка исходника 151.
+  - Команда: `git -C C:/Users/Slaven/Projects/DUNE-p2 show acddd297b21ec200c7090dd2f1b73e014e2b74c0:src/gamestates/cGamePlaying.cpp | sed -n '151p'`
+  - Вывод: `    for (cPlayer* pPlayer : m_objects->getPlayers()) {`
+  - Строка отчёта: `    for (cPlayer* pPlayer : m_objects->getPlayers()) {`. Итог: совпало.
+
+Итог пункта 4: 5 из 5 совпало
