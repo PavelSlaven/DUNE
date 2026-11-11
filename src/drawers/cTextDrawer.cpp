@@ -14,6 +14,7 @@
  */
 
 #include "cTextDrawer.h"
+#include "debug/UiAudit.hpp"
 #include "drawers/cTextTextureCache.h"
 #include "game/cGameSettings.h"
 #include "drawers/SDLDrawer.hpp"
@@ -23,6 +24,7 @@
 #include "include/cAssert.h"
 
 #include <algorithm>
+#include <optional>
 
 cTextDrawer::cTextDrawer(TTF_Font *theFont, cGameSettings *settings, SDLDrawer *renderer) :
     m_font(theFont),
@@ -46,6 +48,9 @@ void cTextDrawer::drawText(int x, int y, Color color, const std::string &msg, bo
     auto cacheEntry = m_textCache->findOrCreate(color, msg);
     if (!cacheEntry) return;
     cacheEntry->lifeCounter += 1;
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordText(msg, x, y, cacheEntry->width, cacheEntry->height);
+    }
     if (applyShadow) {
         m_renderer->renderTexture(cacheEntry->shadowsTexture, x + 1, y + 1,cacheEntry->width, cacheEntry->height);
     }
@@ -89,6 +94,10 @@ void cTextDrawer::drawTextCenteredInBox(const std::string &msg, int x, int y, in
     int xPos = x + ((boxWidth / 2) - halfLengthInPixels);
     int halfHeightInPixels = heightInPixels / 2;
     int yPos = y + ((boxHeight / 2) - halfHeightInPixels);
+    std::optional<uiaudit::BoxScope> auditBox;
+    if (uiaudit::isEnabled()) {
+        auditBox.emplace(x, y, boxWidth, boxHeight);
+    }
     drawText(xPos, yPos, color, msg);
 }
 
@@ -117,6 +126,10 @@ void cTextDrawer::drawTextScaledCenteredInBox(
     const int height = static_cast<int>(cacheEntry->height * scale + 0.5F);
     const int x = rect.getX() + (rect.getWidth() - width) / 2;
     const int y = rect.getY() + (rect.getHeight() - height) / 2;
+    if (uiaudit::isEnabled()) {
+        const uiaudit::Rect box{rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()};
+        uiaudit::recordText(msg, x, y, width, height, &box);
+    }
     if (applyShadow) {
         m_renderer->renderTexture(cacheEntry->shadowsTexture, x + 2, y + 2, width, height);
     }
@@ -142,6 +155,10 @@ void cTextDrawer::drawTextScaledOpticallyCenteredInBox(
         height,
         cacheEntry->inkBounds
     );
+    if (uiaudit::isEnabled()) {
+        const uiaudit::Rect box{rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()};
+        uiaudit::recordText(msg, origin.x, origin.y, width, height, &box);
+    }
     if (applyShadow) {
         m_renderer->renderTexture(
             cacheEntry->shadowsTexture,
@@ -162,6 +179,10 @@ void cTextDrawer::drawTextCentered(const std::string &msg, int x, int width, int
     int lenghtInPixels = w;
     int half = lenghtInPixels / 2;
     int xPos = x + ((width / 2) - half);
+    std::optional<uiaudit::BoxScope> auditBox;
+    if (uiaudit::isEnabled()) {
+        auditBox.emplace(x, y, width, getFontHeight());
+    }
     drawText(xPos, y, color, msg);
 }
 

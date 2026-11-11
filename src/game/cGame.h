@@ -86,6 +86,7 @@ struct s_DataCampaign;
 struct sGameServices;
 
 class cGame : public cScenarioObserver, cInputObserver {
+    friend class UiAuditAccess;
 
 public:
     cGame();

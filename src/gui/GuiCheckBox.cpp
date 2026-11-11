@@ -15,6 +15,7 @@
 
 #include "gui/GuiCheckBox.hpp"
 
+#include "debug/UiAudit.hpp"
 #include "drawers/SDLDrawer.hpp"
 #include <iostream>
 #include "include/cAssert.h"
@@ -38,6 +39,12 @@ GuiCheckBox::~GuiCheckBox()
 
 void GuiCheckBox::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiCheckBox");
+        if (m_enabled) {
+            auditClick("GuiCheckBox");
+        }
+    }
     switch (m_renderKind) {
         case OPAQUE_WITHOUT_BORDER:
             m_sdlDrawer->renderRectFillColor(m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight(), m_theme.fillColor);

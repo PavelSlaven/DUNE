@@ -14,6 +14,7 @@
  */
 
 #include "game/cSDLSystem.h"
+#include "debug/UiAuditArguments.hpp"
 
 #include "utils/Graphics.hpp"
 #include "utils/Log.h"
@@ -201,6 +202,13 @@ void cSDLSystem::adaptResolution(int desiredWidth, int desiredHeight, bool windo
         desiredWidth = MIN_RENDER_WIDTH;
     if (desiredHeight<MIN_RENDER_HEIGHT)
         desiredHeight = MIN_RENDER_HEIGHT;
+
+    if (uiaudit::isEnabled()) {
+        renderResolution.width = desiredWidth;
+        renderResolution.height = desiredHeight;
+        Logger::info(COMP_SDL2, "Resolution", "Adopted : {}x{}", renderResolution.width, renderResolution.height);
+        return;
+    }
 
     int tmpWidth =  windowResolution.width * desiredHeight / windowResolution.height;
     if (tmpWidth > desiredWidth) {

@@ -22,6 +22,8 @@
 
 
 class cGameSettings {
+    friend class UiAuditAccess;
+
 public:
     cGameSettings() = default;
 

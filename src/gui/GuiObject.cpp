@@ -14,6 +14,7 @@
  */
 
 #include "gui/GuiObject.h"
+#include "debug/UiAudit.hpp"
 #include "drawers/SDLDrawer.hpp"
 #include <iostream>
 #include "include/cAssert.h"
@@ -29,6 +30,16 @@ GuiObject::GuiObject(SDLDrawer* drawer, const cRectangle &rect) :
 void GuiObject::setTheme(const GuiTheme& theme)
 {
     m_theme = theme;
+}
+
+void GuiObject::auditRecord(const char *type) const
+{
+    uiaudit::recordGui(type, m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight());
+}
+
+void GuiObject::auditClick(const std::string &name) const
+{
+    uiaudit::recordClick(name.c_str(), m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight());
 }
 
 void GuiObject::setPosition(int x, int y)

@@ -14,6 +14,7 @@
  */
 
 #include "gui/GuiLabel.hpp"
+#include "debug/UiAudit.hpp"
 #include "drawers/cTextDrawer.h"
 #include "drawers/SDLDrawer.hpp"
 #include "include/cAssert.h"
@@ -38,6 +39,9 @@ void GuiLabel::draw() const
 {
     if (!m_enabled)
         return;
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiLabel");
+    }
     switch (m_renderKind) {
         case OPAQUE_WITHOUT_BORDER:
             m_sdlDrawer->renderRectFillColor(m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight(), m_theme.fillColor);

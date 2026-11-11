@@ -20,6 +20,7 @@
 #include "context/GameContext.hpp"
 #include "context/cGameObjectContextCreator.h"
 #include "game/cGame.h"
+#include "debug/UiAudit.hpp"
 #include "game/GameStateTransition.hpp"
 #include "game/MentatFlow.hpp"
 #include "game/MissionFlow.hpp"
@@ -572,7 +573,7 @@ void cGame::run()
     ensureFrameTargets();
     SDL_Event event;
     while (m_gameSettings->m_playing) {
-        if (m_focusManager->isGameWindowActive()) {
+        if (uiaudit::isEnabled() || m_focusManager->isGameWindowActive()) {
             m_timeManager->processTime();
         }
         while (SDL_PollEvent(&event)) {
@@ -611,7 +612,7 @@ void cGame::run()
             }
         }
 
-        if (!m_focusManager->isGameWindowActive()) {
+        if (!uiaudit::isEnabled() && !m_focusManager->isGameWindowActive()) {
             m_timeManager->waitForCPU(); // wait for CPU to catch up, so we don't run too fast
             continue; // skip the rest of the loop when we don't have focus
         }
@@ -623,6 +624,9 @@ void cGame::run()
         ensureFrameTargets();
         m_sdlDrawer->beginDrawingToTexture(actualRenderer);
         m_sdlDrawer->renderClearToColor();
+        if (uiaudit::isEnabled()) {
+            uiaudit::beginFrame(*this);
+        }
         drawState(); // run game state, includes interaction + drawing
         transitionStateIfRequired();
         shakeScreenAndBlitBuffer();
@@ -630,6 +634,9 @@ void cGame::run()
         m_sdlDrawer->endDrawingToTexture();
         m_sdlDrawer->renderClearToColor();  // SDL3 persists its intermediate texture between frames; clear before composite
         m_sdlDrawer->renderSprite(actualRenderer, m_screenShake->getX(), m_screenShake->getY());
+        if (uiaudit::isEnabled()) {
+            uiaudit::onFramePresented(*this);
+        }
         SDL_RenderPresent(renderer);
         m_timeManager->waitForCPU(); // wait for CPU to catch up, so we don't run too fast
     }
