@@ -2,11 +2,11 @@
 
 Исполнитель: корневая нить Codex `gpt-6.1-sol` `high` и два помощника `gpt-6-luna` `xhigh` (раздел «Организация работы»).
 
-Рабочая копия: `/srv/dune/worktrees/u34`, ветка `codex/p5g3v`, `HEAD` — `c5834615f8fc71789bba7108078a461018cc7d56` (код части 3б шага П5г). Файлы Git LFS в этой рабочей копии — настоящие данные. Временные файлы — в `.tmp/p5g3v/`. Коммитов не делай: коммиты делает ведущий по списку из сдачи.
+Рабочая копия: `/srv/dune/worktrees/u34`, ветка `codex/p5g3v`, `HEAD` — `5df04cc25563b3f68aad7bd3322981eb9ee08682` (ключ `--ui-audit-frames` шага П5г-5 поверх кода части 3б `c5834615`); ссылки `@c583461` ниже — на код части 3б, в файлах этого задания он не менялся. Файлы Git LFS в этой рабочей копии — настоящие данные. Временные файлы — в `.tmp/p5g3v/`. Коммитов не делай: коммиты делает ведущий по списку из сдачи.
 
 ## Цель
 
-Добавить в каталог режима отладки интерфейса порта пять сцен части 3в — итоги миссии, окно настройки новой карты и редактор карт с каждой из трёх правых панелей, — записи журнала геометрии элементов интерфейса редактора и исключения экрана видеоролика по плану `PLAN-P5G3V` ниже. Готово, когда три приёмочных теста ведущего (два новых скрипта `tests/ui_audit/ui_audit_part3c_catalog.py` и `tests/ui_audit/ui_audit_part3c_scenes.py` и новый текст `tools/ui-audit/tests/test_port_changes.py`; их не меняй) сначала красные на установленной игре без кода этого задания, а после кода зелёные, и остались зелёными сборка (319 тестов), десять скриптов Python частей 1, 2, 3а, 3б и 4 и весь набор `tools/ui-audit/tests`.
+Добавить в каталог режима отладки интерфейса порта пять сцен части 3в — итоги миссии, окно настройки новой карты и редактор карт с каждой из трёх правых панелей, — записи журнала геометрии элементов интерфейса редактора и исключения экрана видеоролика по плану `PLAN-P5G3V` ниже. Готово, когда три приёмочных теста ведущего (два новых скрипта `tests/ui_audit/ui_audit_part3c_catalog.py` и `tests/ui_audit/ui_audit_part3c_scenes.py` и новый текст `tools/ui-audit/tests/test_port_changes.py`; их не меняй) сначала красные на установленной игре без кода этого задания, а после кода зелёные, и остались зелёными сборка (319 тестов), одиннадцать скриптов Python частей 1, 2, 3а, 3б, 4 и шага П5г-5 и весь набор `tools/ui-audit/tests`.
 
 ## Что уже решено
 
@@ -35,7 +35,7 @@
 
 ## Контракт поведения
 
-Пункты 1–15 контрактов частей 1, 2, 3а и 3б действуют без изменений, кроме одного места пункта 10: после части 3в итоговый список проблем покрытия экранов пуст. Скрипты частей 1, 2, 3а, 3б и 4 в `tests/ui_audit/` остаются зелёными. Игра запускается так же, как в пункте 2 части 1.
+Пункты 1–16 контрактов частей 1, 2, 3а, 3б и шага П5г-5 действуют без изменений, кроме одного места пункта 10: после части 3в итоговый список проблем покрытия экранов пуст. Скрипты частей 1, 2, 3а, 3б, 4 и `ui_audit_frames.py` шага П5г-5 в `tests/ui_audit/` остаются зелёными. Игра запускается так же, как в пункте 2 части 1.
 
 17. **Каталог части 3в.** В выводе `--ui-audit-list` у каждой сцены ровно ключи части 1. Среди сцен, у которых `group` — `scoring`, `new-map-editor` или `editor`, нет двух с одним `id`, и эти сцены ровно совпадают по `id` и значениям всех ключей с пятью сценами ниже. У каждой из пяти сцен `game_screen`, `hud` и `hd_only` — `false`, `hover` — `null`; `""` — пустая строка.
     - `scoring`: `group` — `scoring`, `state` — `GAME_SCORING`, `screen` — `cScoringState`, `house` — `atreides`, `readiness` — `FixedFrames(8, no readiness flag)`;
@@ -260,7 +260,7 @@ bool prepareEditor(cGame &game)
 2. `df -m /srv` — в столбце `Available` не меньше 5000, иначе блок `## Q-P5G3V-01` и стоп. Сборка: `CCACHE_DISABLE=1 DUNE_DEPS_DIR=$PWD/.tmp/deps DUNE_OUT_DIR=$PWD/.tmp/out bash tools/upstream/build_upstream_linux.sh d06f2fcd2a347182c3774fb96e9a85570405c489 > .tmp/p5g3v/build.log 2>&1; echo exit=$?` — `exit=0`; итоговая строка `ctest.log` последней папки логов `.tmp/out/logs/` — `100% tests passed, 0 tests failed out of 319`. `CCACHE_DISABLE=1` обязателен: `ccache` пишет в `/root/.cache`, который песочница нити держит только для чтения.
 3. `grep -n 'warning:' .tmp/out/logs/<последняя папка>/full.log | grep -E 'src/(debug|gui)/|src/gamestates/cEditorState'` — пустой вывод.
 4. В `game-dummy.log` и `stdout-dummy.log` последней папки логов нет строки `Imminent crash`; файл `.tmp/out/xdg/D2TM/Dune II - The Maker/preferences.ini` есть.
-5. Для каждого скрипта `<скрипт>` из `ui_audit_list_and_scales.py`, `ui_audit_unknown_scene.py`, `ui_audit_main_menu_png.py`, `ui_audit_tools_run_combo.py`, `ui_audit_part2_catalog.py`, `ui_audit_part2_scenes.py`, `ui_audit_part3a_catalog.py`, `ui_audit_part3a_scenes.py`, `ui_audit_part3b_catalog.py`, `ui_audit_part3b_scenes.py`, `ui_audit_part3c_catalog.py`, `ui_audit_part3c_scenes.py`: `LD_LIBRARY_PATH=$PWD/.tmp/deps/prefix/lib timeout 1800 python3 -B tests/ui_audit/<скрипт> --run-dir .tmp/out/run/bin > .tmp/p5g3v/run-<скрипт>.log 2>&1; echo exit=$?` — у каждого `exit=0`.
+5. Для каждого скрипта `<скрипт>` из `ui_audit_list_and_scales.py`, `ui_audit_unknown_scene.py`, `ui_audit_main_menu_png.py`, `ui_audit_tools_run_combo.py`, `ui_audit_part2_catalog.py`, `ui_audit_part2_scenes.py`, `ui_audit_part3a_catalog.py`, `ui_audit_part3a_scenes.py`, `ui_audit_part3b_catalog.py`, `ui_audit_part3b_scenes.py`, `ui_audit_frames.py`, `ui_audit_part3c_catalog.py`, `ui_audit_part3c_scenes.py`: `LD_LIBRARY_PATH=$PWD/.tmp/deps/prefix/lib timeout 1800 python3 -B tests/ui_audit/<скрипт> --run-dir .tmp/out/run/bin > .tmp/p5g3v/run-<скрипт>.log 2>&1; echo exit=$?` — у каждого `exit=0`.
 6. `mkdir -p .tmp/p5g3v/tmp && (cd tools/ui-audit && TMPDIR=$PWD/../../.tmp/p5g3v/tmp python3 -B -m unittest discover -s tests) > .tmp/p5g3v/run-j.log 2>&1; echo exit=$?` — `exit=0`, последняя строка `.tmp/p5g3v/run-j.log` — `OK`. После проверок 5 и 6 — `rm -r tests/ui_audit/__pycache__ tools/ui-audit/__pycache__ tools/ui-audit/tests/__pycache__` для тех из этих папок, что появились.
 7. Снимки для ведущего: для каждой сцены `<id>` из `scoring`, `editor-new-map`, `editor-topology`, `editor-start-cells`, `editor-symmetry` по очереди: `(cd .tmp/out/run/bin && SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software SDL_AUDIODRIVER=dummy XDG_DATA_HOME=/srv/dune/worktrees/u34/.tmp/p5g3v/xdg LD_LIBRARY_PATH=/srv/dune/worktrees/u34/.tmp/deps/prefix/lib timeout 120 ./d2tm -windowed -screenWidth 1024 -screenHeight 768 --ui-audit-scene <id> --ui-audit-out /srv/dune/worktrees/u34/.tmp/p5g3v/png) > .tmp/p5g3v/png-<id>.log 2>&1; echo exit=$?` — `exit=0`; затем `ls .tmp/p5g3v/png` — десять файлов `<id>.png` и `<id>.geometry.jsonl`.
 8. Сверки `grep` (в скобках — ожидаемый вывод):
@@ -270,7 +270,7 @@ bool prepareEditor(cGame &game)
    - `grep -c '"editor-map"' src/gamestates/cEditorState.cpp` (1).
 9. `git -c lfs.storage=$PWD/.tmp/p5g3v/lfs status --short` — ровно четырнадцать строк: ` M src/debug/UiAudit.hpp`, ` M src/debug/UiAuditAccess.cpp`, ` M src/debug/UiAuditScenes.cpp`, ` M src/gamestates/cEditorState.cpp`, ` M src/gamestates/cEditorState.h`, ` M src/gui/GuiBar.cpp`, ` M src/gui/GuiCycleButton.cpp`, ` M src/gui/GuiStateButton.cpp`, ` M src/gui/GuiTextInput.cpp`, ` M src/gui/GuiValueButton.cpp`, ` M tools/ui-audit/exclusions.tsv`, ` M tools/ui-audit/tests/test_port_changes.py`, `?? tests/ui_audit/ui_audit_part3c_catalog.py`, `?? tests/ui_audit/ui_audit_part3c_scenes.py`.
 
-Расхождение в любой проверке, которое не убирается правкой в рамке правок по плану, — блок `## Q-P5G3V-NN` с выводом и стоп. Три файла тестов шага 1 и скрипты частей 1–4 не подгоняй и не меняй.
+Расхождение в любой проверке, которое не убирается правкой в рамке правок по плану, — блок `## Q-P5G3V-NN` с выводом и стоп. Три файла тестов шага 1, скрипты частей 1–4 и `ui_audit_frames.py` не подгоняй и не меняй.
 
 ## Сдача
 
