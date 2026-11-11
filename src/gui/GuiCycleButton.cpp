@@ -14,6 +14,7 @@
  */
 
 #include "gui/GuiCycleButton.h"
+#include "debug/UiAudit.hpp"
 #include "drawers/cTextDrawer.h"
 #include "include/cAssert.h"
 
@@ -68,6 +69,12 @@ void GuiCycleButton::onNotifyKeyboardEvent(const cKeyboardEvent& )
 
 void GuiCycleButton::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiCycleButton");
+        if (m_enabled) {
+            auditClick("GuiCycleButton");
+        }
+    }
     drawRectFillBorder(m_theme);
 
     if (m_textDrawer && !m_values.empty()) {

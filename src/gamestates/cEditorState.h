@@ -42,6 +42,8 @@ class GameStateTransition;
 class cGameSettings;
 
 class cEditorState : public cGameState {
+    friend class UiAuditAccess;
+
 public:
     explicit cEditorState(sGameServices* services);
     ~cEditorState() override;

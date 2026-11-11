@@ -14,6 +14,7 @@
  */
 
 #include "gui/GuiBar.h"
+#include "debug/UiAudit.hpp"
 
 #include "drawers/SDLDrawer.hpp"
 #include "include/cAssert.h"
@@ -39,6 +40,9 @@ GuiBar::~GuiBar() noexcept
 
 void GuiBar::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiBar");
+    }
     // draw window itself...
     //drawRectFillBorder(m_theme);
     //drawRectBorder(m_theme.borderLight,m_theme.borderLight);

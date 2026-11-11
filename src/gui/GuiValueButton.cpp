@@ -14,6 +14,7 @@
  */
 
 #include "gui/GuiValueButton.h"
+#include "debug/UiAudit.hpp"
 
 #include "drawers/SDLDrawer.hpp"
 #include "drawers/cTextDrawer.h"
@@ -92,6 +93,12 @@ void GuiValueButton::onNotifyKeyboardEvent(const cKeyboardEvent &)
 
 void GuiValueButton::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiValueButton");
+        if (m_enabled) {
+            auditClick("GuiValueButton");
+        }
+    }
     m_sdlDrawer->renderRectFillColor(m_rect, m_theme.fillColor);
     if (m_visualState == VisualState::Pressed) {
         m_sdlDrawer->gui_DrawRectBorder(m_rect, m_theme.borderDark, m_theme.borderLight);

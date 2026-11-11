@@ -14,6 +14,7 @@
  */
 
 #include "gamestates/cEditorState.h"
+#include "debug/UiAudit.hpp"
 #include "gamestates/cEditorState/cEditorCam.h"
 #include "gamestates/cEditorState/cEditorUndoRedoHistory.h"
 #include "controls/eKeyAction.h"
@@ -414,6 +415,10 @@ void cEditorState::thinkFast()
 
 void cEditorState::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordArea("editor-map", mapSizeArea.getX(), mapSizeArea.getY(), mapSizeArea.getWidth(),
+                            mapSizeArea.getHeight());
+    }
     drawMap();
     drawHoveredCellHighlight();
     drawSelectionRectangle();
