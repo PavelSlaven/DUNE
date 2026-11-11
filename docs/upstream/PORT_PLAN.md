@@ -97,7 +97,7 @@
 - **П8 — сохранения.** Риск — новый API `src/game/cGame.h` апстрима. Приёмка: `save_file_codec_tests`, `save_slot_name_tests`, совместимость — по решению владельца.
 - **П8а — игровые правки зданий.** Приёмка — тесты функций placement-rule, refinery-dock, factory-pads, radar-dish по карте. Риски — четыре строки карты о `cMousePlaceState`, `cLightFactory`, `cOutPost` и потребителе `cStructureDrawer`. Из П4: харвестер на площадке завода (`WorldObjectScale`, `world_object_scale_tests`).
 - **П9 — музыка на SDL3_mixer.** Приёмка: `music_playlist_tests`, `music_transition_policy_tests`, `music_controls_layout_tests`.
-- **П10 — панель приказов и клавиши.** Риск — `cInteractionManager` удалён апстримом, обработка событий встраивается в `cGamePlaying::onNotifyMouseEvent`. Приёмка: `command_bindings_tests`, `command_bar_layout_tests`, `interaction_regression_tests`. Из П4: HD-картинки панели приказов `command_bar.png` и `command_bar_disabled.png` из `data/hd4/`.
+- **П10 — панель приказов и клавиши.** Риск — `cInteractionManager` удалён апстримом, обработка событий встраивается в `cGamePlaying::onNotifyMouseEvent`. Приёмка: `command_bindings_tests`, `command_bar_layout_tests`, `interaction_regression_tests`. Из П4: HD-картинки панели приказов `command_bar.png` и `command_bar_disabled.png` из `data/hd4/`. Из П5г: опись клавиш режима отладки интерфейса — `tools/ui-audit/extract_keys.py`, `check_keys.py`, `keys.tsv` и их тесты; `keys.tsv` собирается заново по клавишам порта (SDL3, `cKeyBindings`).
 - **П11 — ментаты HD, титры, сцены.** Приёмка — снимки П13.
 - **П12 — упаковка релиза и workflows.** Приёмка — CI зелёный на Windows, Linux и macOS.
 - **П13 — эталонные снимки.** Одни и те же сцены в `v0.8.0-ru-hd.10` и в новой сборке:
