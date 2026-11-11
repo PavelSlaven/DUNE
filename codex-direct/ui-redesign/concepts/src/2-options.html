@@ -2,17 +2,19 @@
 <html lang="ru"><head><meta charset="utf-8"><title>2 — меню настроек</title>
 <link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
 <style>
-/* Variant by canvas: narrow canvas shows the menu opened from the main menu, wide one — opened from battle (pause menu column). */
+/* Two variants: opened from the main menu (default on the narrow canvas) and from battle (class g: pause column on the left; default on the wide canvas, ?v=game forces it). */
 :root { --ww: 600px; --wh: 532px; --rowh: 32px; --lblw: 196px; --act: 0px; --fs: 16px; }
-@media (min-width: 960px) { :root { --ww: 840px; --wh: 548px; --rowh: 33px; --lblw: 220px; --act: 224px; --fs: 16px; } }
+body.g { --ww: 768px; --wh: 548px; --rowh: 32px; --lblw: 184px; --act: 212px; }
+@media (min-width: 960px) { body.g { --ww: 840px; --lblw: 220px; --act: 232px; } }
 .art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png"); background-position: 58% 50%; }
 .game { display: none; }
-@media (min-width: 960px) { .art { background-image: url("../../../../.cache/ui-redesign/derived/field-ordos-1600x1048.jpg"); background-position: center; filter: blur(2px) saturate(.7); } .game { display: flex; } .nogame { display: none !important; } }
-.scrim { background: rgba(4,6,8,.66); }
+body.g .art { background-image: url("../../../../.cache/ui-redesign/derived/field-ordos-1600x1048.jpg"); background-position: center; } body.g .game { display: flex; } body.g .nogame { display: none !important; }
+@media (max-width: 959px) { body.g .actions { padding: 14px 10px 14px 12px; } body.g .actions .btn { font-size: 14px; gap: 8px; } }
+.scrim { background: rgba(8,11,13,.7); }
 .win { left: calc(50% - var(--ww) / 2); top: calc(50% - var(--wh) / 2); width: var(--ww); height: var(--wh); display: flex; flex-direction: column; }
 .body { flex: 1; display: flex; min-height: 0; }
-.actions { width: var(--act); padding: 16px 14px 16px 18px; gap: 8px; border-right: 1px solid #06080a; box-shadow: 1px 0 0 rgba(255,255,255,.05); }
-.actions .btn { justify-content: flex-start; gap: 10px; padding-left: 14px; }
+.actions { width: var(--act); padding: 16px; gap: 8px; border-right: 1px solid var(--g0); box-shadow: 1px 0 0 rgba(255,255,255,.05); }
+.actions .btn { justify-content: flex-start; gap: 10px; padding: 0 16px; }
 .actions .sp { flex: 1; }
 .main { flex: 1; display: flex; flex-direction: column; padding: 12px 18px 0 18px; min-width: 0; }
 .tabs { margin-bottom: 8px; }
@@ -22,12 +24,13 @@
 .field > .lbl { font-size: var(--fs); }
 .field .cycle { --vw: 150px; }
 .field.hoverrow { background: linear-gradient(90deg, rgba(198,154,68,.10), transparent 70%); box-shadow: inset 2px 0 0 var(--brass); margin-left: -8px; padding-left: 8px; }
-.foot { height: 56px; padding: 0 18px; gap: 10px; border-top: 1px solid #06080a; box-shadow: inset 0 1px 0 rgba(255,255,255,.05); flex: none; }
+.foot { height: 56px; padding: 0 18px; gap: 10px; border-top: 1px solid var(--g0); box-shadow: inset 0 1px 0 rgba(255,255,255,.05); flex: none; }
 .foot .msg { font: 15px/1.2 "PTN"; color: var(--ok); gap: 6px; }
 .foot .msg .ico { width: 15px; height: 15px; }
-.ver { position: absolute; right: 18px; top: 12px; font: 13px/1 "PTN"; color: var(--text3); }
+.ver { position: absolute; right: 18px; top: 12px; font: 13px/1 "PTN"; color: var(--text2); }
 </style></head>
 <body>
+<script>if (innerWidth >= 960 || location.search.indexOf("v=game") >= 0) document.body.classList.add("g");</script>
 <div class="art"></div><div class="scrim"></div>
 <div class="abs panel win">
   <div class="hd center">Настройки</div>

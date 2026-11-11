@@ -4,11 +4,11 @@
 <style>
 /* The painting already carries its own gold frame and title; the screen only adds the prompt. */
 :root { --m: 18px; --fs: 16px; }
-body { background: #050607; }
+body { background: var(--edge); }
 .pic { left: var(--m); right: var(--m); top: var(--m); bottom: var(--m); background: url("../../../../.cache/ui-redesign/assets/hd4/outcome_defeat_ru.png") center / contain no-repeat; }
-.prompt { left: 0; right: 0; bottom: calc(var(--m) + 9%); justify-content: center; }
-.prompt div { padding: calc(var(--fs) * .5) calc(var(--fs) * 1.2); display: flex; align-items: center; gap: calc(var(--fs) * .6); font: var(--fs)/1 "Russo"; text-transform: uppercase; color: var(--gold); background: rgba(8,11,13,.78); box-shadow: 0 0 0 1px rgba(3,4,5,.9), inset 0 0 0 1px var(--brass-mid); text-shadow: 0 1px 0 #000; }
-.prompt .kbd { font-size: calc(var(--fs) * .7); }
+.prompt { left: 0; right: 0; bottom: 72px; justify-content: center; }
+.prompt div { padding: 8px 20px; display: flex; align-items: center; gap: 10px; font: var(--fs)/1 "Russo"; text-transform: uppercase; color: var(--gold); background: rgba(8,11,13,.8); box-shadow: 0 0 0 1px var(--edge), inset 0 0 0 1px var(--brass-mid); text-shadow: 0 1px 0 var(--edge); }
+.prompt .kbd { font-size: 12px; }
 </style></head>
 <body>
 <div class="abs pic"></div>

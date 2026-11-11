@@ -3,8 +3,8 @@
   const NS = "http://www.w3.org/2000/svg";
   const ICONS = {
     menu: "M4 7h16M4 12h16M4 17h16",
-    "chev-l": "M15 5l-7 7 7 7", "chev-r": "M9 5l7 7-7 7", "chev-u": "M5 15l7-7 7 7", "chev-d": "M5 9l7 7 7-7",
-    check: "M5 12l5 5 9-10", close: "M6 6l12 12M18 6L6 18",
+    "chev-l": "M15 5l-7 7 7 7", "chev-r": "M9 5l7 7-7 7",
+    check: "M5 12l5 5 9-10",
     note: "M9 18V6l10-2v12M9 18a3 2.4 0 11-6 0 3 2.4 0 016 0zM19 16a3 2.4 0 11-6 0 3 2.4 0 016 0z",
     prev: "M18 5v14L8 12zM6 5v14", next: "M6 5v14l10-7zM18 5v14",
     speed: "M4 16a8 8 0 1116 0M12 16l4-6M4 16h16",
@@ -24,32 +24,33 @@
     save: "M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6", load: "M3 7h6l2 2h10v10H3zM12 12v5M9.5 14.5L12 17l2.5-2.5",
     lock: "M6 11h12v9H6zM8 11V8a4 4 0 018 0v3", clock: "M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2",
     warn: "M12 3l10 17H2zM12 10v5M12 17.5v.5", info: "M12 3a9 9 0 100 18 9 9 0 000-18zM12 11v6M12 7.5v.5",
-    radar: "M12 3a9 9 0 109 9M12 7a5 5 0 105 5M12 12l7-7", worm: "M3 16c3-6 5 4 8-2s5 4 8-2M3 20h18",
+    radar: "M12 3a9 9 0 109 9M12 7a5 5 0 105 5M12 12l7-7",
     star: "M12 3l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17l-5.6 3 1.3-6.2L3 9.5l6.3-.7z",
     map: "M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14",
     users: "M9 4a3.5 3.5 0 100 7 3.5 3.5 0 000-7zM2 21c0-4 3-6 7-6s7 2 7 6M17 5a3 3 0 010 6M19 15c2 1 3 3 3 6",
-    dice: "M4 4h16v16H4zM8.5 8.5v.1M15.5 8.5v.1M12 12v.1M8.5 15.5v.1M15.5 15.5v.1", pause: "M8 5v14M16 5v14", play: "M7 4l12 8-12 8z",
-    vol: "M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11", screen: "M3 5h18v12H3zM8 21h8M12 17v4",
+    dice: "M4 4h16v16H4zM8.5 8.5v.1M15.5 8.5v.1M12 12v.1M8.5 15.5v.1M15.5 15.5v.1", play: "M7 4l12 8-12 8z",
     gear: "M12 8.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.2 2.2M16.9 16.9l2.2 2.2M4.9 19.1l2.2-2.2M16.9 7.1l2.2-2.2",
-    keys: "M3 7h18v10H3zM7 11h1M11 11h1M15 11h1M7 14h10",
-    bug: "M8 8a4 4 0 018 0v8a4 4 0 01-8 0zM3 10h5M16 10h5M3 16h5M16 16h5M9 5L7 3M15 5l2-2M12 8v12",
-    exit: "M10 4H4v16h6M14 8l4 4-4 4M8 12h10", back: "M9 6l-6 6 6 6M3 12h18", trash: "M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13",
+    exit: "M10 4H4v16h6M14 8l4 4-4 4M8 12h10", back: "M9 6l-6 6 6 6M3 12h18",
     shield: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z", edit: "M4 20h4L19 9l-4-4L4 16zM13 7l4 4",
-    grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z", plus: "M12 5v14M5 12h14", minus: "M5 12h14",
+    grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z", plus: "M12 5v14M5 12h14",
   };
+  const css = getComputedStyle(document.documentElement);
+  const tok = function (name) { return css.getPropertyValue("--" + name).trim(); };
+  const EDGE = tok("edge");
+  const frameOf = function (top, bot, rim1, rim2, rim3, inner, hi) { return { top: top, bot: bot, rim1: tok(rim1), rim2: tok(rim2), rim3: tok(rim3), edge: EDGE, inner: inner, hi: hi }; };
   const PAL = {
-    panel:    { top: "#1d252b", bot: "#12171c", rim1: "#f0d28a", rim2: "#8e6c2c", rim3: "#b88d3c", edge: "#030405", inner: "rgba(0,0,0,.55)", hi: "rgba(255,255,255,.06)" },
-    glass:    { top: "rgba(29,37,43,.92)", bot: "rgba(14,18,22,.95)", rim1: "#f0d28a", rim2: "#8e6c2c", rim3: "#b88d3c", edge: "#030405", inner: "rgba(0,0,0,.55)", hi: "rgba(255,255,255,.06)" },
-    well:     { top: "#06080a", bot: "#0b0f12", rim1: "#5f4a22", rim2: "#a8823a", rim3: "#7b5f2a", edge: "#030405", inner: "rgba(0,0,0,.7)", hi: "rgba(0,0,0,0)" },
-    btn:      { top: "#2c3640", bot: "#171d23", rim1: "#c79d48", rim2: "#6a4f21", rim3: "#8e6c2c", edge: "#030405", inner: "rgba(0,0,0,.45)", hi: "rgba(255,255,255,.10)" },
-    hover:    { top: "#384652", bot: "#1c242b", rim1: "#ffe9ad", rim2: "#b88a3a", rim3: "#e9c877", edge: "#030405", inner: "rgba(0,0,0,.4)", hi: "rgba(255,255,255,.16)" },
-    pressed:  { top: "#10151a", bot: "#1b2229", rim1: "#8d6b2c", rim2: "#d2a650", rim3: "#b88d3c", edge: "#030405", inner: "rgba(0,0,0,.75)", hi: "rgba(0,0,0,.35)" },
-    disabled: { top: "#181d22", bot: "#14181c", rim1: "#4d4732", rim2: "#333025", rim3: "#3f3a2b", edge: "#030405", inner: "rgba(0,0,0,.3)", hi: "rgba(255,255,255,.03)" },
-    selected: { top: "#55421f", bot: "#30260e", rim1: "#ffe9ad", rim2: "#c69a44", rim3: "#f0d28a", edge: "#030405", inner: "rgba(0,0,0,.4)", hi: "rgba(255,255,255,.14)" },
-    primary:  { top: "#f6d273", bot: "#a67524", rim1: "#fff0c0", rim2: "#7a5a22", rim3: "#e9c877", edge: "#030405", inner: "rgba(90,60,10,.45)", hi: "rgba(255,255,255,.5)" },
-    primaryh: { top: "#ffe391", bot: "#b98630", rim1: "#fff6d6", rim2: "#8d6b2c", rim3: "#ffe9ad", edge: "#030405", inner: "rgba(90,60,10,.4)", hi: "rgba(255,255,255,.6)" },
-    primaryd: { top: "#4a4331", bot: "#37322a", rim1: "#5c5540", rim2: "#3a3528", rim3: "#4d4732", edge: "#030405", inner: "rgba(0,0,0,.3)", hi: "rgba(255,255,255,.05)" },
+    panel:    frameOf(tok("g3"), tok("g2"), "brass-hi", "brass-mid", "brass", "rgba(0,0,0,.55)", "rgba(255,255,255,.06)"),
+    glass:    frameOf("rgba(28,36,42,.92)", "rgba(21,27,32,.95)", "brass-hi", "brass-mid", "brass", "rgba(0,0,0,.55)", "rgba(255,255,255,.06)"),
+    well:     frameOf(tok("g0"), tok("g0"), "brass-lo", "brass-mid", "brass-lo", "rgba(0,0,0,.7)", "rgba(0,0,0,0)"),
+    btn:      frameOf(tok("g4"), tok("g2"), "brass", "brass-lo", "brass-mid", "rgba(0,0,0,.45)", "rgba(255,255,255,.10)"),
+    hover:    frameOf(tok("g5"), tok("g3"), "brass-top", "brass", "brass-hi", "rgba(0,0,0,.4)", "rgba(255,255,255,.16)"),
+    pressed:  frameOf(tok("g1"), tok("g2"), "brass-mid", "brass", "brass", "rgba(0,0,0,.75)", "rgba(0,0,0,.35)"),
+    disabled: frameOf(tok("g2"), tok("g1"), "rim-off", "rim-off-lo", "rim-off", "rgba(0,0,0,.3)", "rgba(255,255,255,.03)"),
+    selected: frameOf(tok("sel-hi"), tok("sel-lo"), "brass-top", "brass", "brass-hi", "rgba(0,0,0,.4)", "rgba(255,255,255,.14)"),
+    primary:  frameOf(tok("gold-hi"), tok("gold-lo"), "brass-top", "brass-mid", "brass-hi", "rgba(90,60,10,.45)", "rgba(255,255,255,.5)"),
+    primaryh: frameOf(tok("gold-top"), tok("gold-lo2"), "brass-top", "brass-mid", "brass-top", "rgba(90,60,10,.4)", "rgba(255,255,255,.6)"),
   };
+
   let uid = 0;
   function path(w, h, c, i) {
     const k = Math.max(0, c - i * 0.414);
@@ -90,7 +91,7 @@
   }
   function buttonPalette(node) {
     const has = (name) => node.classList.contains(name);
-    if (has("primary")) return has("disabled") ? PAL.primaryd : has("hover") ? PAL.primaryh : PAL.primary;
+    if (has("primary") && !has("disabled")) return has("hover") ? PAL.primaryh : PAL.primary;
     for (const name of ["disabled", "pressed", "selected", "hover"]) if (has(name)) return PAL[name];
     return PAL.btn;
   }

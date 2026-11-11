@@ -3,28 +3,28 @@
 <link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
 <style>
 :root { --cw: 178px; --chh: 412px; --gap: 12px; --ty: 34px; --tfs: 26px; --cy: 92px; --img: 154px; --nfs: 19px; --dfs: 14px; --pad: 12px; }
-.art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png"); background-position: 58% 50%; filter: blur(3px); transform: scale(1.03); }
-.scrim { background: radial-gradient(ellipse at 50% 45%, rgba(4,6,8,.58), rgba(4,6,8,.86)); }
+.art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png"); background-position: 58% 50%; }
+.scrim { background: radial-gradient(ellipse at 50% 45%, rgba(8,11,13,.58), rgba(8,11,13,.86)); }
 .title { left: 0; right: 0; top: var(--ty); justify-content: center; gap: 18px; font-size: var(--tfs); }
 .title .rule { width: 18%; }
-.sub { left: 0; right: 0; top: calc(var(--ty) + var(--tfs) + 8px); text-align: center; font-size: var(--dfs); color: var(--text2); }
+.sub { left: 0; right: 0; top: calc(var(--ty) + var(--tfs) + 8px); text-align: center; font-size: var(--dfs); color: var(--text); }
 .cards { left: 0; right: 0; top: var(--cy); justify-content: center; gap: var(--gap); align-items: flex-start; }
 .hc { width: var(--cw); height: var(--chh); padding: var(--pad); display: flex; flex-direction: column; align-items: center; }
 .hc .band { position: absolute; left: 12px; right: 12px; top: 3px; height: 3px; background: linear-gradient(90deg, transparent, var(--hc), transparent); opacity: .9; }
-.hc img { width: var(--img); height: calc(var(--img) * 1.089); object-fit: cover; box-shadow: 0 0 0 1px #030405, 0 0 0 2px var(--brass-lo); }
-.hc .nm { margin-top: calc(var(--pad) * .9); font: var(--nfs)/1 "Russo"; text-transform: uppercase; color: var(--text); text-shadow: 0 2px 0 #000; }
-.hc .rule { width: 70%; margin: calc(var(--pad) * .6) 0; }
+.hc img { width: var(--img); height: 168px; object-fit: cover; box-shadow: 0 0 0 1px var(--edge), 0 0 0 2px var(--brass-lo); }
+.hc .nm { margin-top: 10px; font: var(--nfs)/1 "Russo"; text-transform: uppercase; color: var(--text); text-shadow: 0 2px 0 var(--edge); }
+.hc .rule { width: 70%; margin: 8px 0; }
 .hc .ds { font: var(--dfs)/1.3 "PTN"; color: var(--text2); text-align: center; }
 .hc .tr { margin-top: auto; align-self: stretch; display: flex; flex-direction: column; gap: 4px; font: var(--dfs)/1.1 "PTN"; color: var(--text2); }
 .hc .tr div { display: flex; align-items: center; gap: 6px; } .hc .tr .ico { width: calc(var(--dfs) + 1px); height: calc(var(--dfs) + 1px); color: var(--hc); }
 .hc.hover { transform: translateY(-6px); }
 .hc.hover > svg.fr { filter: drop-shadow(0 0 16px var(--hc)) drop-shadow(0 14px 22px rgba(0,0,0,.7)); }
 .hc.hover .nm { color: var(--gold); }
-.hc.hover img { box-shadow: 0 0 0 1px #030405, 0 0 0 2px var(--brass-hi); }
+.hc.hover img { box-shadow: 0 0 0 1px var(--edge), 0 0 0 2px var(--brass-hi); }
 .hc .pick { display: none; align-self: stretch; margin-top: 10px; }
 .hc.hover .pick { display: flex; }
 .back { left: 24px; bottom: 20px; }
-.keys { right: 24px; bottom: 26px; font: 14px/1 "PTN"; color: var(--text3); gap: 8px; }
+.keys { right: 24px; bottom: 26px; font: 14px/1 "PTN"; color: var(--text2); gap: 8px; }
 </style></head>
 <body>
 <div class="art"></div><div class="scrim"></div>

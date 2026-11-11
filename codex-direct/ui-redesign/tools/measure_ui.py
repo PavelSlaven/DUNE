@@ -138,4 +138,5 @@ def main():
     print(summary(rows, n))
 
 
-main()
+if __name__ == "__main__":
+    main()

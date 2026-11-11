@@ -2,10 +2,10 @@
 <html lang="ru"><head><meta charset="utf-8"><title>5 — настройка схватки</title>
 <link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
 <style>
-:root { --m: 8px; --hd: 40px; --ft: 52px; --right: 276px; --topH: 222px; --rowh: 32px; --fs: 15px; --tile: 104px; --tcols: 4; --prev: 168px; --tfs: 26px; }
-@media (min-width: 960px) { :root { --tcols: 6; --right: 300px; } }
-.art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png"); background-position: 58% 50%; filter: blur(3px); transform: scale(1.03); }
-.scrim { background: rgba(4,6,8,.8); }
+:root { --m: 8px; --hd: 40px; --ft: 54px; --right: 276px; --topH: 228px; --rowh: 32px; --fs: 15px; --tile: 104px; --tcols: 4; --prev: 144px; --tfs: 26px; }
+@media (min-width: 960px) { :root { --right: 300px; } }
+.art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png"); background-position: 58% 50%; }
+.scrim { background: rgba(8,11,13,.8); }
 .title { left: 0; right: 0; top: 0; height: var(--hd); justify-content: center; gap: 16px; font-size: var(--tfs); }
 .title .rule { width: 22%; }
 .pA { left: var(--m); top: var(--hd); right: calc(var(--right) + var(--m) * 2); height: var(--topH); }
@@ -17,37 +17,37 @@
 .hd .ico { width: calc(var(--fs) + 1px); height: calc(var(--fs) + 1px); color: var(--brass); }
 .pbody { flex: 1; min-height: 0; padding: 4px 8px 6px; position: relative; overflow: hidden; }
 /* players table */
-.trow { display: grid; grid-template-columns: calc(var(--rowh) - 8px) 1.25fr 1.7fr 1.3fr .9fr .9fr; align-items: center; height: var(--rowh); gap: 6px; padding: 0 4px; font: var(--fs)/1 "PTN"; border-bottom: 1px solid rgba(0,0,0,.35); }
+.trow { display: grid; grid-template-columns: calc(var(--rowh) - 8px) 80fr 130fr 84fr 63fr 65fr; align-items: center; height: var(--rowh); gap: 6px; padding: 0 4px; font: var(--fs)/1 "PTN"; border-bottom: 1px solid rgba(0,0,0,.35); }
 .trow.head { height: calc(var(--rowh) - 8px); font: calc(var(--fs) - 3px)/1 "Russo"; text-transform: uppercase; color: var(--brass); border-bottom: 1px solid var(--brass-lo); }
-.trow .n { width: calc(var(--rowh) - 12px); height: calc(var(--rowh) - 12px); display: flex; align-items: center; justify-content: center; font: calc(var(--fs) - 3px)/1 "Russo"; color: #0b0d10; background: var(--pc); box-shadow: 0 0 0 1px #030405, inset 0 1px 0 rgba(255,255,255,.35); }
-.trow.off { color: var(--text3); } .trow.off .n { background: #2a2f33; color: #6b6d68; }
+.trow .n { width: calc(var(--rowh) - 12px); height: calc(var(--rowh) - 12px); display: flex; align-items: center; justify-content: center; font: calc(var(--fs) - 3px)/1 "Russo"; color: var(--text); background: var(--g0); box-shadow: 0 0 0 1px var(--edge), inset 0 0 0 1px var(--brass-lo); }
+.trow.off { color: var(--text2); } .trow.off .n { color: var(--text2); }
 .trow .who { display: flex; align-items: center; gap: 6px; }
 .mini { display: flex; align-items: center; height: calc(var(--rowh) - 4px); font: var(--fs)/1 "PTN"; }
 .mini .ar { width: calc(var(--rowh) - 8px); height: 100%; display: flex; align-items: center; justify-content: center; color: var(--brass); }
 .mini .ar .ico { width: 12px; height: 12px; }
-.mini .v { flex: 1; text-align: center; white-space: nowrap; height: 100%; display: flex; align-items: center; justify-content: center; background: #090c0f; box-shadow: inset 0 0 0 1px #2c2212, inset 0 2px 3px rgba(0,0,0,.6); }
+.mini .v { flex: 1; text-align: center; white-space: nowrap; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--g0); box-shadow: inset 0 0 0 1px var(--brass-lo), inset 0 2px 3px rgba(0,0,0,.6); }
 .mini.hover .v { box-shadow: inset 0 0 0 1px var(--brass-hi); color: var(--gold); } .mini.hover .ar { color: var(--gold); }
-.trow.off .mini .v { box-shadow: inset 0 0 0 1px #1c1f22; } .trow.off .mini .ar { color: #3a3d3c; }
-.hsw { width: 9px; height: 9px; transform: rotate(45deg); flex: none; margin-right: 6px; box-shadow: 0 0 0 1px #030405; }
-.check { width: calc(var(--rowh) - 12px); height: calc(var(--rowh) - 12px); }
+.trow.off .mini .v { box-shadow: inset 0 0 0 1px var(--g3); } .trow.off .mini .ar { color: var(--rim-off); }
+.hsw { width: 9px; height: 9px; transform: rotate(45deg); flex: none; margin-right: 6px; box-shadow: 0 0 0 1px var(--edge); }
+.check { width: 22px; height: 22px; }
 .check.on::after { left: calc(50% - 4px); top: 5%; width: 32%; height: 62%; }
 /* rules */
 .pB .field { min-height: var(--rowh); padding: 0 4px; border-bottom: 1px solid rgba(0,0,0,.35); }
 .pB .field > .lbl { flex: 1; font-size: var(--fs); }
 .pB .mini { width: 42%; }
 /* maps */
-.maps { display: grid; grid-template-columns: repeat(var(--tcols), var(--tile)); gap: 8px; justify-content: space-between; padding-right: 12px; }
-.mt { padding: 4px 4px 0; background: linear-gradient(180deg, #1d252b, #141a1f); box-shadow: 0 0 0 1px #030405, inset 0 0 0 1px #2c2212; }
-.mt img, .mt .rnd { display: block; width: 100%; aspect-ratio: 1; image-rendering: pixelated; box-shadow: 0 0 0 1px #030405; background: #07090b; }
-.mt .rnd { display: flex; align-items: center; justify-content: center; color: var(--brass); background: repeating-linear-gradient(45deg, #0b0f12 0 8px, #0e1317 8px 16px); }
+.maps { display: grid; grid-template-columns: repeat(auto-fill, var(--tile)); gap: 8px; justify-content: space-between; padding-right: 12px; }
+.mt { padding: 4px 4px 0; background: linear-gradient(180deg, var(--g3), var(--g2)); box-shadow: 0 0 0 1px var(--edge), inset 0 0 0 1px var(--brass-lo); }
+.mt img, .mt .rnd { display: block; width: 100%; aspect-ratio: 1; image-rendering: pixelated; box-shadow: 0 0 0 1px var(--edge); background: var(--g0); }
+.mt .rnd { display: flex; align-items: center; justify-content: center; color: var(--brass); background: repeating-linear-gradient(45deg, var(--g0) 0 8px, var(--g1) 8px 16px); }
 .mt .rnd .ico { width: 38%; height: 38%; stroke-width: 1.2; }
 .mt .nm { height: calc(var(--fs) + 9px); display: flex; align-items: center; justify-content: center; font: calc(var(--fs) - 2px)/1 "PTN"; color: var(--text); white-space: nowrap; overflow: hidden; }
-.mt.hover { box-shadow: 0 0 0 1px #030405, inset 0 0 0 1px var(--brass); } .mt.hover .nm { color: var(--gold); }
-.mt.selected { background: linear-gradient(180deg, #55421f, #30260e); box-shadow: 0 0 0 1px #030405, inset 0 0 0 1px var(--brass-hi), 0 0 12px rgba(242,190,90,.45); } .mt.selected .nm { color: var(--gold); font-family: "Russo"; font-size: calc(var(--fs) - 3px); text-transform: uppercase; }
+.mt.hover { box-shadow: 0 0 0 1px var(--edge), inset 0 0 0 1px var(--brass); } .mt.hover .nm { color: var(--gold); }
+.mt.selected { background: linear-gradient(180deg, var(--sel-hi), var(--sel-lo)); box-shadow: 0 0 0 1px var(--edge), inset 0 0 0 1px var(--brass-hi), 0 0 12px rgba(255,202,83,.45); } .mt.selected .nm { color: var(--gold); font-family: "Russo"; font-size: calc(var(--fs) - 3px); text-transform: uppercase; }
 .pC .sbar { position: absolute; right: 6px; top: 8px; bottom: 8px; } .pC .sbar i { top: 0; height: 22%; }
 /* preview */
 .prevwrap { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 6px 4px; }
-.prevwrap img { width: var(--prev); height: var(--prev); image-rendering: pixelated; box-shadow: 0 0 0 1px #030405, 0 0 0 2px var(--brass-mid); flex: none; }
+.prevwrap img { width: var(--prev); height: var(--prev); image-rendering: pixelated; box-shadow: 0 0 0 1px var(--edge), 0 0 0 2px var(--brass-mid); flex: none; }
 .pinfo { font: var(--fs)/1.35 "PTN"; color: var(--text2); align-self: stretch; display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; padding: 0 6px; }
 .pinfo .nm { font: calc(var(--fs) + 1px)/1.1 "Russo"; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; grid-column: 1 / 3; text-align: center; }
 .pinfo b { color: var(--text); font-weight: normal; }
@@ -91,13 +91,12 @@
 (function () {
   const D = "../../../../.cache/ui-redesign/derived/";
   const mini = function (value, hover) { return '<div class="mini' + (hover ? " hover" : "") + '"><div class="ar"><i data-i="chev-l"></i></div><div class="v">' + value + '</div><div class="ar"><i data-i="chev-r"></i></div></div>'; };
-  const houses = { a: ["#5079d6", "Атрейдес"], h: ["#d60000", "Харконнен"], o: ["#4cd64c", "Ордос"], s: ["#f269f2", "Сардаукары"], r: ["#8b8672", "Случайный"] };
-  const rows = [[1, "Человек", "a", 2500, 3, 1, true], [2, "ИИ", "h", 2500, 3, 2, true], [3, "ИИ", "r", 3000, 5, 2, true], [4, "ИИ", "o", 2500, 3, 3, true], [5, "ИИ", "r", 2500, 3, 4, false]];
-  const colors = ["#5079d6", "#d60000", "#d9a441", "#4cd64c", "#8b8672"];
+  const houses = { a: ["#5079d6", "Атрейдес"], h: ["#d60000", "Харконнен"], o: ["#4cd64c", "Ордос"], s: ["#f269f2", "Сардаукары"], r: ["#929083", "Случайный"] };
+  const rows = [[1, "Человек", "a", 2500, 3, 1, true], [2, "ИИ", "h", 2500, 3, 2, true], [3, "ИИ", "s", 3000, 5, 2, true], [4, "ИИ", "o", 2500, 3, 3, true], [5, "ИИ", "r", 2500, 3, 4, false]];
   let html = '<div class="trow head"><span></span><span>Игрок</span><span>Дом</span><span>Кредиты</span><span>Юниты</span><span>Команда</span></div>';
   rows.forEach(function (row, index) {
     const house = houses[row[2]];
-    html += '<div class="trow' + (row[6] ? "" : " off") + '" style="--pc:' + colors[index] + '"><span class="n">' + row[0] + '</span>' +
+    html += '<div class="trow' + (row[6] ? "" : " off") + '"><span class="n">' + row[0] + '</span>' +
       '<span class="who">' + (index > 1 ? '<div class="check' + (row[6] ? " on" : "") + '"></div>' : "") + row[1] + '</span>' +
       mini('<i class="hsw" style="background:' + house[0] + '"></i>' + house[1], index === 2) + mini(row[3]) + mini(row[4]) + mini(row[5]) + '</div>';
   });
@@ -105,7 +104,7 @@
   const maps = [["", "Случайная карта"], ["map-sietch", "Sietch Stefan", "selected"], ["map-broken", "Broken Mountains", "hover"], ["map-golek", "Golek Crossing"], ["map-delta", "Ancient Delta"], ["map-division", "Division"],
     ["map-golek", "Bottle Neck"], ["map-delta", "Cliffs of Rene"], ["map-division", "David's Pass"], ["map-broken", "Duality"], ["map-sietch", "Edge to Edge"], ["map-golek", "Kig-Yar"],
     ["map-delta", "Marland Cove"], ["map-broken", "Ogelle Basin"], ["map-division", "Twin Fists"], ["map-sietch", "Two Stacks"], ["map-golek", "Rabban"], ["map-delta", "Worms Hole"]];
-  const count = innerWidth >= 960 ? 12 : 8;
+  const count = 2 * Math.floor((innerWidth - 8 - (innerWidth >= 960 ? 316 : 292) - 28 + 8) / 112);
   document.getElementById("maps").innerHTML = maps.slice(0, count).map(function (map) {
     return '<div class="mt ' + (map[2] || "") + '">' + (map[0] ? '<img src="' + D + map[0] + '.png">' : '<div class="rnd"><i data-i="dice"></i></div>') + '<div class="nm">' + map[1] + '</div></div>';
   }).join("");

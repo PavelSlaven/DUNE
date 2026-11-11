@@ -1,43 +1,50 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><title>7 — исход и отчёт о миссии</title>
+<html lang="ru"><head><meta charset="utf-8"><title>7 — отчёт о миссии</title>
 <link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
 <style>
-:root { --m: 16px; --ph: 338px; --cw: 244px; --fs: 15px; --crest: 52px; --tfs: 22px; --bh: 40px; }
-.art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/outcome_victory_ru.png"); background-position: 0% 12%; background-size: 118% auto; }
-.scrim { background: linear-gradient(180deg, rgba(4,6,8,0) 0%, rgba(4,6,8,.25) 30%, rgba(4,6,8,.92) 62%, rgba(4,6,8,.97) 100%); }
-.frame { position: absolute; inset: 6px; box-shadow: inset 0 0 0 1px #030405, inset 0 0 0 3px #c69a44, inset 0 0 0 4px #5a431c; pointer-events: none; }
-.rep { left: var(--m); right: var(--m); bottom: var(--m); height: var(--ph); display: flex; flex-direction: column; }
-.hd { height: calc(var(--tfs) + 22px); font-size: var(--tfs); }
-.meta { position: absolute; right: 18px; top: calc((var(--tfs) + 22px) / 2 - var(--fs) / 2); gap: 16px; font: var(--fs)/1 "Russo"; color: var(--text); }
-.meta span { display: flex; align-items: center; gap: 6px; } .meta .ico { width: calc(var(--fs) + 2px); height: calc(var(--fs) + 2px); color: var(--brass); }
-.cards { flex: 1; min-height: 0; padding: calc(var(--m) * .6) calc(var(--m) * .7); gap: calc(var(--m) * .6); justify-content: center; align-items: stretch; }
-.pc { flex: 1 1 0; min-width: 0; max-width: var(--cw); padding: 10px 12px; background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,0) 30%), #0f1418; box-shadow: 0 0 0 1px #030405, inset 0 0 0 1px #2c2212, inset 0 3px 0 var(--hc); display: flex; flex-direction: column; }
-.pc.me { box-shadow: 0 0 0 1px #030405, inset 0 0 0 1px var(--brass), inset 0 3px 0 var(--hc), 0 0 16px rgba(242,190,90,.22); }
-.pc .top { gap: 10px; margin-bottom: 8px; padding-top: 4px; }
-.pc .top img { width: var(--crest); height: var(--crest); object-fit: cover; filter: drop-shadow(0 2px 4px #000); }
-.pc .who { font: calc(var(--fs) - 3px)/1 "Russo"; text-transform: uppercase; color: var(--brass); }
-.pc .hn { font: calc(var(--fs) + 3px)/1.1 "Russo"; text-transform: uppercase; color: var(--text); margin-top: 4px; }
-.st { display: grid; grid-template-columns: minmax(0, 1fr) 19% 19% 21%; column-gap: 4px; white-space: nowrap; row-gap: 0; align-items: center; font: var(--fs)/1 "PTN"; color: var(--text2); }
-.st > * { height: calc(var(--fs) + 9px); display: flex; align-items: center; border-top: 1px solid rgba(0,0,0,.4); }
-.st .h { font: calc(var(--fs) - 3px)/1 "Russo"; text-transform: uppercase; color: var(--text3); border-top: 0; justify-content: flex-end; }
-.st .n { font: var(--fs)/1 "Russo"; color: var(--text); justify-content: flex-end; min-width: 0; }
+/* A screen of its own, shown after the outcome painting (7b): the window takes the whole menu field and hides no painting.
+   Two or three sides: cards. Four or five sides (?v=five): one table, a row per side. */
+:root { --m: 16px; --cw: 300px; --crest: 64px; }
+.art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/outcome_victory_ru.png"); }
+.scrim { background: rgba(8,11,13,.8); }
+.rep { left: var(--m); right: var(--m); top: var(--m); bottom: var(--m); display: flex; flex-direction: column; }
+.hd { height: 44px; font-size: 22px; }
+.meta { position: absolute; right: 18px; top: 14px; gap: 16px; font: 15px/1 "Russo"; color: var(--text); }
+.meta span { display: flex; align-items: center; gap: 6px; } .meta .ico { width: 17px; height: 17px; color: var(--brass); }
+.cards { flex: 1; min-height: 0; padding: 10px 12px; gap: 10px; justify-content: center; align-items: center; }
+.pc { flex: 1 1 0; min-width: 0; max-width: var(--cw); padding: 14px 12px; background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,0) 30%), var(--g1); box-shadow: 0 0 0 1px var(--edge), inset 0 0 0 1px var(--brass-lo), inset 0 3px 0 var(--hc); display: flex; flex-direction: column; }
+.pc.me { box-shadow: 0 0 0 1px var(--edge), inset 0 0 0 1px var(--brass), inset 0 3px 0 var(--hc), 0 0 12px rgba(255,202,83,.45); }
+.pc .top { gap: 12px; margin-bottom: 12px; }
+.pc .top img { width: var(--crest); height: var(--crest); object-fit: cover; filter: drop-shadow(0 2px 4px var(--edge)); }
+.pc .who { font: 12px/1 "Russo"; text-transform: uppercase; color: var(--brass); }
+.pc .hn { font: 18px/1.1 "Russo"; text-transform: uppercase; color: var(--text); margin-top: 5px; }
+.st { display: grid; grid-template-columns: minmax(0, 1fr) 19% 19% 21%; column-gap: 4px; white-space: nowrap; row-gap: 0; align-items: center; font: 15px/1 "PTN"; color: var(--text2); }
+.st > * { height: 32px; display: flex; align-items: center; border-top: 1px solid rgba(0,0,0,.4); }
+.st .h { height: 22px; font: 13px/1 "PTN"; color: var(--text2); border-top: 0; justify-content: flex-end; }
+.st .n { font: 17px/1 "Russo"; color: var(--text); justify-content: flex-end; min-width: 0; }
 .st .w { grid-column: 2 / 5; }
-.st .lab .ico { width: calc(var(--fs) - 1px); height: calc(var(--fs) - 1px); margin-right: 6px; color: var(--brass); }
-.foot { height: calc(var(--bh) + 20px); padding: 0 calc(var(--m) * .7); gap: 12px; border-top: 1px solid #06080a; box-shadow: inset 0 1px 0 rgba(255,255,255,.05); flex: none; }
-.foot .btn { height: var(--bh); font-size: calc(var(--fs) + 1px); min-width: calc(var(--cw) * .75); }
-.foot .hintk { font: var(--fs)/1 "PTN"; color: var(--text3); gap: 8px; }
-.rank { gap: 10px; font: var(--fs)/1 "PTN"; color: var(--text2); }
-.rank b { font: calc(var(--fs) + 3px)/1 "Russo"; color: var(--gold); font-weight: normal; text-transform: uppercase; }
+.st .lab .ico { width: 14px; height: 14px; margin-right: 6px; color: var(--brass); }
+.foot { height: 60px; padding: 0 12px; gap: 12px; justify-content: flex-end; border-top: 1px solid var(--g0); box-shadow: inset 0 1px 0 rgba(255,255,255,.05); flex: none; }
+.foot .btn { height: 40px; font-size: 16px; min-width: 183px; }
+.tbl { flex: 1; min-height: 0; margin: 10px 12px; display: none; grid-template-columns: minmax(0, 1fr) repeat(8, 61px) 70px; align-content: center; }
+.tbl > * { height: 36px; display: flex; align-items: center; justify-content: flex-end; padding: 0 6px; border-top: 1px solid rgba(0,0,0,.4); white-space: nowrap; }
+.tbl .g { height: 22px; justify-content: center; font: 12px/1 "Russo"; text-transform: uppercase; color: var(--brass); border-top: 0; box-shadow: inset 1px 0 0 var(--brass-lo); }
+.tbl .h { height: 20px; font: 13px/1 "PTN"; color: var(--text2); border-top: 0; }
+.tbl .s { justify-content: flex-start; gap: 8px; padding-left: 10px; font: 14px/1 "Russo"; text-transform: uppercase; color: var(--text); box-shadow: inset 3px 0 0 var(--hc); }
+.tbl .s img { width: 24px; height: 24px; object-fit: cover; }
+.tbl .n { font: 14px/1 "Russo"; color: var(--text); }
+.tbl .me { background: rgba(255,202,83,.1); } .tbl .s.me { color: var(--gold); }
+body.t .cards { display: none; } body.t .tbl { display: grid; }
 </style></head>
 <body>
-<div class="art"></div><div class="scrim"></div><div class="frame"></div>
-<div class="abs panel glass rep">
+<div class="art"></div><div class="scrim"></div>
+<div class="abs panel rep">
   <div class="hd">Отчёт о миссии</div>
-  <div class="row meta"><span><i data-i="flag"></i>Миссия 3</span><span><i data-i="clock"></i>12:47</span></div>
+  <div class="row meta"><span><i data-i="rally"></i>Миссия 3</span><span><i data-i="clock"></i>12:47</span></div>
   <div class="row cards" id="cards"></div>
+  <div class="tbl" id="tbl"></div>
   <div class="row foot">
-    <div class="row rank grow"><i data-i="check" style="width:22px;height:22px;color:var(--ok)"></i><b>Победа</b></div>
-    <div class="row hintk"><span class="kbd">Enter</span></div>
+    <span class="kbd">Enter</span>
     <div class="btn primary hover">Продолжить</div>
   </div>
 </div>
@@ -51,13 +58,27 @@
   ];
   document.getElementById("cards").innerHTML = players.map(function (p) {
     return '<div class="pc ' + p[0] + '" style="--hc:' + p[3] + '"><div class="row top"><img src="' + A + p[4] + '"><div><div class="who">' + p[1] + '</div><div class="hn">' + p[2] + '</div></div></div>' +
-      '<div class="st"><span class="h" style="justify-content:flex-start"></span>' + '<span class="h">созд.</span><span class="h">потер.</span><span class="h">уничт.</span>' +
+      '<div class="st"><span class="h"></span><span class="h">созд.</span><span class="h">потер.</span><span class="h">уничт.</span>' +
       '<span class="lab"><i data-i="tank"></i>Юниты</span><span class="n">' + p[5][0] + '</span><span class="n">' + p[5][1] + '</span><span class="n">' + p[5][2] + '</span>' +
       '<span class="lab"><i data-i="build"></i>Здания</span><span class="n">' + p[6][0] + '</span><span class="n">' + p[6][1] + '</span><span class="n">' + p[6][2] + '</span>' +
       '<span class="lab"><i data-i="attack"></i>Урон нанесён</span><span class="n w">' + p[7] + '</span>' +
       '<span class="lab"><i data-i="shield"></i>Урон получен</span><span class="n w">' + p[8] + '</span>' +
       '<span class="lab"><i data-i="coin"></i>Пряность</span><span class="n w">' + p[9] + '</span></div></div>';
   }).join("");
+  if (location.search.indexOf("v=five") < 0) return;
+  document.body.classList.add("t");
+  const sides = players.concat([
+    ["", "Враг", "Сардаукары", "#f269f2", "sdl_inter_hd4/0144_BMP_SELECT_HOUSE_SARDAUKAR.png", [17, 17, 3], [6, 6, 0], "2 040", "9 800", "1 200"],
+    ["", "Враг", "Харконнен", "#d60000", "hd4/hud_house_harkonnen.png", [21, 12, 8], [8, 2, 3], "7 730", "6 450", "2 700"],
+  ]);
+  let html = '<span class="g" style="box-shadow:none"></span><span class="g" style="grid-column:span 3">Юниты</span><span class="g" style="grid-column:span 3">Здания</span><span class="g" style="grid-column:span 2">Урон</span><span class="g">Пряность</span>' +
+    '<span class="h"></span><span class="h">созд.</span><span class="h">потер.</span><span class="h">уничт.</span><span class="h">созд.</span><span class="h">потер.</span><span class="h">уничт.</span><span class="h">нанесён</span><span class="h">получен</span><span class="h"></span>';
+  sides.forEach(function (p) {
+    const me = p[0] ? " me" : "";
+    html += '<span class="s' + me + '" style="--hc:' + p[3] + '"><img src="' + A + p[4] + '">' + p[2] + '</span>' +
+      p[5].concat(p[6], [p[7], p[8], p[9]]).map(function (value) { return '<span class="n' + me + '">' + value + '</span>'; }).join("");
+  });
+  document.getElementById("tbl").innerHTML = html;
 })();
 </script>
 </body></html>

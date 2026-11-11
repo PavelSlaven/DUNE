@@ -4,23 +4,23 @@
 <style>
 :root { --colw: 440px; --fs: 16px; --hfs: 15px; --logo: 300px; --ph: 150px; --m: 20px; }
 .art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png"); background-position: 30% 50%; }
-.scrim { background: linear-gradient(90deg, rgba(4,6,8,.9), rgba(4,6,8,.78) 50%, rgba(4,6,8,.9)); }
-.crawl { left: calc(50% - var(--colw) / 2); width: var(--colw); top: 0; bottom: 0; overflow: hidden; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 16%, #000 80%, transparent 100%); }
+.scrim { background: linear-gradient(90deg, rgba(8,11,13,.9), rgba(8,11,13,.86) 50%, rgba(8,11,13,.9)); }
+.crawl { left: calc(50% - var(--colw) / 2); width: var(--colw); top: 0; bottom: 0; overflow: hidden; -webkit-mask-image: linear-gradient(180deg, transparent 0, var(--edge) 16%, var(--edge) 80%, transparent 100%); }
 @media (max-width: 959px) { .crawl { left: 28px; width: 500px; } }
 .crawl .in { position: absolute; left: 0; right: 0; top: 7%; display: flex; flex-direction: column; align-items: center; }
 .crawl img.logo { width: var(--logo); filter: drop-shadow(0 4px 10px rgba(0,0,0,.7)); }
-.crawl .tag { font: calc(var(--hfs) * .9)/1 "Russo"; color: var(--brass); text-transform: uppercase; margin: calc(var(--fs) * .5) 0 calc(var(--fs) * 1.4); }
-.sec { display: flex; align-items: center; gap: 14px; align-self: stretch; margin: calc(var(--fs) * 1.3) 0 calc(var(--fs) * .55); font: var(--hfs)/1 "Russo"; text-transform: uppercase; color: var(--title); }
+.crawl .tag { font: 13px/1 "Russo"; color: var(--brass); text-transform: uppercase; margin: 8px 0 22px; }
+.sec { display: flex; align-items: center; gap: 14px; align-self: stretch; margin: 20px 0 8px; font: var(--hfs)/1 "Russo"; text-transform: uppercase; color: var(--title); }
 .sec::before, .sec::after { content: ""; flex: 1; height: 1px; }
 .sec::before { background: linear-gradient(90deg, transparent, var(--brass-mid)); } .sec::after { background: linear-gradient(270deg, transparent, var(--brass-mid)); }
-.ln { display: grid; grid-template-columns: 1fr 1fr; column-gap: calc(var(--fs) * 1.2); align-self: stretch; font: var(--fs)/1.5 "PTN"; }
+.ln { display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; align-self: stretch; font: var(--fs)/1.5 "PTN"; }
 .ln .r { text-align: right; } .ln .n { color: var(--text); } .ln .l { color: var(--text2); }
 .one { font: var(--fs)/1.5 "PTN"; color: var(--text); text-align: center; }
 .photo { right: var(--m); bottom: calc(var(--m) + 4px); padding: 6px 6px 0; }
-.photo img { display: block; height: var(--ph); filter: sepia(.25) contrast(1.05); box-shadow: 0 0 0 1px #030405; }
-.photo .cp { height: calc(var(--fs) + 8px); display: flex; align-items: center; justify-content: center; font: calc(var(--fs) * .8)/1 "PTN"; color: var(--text2); }
+.photo img { display: block; height: var(--ph); filter: sepia(.25) contrast(1.05); box-shadow: 0 0 0 1px var(--edge); }
+.photo .cp { height: calc(var(--fs) + 8px); display: flex; align-items: center; justify-content: center; font: 13px/1 "PTN"; color: var(--text2); }
 .back { left: var(--m); bottom: var(--m); }
-.spd { left: var(--m); bottom: calc(var(--m) + 52px); font: calc(var(--fs) * .85)/1 "PTN"; color: var(--text3); gap: 8px; }
+.spd { left: var(--m); bottom: calc(var(--m) + 52px); font: 14px/1 "PTN"; color: var(--text2); gap: 8px; }
 </style></head>
 <body>
 <div class="art"></div><div class="scrim"></div>
@@ -53,7 +53,7 @@
   <div class="ln"><span class="r n">Gobalopper</span><span class="l">for Dune2K, and hosting arrakis.dune2k.com</span></div>
   <div class="ln"><span class="r n">Jpexs</span><span class="l">for help with the Dune 2 Seed Generator</span></div>
 </div></div>
-<div class="abs panel photo" data-c="6"><img src="../../../../.cache/ui-redesign/assets/hd4/credits_team.png"><div class="cp">Dune 2 core team</div></div>
+<div class="abs panel photo"><img src="../../../../.cache/ui-redesign/assets/hd4/credits_team.png"><div class="cp">Dune 2 core team</div></div>
 <div class="abs row spd"><span class="kbd">ЛКМ</span> быстрее</div>
 <div class="abs btn back"><i data-i="back"></i>Назад</div>
 </body></html>
