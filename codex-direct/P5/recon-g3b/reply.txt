@@ -1,0 +1,70 @@
+## RECON-P5G3B | 2026-11-11 16:52:11 UTC
+
+Отчёт: [.tmp/p5g3b/RECON.md](/srv/dune/worktrees/u35/.tmp/p5g3b/RECON.md). Полные материалы: [names.md](/srv/dune/worktrees/u35/.tmp/p5g3b/names.md), [missing.md](/srv/dune/worktrees/u35/.tmp/p5g3b/missing.md), [fork.md](/srv/dune/worktrees/u35/.tmp/p5g3b/fork.md), [spotcheck.md](/srv/dune/worktrees/u35/.tmp/p5g3b/spotcheck.md).
+
+### Пункт 1 — строки `git grep` и определения функций
+
+| Имя | Строк `git grep` | Функции |
+|---|---:|---|
+| `setPlaceIt` | 4 | нет |
+| `setSelectedListId` | 9 | `src/sidebar/cSideBar.cpp@dc6e5ff:446-460` |
+| `onStructureCreated` | 11 | `src/sidebar/cBuildingListUpdater.cpp@dc6e5ff:42-68` |
+| `setTechLevel` | 2 | нет |
+| `setBuildingFase` | 2 | нет |
+| `getItemByBuildId` | 6 | `src/sidebar/cBuildingList.cpp@dc6e5ff:90-102` |
+| `getRallyPoint` | 9 | нет |
+| `setHitPoints` | 3 | `src/gameobjects/structures/cAbstractStructure.cpp@dc6e5ff:565-579` |
+| `getBuildingListUpdater` | 2 | нет |
+| `getMiniMapDrawer` | 3 | нет |
+| `getBuildingListDrawer` | 8 | `src/managers/cDrawManager.cpp@dc6e5ff:465-467` |
+| `addNotification` | 23 | `src/game/cNotificationArea.cpp@dc6e5ff:35-41` |
+| `getWidthOfStructureTypeInCells` | 4 | `src/utils/cStructureUtils.cpp@dc6e5ff:59-64` |
+| `getHeightOfStructureTypeInCells` | 4 | `src/utils/cStructureUtils.cpp@dc6e5ff:52-57` |
+| `isMouseOverStructure` | 8 | `src/utils/cStructureUtils.cpp@dc6e5ff:282-293` |
+| `getIdOfStructureWhereMouseHovers` | 4 | нет |
+
+### Пункт 2 — строки поиска форковых имён
+
+Числа в столбцах показывают строки вывода `git show ...UiAuditAccess.cpp` и `git grep ...PORT` соответственно.
+
+| Имя | FORK1 | PORT |
+|---|---:|---:|
+| `MusicController` | 2 | 0 |
+| `MusicCategory` | 2 | 0 |
+| `MusicTrack` | 1 | 0 |
+| `setTracks` | 1 | 0 |
+| `m_musicController` | 1 | 0 |
+| `currentDisplayName` | 1 | 0 |
+| `cCommandBarDrawer` | 2 | 0 |
+| `m_buttons` | 1 | 0 |
+| `mouse_co_x1` | 1 | 0 |
+| `mouse_co_y1` | 1 | 0 |
+| `getMouse` | 1 | 0 |
+
+Пути по именам файлов: `cMouse.h` — `src/controls/cMouse.h`, 152 строки; `cCommandBarDrawer.h` — нет файла; `MusicController.h` — нет файла; `MusicJukeBox.hpp` — `src/context/MusicJukeBox.hpp`, 42 строки. Поиск `music` дал 0 строк, поиск `command` — 0 строк.
+
+### Пункт 3 — выдержки форка
+
+- `src/debug/UiAuditAccess.cpp@9208dcf:641-934`
+- `src/drawers/cCommandBarDrawer.cpp@9208dcf:90-110`
+- `src/managers/cDrawManager.cpp@9208dcf:280-320`
+- `src/save/SaveSlotsDialog.cpp@9208dcf:262-280`
+
+### Чтение
+
+Целиком прочитаны `.tmp/p5g3r/RECON.md` и `.tmp/p5g3w/RECON.md`. В задании не выявлено недостающих ссылок на правила, нормы или контракты.
+
+### Не проверено
+
+Сборки, CTest и запуск игры не выполнялись по запрету задания. Помощник 4 сверил 12 фактов: совпало — 12, не совпало — 0.
+
+### Рабочие места
+
+Вывод `python3 /srv/dune/tools/task-places.py inventory .tmp/p5g3b --size`:
+
+```text
+path	kind	branch	head_date	size	dirty	untracked	unpushed	worktrees	procs	refs
+/srv/dune/worktrees/u35/.tmp/p5g3b	dir	-	-	85808	-	-	-	-	0	0
+```
+
+`.tmp/p5g3b` — оставить — разведка для ведущего.
