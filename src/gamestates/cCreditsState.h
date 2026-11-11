@@ -40,6 +40,7 @@ struct s_CreditLine {
 };
 
 class cCreditsState : public cGameState {
+    friend class UiAuditAccess;
 
 public:
     explicit cCreditsState(sGameServices* services);

@@ -75,6 +75,7 @@ public:
 };
 
 class cSelectYourNextConquestState : public cGameState {
+    friend class UiAuditAccess;
 
 public:
     explicit cSelectYourNextConquestState(sGameServices* services, cIni* ini, s_DataCampaign* dataCompaign);

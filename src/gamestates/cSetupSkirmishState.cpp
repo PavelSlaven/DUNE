@@ -14,6 +14,7 @@
  */
 
 #include "gamestates/cSetupSkirmishState.h"
+#include "debug/UiAudit.hpp"
 
 #include "controls/eKeyAction.h"
 #include "controls/cMouse.h"
@@ -506,6 +507,35 @@ void cSetupSkirmishState::draw() const
             drawCredits(sSkirmishPlayer, rowLayout.credits);
             drawStartingUnits(sSkirmishPlayer, rowLayout.units);
             drawTeams(sSkirmishPlayer, rowLayout.team);
+        }
+    }
+
+    if (uiaudit::isEnabled()) {
+        const auto zone = [](const std::string &name, const cRectangle &rect) {
+            uiaudit::recordClick(name.c_str(), rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        };
+        for (int p = 0; p < (AI_WORM - 1) && p < iStartingPoints; p++) {
+            const SkirmishPlayerTableLayout rowLayout(playerList.getY() + 4 + (p * m_playerRowHeight));
+            const std::string row = std::to_string(p + 1);
+            if (p > 1) {
+                zone("skirmish-brain:" + row, rowLayout.player);
+            }
+            if (!skirmishPlayer[p].bPlaying) {
+                continue;
+            }
+            zone("skirmish-house:" + row, rowLayout.house);
+            zone("skirmish-credits:" + row, rowLayout.credits);
+            zone("skirmish-units:" + row, rowLayout.units);
+            zone("skirmish-team:" + row, rowLayout.team);
+        }
+        zone("skirmish-blooms", bloomsRect);
+        zone("skirmish-worms", wormsRect);
+        zone("skirmish-tech-level", techLevelRect);
+        if (spawnBlooms) {
+            zone("skirmish-detonate-blooms", detonateBloomsRect);
+        }
+        if (iSkirmishMap == 0) {
+            zone("skirmish-start-points", startPointsRect);
         }
     }
 
@@ -1462,6 +1492,9 @@ void cSetupSkirmishState::drawMapList(const cRectangle &selectMapArea) const
         // no title, safety measure
         s_PreviewMap *mapToRender = m_previewMaps->getMap(mapIndexToRender);
         if (mapToRender->name.empty()) continue;
+        if (uiaudit::isEnabled() && mapToRender->validMap) {
+            uiaudit::recordClick(("skirmish-map:" + std::to_string(mapIndexToRender)).c_str(), iDrawX, iDrawY, mapItemButtonWidth, mapItemButtonHeight);
+        }
 
         // Start rendering
         bool isRenderingSelectedMap = mapIndexToRender == iSkirmishMap;

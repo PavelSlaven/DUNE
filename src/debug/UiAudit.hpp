@@ -20,6 +20,7 @@ struct Rect {
 void recordText(const std::string &text, int x, int y, int w, int h, const Rect *box = nullptr);
 void recordGui(const char *type, int x, int y, int w, int h);
 void recordClick(const char *name, int x, int y, int w, int h);
+void recordCanvasClick(const char *name);
 
 class BoxScope {
 public:
@@ -28,6 +29,9 @@ public:
     BoxScope(const BoxScope &) = delete;
     BoxScope &operator=(const BoxScope &) = delete;
 };
+
+void setVerticalClipText(bool enabled);
+void recordCreditLine(const std::string &name, const std::string &text);
 
 bool handleEarlyExit(int &exitCode);
 void onSetupDone(cGame &game);
@@ -48,4 +52,16 @@ public:
     static void freezeClock(cGame &game);
     static void resumeClock(cGame &game);
     static bool notFadingOut(const cGame &game);
+    static void setHouse(cGame &game, int house);
+    static bool prepareMentatScene(cGame &game, int house, int kind);
+    static bool mentatFreeze(cGame &game, bool awaiting);
+    static bool prepareSkirmish(cGame &game, int variant);
+    static bool optionsStatus(cGame &game);
+    static bool creditsScroll(cGame &game, int frame);
+    static void recordCreditLines(cGame &game);
+    static void regionOpen(cGame &game, int mission, bool jump);
+    static int regionState(const cGame &game);
+    static int regionScene(const cGame &game);
+    static int regionSceneAlpha(const cGame &game);
+    static bool hasMessage(const cGame &game);
 };

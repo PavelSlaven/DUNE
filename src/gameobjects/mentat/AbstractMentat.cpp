@@ -36,6 +36,7 @@
 #include "context/TextContext.hpp"
 #include "include/Texture.hpp"
 #include "utils/cRectangle.h"
+#include "debug/UiAudit.hpp"
 
 // The mentat screen artwork was designed for 640x480. On higher resolutions it
 // is centered, so the offset is half the extra pixels on each axis.
@@ -289,6 +290,10 @@ void AbstractMentat::draw()
     draw_other();
 
     if (state == SPEAKING) {
+        if (uiaudit::isEnabled()) {
+            uiaudit::recordCanvasClick("mentat-skip");
+        }
+
         // draw text that is being spoken
         if (iMentatSentence >= 0) {
             m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{0, 0, 0,255},sentence[iMentatSentence]);

@@ -51,6 +51,7 @@
 #include "include/eGameState.h"
 #include <algorithm>
 #include "utils/HdUiTextureLoader.hpp"
+#include "debug/UiAudit.hpp"
 
 // Return color index from pixel (x, y) in surface
 static Uint8 getPixelColorIndexFromSurface(SDL_Surface *surface, int x, int y)
@@ -341,6 +342,11 @@ void cSelectYourNextConquestState::thinkFast()
 void cSelectYourNextConquestState::draw() const
 {
     m_mouse->setTile(MOUSE_NORMAL); // global state of mouse
+    if (uiaudit::isEnabled() && state == eRegionState::REGSTATE_SELECT_NEXT_CONQUEST) {
+        const cRectangle mapRect = m_hdCampaignLayout.map;
+        uiaudit::recordClick("campaign-region-map", mapRect.getX(), mapRect.getY(), mapRect.getWidth(), mapRect.getHeight());
+    }
+
     drawHdBackground();
     drawHdChrome();
 
