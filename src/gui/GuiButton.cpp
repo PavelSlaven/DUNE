@@ -15,6 +15,7 @@
 
 #include "GuiButton.h"
 
+#include "debug/UiAudit.hpp"
 #include "drawers/SDLDrawer.hpp"
 #include "drawers/cTextDrawer.h"
 #include "game/cGameSettings.h"
@@ -45,6 +46,12 @@ GuiButton::~GuiButton()
 
 void GuiButton::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiButton");
+        if (m_enabled && (m_onLeftMouseButtonClickedAction || m_onRightMouseButtonClickedAction)) {
+            auditClick("GuiButton:" + m_buttonText);
+        }
+    }
     const bool isDisabled = !m_enabled || m_visualState == VisualState::Disabled;
     const bool isPressed = m_pressed || m_visualState == VisualState::Pressed;
     //const bool isHovered = m_focus || m_visualState == VisualState::Hover;

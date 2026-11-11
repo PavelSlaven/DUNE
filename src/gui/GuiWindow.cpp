@@ -14,6 +14,7 @@
  */
 
 #include "GuiWindow.h"
+#include "debug/UiAudit.hpp"
 #include "drawers/cTextDrawer.h"
 #include "drawers/SDLDrawer.hpp"
 #include "include/cAssert.h"
@@ -35,6 +36,9 @@ GuiWindow::~GuiWindow() noexcept
 
 void GuiWindow::draw() const
 {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiWindow");
+    }
     // draw window itself...
     drawRectFillBorder(m_theme);
     for (auto &guiObject : gui_objects) {

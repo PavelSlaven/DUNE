@@ -93,4 +93,6 @@ protected:
     SDLDrawer* m_sdlDrawer = nullptr;
     void drawRectBorder(Color borderRect, Color borderBottomRight) const;
     void drawRectFillBorder(const GuiTheme& theme) const;
+    void auditRecord(const char *type) const;
+    void auditClick(const std::string &name) const;
 };

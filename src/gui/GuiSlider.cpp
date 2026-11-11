@@ -14,6 +14,7 @@
  */
 
 #include "gui/GuiSlider.hpp"
+#include "debug/UiAudit.hpp"
 #include "drawers/SDLDrawer.hpp"
 #include <algorithm>
 #include <iostream>
@@ -72,6 +73,10 @@ GuiSlider::VisualState GuiSlider::visualState() const
 }
 
 void GuiSlider::draw() const {
+    if (uiaudit::isEnabled()) {
+        auditRecord("GuiSlider");
+        auditClick("GuiSlider");
+    }
     drawTrack();
     drawKnob();
 }

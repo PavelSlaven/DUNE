@@ -14,6 +14,7 @@
  */
 
 #include "game/cGame.h"
+#include "debug/UiAudit.hpp"
 
 #include "config.h"
 #include "utils/Log.h"
@@ -56,6 +57,12 @@ int main(int argc, char **argv)
 #ifdef _WIN32
     attachParentConsole();
 #endif
+    uiaudit::consumeArguments(argc, argv);
+    int uiAuditExitCode = 0;
+    if (uiaudit::isEnabled() && uiaudit::handleEarlyExit(uiAuditExitCode)) {
+        return uiAuditExitCode;
+    }
+
     std::unique_ptr<cLog> m_log = std::make_unique<cLog>("nlog.txt");
     Logger::init(m_log.get());
     // m_log is destroyed when main returns, make sure the crash handlers never write through a dangling pointer
@@ -110,16 +117,25 @@ int main(int argc, char **argv)
     
     game.applySettings(std::move(settings));
 
+    bool uiAuditError = false;
     try {
         if (game.setupGame()) {
+            if (uiaudit::isEnabled()) {
+                uiaudit::onSetupDone(game);
+            }
             game.run();
 
-            if (const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME)) {
-                std::string prefsError;
-                if (!Preferences::save(*prefsFile, game.currentSettings(), prefsError)) {
-                    Logger::warn(COMP_GAMERULES, "Preferences", "Could not save preferences: {}", prefsError);
+            if (!uiaudit::isEnabled()) {
+                if (const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME)) {
+                    std::string prefsError;
+                    if (!Preferences::save(*prefsFile, game.currentSettings(), prefsError)) {
+                        Logger::warn(COMP_GAMERULES, "Preferences", "Could not save preferences: {}", prefsError);
+                    }
                 }
             }
+        }
+        else {
+            uiAuditError = true;
         }
 
         game.shutdown();
@@ -127,8 +143,12 @@ int main(int argc, char **argv)
     catch (std::runtime_error &e) {
         m_log->error(eLogComponent::COMP_NONE, "Unknown", "Error: {}", e.what());
         std::cerr << std::format("Error: {}\n\n", e.what());
+        uiAuditError = true;
     }
 
     std::cout << std::format("Thank you for playing Dune 2 - The Maker\n");
+    if (uiaudit::isEnabled() && (uiAuditError || uiaudit::failed())) {
+        return 1;
+    }
     return 0;
 }

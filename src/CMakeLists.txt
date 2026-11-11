@@ -1,4 +1,8 @@
 set(D2TM_SOURCES
+    debug/UiAuditAccess.cpp
+    debug/UiAuditArguments.cpp
+    debug/UiAuditCapture.cpp
+    debug/UiAuditScenes.cpp
     building/cItemBuilder.cpp
     context/AudioContext.cpp
     context/MusicJukeBox.cpp
