@@ -854,6 +854,8 @@ bool cGame::setupGame()
     m_players->setupPlayers(m_Houses.get());
     cInfoContextCreator infoCreator(ctx->getGraphicsContext());
     infoCreator.installInfos(*m_infoContext);
+    // installInfos replaced the terrain info that init() handed to the map.
+    m_gameObjectsContext->getMap()->setTerrainInfo(m_infoContext->getTerrainInfo());
 
     m_mapCamera.reset();
 
