@@ -6,13 +6,13 @@
 
 ## Цель
 
-Написать приёмочные тесты первой части шага П5г по контракту ниже: тест Catch2 разбора аргументов и три скрипта Python, которые запускают игру. Получить красные прогоны A и B и зелёный прогон C теста Catch2, проверить посылку о размере холста прогоном D, получить красный прогон E скриптов Python и заморозить тесты хэшем. Код игры не менять, кроме временных файлов прогонов B и C (шаг 2), которые убираются сразу после каждого из них.
+Написать приёмочные тесты первой части шага П5г по контракту ниже: тест Catch2 разбора аргументов (семь тестов) и три скрипта Python, которые запускают игру. Получить красные прогоны A и B и зелёный прогон C теста Catch2, проверить посылку о размере холста прогоном D, получить красный прогон E скриптов Python и заморозить тесты хэшем. Код игры не менять, кроме временных файлов прогонов B и C (шаг 2), которые убираются сразу после каждого из них.
 
 ## Что уже решено
 
 Первая часть шага П5г переносит в порт ядро режима отладки интерфейса форка (`ui-audit`): разбор аргументов `--ui-audit-*`, каталог сцен с одной сценой `main-menu`, ранние выходы `--ui-audit-list` и `--ui-audit-scales`, снимок сцены в PNG и файл геометрии JSONL с записями текста и элементов интерфейса. Остальные сцены и вызовы режима из кода игры — следующие части шага. В режиме отладки игра не пишет файл настроек `preferences.ini`.
 
-Тесты пишутся до кода. Их потом выполняет другой исполнитель, который пишет код по тому же контракту и тесты не меняет. Скрипты Python запускают установленную игру и в CTest не входят: в CI нет данных Git LFS.
+Тесты пишутся до кода. Их потом выполняет другой исполнитель, который пишет код по тому же контракту и тесты не меняет. Скрипты Python запускают установленную игру и в CTest не входят: в CI нет данных Git LFS. Скрипты создают временную папку через `tempfile.TemporaryDirectory` в системной временной папке и удаляют её при выходе — это исключение из правила о папке задачи для прогона E.
 
 ## Прочитать до работы
 
@@ -32,11 +32,11 @@
 Этот раздел дословно входит и в задание исполнителя кода.
 
 1. **Разбор аргументов (новые файлы).** `src/debug/UiAuditArguments.hpp` и `src/debug/UiAuditArguments.cpp` — дословные копии одноимённых файлов ревизии форка `9208dcf5a358f40afd95c99480e4e09f781ed566`. В них: структура `uiaudit::Options` с полями `bool list`, `std::string scales`, `std::string scene`, `std::string outDir`; функции `void uiaudit::consumeArguments(int &argc, char **argv)`, `const uiaudit::Options &uiaudit::options()`, `bool uiaudit::isEnabled()`. `consumeArguments` убирает из `argv` аргументы `--ui-audit-list`, `--ui-audit-scales <значение>`, `--ui-audit-scene <значение>`, `--ui-audit-out <значение>` и оставляет остальные в прежнем порядке; режим включён, если есть `--ui-audit-list`, или непустой `--ui-audit-scales`, или вместе непустые `--ui-audit-scene` и `--ui-audit-out`.
-2. **Запуск игры с аргументами режима.** Игра `d2tm` запускается из каталога установки сборки порта (рабочий каталог процесса — этот каталог) с аргументами `-windowed -screenWidth 1024 -screenHeight 768` и аргументами режима ниже; переменные среды `SDL_VIDEODRIVER=dummy`, `SDL_RENDER_DRIVER=software`, `SDL_AUDIODRIVER=dummy`, `XDG_DATA_HOME=<пустая временная папка>`.
-   1. `--ui-audit-list` — код выхода 0; весь вывод stdout без пробельных символов по краям — один объект JSON с ключом `scenes`: список объектов, у каждого ровно ключи `id`, `group`, `state`, `screen`, `game_screen`, `house`, `hud`, `hd_only`, `hover`, `readiness`. В списке ровно одна сцена с `id` `main-menu`, и она равна объекту `{"id": "main-menu", "group": "main-menu", "state": "GAME_MENU", "screen": "cMainMenuState", "game_screen": false, "house": "", "hud": false, "hd_only": false, "hover": null, "readiness": "StateSettled"}`.
+2. **Запуск игры с аргументами режима.** Игра `d2tm` запускается из каталога установки сборки порта (рабочий каталог процесса — этот каталог) с аргументами `-windowed -screenWidth 1024 -screenHeight 768` и аргументами режима ниже; переменные среды `SDL_VIDEODRIVER=dummy`, `SDL_RENDER_DRIVER=software`, `SDL_AUDIODRIVER=dummy`, `XDG_DATA_HOME=<пустая временная папка>`; переменную `LD_LIBRARY_PATH` задаёт вызывающий процесс — папка библиотек SDL3 сборки (на servak — `.tmp/deps/prefix/lib` рабочей копии), скрипты Python передают игре своё окружение. Каждый запуск пунктов 1–4 завершается не позже чем через 120 секунд, и после его выхода в папке `XDG_DATA_HOME` нет файла с именем `preferences.ini` ни на каком уровне вложенности (папка с таким именем не считается). «Равен» для значений JSON ниже — с учётом типа JSON: `false` не равно `0`.
+   1. `--ui-audit-list` — код выхода 0; весь вывод stdout без пробельных символов по краям — один объект JSON с ключом `scenes`: список объектов, у каждого ровно ключи `id`, `group`, `state`, `screen`, `game_screen`, `house`, `hud`, `hd_only`, `hover`, `readiness`. В списке ровно одна сцена с `id` `main-menu` (других сцен в каталоге части 1 нет; скрипт проверяет только сцену `main-menu`, чтобы следующие части шага добавляли сцены без правки скрипта), и она равна объекту `{"id": "main-menu", "group": "main-menu", "state": "GAME_MENU", "screen": "cMainMenuState", "game_screen": false, "house": "", "hud": false, "hd_only": false, "hover": null, "readiness": "StateSettled"}`.
    2. `--ui-audit-scales 1024x768` — код выхода 0; весь вывод stdout без пробельных символов по краям — объект JSON ровно с ключами `resolution`, `render`, `world`; `resolution` — `"1024x768"`; `render` — непустой список целых чисел, первое — 0; `world` — `[0, 100, 110, 125, 150]`. `--ui-audit-scales abc` — код выхода 2, stderr содержит строку `ui-audit: bad resolution abc`.
    3. `--ui-audit-scene no-such-scene__nothing --ui-audit-out <папка>` — код выхода 2; stderr содержит строку `ui-audit: unknown scene no-such-scene__nothing`; в папке `<папка>` нет файлов.
-   4. `--ui-audit-scene main-menu --ui-audit-out <папка>` — код выхода 0 не позже чем через 120 секунд; в `<папка>` есть файлы `main-menu.png` и `main-menu.geometry.jsonl`. PNG — 1024 × 768 точек. Каждая строка файла геометрии — объект JSON. Первая строка — заголовок, в нём значения ключей `k`, `scene`, `resolution`, `language`, `graphics`, `canvas`, `game_screen`, `render_scale`, `world_scale` равны `"header"`, `"main-menu"`, `"1024x768"`, `"en"`, `"hd"`, `{"w": 800, "h": 600}`, `false`, `0`, `0`, а `version` — строка. Есть хотя бы одна запись с `"k": "text"`, у каждой такой записи ровно ключи `k`, `s`, `x`, `y`, `w`, `h`, `box`. Есть хотя бы одна запись с `"k": "gui"`, у каждой такой записи ровно ключи `k`, `t`, `x`, `y`, `w`, `h`. После выхода игры в папке `XDG_DATA_HOME` нет файла с именем `preferences.ini` ни на каком уровне вложенности.
+   4. `--ui-audit-scene main-menu --ui-audit-out <папка>` — код выхода 0; в `<папка>` есть файлы `main-menu.png` и `main-menu.geometry.jsonl`. PNG — 1024 × 768 точек, в нём есть блок `IDAT`, файл заканчивается блоком `IEND`, размер файла — не меньше 50 000 байт (снимок меню с картинкой фона, а не пустой кадр). Каждая строка файла геометрии — объект JSON. Первая строка — заголовок, в нём значения ключей `k`, `scene`, `resolution`, `language`, `graphics`, `canvas`, `game_screen`, `render_scale`, `world_scale` равны `"header"`, `"main-menu"`, `"1024x768"`, `"en"`, `"hd"`, `{"w": 800, "h": 600}`, `false`, `0`, `0`, а `version` — строка. Есть хотя бы одна запись с `"k": "text"`, у каждой такой записи ровно ключи `k`, `s`, `x`, `y`, `w`, `h`, `box`; среди значений `s` этих записей есть `Campaign`, `Skirmish`, `Options` и `Exit` — подписи кнопок главного меню порта (`src/gamestates/cMainMenuState.cpp@4aa980e:155-176`). Записей с `"k": "gui"` не меньше восьми, у каждой такой записи ровно ключи `k`, `t`, `x`, `y`, `w`, `h`.
 
 ## Шаг 1. Тесты — корневая нить сама
 
@@ -105,6 +105,8 @@ TEST_CASE("P5G ui audit needs a scene besides the output directory", "[P5G]")
     Argv args({"d2tm", "--ui-audit-out", "somewhere", "-windowed"});
     uiaudit::consumeArguments(args.argc, args.argv());
     CHECK_FALSE(uiaudit::isEnabled());
+    CHECK(uiaudit::options().outDir == "somewhere");
+    CHECK(remaining(args, {"d2tm", "-windowed"}));
 }
 
 TEST_CASE("P5G ui audit scene and output enable the mode and are removed", "[P5G]")
@@ -125,6 +127,16 @@ TEST_CASE("P5G ui audit list enables the mode and is removed", "[P5G]")
     CHECK(uiaudit::isEnabled());
     CHECK(uiaudit::options().list);
     CHECK(remaining(args, {"d2tm"}));
+}
+
+TEST_CASE("P5G ui audit scales enable the mode and are removed", "[P5G]")
+{
+    Argv args({"d2tm", "--ui-audit-scales", "1024x768", "-windowed"});
+    uiaudit::consumeArguments(args.argc, args.argv());
+    CHECK(uiaudit::isEnabled());
+    CHECK(uiaudit::options().scales == "1024x768");
+    CHECK_FALSE(uiaudit::options().list);
+    CHECK(remaining(args, {"d2tm", "-windowed"}));
 }
 
 TEST_CASE("P5G ui audit is switched off again by a later plain launch", "[P5G]")
@@ -158,6 +170,8 @@ from pathlib import Path
 
 TIMEOUT_SECONDS = 120
 SCREEN_ARGS = ["-windowed", "-screenWidth", "1024", "-screenHeight", "768"]
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+PNG_END = b"\x00\x00\x00\x00IEND\xaeB`\x82"
 
 
 class GameRun:
@@ -188,6 +202,9 @@ class GameRun:
             timeout=TIMEOUT_SECONDS,
         )
 
+    def preferences_files(self):
+        return sorted(str(path) for path in self.xdg.rglob("preferences.ini") if path.is_file())
+
     def close(self):
         self.directory.cleanup()
 
@@ -201,13 +218,19 @@ class GameRun:
 
 def png_size(path):
     data = Path(path).read_bytes()
-    if len(data) < 24 or data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
+    if len(data) < 24 or data[:8] != PNG_SIGNATURE or data[12:16] != b"IHDR":
         raise ValueError(f"not a PNG: {path}")
+    if b"IDAT" not in data or not data.endswith(PNG_END):
+        raise ValueError(f"incomplete PNG: {path}")
     return int.from_bytes(data[16:20], "big"), int.from_bytes(data[20:24], "big")
 
 
 def read_json(stdout):
     return json.loads(stdout.strip())
+
+
+def same_json(actual, expected):
+    return json.dumps(actual, sort_keys=True) == json.dumps(expected, sort_keys=True)
 ```
 
 ### Новый файл `tests/ui_audit/ui_audit_list_and_scales.py`
@@ -251,7 +274,7 @@ def check_list(game):
         if set(scene) != SCENE_KEYS:
             return f"Scene keys differ: {sorted(scene)}"
     main_menu = [scene for scene in scenes if scene["id"] == "main-menu"]
-    if main_menu != [MAIN_MENU]:
+    if len(main_menu) != 1 or not support.same_json(main_menu[0], MAIN_MENU):
         return f"Unexpected main-menu entry: {main_menu}"
     return None
 
@@ -269,7 +292,7 @@ def check_scales(game):
     render = scales["render"]
     if not render or render[0] != 0 or not all(type(value) is int for value in render):
         return f"Unexpected render scales: {render}"
-    if scales["world"] != WORLD_SCALES:
+    if not support.same_json(scales["world"], WORLD_SCALES):
         return f"Unexpected world scales: {scales['world']}"
     bad = game.run(["--ui-audit-scales", "abc"])
     if bad.returncode != 2 or "ui-audit: bad resolution abc" not in bad.stderr:
@@ -287,6 +310,10 @@ def main():
             if error:
                 print(error, file=sys.stderr)
                 return 1
+        preferences = game.preferences_files()
+        if preferences:
+            print(f"An audit run must not write preferences: {preferences}", file=sys.stderr)
+            return 1
     return 0
 
 
@@ -326,6 +353,10 @@ def main():
         if leftovers:
             print(f"An unknown scene must not create files: {leftovers}", file=sys.stderr)
             return 1
+        preferences = game.preferences_files()
+        if preferences:
+            print(f"An audit run must not write preferences: {preferences}", file=sys.stderr)
+            return 1
     return 0
 
 
@@ -361,6 +392,9 @@ HEADER = {
 }
 TEXT_KEYS = {"k", "s", "x", "y", "w", "h", "box"}
 GUI_KEYS = {"k", "t", "x", "y", "w", "h"}
+MENU_LABELS = {"Campaign", "Skirmish", "Options", "Exit"}
+MIN_PNG_BYTES = 50000
+MIN_GUI_RECORDS = 8
 
 
 def check(game):
@@ -377,6 +411,8 @@ def check(game):
         return str(error)
     if size != (1024, 768):
         return f"Unexpected PNG size: {size[0]}x{size[1]}"
+    if png.stat().st_size < MIN_PNG_BYTES:
+        return f"The PNG is too small for a menu snapshot: {png.stat().st_size} bytes"
     try:
         records = [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines()]
     except ValueError as error:
@@ -384,15 +420,18 @@ def check(game):
     if not records or not all(isinstance(record, dict) for record in records):
         return "The geometry log must hold JSON objects"
     header = records[0]
-    if {key: header.get(key) for key in HEADER} != HEADER or not isinstance(header.get("version"), str):
+    if not support.same_json({key: header.get(key) for key in HEADER}, HEADER) or not isinstance(header.get("version"), str):
         return f"Unexpected header: {header}"
     texts = [record for record in records if record.get("k") == "text"]
     if not texts or any(set(record) != TEXT_KEYS for record in texts):
         return f"Text records are missing or malformed: {texts[:3]}"
+    labels = {record["s"] for record in texts}
+    if not MENU_LABELS <= labels:
+        return f"Menu labels are missing from the text records: {sorted(MENU_LABELS - labels)}"
     guis = [record for record in records if record.get("k") == "gui"]
-    if not guis or any(set(record) != GUI_KEYS for record in guis):
-        return f"GUI records are missing or malformed: {guis[:3]}"
-    preferences = sorted(str(path) for path in game.xdg.rglob("preferences.ini"))
+    if len(guis) < MIN_GUI_RECORDS or any(set(record) != GUI_KEYS for record in guis):
+        return f"Expected at least {MIN_GUI_RECORDS} well-formed GUI records, got {len(guis)}: {guis[:3]}"
+    preferences = game.preferences_files()
     if preferences:
         return f"An audit run must not write preferences: {preferences}"
     return None
@@ -427,7 +466,7 @@ DUNE_DEPS_DIR=$PWD/.tmp/deps DUNE_OUT_DIR=$PWD/.tmp/out bash tools/upstream/buil
 Субагент сдаёт корневой нити код выхода каждого прогона, все строки лога прогона и `.tmp/out/logs/<последняя папка>/full.log`, содержащие `error:`, вывод `grep -A3 "CMake Error"` по тем же двум файлам и, если есть `ctest.log` последней папки логов, его строки с `P5G `, `Failed`, `failed` и итоговую строку `tests passed`.
 
 - **Прогон A** — лог `build-red-a.log`, рабочая копия как после шага 1. Ожидается: код выхода не 0; в выводе `grep -A3 "CMake Error"` есть строка, содержащая `src/debug/UiAuditArguments.cpp`.
-- **Прогон B** — лог `build-red-b.log`. Перед ним субагент создаёт папку `src/debug` и в ней два временных файла: `src/debug/UiAuditArguments.hpp` — командой `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditArguments.hpp > src/debug/UiAuditArguments.hpp`; `src/debug/UiAuditArguments.cpp` — ровно такого вида:
+- **Прогон B** — лог `build-red-b.log`. Перед ним субагент проверяет `test ! -e src/debug` (код выхода 0, иначе блок `## Q-P5GT-05` и стоп), затем создаёт папку `src/debug` и в ней два временных файла: `src/debug/UiAuditArguments.hpp` — командой `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditArguments.hpp > src/debug/UiAuditArguments.hpp`; `src/debug/UiAuditArguments.cpp` — ровно такого вида:
   ```cpp
   #include "UiAuditArguments.hpp"
 
@@ -453,18 +492,18 @@ DUNE_DEPS_DIR=$PWD/.tmp/deps DUNE_OUT_DIR=$PWD/.tmp/out bash tools/upstream/buil
 
   }
   ```
-  Сразу после прогона B — `rm -r src/debug`. Ожидается: строк `error:` нет; код выхода не 0; в `ctest.log` провалены ровно шесть тестов — все шесть тестов `P5G ` из шага 1; остальные тесты — `Passed`.
-- **Прогон C** — лог `build-green-c.log`. Перед ним субагент создаёт папку `src/debug` и в ней временные копии файлов форка: `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditArguments.hpp > src/debug/UiAuditArguments.hpp` и `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditArguments.cpp > src/debug/UiAuditArguments.cpp`. Сразу после прогона C — `rm -r src/debug`. Ожидается: код выхода 0; строк `error:` нет; все шесть тестов `P5G ` — `Passed`; итоговая строка `ctest.log` — `100% tests passed, 0 tests failed out of 318` (312 тестов сборки шага П5в и шесть новых).
+  Сразу после прогона B — `rm -r src/debug`. Ожидается: строк `error:` нет; код выхода не 0; в `ctest.log` провалены ровно семь тестов — все семь тестов `P5G ` из шага 1; остальные тесты — `Passed`.
+- **Прогон C** — лог `build-green-c.log`. Перед ним субагент создаёт папку `src/debug` и в ней временные копии файлов форка: `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditArguments.hpp > src/debug/UiAuditArguments.hpp` и `git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditArguments.cpp > src/debug/UiAuditArguments.cpp`. Сразу после прогона C — `rm -r src/debug`. Ожидается: код выхода 0; строк `error:` нет; все семь тестов `P5G ` — `Passed`; итоговая строка `ctest.log` — `100% tests passed, 0 tests failed out of 319` (312 тестов сборки шага П5в и семь новых).
 - **Прогон D** — посылка о холсте, после прогона C, на игре, которую установил прогон C. Из корня рабочей копии:
   ```
-  mkdir -p .tmp/p5gt/xdg-d && (cd .tmp/out/run/bin && SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software SDL_AUDIODRIVER=dummy XDG_DATA_HOME=/srv/dune/worktrees/u34/.tmp/p5gt/xdg-d timeout 20 ./d2tm -windowed -screenWidth 1024 -screenHeight 768) > .tmp/p5gt/run-d.log 2>&1; echo exit=$?; grep -n 'logical canvas' .tmp/out/run/bin/nlog.txt
+  mkdir -p .tmp/p5gt/xdg-d && (cd .tmp/out/run/bin && LD_LIBRARY_PATH=/srv/dune/worktrees/u34/.tmp/deps/prefix/lib SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software SDL_AUDIODRIVER=dummy XDG_DATA_HOME=/srv/dune/worktrees/u34/.tmp/p5gt/xdg-d timeout 20 ./d2tm -windowed -screenWidth 1024 -screenHeight 768) > .tmp/p5gt/run-d.log 2>&1; echo exit=$?; grep -n 'logical canvas' .tmp/out/run/bin/nlog.txt
   ```
   Ожидается: `exit=124`; ровно одна строка вывода `grep`, и в ней есть `logical canvas 800x600`.
-- **Прогон E** — красные скрипты Python, после прогона D, на той же игре. Из корня рабочей копии для каждого скрипта `<скрипт>` из `ui_audit_list_and_scales.py`, `ui_audit_unknown_scene.py`, `ui_audit_main_menu_png.py`: `python3 tests/ui_audit/<скрипт> --run-dir .tmp/out/run/bin > .tmp/p5gt/run-e-<скрипт>.log 2>&1; echo exit=$?`. Ожидается: у каждого `exit=1`, в логе — строка из скрипта о коде выхода игры, отличном от ожидаемого, и вывод stderr игры с её сообщением о неизвестном аргументе `--ui-audit-…`. Перед прогоном E — `python3 -m py_compile tests/ui_audit/*.py` с кодом выхода 0; после прогона E — `rm -r tests/ui_audit/__pycache__`, если такая папка появилась.
+- **Прогон E** — красные скрипты Python, после прогона D, на той же игре. Из корня рабочей копии для каждого скрипта `<скрипт>` из `ui_audit_list_and_scales.py`, `ui_audit_unknown_scene.py`, `ui_audit_main_menu_png.py`: `LD_LIBRARY_PATH=$PWD/.tmp/deps/prefix/lib python3 tests/ui_audit/<скрипт> --run-dir .tmp/out/run/bin > .tmp/p5gt/run-e-<скрипт>.log 2>&1; echo exit=$?`. Ожидается: у каждого `exit=1`, в логе — строка из скрипта о коде выхода игры, отличном от ожидаемого, и вывод stderr игры с её сообщением о неизвестном аргументе `--ui-audit-…`. Перед прогоном E — `python3 -m py_compile tests/ui_audit/*.py` с кодом выхода 0; после прогона E — `rm -r tests/ui_audit/__pycache__`, если такая папка появилась.
 
 Проверка уборки после прогонов B и C: `test ! -e src/debug` с кодом выхода 0, иначе блок `## Q-P5GT-05` и стоп.
 
-Ошибка другого рода в файле теста (опечатка, неверный тип, неверный заголовок проекта) — корневая нить исправляет тест так, чтобы его текст по-прежнему совпадал с шагом 1, и повторяет прогоны с A. Ошибки вне файлов шага 1; провал другого теста в прогоне B или C; в прогоне B любой из шести тестов `P5G ` со статусом `Passed` или `Skipped`; в прогоне C любой из шести тестов `P5G ` со статусом, отличным от `Passed`; в прогоне D другой код выхода или другой холст; в прогоне E другой код выхода или другая причина — блок `## Q-P5GT-02` с этими строками и стоп. Ожидание теста под код не подгоняй: тест, который требует правки текста шага 1, — тоже `## Q-P5GT-02`.
+Ошибка другого рода в файле теста (опечатка, неверный тип, неверный заголовок проекта) — корневая нить исправляет тест так, чтобы его текст по-прежнему совпадал с шагом 1, и повторяет прогоны с A. Ошибки вне файлов шага 1; провал другого теста в прогоне B или C; в прогоне B любой из семи тестов `P5G ` со статусом `Passed` или `Skipped`; в прогоне C любой из семи тестов `P5G ` со статусом, отличным от `Passed`; в прогоне D другой код выхода или другой холст; в прогоне E другой код выхода или другая причина — блок `## Q-P5GT-02` с этими строками и стоп. Ожидание теста под код не подгоняй: тест, который требует правки текста шага 1, — тоже `## Q-P5GT-02`.
 
 ## Шаг 3. Заморозка — корневая нить
 
