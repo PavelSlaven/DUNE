@@ -36,6 +36,7 @@
 #include "context/cInfoContext.h"
 #include "context/cGameObjectContext.h"
 #include "gameobjects/map/cMap.h"
+#include "sidebar/HudLayout.hpp"
 #include "include/cAssert.h"
 #include <algorithm>
 #include <cmath>
@@ -55,8 +56,7 @@ cMiniMapDrawer::cMiniMapDrawer(GameContext *ctx, cGameSettings *settings, cMap *
     m_gfxinter(ctx->getGraphicsContext()->gfxinter.get()),
     m_sdlDrawer(ctx->getSDLDrawer()),
     m_status(eMinimapStatus::NOTAVAILABLE),
-    m_iStaticFrame(STAT14),
-    m_iTrans(0)
+    m_iStaticFrame(STAT14)
 {
     d2tm_assert(map!=nullptr);
     d2tm_assert(m_mapGeometry != nullptr);
@@ -64,26 +64,28 @@ cMiniMapDrawer::cMiniMapDrawer(GameContext *ctx, cGameSettings *settings, cMap *
     d2tm_assert(mapCamera!=nullptr);
     d2tm_assert(settings!=nullptr);
 
-    float reportX = cSideBar::WidthOfMinimap*1.f / getMapWidthInPixels();
-    float reportY = cSideBar::HeightOfMinimap*1.f / getMapHeightInPixels();
+    const cRectangle minimapArea = HudLayout::create(settings->getScreenW(), settings->getScreenH()).radarViewport;
+
+    float reportX = minimapArea.getWidth()*1.f / getMapWidthInPixels();
+    float reportY = minimapArea.getHeight()*1.f / getMapHeightInPixels();
     m_factorZoom = std::min(reportX, reportY);
     //std::cout << "Minimap zoom factor: " << m_factorZoom << std::endl;
 
-    int halfWidthOfMinimap = cSideBar::WidthOfMinimap / 2;
+    int halfWidthOfMinimap = minimapArea.getWidth() / 2;
     int halfWidthOfMap = getMapWidthInPixels() / 2;
-    int topLeftX = settings->getScreenW() - cSideBar::WidthOfMinimap;
+    int topLeftX = minimapArea.getX();
     m_drawX = topLeftX + (halfWidthOfMinimap - m_factorZoom*halfWidthOfMap);
 
-    int halfHeightOfMinimap = cSideBar::HeightOfMinimap / 2;
+    int halfHeightOfMinimap = minimapArea.getHeight() / 2;
     int halfHeightOfMap = getMapHeightInPixels() / 2;
-    int topLeftY = cSideBar::TopBarHeight;
+    int topLeftY = minimapArea.getY();
     m_drawY = topLeftY + (halfHeightOfMinimap - m_factorZoom*halfHeightOfMap);
 
     m_centerX = topLeftX + (halfWidthOfMinimap - halfWidthOfMap);
     m_centerY = topLeftY + (halfHeightOfMinimap - halfHeightOfMap);
 
     m_RectMinimap = cRectangle(m_drawX, m_drawY, m_factorZoom*getMapWidthInPixels(), m_factorZoom * getMapHeightInPixels());
-    m_RectFullMinimap = cRectangle(topLeftX, topLeftY, cSideBar::WidthOfMinimap, cSideBar::HeightOfMinimap);
+    m_RectFullMinimap = minimapArea;
     //std::cout << "Minimap top left corner: (" << m_RectMinimap.getX() << ", " << m_RectMinimap.getY() << ", " << m_RectMinimap.getWidth() << ", " << m_RectMinimap.getHeight() << ")" << std::endl;
     //std::cout << "RectFullMinimap: (" << m_RectFullMinimap.getX() << ", " << m_RectFullMinimap.getY() << ", " << m_RectFullMinimap.getWidth() << ", " << m_RectFullMinimap.getHeight() << ")" << std::endl;
     m_mipMapTex = m_sdlDrawer->createRenderTargetTexture(getMapWidthInPixels(), getMapHeightInPixels());
@@ -128,40 +130,13 @@ void cMiniMapDrawer::draw()
     }
     m_sdlDrawer->renderStrechFullSprite(m_mipMapTex, m_RectMinimap);
 
-    drawStaticFrame();
     drawViewPortRectangle();
-}
-
-void cMiniMapDrawer::drawStaticFrame()
-{
-    if (m_status == eMinimapStatus::NOTAVAILABLE) return;
-    if (m_status == eMinimapStatus::RENDERMAP) return;
-    if (m_status == eMinimapStatus::LOWPOWER) return;
-
-    if (m_status == eMinimapStatus::POWERDOWN) {
-        m_sdlDrawer->renderStrechFullSprite(m_gfxinter->getTexture(m_iStaticFrame), m_RectFullMinimap);
-        return;
-    }
-
-    // Draw static info
-    // < STAT01 frames are going from very transparent to opaque
-    if (m_iStaticFrame < STAT10) {
-        m_iTrans = 255 - healthBar(192, (STAT12 - m_iStaticFrame), 12);
-    } else {
-        m_iTrans = 255;
-    }
-
-    // non-stat01 frames are drawn transparent
-    if (m_iStaticFrame != STAT01) {
-        m_sdlDrawer->renderStrechFullSprite(m_gfxinter->getTexture(m_iStaticFrame), m_RectFullMinimap,m_iTrans);
-    }
 }
 
 void cMiniMapDrawer::init()
 {
     m_status = eMinimapStatus::NOTAVAILABLE;
     m_iStaticFrame = STAT14;
-    m_iTrans = 0;
     m_isMouseOver = false;
 }
 

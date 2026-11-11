@@ -773,6 +773,7 @@ bool cGame::setupGame()
     m_gameSettings->m_screenH = m_Screen->Height();
     m_gameSettings->m_outputW = m_Screen->OutputWidth();
     m_gameSettings->m_outputH = m_Screen->OutputHeight();
+    cSideBar::configureLayout(m_gameSettings->getScreenW(), m_gameSettings->getScreenH());
     Logger::info(COMP_SDL2, "Resolution", "World scale zoom {}", m_gameSettings->getWorldScaleFactor());
     window = m_Screen->getWindows();
     renderer = m_Screen->getRenderer();

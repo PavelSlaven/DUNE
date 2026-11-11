@@ -100,9 +100,10 @@ public:
     static const int LIST_MAX = 7;
 
     static const int VerticalCandyBarWidth = 24;
-    static const int SidebarWidthWithoutCandyBar = 200;
-    static const int SidebarWidth = SidebarWidthWithoutCandyBar + VerticalCandyBarWidth; // including vertical candy bar
+    inline static int SidebarWidthWithoutCandyBar = 200;
+    inline static int SidebarWidth = SidebarWidthWithoutCandyBar + VerticalCandyBarWidth;
     static constexpr int TopBarHeight = 42;
+    static void configureLayout(int logicalWidth, int logicalHeight);
     static const int HeightOfMinimap = 200 + 8;
     static const int WidthOfMinimap = 200;
     static const int PowerBarMarginHeight = 32; // for a power icon

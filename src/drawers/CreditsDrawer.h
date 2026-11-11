@@ -25,6 +25,7 @@
 class GameContext;
 class cGameSettings;
 class Graphics;
+class cTextDrawer;
 class cPlayer;
 struct SDL_Surface;
 class SDLDrawer;
@@ -52,17 +53,17 @@ public:
 private:
     cPlayer *m_player;  //
     GameContext* m_ctx;
+    cGameSettings* m_settings;
     AudioContext* m_audioContext = nullptr;
     cMapCamera* m_mapCamera = nullptr;
     cGameObjectContext* m_objects = nullptr;
     Graphics* m_gfxinter;
     Graphics* m_gfxdata;
     SDLDrawer* m_sdlDrawer = nullptr;
+    cTextDrawer* m_gameTextDrawer = nullptr;
     bool m_playCreditsSound = true;
 
     void thinkAboutIndividualCreditOffsets();
-    void drawCurrentCredits(int drawX, int drawY);
-    void drawPreviousCredits(int drawX, int drawY);
 
     int m_TIMER_money;	// timer needed to do logic
 

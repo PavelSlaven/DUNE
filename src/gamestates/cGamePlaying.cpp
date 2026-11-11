@@ -320,7 +320,10 @@ void cGamePlaying::onNotifyMouseEvent(const s_MouseEvent &event)
     pContext->onNotifyMouseEvent(event); // must be first because other classes rely on this context
 
     m_controlledPlayer->getSideBar()->onNotifyMouseEvent(event);
-    m_mapCamera->onNotifyMouseEvent(event);
+    const bool isWheelEvent = event.eventType == eMouseEventType::MOUSE_SCROLLED_UP || event.eventType == eMouseEventType::MOUSE_SCROLLED_DOWN;
+    if (!isWheelEvent || !pContext->isMouseOnSidebarOrMinimap()) {
+        m_mapCamera->onNotifyMouseEvent(event);
+    }
 
     m_drawManager->getMiniMapDrawer()->onNotifyMouseEvent(event);
     m_drawManager->getOrderDrawer()->onNotify(event);

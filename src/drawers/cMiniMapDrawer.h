@@ -61,8 +61,6 @@ public:
 
     void draw();
 
-    void drawStaticFrame();
-
     // in-between solution until we have a proper combat state object
     void init();
 
@@ -117,7 +115,6 @@ private:
     eMinimapStatus m_status;
 
     int m_iStaticFrame;
-    int m_iTrans;							// transparancy
 
     // the top left coordinates for the minimap
     int m_drawX, m_drawY;

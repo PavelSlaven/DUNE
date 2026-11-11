@@ -14,6 +14,7 @@
  */
 
 #include "cSideBar.h"
+#include "sidebar/HudLayout.hpp"
 #include "game/cGameSettings.h"
 #include "building/cItemBuilder.h"
 #include "managers/cDrawManager.h"
@@ -352,6 +353,8 @@ void cSideBar::onNotifyMouseEvent(const s_MouseEvent &event)
         return;
     }
 
+    m_drawManager->getBuildingListDrawer()->onNotifyMouseEvent(event);
+
     switch (event.eventType) {
         case eMouseEventType::MOUSE_MOVED_TO:
             onMouseAt(event);
@@ -454,4 +457,11 @@ void cSideBar::setSelectedListId(eListType value)
     if (m_selectedListID > -1 && m_selectedListID < LIST_MAX) {
         m_lists[m_selectedListID]->setSelected(true);
     }
+}
+
+void cSideBar::configureLayout(int logicalWidth, int logicalHeight)
+{
+    SidebarWidth = HudLayout::create(logicalWidth, logicalHeight).sidebarWidth;
+    // HD uses a narrow graphite divider instead of the 24 px candybar.
+    SidebarWidthWithoutCandyBar = SidebarWidth - 8;
 }

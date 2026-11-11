@@ -16,20 +16,25 @@
 #include "cBuildingListFactory.h"
 #include "game/cGameSettings.h"
 #include "data/gfxinter.h"
+#include "sidebar/HudLayout.hpp"
 
 cBuildingListFactory::cBuildingListFactory(cGameSettings* settings) : m_settings(settings)
 {}
 
 int cBuildingListFactory::getButtonDrawY()
 {
-    // 6 pixels margin below horizontal candybar, so it lines up nice horizontally with the sphere
-    // of the vertical candybar at the left of the building list icons
-    return cSideBar::TopBarHeight + cSideBar::HeightOfMinimap + cSideBar::HorizontalCandyBarHeight + 6;
+    return HudLayout::create(
+        m_settings->getScreenW(),
+        m_settings->getScreenH()
+    ).tabs.getY();
 }
 
 int cBuildingListFactory::getButtonDrawXStart()
 {
-    return (m_settings->getScreenW() - 200) + 2;
+    return HudLayout::create(
+        m_settings->getScreenW(),
+        m_settings->getScreenH()
+    ).tabs.getX();
 }
 
 
@@ -43,9 +48,14 @@ void cBuildingListFactory::initializeList(cBuildingList *list, eListType listTyp
     // Y is the same for all list buttons
     list->setButtonDrawY(getButtonDrawY());
 
-    int widthOfButtonIncludingMargin = 33;
+    const HudLayout layout = HudLayout::create(
+        m_settings->getScreenW(),
+        m_settings->getScreenH()
+    );
+    const int widthOfButtonIncludingMargin = layout.tabs.getWidth() / 6;
+    const int buttonHeight = layout.tabs.getHeight();
     list->setButtonWidth(widthOfButtonIncludingMargin);
-//    list->setButtonHeight()
+    list->setButtonHeight(buttonHeight);
 
     int startX = getButtonDrawXStart();
 

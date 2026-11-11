@@ -126,8 +126,6 @@ protected:
     void drawTopBarBackground();
 
 private:
-    void drawOptionBar();
-
     void drawDebugInfoUsages() const;
 
     // void drawNotifications();
@@ -143,7 +141,6 @@ private:
     std::unique_ptr<cPlaceItDrawer> m_placeitDrawer;
     std::unique_ptr<cStructureDrawer> m_structureDrawer;
     Color m_sidebarColor;
-    std::unique_ptr<Texture> m_btnOptions;
     bool m_drawToolTip = false;
     // TODO: bullet/projectile drawer
     cPlayer *m_player = nullptr;
