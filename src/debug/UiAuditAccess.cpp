@@ -483,6 +483,14 @@ bool UiAuditAccess::enterPlaying(cGame &currentGame, int house, int region)
     currentGame.setNextStateToTransitionTo(GAME_PLAYING);
     currentGame.m_drawManager->missionInit();
     currentGame.transitionStateIfRequired();
+    // sandworms wander at random, so one could crawl into a scene and change its records
+    currentGame.m_gameObjectsContext->getMap()->setDesiredAmountOfWorms(0);
+    for (int i = 0; i < cUnits::size(); i++) {
+        cUnit *unit = currentGame.m_gameObjectsContext->getUnit(i);
+        if (unit != nullptr && unit->isValid() && unit->iPlayer == AI_WORM) {
+            unit->die(false, false);
+        }
+    }
     return currentGame.m_gameObjectsContext->getMap()->getGeometry()->getWidth() > 0 &&
            currentGame.m_state == GAME_PLAYING;
 }
