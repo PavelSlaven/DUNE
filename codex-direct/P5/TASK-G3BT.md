@@ -32,7 +32,7 @@
 
 14. **Прогон сцены части 3б.** Для каждой из 35 сцен пункта 13 — всё, что пункт 11 требует от сцен части 3а с `game_screen` `true`: код выхода 0 не позже чем через 120 секунд, файлы `<id>.png` и `<id>.geometry.jsonl`, PNG и заголовок как там, ключ `map_viewport` со значением `{"x": 0, "y": 42, "w": 520, "h": 558}`, записи пяти видов с теми же ключами и ограничениями, нет файла `preferences.ini` в папке `XDG_DATA_HOME`.
 
-15. **Записи сцен части 3б.** «Одна запись», «внутри» и «прямоугольник (x, y, w, h)» — как в пункте 12; у записи `label` её имя — значение `kind`. Прямоугольники A и B «пересекаются», если `A.x < B.x + B.w`, `B.x < A.x + A.w`, `A.y < B.y + B.h` и `B.y < A.y + A.h`. «Номер» записи click `list-button:<n>` или `build-item:<n>` — число `<n>`.
+15. **Записи сцен части 3б.** «Одна запись», «внутри» и «прямоугольник (x, y, w, h)» — как в пункте 12; у записи `label` её имя — значение `kind`. Прямоугольники A и B «пересекаются», если `A.x < B.x + B.w`, `B.x < A.x + A.w`, `A.y < B.y + B.h` и `B.y < A.y + A.h`. «Номер» записи click `list-button:<n>` или `build-item:<n>` — число `<n>`, записанное десятичными цифрами без знака и без ведущих нулей (как `std::to_string` пишет неотрицательное целое).
     - Каждая сцена части 3б:
       - одна запись area `top-panel` с прямоугольником (0, 0, 800, 42); одна запись area `sidebar` с прямоугольником (520, 42, 280, 558); одна запись area `build-list` внутри прямоугольника `sidebar`; одна запись click `top-options` с прямоугольником (7, 4, 126, 33); нет записи click `order-button`;
       - каждая запись click, у которой `name` начинается с `list-button:` или `build-item:` либо равно `build-scrollbar`, лежит внутри прямоугольника `sidebar`; есть хотя бы одна запись click, у которой `name` начинается с `list-button:` или `build-item:`;
@@ -41,7 +41,7 @@
     - Радар. У каждой сцены, кроме `game-radar-none`, одна запись area `minimap` внутри прямоугольника `sidebar` и одна запись click `minimap` с тем же прямоугольником (у игрока есть радар; в `game-radar-nopower` ему не хватает энергии, и порт всё равно рисует мини-карту, `src/drawers/cMiniMapDrawer.cpp@dc6e5ff:116-130`). У `game-radar-none` нет записей area и click `minimap`.
     - Списки. У сцены `game-list-<вид>`, `game-harkonnen-list-<вид>`, `game-ordos-list-<вид>`, `game-sardaukar-list-<вид>` выбран список с номером `<n>`: `build` — 1, `infantry` — 2, `vehicles` — 3, `starport` — 4, `palace` — 5, `upgrades` — 6 (номера списков порта, `src/include/enums/ListEnums.h@af6a2e1:44-63`). У такой сцены нет записи click `list-button:<n>` (кнопку выбранного списка режим не записывает, `src/debug/UiAuditAccess.cpp@af6a2e1:297-309`); есть хотя бы одна запись click `list-button:<m>`; номер каждой записи click `list-button:<m>` — целое от 1 до 6; есть хотя бы одна запись click `build-item:<i>`.
     - `game-structure-selected`: одна запись label `structure-selected`; её `type` — `STRUCTURE`, `w` > 0, `h` > 0.
-    - `game-rally-point`: одна запись label `structure-selected` с тем же требованием и одна запись label `rally-point`, у которой `type` — `STRUCTURE`, `w` > 0, `h` > 0, `obj` равно `obj` записи `structure-selected`, а её прямоугольник не пересекается с прямоугольником её `owner` (точка сбора стоит на клетке в стороне от здания).
+    - `game-rally-point`: одна запись label `structure-selected` с тем же требованием и одна запись label `rally-point`, у которой `type` — `STRUCTURE`, `w` > 0, `h` > 0, `obj` равно `obj` записи `structure-selected`, `owner` равен `owner` записи `structure-selected` (тот же прямоугольник здания), а прямоугольник `rally-point` не пересекается с этим `owner` (точка сбора стоит на клетке в стороне от здания).
     - `game-place-allowed`: ровно четыре записи label `place-cell` (ветряная электростанция — 2 × 2 клетки), у всех одно значение `obj`, у каждой `w` > 0 и `h` > 0, `type` каждой — `GOOD` или `NEUTRAL`.
     - `game-place-forbidden`: ровно четыре записи label `place-cell`, у всех одно значение `obj`, у каждой `w` > 0 и `h` > 0, `type` каждой — `GOOD`, `NEUTRAL` или `BAD`, и хотя бы у одной — `BAD`.
     - `game-group-select`: одна запись area `selection-box` внутри прямоугольника (0, 42, 520, 558) — области карты.
@@ -284,6 +284,8 @@ def check_rally_point(scene_id, header, body, bodies):
         return error
     if rally["type"] != "STRUCTURE" or not visible(rally) or rally["obj"] != selected["obj"]:
         return f"the label record rally-point must have type STRUCTURE, w > 0, h > 0 and obj {selected['obj']}: {rally}"
+    if not support.same_json(rally["owner"], selected["owner"]):
+        return f"the rally point owner {rally['owner']} is not the selected building {selected['owner']}"
     if intersects(rally, rally["owner"]):
         return f"the rally point {base.rect(rally)} overlaps its building {rally['owner']}"
     return None
@@ -403,7 +405,7 @@ if __name__ == "__main__":
 
 1. `mkdir -p .tmp/p5g3bt && python3 -m py_compile tests/ui_audit/ui_audit_part3b_catalog.py tests/ui_audit/ui_audit_part3b_scenes.py; echo exit=$?` — ожидается `exit=0`.
 2. **Прогон H** — `LD_LIBRARY_PATH=$PWD/.tmp/deps/prefix/lib python3 -B tests/ui_audit/ui_audit_part3b_catalog.py --run-dir .tmp/out/run/bin > .tmp/p5g3bt/run-h.log 2>&1; echo exit=$?`. Ожидается: `exit=1`; первая строка лога начинается с `Part 3b scenes differ: missing [` и содержит `'game-hud'`, `'game-sardaukar-list-upgrades'` и `; extra []`; в логе нет строки, содержащей `must not write preferences`.
-3. **Прогон I** — `LD_LIBRARY_PATH=$PWD/.tmp/deps/prefix/lib timeout 3000 python3 -B tests/ui_audit/ui_audit_part3b_scenes.py --run-dir .tmp/out/run/bin > .tmp/p5g3bt/run-i.log 2>&1; echo exit=$?`. Ожидается: `exit=1`; `grep -c 'game exited with 2' .tmp/p5g3bt/run-i.log` выводит `35`; `grep -c 'ui-audit: unknown scene' .tmp/p5g3bt/run-i.log` выводит `35`; в логе нет строки, содержащей `must not write preferences`.
+3. **Прогон I** — `LD_LIBRARY_PATH=$PWD/.tmp/deps/prefix/lib timeout 1800 python3 -B tests/ui_audit/ui_audit_part3b_scenes.py --run-dir .tmp/out/run/bin > .tmp/p5g3bt/run-i.log 2>&1; echo exit=$?`. Ожидается: `exit=1`; `grep -c 'game exited with 2' .tmp/p5g3bt/run-i.log` выводит `35`; `grep -c 'ui-audit: unknown scene' .tmp/p5g3bt/run-i.log` выводит `35`; в логе нет строки, содержащей `must not write preferences`.
 4. После прогонов — `rm -r tests/ui_audit/__pycache__ tools/ui-audit/__pycache__` для тех из этих папок, что появились.
 
 Помощник сдаёт корневой нити каждую команду, её код выхода и вывод, первые 3 строки лога прогона H (каждая обрезана до 300 символов командой `cut -c1-300`) и выводы двух `grep -c` прогона I.
