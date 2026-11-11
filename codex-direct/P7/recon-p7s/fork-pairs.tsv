@@ -1,0 +1,246 @@
+путь	строка	английский	русский
+src/cGame_logic.cpp@9208dcf	2048	Game saved.	Игра сохранена.
+src/cGame_logic.cpp@9208dcf	2061	Game loaded.	Игра загружена.
+src/cGame_logic.cpp@9208dcf	2097	Music off	Музыка выключена
+src/cGame_logic.cpp@9208dcf	2101	Music on	Музыка включена
+src/cGame_logic.cpp@9208dcf	2541	не литерал	не литерал
+src/cGame_logic.cpp@9208dcf	2545	не литерал	не литерал
+src/cGame_logic.cpp@9208dcf	2564	не литерал	не литерал
+src/controls/mousestates/cMousePlaceState.cpp@9208dcf	59	не литерал	не литерал
+src/controls/mousestates/cMousePlaceState.cpp@9208dcf	63	не литерал	не литерал
+src/controls/mousestates/cMousePlaceState.cpp@9208dcf	68	не литерал	не литерал
+src/controls/mousestates/cMousePlaceState.cpp@9208dcf	73	не литерал	не литерал
+src/controls/mousestates/cMousePlaceState.cpp@9208dcf	78	не литерал	не литерал
+src/controls/mousestates/cMousePlaceState.cpp@9208dcf	83	не литерал	не литерал
+src/controls/mousestates/cMousePlaceState.cpp@9208dcf	88	не литерал	не литерал
+src/debug/UiAuditAccess.cpp@9208dcf	209	Saved. Restart the game.	Сохранено. Перезапустите игру.
+src/debug/UiAuditAccess.cpp@9208dcf	834	не литерал	не литерал
+src/debug/UiAuditAccess.cpp@9208dcf	893	не литерал	не литерал
+src/debug/UiAuditAccess.cpp@9208dcf	898	Neutral notification	Обычное уведомление
+src/debug/UiAuditAccess.cpp@9208dcf	900	не литерал	не литерал
+src/debug/UiAuditAccess.cpp@9208dcf	903	не литерал	не литерал
+src/drawers/CreditsDrawer.cpp@9208dcf	230	CREDITS	КРЕДИТЫ
+src/drawers/cBuildingListDrawer.cpp@9208dcf	53	Hi-Tech	Авиазавод
+src/drawers/cBuildingListDrawer.cpp@9208dcf	53	Hi-Tech	Авиазавод
+src/drawers/cBuildingListDrawer.cpp@9208dcf	54	Spice Refinery	Переработчик пряности
+src/drawers/cBuildingListDrawer.cpp@9208dcf	54	Refinery	Переработчик
+src/drawers/cBuildingListDrawer.cpp@9208dcf	55	MCV	Мобильная база
+src/drawers/cBuildingListDrawer.cpp@9208dcf	55	MCV	Мобильная база
+src/drawers/cBuildingListDrawer.cpp@9208dcf	56	Light Infantry	Отряд пехоты
+src/drawers/cBuildingListDrawer.cpp@9208dcf	56	Infantry	Пехота
+src/drawers/cBuildingListDrawer.cpp@9208dcf	57	Troopers	Отряд ракетчиков
+src/drawers/cBuildingListDrawer.cpp@9208dcf	57	Troopers	Ракетчики
+src/drawers/cBuildingListDrawer.cpp@9208dcf	68	READY	ГОТОВО
+src/drawers/cBuildingListDrawer.cpp@9208dcf	357	Upgrade	Улучшение
+src/drawers/cBuildingListDrawer.cpp@9208dcf	369	OCCUPIED	ЗАНЯТО
+src/drawers/cCommandBarDrawer.cpp@9208dcf	86	Move	Переместить
+src/drawers/cCommandBarDrawer.cpp@9208dcf	86	LMB	ЛКМ
+src/drawers/cCommandBarDrawer.cpp@9208dcf	87	Attack	Атаковать
+src/drawers/cCommandBarDrawer.cpp@9208dcf	88	Repair	Ремонт
+src/drawers/cCommandBarDrawer.cpp@9208dcf	89	Unload	Разгрузить
+src/drawers/cCommandBarDrawer.cpp@9208dcf	90	Deploy	Развернуть
+src/drawers/cCommandBarDrawer.cpp@9208dcf	91	Rally	Точка сбора
+src/drawers/cCommandBarDrawer.cpp@9208dcf	92	Release	Выпустить
+src/drawers/cMouseDrawer.cpp@9208dcf	179	Sight: unknown	Обзор: неизвестно
+src/drawers/cMouseDrawer.cpp@9208dcf	180	Range: unknown	Дальность: неизвестно
+src/drawers/cMouseDrawer.cpp@9208dcf	218	Usage: unknown	Расход: неизвестно
+src/drawers/cMouseDrawer.cpp@9208dcf	219	Power output: unknown	Выработка энергии: неизвестно
+src/drawers/cMouseDrawer.cpp@9208dcf	254	Spice storage: unknown	Запас пряности: неизвестно
+src/drawers/cOrderDrawer.cpp@9208dcf	61	ORDER	ЗАКАЗ
+src/drawers/cSideBarDrawer.cpp@9208dcf	128	HOUSE ATREIDES	ДОМ АТРЕЙДЕС
+src/drawers/cSideBarDrawer.cpp@9208dcf	131	HOUSE HARKONNEN	ДОМ ХАРКОННЕН
+src/drawers/cSideBarDrawer.cpp@9208dcf	134	HOUSE ORDOS	ДОМ ОРДОС
+src/drawers/cSideBarDrawer.cpp@9208dcf	136	UNKNOWN HOUSE	НЕИЗВЕСТНЫЙ ДОМ
+src/drawers/cSideBarDrawer.cpp@9208dcf	316	PWR	ЭНЕРГ.
+src/drawers/cSideBarDrawer.cpp@9208dcf	316	POWER	ЭНЕРГИЯ
+src/drawers/cSideBarDrawer.cpp@9208dcf	325	SPC	ПРЯН.
+src/drawers/cSideBarDrawer.cpp@9208dcf	325	SPICE	ПРЯНОСТЬ
+src/gameobjects/structures/cOrderProcesser.cpp@9208dcf	99	Frigate arriving...	Фрегат прибывает…
+src/gamestates/cChooseHouseState.cpp@9208dcf	120	не литерал	не литерал
+src/gamestates/cChooseHouseState.cpp@9208dcf	133	ATREIDES	АТРЕЙДЕС
+src/gamestates/cChooseHouseState.cpp@9208dcf	139	ORDOS	ОРДОС
+src/gamestates/cChooseHouseState.cpp@9208dcf	145	HARKONNEN	ХАРКОННЕН
+src/gamestates/cChooseHouseState.cpp@9208dcf	157	BACK	НАЗАД
+src/gamestates/cCreditsState.cpp@9208dcf	55	BACK	НАЗАД
+src/gamestates/cCreditsState.cpp@9208dcf	62	BACK	НАЗАД
+src/gamestates/cMainMenuState.cpp@9208dcf	153	Campaign	Кампания
+src/gamestates/cMainMenuState.cpp@9208dcf	157	Skirmish	Схватка
+src/gamestates/cMainMenuState.cpp@9208dcf	163	Multiplayer	Сетевая игра
+src/gamestates/cMainMenuState.cpp@9208dcf	164	Saved games	Сохранения
+src/gamestates/cMainMenuState.cpp@9208dcf	167	Settings	Настройки
+src/gamestates/cMainMenuState.cpp@9208dcf	170	Hall of Fame	Зал славы
+src/gamestates/cMainMenuState.cpp@9208dcf	171	Exit	Выход
+src/gamestates/cMainMenuState.cpp@9208dcf	185	CREDITS	АВТОРЫ
+src/gamestates/cMainMenuState.cpp@9208dcf	287	Powered by SDL2	На базе SDL2
+src/gamestates/cSelectMissionState.cpp@9208dcf	81	Back	Назад
+src/gamestates/cSelectYourNextConquestState.cpp@9208dcf	127	MISSION SELECT	ВЫБОР МИССИИ
+src/gamestates/cSelectYourNextConquestState.cpp@9208dcf	192	Three Houses came to Dune.	Три Дома прибыли на Дюну.
+src/gamestates/cSelectYourNextConquestState.cpp@9208dcf	197	To take control of the land.	Чтобы покорить её земли.
+src/gamestates/cSelectYourNextConquestState.cpp@9208dcf	203	It has now become divided.	Теперь Дюна разделена.
+src/gamestates/cSelectYourNextConquestState.cpp@9208dcf	423	SELECT YOUR NEXT REGION	ВЫБЕРИТЕ СЛЕДУЮЩИЙ РЕГИОН
+src/gamestates/cSelectYourNextConquestState.cpp@9208dcf	643	Select your next region.	Выберите следующий регион.
+src/gamestates/cSelectYourNextConquestState.cpp@9208dcf	665	Select your next region.	Выберите следующий регион.
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	268	Next	Далее
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	281	Back	Назад
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	336	BACK	НАЗАД
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	358	START	НАЧАТЬ
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	403	Skirmish	Схватка
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	418	Maps	Карты
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	426	Preview	Предпросмотр
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	503	Player	Игрок
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	504	House	Дом
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	505	Credits	Кредиты
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	506	Units	Войска
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	507	Team	Команда
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	601	Random	Случайно
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	610	Player	Игрок
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	616	AI	ИИ
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	701	YES	ДА
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	701	NO	НЕТ
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	705	Auto-detonate: -	Автоподрыв: -
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	714	YES	ДА
+src/gamestates/cSetupSkirmishState.cpp@9208dcf	714	NO	НЕТ
+src/managers/cDrawManager.cpp@9208dcf	271	OPTIONS	НАСТРОЙКИ
+src/managers/cDrawManager.cpp@9208dcf	362	SPEED	СКОРОСТЬ
+src/map/cPreviewMaps.cpp@9208dcf	253	Random map	Случайная карта
+src/map/cPreviewMaps.cpp@9208dcf	269	ERROR	ОШИБКА
+src/map/cPreviewMaps.cpp@9208dcf	273	SMALL	МАЛАЯ
+src/map/cPreviewMaps.cpp@9208dcf	276	MEDIUM	СРЕДНЯЯ
+src/map/cPreviewMaps.cpp@9208dcf	279	LARGE	БОЛЬШАЯ
+src/map/cPreviewMaps.cpp@9208dcf	281	HUGE	ОГРОМНАЯ
+src/mentat/AbstractMentat.cpp@9208dcf	182	Missions	Миссии
+src/mentat/AbstractMentat.cpp@9208dcf	495	Repeat	Повторить
+src/mentat/AbstractMentat.cpp@9208dcf	496	Next	Далее
+src/mentat/AbstractMentat.cpp@9208dcf	506	Missions	Миссии
+src/mentat/AtreidesMentat.cpp@9208dcf	36	Repeat	Повторить
+src/mentat/AtreidesMentat.cpp@9208dcf	46	Next	Далее
+src/mentat/BeneMentat.cpp@9208dcf	27	No	Нет
+src/mentat/BeneMentat.cpp@9208dcf	43	Yes	Да
+src/mentat/BeneMentat.cpp@9208dcf	73	Atreides	Атрейдес
+src/mentat/BeneMentat.cpp@9208dcf	74	Harkonnen	Харконнен
+src/mentat/BeneMentat.cpp@9208dcf	75	Ordos	Ордос
+src/mentat/HarkonnenMentat.cpp@9208dcf	18	Repeat	Повторить
+src/mentat/HarkonnenMentat.cpp@9208dcf	28	Next	Далее
+src/mentat/OrdosMentat.cpp@9208dcf	20	Repeat	Повторить
+src/mentat/OrdosMentat.cpp@9208dcf	30	Next	Далее
+src/player/cPlayer.cpp@9208dcf	730	Atreides	Атрейдесы
+src/player/cPlayer.cpp@9208dcf	733	Harkonnen	Харконнены
+src/player/cPlayer.cpp@9208dcf	736	Ordos	Ордос
+src/player/cPlayer.cpp@9208dcf	739	Sardaukar	Сардаукары
+src/player/cPlayer.cpp@9208dcf	742	Fremen	Фримены
+src/player/cPlayer.cpp@9208dcf	745	Mercenary	Наёмники
+src/player/cPlayer.cpp@9208dcf	748	No House	Без Дома
+src/player/cPlayer.cpp@9208dcf	751	Corrino	Коррино
+src/player/cPlayer.cpp@9208dcf	753	Unknown	Неизвестно
+src/player/cPlayer.cpp@9208dcf	2099	You lost a harvester.	Вы потеряли харвестер.
+src/player/cPlayer.cpp@9208dcf	2106	You have one harvester left.	У вас остался один харвестер.
+src/player/cPlayer.cpp@9208dcf	2119	No harvesters or refineries left!	Не осталось харвестеров и переработчиков!
+src/player/cPlayer.cpp@9208dcf	2140	No harvesters left. Reinforcements incoming...	Харвестеров не осталось. Прибывает подкрепление…
+src/save/SaveFileCodec.cpp@9208dcf	40	Save file is too large	Файл сохранения слишком большой
+src/save/SaveFileCodec.cpp@9208dcf	44	Save header is corrupted	Повреждён заголовок сохранения
+src/save/SaveFileCodec.cpp@9208dcf	53	Save header is corrupted	Повреждён заголовок сохранения
+src/save/SaveFileCodec.cpp@9208dcf	57	Save header is corrupted	Повреждён заголовок сохранения
+src/save/SaveFileCodec.cpp@9208dcf	60	Unsupported save version	Неподдерживаемая версия сохранения
+src/save/SaveFileCodec.cpp@9208dcf	65	Save checksum does not match	Контрольная сумма сохранения не совпадает
+src/save/SaveGameManager.cpp@9208dcf	375	Save header is corrupted	Повреждён заголовок сохранения
+src/save/SaveGameManager.cpp@9208dcf	381	Save name is corrupted	Имя сохранения повреждено
+src/save/SaveGameManager.cpp@9208dcf	386	Save header is corrupted	Повреждён заголовок сохранения
+src/save/SaveGameManager.cpp@9208dcf	404	Save header is corrupted	Повреждён заголовок сохранения
+src/save/SaveGameManager.cpp@9208dcf	409	Invalid map size in save	Некорректный размер карты в сохранении
+src/save/SaveGameManager.cpp@9208dcf	417	Invalid player list	Некорректный список игроков
+src/save/SaveGameManager.cpp@9208dcf	441	Player data is corrupted	Повреждены данные игроков
+src/save/SaveGameManager.cpp@9208dcf	447	Invalid player settings	Некорректные параметры игрока
+src/save/SaveGameManager.cpp@9208dcf	458	Invalid map data	Некорректные данные карты
+src/save/SaveGameManager.cpp@9208dcf	473	Map cells are corrupted	Ячейки карты повреждены
+src/save/SaveGameManager.cpp@9208dcf	479	Invalid terrain type	Некорректный тип местности
+src/save/SaveGameManager.cpp@9208dcf	487	Invalid structure list	Некорректный список зданий
+src/save/SaveGameManager.cpp@9208dcf	505	Structure data is corrupted	Повреждены данные зданий
+src/save/SaveGameManager.cpp@9208dcf	514	Invalid reference in structure data	Некорректная ссылка в данных здания
+src/save/SaveGameManager.cpp@9208dcf	523	Invalid unit list	Некорректный список юнитов
+src/save/SaveGameManager.cpp@9208dcf	554	Unit data is corrupted	Повреждены данные юнитов
+src/save/SaveGameManager.cpp@9208dcf	565	Invalid reference in unit data	Некорректная ссылка в данных юнита
+src/save/SaveGameManager.cpp@9208dcf	574	Invalid reinforcement list	Некорректный список подкреплений
+src/save/SaveGameManager.cpp@9208dcf	584	Reinforcement data is corrupted	Повреждены данные подкреплений
+src/save/SaveGameManager.cpp@9208dcf	590	Invalid reinforcement data	Некорректные данные подкрепления
+src/save/SaveGameManager.cpp@9208dcf	598	Invalid construction queue	Некорректная очередь строительства
+src/save/SaveGameManager.cpp@9208dcf	613	Construction queue is corrupted	Повреждена очередь строительства
+src/save/SaveGameManager.cpp@9208dcf	622	Invalid construction queue entry	Некорректная запись очереди строительства
+src/save/SaveGameManager.cpp@9208dcf	629	Invalid factory pad list	Некорректный список площадок заводов
+src/save/SaveGameManager.cpp@9208dcf	638	Factory pad data is corrupted	Повреждены данные площадок заводов
+src/save/SaveGameManager.cpp@9208dcf	682	Invalid factory pad data	Некорректные данные площадки завода
+src/save/SaveGameManager.cpp@9208dcf	688	Save data is incomplete	Данные сохранения неполны
+src/save/SaveGameManager.cpp@9208dcf	1022	Invalid structure in save	Некорректное здание в сохранении
+src/save/SaveGameManager.cpp@9208dcf	1289	Could not create the saves folder	Не удалось создать папку saves
+src/save/SaveGameManager.cpp@9208dcf	1300	Could not create temporary save file	Не удалось создать временный файл сохранения
+src/save/SaveGameManager.cpp@9208dcf	1309	Error writing save file	Ошибка записи сохранения
+src/save/SaveGameManager.cpp@9208dcf	1402	Quick Save	Быстрое сохранение
+src/save/SaveGameManager.cpp@9208dcf	1436	Quick Save	Быстрое сохранение
+src/save/SaveGameManager.cpp@9208dcf	1448	Invalid save slot number	Некорректный номер слота
+src/save/SaveGameManager.cpp@9208dcf	1454	Saving is only available during a mission	Сохранять можно только во время миссии
+src/save/SaveGameManager.cpp@9208dcf	1491	Invalid save slot number	Некорректный номер слота
+src/save/SaveGameManager.cpp@9208dcf	1497	Save file was not found	Сохранение не найдено
+src/save/SaveSlotName.hpp@9208dcf	96	Save 	Сохранение 
+src/save/SaveSlotsDialog.cpp@9208dcf	226	не литерал	не литерал
+src/save/SaveSlotsDialog.cpp@9208dcf	300	SAVED GAMES	СОХРАНЕНИЯ
+src/save/SaveSlotsDialog.cpp@9208dcf	390	Save	Сохранить
+src/save/SaveSlotsDialog.cpp@9208dcf	393	Load	Загрузить
+src/save/SaveSlotsDialog.cpp@9208dcf	396	Close	Закрыть
+src/save/SaveSlotsDialog.cpp@9208dcf	404	saved	сохранён
+src/sidebar/cBuildingListItem.cpp@9208dcf	407	ERROR: UNKNOWN TYPE	ОШИБКА: НЕИЗВЕСТНЫЙ ТИП
+src/sidebar/cBuildingListItem.cpp@9208dcf	446	Unknown type.	Неизвестный тип.
+src/utils/cIniGameRessouces.cpp@9208dcf	103	Carry-All	Транспортник
+src/utils/cIniGameRessouces.cpp@9208dcf	122	Ornithopter	Орнитоптер
+src/utils/cIniGameRessouces.cpp@9208dcf	141	Devastator	Девастатор
+src/utils/cIniGameRessouces.cpp@9208dcf	158	Harvester	Харвестер
+src/utils/cIniGameRessouces.cpp@9208dcf	177	Tank	Танк
+src/utils/cIniGameRessouces.cpp@9208dcf	200	Siege Tank	Осадный танк
+src/utils/cIniGameRessouces.cpp@9208dcf	215	MCV	Мобильная база
+src/utils/cIniGameRessouces.cpp@9208dcf	233	Deviator	Девиатор
+src/utils/cIniGameRessouces.cpp@9208dcf	254	Launcher	Ракетная установка
+src/utils/cIniGameRessouces.cpp@9208dcf	274	Quad	Квад
+src/utils/cIniGameRessouces.cpp@9208dcf	294	Trike	Трайк
+src/utils/cIniGameRessouces.cpp@9208dcf	304	Raider Trike	Рейдерский трайк
+src/utils/cIniGameRessouces.cpp@9208dcf	330	Frigate	Фрегат
+src/utils/cIniGameRessouces.cpp@9208dcf	359	Sonic Tank	Звуковой танк
+src/utils/cIniGameRessouces.cpp@9208dcf	381	Soldier	Солдат
+src/utils/cIniGameRessouces.cpp@9208dcf	405	Light Infantry	Отряд пехоты
+src/utils/cIniGameRessouces.cpp@9208dcf	414	Trooper	Ракетчик
+src/utils/cIniGameRessouces.cpp@9208dcf	438	Troopers	Отряд ракетчиков
+src/utils/cIniGameRessouces.cpp@9208dcf	463	Fremen (1)	Фримен
+src/utils/cIniGameRessouces.cpp@9208dcf	484	Fremen (3)	Отряд фрименов
+src/utils/cIniGameRessouces.cpp@9208dcf	512	Saboteur	Диверсант
+src/utils/cIniGameRessouces.cpp@9208dcf	533	Sandworm	Песчаный червь
+src/utils/cIniGameRessouces.cpp@9208dcf	754	Saboteur	Диверсант
+src/utils/cIniGameRessouces.cpp@9208dcf	768	Fremen	Фримены
+src/utils/cIniGameRessouces.cpp@9208dcf	787	Death Hand	Рука Смерти
+src/utils/cIniGameRessouces.cpp@9208dcf	1038	Upgrade	Улучшение
+src/utils/cIniGameRessouces.cpp@9208dcf	1056	Build 4 concrete slabs at once	Укладка плит 2×2
+src/utils/cIniGameRessouces.cpp@9208dcf	1073	Build Rocket Turret	Ракетные башни
+src/utils/cIniGameRessouces.cpp@9208dcf	1090	Build Quad at Light Factory	Квады на лёгком заводе
+src/utils/cIniGameRessouces.cpp@9208dcf	1109	Build MCV at Heavy Factory	Мобильные базы на тяжёлом заводе
+src/utils/cIniGameRessouces.cpp@9208dcf	1126	Build Rocket Launcher at Heavy Factory	Ракетные установки на тяжёлом заводе
+src/utils/cIniGameRessouces.cpp@9208dcf	1142	Build Siege Tank at Heavy Factory	Осадные танки на тяжёлом заводе
+src/utils/cIniGameRessouces.cpp@9208dcf	1158	Build Siege Tank at Heavy Factory	Осадные танки на тяжёлом заводе
+src/utils/cIniGameRessouces.cpp@9208dcf	1173	Build Ornithopter at Hi-Tech	Орнитоптеры на авиазаводе
+src/utils/cIniGameRessouces.cpp@9208dcf	1190	Build Troopers at WOR	Ракетчики в военной академии
+src/utils/cIniGameRessouces.cpp@9208dcf	1207	Build Infantry at Barracks	Пехота в казармах
+src/utils/cIniGameRessouces.cpp@9208dcf	1243	Unknown	Неизвестно
+src/utils/cIniGameRessouces.cpp@9208dcf	1254	Concrete Slab	Бетонная плита
+src/utils/cIniGameRessouces.cpp@9208dcf	1263	4 Concrete Slabs	Бетонная площадка 2×2
+src/utils/cIniGameRessouces.cpp@9208dcf	1274	Concrete Wall	Бетонная стена
+src/utils/cIniGameRessouces.cpp@9208dcf	1289	Windtrap	Ветроловушка
+src/utils/cIniGameRessouces.cpp@9208dcf	1306	Heavy Factory	Тяжёлый завод
+src/utils/cIniGameRessouces.cpp@9208dcf	1322	Hi-Tech	Авиазавод
+src/utils/cIniGameRessouces.cpp@9208dcf	1338	Repair Facility	Ремонтный центр
+src/utils/cIniGameRessouces.cpp@9208dcf	1353	Palace	Дворец
+src/utils/cIniGameRessouces.cpp@9208dcf	1370	Light Factory	Лёгкий завод
+src/utils/cIniGameRessouces.cpp@9208dcf	1393	Outpost	Командный пост
+src/utils/cIniGameRessouces.cpp@9208dcf	1414	Barracks	Казармы
+src/utils/cIniGameRessouces.cpp@9208dcf	1430	WOR	Военная академия
+src/utils/cIniGameRessouces.cpp@9208dcf	1448	Spice Storage Silo	Хранилище пряности
+src/utils/cIniGameRessouces.cpp@9208dcf	1464	Spice Refinery	Переработчик пряности
+src/utils/cIniGameRessouces.cpp@9208dcf	1482	Construction Yard	Стройбаза
+src/utils/cIniGameRessouces.cpp@9208dcf	1498	Starport	Космопорт
+src/utils/cIniGameRessouces.cpp@9208dcf	1514	House of IX	Техноцентр Икс
+src/utils/cIniGameRessouces.cpp@9208dcf	1528	Gun Turret	Пушечная башня
+src/utils/cIniGameRessouces.cpp@9208dcf	1543	Rocket Turret	Ракетная башня

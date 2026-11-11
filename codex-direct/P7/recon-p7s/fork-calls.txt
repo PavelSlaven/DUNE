@@ -1,0 +1,235 @@
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:2048:                localization::text("Game saved.", "Игра сохранена."),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:2061:                localization::text("Game loaded.", "Игра загружена."),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:2097:            humanPlayer.addNotification(localization::text("Music off", "Музыка выключена"), eNotificationType::NEUTRAL);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:2101:            humanPlayer.addNotification(localization::text("Music on", "Музыка включена"), eNotificationType::NEUTRAL);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:2541:            ? localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:2545:            : localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:2564:        const std::string prompt = localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/controls/mousestates/cMousePlaceState.cpp:59:        const char *message = localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/controls/mousestates/cMousePlaceState.cpp:63:            message = localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/controls/mousestates/cMousePlaceState.cpp:68:            message = localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/controls/mousestates/cMousePlaceState.cpp:73:            message = localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/controls/mousestates/cMousePlaceState.cpp:78:            message = localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/controls/mousestates/cMousePlaceState.cpp:83:            message = localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/controls/mousestates/cMousePlaceState.cpp:88:            message = localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditAccess.cpp:209:        localization::text("Saved. Restart the game.", "Сохранено. Перезапустите игру."));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditAccess.cpp:834:                localization::text("Gameplay_theme_with_an_extremely_long_track_title_for_the_layout_audit.ogg",
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditAccess.cpp:893:            drawManager->setMessage(localization::text("Construction complete: the Windtrap is ready to be placed",
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditAccess.cpp:898:            players[HUMAN].addNotification(localization::text("Neutral notification", "Обычное уведомление"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditAccess.cpp:900:            players[HUMAN].addNotification(localization::text("Priority notification: Harvester is full",
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditAccess.cpp:903:            players[HUMAN].addNotification(localization::text("Bad news: a structure is under attack",
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/CreditsDrawer.cpp:230:        localization::text("CREDITS", "КРЕДИТЫ"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cBuildingListDrawer.cpp:53:    if (name == localization::text("Hi-Tech", "Авиазавод")) return localization::text("Hi-Tech", "Авиазавод");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cBuildingListDrawer.cpp:54:    if (name == localization::text("Spice Refinery", "Переработчик пряности")) return localization::text("Refinery", "Переработчик");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cBuildingListDrawer.cpp:55:    if (name == localization::text("MCV", "Мобильная база")) return localization::text("MCV", "Мобильная база");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cBuildingListDrawer.cpp:56:    if (name == localization::text("Light Infantry", "Отряд пехоты")) return localization::text("Infantry", "Пехота");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cBuildingListDrawer.cpp:57:    if (name == localization::text("Troopers", "Отряд ракетчиков")) return localization::text("Troopers", "Ракетчики");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cBuildingListDrawer.cpp:68:    m_readyLabel(localization::text("READY", "ГОТОВО"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cBuildingListDrawer.cpp:357:                    m_smallTextDrawer->drawTextCenteredInBox(localization::text("Upgrade", "Улучшение"), iDrawX, iDrawY, withOfIcon, heightOfIcon, red);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cBuildingListDrawer.cpp:369:                        localization::text("OCCUPIED", "ЗАНЯТО"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cCommandBarDrawer.cpp:86:        {Command::Move, layout.actions[0], localization::text("Move", "Переместить"), localization::text("LMB", "ЛКМ"), isMoveCommandEnabled(!selectedUnits.empty()), false},
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cCommandBarDrawer.cpp:87:        {Command::Attack, layout.actions[1], localization::text("Attack", "Атаковать"), commandBindingDisplayName(game.m_commandBindings.attack, localization::isEnglish()), isAttackCommandEnabled(hasAttackCapableUnit()), false},
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cCommandBarDrawer.cpp:88:        {Command::Repair, layout.actions[2], localization::text("Repair", "Ремонт"), commandBindingDisplayName(game.m_commandBindings.repair, localization::isEnglish()), isRepairCommandEnabled(), false},
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cCommandBarDrawer.cpp:89:        {Command::Unload, layout.actions[3], localization::text("Unload", "Разгрузить"), commandBindingDisplayName(game.m_commandBindings.unload, localization::isEnglish()), isUnloadCommandEnabled(hasUnloadableHarvester()), false},
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cCommandBarDrawer.cpp:90:        {Command::Deploy, layout.actions[4], localization::text("Deploy", "Развернуть"), commandBindingDisplayName(game.m_commandBindings.deploy, localization::isEnglish()), isDeployCommandEnabled(hasSelectedMcv()), false},
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cCommandBarDrawer.cpp:91:        {Command::Rally, layout.actions[5], localization::text("Rally", "Точка сбора"), commandBindingDisplayName(game.m_commandBindings.rally, localization::isEnglish()), isRallyCommandEnabled(ownsSelectedStructure, ownsSelectedStructure && selectedStructure->canSpawnUnits()), false},
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cCommandBarDrawer.cpp:92:        {Command::Release, layout.actions[6], localization::text("Release", "Выпустить"), commandBindingDisplayName(game.m_commandBindings.release, localization::isEnglish()), isReleaseCommandEnabled(ownsSelectedStructure, ownsSelectedStructure && selectedStructure->getType() == REPAIR), false}
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMouseDrawer.cpp:179:        textWriter->write(localization::text("Sight: unknown", "Обзор: неизвестно"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMouseDrawer.cpp:180:        textWriter->write(localization::text("Range: unknown", "Дальность: неизвестно"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMouseDrawer.cpp:218:        textWriter->write(localization::text("Usage: unknown", "Расход: неизвестно"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMouseDrawer.cpp:219:        textWriter->write(localization::text("Power output: unknown", "Выработка энергии: неизвестно"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMouseDrawer.cpp:254:        textWriter->write(localization::text("Spice storage: unknown", "Запас пряности: неизвестно"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cOrderDrawer.cpp:61:        localization::text("ORDER", "ЗАКАЗ"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cSideBarDrawer.cpp:128:        return localization::text("HOUSE ATREIDES", "ДОМ АТРЕЙДЕС");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cSideBarDrawer.cpp:131:        return localization::text("HOUSE HARKONNEN", "ДОМ ХАРКОННЕН");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cSideBarDrawer.cpp:134:        return localization::text("HOUSE ORDOS", "ДОМ ОРДОС");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cSideBarDrawer.cpp:136:    return localization::text("UNKNOWN HOUSE", "НЕИЗВЕСТНЫЙ ДОМ");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cSideBarDrawer.cpp:316:        layout.powerMeter.getWidth() < 140 ? localization::text("PWR", "ЭНЕРГ.") : localization::text("POWER", "ЭНЕРГИЯ"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cSideBarDrawer.cpp:325:        layout.spiceMeter.getWidth() < 140 ? localization::text("SPC", "ПРЯН.") : localization::text("SPICE", "ПРЯНОСТЬ"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gameobjects/structures/cOrderProcesser.cpp:99:            drawManager->setMessage(localization::text("Frigate arriving...", "Фрегат прибывает…"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cChooseHouseState.cpp:120:    const std::string title = localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cChooseHouseState.cpp:133:        localization::text("ATREIDES", "АТРЕЙДЕС"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cChooseHouseState.cpp:139:        localization::text("ORDOS", "ОРДОС"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cChooseHouseState.cpp:145:        localization::text("HARKONNEN", "ХАРКОННЕН"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cChooseHouseState.cpp:157:    const std::string backLabel = localization::text("BACK", "НАЗАД");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cCreditsState.cpp:55:        localization::text("BACK", "НАЗАД")) + 24);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cCreditsState.cpp:62:            .withLabel(localization::text("BACK", "НАЗАД"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:153:    addButton(localization::text("Campaign", "Кампания"), true, [this]() {
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:157:    addButton(localization::text("Skirmish", "Схватка"), true, [this]() {
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:163:    addButton(localization::text("Multiplayer", "Сетевая игра"), false, nullptr);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:164:    addButton(localization::text("Saved games", "Сохранения"), SaveGameManager::hasAnySave(), [this]() {
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:167:    addButton(localization::text("Settings", "Настройки"), true, [this]() {
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:170:    addButton(localization::text("Hall of Fame", "Зал славы"), false, nullptr);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:171:    addButton(localization::text("Exit", "Выход"), true, [this]() {
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:185:        .withLabel(localization::text("CREDITS", "АВТОРЫ"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:287:        localization::text("Powered by SDL2", "На базе SDL2")
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSelectMissionState.cpp:81:            .withLabel(localization::text("Back", "Назад"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSelectYourNextConquestState.cpp:127:    const std::string missionSelectLabel = localization::text("MISSION SELECT", "ВЫБОР МИССИИ");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSelectYourNextConquestState.cpp:192:            drawManager->setMessage(localization::text("Three Houses came to Dune.", "Три Дома прибыли на Дюну."));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSelectYourNextConquestState.cpp:197:                drawManager->setMessage(localization::text("To take control of the land.", "Чтобы покорить её земли."));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSelectYourNextConquestState.cpp:203:                drawManager->setMessage(localization::text("It has now become divided.", "Теперь Дюна разделена."));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSelectYourNextConquestState.cpp:423:        localization::text("SELECT YOUR NEXT REGION", "ВЫБЕРИТЕ СЛЕДУЮЩИЙ РЕГИОН"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSelectYourNextConquestState.cpp:643:        drawManager->setMessage(localization::text("Select your next region.", "Выберите следующий регион."), true);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSelectYourNextConquestState.cpp:665:        drawManager->setMessage(localization::text("Select your next region.", "Выберите следующий регион."), true);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:268:        .withLabel(localization::text("Next", "Далее"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:281:            .withLabel(localization::text("Back", "Назад"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:336:            .withLabel(localization::text("BACK", "НАЗАД"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:358:            .withLabel(localization::text("START", "НАЧАТЬ"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:403:        localization::text("Skirmish", "Схватка"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:418:        localization::text("Maps", "Карты"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:426:        localization::text("Preview", "Предпросмотр"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:503:        localization::text("Player", "Игрок"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:504:        localization::text("House", "Дом"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:505:        localization::text("Credits", "Кредиты"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:506:        localization::text("Units", "Войска"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:507:        localization::text("Team", "Команда")
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:601:        : localization::text("Random", "Случайно");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:610:            localization::text("Player", "Игрок"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:616:            localization::text("AI", "ИИ"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:701:                                detonateBlooms ? localization::text("YES", "ДА") : localization::text("NO", "НЕТ")));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:705:            localization::text("Auto-detonate: -", "Автоподрыв: -"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cSetupSkirmishState.cpp:714:                            spawnBlooms ? localization::text("YES", "ДА") : localization::text("NO", "НЕТ")));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/managers/cDrawManager.cpp:271:        localization::text("OPTIONS", "НАСТРОЙКИ"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/managers/cDrawManager.cpp:362:        localization::text("SPEED", "СКОРОСТЬ"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:253:    firstSkirmishMap.name = localization::text("Random map", "Случайная карта");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:269:        return localization::text("ERROR", "ОШИБКА");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:273:        return localization::text("SMALL", "МАЛАЯ");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:276:        return localization::text("MEDIUM", "СРЕДНЯЯ");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:279:        return localization::text("LARGE", "БОЛЬШАЯ");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:281:    return localization::text("HUGE", "ОГРОМНАЯ");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/AbstractMentat.cpp:182:        const std::string label = localization::text("Missions", "Миссии");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/AbstractMentat.cpp:495:    include(*leftButton, localization::text("Repeat", "Повторить"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/AbstractMentat.cpp:496:    include(*rightButton, localization::text("Next", "Далее"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/AbstractMentat.cpp:506:            localization::text("Missions", "Миссии")
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/AtreidesMentat.cpp:36:            .withLabel(localization::text("Repeat", "Повторить"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/AtreidesMentat.cpp:46:            .withLabel(localization::text("Next", "Далее"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/BeneMentat.cpp:27:            .withLabel(localization::text("No", "Нет"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/BeneMentat.cpp:43:            .withLabel(localization::text("Yes", "Да"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/BeneMentat.cpp:73:            case ATREIDES: houseName = localization::text("Atreides", "Атрейдес"); break;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/BeneMentat.cpp:74:            case HARKONNEN: houseName = localization::text("Harkonnen", "Харконнен"); break;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/BeneMentat.cpp:75:            case ORDOS: houseName = localization::text("Ordos", "Ордос"); break;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/HarkonnenMentat.cpp:18:            .withLabel(localization::text("Repeat", "Повторить"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/HarkonnenMentat.cpp:28:            .withLabel(localization::text("Next", "Далее"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/OrdosMentat.cpp:20:            .withLabel(localization::text("Repeat", "Повторить"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/mentat/OrdosMentat.cpp:30:            .withLabel(localization::text("Next", "Далее"))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:730:        return localization::text("Atreides", "Атрейдесы");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:733:        return localization::text("Harkonnen", "Харконнены");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:736:        return localization::text("Ordos", "Ордос");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:739:        return localization::text("Sardaukar", "Сардаукары");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:742:        return localization::text("Fremen", "Фримены");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:745:        return localization::text("Mercenary", "Наёмники");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:748:        return localization::text("No House", "Без Дома");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:751:        return localization::text("Corrino", "Коррино");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:753:    return localization::text("Unknown", "Неизвестно");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:2099:        addNotification(localization::text("You lost a harvester.", "Вы потеряли харвестер."), eNotificationType::PRIORITY);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:2106:            addNotification(localization::text("You have one harvester left.", "У вас остался один харвестер."), eNotificationType::NEUTRAL);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:2119:                addNotification(localization::text("No harvesters or refineries left!", "Не осталось харвестеров и переработчиков!"), eNotificationType::BAD);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/player/cPlayer.cpp:2140:            addNotification(localization::text("No harvesters left. Reinforcements incoming...", "Харвестеров не осталось. Прибывает подкрепление…"), BAD);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveFileCodec.cpp:40:        return {"", localization::text("Save file is too large", "Файл сохранения слишком большой")};
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveFileCodec.cpp:44:        return {"", localization::text("Save header is corrupted", "Повреждён заголовок сохранения")};
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveFileCodec.cpp:53:        return {"", localization::text("Save header is corrupted", "Повреждён заголовок сохранения")};
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveFileCodec.cpp:57:        return {"", localization::text("Save header is corrupted", "Повреждён заголовок сохранения")};
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveFileCodec.cpp:60:        return {"", localization::text("Unsupported save version", "Неподдерживаемая версия сохранения")};
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveFileCodec.cpp:65:        return {"", localization::text("Save checksum does not match", "Контрольная сумма сохранения не совпадает")};
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:375:        error = localization::text("Save header is corrupted", "Повреждён заголовок сохранения");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:381:            error = localization::text("Save name is corrupted", "Имя сохранения повреждено");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:386:        error = localization::text("Save header is corrupted", "Повреждён заголовок сохранения");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:404:        error = localization::text("Save header is corrupted", "Повреждён заголовок сохранения");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:409:        error = localization::text("Invalid map size in save", "Некорректный размер карты в сохранении");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:417:        error = localization::text("Invalid player list", "Некорректный список игроков");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:441:            error = localization::text("Player data is corrupted", "Повреждены данные игроков");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:447:            error = localization::text("Invalid player settings", "Некорректные параметры игрока");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:458:        error = localization::text("Invalid map data", "Некорректные данные карты");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:473:            error = localization::text("Map cells are corrupted", "Ячейки карты повреждены");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:479:            error = localization::text("Invalid terrain type", "Некорректный тип местности");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:487:        error = localization::text("Invalid structure list", "Некорректный список зданий");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:505:            error = localization::text("Structure data is corrupted", "Повреждены данные зданий");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:514:            error = localization::text("Invalid reference in structure data", "Некорректная ссылка в данных здания");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:523:        error = localization::text("Invalid unit list", "Некорректный список юнитов");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:554:            error = localization::text("Unit data is corrupted", "Повреждены данные юнитов");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:565:            error = localization::text("Invalid reference in unit data", "Некорректная ссылка в данных юнита");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:574:        error = localization::text("Invalid reinforcement list", "Некорректный список подкреплений");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:584:            error = localization::text("Reinforcement data is corrupted", "Повреждены данные подкреплений");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:590:            error = localization::text("Invalid reinforcement data", "Некорректные данные подкрепления");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:598:        error = localization::text("Invalid construction queue", "Некорректная очередь строительства");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:613:            error = localization::text("Construction queue is corrupted", "Повреждена очередь строительства");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:622:            error = localization::text("Invalid construction queue entry", "Некорректная запись очереди строительства");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:629:        error = localization::text("Invalid factory pad list", "Некорректный список площадок заводов");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:638:            error = localization::text("Factory pad data is corrupted", "Повреждены данные площадок заводов");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:682:            error = localization::text("Invalid factory pad data", "Некорректные данные площадки завода");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:688:        error = localization::text("Save data is incomplete", "Данные сохранения неполны");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:1022:            error = localization::text("Invalid structure in save", "Некорректное здание в сохранении");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:1289:        error = localization::text("Could not create the saves folder", "Не удалось создать папку saves");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:1300:            error = localization::text("Could not create temporary save file", "Не удалось создать временный файл сохранения");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:1309:            error = localization::text("Error writing save file", "Ошибка записи сохранения");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:1402:            ? localization::text("Quick Save", "Быстрое сохранение")
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:1436:        : localization::text("Quick Save", "Быстрое сохранение");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:1448:        errorMessage = localization::text("Invalid save slot number", "Некорректный номер слота");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:1454:        errorMessage = localization::text("Saving is only available during a mission", "Сохранять можно только во время миссии");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:1491:        errorMessage = localization::text("Invalid save slot number", "Некорректный номер слота");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveGameManager.cpp:1497:        errorMessage = localization::text("Save file was not found", "Сохранение не найдено");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveSlotName.hpp:96:    return std::string(localization::text("Save ", "Сохранение ")) +
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveSlotsDialog.cpp:226:        m_status = localization::text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveSlotsDialog.cpp:300:        localization::text("SAVED GAMES", "СОХРАНЕНИЯ"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveSlotsDialog.cpp:390:    drawButton(m_saveRect, localization::text("Save", "Сохранить"), m_allowSaving);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveSlotsDialog.cpp:393:        localization::text("Load", "Загрузить"),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveSlotsDialog.cpp:396:    drawButton(m_closeRect, localization::text("Close", "Закрыть"), true);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/save/SaveSlotsDialog.cpp:404:            m_status.find(localization::text("saved", "сохранён")) != std::string::npos
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/sidebar/cBuildingListItem.cpp:407:        msg = localization::text("ERROR: UNKNOWN TYPE", "ОШИБКА: НЕИЗВЕСТНЫЙ ТИП");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/sidebar/cBuildingListItem.cpp:446:    return std::string(localization::text("Unknown type.", "Неизвестный тип."));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:103:    strcpy(sUnitInfo[CARRYALL].name, localization::text("Carry-All", "Транспортник"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:122:    strcpy(sUnitInfo[ORNITHOPTER].name, localization::text("Ornithopter", "Орнитоптер"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:141:    strcpy(sUnitInfo[DEVASTATOR].name, localization::text("Devastator", "Девастатор"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:158:    strcpy(sUnitInfo[HARVESTER].name, localization::text("Harvester", "Харвестер"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:177:    strcpy(sUnitInfo[TANK].name, localization::text("Tank", "Танк"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:200:    strcpy(sUnitInfo[SIEGETANK].name, localization::text("Siege Tank", "Осадный танк"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:215:    strcpy(sUnitInfo[MCV].name, localization::text("MCV", "Мобильная база"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:233:    strcpy(sUnitInfo[DEVIATOR].name, localization::text("Deviator", "Девиатор"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:254:    strcpy(sUnitInfo[LAUNCHER].name, localization::text("Launcher", "Ракетная установка"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:274:    strcpy(sUnitInfo[QUAD].name, localization::text("Quad", "Квад"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:294:    strcpy(sUnitInfo[TRIKE].name, localization::text("Trike", "Трайк"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:304:    strcpy(sUnitInfo[RAIDER].name, localization::text("Raider Trike", "Рейдерский трайк"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:330:    strcpy(sUnitInfo[FRIGATE].name, localization::text("Frigate", "Фрегат"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:359:    strcpy(sUnitInfo[SONICTANK].name, localization::text("Sonic Tank", "Звуковой танк"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:381:    strcpy(sUnitInfo[SOLDIER].name, localization::text("Soldier", "Солдат"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:405:    strcpy(sUnitInfo[INFANTRY].name, localization::text("Light Infantry", "Отряд пехоты"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:414:    strcpy(sUnitInfo[TROOPER].name, localization::text("Trooper", "Ракетчик"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:438:    strcpy(sUnitInfo[TROOPERS].name, localization::text("Troopers", "Отряд ракетчиков"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:463:    strcpy(sUnitInfo[UNIT_FREMEN_ONE].name, localization::text("Fremen (1)", "Фримен"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:484:    strcpy(sUnitInfo[UNIT_FREMEN_THREE].name, localization::text("Fremen (3)", "Отряд фрименов"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:512:    strcpy(sUnitInfo[SABOTEUR].name, localization::text("Saboteur", "Диверсант"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:533:    strcpy(sUnitInfo[SANDWORM].name, localization::text("Sandworm", "Песчаный червь"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:754:    strcpy(sSpecialInfo[SPECIAL_SABOTEUR].description, localization::text("Saboteur", "Диверсант"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:768:    strcpy(sSpecialInfo[SPECIAL_FREMEN].description, localization::text("Fremen", "Фримены"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:787:    strcpy(sSpecialInfo[SPECIAL_DEATHHAND].description, localization::text("Death Hand", "Рука Смерти"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1038:        strcpy(sUpgradeInfo[i].description, localization::text("Upgrade", "Улучшение"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1056:    strcpy(sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].description, localization::text("Build 4 concrete slabs at once", "Укладка плит 2×2"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1073:    strcpy(sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].description, localization::text("Build Rocket Turret", "Ракетные башни"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1090:    strcpy(sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].description, localization::text("Build Quad at Light Factory", "Квады на лёгком заводе"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1109:    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].description, localization::text("Build MCV at Heavy Factory", "Мобильные базы на тяжёлом заводе"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1126:    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].description, localization::text("Build Rocket Launcher at Heavy Factory", "Ракетные установки на тяжёлом заводе"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1142:    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].description, localization::text("Build Siege Tank at Heavy Factory", "Осадные танки на тяжёлом заводе"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1158:    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].description, localization::text("Build Siege Tank at Heavy Factory", "Осадные танки на тяжёлом заводе"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1173:    strcpy(sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].description, localization::text("Build Ornithopter at Hi-Tech", "Орнитоптеры на авиазаводе"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1190:    strcpy(sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].description, localization::text("Build Troopers at WOR", "Ракетчики в военной академии"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1207:    strcpy(sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].description, localization::text("Build Infantry at Barracks", "Пехота в казармах"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1243:        strcpy(structureInfo.name, localization::text("Unknown", "Неизвестно"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1254:    strcpy(sStructureInfo[SLAB1].name, localization::text("Concrete Slab", "Бетонная плита"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1263:    strcpy(sStructureInfo[SLAB4].name, localization::text("4 Concrete Slabs", "Бетонная площадка 2×2"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1274:    strcpy(sStructureInfo[WALL].name, localization::text("Concrete Wall", "Бетонная стена"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1289:    strcpy(sStructureInfo[WINDTRAP].name, localization::text("Windtrap", "Ветроловушка"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1306:    strcpy(sStructureInfo[HEAVYFACTORY].name, localization::text("Heavy Factory", "Тяжёлый завод"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1322:    strcpy(sStructureInfo[HIGHTECH].name, localization::text("Hi-Tech", "Авиазавод"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1338:    strcpy(sStructureInfo[REPAIR].name, localization::text("Repair Facility", "Ремонтный центр"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1353:    strcpy(sStructureInfo[PALACE].name, localization::text("Palace", "Дворец"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1370:    strcpy(sStructureInfo[LIGHTFACTORY].name, localization::text("Light Factory", "Лёгкий завод"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1393:    strcpy(sStructureInfo[RADAR].name, localization::text("Outpost", "Командный пост"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1414:    strcpy(sStructureInfo[BARRACKS].name, localization::text("Barracks", "Казармы"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1430:    strcpy(sStructureInfo[WOR].name, localization::text("WOR", "Военная академия"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1448:    strcpy(sStructureInfo[SILO].name, localization::text("Spice Storage Silo", "Хранилище пряности"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1464:    strcpy(sStructureInfo[REFINERY].name, localization::text("Spice Refinery", "Переработчик пряности"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1482:    strcpy(sStructureInfo[CONSTYARD].name, localization::text("Construction Yard", "Стройбаза"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1498:    strcpy(sStructureInfo[STARPORT].name, localization::text("Starport", "Космопорт"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1514:    strcpy(sStructureInfo[IX].name, localization::text("House of IX", "Техноцентр Икс"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1528:    strcpy(sStructureInfo[TURRET].name, localization::text("Gun Turret", "Пушечная башня"));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp:1543:    strcpy(sStructureInfo[RTURRET].name, localization::text("Rocket Turret", "Ракетная башня"));

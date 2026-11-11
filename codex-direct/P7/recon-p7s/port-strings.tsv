@@ -1,0 +1,78 @@
+путь	строка	литералы
+src/drawers/cBuildingListDrawer.cpp@dc6e5ff	605	Max
+src/drawers/cBuildingListDrawer.cpp@dc6e5ff	606	built
+src/drawers/cStructureDrawer.cpp@dc6e5ff	262	degrees = {:.1f}, faceAngle = {}
+src/game/cGame_logic.cpp@dc6e5ff	1520	Screenshot saved.
+src/game/cGame_logic.cpp@dc6e5ff	1537	Music toggle successfully
+src/game/cGame_logic.cpp@dc6e5ff	1542	Music volume down
+src/game/cGame_logic.cpp@dc6e5ff	1547	Music volume up
+src/game/cGame_logic.cpp@dc6e5ff	1553	Game speed up
+src/game/cGame_logic.cpp@dc6e5ff	1559	Game speed down
+src/gamestates/cCreditsState.cpp@dc6e5ff	89	Back
+src/gamestates/cEditorState.cpp@dc6e5ff	241	size
+src/gamestates/cGamePlaying.cpp@dc6e5ff	473	MouseCell {}
+src/gamestates/cGamePlaying.cpp@dc6e5ff	479	FPS/REST: {}/{}
+src/gamestates/cMainMenuState.cpp@dc6e5ff	76	DEBUG
+src/gamestates/cMainMenuState.cpp@dc6e5ff	183	CREDITS
+src/gamestates/cNewmapEditorState.cpp@dc6e5ff	94	Name your map:
+src/gamestates/cNewmapEditorState.cpp@dc6e5ff	113	Name of author:
+src/gamestates/cNewmapEditorState.cpp@dc6e5ff	132	Description:
+src/gamestates/cNewmapEditorState.cpp@dc6e5ff	151	Width size:
+src/gamestates/cNewmapEditorState.cpp@dc6e5ff	176	Height size:
+src/gamestates/cNewmapEditorState.cpp@dc6e5ff	201	Random:
+src/gamestates/cNewmapEditorState.cpp@dc6e5ff	229	Dune 2 seed: 
+src/gamestates/cNewmapEditorState.cpp@dc6e5ff	251	Return to menu
+src/gamestates/cNewmapEditorState.cpp@dc6e5ff	268	Create map
+src/gamestates/cOptionsState.cpp@dc6e5ff	123	Main menu
+src/gamestates/cOptionsState.cpp@dc6e5ff	137	Quit game
+src/gamestates/cOptionsState.cpp@dc6e5ff	152	Back
+src/gamestates/cOptionsState.cpp@dc6e5ff	167	Save game
+src/gamestates/cOptionsState.cpp@dc6e5ff	179	Load game
+src/gamestates/cOptionsState.cpp@dc6e5ff	193	Mission select
+src/gamestates/cOptionsState.cpp@dc6e5ff	208	Cheat mode enabled
+src/gamestates/cOptionsState.cpp@dc6e5ff	221	Music
+src/gamestates/cOptionsState.cpp@dc6e5ff	247	Volume
+src/gamestates/cOptionsState.cpp@dc6e5ff	272	Sound
+src/gamestates/cOptionsState.cpp@dc6e5ff	298	Volume
+src/gamestates/cOptionsState.cpp@dc6e5ff	323	Game speed
+src/gamestates/cOptionsState.cpp@dc6e5ff	352	FOW
+src/gamestates/cOptionsState.cpp@dc6e5ff	380	Game scale
+src/gamestates/cOptionsState.cpp@dc6e5ff	428	Object size
+src/gamestates/cOptionsState.cpp@dc6e5ff	475	Low power icon
+src/gamestates/cOptionsState.cpp@dc6e5ff	503	Apply
+src/gamestates/cOptionsState.cpp@dc6e5ff	529	More settings
+src/gamestates/cOptionsState.cpp@dc6e5ff	579	Saved. Restart the game.
+src/gamestates/cOptionsState.cpp@dc6e5ff	582	Could not save preferences.ini
+src/gamestates/cScoringState.cpp@dc6e5ff	64	MISSION REPORT
+src/gamestates/cScoringState.cpp@dc6e5ff	69	Mission time: {:02}:{:02}
+src/gamestates/cScoringState.cpp@dc6e5ff	109	Click to continue
+src/gamestates/cSelectMissionState.cpp@dc6e5ff	113	CONTINUE
+src/gamestates/cSelectMissionState.cpp@dc6e5ff	136	MISSION {}
+src/gamestates/cSelectMissionState.cpp@dc6e5ff	157	Back
+src/gamestates/cSelectYourNextConquestState.cpp@dc6e5ff	167	Mission select
+src/gamestates/cSelectYourNextConquestState.cpp@dc6e5ff	227	3 Houses have come to Dune.
+src/gamestates/cSelectYourNextConquestState.cpp@dc6e5ff	232	To take control of the land.
+src/gamestates/cSelectYourNextConquestState.cpp@dc6e5ff	238	That has become divided.
+src/gamestates/cSelectYourNextConquestState.cpp@dc6e5ff	709	Select your next region.
+src/gamestates/cSelectYourNextConquestState.cpp@dc6e5ff	731	Select your next region.
+src/gamestates/cSelectYourNextConquestState.cpp@dc6e5ff	901	region {}
+src/gamestates/cSetupSkirmishState.cpp@dc6e5ff	261	Next
+src/gamestates/cSetupSkirmishState.cpp@dc6e5ff	271	Previous
+src/gamestates/cSetupSkirmishState.cpp@dc6e5ff	324	Back
+src/gamestates/cSetupSkirmishState.cpp@dc6e5ff	344	Start
+src/gamestates/cSetupSkirmishState.cpp@dc6e5ff	361	Surprise me
+src/gamestates/cSetupSkirmishState.cpp@dc6e5ff	377	New Map
+src/gamestates/cSetupSkirmishState.cpp@dc6e5ff	391	Modify
+src/gamestates/cSetupSkirmishState.cpp@dc6e5ff	668	Startpoints: {}
+src/gamestates/cSetupSkirmishState.cpp@dc6e5ff	737	Auto-detonate : -
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp@dc6e5ff	72	Malformed command: {}
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp@dc6e5ff	79	Unknown command: {}
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp@dc6e5ff	84	Help mode.
+src/managers/cDrawManager.cpp@dc6e5ff	210	Units {}/{}
+src/managers/cDrawManager.cpp@dc6e5ff	211	Structures {}/{}
+src/managers/cDrawManager.cpp@dc6e5ff	212	Bullets {}/{}
+src/managers/cDrawManager.cpp@dc6e5ff	213	Particles {}/{}
+src/managers/cDrawManager.cpp@dc6e5ff	214	Visible particles BOTTOM: {}/ TOP: {}
+src/managers/cDrawManager.cpp@dc6e5ff	333	OPTIONS
+src/sidebar/cSideBar.cpp@dc6e5ff	108	Unable to create more.
+src/sidebar/cSideBar.cpp@dc6e5ff	113	Unable to create more.
