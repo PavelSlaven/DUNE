@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>3c — выбор миссии</title>
+<link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
+<style>
+:root { --ww: 640px; --wh: 440px; --left: 236px; --crest: 150px; --fs: 15px; --tile: 104px; --th: 88px; --tfs: 19px; --bh: 40px; }
+.art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png"); background-position: 58% 50%; filter: blur(3px); transform: scale(1.03); }
+.scrim { background: rgba(4,6,8,.78); }
+.win { left: calc(50% - var(--ww) / 2); top: calc(50% - var(--wh) / 2); width: var(--ww); height: var(--wh); display: flex; flex-direction: column; }
+.hd { height: calc(var(--tfs) + 22px); font-size: var(--tfs); }
+.body { flex: 1; display: flex; min-height: 0; }
+.left { width: var(--left); padding: calc(var(--fs) * .9); align-items: center; gap: calc(var(--fs) * .55); border-right: 1px solid #06080a; box-shadow: 1px 0 0 rgba(255,255,255,.05); }
+.left img { width: var(--crest); height: var(--crest); filter: drop-shadow(0 4px 8px rgba(0,0,0,.7)); }
+.left .hn { font: calc(var(--fs) + 5px)/1 "Russo"; text-transform: uppercase; color: var(--text); }
+.left .pr { align-self: stretch; } .left .pr .lab { display: flex; justify-content: space-between; font: var(--fs)/1 "PTN"; color: var(--text2); margin-bottom: 5px; }
+.left .pr .meter { height: calc(var(--fs) * .45); }
+.left .btn { align-self: stretch; height: var(--bh); font-size: calc(var(--fs) + 1px); margin-top: auto; }
+.right { flex: 1; padding: calc(var(--fs) * .9); min-width: 0; }
+.right .cap { font-size: calc(var(--fs) - 3px); margin-bottom: calc(var(--fs) * .6); display: flex; align-items: center; gap: 10px; }
+.right .cap::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--brass-lo), transparent); }
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(var(--fs) * .55); }
+.ms { height: var(--th); padding: calc(var(--fs) * .5); display: flex; flex-direction: column; justify-content: space-between; }
+.ms .num { font: calc(var(--fs) * 1.9)/1 "Russo"; color: var(--text); text-shadow: 0 2px 0 #000; }
+.ms .st { display: flex; align-items: center; gap: 5px; font: calc(var(--fs) - 2px)/1 "PTN"; color: var(--text2); text-transform: none; text-shadow: none; }
+.ms .st .ico { width: calc(var(--fs) - 1px); height: calc(var(--fs) - 1px); }
+.ms.btn { align-items: flex-start; justify-content: space-between; }
+.ms.done .st { color: var(--ok); } .ms.selected .num, .ms.hover .num { color: var(--gold); } .ms.disabled .num { color: #55554d; text-shadow: none; }
+.foot { height: calc(var(--bh) + 18px); padding: 0 calc(var(--fs) * .9); border-top: 1px solid #06080a; box-shadow: inset 0 1px 0 rgba(255,255,255,.05); gap: 10px; flex: none; }
+.foot .btn { height: var(--bh); font-size: var(--fs); } .foot .hint { font-size: calc(var(--fs) - 1px); }
+</style></head>
+<body>
+<div class="art"></div><div class="scrim"></div>
+<div class="abs panel win">
+  <div class="hd center">Кампания Атрейдесов</div>
+  <div class="body">
+    <div class="col left">
+      <img src="../../../../.cache/ui-redesign/assets/hd4/hud_house_atreides.png">
+      <div class="hn">Атрейдес</div>
+      <div class="pr"><div class="lab"><span>Пройдено миссий</span><span class="gold">4 из 9</span></div><div class="meter brass" style="--v:44%"><i></i></div></div>
+      <div class="btn primary hover"><i data-i="play"></i>Продолжить</div>
+    </div>
+    <div class="right">
+      <div class="cap">Пройти миссию заново</div>
+      <div class="tiles" id="tiles"></div>
+    </div>
+  </div>
+  <div class="row foot"><div class="btn"><i data-i="back"></i>Назад</div><span class="hint grow">Закрытые миссии откроются по ходу кампании.</span></div>
+</div>
+<script>
+(function () {
+  const states = ["done", "done", "done hover", "done", "selected", "disabled", "disabled", "disabled", "disabled"];
+  document.getElementById("tiles").innerHTML = states.map(function (state, index) {
+    const done = state.indexOf("done") >= 0, locked = state === "disabled";
+    return '<div class="btn ms ' + state + '" data-c="6"><span class="num">' + (index + 1) + '</span><span class="st">' +
+      (done ? '<i data-i="check"></i>пройдена' : locked ? '<i data-i="lock"></i>закрыта' : '<i data-i="play"></i>текущая') + "</span></div>";
+  }).join("");
+})();
+</script>
+</body></html>

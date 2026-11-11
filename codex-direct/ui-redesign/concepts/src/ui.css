@@ -13,9 +13,10 @@
   /* text */
   --text: #ece5ca; --text2: #b9b29a; --text3: #7d7b6f; --gold: #ffca53; --title: #e7be5b;
   /* meaning */
-  --spice: #e2812a; --ok: #58c46e; --warn: #f0b429; --bad: #e04a3c; --info: #5b93e0;
+  --spice: #e2812a; --ok: #58c46e; --warn: #f0b429; --bad: #e04a3c; --bad-text: #ff8576; --info: #5b93e0;
   /* houses */
-  --atreides: #3f6fd6; --harkonnen: #cc3a2e; --ordos: #3fa652; --sardaukar: #a83aa8;
+  --atreides: #5079d6; --harkonnen: #d60000; --ordos: #4cd64c; --sardaukar: #f269f2; /* TEAMCOLOR_0 of each House in game.ini */
+  --atreides-f: #283c99; --harkonnen-f: #990000; --ordos-f: #249924; --sardaukar-f: #aa30aa; /* TEAMCOLOR_2 */
   --house: var(--atreides);
 }
 
@@ -30,7 +31,7 @@ html, body { margin: 0; width: 100vw; height: 100vh; overflow: hidden; backgroun
 .t-ui { font-family: "Russo"; text-transform: uppercase; line-height: 1; }
 .t-num { font-family: "Russo"; line-height: 1; }
 .muted { color: var(--text2); } .dim { color: var(--text3); } .gold { color: var(--gold); }
-.ok { color: var(--ok); } .bad { color: var(--bad); } .warn { color: var(--warn); } .spice { color: var(--spice); }
+.ok { color: var(--ok); } .bad { color: var(--bad-text); } .warn { color: var(--warn); } .spice { color: var(--spice); }
 
 /* ---------- background art ---------- */
 .art { position: absolute; inset: 0; background-size: cover; background-position: center; }
@@ -141,4 +142,4 @@ svg.fr { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; o
 /* tooltip, key cap */
 .tip { position: absolute; padding: 6px 10px; background: rgba(8,11,13,.95); border: 1px solid var(--brass-mid); box-shadow: 0 0 0 1px #030405, 0 6px 16px rgba(0,0,0,.6); font: 14px/1.3 "PTN"; color: var(--text); white-space: nowrap; }
 .tip b { font: 13px/1 "Russo"; color: var(--gold); text-transform: uppercase; font-weight: normal; }
-.kbd { display: inline-block; min-width: 18px; padding: 2px 5px; font: 11px/1.1 "Russo"; color: #1c1506; background: linear-gradient(180deg, #e9d39a, #b89a55); box-shadow: 0 0 0 1px #030405, inset 0 1px 0 rgba(255,255,255,.5); text-align: center; text-shadow: none; }
+.kbd { display: inline-block; min-width: 18px; padding: 2px 5px 1px; font: 12px/1.1 "Russo"; color: #1c1506; background: linear-gradient(180deg, #e9d39a, #b89a55); box-shadow: 0 0 0 1px #030405, inset 0 1px 0 rgba(255,255,255,.5); text-align: center; text-shadow: none; }

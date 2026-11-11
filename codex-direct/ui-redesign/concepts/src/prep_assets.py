@@ -43,6 +43,9 @@ def main():
     for name, box in (("sietch", (684, 339, 976, 631)), ("broken", (426, 346, 596, 498)), ("golek", (15, 557, 185, 709)),
                       ("delta", (219, 557, 391, 709)), ("division", (425, 557, 596, 709))):
         shot.crop(box).resize((128, 128), Image.NEAREST).save(OUT / f"map-{name}.png")
+    region = ROOT / ".cache/ui-redesign/before/png/1920x1080/en/hd/r100w0/region-atreides-select-5.png"
+    if region.is_file():
+        Image.open(region).convert("RGB").crop((59, 144, 1861, 855)).save(OUT / "campaign-map-tinted.jpg", quality=92)
     print("ok", sorted(path.name for path in OUT.iterdir()))
 
 

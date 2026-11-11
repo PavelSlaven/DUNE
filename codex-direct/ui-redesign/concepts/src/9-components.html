@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>9 — общие части и их состояния</title>
+<link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
+<style>
+body { background: #0b0f12; }
+.board { position: absolute; inset: 0; padding: 18px 22px; display: grid; grid-template-columns: 430px 470px 1fr; grid-template-rows: auto 1fr; gap: 14px 22px; }
+h1 { grid-column: 1 / 4; margin: 0; font: 26px/1 "Russo"; color: var(--title); text-transform: uppercase; display: flex; align-items: center; gap: 14px; }
+h1 small { font: 16px/1 "PTN"; color: var(--text2); text-transform: none; }
+.colx { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+.sec { padding: 10px 12px 12px; }
+.sec > h2 { margin: 0 0 8px; font: 13px/1 "Russo"; text-transform: uppercase; color: var(--brass); display: flex; align-items: center; gap: 8px; }
+.sec > h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--brass-lo), transparent); }
+.lab { font: 12px/1.1 "PTN"; color: var(--text3); }
+.sw { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
+.sw div { height: 34px; box-shadow: 0 0 0 1px #030405; display: flex; align-items: flex-end; padding: 2px 3px; font: 10px/1 "PTN"; color: rgba(255,255,255,.75); text-shadow: 0 1px 1px #000; }
+.sw div.dk { color: rgba(0,0,0,.75); text-shadow: none; }
+.ty div { white-space: nowrap; overflow: hidden; margin-bottom: 3px; display: flex; align-items: baseline; gap: 10px; }
+.ty .lab { width: 78px; flex: none; }
+.grid { display: grid; gap: 8px 10px; align-items: center; }
+.g5 { grid-template-columns: 62px repeat(5, 1fr); }
+.g5 .btn { padding: 0 6px; font-size: 13px; height: 32px; }
+.rowx { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.cardrow { display: grid; grid-template-columns: repeat(9, 72px); gap: 6px 6px; }
+.cardrow .lab { text-align: center; margin-top: 2px; }
+.card { width: 72px; height: 54px; position: relative; background: #000 center / cover no-repeat; box-shadow: 0 0 0 1px #030405; overflow: hidden; }
+.card::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px #8e6c2c, inset 0 0 0 2px rgba(0,0,0,.4); pointer-events: none; }
+.card .price { position: absolute; left: 0; right: 0; bottom: 0; height: 17px; padding: 3px 4px 0 5px; font: 12px/1 "Russo"; color: var(--gold); text-shadow: 0 1px 0 #000, 0 0 3px #000; background: linear-gradient(0deg, rgba(4,6,8,.92) 20%, rgba(4,6,8,0)); }
+.card .q { position: absolute; right: 2px; top: 2px; min-width: 16px; height: 16px; padding: 2px 3px 0; font: 12px/1 "Russo"; color: #1c1506; text-align: center; background: linear-gradient(180deg, #f6d273, #b98630); box-shadow: 0 0 0 1px #030405; }
+.card.hover::after { box-shadow: inset 0 0 0 1px #fff0c0, inset 0 0 0 2px #c69a44; } .card.hover { box-shadow: 0 0 0 1px #030405, 0 0 9px rgba(242,190,90,.6); filter: brightness(1.12); }
+.card.poor { filter: saturate(.5) brightness(.72); } .card.poor .price { color: #ff8576; }
+.card.off { filter: grayscale(1) brightness(.4); }
+.card .shade { position: absolute; inset: 0; background: rgba(4,6,8,.62); }
+.card .pct { position: absolute; left: 0; right: 0; top: 50%; margin-top: -11px; text-align: center; font: 15px/1 "Russo"; color: #fff; text-shadow: 0 1px 0 #000, 0 0 4px #000; }
+.card .prog { position: absolute; left: 3px; right: 3px; bottom: 3px; height: 5px; background: #06080a; box-shadow: 0 0 0 1px #030405; }
+.card .prog i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--v); background: linear-gradient(180deg, #f6d273, #b98630); }
+.card.paused .prog i { background: linear-gradient(180deg, #9aa3a8, #5b6468); } .card.paused .pct { color: var(--warn); font-size: 12px; margin-top: -9px; }
+.card.ready::after { box-shadow: inset 0 0 0 1px #fff0c0, inset 0 0 0 3px #f0c24e; } .card.ready { box-shadow: 0 0 0 1px #030405, 0 0 11px rgba(255,205,90,.75); }
+.card .ban { position: absolute; left: 0; right: 0; bottom: 0; height: 18px; padding-top: 3px; text-align: center; font: 12px/1 "Russo"; color: #1c1506; background: linear-gradient(180deg, #f6d273, #b98630); box-shadow: 0 -1px 0 #030405; text-transform: uppercase; }
+.card .ban.red { color: #fff; background: linear-gradient(180deg, #d9584a, #8f2a20); }
+.ltab { width: 44px; height: 28px; display: flex; align-items: center; justify-content: center; color: var(--text2); position: relative; background: linear-gradient(180deg, #1d252b, #141a1f); box-shadow: inset 0 0 0 1px #030405, inset 0 1px 0 1px rgba(255,255,255,.04); }
+.ltab .ico { width: 17px; height: 17px; }
+.ltab.selected { color: var(--gold); background: linear-gradient(180deg, #3a4651, #1b2228 80%); box-shadow: inset 0 0 0 1px var(--brass-mid), inset 0 3px 0 var(--brass); }
+.ltab.hover { color: var(--text); background: linear-gradient(180deg, #2a343d, #181e24); } .ltab.disabled { color: #3d423f; }
+.ltab.flash::after { content: ""; position: absolute; right: 3px; top: 4px; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+.cbtn { width: 48px; height: 48px; padding: 5px 0 0; align-items: flex-start; } .cbtn .ico { width: 21px; height: 21px; stroke-width: 1.5; }
+.cbtn .kbd { position: absolute; left: 50%; transform: translateX(-50%); bottom: 4px; min-width: 0; padding: 1px 3px 0; font-size: 12px; background: none; box-shadow: none; color: var(--brass-hi); text-shadow: 0 1px 0 #000; } .cbtn.disabled .kbd { display: none; }
+.icons { display: grid; grid-template-columns: repeat(12, 1fr); gap: 7px 4px; }
+.icons div { display: flex; flex-direction: column; align-items: center; gap: 2px; font: 10px/1 "PTN"; color: var(--text3); }
+.icons .ico { width: 22px; height: 22px; color: var(--brass-hi); }
+.rad { width: 104px; height: 104px; position: relative; } .rad .in { position: absolute; inset: 3px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font: 11px/1 "Russo"; text-transform: uppercase; color: var(--text3); background: #000 center / cover; image-rendering: pixelated; }
+.rad .in .ico { width: 30px; height: 30px; color: #3d4a50; }
+.rad .in.nop { background: repeating-linear-gradient(0deg, #0a0f12 0 2px, #0e1519 2px 4px); color: var(--bad); } .rad .in.nop .ico { color: #7a2a22; }
+.cur { display: flex; gap: 10px; align-items: flex-end; } .cur div { display: flex; flex-direction: column; align-items: center; gap: 2px; } .cur img { height: 32px; }
+.toast { padding: 5px 14px 5px 12px; font: 14px/1 "PTN"; color: var(--text); background: rgba(8,11,13,.86); box-shadow: 0 0 0 1px rgba(3,4,5,.9), inset 3px 0 0 var(--brass); display: inline-flex; gap: 7px; align-items: center; } .toast .ico { width: 14px; height: 14px; color: var(--gold); }
+.nline { padding: 3px 9px 3px 8px; font: 13px/1.1 "PTN"; background: rgba(8,11,13,.8); box-shadow: inset 2px 0 0 currentColor; display: inline-block; } .nline span { color: var(--text); }
+.field { min-height: 30px; } .field > .lbl { flex: 0 0 150px; font-size: 15px; }
+.tip { position: static; display: inline-block; }
+</style></head>
+<body>
+<div class="board">
+  <h1>Общие части интерфейса и их состояния <small>группа 9 · размеры в точках логического холста</small></h1>
+
+  <div class="colx">
+    <div class="panel sec noshadow"><h2>Цвета</h2>
+      <div class="lab" style="margin-bottom:3px">Графит — фон панелей</div>
+      <div class="sw"><div style="background:#080b0d">g0 080b0d</div><div style="background:#0e1317">g1 0e1317</div><div style="background:#151b20">g2 151b20</div><div style="background:#1c242a">g3 1c242a</div><div style="background:#263038">g4 263038</div><div style="background:#33404a">g5 33404a</div></div>
+      <div class="lab" style="margin:6px 0 3px">Состаренная латунь — рамки и знаки · текст</div>
+      <div class="sw"><div class="dk" style="background:#f2d58c">f2d58c</div><div class="dk" style="background:#c69a44">c69a44</div><div style="background:#93702f">93702f</div><div style="background:#4c3819">4c3819</div><div class="dk" style="background:#ece5ca">текст</div><div class="dk" style="background:#ffca53">акцент</div></div>
+      <div class="lab" style="margin:6px 0 3px">Смысл: пряность, норма, внимание, беда, сведения · вторичный текст</div>
+      <div class="sw"><div class="dk" style="background:#e2812a">e2812a</div><div class="dk" style="background:#58c46e">58c46e</div><div class="dk" style="background:#f0b429">f0b429</div><div style="background:#e04a3c">e04a3c</div><div style="background:#5b93e0">5b93e0</div><div class="dk" style="background:#b9b29a">b9b29a</div></div>
+      <div class="lab" style="margin:6px 0 3px">Дома — только знак принадлежности (берутся из игры)</div>
+      <div class="sw" style="grid-template-columns:repeat(4,1fr)"><div style="background:var(--atreides)">Атрейдес</div><div style="background:var(--harkonnen)">Харконнен</div><div class="dk" style="background:var(--ordos)">Ордос</div><div class="dk" style="background:var(--sardaukar)">Сардаукары</div><div style="background:var(--atreides-f)">заливка</div><div style="background:var(--harkonnen-f)">заливка</div><div style="background:var(--ordos-f)">заливка</div><div style="background:var(--sardaukar-f)">заливка</div></div>
+    </div>
+    <div class="panel sec noshadow ty"><h2>Шрифты</h2>
+      <div><span class="lab">Russo 36</span><span style="font:36px/1 Russo;color:var(--title)">ЗАГОЛОВОК 36</span></div>
+      <div><span class="lab">Russo 26</span><span style="font:26px/1 Russo;color:var(--title)">ЭКРАН · SCREEN 1234</span></div>
+      <div><span class="lab">Russo 17</span><span style="font:17px/1 Russo;color:var(--title)">ЗАГОЛОВОК ОКНА · WINDOW TITLE</span></div>
+      <div><span class="lab">Russo 15</span><span style="font:15px/1 Russo">КНОПКА · BUTTON · 385/405</span></div>
+      <div><span class="lab">Russo 13</span><span style="font:13px/1 Russo">МАЛАЯ КНОПКА · ВКЛАДКА · 1250</span></div>
+      <div><span class="lab">Russo 12</span><span style="font:12px/1 Russo;color:var(--brass)">ПОДПИСЬ ГРУППЫ · ЦЕНА 300</span></div>
+      <div><span class="lab">PT Narrow 22</span><span style="font:22px/1.1 PTN">Речь ментата. Mentat speech.</span></div>
+      <div><span class="lab">PT Narrow 16</span><span style="font:16px/1.1 PTN">Подпись настройки. Option label. 12:47</span></div>
+      <div><span class="lab">PT Narrow 15</span><span style="font:15px/1.1 PTN">Основной текст и строки списков. Body text and list rows.</span></div>
+      <div><span class="lab">PT Narrow 13</span><span style="font:13px/1.1 PTN;color:var(--text2)">Пояснение, подсказка, сообщение. Hint, tooltip, message.</span></div>
+      <div><span class="lab">PT Narrow 12</span><span style="font:12px/1.1 PTN;color:var(--text3)">Наименьший размер текста. Smallest text size.</span></div>
+    </div>
+    <div class="panel sec noshadow"><h2>Значки (линия 1,7 точки, цвет текста)</h2><div class="icons" id="icons"></div></div>
+    <div class="panel sec noshadow"><h2>Курсоры — остаются нынешние</h2><div class="cur" id="cur"></div></div>
+  </div>
+
+  <div class="colx">
+    <div class="panel sec noshadow"><h2>Кнопки: пять состояний</h2>
+      <div class="grid g5">
+        <span></span><span class="lab">обычная</span><span class="lab">наведение</span><span class="lab">нажата</span><span class="lab">выключена</span><span class="lab">выбрана</span>
+        <span class="lab">обычная 36</span><div class="btn">Назад</div><div class="btn hover">Назад</div><div class="btn pressed">Назад</div><div class="btn disabled">Назад</div><div class="btn selected">Назад</div>
+        <span class="lab">главная 36</span><div class="btn primary">Старт</div><div class="btn primary hover">Старт</div><div class="btn primary pressed">Старт</div><div class="btn primary disabled">Старт</div><span class="lab">—</span>
+        <span class="lab">малая 28</span><div class="btn sm">Меню</div><div class="btn sm hover">Меню</div><div class="btn sm pressed">Меню</div><div class="btn sm disabled">Меню</div><div class="btn sm selected">Меню</div>
+      </div>
+      <div class="rowx" style="margin-top:10px"><span class="lab">крупная 44</span><div class="btn lg">Кампания</div><div class="btn lg hover">Схватка</div><span class="lab">со значком</span><div class="btn"><i data-i="save"></i>Сохранить</div><div class="btn ibtn"><i data-i="chev-l"></i></div><div class="btn ibtn hover"><i data-i="chev-r"></i></div></div>
+    </div>
+    <div class="panel sec noshadow"><h2>Настройки: флажок, ползунок, выбор из списка, поле</h2>
+      <div class="field"><span class="lbl">Флажок</span><div class="check"></div><div class="check on"></div><div class="check on hover"></div><div class="check disabled"></div><div class="check on disabled"></div><span class="lab">пуст · отмечен · наведение · выключен</span></div>
+      <div class="field"><span class="lbl">Ползунок</span><div class="slider" style="--v:60%"><div class="track"></div><div class="fill"></div><div class="knob"></div></div><span class="val">6</span><div class="slider hover" style="--v:30%"><div class="track"></div><div class="fill"></div><div class="knob"></div></div><span class="val">3</span></div>
+      <div class="field disabled"><span class="lbl">Ползунок выключен</span><div class="slider disabled" style="--v:45%"><div class="track"></div><div class="fill"></div><div class="knob"></div></div><span class="val" style="color:var(--text3)">4</span></div>
+      <div class="field"><span class="lbl">Выбор из списка</span><div class="cycle"><div class="btn"><i data-i="chev-l"></i></div><div class="v">Авто (128 %)</div><div class="btn hover"><i data-i="chev-r"></i></div></div><div class="cycle disabled" style="--vw:54px"><div class="btn disabled"><i data-i="chev-l"></i></div><div class="v">125 %</div><div class="btn disabled"><i data-i="chev-r"></i></div></div></div>
+      <div class="field"><span class="lbl">Поле ввода</span><div class="input focus grow">Сохранение 3<span class="caret"></span></div><div class="input" style="width:120px">Пусто</div></div>
+    </div>
+    <div class="panel sec noshadow"><h2>Вкладки, строки списка, прокрутка</h2>
+      <div class="tabs" style="margin-bottom:8px"><div class="tab selected">Основные</div><div class="tab">Игра</div><div class="tab hover">Управление</div><div class="tab disabled">Диагностика</div></div>
+      <div style="display:flex;gap:8px"><div class="well grow"><div class="lrow">01. Сохранение 1</div><div class="lrow hover">02. Перед штурмом</div><div class="lrow selected">03. Миссия 5, начало</div><div class="lrow disabled">04. &lt;пусто&gt;</div></div><div class="sbar"><i style="top:0;height:45%"></i></div></div>
+    </div>
+    <div class="panel sec noshadow"><h2>Шкалы, подсказка, клавиши, сообщения</h2>
+      <div class="rowx"><div style="width:110px"><div class="lab" style="margin-bottom:3px">энергия 385/405</div><div class="meter" style="--v:95%"><i></i></div></div><div style="width:110px"><div class="lab" style="margin-bottom:3px">нехватка 520/405</div><div class="meter bad" style="--v:100%"><i></i></div></div><div style="width:110px"><div class="lab" style="margin-bottom:3px">пряность 480/2000</div><div class="meter spice" style="--v:24%"><i></i></div></div><span class="kbd">Esc</span><span class="kbd">Ctrl</span><span class="kbd">R</span></div>
+      <div class="rowx" style="margin-top:10px"><div class="tip"><b>Атаковать</b> &nbsp;<span class="kbd">Ctrl</span></div><div class="toast"><i data-i="check"></i>Строительство завершено</div></div>
+      <div class="rowx" style="margin-top:8px"><div class="nline" style="color:var(--text2)"><span>Снимок экрана сохранён</span></div><div class="nline warn"><span>Харвестер атакован</span></div><div class="nline bad"><span>База под ударом</span></div><div class="nline ok"><span>Фрегат прибывает</span></div></div>
+    </div>
+  </div>
+
+  <div class="colx">
+    <div class="panel sec noshadow"><h2>Карточка постройки 72 × 54: состояния (наименьший текст — 12)</h2>
+      <div class="cardrow" id="cards"></div>
+    </div>
+    <div class="panel sec noshadow"><h2>Вкладки списков построек и кнопки приказов</h2>
+      <div class="rowx"><div class="ltab selected"><i data-i="build"></i></div><div class="ltab hover"><i data-i="infantry"></i></div><div class="ltab"><i data-i="tank"></i></div><div class="ltab flash"><i data-i="ship"></i></div><div class="ltab disabled"><i data-i="palace"></i></div><div class="ltab"><i data-i="upgrade"></i></div>
+        <span class="lab">выбрана · наведение · обычная · есть новое · недоступна<br>постройки · пехота · техника · космопорт · дворец · улучшения</span></div>
+      <div class="rowx" style="margin-top:10px"><div class="btn cbtn"><i data-i="move"></i><span class="kbd">ЛКМ</span></div><div class="btn cbtn hover"><i data-i="attack"></i><span class="kbd">Ctrl</span></div><div class="btn cbtn selected"><i data-i="repair"></i><span class="kbd">R</span></div><div class="btn cbtn disabled"><i data-i="unload"></i></div><div class="btn cbtn disabled"><i data-i="deploy"></i></div><div class="btn cbtn"><i data-i="rally"></i><span class="kbd">Ctrl</span></div><div class="btn cbtn"><i data-i="release"></i><span class="kbd">D</span></div>
+        <span class="lab">идти · атаковать · ремонт (режим включён) · разгрузить · развернуть · точка сбора · выпустить</span></div>
+    </div>
+    <div class="panel sec noshadow"><h2>Радар: три состояния</h2>
+      <div class="rowx"><div><div class="wellf rad" data-c="5" data-noise="0"><div class="in" style="background-image:url('../../../../.cache/ui-redesign/derived/minimap-ordos-152.png')"></div></div><div class="lab" style="text-align:center;margin-top:3px">работает</div></div>
+        <div><div class="wellf rad" data-c="5" data-noise="0"><div class="in"><i data-i="radar"></i>Нет радара</div></div><div class="lab" style="text-align:center;margin-top:3px">постройте Командный пост</div></div>
+        <div><div class="wellf rad" data-c="5" data-noise="0"><div class="in nop"><i data-i="bolt"></i>Нет энергии</div></div><div class="lab" style="text-align:center;margin-top:3px">видны только свои</div></div>
+        <div class="lab" style="max-width:250px">Герб и название Дома стоят рядом с радаром и видны всегда. Рамка обзора — белая, уголки рамки — светлая латунь.</div></div>
+    </div>
+    <div class="panel sec noshadow"><h2>Окна</h2>
+      <div class="rowx" style="align-items:stretch">
+        <div class="panel noshadow" style="width:250px;display:flex;flex-direction:column"><div class="hd center" style="height:30px;font-size:14px">Заголовок окна</div><div style="padding:10px 12px;font:14px/1.3 PTN;color:var(--text2)">Панель: графит, латунный кант, срез углов 10. Заголовок — латунный текст с линиями.</div><div class="row" style="padding:0 12px 10px;gap:8px"><div class="btn sm primary">Да</div><div class="btn sm">Нет</div></div></div>
+        <div class="panel glass noshadow" style="width:190px;padding:10px 12px;font:14px/1.3 PTN;color:var(--text2)">Полупрозрачная панель поверх поля боя или картины.</div>
+        <div class="wellf" data-c="4" data-noise="0" style="width:170px;padding:10px 12px;font:14px/1.3 PTN;color:var(--text2)">Колодец: область данных, список, радар, поле.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  const A = "../../../../.cache/ui-redesign/assets/";
+  const icon = A + "sdl_inter_hd4/";
+  const cards = [
+    ["0049_ICON_STR_WINDTRAP", "", '<div class="price">300</div>', "доступна"],
+    ["0049_ICON_STR_WINDTRAP", "hover", '<div class="price">300</div>', "наведение"],
+    ["0042_ICON_STR_REFINERY", "", '<div class="shade"></div><div class="pct">62%</div><div class="prog" style="--v:62%"><i></i></div>', "строится"],
+    ["0042_ICON_STR_REFINERY", "paused", '<div class="shade"></div><div class="pct">ПАУЗА</div><div class="prog" style="--v:35%"><i></i></div>', "пауза"],
+    ["0042_ICON_STR_REFINERY", "ready", '<div class="ban">Готово</div>', "готово"],
+    ["0068_ICON_UNIT_TANK", "", '<div class="price">300</div><div class="q">3</div>', "в очереди 3"],
+    ["0036_ICON_STR_HEAVYFACTORY", "poor", '<div class="price">600</div>', "не хватает денег"],
+    ["0040_ICON_STR_PALACE", "off", '<div class="price">999</div>', "недоступна"],
+    ["0068_ICON_UNIT_TANK", "poor", '<div class="ban red">Предел</div>', "предел юнитов"],
+  ];
+  document.getElementById("cards").innerHTML = cards.map(function (c) {
+    return '<div><div class="card ' + c[1] + '" style="background-image:url(' + icon + c[0] + '.png)">' + c[2] + '</div><div class="lab">' + c[3] + "</div></div>";
+  }).join("");
+  const names = ["menu", "chev-l", "chev-r", "chev-u", "chev-d", "check", "close", "plus", "minus", "note", "prev", "next", "speed", "clock", "bolt", "coin", "silo", "grid", "build", "infantry", "tank", "ship", "palace", "upgrade",
+    "move", "attack", "repair", "unload", "deploy", "rally", "release", "radar", "save", "load", "edit", "trash", "lock", "warn", "info", "map", "users", "dice", "play", "pause", "back", "exit", "gear", "keys"];
+  document.getElementById("icons").innerHTML = names.map(function (n) { return '<div><i data-i="' + n + '"></i>' + n + "</div>"; }).join("");
+  const curs = [["0084_MOUSE_NORMAL", "обычный"], ["0083_MOUSE_MOVE", "идти"], ["0079_MOUSE_ATTACK", "атака"], ["0085_MOUSE_PICK", "выбор"], ["0087_MOUSE_REPAIR", "ремонт"], ["0086_MOUSE_RALLY", "сбор"], ["0081_MOUSE_FORBIDDEN", "нельзя"], ["0082_MOUSE_LEFT", "прокрутка"]];
+  document.getElementById("cur").innerHTML = curs.map(function (c) { return '<div><img src="' + A + "sdl_data_hd4/" + c[0] + '.png"><span class="lab">' + c[1] + "</span></div>"; }).join("");
+})();
+</script>
+</body></html>

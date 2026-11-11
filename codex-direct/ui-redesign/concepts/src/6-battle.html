@@ -31,7 +31,7 @@
 .side { right: 0; top: 0; bottom: 0; width: var(--S); background: linear-gradient(90deg, #0e1317, #151b20 12%, #12171c); box-shadow: inset 1px 0 0 #030405, inset 2px 0 0 var(--brass-mid), inset 3px 0 0 rgba(0,0,0,.6); }
 .credits { left: 3px; right: 0; top: 0; height: var(--T); padding: 0 10px 2px 10px; gap: 7px; }
 .credits .ico { width: 17px; height: 17px; color: var(--spice); }
-.credits .lab { font: 11px/1 "Russo"; text-transform: uppercase; color: var(--text2); }
+.credits .lab { font: 12px/1 "Russo"; text-transform: uppercase; color: var(--text2); }
 .credits .num { font: 19px/1 "Russo"; color: var(--gold); margin-left: auto; text-shadow: 0 1px 0 #000, 0 0 8px rgba(255,190,80,.35); }
 .radar { left: var(--pad); top: calc(var(--T) + 6px); width: var(--R); height: var(--R); }
 .radar .img { position: absolute; inset: 3px; background: #000 var(--mini) center / auto no-repeat; image-rendering: pixelated; }
@@ -43,14 +43,14 @@
 .status { left: calc(var(--pad) + var(--R) + 6px); right: var(--pad); top: calc(var(--T) + 6px); height: var(--R); }
 .house { align-items: center; gap: 3px; }
 .house img { width: 58px; height: 58px; filter: drop-shadow(0 2px 3px rgba(0,0,0,.7)); }
-.house .nm { font: 11px/1 "Russo"; text-transform: uppercase; color: var(--text); text-align: center; }
+.house .nm { font: 12px/1 "Russo"; text-transform: uppercase; color: var(--text); text-align: center; }
 .house .bar { height: 2px; align-self: stretch; background: linear-gradient(90deg, transparent, var(--house), transparent); margin-top: 2px; }
 .mtr { margin-top: 7px; }
 .mtr .ln { gap: 4px; font: 12px/1 "Russo"; color: var(--text); margin-bottom: 3px; }
 .mtr .ln .ico { width: 12px; height: 12px; }
 .mtr .ln .lab { font: 12px/1 "PTN"; color: var(--text2); display: none; }
 .mtr .ln .v { margin-left: auto; }
-.mtr .ln .v small { font: 11px/1 "PTN"; color: var(--text3); }
+.mtr .ln .v small { font: 12px/1 "PTN"; color: var(--text3); }
 @media (min-width: 960px) {
   .house { flex-direction: row; gap: 8px; align-items: center; flex-wrap: wrap; }
   .house img { width: 46px; height: 46px; }
@@ -82,7 +82,7 @@
 .card { position: relative; background: #000 center / cover no-repeat; box-shadow: 0 0 0 1px #030405; overflow: hidden; }
 .card::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px #8e6c2c, inset 0 0 0 2px rgba(0,0,0,.4); pointer-events: none; }
 .card .price { position: absolute; left: 0; right: 0; bottom: 0; height: 17px; padding: 3px 4px 0 5px; font: 12px/1 "Russo"; color: var(--gold); text-shadow: 0 1px 0 #000, 0 0 3px #000; background: linear-gradient(0deg, rgba(4,6,8,.92) 20%, rgba(4,6,8,0)); }
-.card .q { position: absolute; right: 2px; top: 2px; min-width: 16px; height: 15px; padding: 2px 3px 0; font: 11px/1 "Russo"; color: #1c1506; text-align: center; background: linear-gradient(180deg, #f6d273, #b98630); box-shadow: 0 0 0 1px #030405; }
+.card .q { position: absolute; right: 2px; top: 2px; min-width: 16px; height: 16px; padding: 2px 3px 0; font: 12px/1 "Russo"; color: #1c1506; text-align: center; background: linear-gradient(180deg, #f6d273, #b98630); box-shadow: 0 0 0 1px #030405; }
 .card.hover::after { box-shadow: inset 0 0 0 1px #fff0c0, inset 0 0 0 2px #c69a44; }
 .card.hover { box-shadow: 0 0 0 1px #030405, 0 0 9px rgba(242,190,90,.6); filter: brightness(1.12); }
 .card.poor { filter: saturate(.5) brightness(.72); } .card.poor .price { color: #ff8576; }
@@ -94,7 +94,7 @@
 .card.paused .prog i { background: linear-gradient(180deg, #9aa3a8, #5b6468); } .card.paused .pct { color: var(--warn); font-size: 12px; margin-top: -9px; }
 .card.ready::after { box-shadow: inset 0 0 0 1px #fff0c0, inset 0 0 0 3px #f0c24e; }
 .card.ready { box-shadow: 0 0 0 1px #030405, 0 0 11px rgba(255,205,90,.75); }
-.card .ban { position: absolute; left: 0; right: 0; bottom: 0; height: 18px; padding-top: 4px; text-align: center; font: 11px/1 "Russo"; color: #1c1506; background: linear-gradient(180deg, #f6d273, #b98630); box-shadow: 0 -1px 0 #030405; text-transform: uppercase; }
+.card .ban { position: absolute; left: 0; right: 0; bottom: 0; height: 18px; padding-top: 3px; text-align: center; font: 12px/1 "Russo"; color: #1c1506; background: linear-gradient(180deg, #f6d273, #b98630); box-shadow: 0 -1px 0 #030405; text-transform: uppercase; }
 /* info strip */
 .info { left: var(--pad); right: var(--pad); bottom: 6px; height: var(--info); padding: 6px 9px; }
 .info .nm { font: 13px/1 "Russo"; text-transform: uppercase; color: var(--gold); }
@@ -109,16 +109,16 @@
 .toast { left: 0; right: var(--S); top: calc(var(--T) + 8px); justify-content: center; }
 .toast div { padding: 5px 14px 5px 12px; font: 14px/1 "PTN"; color: var(--text); background: rgba(8,11,13,.8); box-shadow: 0 0 0 1px rgba(3,4,5,.9), inset 3px 0 0 var(--brass); gap: 7px; }
 .toast .ico { width: 14px; height: 14px; color: var(--gold); }
-.notes { left: 8px; bottom: 96px; gap: 3px; align-items: flex-start; }
+.notes { left: 8px; bottom: 100px; gap: 3px; align-items: flex-start; }
 .notes div { padding: 3px 9px 3px 8px; font: 13px/1.1 "PTN"; background: rgba(8,11,13,.72); box-shadow: inset 2px 0 0 currentColor; }
 .notes div span { color: var(--text); }
 .cmd { left: 8px; bottom: 8px; gap: 3px; }
-.cbtn { width: 44px; height: 44px; padding: 0; }
+.cbtn { width: 48px; height: 48px; padding: 0; }
 .cbtn { align-items: flex-start; padding-top: 5px; }
-.cbtn .ico { width: 22px; height: 22px; stroke-width: 1.5; }
-.cbtn .kbd { position: absolute; left: 50%; transform: translateX(-50%); bottom: 4px; min-width: 0; padding: 1px 3px 0; font-size: 9px; }
+.cbtn .ico { width: 21px; height: 21px; stroke-width: 1.5; }
+.cbtn .kbd { position: absolute; left: 50%; transform: translateX(-50%); bottom: 4px; min-width: 0; padding: 1px 3px 0; font-size: 12px; background: none; box-shadow: none; color: var(--brass-hi); text-shadow: 0 1px 0 #000; }
 .cbtn.disabled .kbd { display: none; }
-.cmdtip { left: 55px; bottom: 58px; }
+.cmdtip { left: 59px; bottom: 62px; }
 
 </style></head>
 <body>
@@ -170,8 +170,8 @@
   </div>
   <div class="abs catalog"><img class="wm" id="wm"><div class="cards" id="cards"></div><div class="sbar cscroll"><i></i></div></div>
   <div class="abs wellf info" data-c="4" data-noise="0">
-    <div class="row"><span class="nm">Ветроловушка</span><span class="pr gold"><i data-i="coin"></i>300</span></div>
-    <div class="row st"><span class="ok"><i data-i="bolt"></i>+100</span><span class="muted"><i data-i="grid"></i>2×2</span><span class="muted"><i data-i="clock"></i>12 с</span><span class="ds">ЛКМ — строить · ПКМ — отмена</span></div>
+    <div class="row"><span class="nm">Ветроловушка</span></div>
+    <div class="row st"><span class="gold"><i data-i="coin"></i>300</span><span class="ok"><i data-i="bolt"></i>+100</span><span class="muted"><i data-i="grid"></i>2×2</span><span class="muted"><i data-i="clock"></i>12 с</span><span class="ds">ЛКМ — строить · ПКМ — отмена</span></div>
   </div>
 </div>
 <script>

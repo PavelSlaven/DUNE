@@ -4,7 +4,6 @@
 <style>
 /* The mentat painting is a 640×480 frame; --k scales it to the canvas height (art is 2560×1920, so it stays sharp up to k = 4). */
 :root { --k: 1.25; }
-@media (min-height: 800px) { :root { --k: 2.25; } }
 body { background: #05060c; }
 .sidefill { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, #10121d 0%, #05060c 70%); }
 .stage { left: calc(50% - 320px * var(--k)); top: calc(50% - 240px * var(--k)); width: calc(640px * var(--k)); height: calc(480px * var(--k));
@@ -13,13 +12,12 @@ body { background: #05060c; }
 .txt { font: calc(15.5px * var(--k))/1.22 "PTN"; color: #f3edd8; text-shadow: 0 calc(1px * var(--k)) 0 #000, 0 0 calc(4px * var(--k)) #000; display: flex; flex-direction: column; justify-content: center; }
 .txt .caret { height: calc(13px * var(--k)); width: calc(1.5px * var(--k)); vertical-align: -10%; }
 .scene { background: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png") 55% 42% / 330% auto no-repeat; box-shadow: inset 0 0 calc(18px * var(--k)) rgba(0,0,0,.85); }
-.scene .cap { position: absolute; left: calc(6px * var(--k)); bottom: calc(5px * var(--k)); font-size: calc(8.5px * var(--k)); color: var(--text2); text-shadow: 0 1px 2px #000; }
+.scene .cap { position: absolute; left: calc(6px * var(--k)); bottom: calc(5px * var(--k)); font-size: calc(10px * var(--k)); color: var(--text2); text-shadow: 0 1px 2px #000; }
 .stage .btn.a { padding: 0; font-size: calc(12px * var(--k)); }
-.ms { left: calc(8px * var(--k)); bottom: calc(8px * var(--k)); height: calc(20px * var(--k)); padding: 0 calc(8px * var(--k)); font-size: calc(9.5px * var(--k)); gap: calc(4px * var(--k)); }
+.ms { left: calc(8px * var(--k)); bottom: calc(8px * var(--k)); height: calc(20px * var(--k)); padding: 0 calc(8px * var(--k)); font-size: calc(10px * var(--k)); gap: calc(4px * var(--k)); }
 .ms .ico { width: calc(11px * var(--k)); height: calc(11px * var(--k)); }
 .who { left: calc(30px * var(--k)); top: calc(70px * var(--k)); font: calc(9px * var(--k))/1 "Russo"; color: var(--brass); text-transform: uppercase; text-shadow: 0 1px 2px #000; }
 .keys { right: 22px; bottom: 14px; font: 15px/1 "PTN"; color: var(--text3); gap: 8px; display: none; }
-@media (min-height: 800px) { .keys { display: flex; } }
 </style></head>
 <body>
 <div class="sidefill"></div>

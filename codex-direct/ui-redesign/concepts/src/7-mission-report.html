@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
 <style>
 :root { --m: 16px; --ph: 338px; --cw: 244px; --fs: 15px; --crest: 52px; --tfs: 22px; --bh: 40px; }
-@media (min-height: 800px) { :root { --m: 48px; --ph: 540px; --cw: 430px; --fs: 22px; --crest: 92px; --tfs: 36px; --bh: 56px; } }
 .art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/outcome_victory_ru.png"); background-position: 0% 12%; background-size: 118% auto; }
 .scrim { background: linear-gradient(180deg, rgba(4,6,8,0) 0%, rgba(4,6,8,.25) 30%, rgba(4,6,8,.92) 62%, rgba(4,6,8,.97) 100%); }
 .frame { position: absolute; inset: 6px; box-shadow: inset 0 0 0 1px #030405, inset 0 0 0 3px #c69a44, inset 0 0 0 4px #5a431c; pointer-events: none; }
@@ -20,7 +19,7 @@
 .pc .hn { font: calc(var(--fs) + 3px)/1.1 "Russo"; text-transform: uppercase; color: var(--text); margin-top: 4px; }
 .st { display: grid; grid-template-columns: minmax(0, 1fr) 19% 19% 21%; column-gap: 4px; white-space: nowrap; row-gap: 0; align-items: center; font: var(--fs)/1 "PTN"; color: var(--text2); }
 .st > * { height: calc(var(--fs) + 9px); display: flex; align-items: center; border-top: 1px solid rgba(0,0,0,.4); }
-.st .h { font: calc(var(--fs) - 4px)/1 "Russo"; text-transform: uppercase; color: var(--text3); border-top: 0; justify-content: flex-end; }
+.st .h { font: calc(var(--fs) - 3px)/1 "Russo"; text-transform: uppercase; color: var(--text3); border-top: 0; justify-content: flex-end; }
 .st .n { font: var(--fs)/1 "Russo"; color: var(--text); justify-content: flex-end; min-width: 0; }
 .st .w { grid-column: 2 / 5; }
 .st .lab .ico { width: calc(var(--fs) - 1px); height: calc(var(--fs) - 1px); margin-right: 6px; color: var(--brass); }
@@ -46,9 +45,9 @@
 (function () {
   const A = "../../../../.cache/ui-redesign/assets/";
   const players = [
-    ["me", "Вы", "Атрейдес", "#3f6fd6", "hd4/hud_house_atreides.png", [24, 7, 31], [12, 1, 9], "18 420", "6 310", "5 600"],
-    ["", "Враг", "Харконнен", "#cc3a2e", "hd4/hud_house_harkonnen.png", [38, 31, 5], [14, 9, 1], "5 210", "17 900", "3 150"],
-    ["", "Враг", "Ордос", "#3fa652", "hd4/hud_house_ordos.png", [9, 6, 2], [5, 0, 0], "1 100", "520", "900"],
+    ["me", "Вы", "Атрейдес", "#5079d6", "hd4/hud_house_atreides.png", [24, 7, 31], [12, 1, 9], "18 420", "6 310", "5 600"],
+    ["", "Враг", "Харконнен", "#d60000", "hd4/hud_house_harkonnen.png", [38, 31, 5], [14, 9, 1], "5 210", "17 900", "3 150"],
+    ["", "Враг", "Ордос", "#4cd64c", "hd4/hud_house_ordos.png", [9, 6, 2], [5, 0, 0], "1 100", "520", "900"],
   ];
   document.getElementById("cards").innerHTML = players.map(function (p) {
     return '<div class="pc ' + p[0] + '" style="--hc:' + p[3] + '"><div class="row top"><img src="' + A + p[4] + '"><div><div class="who">' + p[1] + '</div><div class="hn">' + p[2] + '</div></div></div>' +
