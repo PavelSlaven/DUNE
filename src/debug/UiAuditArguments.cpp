@@ -32,6 +32,9 @@ void consumeArguments(int &argc, char **argv)
         else if (std::strcmp(argv[i], "--ui-audit-out") == 0 && i + 1 < argc) {
             s_options.outDir = argv[++i];
         }
+        else if (std::strcmp(argv[i], "--ui-audit-frames") == 0 && i + 1 < argc) {
+            s_options.frames = argv[++i];
+        }
         else {
             argv[kept++] = argv[i];
         }

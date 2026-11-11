@@ -9,6 +9,7 @@ struct Options {
     std::string scales;
     std::string scene;
     std::string outDir;
+    std::string frames;
 };
 
 extern bool g_enabled;

@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <filesystem>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -58,6 +59,11 @@ int g_canvasH = 0;
 SDL_Renderer *g_renderer = nullptr;
 bool g_collecting = false;
 bool g_collected = false;
+int g_measureFrames = 0;
+int g_measuredFrames = 0;
+bool g_measuring = false;
+Uint64 g_frameStartNs = 0;
+Uint64 g_frameTotalNs = 0;
 Rect g_union{0, 0, 0, 0};
 
 Rect clipped(const Rect &rect)
@@ -134,6 +140,16 @@ std::string rectJson(const Rect &rect)
            ",\"w\":" + std::to_string(rect.w) + ",\"h\":" + std::to_string(rect.h);
 }
 
+bool parseFrames(const std::string &text, int &frames)
+{
+    if (text.empty() || text.size() > 5 || text[0] == '0' ||
+        !std::all_of(text.begin(), text.end(), [](char c) { return c >= '0' && c <= '9'; })) {
+        return false;
+    }
+    frames = std::stoi(text);
+    return frames <= 10000;
+}
+
 void fail(const std::string &message)
 {
     std::cerr << "ui-audit: " << message << '\n';
@@ -167,6 +183,10 @@ bool writeGeometry(cGame &currentGame, const std::filesystem::path &path, int ou
     int viewH = 0;
     if (g_scene->gameScreen && UiAuditAccess::mapViewport(currentGame, viewX, viewY, viewW, viewH)) {
         file << ",\"map_viewport\":{" << rectJson({viewX, viewY, viewW, viewH}) << '}';
+    }
+    if (g_measureFrames > 0) {
+        file << ",\"frames\":" << g_measureFrames << ",\"frame_ms\":"
+             << std::format("{:.3f}", static_cast<double>(g_frameTotalNs) / 1e6 / g_measureFrames);
     }
     file << ",\"version\":\"" << escapeJson(D2TM_VERSION) << "\"}\n";
     for (const Entry &entry : g_entries) {
@@ -404,6 +424,11 @@ bool handleEarlyExit(int &exitCode)
         exitCode = 0;
         return true;
     }
+    if (!options().frames.empty() && !parseFrames(options().frames, g_measureFrames)) {
+        std::cerr << "ui-audit: bad frame count " << options().frames << '\n';
+        exitCode = 2;
+        return true;
+    }
     if (findScene(options().scene) == nullptr) {
         std::cerr << "ui-audit: unknown scene " << options().scene << '\n';
         exitCode = 2;
@@ -427,6 +452,9 @@ void onSetupDone(cGame &currentGame)
     g_frame = 0;
     g_settled = 0;
     g_done = false;
+    g_measuredFrames = 0;
+    g_measuring = false;
+    g_frameTotalNs = 0;
     g_clipText = false;
     currentGame.m_gameSettings->setPlayMusic(false);
     UiAuditAccess::stopCameraEdgeMove(currentGame);
@@ -461,6 +489,9 @@ void beginFrame(cGame &currentGame)
     else {
         moveCursor(static_cast<float>(kOffscreenCursor), static_cast<float>(kOffscreenCursor));
     }
+    if (g_measuring) {
+        g_frameStartNs = SDL_GetTicksNS();
+    }
 }
 
 void onFramePresented(cGame &currentGame)
@@ -469,11 +500,25 @@ void onFramePresented(cGame &currentGame)
         currentGame.m_gameSettings->setPlaying(false);
         return;
     }
+    if (g_measuring) {
+        // SDL batches draw calls until the frame is presented; flush them so their cost falls inside the measured frame
+        SDL_FlushRenderer(g_renderer);
+        g_frameTotalNs += SDL_GetTicksNS() - g_frameStartNs;
+        if (++g_measuredFrames >= g_measureFrames) {
+            capture(currentGame);
+            currentGame.m_gameSettings->setPlaying(false);
+        }
+        return;
+    }
     const bool stable = g_stateAtBegin == UiAuditAccess::state(currentGame) &&
                         g_currentStateAtBegin == UiAuditAccess::currentState(currentGame) &&
                         g_fadeAtBegin && UiAuditAccess::notFadingOut(currentGame);
     g_settled = stable ? g_settled + 1 : 0;
     if (g_settled >= g_scene->settleFrames && (g_scene->ready == nullptr || g_scene->ready(currentGame))) {
+        if (g_measureFrames > 0) {
+            g_measuring = true;
+            return;
+        }
         capture(currentGame);
         currentGame.m_gameSettings->setPlaying(false);
         return;
