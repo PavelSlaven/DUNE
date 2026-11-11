@@ -1,0 +1,46 @@
+    13	def plan_actions(out_root, flags, ordered_ids):
+    14	    needed = defaultdict(set)
+    15	    for combo, scene in combos.png_required(flags, ordered_ids):
+    16	        needed[combo].add(scene)
+    17	    missing, extra = [], []
+    18	    for identifier in ordered_ids:
+    19	        png_dir = Path(out_root) / "png" / identifier
+    20	        have = {path.stem for path in png_dir.glob("*.png")} if png_dir.is_dir() else set()
+    21	        missing += [(identifier, scene) for scene in sorted(needed[identifier] - have)]
+    22	        if identifier.count("/") != 2:
+    23	            extra += [(identifier, scene) for scene in sorted(have - needed[identifier])]
+    24	    return missing, extra
+    25	
+    26	
+    27	def main(argv=None):
+    28	    parser = argparse.ArgumentParser(
+    29	        description="Leave PNG only for the first flag with a given key per resolution; capture the ones still missing.")
+    30	    parser.add_argument("--exe", required=True)
+    31	    parser.add_argument("--resources", required=True)
+    32	    parser.add_argument("--out", required=True)
+    33	    parser.add_argument("--flags", required=True, help="flags JSON from check_geometry.py")
+    34	    parser.add_argument("--dry-run", action="store_true")
+    35	    args = parser.parse_args(argv)
+    36	    out = Path(args.out)
+    37	    order = json.loads((out / "order.json").read_text(encoding="utf-8"))
+    38	    flags = json.loads(Path(args.flags).read_text(encoding="utf-8"))
+    39	    missing, extra = plan_actions(out, flags, order)
+    40	    print(f"extra PNG: {len(extra)}; missing PNG: {len(missing)}")
+    41	    if args.dry_run:
+    42	        return 0
+    43	    for identifier, scene in extra:
+    44	        (out / "png" / identifier / f"{scene}.png").unlink()
+    45	    by_combo = defaultdict(list)
+    46	    for identifier, scene in missing:
+    47	        by_combo[identifier].append(scene)
+    48	    code = 0
+    49	    for identifier, scenes in by_combo.items():
+    50	        command = [sys.executable, str(Path(__file__).resolve().parent / "run_combo.py"), "--exe", args.exe,
+    51	                   "--resources", args.resources, "--out", str(out), "--combo", identifier]
+    52	        for scene in scenes:
+    53	            command += ["--scene", scene]
+    54	        code = max(code, subprocess.run(command, check=False).returncode)
+    55	    return code
+    56	
+    57	
+    58	if __name__ == "__main__":

@@ -1,0 +1,216 @@
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"a"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"action"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"actions"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"all"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"append"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"area"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"auto"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"b"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"bin"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"box"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"campaign"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"campaign_en"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"canvas"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"click"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"combo"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"command"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"credit"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"d2tm"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"data"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"done"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"dummy"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"en"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditCapture.cpp:162:         << outputH << "\",\"language\":\"" << (localization::isEnglish() ? "en" : "ru") << "\",\"graphics\":\"hd\",\"canvas\":{\"w\":" << game.m_screenW
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"experience"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"false"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditCapture.cpp:163:         << ",\"h\":" << game.m_screenH << "},\"game_screen\":" << (g_scene->gameScreen ? "true" : "false")
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditCapture.cpp:405:                    "\",\"game_screen\":" + (scene.gameScreen ? "true" : "false") + ",\"house\":\"" + escapeJson(scene.house) + "\",\"hud\":" + (scene.hud ? "true" : "false") +
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditCapture.cpp:406:                    ",\"hd_only\":" + (scene.hdOnly ? "true" : "false") + ",\"hover\":";
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"file"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"flags"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"function"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"game"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"game_screen"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"graphics"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"group"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"groups"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"gui"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"h"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"harvester"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"hd"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"header"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"health"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"house"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"hud"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"id"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"json_out"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"k"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"key"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"keys"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"kind"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"kinds"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"label"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"language"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"legacy"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"line"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"log"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"logs"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"logs_root"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"map_viewport"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"mods"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"n"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"name"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"names"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"no"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"obj"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"objects_intersecting"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"objects_total"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"other"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"out"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"owner"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"places"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"png"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"render"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"render_scale"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"replace"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"resolution"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"right"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"root"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"ru"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditCapture.cpp:162:         << outputH << "\",\"language\":\"" << (localization::isEnglish() ? "en" : "ru") << "\",\"graphics\":\"hd\",\"canvas\":{\"w\":" << game.m_screenW
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"rule"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"run"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"runtime"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"s"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"scene"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"scenes"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"scope"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"screen"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"sheets"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"skirmish"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"skirmish_en"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"software"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"spice"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"src"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"state"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"states"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"store_true"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"summary8_out"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"t"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"text"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"texts"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"timeout"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"top"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"txt_out"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"type"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"w"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"work"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"world"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"world_scale"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"x"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/debug/UiAuditCapture.cpp:379:        std::string json = "{\"resolution\":\"" + std::to_string(width) + "x" + std::to_string(height) +
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"y"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)
+Command: export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"yes"' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/debug | head -3
+(нет)

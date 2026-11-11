@@ -1,0 +1,499 @@
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tools/ui-audit/run_combo.py | nl -ba | sed -n '28,36p'
+    28	def apply_settings(text, values):
+    29	    for key, value in values.items():
+    30	        pattern = re.compile(rf"^{key}\s*=.*$", re.MULTILINE)
+    31	        line = f"{key}={value}"
+    32	        if pattern.search(text):
+    33	            text = pattern.sub(line, text, count=1)
+    34	        else:
+    35	            text = text.replace("[SETTINGS]", f"[SETTINGS]\n{line}", 1)
+    36	    return text
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tools/ui-audit/run_combo.py | nl -ba | sed -n '44,64p'
+    44	def make_runtime(executable, resources, directory, combo):
+    45	    width, height = split_resolution(combo)
+    46	    runtime = Path(directory)
+    47	    if runtime.exists():
+    48	        shutil.rmtree(runtime)
+    49	    runtime.mkdir(parents=True)
+    50	    shutil.copy2(executable, runtime / "d2tm")
+    51	    bin_dir = Path(resources) / "bin"
+    52	    for name in RUNTIME_LINKS:
+    53	        os.symlink(bin_dir / name, runtime / name)
+    54	    shutil.copy2(Path(resources) / "game.ini", runtime / "game.ini")
+    55	    settings = apply_settings((bin_dir / "settings.ini").read_text(encoding="utf-8"), {
+    56	        "ScreenWidth": width,
+    57	        "ScreenHeight": height,
+    58	        "FullScreen": "false",
+    59	        "RenderScale": combo["render"],
+    60	        "WorldScale": combo["world"],
+    61	        "Language": combo["language"],
+    62	    })
+    63	    (runtime / "settings.ini").write_text(settings, encoding="utf-8")
+    64	    return runtime
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tools/ui-audit/run_combo.py | nl -ba | sed -n '67,70p'
+    67	def game_environment():
+    68	    environment = dict(os.environ)
+    69	    environment.update(SDL_VIDEODRIVER="dummy", SDL_RENDER_DRIVER="software", SDL_AUDIODRIVER="dummy")
+    70	    return environment
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tools/ui-audit/run_combo.py | nl -ba | sed -n '73,80p'
+    73	def run_scene(runtime, combo, scene_id, out_dir):
+    74	    width, height = split_resolution(combo)
+    75	    command = [
+    76	        str(runtime / "d2tm"), "-windowed", "-screenWidth", str(width), "-screenHeight", str(height),
+    77	        "--ui-audit-scene", scene_id, "--ui-audit-out", str(out_dir),
+    78	    ]
+    79	    return subprocess.run(command, cwd=runtime, env=game_environment(), check=False,
+    80	                          capture_output=True, text=True, timeout=SCENE_TIMEOUT_SECONDS)
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tools/ui-audit/run_combo.py | nl -ba | sed -n '83,86p'
+    83	def list_scenes(executable):
+    84	    result = subprocess.run([str(executable), "--ui-audit-list"], env=game_environment(), check=True,
+    85	                            capture_output=True, text=True, timeout=60)
+    86	    return json.loads(result.stdout)["scenes"]
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tools/ui-audit/run_all.py | nl -ba | sed -n '19,26p'
+    19	def scales_for(executable, resolutions):
+    20	    scales = {}
+    21	    for resolution in resolutions:
+    22	        result = subprocess.run([str(executable), "--ui-audit-scales", resolution], env=run_combo.game_environment(),
+    23	                                check=True, capture_output=True, text=True, timeout=60)
+    24	        _, render, world = combos.parse_scales(result.stdout)
+    25	        scales[resolution] = {"render": [value for value in render if value], "world": [value for value in world if value]}
+    26	    return scales
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tools/ui-audit/run_all.py | nl -ba | sed -n '73,91p'
+    73	def run_one(args, combo, journal):
+    74	    identifier = combos.combo_id(combo)
+    75	    free = run_combo.free_gb(args.out)
+    76	    journal.write(f"{time.strftime('%F %T')} free {free:.1f} GB before {identifier}\n")
+    77	    journal.flush()
+    78	    if free < args.min_free_gb:
+    79	        return identifier, 3
+    80	    log_path = Path(args.out) / "run" / (identifier.replace("/", "_") + ".txt")
+    81	    log_path.parent.mkdir(parents=True, exist_ok=True)
+    82	    command = [sys.executable, str(Path(__file__).resolve().parent / "run_combo.py"), "--exe", args.exe,
+    83	               "--resources", args.resources, "--out", args.out, "--combo", identifier,
+    84	               "--min-free-gb", str(args.min_free_gb)]
+    85	    with open(log_path, "w", encoding="utf-8") as log:
+    86	        code = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=False).returncode
+    87	    if code == 0:
+    88	        marker = done_marker(args.out, combo)
+    89	        marker.parent.mkdir(parents=True, exist_ok=True)
+    90	        marker.write_text("ok\n", encoding="utf-8")
+    91	    return identifier, code
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tools/ui-audit/finalize_png.py | nl -ba | sed -n '27,55p'
+    27	def main(argv=None):
+    28	    parser = argparse.ArgumentParser(
+    29	        description="Leave PNG only for the first flag with a given key per resolution; capture the ones still missing.")
+    30	    parser.add_argument("--exe", required=True)
+    31	    parser.add_argument("--resources", required=True)
+    32	    parser.add_argument("--out", required=True)
+    33	    parser.add_argument("--flags", required=True, help="flags JSON from check_geometry.py")
+    34	    parser.add_argument("--dry-run", action="store_true")
+    35	    args = parser.parse_args(argv)
+    36	    out = Path(args.out)
+    37	    order = json.loads((out / "order.json").read_text(encoding="utf-8"))
+    38	    flags = json.loads(Path(args.flags).read_text(encoding="utf-8"))
+    39	    missing, extra = plan_actions(out, flags, order)
+    40	    print(f"extra PNG: {len(extra)}; missing PNG: {len(missing)}")
+    41	    if args.dry_run:
+    42	        return 0
+    43	    for identifier, scene in extra:
+    44	        (out / "png" / identifier / f"{scene}.png").unlink()
+    45	    by_combo = defaultdict(list)
+    46	    for identifier, scene in missing:
+    47	        by_combo[identifier].append(scene)
+    48	    code = 0
+    49	    for identifier, scenes in by_combo.items():
+    50	        command = [sys.executable, str(Path(__file__).resolve().parent / "run_combo.py"), "--exe", args.exe,
+    51	                   "--resources", args.resources, "--out", str(out), "--combo", identifier]
+    52	        for scene in scenes:
+    53	            command += ["--scene", scene]
+    54	        code = max(code, subprocess.run(command, check=False).returncode)
+    55	    return code
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--exe"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--resources"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--out"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--flags"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--dry-run"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--exe"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--resources"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--out"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--combo"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--scene"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--ui-audit-scales"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--exe"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--resources"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--out"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--combo"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--min-free-gb"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"-windowed"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/utils/cHandleArgument.cpp:23:    {"-windowed",               Options::WINDOWED},
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"-screenWidth"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/utils/cHandleArgument.cpp:34:    {"-screenWidth",            Options::SCREENX},
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"-screenHeight"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/utils/cHandleArgument.cpp:35:    {"-screenHeight",           Options::SCREENY},
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--ui-audit-scene"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--ui-audit-out"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F -e '"--ui-audit-list"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -3
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 5e9059778bd59e486a58a899c9cf56f6758ed178:resources/bin/settings.ini | grep -n '^ScreenWidth='
+3:ScreenWidth=1024
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"ScreenWidth"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -5
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:86:    if (section.hasValue("ScreenWidth")) {
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:87:        settings.screenW = section.getInt("ScreenWidth");
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:182:    set(ini, "ScreenWidth", std::to_string(settings.screenW));
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 5e9059778bd59e486a58a899c9cf56f6758ed178:resources/bin/settings.ini | grep -n '^ScreenHeight='
+4:ScreenHeight=768
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"ScreenHeight"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -5
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:89:    if (section.hasValue("ScreenHeight")) {
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:90:        settings.screenH = section.getInt("ScreenHeight");
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:183:    set(ini, "ScreenHeight", std::to_string(settings.screenH));
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 5e9059778bd59e486a58a899c9cf56f6758ed178:resources/bin/settings.ini | grep -n '^FullScreen='
+10:FullScreen=false
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"FullScreen"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -5
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:98:    if (section.hasValue("FullScreen")) {
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:99:        settings.windowed = !section.getBoolean("FullScreen");
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:186:    set(ini, "FullScreen", toText(!settings.windowed));
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 5e9059778bd59e486a58a899c9cf56f6758ed178:resources/bin/settings.ini | grep -n '^RenderScale='
+12:RenderScale=0
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"RenderScale"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -5
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:104:    if (section.hasValue("RenderScale")) {
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:105:        settings.renderScalePercent = section.getInt("RenderScale");
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:188:    set(ini, "RenderScale", std::to_string(settings.renderScalePercent));
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:223:    set(ini, "RenderScale", std::to_string(renderScalePercent));
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:236:    if (section.hasValue("RenderScale")) {
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 5e9059778bd59e486a58a899c9cf56f6758ed178:resources/bin/settings.ini | grep -n '^WorldScale='
+нет
+[exit 1]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"WorldScale"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -5
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:107:    if (section.hasValue("WorldScale")) {
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:108:        settings.worldScalePercent = section.getInt("WorldScale");
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:189:    set(ini, "WorldScale", std::to_string(settings.worldScalePercent));
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:224:    set(ini, "WorldScale", std::to_string(worldScalePercent));
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp:239:    if (section.hasValue("WorldScale")) {
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 5e9059778bd59e486a58a899c9cf56f6758ed178:resources/bin/settings.ini | grep -n '^Language='
+нет
+[exit 1]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F '"Language"' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src | head -5
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 9208dcf5a358f40afd95c99480e4e09f781ed566 resources/bin/campaign resources/campaign
+040000 tree 1d78e538bed17d2d408922fb68dce75446db2c64	resources/bin/campaign
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 5e9059778bd59e486a58a899c9cf56f6758ed178 resources/bin/campaign resources/campaign
+040000 tree a7dd3ac6c95570c5f9b272ca8ab12161c9e39d4c	resources/bin/campaign
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 9208dcf5a358f40afd95c99480e4e09f781ed566 resources/bin/campaign_en resources/campaign_en
+040000 tree e420c95958690e97845e94ab0036f9cf4c4ced7d	resources/bin/campaign_en
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 5e9059778bd59e486a58a899c9cf56f6758ed178 resources/bin/campaign_en resources/campaign_en
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 9208dcf5a358f40afd95c99480e4e09f781ed566 resources/bin/data resources/data
+040000 tree 6c2458699107335c49177743addff0bacd54d5bf	resources/bin/data
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 5e9059778bd59e486a58a899c9cf56f6758ed178 resources/bin/data resources/data
+040000 tree cc6cc1f3161f43e55e96d4878646d578509d57cc	resources/bin/data
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 9208dcf5a358f40afd95c99480e4e09f781ed566 resources/bin/skirmish resources/skirmish
+040000 tree 8b97f75db2e891a72b376256fe4e8810b2236171	resources/bin/skirmish
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 5e9059778bd59e486a58a899c9cf56f6758ed178 resources/bin/skirmish resources/skirmish
+040000 tree dca16b79fc302e4d16d2803153aeb8102cef6a57	resources/bin/skirmish
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 9208dcf5a358f40afd95c99480e4e09f781ed566 resources/bin/skirmish_en resources/skirmish_en
+040000 tree 526906dc67dd8b566e08ae7db643ed161fb44a5d	resources/bin/skirmish_en
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 5e9059778bd59e486a58a899c9cf56f6758ed178 resources/bin/skirmish_en resources/skirmish_en
+нет
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 9208dcf5a358f40afd95c99480e4e09f781ed566 resources/bin/game.ini resources/game.ini
+100644 blob c45bc861a56cb964ad609877f05dd6eaa79a1efa	resources/game.ini
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 5e9059778bd59e486a58a899c9cf56f6758ed178 resources/bin/game.ini resources/game.ini
+100644 blob 7feed737476e58f5645189c100cae77f4a8a0231	resources/game.ini
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 9208dcf5a358f40afd95c99480e4e09f781ed566 resources/bin/settings.ini resources/settings.ini
+100644 blob 636898ad4ca47088d4374950f6e71ba802d5f431	resources/bin/settings.ini
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git ls-tree 5e9059778bd59e486a58a899c9cf56f6758ed178 resources/bin/settings.ini resources/settings.ini
+100644 blob d3f475fc78e9416d32f6987633f5664c53f8e626	resources/bin/settings.ini
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/Preferences.cpp | nl -ba | grep '"'
+    17	#include "game/Preferences.hpp"
+    19	#include "utils/cIniFile.h"
+    20	#include "utils/InitialGameSettings.hpp"
+    25	constexpr const char *SECTION = "SETTINGS";
+    36	    return value ? "true" : "false";
+    48	        error = "No preferences file found at " + utf8FileName(file);
+    53	        error = "Preferences file is unusable: " + utf8FileName(file);
+    64	        error = "Could not create preferences directory: " + filesystemError.message();
+    70	    tempPath += ".tmp";
+    72	        error = "Could not write preferences file";
+    77	        error = "Could not replace preferences file: " + filesystemError.message();
+    86	    if (section.hasValue("ScreenWidth")) {
+    87	        settings.screenW = section.getInt("ScreenWidth");
+    89	    if (section.hasValue("ScreenHeight")) {
+    90	        settings.screenH = section.getInt("ScreenHeight");
+    92	    if (section.hasValue("CameraDragMoveSpeed")) {
+    93	        settings.cameraDragMoveSpeed = section.getDouble("CameraDragMoveSpeed");
+    95	    if (section.hasValue("CameraBorderOrKeyMoveSpeed")) {
+    96	        settings.cameraBorderOrKeyMoveSpeed = section.getDouble("CameraBorderOrKeyMoveSpeed");
+    98	    if (section.hasValue("FullScreen")) {
+    99	        settings.windowed = !section.getBoolean("FullScreen");
+   101	    if (section.hasValue("CameraEdgeMove")) {
+   102	        settings.cameraEdgeMove = section.getBoolean("CameraEdgeMove");
+   104	    if (section.hasValue("RenderScale")) {
+   105	        settings.renderScalePercent = section.getInt("RenderScale");
+   107	    if (section.hasValue("WorldScale")) {
+   108	        settings.worldScalePercent = section.getInt("WorldScale");
+   110	    if (section.hasValue("AllowRepeatingReinforcements")) {
+   111	        settings.allowRepeatingReinforcements = section.getBoolean("AllowRepeatingReinforcements");
+   113	    if (section.hasValue("AllTurretsDownOnLowPower")) {
+   114	        settings.turretsDownOnLowPower = section.getBoolean("AllTurretsDownOnLowPower");
+   116	    if (section.hasValue("ShowLowPowerIcon")) {
+   117	        settings.showLowPowerIcon = section.getBoolean("ShowLowPowerIcon");
+   119	    if (section.hasValue("RocketTurretsDownOnLowPower")) {
+   120	        settings.rocketTurretsDownOnLowPower = section.getBoolean("RocketTurretsDownOnLowPower");
+   122	    if (section.hasValue("GameRules")) {
+   123	        settings.gameFilename = section.getStringValue("GameRules");
+   125	    if (section.hasValue("NoAI")) {
+   126	        settings.disableAI = section.getBoolean("NoAI");
+   128	    if (section.hasValue("Debug")) {
+   129	        settings.debugMode = section.getBoolean("Debug");
+   131	    if (section.hasValue("playMusic")) {
+   132	        settings.playMusic = section.getBoolean("playMusic");
+   134	    if (section.hasValue("customMusic")) {
+   135	        settings.customMusic = section.getBoolean("customMusic");
+   137	    if (section.hasValue("playSound")) {
+   138	        settings.playSound = section.getBoolean("playSound");
+   140	    if (section.hasValue("playCreditsSound")) {
+   141	        settings.playCreditsSound = section.getBoolean("playCreditsSound");
+   143	    if (section.hasValue("drawUnitDebug")) {
+   144	        settings.drawUnitDebug = section.getBoolean("drawUnitDebug");
+   146	    if (section.hasValue("oneAi")) {
+   147	        settings.oneAi = section.getBoolean("oneAi");
+   149	    if (section.hasValue("disableWormAi")) {
+   150	        settings.disableWormAi = section.getBoolean("disableWormAi");
+   152	    if (section.hasValue("disableReinforcements")) {
+   153	        settings.disableReinforcements = section.getBoolean("disableReinforcements");
+   155	    if (section.hasValue("noAiRest")) {
+   156	        settings.noAiRest = section.getBoolean("noAiRest");
+   158	    if (section.hasValue("drawUsages")) {
+   159	        settings.drawUsages = section.getBoolean("drawUsages");
+   161	    if (section.hasValue("pauseWhenLosingFocus")) {
+   162	        settings.pauseWhenLosingFocus = section.getBoolean("pauseWhenLosingFocus");
+   164	    if (section.hasValue("fogOfWarEnabled")) {
+   165	        settings.fogOfWarEnabled = section.getBoolean("fogOfWarEnabled");
+   182	    set(ini, "ScreenWidth", std::to_string(settings.screenW));
+   183	    set(ini, "ScreenHeight", std::to_string(settings.screenH));
+   184	    set(ini, "CameraDragMoveSpeed", std::to_string(settings.cameraDragMoveSpeed));
+   185	    set(ini, "CameraBorderOrKeyMoveSpeed", std::to_string(settings.cameraBorderOrKeyMoveSpeed));
+   186	    set(ini, "FullScreen", toText(!settings.windowed));
+   187	    set(ini, "CameraEdgeMove", toText(settings.cameraEdgeMove));
+   188	    set(ini, "RenderScale", std::to_string(settings.renderScalePercent));
+   189	    set(ini, "WorldScale", std::to_string(settings.worldScalePercent));
+   190	    set(ini, "AllowRepeatingReinforcements", toText(settings.allowRepeatingReinforcements));
+   191	    set(ini, "AllTurretsDownOnLowPower", toText(settings.turretsDownOnLowPower));
+   192	    set(ini, "RocketTurretsDownOnLowPower", toText(settings.rocketTurretsDownOnLowPower));
+   193	    set(ini, "ShowLowPowerIcon", toText(settings.showLowPowerIcon));
+   194	    set(ini, "GameRules", settings.gameFilename);
+   195	    set(ini, "NoAI", toText(settings.disableAI));
+   196	    set(ini, "Debug", toText(settings.debugMode));
+   197	    set(ini, "playMusic", toText(settings.playMusic));
+   198	    set(ini, "customMusic", toText(settings.customMusic));
+   199	    set(ini, "playSound", toText(settings.playSound));
+   200	    set(ini, "playCreditsSound", toText(settings.playCreditsSound));
+   201	    set(ini, "drawUnitDebug", toText(settings.drawUnitDebug));
+   202	    set(ini, "oneAi", toText(settings.oneAi));
+   203	    set(ini, "disableWormAi", toText(settings.disableWormAi));
+   204	    set(ini, "disableReinforcements", toText(settings.disableReinforcements));
+   205	    set(ini, "noAiRest", toText(settings.noAiRest));
+   206	    set(ini, "drawUsages", toText(settings.drawUsages));
+   207	    set(ini, "pauseWhenLosingFocus", toText(settings.pauseWhenLosingFocus));
+   208	    set(ini, "fogOfWarEnabled", toText(settings.fogOfWarEnabled));
+   223	    set(ini, "RenderScale", std::to_string(renderScalePercent));
+   224	    set(ini, "WorldScale", std::to_string(worldScalePercent));
+   236	    if (section.hasValue("RenderScale")) {
+   237	        settings.renderScalePercent = section.getInt("RenderScale");
+   239	    if (section.hasValue("WorldScale")) {
+   240	        settings.worldScalePercent = section.getInt("WorldScale");
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -w 'loadSettingsFromIni' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- src
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/main.cpp:72:    std::unique_ptr<InitialGameSettings> settings = loadSettingsFromIni("settings.ini");
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/utils/common.cpp:44:std::unique_ptr<InitialGameSettings> loadSettingsFromIni(const std::string& filename)
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/utils/common.cpp:50:        Logger::error(COMP_GAMERULES, "loadSettingsFromIni", "Expected to find [SETTINGS] in {}", filename);
+5e9059778bd59e486a58a899c9cf56f6758ed178:src/utils/common.h:62:std::unique_ptr<InitialGameSettings> loadSettingsFromIni(const std::string& filename);
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 5e9059778bd59e486a58a899c9cf56f6758ed178:src/utils/common.cpp | nl -ba | sed -n '44,64p'
+    44	std::unique_ptr<InitialGameSettings> loadSettingsFromIni(const std::string& filename)
+    45	{
+    46	    std::shared_ptr<cIniFile> file = std::make_shared<cIniFile>(filename);
+    47	    std::unique_ptr<InitialGameSettings> gameSettings = std::make_unique<InitialGameSettings>();
+    48	
+    49	    if (!file->hasSection("SETTINGS")) {
+    50	        Logger::error(COMP_GAMERULES, "loadSettingsFromIni", "Expected to find [SETTINGS] in {}", filename);
+    51	        return gameSettings;
+    52	    }
+    53	
+    54	    const cSection &section = file->getSection("SETTINGS");
+    55	    Preferences::readSettings(section, *gameSettings);
+    56	
+    57	    if (!section.hasValue("CameraEdgeMove")) {
+    58	        // no explicit setting: default off when windowed (edge-scrolling fights
+    59	        // with normal window interactions), on when fullscreen
+    60	        gameSettings->cameraEdgeMove = !gameSettings->windowed;
+    61	    }
+    62	
+    63	    return gameSettings;
+    64	}
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -E 'XDG|environ|LD_LIBRARY_PATH|SDL_' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- tests/ui_audit tools/upstream/build_upstream_linux.sh
+5e9059778bd59e486a58a899c9cf56f6758ed178:tests/ui_audit/ui_audit_runtime_support.py:24:        environment = dict(os.environ)
+5e9059778bd59e486a58a899c9cf56f6758ed178:tests/ui_audit/ui_audit_runtime_support.py:25:        environment.update(
+5e9059778bd59e486a58a899c9cf56f6758ed178:tests/ui_audit/ui_audit_runtime_support.py:26:            SDL_VIDEODRIVER="dummy",
+5e9059778bd59e486a58a899c9cf56f6758ed178:tests/ui_audit/ui_audit_runtime_support.py:27:            SDL_RENDER_DRIVER="software",
+5e9059778bd59e486a58a899c9cf56f6758ed178:tests/ui_audit/ui_audit_runtime_support.py:28:            SDL_AUDIODRIVER="dummy",
+5e9059778bd59e486a58a899c9cf56f6758ed178:tests/ui_audit/ui_audit_runtime_support.py:29:            XDG_DATA_HOME=str(self.xdg),
+5e9059778bd59e486a58a899c9cf56f6758ed178:tests/ui_audit/ui_audit_runtime_support.py:34:            env=environment,
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:51:                -DSDL_INSTALL=ON -DSDL_SHARED=ON -DSDL_STATIC=OFF
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:52:                -DSDL_TEST_LIBRARY=OFF -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:53:                -DSDL_AUDIO=ON -DSDL_VIDEO=ON -DSDL_RENDER=ON
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:54:                -DSDL_DUMMYAUDIO=ON -DSDL_DUMMYVIDEO=ON -DSDL_OFFSCREEN=ON
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:55:                -DSDL_ALSA=OFF -DSDL_PULSEAUDIO=OFF -DSDL_JACK=OFF
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:56:                -DSDL_PIPEWIRE=OFF -DSDL_SNDIO=OFF -DSDL_X11=OFF
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:57:                -DSDL_WAYLAND=OFF -DSDL_KMSDRM=OFF -DSDL_OPENGL=OFF
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:58:                -DSDL_OPENGLES=OFF -DSDL_VULKAN=OFF -DSDL_UNIX_CONSOLE_BUILD=ON
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:61:        SDL_image)
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:73:        SDL_ttf)
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:82:        SDL_mixer)
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:127:    if [[ "$name" == SDL_ttf ]]; then
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:140:        SDL_image|SDL_ttf|SDL_mixer)
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:160:    printf 'Команда: SDL_VIDEODRIVER=%s SDL_AUDIODRIVER=dummy XDG_DATA_HOME=%q timeout 20 ./d2tm\n' \
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:163:        SDL_VIDEODRIVER="$driver" SDL_AUDIODRIVER=dummy \
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:164:        XDG_DATA_HOME="$DUNE_OUT_DIR/xdg" timeout 20 ./d2tm) \
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:197:    printf '%s\0' SDL_image SDL_ttf SDL_mixer |
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:208:    export LD_LIBRARY_PATH="$library_dir"
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:210:    printf 'CPATH=%s\nLIBRARY_PATH=%s\nLD_LIBRARY_PATH=%s\n' "$CPATH" "$LIBRARY_PATH" "$LD_LIBRARY_PATH"
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:255:    for name in SDL SDL_image SDL_ttf SDL_mixer Catch2; do
+5e9059778bd59e486a58a899c9cf56f6758ed178:tools/upstream/build_upstream_linux.sh:260:    printf 'Запуск: SDL_VIDEODRIVER=%s; код timeout=%s\n' "$selected_driver" "$game_status"
+[exit 0]
+
+$ export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -E 'python|unittest|pytest' 5e9059778bd59e486a58a899c9cf56f6758ed178 -- .github CMakeLists.txt tests/CMakeLists.txt tools/upstream/build_upstream_linux.sh | head -40
+5e9059778bd59e486a58a899c9cf56f6758ed178:.github/workflows/build_manual.yml:100:        uses: actions/setup-python@v3
+5e9059778bd59e486a58a899c9cf56f6758ed178:.github/workflows/build_manual.yml:102:          python-version: "3.14"
+[exit 0]

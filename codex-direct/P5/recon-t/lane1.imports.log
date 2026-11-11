@@ -1,0 +1,44 @@
+Command: wc -l /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/build_sheets.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_completeness.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_credits.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_geometry.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_keys.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_options_geometry.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_scenes.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_screens.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/combos.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/extract_keys.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/finalize_png.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/find_hit_tests.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/run_all.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/run_combo.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_build_sheets.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_completeness.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_credits.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_geometry.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_keys.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_options_geometry.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_scenes.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_screens.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_combos.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_extra_rules.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_extract_keys.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_find_hit_tests.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_png_policy.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_png_policy_outputs.py /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_run_all.py
+Command: /usr/bin/python3 -c 'import sys; print("\n".join(sys.stdlib_module_names))'
+stdlib_module_names count=290
+   261 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/build_sheets.py
+    73 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_completeness.py
+    53 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_credits.py
+   251 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_geometry.py
+   126 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_keys.py
+   120 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_options_geometry.py
+   132 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_scenes.py
+    86 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/check_screens.py
+   100 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/combos.py
+    92 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/extract_keys.py
+    59 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/finalize_png.py
+    58 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/find_hit_tests.py
+   152 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/run_all.py
+   184 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/run_combo.py
+   117 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_build_sheets.py
+   139 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_completeness.py
+    53 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_credits.py
+   326 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_geometry.py
+   173 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_keys.py
+   137 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_options_geometry.py
+   166 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_scenes.py
+    97 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_check_screens.py
+   170 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_combos.py
+   203 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_extra_rules.py
+    74 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_extract_keys.py
+    70 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_find_hit_tests.py
+    93 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_png_policy.py
+    97 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_png_policy_outputs.py
+    70 /srv/dune/worktrees/u13g/.tmp/p5tr/fork/tools/ui-audit/tests/test_run_all.py
+  3732 total
+Third-party import probes use the specified interpreter executable and -c import command.
+Command: /usr/bin/python3 -c 'import PIL'
+exit=0
+first_stderr_line=(пусто)
+stdout=(пусто)
+stderr=(пусто)
+Command: /srv/dune/venv/bin/python -c 'import PIL'
+exit=0
+first_stderr_line=(пусто)
+stdout=(пусто)
+stderr=(пусто)

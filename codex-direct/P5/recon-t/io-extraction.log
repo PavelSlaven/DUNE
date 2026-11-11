@@ -1,0 +1,17 @@
+files_scanned=14
+rows=81
+files:
+tools/ui-audit/build_sheets.py
+tools/ui-audit/check_completeness.py
+tools/ui-audit/check_credits.py
+tools/ui-audit/check_geometry.py
+tools/ui-audit/check_keys.py
+tools/ui-audit/check_options_geometry.py
+tools/ui-audit/check_scenes.py
+tools/ui-audit/check_screens.py
+tools/ui-audit/combos.py
+tools/ui-audit/extract_keys.py
+tools/ui-audit/finalize_png.py
+tools/ui-audit/find_hit_tests.py
+tools/ui-audit/run_all.py
+tools/ui-audit/run_combo.py

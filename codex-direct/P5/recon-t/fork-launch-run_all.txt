@@ -1,0 +1,37 @@
+    19	def scales_for(executable, resolutions):
+    20	    scales = {}
+    21	    for resolution in resolutions:
+    22	        result = subprocess.run([str(executable), "--ui-audit-scales", resolution], env=run_combo.game_environment(),
+    23	                                check=True, capture_output=True, text=True, timeout=60)
+    24	        _, render, world = combos.parse_scales(result.stdout)
+    25	        scales[resolution] = {"render": [value for value in render if value], "world": [value for value in world if value]}
+    26	    return scales
+    27	
+    28	
+    29	def interleave(chains):
+    73	def run_one(args, combo, journal):
+    74	    identifier = combos.combo_id(combo)
+    75	    free = run_combo.free_gb(args.out)
+    76	    journal.write(f"{time.strftime('%F %T')} free {free:.1f} GB before {identifier}\n")
+    77	    journal.flush()
+    78	    if free < args.min_free_gb:
+    79	        return identifier, 3
+    80	    log_path = Path(args.out) / "run" / (identifier.replace("/", "_") + ".txt")
+    81	    log_path.parent.mkdir(parents=True, exist_ok=True)
+    82	    command = [sys.executable, str(Path(__file__).resolve().parent / "run_combo.py"), "--exe", args.exe,
+    83	               "--resources", args.resources, "--out", args.out, "--combo", identifier,
+    84	               "--min-free-gb", str(args.min_free_gb)]
+    85	    with open(log_path, "w", encoding="utf-8") as log:
+    86	        code = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=False).returncode
+    87	    if code == 0:
+    88	        marker = done_marker(args.out, combo)
+    89	        marker.parent.mkdir(parents=True, exist_ok=True)
+    90	        marker.write_text("ok\n", encoding="utf-8")
+    91	    return identifier, code
+    92	
+    93	
+    94	def main(argv=None):
+    95	    parser = argparse.ArgumentParser(description="Capture all combinations, 16 at a time, skipping finished ones.")
+    96	    parser.add_argument("--exe", required=True)
+    97	    parser.add_argument("--resources", required=True)
+    98	    parser.add_argument("--out", required=True)
