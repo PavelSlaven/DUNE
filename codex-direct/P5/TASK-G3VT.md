@@ -16,7 +16,7 @@
 
 Тесты пишутся до кода. Их потом выполняет другой исполнитель, который пишет код по тому же контракту и тесты не меняет. Скрипты запускают установленную игру и в CTest не входят: в CI нет данных Git LFS. Скрипты создают временную папку через `tempfile.TemporaryDirectory` в системной временной папке и удаляют её при выходе — это исключение из правила о папке задачи для прогонов H и I. Тест `tools/ui-audit/tests/test_port_changes.py` входит в CTest и игру не запускает.
 
-Сборка в этой задаче не нужна. Установленная игра — `.tmp/out/run/bin/d2tm`; сцен части 3в в ней нет, и оба новых скрипта должны упасть. Ведущий проверил оба скрипта на поддельной игре: зелёный прогон по контракту и 34 атаки — каждая падает по своей причине. Правку `test_port_changes.py` ведущий проверил так: при нынешнем `exclusions.tsv` падает только `test_g_exclusions_text`, при `exclusions.tsv` с двумя новыми строками пункта 17 все тесты файла проходят.
+Сборка в этой задаче не нужна. Установленная игра — `.tmp/out/run/bin/d2tm`; сцен части 3в в ней нет, и оба новых скрипта должны упасть. Ведущий проверил оба скрипта на поддельной игре: зелёный прогон по контракту и 35 атак — каждая падает по своей причине. Правку `test_port_changes.py` ведущий проверил так: при нынешнем `exclusions.tsv` падает только `test_g_exclusions_text`, при `exclusions.tsv` с двумя новыми строками пункта 17 все тесты файла проходят.
 
 ## Прочитать до работы
 
@@ -55,7 +55,7 @@
       - прямоугольники двух записей `GuiBar` — (0, 0, 800, 48) (верхняя панель) и (752, 48, 48, 552) (правая панель);
       - внутри прямоугольника верхней панели — ровно 3 записи `GuiStateButton`, внутри прямоугольника правой — ровно `<n>`; каждая запись `GuiValueButton` — внутри правой панели; запись `GuiButton` — внутри верхней панели;
       - записи `click` по именам — ровно: `GuiStateButton` 3 + `<n>`, `GuiButton:` 1 (кнопка сохранения без подписи), у `editor-topology` ещё `GuiValueButton` 1.
-    - `editor-new-map` и три сцены редактора: для каждой записи `click` есть запись `gui` с тем же прямоугольником, тип которой равен части имени записи `click` до первого символа `:` (всему имени, если `:` в нём нет).
+    - `editor-new-map` и три сцены редактора: «тип» записи `click` — часть её имени до первого символа `:` (всё имя, если `:` в нём нет). Для каждого типа `T` записей `click` сцены прямоугольники записей `click` типа `T` и прямоугольники записей `gui` с типом `T` совпадают как наборы с повторами: у каждой записи `click` — своя запись `gui` с тем же прямоугольником.
 
 ## Шаг 1. Тесты — корневая нить сама
 
@@ -198,13 +198,22 @@ def of_type(body, type_name):
     return [record for record in base.records_of(body, "gui") if record["t"] == type_name]
 
 
+def click_type(record):
+    return record["name"].split(":", 1)[0]
+
+
+def rects_of(records):
+    return sorted((record["x"], record["y"], record["w"], record["h"]) for record in records)
+
+
 def check_click_owners(body):
-    gui = base.records_of(body, "gui")
-    for record in base.records_of(body, "click"):
-        type_name = record["name"].split(":", 1)[0]
-        if not any(item["t"] == type_name and support.same_json(base.rect(item), base.rect(record)) for item in gui):
-            return f"the click record {record['name']} {base.rect(record)} has no gui record {type_name} " \
-                   f"with the same rectangle"
+    clicks = base.records_of(body, "click")
+    for type_name in sorted({click_type(record) for record in clicks}):
+        click_rects = rects_of(record for record in clicks if click_type(record) == type_name)
+        gui_rects = rects_of(of_type(body, type_name))
+        if click_rects != gui_rects:
+            return f"the click records of {type_name} {click_rects} do not match its gui records {gui_rects} " \
+                   f"one to one"
     return None
 
 
