@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>4 — брифинг ментата</title>
+<link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
+<style>
+/* The mentat painting is a 640×480 frame; --k scales it to the canvas height (art is 2560×1920, so it stays sharp up to k = 4). */
+:root { --k: 1.25; }
+@media (min-height: 800px) { :root { --k: 2.25; } }
+body { background: #05060c; }
+.sidefill { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, #10121d 0%, #05060c 70%); }
+.stage { left: calc(50% - 320px * var(--k)); top: calc(50% - 240px * var(--k)); width: calc(640px * var(--k)); height: calc(480px * var(--k));
+  background: url("../../../../.cache/ui-redesign/assets/sdl_mentat_hd4/0037_MENTATA.png") center / 100% 100% no-repeat; box-shadow: 0 0 0 1px #000, 0 0 0 2px #3b3220, 0 0 60px rgba(0,0,0,.9); }
+.a { position: absolute; left: calc(var(--x) * 1px * var(--k)); top: calc(var(--y) * 1px * var(--k)); width: calc(var(--w) * 1px * var(--k)); height: calc(var(--h) * 1px * var(--k)); }
+.txt { font: calc(15.5px * var(--k))/1.22 "PTN"; color: #f3edd8; text-shadow: 0 calc(1px * var(--k)) 0 #000, 0 0 calc(4px * var(--k)) #000; display: flex; flex-direction: column; justify-content: center; }
+.txt .caret { height: calc(13px * var(--k)); width: calc(1.5px * var(--k)); vertical-align: -10%; }
+.scene { background: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png") 55% 42% / 330% auto no-repeat; box-shadow: inset 0 0 calc(18px * var(--k)) rgba(0,0,0,.85); }
+.scene .cap { position: absolute; left: calc(6px * var(--k)); bottom: calc(5px * var(--k)); font-size: calc(8.5px * var(--k)); color: var(--text2); text-shadow: 0 1px 2px #000; }
+.stage .btn.a { padding: 0; font-size: calc(12px * var(--k)); }
+.ms { left: calc(8px * var(--k)); bottom: calc(8px * var(--k)); height: calc(20px * var(--k)); padding: 0 calc(8px * var(--k)); font-size: calc(9.5px * var(--k)); gap: calc(4px * var(--k)); }
+.ms .ico { width: calc(11px * var(--k)); height: calc(11px * var(--k)); }
+.who { left: calc(30px * var(--k)); top: calc(70px * var(--k)); font: calc(9px * var(--k))/1 "Russo"; color: var(--brass); text-transform: uppercase; text-shadow: 0 1px 2px #000; }
+.keys { right: 22px; bottom: 14px; font: 15px/1 "PTN"; color: var(--text3); gap: 8px; display: none; }
+@media (min-height: 800px) { .keys { display: flex; } }
+</style></head>
+<body>
+<div class="sidefill"></div>
+<div class="abs stage">
+  <div class="a txt" style="--x:30;--y:19;--w:578;--h:41"><div>Приветствую вас. Я — ваш ментат, и моя первая задача — помочь</div><div>вам добыть 1000 кредитов пряности на этой планете.<span class="caret"></span></div></div>
+  <div class="a scene" style="--x:273;--y:108;--w:328;--h:222"><div class="cap">Арракис · Миссия 1</div></div>
+  <div class="a btn" style="--x:346;--y:393;--w:119;--h:43">Повторить</div>
+  <div class="a btn primary hover" style="--x:483;--y:393;--w:119;--h:43">Начать</div>
+  <div class="abs btn ms"><i data-i="map"></i>Выбор миссии</div>
+</div>
+<div class="abs row keys"><span class="kbd">Enter</span> начать &nbsp; <span class="kbd">Пробел</span> пропустить текст</div>
+</body></html>

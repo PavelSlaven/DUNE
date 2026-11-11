@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>6 — экран боя</title>
+<link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
+<style>
+/* Layout tokens. Narrow canvas (width < 960): sidebar 240, 3 columns. Wide: sidebar 320, 4 columns. */
+:root { --T: 32px; --S: 240px; --R: 152px; --cols: 3; --cw: 72px; --ch: 54px; --pad: 8px; --info: 46px; --field: url("../../../../.cache/ui-redesign/derived/field-atreides-560x568.jpg"); --mini: url("../../../../.cache/ui-redesign/derived/minimap-atreides-152.png"); }
+@media (min-width: 960px) { :root { --S: 320px; --cols: 4; --cw: 73px; --ch: 55px; --field: url("../../../../.cache/ui-redesign/derived/field-atreides-747x568.jpg"); } }
+@media (min-width: 1600px) { :root { --house: var(--ordos); --field: url("../../../../.cache/ui-redesign/derived/field-ordos-wide.jpg"); --mini: url("../../../../.cache/ui-redesign/derived/minimap-ordos-152.png"); } }
+@media (min-width: 960px) and (min-height: 800px) { :root { --R: 200px; --cols: 3; --cw: 98px; --ch: 74px; --field: url("../../../../.cache/ui-redesign/derived/field-ordos-1600x1048.jpg"); --mini: url("../../../../.cache/ui-redesign/derived/minimap-ordos-200.png"); } }
+
+.field { left: 0; top: var(--T); right: var(--S); bottom: 0; background: #000 var(--field) center / cover no-repeat; }
+
+/* top bar */
+.top { left: 0; top: 0; right: 0; height: var(--T); background: linear-gradient(180deg, #232c33, #151b20); box-shadow: inset 0 -1px 0 #030405, inset 0 -2px 0 var(--brass-mid), inset 0 1px 0 rgba(255,255,255,.07); }
+.top .grp { height: 24px; gap: 4px; }
+.topl { left: 4px; top: 4px; height: 24px; gap: 8px; right: calc(var(--S) + 8px); }
+.tbtn { height: 24px; padding: 0 9px; font-size: 12px; gap: 5px; }
+.tbtn.sq { width: 24px; padding: 0; }
+.tbtn .ico { width: 14px; height: 14px; }
+.trk { height: 24px; min-width: 118px; padding: 0 8px; font: 13px/1 "PTN"; color: var(--text); justify-content: center; gap: 6px; }
+.trk .ico { width: 13px; height: 13px; color: var(--brass); }
+.speed { gap: 6px; height: 24px; }
+.speed .ico { width: 15px; height: 15px; color: var(--brass); }
+.speed .slider { width: 78px; flex: none; }
+.speed .val { font-size: 12px; min-width: 0; text-align: left; }
+.clock { font: 12px/1 "Russo"; color: var(--text2); gap: 5px; margin-left: auto; }
+.clock .ico { width: 14px; height: 14px; }
+@media (max-width: 959px) { .trk { min-width: 96px; } .speed .slider { width: 62px; } }
+
+/* sidebar */
+.side { right: 0; top: 0; bottom: 0; width: var(--S); background: linear-gradient(90deg, #0e1317, #151b20 12%, #12171c); box-shadow: inset 1px 0 0 #030405, inset 2px 0 0 var(--brass-mid), inset 3px 0 0 rgba(0,0,0,.6); }
+.credits { left: 3px; right: 0; top: 0; height: var(--T); padding: 0 10px 2px 10px; gap: 7px; }
+.credits .ico { width: 17px; height: 17px; color: var(--spice); }
+.credits .lab { font: 11px/1 "Russo"; text-transform: uppercase; color: var(--text2); }
+.credits .num { font: 19px/1 "Russo"; color: var(--gold); margin-left: auto; text-shadow: 0 1px 0 #000, 0 0 8px rgba(255,190,80,.35); }
+.radar { left: var(--pad); top: calc(var(--T) + 6px); width: var(--R); height: var(--R); }
+.radar .img { position: absolute; inset: 3px; background: #000 var(--mini) center / auto no-repeat; image-rendering: pixelated; }
+.radar .br { position: absolute; inset: 6px; pointer-events: none; opacity: .9;
+  background: linear-gradient(var(--brass-hi), var(--brass-hi)) left top / 9px 1px no-repeat, linear-gradient(var(--brass-hi), var(--brass-hi)) left top / 1px 9px no-repeat,
+    linear-gradient(var(--brass-hi), var(--brass-hi)) right top / 9px 1px no-repeat, linear-gradient(var(--brass-hi), var(--brass-hi)) right top / 1px 9px no-repeat,
+    linear-gradient(var(--brass-hi), var(--brass-hi)) left bottom / 9px 1px no-repeat, linear-gradient(var(--brass-hi), var(--brass-hi)) left bottom / 1px 9px no-repeat,
+    linear-gradient(var(--brass-hi), var(--brass-hi)) right bottom / 9px 1px no-repeat, linear-gradient(var(--brass-hi), var(--brass-hi)) right bottom / 1px 9px no-repeat; }
+.status { left: calc(var(--pad) + var(--R) + 6px); right: var(--pad); top: calc(var(--T) + 6px); height: var(--R); }
+.house { align-items: center; gap: 3px; }
+.house img { width: 58px; height: 58px; filter: drop-shadow(0 2px 3px rgba(0,0,0,.7)); }
+.house .nm { font: 11px/1 "Russo"; text-transform: uppercase; color: var(--text); text-align: center; }
+.house .bar { height: 2px; align-self: stretch; background: linear-gradient(90deg, transparent, var(--house), transparent); margin-top: 2px; }
+.mtr { margin-top: 7px; }
+.mtr .ln { gap: 4px; font: 12px/1 "Russo"; color: var(--text); margin-bottom: 3px; }
+.mtr .ln .ico { width: 12px; height: 12px; }
+.mtr .ln .lab { font: 12px/1 "PTN"; color: var(--text2); display: none; }
+.mtr .ln .v { margin-left: auto; }
+.mtr .ln .v small { font: 11px/1 "PTN"; color: var(--text3); }
+@media (min-width: 960px) {
+  .house { flex-direction: row; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .house img { width: 46px; height: 46px; }
+  .house .nm { font-size: 13px; text-align: left; line-height: 1.15; }
+  .house .nm small { display: block; font: 12px/1.1 "PTN"; color: var(--text2); text-transform: none; }
+  .house .bar { flex: 0 0 100%; background: linear-gradient(90deg, var(--house), transparent); }
+  .mtr { margin-top: 11px; } .mtr .ln .lab { display: inline; }
+}
+@media (min-width: 960px) and (min-height: 800px) {
+  .house { flex-direction: column; gap: 4px; } .house img { width: 72px; height: 72px; } .house .nm { text-align: center; font-size: 12px; } .house .nm small { display: none; }
+  .house .bar { flex: none; background: linear-gradient(90deg, transparent, var(--house), transparent); } .mtr .ln .lab { display: none; } .mtr { margin-top: 12px; }
+}
+/* list tabs */
+.ltabs { left: var(--pad); right: var(--pad); top: calc(var(--T) + 6px + var(--R) + 6px); height: 28px; gap: 2px; }
+.ltab { flex: 1; height: 28px; display: flex; align-items: center; justify-content: center; color: var(--text2); position: relative;
+  background: linear-gradient(180deg, #1d252b, #141a1f); box-shadow: inset 0 0 0 1px #030405, inset 0 1px 0 1px rgba(255,255,255,.04); }
+.ltab .ico { width: 17px; height: 17px; }
+.ltab.selected { color: var(--gold); background: linear-gradient(180deg, #3a4651, #1b2228 80%); box-shadow: inset 0 0 0 1px var(--brass-mid), inset 0 3px 0 var(--brass); }
+.ltab.hover { color: var(--text); background: linear-gradient(180deg, #2a343d, #181e24); }
+.ltab.disabled { color: #3d423f; }
+.ltab.flash::after { content: ""; position: absolute; right: 3px; top: 4px; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+/* catalog */
+.catalog { left: var(--pad); right: var(--pad); top: calc(var(--T) + 6px + var(--R) + 6px + 28px + 4px); bottom: calc(var(--info) + 10px); }
+.cards { display: grid; grid-template-columns: repeat(var(--cols), var(--cw)); grid-auto-rows: var(--ch); gap: 4px; position: absolute; left: 0; top: 0; }
+.wm { position: absolute; left: 50%; bottom: 8%; width: 180px; height: 180px; margin-left: -90px; opacity: .07; filter: grayscale(1); display: none; }
+@media (min-height: 800px) { .wm { display: block; } }
+.cscroll { position: absolute; right: -6px; top: 0; bottom: 0; width: 4px; }
+.cscroll i { top: 0; height: 78%; left: 0; right: 0; }
+.card { position: relative; background: #000 center / cover no-repeat; box-shadow: 0 0 0 1px #030405; overflow: hidden; }
+.card::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px #8e6c2c, inset 0 0 0 2px rgba(0,0,0,.4); pointer-events: none; }
+.card .price { position: absolute; left: 0; right: 0; bottom: 0; height: 17px; padding: 3px 4px 0 5px; font: 12px/1 "Russo"; color: var(--gold); text-shadow: 0 1px 0 #000, 0 0 3px #000; background: linear-gradient(0deg, rgba(4,6,8,.92) 20%, rgba(4,6,8,0)); }
+.card .q { position: absolute; right: 2px; top: 2px; min-width: 16px; height: 15px; padding: 2px 3px 0; font: 11px/1 "Russo"; color: #1c1506; text-align: center; background: linear-gradient(180deg, #f6d273, #b98630); box-shadow: 0 0 0 1px #030405; }
+.card.hover::after { box-shadow: inset 0 0 0 1px #fff0c0, inset 0 0 0 2px #c69a44; }
+.card.hover { box-shadow: 0 0 0 1px #030405, 0 0 9px rgba(242,190,90,.6); filter: brightness(1.12); }
+.card.poor { filter: saturate(.5) brightness(.72); } .card.poor .price { color: #ff8576; }
+.card.off { filter: grayscale(1) brightness(.4); }
+.card .shade { position: absolute; inset: 0; background: rgba(4,6,8,.62); }
+.card .pct { position: absolute; left: 0; right: 0; top: 50%; margin-top: -11px; text-align: center; font: 15px/1 "Russo"; color: #fff; text-shadow: 0 1px 0 #000, 0 0 4px #000; }
+.card .prog { position: absolute; left: 3px; right: 3px; bottom: 3px; height: 5px; background: #06080a; box-shadow: 0 0 0 1px #030405; }
+.card .prog i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--v); background: linear-gradient(180deg, #f6d273, #b98630); }
+.card.paused .prog i { background: linear-gradient(180deg, #9aa3a8, #5b6468); } .card.paused .pct { color: var(--warn); font-size: 12px; margin-top: -9px; }
+.card.ready::after { box-shadow: inset 0 0 0 1px #fff0c0, inset 0 0 0 3px #f0c24e; }
+.card.ready { box-shadow: 0 0 0 1px #030405, 0 0 11px rgba(255,205,90,.75); }
+.card .ban { position: absolute; left: 0; right: 0; bottom: 0; height: 18px; padding-top: 4px; text-align: center; font: 11px/1 "Russo"; color: #1c1506; background: linear-gradient(180deg, #f6d273, #b98630); box-shadow: 0 -1px 0 #030405; text-transform: uppercase; }
+/* info strip */
+.info { left: var(--pad); right: var(--pad); bottom: 6px; height: var(--info); padding: 6px 9px; }
+.info .nm { font: 13px/1 "Russo"; text-transform: uppercase; color: var(--gold); }
+.info .st { gap: 10px; font: 12px/1 "Russo"; color: var(--text); margin-top: 7px; }
+.info .pr { margin-left: auto; font: 13px/1 "Russo"; display: flex; align-items: center; gap: 3px; } .info .pr .ico { width: 13px; height: 13px; }
+.info .st span { display: flex; align-items: center; gap: 3px; }
+.info .st .ico { width: 12px; height: 12px; }
+.info .st span { white-space: nowrap; }
+.info .st .ds { font: 13px/1 "PTN"; color: var(--text2); margin-left: auto; }
+@media (max-width: 959px) { .info .st .ds { display: none; } }
+/* battlefield overlays */
+.toast { left: 0; right: var(--S); top: calc(var(--T) + 8px); justify-content: center; }
+.toast div { padding: 5px 14px 5px 12px; font: 14px/1 "PTN"; color: var(--text); background: rgba(8,11,13,.8); box-shadow: 0 0 0 1px rgba(3,4,5,.9), inset 3px 0 0 var(--brass); gap: 7px; }
+.toast .ico { width: 14px; height: 14px; color: var(--gold); }
+.notes { left: 8px; bottom: 96px; gap: 3px; align-items: flex-start; }
+.notes div { padding: 3px 9px 3px 8px; font: 13px/1.1 "PTN"; background: rgba(8,11,13,.72); box-shadow: inset 2px 0 0 currentColor; }
+.notes div span { color: var(--text); }
+.cmd { left: 8px; bottom: 8px; gap: 3px; }
+.cbtn { width: 44px; height: 44px; padding: 0; }
+.cbtn { align-items: flex-start; padding-top: 5px; }
+.cbtn .ico { width: 22px; height: 22px; stroke-width: 1.5; }
+.cbtn .kbd { position: absolute; left: 50%; transform: translateX(-50%); bottom: 4px; min-width: 0; padding: 1px 3px 0; font-size: 9px; }
+.cbtn.disabled .kbd { display: none; }
+.cmdtip { left: 55px; bottom: 58px; }
+
+</style></head>
+<body>
+<div class="abs field"></div>
+
+<div class="abs row toast"><div class="row"><i data-i="check"></i>Строительство завершено: Завод переработки</div></div>
+<div class="abs col notes">
+  <div class="warn"><span>Харвестер атакован</span></div>
+  <div class="ok"><span>Фрегат прибывает с заказом</span></div>
+</div>
+<div class="abs row cmd">
+  <div class="btn cbtn"><i data-i="move"></i><span class="kbd">ЛКМ</span></div>
+  <div class="btn cbtn hover"><i data-i="attack"></i><span class="kbd">Ctrl</span></div>
+  <div class="btn cbtn"><i data-i="repair"></i><span class="kbd">R</span></div>
+  <div class="btn cbtn disabled"><i data-i="unload"></i><span class="kbd">D</span></div>
+  <div class="btn cbtn disabled"><i data-i="deploy"></i><span class="kbd">D</span></div>
+  <div class="btn cbtn disabled"><i data-i="rally"></i><span class="kbd">Ctrl</span></div>
+  <div class="btn cbtn disabled"><i data-i="release"></i><span class="kbd">D</span></div>
+</div>
+<div class="tip cmdtip"><b>Атаковать</b> &nbsp;<span class="kbd">Ctrl</span></div>
+
+<div class="abs top"></div>
+<div class="abs row topl">
+  <div class="btn tbtn"><i data-i="menu"></i>Меню</div>
+  <div class="row grp">
+    <div class="btn tbtn sq"><i data-i="prev"></i></div>
+    <div class="wellf row trk" data-c="3"><i data-i="note"></i>Dune II #22</div>
+    <div class="btn tbtn sq"><i data-i="next"></i></div>
+  </div>
+  <div class="row speed"><i data-i="speed"></i><div class="slider" style="--v:50%"><div class="track"></div><div class="fill"></div><div class="knob"></div></div><span class="val">5</span></div>
+  <div class="row clock"><i data-i="clock"></i>12:47</div>
+</div>
+
+<div class="abs side">
+  <div class="abs row credits"><i data-i="coin"></i><span class="lab">Кредиты</span><span class="num" id="credits">480</span></div>
+  <div class="abs wellf radar" data-c="5" data-noise="0"><div class="img"></div><div class="br"></div></div>
+  <div class="abs col status">
+    <div class="col house"><img id="crest"><div class="nm" id="hname"></div><div class="bar"></div></div>
+    <div class="mtr"><div class="row ln ok"><i data-i="bolt"></i><span class="lab">Энергия</span><span class="v" style="color:var(--text)">385<small>/405</small></span></div><div class="meter" style="--v:95%"><i></i></div></div>
+    <div class="mtr"><div class="row ln spice"><i data-i="silo"></i><span class="lab">Пряность</span><span class="v" style="color:var(--text)">480<small>/2000</small></span></div><div class="meter spice" style="--v:24%"><i></i></div></div>
+  </div>
+  <div class="abs row ltabs">
+    <div class="ltab selected"><i data-i="build"></i></div>
+    <div class="ltab hover"><i data-i="infantry"></i></div>
+    <div class="ltab flash"><i data-i="tank"></i></div>
+    <div class="ltab"><i data-i="ship"></i></div>
+    <div class="ltab disabled"><i data-i="palace"></i></div>
+    <div class="ltab"><i data-i="upgrade"></i></div>
+  </div>
+  <div class="abs catalog"><img class="wm" id="wm"><div class="cards" id="cards"></div><div class="sbar cscroll"><i></i></div></div>
+  <div class="abs wellf info" data-c="4" data-noise="0">
+    <div class="row"><span class="nm">Ветроловушка</span><span class="pr gold"><i data-i="coin"></i>300</span></div>
+    <div class="row st"><span class="ok"><i data-i="bolt"></i>+100</span><span class="muted"><i data-i="grid"></i>2×2</span><span class="muted"><i data-i="clock"></i>12 с</span><span class="ds">ЛКМ — строить · ПКМ — отмена</span></div>
+  </div>
+</div>
+<script>
+(function () {
+  const A = "../../../../.cache/ui-redesign/assets/";
+  const wide = innerWidth >= 960;
+  const items = [
+    ["0032_ICON_STR_1SLAB", 5], ["0033_ICON_STR_4SLAB", 20], ["0048_ICON_STR_WALL", 50],
+    ["0049_ICON_STR_WINDTRAP", 300, "hover"], ["0042_ICON_STR_REFINERY", 400, "ready"], ["0045_ICON_STR_SILO", 150],
+    ["0034_ICON_STR_BARRACKS", 300], ["0050_ICON_STR_WOR", 400], ["0041_ICON_STR_RADAR", 400],
+    ["0039_ICON_STR_LIGHTFACTORY", 400, "building"], ["0036_ICON_STR_HEAVYFACTORY", 600, "poor"], ["0037_ICON_STR_HIGHTECH", 500, "poor"],
+    ["0043_ICON_STR_REPAIR", 700, "poor"], ["0047_ICON_STR_TURRET", 125], ["0044_ICON_STR_RTURRET", 250, "paused"],
+    ["0046_ICON_STR_STARPORT", 500, "poor"], ["0038_ICON_STR_IX", 500, "off"], ["0040_ICON_STR_PALACE", 999, "off"],
+  ];
+  const count = wide ? 18 : 15;
+  const host = document.getElementById("cards");
+  items.slice(0, count).forEach(function (item) {
+    const card = document.createElement("div");
+    const state = item[2] || "";
+    card.className = "card " + state;
+    card.style.backgroundImage = "url(" + A + "sdl_inter_hd4/" + item[0] + ".png)";
+    let inner = "";
+    if (state === "building") inner = '<div class="shade"></div><div class="pct">62%</div><div class="prog" style="--v:62%"><i></i></div>';
+    else if (state === "paused") inner = '<div class="shade"></div><div class="pct">ПАУЗА</div><div class="prog" style="--v:35%"><i></i></div>';
+    else if (state === "ready") inner = '<div class="ban">Готово</div>';
+    else inner = '<div class="price">' + item[1] + "</div>";
+    card.innerHTML = inner;
+    host.appendChild(card);
+  });
+  const house = innerWidth >= 1600 ? ["hud_house_ordos", "Ордос", "Дом"] : ["hud_house_atreides", "Атрейдес", "Дом"];
+  document.getElementById("crest").src = A + "hd4/" + house[0] + ".png";
+  document.getElementById("wm").src = A + "hd4/" + house[0] + ".png";
+  document.getElementById("hname").innerHTML = (wide ? "<small>" + house[2] + "</small>" : "") + house[1];
+  if (!wide) document.querySelector(".clock").style.display = "none";
+})();
+</script>
+</body></html>

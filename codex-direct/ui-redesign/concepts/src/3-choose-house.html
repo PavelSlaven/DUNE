@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>3 — выбор Дома</title>
+<link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
+<style>
+:root { --cw: 178px; --chh: 412px; --gap: 12px; --ty: 34px; --tfs: 26px; --cy: 92px; --img: 154px; --nfs: 19px; --dfs: 14px; --pad: 12px; }
+@media (min-height: 800px) { :root { --cw: 360px; --chh: 720px; --gap: 32px; --ty: 76px; --tfs: 44px; --cy: 190px; --img: 312px; --nfs: 32px; --dfs: 20px; --pad: 24px; } }
+.art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png"); background-position: 58% 50%; filter: blur(3px); transform: scale(1.03); }
+.scrim { background: radial-gradient(ellipse at 50% 45%, rgba(4,6,8,.58), rgba(4,6,8,.86)); }
+.title { left: 0; right: 0; top: var(--ty); justify-content: center; gap: 18px; font-size: var(--tfs); }
+.title .rule { width: 18%; }
+.sub { left: 0; right: 0; top: calc(var(--ty) + var(--tfs) + 8px); text-align: center; font-size: var(--dfs); color: var(--text2); }
+.cards { left: 0; right: 0; top: var(--cy); justify-content: center; gap: var(--gap); align-items: flex-start; }
+.hc { width: var(--cw); height: var(--chh); padding: var(--pad); display: flex; flex-direction: column; align-items: center; }
+.hc .band { position: absolute; left: 12px; right: 12px; top: 3px; height: 3px; background: linear-gradient(90deg, transparent, var(--hc), transparent); opacity: .9; }
+.hc img { width: var(--img); height: calc(var(--img) * 1.089); object-fit: cover; box-shadow: 0 0 0 1px #030405, 0 0 0 2px var(--brass-lo); }
+.hc .nm { margin-top: calc(var(--pad) * .9); font: var(--nfs)/1 "Russo"; text-transform: uppercase; color: var(--text); text-shadow: 0 2px 0 #000; }
+.hc .rule { width: 70%; margin: calc(var(--pad) * .6) 0; }
+.hc .ds { font: var(--dfs)/1.3 "PTN"; color: var(--text2); text-align: center; }
+.hc .tr { margin-top: auto; align-self: stretch; display: flex; flex-direction: column; gap: 4px; font: var(--dfs)/1.1 "PTN"; color: var(--text2); }
+.hc .tr div { display: flex; align-items: center; gap: 6px; } .hc .tr .ico { width: calc(var(--dfs) + 1px); height: calc(var(--dfs) + 1px); color: var(--hc); }
+.hc.hover { transform: translateY(-6px); }
+.hc.hover > svg.fr { filter: drop-shadow(0 0 16px var(--hc)) drop-shadow(0 14px 22px rgba(0,0,0,.7)); }
+.hc.hover .nm { color: var(--gold); }
+.hc.hover img { box-shadow: 0 0 0 1px #030405, 0 0 0 2px var(--brass-hi); }
+.hc .pick { display: none; align-self: stretch; margin-top: 10px; }
+.hc.hover .pick { display: flex; }
+.back { left: 24px; bottom: 20px; }
+.keys { right: 24px; bottom: 26px; font: 14px/1 "PTN"; color: var(--text3); gap: 8px; }
+@media (min-height: 800px) { .back { left: 64px; bottom: 48px; height: 52px; font-size: 20px; padding: 0 26px; } .hc .pick { height: 52px; font-size: 20px; } .keys { right: 64px; bottom: 58px; font-size: 17px; } }
+</style></head>
+<body>
+<div class="art"></div><div class="scrim"></div>
+<div class="abs row title t-title"><div class="rule"></div><div class="dia"></div><span>Выберите Дом</span><div class="dia"></div><div class="rule"></div></div>
+<div class="abs sub">Под чьим знаменем вы завоюете Арракис?</div>
+<div class="abs row cards">
+  <div class="panel hc" style="--hc: var(--atreides)"><div class="band"></div>
+    <img src="../../../../.cache/ui-redesign/assets/sdl_inter_hd4/0011_BMP_SELECT_HOUSE_ATREIDES.png">
+    <div class="nm">Атрейдес</div><div class="rule"></div>
+    <div class="ds">Благородный Дом с планеты Каладан. Сбалансированная армия.</div>
+    <div class="tr"><div><i data-i="star"></i>Звуковой танк</div><div><i data-i="users"></i>Союз с фрименами</div></div>
+  </div>
+  <div class="panel hc hover" style="--hc: var(--ordos)"><div class="band"></div>
+    <img src="../../../../.cache/ui-redesign/assets/sdl_inter_hd4/0013_BMP_SELECT_HOUSE_ORDOS.png">
+    <div class="nm">Ордос</div><div class="rule"></div>
+    <div class="ds">Дом торговцев с ледяной планеты. Быстрая техника и хитрость.</div>
+    <div class="tr"><div><i data-i="star"></i>Девиатор</div><div><i data-i="users"></i>Диверсант</div></div>
+    <div class="btn primary pick">Выбрать</div>
+  </div>
+  <div class="panel hc" style="--hc: var(--harkonnen)"><div class="band"></div>
+    <img src="../../../../.cache/ui-redesign/assets/sdl_inter_hd4/0012_BMP_SELECT_HOUSE_HARKONNEN.png">
+    <div class="nm">Харконнен</div><div class="rule"></div>
+    <div class="ds">Жестокий Дом с Гьеди Прайм. Тяжёлая броня и грубая сила.</div>
+    <div class="tr"><div><i data-i="star"></i>Девастатор</div><div><i data-i="users"></i>Ракета «Рука смерти»</div></div>
+  </div>
+  <div class="panel hc" style="--hc: var(--sardaukar)"><div class="band"></div>
+    <img src="../../../../.cache/ui-redesign/assets/sdl_inter_hd4/0144_BMP_SELECT_HOUSE_SARDAUKAR.png">
+    <div class="nm">Сардаукары</div><div class="rule"></div>
+    <div class="ds">Гвардия Императора. Элитная пехота, закалённая на Салусе Секундус.</div>
+    <div class="tr"><div><i data-i="star"></i>Элитные бойцы</div><div><i data-i="users"></i>Поддержка Императора</div></div>
+  </div>
+</div>
+<div class="abs btn back"><i data-i="back"></i>Назад</div>
+<div class="abs row keys"><span class="kbd">Esc</span> назад</div>
+</body></html>

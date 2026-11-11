@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>1 — главное меню</title>
+<link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
+<style>
+:root { --mx: 44px; --logo-w: 300px; --logo-y: 44px; --menu-y: 132px; --menu-w: 264px; --bh: 40px; --gap: 8px; --fs: 16px; }
+@media (min-height: 800px) { :root { --mx: 150px; --logo-w: 520px; --logo-y: 150px; --menu-y: 300px; --menu-w: 380px; --bh: 54px; --gap: 12px; --fs: 20px; } }
+.art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png"); background-position: 58% 50%; }
+.scrim { background: linear-gradient(90deg, rgba(5,7,9,.88) 0%, rgba(5,7,9,.62) 30%, rgba(5,7,9,0) 62%), linear-gradient(0deg, rgba(5,7,9,.7), rgba(5,7,9,0) 22%); }
+.logo { left: var(--mx); top: var(--logo-y); width: var(--logo-w); filter: drop-shadow(0 4px 10px rgba(0,0,0,.7)); }
+.tag { left: var(--mx); top: calc(var(--logo-y) + var(--logo-w) * .19); width: var(--logo-w); text-align: right; font-size: calc(var(--fs) * .8); color: var(--brass); }
+.menu { left: var(--mx); top: var(--menu-y); width: var(--menu-w); gap: var(--gap); }
+.menu .btn { height: var(--bh); font-size: var(--fs); justify-content: flex-start; padding-left: calc(var(--bh) * .55); }
+.menu .btn.hover::before { content: ""; position: absolute; left: calc(var(--bh) * -.4); top: 50%; width: 9px; height: 9px; margin-top: -5px; transform: rotate(45deg); background: linear-gradient(135deg, var(--brass-hi), var(--brass-mid)); box-shadow: 0 0 0 1px #050607, 0 0 10px rgba(242,190,90,.6); }
+.menu .gapline { height: calc(var(--gap) * .5); }
+.foot { left: var(--mx); right: var(--mx); bottom: 14px; font-size: 13px; color: var(--text3); justify-content: space-between; }
+@media (min-height: 800px) { .foot { bottom: 28px; font-size: 15px; } }
+</style></head>
+<body>
+<div class="art"></div><div class="scrim"></div>
+<img class="abs logo" src="../../../../.cache/ui-redesign/assets/hd4/main_menu_logo.png">
+<div class="abs tag t-ui">The Maker</div>
+<div class="abs col menu">
+  <div class="btn">Кампания</div>
+  <div class="btn hover">Схватка</div>
+  <div class="btn disabled">Сохранения</div>
+  <div class="gapline"></div>
+  <div class="btn">Редактор карт</div>
+  <div class="btn">Настройки</div>
+  <div class="btn">Авторы</div>
+  <div class="gapline"></div>
+  <div class="btn">Выход</div>
+</div>
+<div class="abs row foot"><span>Сборка 2026-11-11</span><span>v0.9.0-ru-hd</span></div>
+</body></html>

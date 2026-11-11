@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>5 — настройка схватки</title>
+<link rel="stylesheet" href="ui.css"><script src="ui.js"></script>
+<style>
+:root { --m: 8px; --hd: 40px; --ft: 52px; --right: 276px; --topH: 208px; --rowh: 30px; --fs: 15px; --tile: 104px; --tcols: 4; --prev: 168px; --tfs: 22px; }
+@media (min-height: 800px) { :root { --m: 20px; --hd: 64px; --ft: 84px; --right: 520px; --topH: 330px; --rowh: 46px; --fs: 20px; --tile: 180px; --tcols: 6; --prev: 360px; --tfs: 34px; } }
+.art { background-image: url("../../../../.cache/ui-redesign/assets/hd4/main_menu_background.png"); background-position: 58% 50%; filter: blur(3px); transform: scale(1.03); }
+.scrim { background: rgba(4,6,8,.8); }
+.title { left: 0; right: 0; top: 0; height: var(--hd); justify-content: center; gap: 16px; font-size: var(--tfs); }
+.title .rule { width: 22%; }
+.pA { left: var(--m); top: var(--hd); right: calc(var(--right) + var(--m) * 2); height: var(--topH); }
+.pB { right: var(--m); top: var(--hd); width: var(--right); height: var(--topH); }
+.pC { left: var(--m); top: calc(var(--hd) + var(--topH) + var(--m)); right: calc(var(--right) + var(--m) * 2); bottom: var(--ft); }
+.pD { right: var(--m); top: calc(var(--hd) + var(--topH) + var(--m)); width: var(--right); bottom: var(--ft); }
+.panel { display: flex; flex-direction: column; }
+.hd { height: calc(var(--rowh) + 2px); font-size: calc(var(--fs) - 1px); padding: 0 12px; }
+.hd .ico { width: calc(var(--fs) + 1px); height: calc(var(--fs) + 1px); color: var(--brass); }
+.pbody { flex: 1; min-height: 0; padding: 4px 8px 6px; position: relative; overflow: hidden; }
+/* players table */
+.trow { display: grid; grid-template-columns: calc(var(--rowh) - 8px) 1.25fr 1.7fr 1.3fr .9fr .9fr; align-items: center; height: var(--rowh); gap: 6px; padding: 0 4px; font: var(--fs)/1 "PTN"; border-bottom: 1px solid rgba(0,0,0,.35); }
+.trow.head { height: calc(var(--rowh) - 8px); font: calc(var(--fs) - 4px)/1 "Russo"; text-transform: uppercase; color: var(--brass); border-bottom: 1px solid var(--brass-lo); }
+.trow .n { width: calc(var(--rowh) - 12px); height: calc(var(--rowh) - 12px); display: flex; align-items: center; justify-content: center; font: calc(var(--fs) - 3px)/1 "Russo"; color: #0b0d10; background: var(--pc); box-shadow: 0 0 0 1px #030405, inset 0 1px 0 rgba(255,255,255,.35); }
+.trow.off { color: var(--text3); } .trow.off .n { background: #2a2f33; color: #6b6d68; }
+.trow .who { display: flex; align-items: center; gap: 6px; }
+.mini { display: flex; align-items: center; height: calc(var(--rowh) - 8px); font: var(--fs)/1 "PTN"; }
+.mini .ar { width: calc(var(--rowh) - 12px); height: 100%; display: flex; align-items: center; justify-content: center; color: var(--brass); }
+.mini .ar .ico { width: 12px; height: 12px; }
+.mini .v { flex: 1; text-align: center; white-space: nowrap; height: 100%; display: flex; align-items: center; justify-content: center; background: #090c0f; box-shadow: inset 0 0 0 1px #2c2212, inset 0 2px 3px rgba(0,0,0,.6); }
+.mini.hover .v { box-shadow: inset 0 0 0 1px var(--brass-hi); color: var(--gold); } .mini.hover .ar { color: var(--gold); }
+.trow.off .mini .v { box-shadow: inset 0 0 0 1px #1c1f22; } .trow.off .mini .ar { color: #3a3d3c; }
+.hsw { width: 9px; height: 9px; transform: rotate(45deg); flex: none; margin-right: 6px; box-shadow: 0 0 0 1px #030405; }
+.check { width: calc(var(--rowh) - 12px); height: calc(var(--rowh) - 12px); }
+.check.on::after { left: calc(50% - 4px); top: 5%; width: 32%; height: 62%; }
+/* rules */
+.pB .field { min-height: var(--rowh); padding: 0 4px; border-bottom: 1px solid rgba(0,0,0,.35); }
+.pB .field > .lbl { flex: 1; font-size: var(--fs); }
+.pB .mini { width: 42%; }
+/* maps */
+.maps { display: grid; grid-template-columns: repeat(var(--tcols), var(--tile)); gap: 8px; justify-content: space-between; padding-right: 12px; }
+.mt { padding: 4px 4px 0; background: linear-gradient(180deg, #1d252b, #141a1f); box-shadow: 0 0 0 1px #030405, inset 0 0 0 1px #2c2212; }
+.mt img, .mt .rnd { display: block; width: 100%; aspect-ratio: 1; image-rendering: pixelated; box-shadow: 0 0 0 1px #030405; background: #07090b; }
+.mt .rnd { display: flex; align-items: center; justify-content: center; color: var(--brass); background: repeating-linear-gradient(45deg, #0b0f12 0 8px, #0e1317 8px 16px); }
+.mt .rnd .ico { width: 38%; height: 38%; stroke-width: 1.2; }
+.mt .nm { height: calc(var(--fs) + 9px); display: flex; align-items: center; justify-content: center; font: calc(var(--fs) - 2px)/1 "PTN"; color: var(--text); white-space: nowrap; overflow: hidden; }
+.mt.hover { box-shadow: 0 0 0 1px #030405, inset 0 0 0 1px var(--brass); } .mt.hover .nm { color: var(--gold); }
+.mt.selected { background: linear-gradient(180deg, #55421f, #30260e); box-shadow: 0 0 0 1px #030405, inset 0 0 0 1px var(--brass-hi), 0 0 12px rgba(242,190,90,.45); } .mt.selected .nm { color: var(--gold); font-family: "Russo"; font-size: calc(var(--fs) - 4px); text-transform: uppercase; }
+.pC .sbar { position: absolute; right: 6px; top: 8px; bottom: 8px; } .pC .sbar i { top: 0; height: 22%; }
+/* preview */
+.prevwrap { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 6px 4px; }
+.prevwrap img { width: var(--prev); height: var(--prev); image-rendering: pixelated; box-shadow: 0 0 0 1px #030405, 0 0 0 2px var(--brass-mid); flex: none; }
+.pinfo { font: var(--fs)/1.35 "PTN"; color: var(--text2); align-self: stretch; display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; padding: 0 6px; }
+.pinfo .nm { font: calc(var(--fs) + 1px)/1.1 "Russo"; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; grid-column: 1 / 3; text-align: center; }
+.pinfo b { color: var(--text); font-weight: normal; }
+
+/* footer */
+.foot { left: var(--m); right: var(--m); bottom: 0; height: var(--ft); gap: 8px; }
+.foot .btn { height: calc(var(--ft) - 18px); font-size: calc(var(--fs) - 1px); }
+.foot .sp { flex: 1; }
+.foot .start { min-width: 150px; font-size: calc(var(--fs) + 2px); }
+@media (min-height: 800px) { .foot .start { min-width: 280px; } .foot .btn { padding: 0 28px; } }
+</style></head>
+<body>
+<div class="art"></div><div class="scrim"></div>
+<div class="abs row title t-title"><div class="rule"></div><div class="dia"></div><span>Схватка</span><div class="dia"></div><div class="rule"></div></div>
+
+<div class="abs panel pA"><div class="hd"><i data-i="users"></i>Игроки</div><div class="pbody" id="players"></div></div>
+
+<div class="abs panel pB"><div class="hd"><i data-i="gear"></i>Правила</div><div class="pbody">
+  <div class="field"><span class="lbl">Стартовых позиций</span><div class="mini"><div class="ar"><i data-i="chev-l"></i></div><div class="v">4</div><div class="ar"><i data-i="chev-r"></i></div></div></div>
+  <div class="field"><span class="lbl">Уровень технологий</span><div class="mini hover"><div class="ar"><i data-i="chev-l"></i></div><div class="v">9</div><div class="ar"><i data-i="chev-r"></i></div></div></div>
+  <div class="field"><span class="lbl">Песчаные черви</span><div class="mini"><div class="ar"><i data-i="chev-l"></i></div><div class="v">2</div><div class="ar"><i data-i="chev-r"></i></div></div></div>
+  <div class="field"><span class="lbl">Поля пряности</span><div class="check on"></div></div>
+  <div class="field"><span class="lbl">Самоподрыв полей</span><div class="check on"></div></div>
+</div></div>
+
+<div class="abs panel pC"><div class="hd"><i data-i="map"></i>Карты<span class="grow"></span><span class="hint" style="text-transform:none">37 карт · колесо листает</span></div><div class="pbody"><div class="maps" id="maps"></div><div class="sbar"><i></i></div></div></div>
+
+<div class="abs panel pD"><div class="hd"><i data-i="info"></i>Выбранная карта</div><div class="pbody"><div class="prevwrap">
+  <img src="../../../../.cache/ui-redesign/derived/map-sietch.png">
+  <div class="pinfo"><div class="nm">Sietch Stefan</div><span>Размер: <b>средняя</b></span><span>Клеток: <b>64 × 64</b></span><span>Игроков: <b>до 4</b></span><span>Автор: <b>Ripps</b></span></div>
+</div></div></div>
+
+<div class="abs row foot">
+  <div class="btn"><i data-i="back"></i>Назад</div>
+  <div class="sp"></div>
+  <div class="btn"><i data-i="plus"></i>Новая карта</div>
+  <div class="btn"><i data-i="edit"></i>Изменить</div>
+  <div class="btn hover"><i data-i="dice"></i>Удиви меня</div>
+  <div class="btn primary start"><i data-i="play"></i>Старт</div>
+</div>
+<script>
+(function () {
+  const D = "../../../../.cache/ui-redesign/derived/";
+  const mini = function (value, hover) { return '<div class="mini' + (hover ? " hover" : "") + '"><div class="ar"><i data-i="chev-l"></i></div><div class="v">' + value + '</div><div class="ar"><i data-i="chev-r"></i></div></div>'; };
+  const houses = { a: ["#3f6fd6", "Атрейдес"], h: ["#cc3a2e", "Харконнен"], o: ["#3fa652", "Ордос"], s: ["#a83aa8", "Сардаукары"], r: ["#8b8672", "Случайный"] };
+  const rows = [[1, "Человек", "a", 2500, 3, 1, true], [2, "ИИ", "h", 2500, 3, 2, true], [3, "ИИ", "r", 3000, 5, 2, true], [4, "ИИ", "o", 2500, 3, 3, true], [5, "ИИ", "r", 2500, 3, 4, false]];
+  const colors = ["#3f6fd6", "#cc3a2e", "#d9a441", "#3fa652", "#8b8672"];
+  let html = '<div class="trow head"><span></span><span>Игрок</span><span>Дом</span><span>Кредиты</span><span>Юниты</span><span>Команда</span></div>';
+  rows.forEach(function (row, index) {
+    const house = houses[row[2]];
+    html += '<div class="trow' + (row[6] ? "" : " off") + '" style="--pc:' + colors[index] + '"><span class="n">' + row[0] + '</span>' +
+      '<span class="who">' + (index > 1 ? '<div class="check' + (row[6] ? " on" : "") + '"></div>' : "") + row[1] + '</span>' +
+      mini('<i class="hsw" style="background:' + house[0] + '"></i>' + house[1], index === 2) + mini(row[3]) + mini(row[4]) + mini(row[5]) + '</div>';
+  });
+  document.getElementById("players").innerHTML = html;
+  const maps = [["", "Случайная карта"], ["map-sietch", "Sietch Stefan", "selected"], ["map-broken", "Broken Mountains", "hover"], ["map-golek", "Golek Crossing"], ["map-delta", "Ancient Delta"], ["map-division", "Division"],
+    ["map-golek", "Bottle Neck"], ["map-delta", "Cliffs of Rene"], ["map-division", "David's Pass"], ["map-broken", "Duality"], ["map-sietch", "Edge to Edge"], ["map-golek", "Kig-Yar"],
+    ["map-delta", "Marland Cove"], ["map-broken", "Ogelle Basin"], ["map-division", "Twin Fists"], ["map-sietch", "Two Stacks"], ["map-golek", "Rabban"], ["map-delta", "Worms Hole"]];
+  const count = innerHeight >= 800 ? 18 : 8;
+  document.getElementById("maps").innerHTML = maps.slice(0, count).map(function (map) {
+    return '<div class="mt ' + (map[2] || "") + '">' + (map[0] ? '<img src="' + D + map[0] + '.png">' : '<div class="rnd"><i data-i="dice"></i></div>') + '<div class="nm">' + map[1] + '</div></div>';
+  }).join("");
+})();
+</script>
+</body></html>
