@@ -25,9 +25,12 @@
 #include "sidebar/cSideBar.h"
 #include "utils/cSoundPlayer.h"
 #include "drawers/SDLDrawer.hpp"
+#include "drawers/cTextDrawer.h"
 #include "utils/Graphics.hpp"
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
+#include "context/TextContext.hpp"
+#include "sidebar/HudLayout.hpp"
 #include "data/gfxaudio.h"
 
 #include <SDL3/SDL.h>
@@ -35,6 +38,7 @@
 #include "include/Texture.hpp"
 #include <algorithm>
 #include <cstdlib>
+#include <format>
 #include <string>
 
 namespace {
@@ -50,9 +54,11 @@ std::string creditsToDigits(int credits)
 CreditsDrawer::CreditsDrawer(GameContext* ctx, cGameSettings *settings, cPlayer *player) :
     m_player(player),
     m_ctx(ctx),
+    m_settings(settings),
     m_gfxinter(ctx->getGraphicsContext()->gfxinter.get()),
     m_gfxdata(ctx->getGraphicsContext()->gfxdata.get()),
     m_sdlDrawer(ctx->getSDLDrawer()),
+    m_gameTextDrawer(ctx->getTextContext()->getGameTextDrawer()),
     m_playCreditsSound(settings->isPlayCreditsSound())
 {
     d2tm_assert(player!= nullptr);
@@ -208,78 +214,64 @@ void CreditsDrawer::thinkAboutIndividualCreditOffsets()
  */
 void CreditsDrawer::draw()
 {
-    auto *tex = m_gfxinter->getTexture(CREDITS_BAR);
-    m_sdlDrawer->renderSprite(tex, m_drawX, m_drawY);
-    m_sdlDrawer->setClippingFor(m_drawX+1, m_drawY+5, m_drawX+tex->w-1, m_drawY+tex->h-5);
-    drawCurrentCredits(m_drawX, m_drawY);
-    drawPreviousCredits(m_drawX, m_drawY);
-    m_sdlDrawer->resetClippingFor();
+    const HudLayout layout = HudLayout::create(
+        m_settings->getScreenW(),
+        m_settings->getScreenH()
+    );
+    const cRectangle &rect = layout.credits;
+    const Color panel{15, 19, 21, 255};
+    const Color border{155, 116, 43, 255};
+    const Color label{208, 196, 157, 255};
+    const Color amount{255, 210, 82, 255};
 
-}
+    m_sdlDrawer->renderRectFillColor(
+        rect.getX(),
+        rect.getY(),
+        rect.getWidth(),
+        rect.getHeight(),
+        panel
+    );
+    m_sdlDrawer->renderRectColor(
+        rect.getX(),
+        rect.getY(),
+        rect.getWidth(),
+        rect.getHeight(),
+        border
+    );
+    m_sdlDrawer->renderRectFillColor(
+        rect.getX() + 7,
+        rect.getY() + 10,
+        12,
+        14,
+        Color{205, 133, 35, 255}
+    );
+    m_sdlDrawer->renderRectColor(
+        rect.getX() + 7,
+        rect.getY() + 10,
+        12,
+        14,
+        Color{255, 215, 103, 255}
+    );
+    m_gameTextDrawer->drawText(
+        rect.getX() + 26,
+        rect.getY() + 10,
+        label,
+        "CREDITS",
+        false
+    );
 
-// current credits are either drawn from 'above' or from below. (depending on direction)
-// the offset pushes them more up or down.
-void CreditsDrawer::drawCurrentCredits(int drawX, int drawY)
-{
-    if (m_currentCredits < 0) m_currentCredits = 0;
-
-    std::string credits = creditsToDigits(m_currentCredits);
-
-    int offset = CreditsMath::getXDrawingOffset(m_currentCredits);
-
-    for (int i=0; i < 6; i++) {
-        // the actual position to draw on is: ((game.m_screenX - 120) +
-        //        screen        -  14 + (6 digits (each 20 pixels due borders))
-        int dx = ((offset + i) * 20);
-        int dy = 0;
-
-        // the Y is per credit direction
-        if (m_offset_direction[i] == 1) {
-            // up, means it comes from 'below' and the m_offset_credit is the 'coming up' part.
-            dy = 20 - static_cast<int>(m_offset_credit[i]);
-        }
-        else if (m_offset_direction[i] == 2) {
-            dy = -20 + static_cast<int>(m_offset_credit[i]);
-        }
-
-        int nr = CreditsMath::getCreditDrawId(credits[i]);
-
-        if (nr != CREDITS_NONE) {
-            m_sdlDrawer->renderSprite(m_gfxdata->getTexture(nr), drawX+dx+8, drawY+dy+8);
-        }
-    }
-}
-
-// current credits are either drawn from 'above' or from below. (depending on direction)
-// the offset pushes them more up or down.
-void CreditsDrawer::drawPreviousCredits(int drawX, int drawY)
-{
-    if (m_previousCredits < 0) m_previousCredits = 0;
-
-    std::string credits = creditsToDigits(m_previousCredits);
-
-    int offset = CreditsMath::getXDrawingOffset(m_previousCredits);
-
-    for (int i=0; i < 6; i++) {
-        // the actual position to draw on is: ((game.m_screenX - 120) +
-        //        screen        -  14 + (6 digits (each 20 pixels due borders))
-        int dx = ((offset + i) * 20);
-        int dy = 0;
-
-        // the Y is per credit direction
-        if (m_offset_direction[i] == 1) {
-            // up, means it comes from 'below' and the m_offset_credit is the 'coming up' part.
-            dy = static_cast<int>(m_offset_credit[i]) * -1;
-        }
-        else if (m_offset_direction[i] == 2) {
-            dy = static_cast<int>(m_offset_credit[i]);
-        }
-        int nr = CreditsMath::getCreditDrawId(credits[i]);
-
-        if (nr != CREDITS_NONE) {
-            m_sdlDrawer->renderSprite(m_gfxdata->getTexture(nr), drawX+dx+8, drawY+dy+8);
-        }
-    }
+    const std::string credits = std::format(
+        "{}",
+        std::max(0, m_currentCredits)
+    );
+    const int amountWidth = m_gameTextDrawer->getTextLength(credits);
+    m_gameTextDrawer->drawText(
+        rect.getEndX() - amountWidth - 9,
+        rect.getY() + 10,
+        amount,
+        credits,
+        false
+    );
 }
 
 // the think method will gradually update the m_currentCredits array so that it is 'the same'

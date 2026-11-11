@@ -15,23 +15,28 @@
 
 #include "cSideBarDrawer.h"
 #include "include/sGameServices.h"
+#include "data/gfxdata.h"
 #include "data/gfxinter.h"
 #include "drawers/SDLDrawer.hpp"
 #include "drawers/cOrderDrawer.h"
 #include "managers/cDrawManager.h"
 #include "gameobjects/players/cPlayer.h"
+#include "sidebar/cBuildingList.h"
+#include "sidebar/cSideBar.h"
+#include "sidebar/HudLayout.hpp"
 #include "utils/Graphics.hpp"
-#include "utils/texture_utils.h"
+#include "utils/HdUiTextureLoader.hpp"
 #include "context/GameContext.hpp"
 #include "context/GraphicsContext.hpp"
-#include "context/cInfoContext.h"
-#include "context/cGameObjectContext.h"
+#include "context/TextContext.hpp"
 #include "controls/cMouse.h"
+#include "game/cGameSettings.h"
+#include "include/cAssert.h"
+#include "include/Texture.hpp"
+
 #include <SDL3/SDL.h>
 #include <algorithm>
-#include "include/cAssert.h"
-#include "game/cGameSettings.h"
-#include "include/Texture.hpp"
+#include <format>
 
 cSideBarDrawer::cSideBarDrawer(GameContext *ctx, cPlayer *player, sGameServices *services) :
     m_player(player),
@@ -41,23 +46,36 @@ cSideBarDrawer::cSideBarDrawer(GameContext *ctx, cPlayer *player, sGameServices 
     m_services(services),
     m_buildingListDrawer(ctx, player),
     m_sidebar(nullptr),
-    m_sidebarColor(Color{214, 149, 20,255})
+    m_sidebarColor(Color{214, 149, 20,255}),
+    m_smallTextDrawer(ctx->getTextContext()->getSmallTextDrawer())
 {
-    d2tm_assert(player!= nullptr);
+    d2tm_assert(player != nullptr);
     d2tm_assert(ctx != nullptr);
     d2tm_assert(services != nullptr);
 
-    m_candiBarRenderer = m_sdlDrawer->createRenderTargetTexture(cSideBar::SidebarWidth, m_services->settings->getScreenH()-40, m_sdlDrawer->getFrameDensity());
-    createPlayerCandyBar();
+    m_houseCrests[0] = loadHdUiTexture(
+        m_sdlDrawer->getRenderer(),
+        "hud_house_atreides.png",
+        "HD HUD Atreides crest"
+    );
+    m_houseCrests[1] = loadHdUiTexture(
+        m_sdlDrawer->getRenderer(),
+        "hud_house_harkonnen.png",
+        "HD HUD Harkonnen crest"
+    );
+    m_houseCrests[2] = loadHdUiTexture(
+        m_sdlDrawer->getRenderer(),
+        "hud_house_ordos.png",
+        "HD HUD Ordos crest"
+    );
 }
 
 cSideBarDrawer::~cSideBarDrawer()
 {
-    // smart pointers handle cleanup
-    // delete m_candyBarBall; --- IGNORE ---
-    // delete m_candyBarPiece; --- IGNORE ---
-    // delete m_candyHorizonBar; --- IGNORE ---
-    // delete m_candiBarRenderer; --- IGNORE ---
+    for (Texture *&crest : m_houseCrests) {
+        delete crest;
+        crest = nullptr;
+    }
 }
 
 void cSideBarDrawer::serviceInit(sGameServices* services)
@@ -77,375 +95,343 @@ void cSideBarDrawer::onNotifyKeyboardEvent(const cKeyboardEvent &event)
     m_buildingListDrawer.onNotifyKeyboardEvent(event);
 }
 
-// draws the sidebar on screen
 void cSideBarDrawer::draw()
 {
-    // black out sidebar
-    m_sdlDrawer->renderRectFillColor((m_services->settings->getScreenW() - cSideBar::SidebarWidth), 0, cSideBar::SidebarWidth, m_services->settings->getScreenH(), Color{0, 0, 0,255});
-
-    drawCandybar();
-
-    drawMinimap();
-    drawCapacities();
-    drawBuildingLists();
+    drawHdSidebar();
 }
 
 void cSideBarDrawer::setPlayer(cPlayer *pPlayer)
 {
-    const bool houseChanged = m_player->getHouse() != pPlayer->getHouse();
     m_player = pPlayer;
     m_buildingListDrawer.setPlayer(pPlayer);
-    if (houseChanged) {
-        createPlayerCandyBar();
+}
+
+void cSideBarDrawer::drawHdSidebar()
+{
+    const HudLayout layout = HudLayout::create(
+        m_services->settings->getScreenW(),
+        m_services->settings->getScreenH()
+    );
+    m_sdlDrawer->renderRectFillColor(
+        layout.sidebar.getX(),
+        layout.sidebar.getY(),
+        layout.sidebar.getWidth(),
+        layout.sidebar.getHeight(),
+        Color{12, 15, 17, 255}
+    );
+    m_sdlDrawer->renderRectFillColor(
+        layout.sidebar.getX(),
+        cSideBar::TopBarHeight,
+        5,
+        m_services->settings->getScreenH() - cSideBar::TopBarHeight,
+        Color{32, 36, 38, 255}
+    );
+    m_sdlDrawer->renderLine(
+        layout.sidebar.getX() + 5,
+        cSideBar::TopBarHeight,
+        layout.sidebar.getX() + 5,
+        m_services->settings->getScreenH(),
+        Color{166, 124, 44, 255}
+    );
+
+    drawHdRadarPanel();
+    drawHdCapacities();
+    drawHdBuildingLists();
+}
+
+Texture *cSideBarDrawer::getHouseCrest() const
+{
+    if (m_player->isHouse(ATREIDES)) {
+        return m_houseCrests[0];
+    }
+    if (m_player->isHouse(HARKONNEN)) {
+        return m_houseCrests[1];
+    }
+    if (m_player->isHouse(ORDOS)) {
+        return m_houseCrests[2];
+    }
+    if (m_player->isHouse(SARDAUKAR)) {
+        return m_gfxinter->getTexture(BMP_SELECT_HOUSE_SARDAUKAR);
+    }
+    return nullptr;
+}
+
+std::string cSideBarDrawer::getHouseDisplayName() const
+{
+    if (m_player->isHouse(ATREIDES)) {
+        return "HOUSE ATREIDES";
+    }
+    if (m_player->isHouse(HARKONNEN)) {
+        return "HOUSE HARKONNEN";
+    }
+    if (m_player->isHouse(ORDOS)) {
+        return "HOUSE ORDOS";
+    }
+    if (m_player->isHouse(SARDAUKAR)) {
+        return "SARDAUKAR";
+    }
+    return "UNKNOWN HOUSE";
+}
+
+void cSideBarDrawer::drawHdRadarPanel()
+{
+    const HudLayout layout = HudLayout::create(
+        m_services->settings->getScreenW(),
+        m_services->settings->getScreenH()
+    );
+    const Color panel{16, 20, 22, 255};
+    const Color panelInner{7, 10, 11, 255};
+    const Color brass{151, 113, 43, 255};
+    const Color text{235, 225, 191, 255};
+    const Color accent = m_player->getSelectFadingColor();
+
+    m_sdlDrawer->renderRectFillColor(
+        layout.radarPanel.getX(),
+        layout.radarPanel.getY(),
+        layout.radarPanel.getWidth(),
+        layout.radarPanel.getHeight(),
+        panel
+    );
+    m_sdlDrawer->renderRectColor(
+        layout.radarPanel.getX(),
+        layout.radarPanel.getY(),
+        layout.radarPanel.getWidth(),
+        layout.radarPanel.getHeight(),
+        brass
+    );
+    m_sdlDrawer->renderRectFillColor(
+        layout.houseHeader.getX(),
+        layout.houseHeader.getY(),
+        layout.houseHeader.getWidth(),
+        layout.houseHeader.getHeight(),
+        Color{25, 29, 30, 255}
+    );
+    m_sdlDrawer->renderRectFillColor(
+        layout.houseHeader.getX(),
+        layout.houseHeader.getEndY() - 2,
+        layout.houseHeader.getWidth(),
+        2,
+        accent
+    );
+
+    Texture *crest = getHouseCrest();
+    const int headerCrestSize = 24;
+    if (crest != nullptr) {
+        m_sdlDrawer->renderStrechFullSprite(
+            crest,
+            cRectangle(
+                layout.houseHeader.getX() + 3,
+                layout.houseHeader.getY() + 2,
+                headerCrestSize,
+                headerCrestSize
+            )
+        );
+    }
+    m_smallTextDrawer->drawText(
+        layout.houseHeader.getX() + headerCrestSize + 10,
+        layout.houseHeader.getY() + 7,
+        text,
+        getHouseDisplayName(),
+        false
+    );
+
+    m_sdlDrawer->renderRectFillColor(
+        layout.radarViewport.getX(),
+        layout.radarViewport.getY(),
+        layout.radarViewport.getWidth(),
+        layout.radarViewport.getHeight(),
+        panelInner
+    );
+    m_sdlDrawer->renderRectColor(
+        layout.radarViewport.getX(),
+        layout.radarViewport.getY(),
+        layout.radarViewport.getWidth(),
+        layout.radarViewport.getHeight(),
+        Color{62, 68, 67, 255}
+    );
+
+    if (!m_player->hasRadarAndEnoughPower() && crest != nullptr) {
+        const int crestSize = std::min(
+            96,
+            layout.radarViewport.getHeight() - 18
+        );
+        m_sdlDrawer->renderStrechFullSprite(
+            crest,
+            cRectangle(
+                layout.radarViewport.getX() +
+                    (layout.radarViewport.getWidth() - crestSize) / 2,
+                layout.radarViewport.getY() +
+                    (layout.radarViewport.getHeight() - crestSize) / 2,
+                crestSize,
+                crestSize
+            ),
+            210
+        );
     }
 }
 
-// (re)creates the house-colored candybar textures and renders them into the candybar texture
-void cSideBarDrawer::createPlayerCandyBar()
+void cSideBarDrawer::drawHdMeter(
+    const cRectangle &rect,
+    const std::string &label,
+    int value,
+    int maximum,
+    Color fill,
+    bool warning) const
 {
-    m_candyBarBall.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_sdlDrawer,
-        m_player, m_gfxinter->getSurface(BMP_GERALD_CANDYBAR_BALL), TransparentColorIndex, m_gfxinter->getDensity()));
-    m_candyBarPiece.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_sdlDrawer,
-        m_player, m_gfxinter->getSurface(BMP_GERALD_CANDYBAR_PIECE), TransparentColorIndex, m_gfxinter->getDensity()));
-    m_candyHorizonBar.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_sdlDrawer,
-        m_player, m_gfxinter->getSurface(HORIZONTAL_CANDYBAR), TransparentColorIndex, m_gfxinter->getDensity()));
+    const int safeMaximum = std::max(1, maximum);
+    const float ratio = std::clamp(
+        static_cast<float>(value) / static_cast<float>(safeMaximum),
+        0.0f,
+        1.0f
+    );
+    const Color border{104, 82, 43, 255};
+    const Color text{225, 218, 190, 255};
+    const Color warningColor = warning
+        ? m_player->getErrorFadingColor()
+        : fill;
 
-    if (m_candiBarRenderer->density != m_sdlDrawer->getFrameDensity()) {
-        delete m_candiBarRenderer;
-        m_candiBarRenderer = m_sdlDrawer->createRenderTargetTexture(cSideBar::SidebarWidth, m_services->settings->getScreenH()-40, m_sdlDrawer->getFrameDensity());
-    }
-    m_sdlDrawer->beginDrawingToTexture(m_candiBarRenderer);
-    createCandyBar();
-    m_sdlDrawer->endDrawingToTexture();
+    m_sdlDrawer->renderRectFillColor(
+        rect.getX(),
+        rect.getY(),
+        rect.getWidth(),
+        rect.getHeight(),
+        Color{10, 13, 15, 255}
+    );
+    m_sdlDrawer->renderRectColor(
+        rect.getX(),
+        rect.getY(),
+        rect.getWidth(),
+        rect.getHeight(),
+        border
+    );
+    m_smallTextDrawer->drawText(
+        rect.getX() + 4,
+        rect.getY() + 2,
+        text,
+        label,
+        false
+    );
+    const std::string amount = std::format("{}/{}", value, maximum);
+    const int amountWidth = m_smallTextDrawer->getTextLength(amount);
+    m_smallTextDrawer->drawText(
+        rect.getEndX() - amountWidth - 4,
+        rect.getY() + 2,
+        text,
+        amount,
+        false
+    );
+
+    const int barX = rect.getX() + 4;
+    const int barY = rect.getEndY() - 7;
+    const int barWidth = rect.getWidth() - 8;
+    m_sdlDrawer->renderRectFillColor(
+        barX,
+        barY,
+        barWidth,
+        4,
+        Color{31, 35, 36, 255}
+    );
+    m_sdlDrawer->renderRectFillColor(
+        barX,
+        barY,
+        static_cast<int>(barWidth * ratio),
+        4,
+        warningColor
+    );
 }
 
-void cSideBarDrawer::drawBuildingLists()
+void cSideBarDrawer::drawHdCapacities()
 {
-    // draw the sidebar itself (the backgrounds, borders, etc)
+    const HudLayout layout = HudLayout::create(
+        m_services->settings->getScreenW(),
+        m_services->settings->getScreenH()
+    );
+    const int produced = std::max(0, m_player->getPowerProduced());
+    const int used = std::max(0, m_player->getPowerUsage());
+    drawHdMeter(
+        layout.powerMeter,
+        layout.powerMeter.getWidth() < 140 ? "PWR" : "POWER",
+        used,
+        produced,
+        Color{72, 202, 103, 255},
+        !m_player->bEnoughPower()
+    );
 
-    // !??! sidebar is not set earlier...but can be re-set, so keep doing this :(
-    // This basically means the allocation goes wrong somewhere! :(
+    drawHdMeter(
+        layout.spiceMeter,
+        layout.spiceMeter.getWidth() < 140 ? "SPC" : "SPICE",
+        std::max(0, m_player->getCredits()),
+        std::max(1, static_cast<int>(m_player->getMaxCredits())),
+        Color{218, 139, 47, 255},
+        !m_player->bEnoughSpiceCapacityToStoreCredits()
+    );
+}
+
+void cSideBarDrawer::drawHdBuildingLists()
+{
     m_sidebar = m_player->getSideBar();
-
-    // draw the buildlist icons
-    int selectedListId = m_sidebar->getSelectedListID();
-
-    int startPos = eListTypeAsInt(eListType::LIST_CONSTYARD);
-    for (int listId = startPos; listId < cSideBar::LIST_MAX; listId++) {
-        cBuildingList *list = m_sidebar->getList(listId);
-        bool isListIdSelectedList = (selectedListId == listId);
-        m_buildingListDrawer.drawButton(list, isListIdSelectedList);
-    }
-
-    // draw background of buildlist
-    Texture *backgroundSprite = m_gfxinter->getTexture(BMP_GERALD_ICONLIST_BACKGROUND);
-
-    int drawX = m_services->settings->getScreenW() - cSideBar::SidebarWidthWithoutCandyBar + 1;
-
-    int startY = cSideBar::TopBarHeight + cSideBar::HeightOfMinimap + cSideBar::HorizontalCandyBarHeight +
-                 cSideBar::HeightOfListButton;
-
-    for (; drawX < m_services->settings->getScreenW(); drawX += backgroundSprite->w) {
-        for (int drawY=startY; drawY < m_services->settings->getScreenH(); drawY += backgroundSprite->h) {
-            m_sdlDrawer->renderSprite(backgroundSprite, drawX, drawY);
-        }
-    }
-
-    // draw the 'lines' between the icons    // draw the buildlist itself (take scrolling into account)
+    const int selectedListId = m_sidebar->getSelectedListID();
     cBuildingList *selectedList = nullptr;
-
-    int iDrawX = m_buildingListDrawer.getDrawX();
-    int iDrawY = m_buildingListDrawer.getDrawY();
-
-    Texture *horBar = m_gfxinter->getTexture(BMP_GERALD_SIDEBAR_PIECE);
-    m_sdlDrawer->renderSprite(horBar, iDrawX-1, iDrawY-38); // above sublist buttons
-    m_sdlDrawer->renderSprite(horBar, iDrawX-1, iDrawY-5); // above normal icons
-
-    if (selectedListId > -1) {
+    if (selectedListId >= 0 && selectedListId < cSideBar::LIST_MAX) {
         selectedList = m_sidebar->getList(selectedListId);
     }
 
-    int endY = m_services->settings->getScreenH();
-    int rows = 6;
-    if (selectedList && selectedList->getType() == eListType::LIST_STARPORT) {
-        rows = 5;
-        endY = m_services->settings->getScreenH() - 50; // leave room for button "order" at bottom sidebar
+    const HudLayout layout = HudLayout::create(
+        m_services->settings->getScreenW(),
+        m_services->settings->getScreenH(),
+        selectedList != nullptr &&
+            selectedList->getType() == eListType::LIST_STARPORT
+    );
+
+    m_sdlDrawer->renderRectFillColor(
+        layout.tabs.getX(),
+        layout.tabs.getY(),
+        layout.tabs.getWidth(),
+        layout.tabs.getHeight(),
+        Color{13, 16, 18, 255}
+    );
+
+    const int startPos = eListTypeAsInt(eListType::LIST_CONSTYARD);
+    for (int listId = startPos; listId < cSideBar::LIST_MAX; ++listId) {
+        cBuildingList *list = m_sidebar->getList(listId);
+        m_buildingListDrawer.drawButton(
+            list,
+            selectedListId == listId
+        );
     }
 
-    for (int i = 1; i < 3; i++) {
-        int barX = (iDrawX - 1) + (i * 66);
-        Color darker = Color{89, 56, 0,255};
-        Color veryDark = Color{48, 28, 0,255};
-        m_sdlDrawer->renderLine( barX - 1, iDrawY, barX - 1, endY, darker);
-        m_sdlDrawer->renderLine( barX, iDrawY, barX, endY, veryDark);
+    m_sdlDrawer->renderRectFillColor(
+        layout.catalog.getX(),
+        layout.catalog.getY(),
+        layout.catalog.getWidth(),
+        layout.catalog.getHeight(),
+        Color{12, 15, 17, 255}
+    );
+    m_sdlDrawer->renderRectColor(
+        layout.catalog.getX(),
+        layout.catalog.getY(),
+        layout.catalog.getWidth(),
+        layout.catalog.getHeight(),
+        Color{93, 75, 40, 255}
+    );
 
-        // horizontal lines
-        for (int j = 1; j < rows; j++) {
-            int barY = iDrawY - 1 + (j * 50);
-            m_sdlDrawer->renderLine( iDrawX, barY-1, m_services->settings->getScreenW(), barY - 1, darker);
-            m_sdlDrawer->renderLine( iDrawX, barY, m_services->settings->getScreenW(), barY, veryDark);
-        }
-    }
-
-    if (selectedList && selectedList->getType() == eListType::LIST_STARPORT) {
-        m_sdlDrawer->renderRectFillColor(iDrawX, endY, m_services->settings->getScreenW()-iDrawX, m_services->settings->getScreenH()-endY, m_sidebarColor);
-        m_sdlDrawer->renderSprite(horBar, iDrawX-1, endY); // just below the last icons
-    }
-
-    // vertical lines at the side
-    m_sdlDrawer->renderLine( iDrawX - 1, iDrawY-38, iDrawX-1, m_services->settings->getScreenH(), Color{255, 211, 125,255}); // left
-    m_sdlDrawer->renderLine( m_services->settings->getScreenW() - 1, iDrawY - 38, m_services->settings->getScreenW() - 1, endY, Color{209, 150, 28,255}); // right
-
-    // END drawing icons grid
-
-    if (selectedList) {
+    if (selectedList != nullptr) {
         m_buildingListDrawer.drawList(selectedList, selectedListId);
     }
 
-    // button interaction
-    for (int i = startPos; i < cSideBar::LIST_MAX; i++) {
-        if (i == selectedListId) continue; // skip selected list for button interaction
-        cBuildingList *list = m_sidebar->getList(i);
-
-        if (list->isAvailable() == false) continue; // not available, so no interaction possible
-
-        // render hover over border
-        if (list->isOverButton(m_mouse->getX(), m_mouse->getY())) {
+    for (int listId = startPos; listId < cSideBar::LIST_MAX; ++listId) {
+        if (listId == selectedListId) {
+            continue;
+        }
+        cBuildingList *list = m_sidebar->getList(listId);
+        if (list->isAvailable() &&
+            list->isOverButton(m_mouse->getX(), m_mouse->getY())) {
             m_buildingListDrawer.drawButtonHoverRectangle(list);
         }
     }
 
-    cOrderDrawer *orderDrawer = m_services->drawManager->getOrderDrawer();
-
-    // allow clicking on the order button
-    if (selectedList && selectedList->getType() == eListType::LIST_STARPORT) {
-        orderDrawer->drawOrderButton(m_player);
-    }
-}
-
-void cSideBarDrawer::drawCapacities()
-{
-    drawPowerUsage();
-    drawCreditsUsage();
-}
-
-void cSideBarDrawer::drawCandybar()
-{
-    if (m_candiBarRenderer->density != m_sdlDrawer->getFrameDensity()) {
-        createPlayerCandyBar();
-    }
-
-    m_sdlDrawer->renderSprite(m_candiBarRenderer,m_services->settings->getScreenW() - cSideBar::SidebarWidth,40);
-}
-
-void cSideBarDrawer::drawMinimap()
-{
-    Texture *sprite = m_candyHorizonBar.get();
-    int drawX = (m_services->settings->getScreenW() - sprite->w) + 1;
-    // 128 pixels (each pixel is a cell) + 8 margin
-    int heightMinimap = cSideBar::HeightOfMinimap;
-    int drawY = cSideBar::TopBarHeight + heightMinimap;
-    m_sdlDrawer->renderSprite(sprite, drawX, drawY);
-
-    // 11, 10
-    // 78, 60
-    // ------
-    // 67, 50 (width/height)
-
-    bool hasRadarAndEnoughPower = m_player->hasRadarAndEnoughPower();
-
-    if (hasRadarAndEnoughPower) {
-        return; // bail, because we render the minimap
-    }
-
-    // else, we render the house emblem
-    m_sdlDrawer->renderRectFillColor(drawX + 1, cSideBar::TopBarHeight + 1,m_services->settings->getScreenW()-(drawX + 1), drawY-(cSideBar::TopBarHeight + 1),
-                                      m_player->getEmblemBackgroundColor());
-
-    if (m_player->isHouse(ATREIDES) || m_player->isHouse(HARKONNEN) || m_player->isHouse(ORDOS) || m_player->isHouse(SARDAUKAR)) {
-        int bitmapId = BMP_SELECT_HOUSE_ATREIDES;
-
-        int srcX = 11;
-        int srcY = 10;
-
-        // draw house emblem, which is the same as the 'select house x' picture, but partially
-        int emblemWidth = 68;
-        int emblemHeight = 50;
-
-        if (m_player->isHouse(HARKONNEN)) {
-            bitmapId = BMP_SELECT_HOUSE_HARKONNEN;
-        }
-
-        if (m_player->isHouse(ORDOS)) {
-            bitmapId = BMP_SELECT_HOUSE_ORDOS;
-            emblemHeight = 49;
-            srcY = 11;
-        }
-
-        if (m_player->isHouse(SARDAUKAR)) {
-            bitmapId = BMP_SELECT_HOUSE_SARDAUKAR;
-            //emblemHeight = 49;
-            //srcY = 11;
-        }
-
-        int emblemDesiredWidth = (emblemWidth * 2);
-        int emblemDesiredHeight = (emblemHeight * 2);
-
-        drawX += (sprite->w / 2) - (emblemDesiredWidth / 2);
-        drawY = cSideBar::TopBarHeight + ((heightMinimap / 2) - (emblemDesiredHeight / 2));
-
-        cRectangle src = {srcX, srcY, emblemWidth,emblemHeight};
-        cRectangle dest = {drawX, drawY, emblemDesiredWidth, emblemDesiredHeight};
-        m_sdlDrawer->renderStrechSprite(m_gfxinter->getTexture(bitmapId), src, dest);
-    }
-}
-
-void cSideBarDrawer::createCandyBar()
-{
-    int heightInPixels = (m_services->settings->getScreenH() - cSideBar::TopBarHeight);
-    // ball first
-    m_sdlDrawer->renderSprite(m_candyBarBall.get(), 0,0); // height of ball = 25
-    m_sdlDrawer->renderSprite(m_gfxinter->getTexture(BMP_GERALD_CANDYBAR_TOP), 0, 26); // height of top = 10
-    // now draw pieces untill the end (height of piece is 23 pixels)
-    int startY = 26 + 10; // end of ball (26) + height of top m_candybar (=10) , makes 36
-    int heightMinimap = cSideBar::HeightOfMinimap;
-    // auto tmp = cRectangle{0,0,24, heightMinimap - (6 + 1)};  // (add 1 pixel for room between ball and bar)
-    for (int y = startY; y < (heightMinimap); y += 24) {
-        m_sdlDrawer->renderSprite(m_candyBarPiece.get(), 0, y);
-    }
-    // note: no need to take top bar into account because 'm_candybar' is a separate bitmap so coords start at 0,0
-    // ball is 6 pixels higher than horizontal m_candybar
-    int ballY = (heightMinimap) - 6;
-
-    // draw bottom m_candybar
-    m_sdlDrawer->renderSprite(m_gfxinter->getTexture(BMP_GERALD_CANDYBAR_BOTTOM), 0, ballY - 10); // height of bottom = 9
-
-    // draw ball
-    m_sdlDrawer->renderSprite(m_candyBarBall.get(), 0, ballY); // height of ball = 25
-
-    // draw top m_candybar again
-    m_sdlDrawer->renderSprite(m_gfxinter->getTexture(BMP_GERALD_CANDYBAR_TOP), 0, ballY + 26); // height of top = 10
-
-    startY = ballY + 26 + 10;
-    for (int y = startY; y < (heightInPixels + 23); y += 24) {
-        m_sdlDrawer->renderSprite(m_candyBarPiece.get(), 0, y);
-    }
-    // draw bottom
-    m_sdlDrawer->renderSprite(m_gfxinter->getTexture(BMP_GERALD_CANDYBAR_BOTTOM), 0, heightInPixels - 10); // height of top = 10
-}
-
-void cSideBarDrawer::drawPowerUsage() const
-{
-    int arbitraryMargin = 6;
-    int barTotalHeight = m_services->settings->getScreenH() - (cSideBar::TotalHeightBeforePowerBarStarts + cSideBar::PowerBarMarginHeight);
-    int barX = (m_services->settings->getScreenW() - cSideBar::SidebarWidth) + (cSideBar::VerticalCandyBarWidth / 3);
-    int barY = cSideBar::TotalHeightBeforePowerBarStarts + arbitraryMargin;
-    int barWidth = (cSideBar::VerticalCandyBarWidth / 3) - 1;
-    //cRectangle powerBarRect(barX, barY, barWidth, barTotalHeight);
-    m_sdlDrawer->renderRectFillColor(barX, barY, barWidth, barTotalHeight, Color::Black); //sdlDrawer->getColor_BLACK());
-
-    // the maximum power (ie a full bar) is 1 + amount windtraps * power_give (100)
-    int maxPowerOutageOfWindtrap = m_infos->getStructureInfo(WINDTRAP).power_give;
-    float totalPowerOutput = (1 + (m_player->getAmountOfStructuresForType(WINDTRAP))) * maxPowerOutageOfWindtrap;
-    float powerIn = static_cast<float>(m_player->getPowerProduced()) / totalPowerOutput;
-    float powerUse = static_cast<float>(m_player->getPowerUsage()) / totalPowerOutput;
-
-    float barHeightToDraw = barTotalHeight * powerIn;
-    if (barHeightToDraw > barTotalHeight) barHeightToDraw = barTotalHeight;
-    int powerInY = barY + (barTotalHeight - barHeightToDraw);
-
-    m_sdlDrawer->renderRectFillColor(barX, powerInY, barWidth, barY+barTotalHeight-powerInY, Color{0, 232, 0,255});
-
-    barHeightToDraw = barTotalHeight * powerUse;
-    if (barHeightToDraw > barTotalHeight) barHeightToDraw = barTotalHeight;
-    int powerOutY = barY + (barTotalHeight - barHeightToDraw);
-
-    float powerUsageRatio = (static_cast<float>(m_player->getPowerUsage()) + 1) / (static_cast<float>(m_player->getPowerProduced()) + 1);
-    int r = powerUsageRatio * 255;
-    int g = (1.1 - powerUsageRatio) * 255;
-
-    if (r > 255) r = 255;
-    if (g > 255) g = 255;
-
-    if (m_player->bEnoughPower()) {
-        m_sdlDrawer->renderRectFillColor(barX, powerOutY, barWidth, barY + barTotalHeight-powerOutY, Color{static_cast<Uint8>(r), static_cast<Uint8>(g), 32,255});
-    }
-    else {
-        m_sdlDrawer->renderRectFillColor(barX, powerOutY, barWidth, barY + barTotalHeight-powerOutY, m_player->getErrorFadingColor());
-    }
-
-    m_sdlDrawer->renderLine(barX, powerOutY, barX+barWidth, powerOutY, Color{255, 255, 255,255});
-
-    m_sdlDrawer->renderRectColor(barX, barY, barWidth, barTotalHeight, m_sidebarColor);
-
-    // draw darker 'sides' at the left and top
-    Color darker = Color{89, 56, 0,255};
-    m_sdlDrawer->renderLine(barX, barY, barX, barY + barTotalHeight, darker); // left side |
-    m_sdlDrawer->renderLine(barX, barY, barX+barWidth, barY, darker); // top side _
-    if (m_player->bEnoughPower()) {
-        m_sdlDrawer->renderSprite(m_gfxinter->getTexture(ICON_POWER_HIGH),barX-3, barY - 21);
-    }
-    else {
-        m_sdlDrawer->renderSprite(m_gfxinter->getTexture(ICON_POWER),barX-3, barY - 21);
-    }
-}
-
-void cSideBarDrawer::drawCreditsUsage()
-{
-    int barTotalHeight = (cSideBar::HeightOfMinimap - 76);
-    int barX = (m_services->settings->getScreenW() - cSideBar::SidebarWidth) + (cSideBar::VerticalCandyBarWidth / 3);
-    int barY = cSideBar::TopBarHeight + 48;
-    int barWidth = (cSideBar::VerticalCandyBarWidth / 3) - 1;
-    // cRectangle powerBarRect(barX, barY, barWidth, barTotalHeight);
-    m_sdlDrawer->renderRectFillColor(barX, barY, barWidth, barTotalHeight, 0,0,0,255);
-
-    // STEFAN: 01/05/2021 -> looks like a lot of this code can be moved to the player class to retrieve max spice capacity
-    // and so forth.
-
-    // the maximum power (ie a full bar) is 1 + amount windtraps * power_give (100)
-    int maxSpiceCapacity = 1000; // this is still hard coded, need to move to INI file
-    int structuresWithSpice = m_player->getAmountOfStructuresForType(REFINERY) + m_player->getAmountOfStructuresForType(SILO);
-    float totalSpiceCapacity = (1 + structuresWithSpice) * maxSpiceCapacity;
-    float maxSpice = m_player->getMaxCredits() / totalSpiceCapacity;
-    float spiceStored = static_cast<float>(m_player->getCredits()) / totalSpiceCapacity;
-
-    float barHeightToDraw = barTotalHeight * maxSpice;
-    if (barHeightToDraw > barTotalHeight) barHeightToDraw = barTotalHeight;
-    int powerInY = barY + (barTotalHeight - barHeightToDraw);
-
-    m_sdlDrawer->renderRectFillColor(barX, powerInY, barWidth, barY + barTotalHeight - powerInY, Color{0, 232, 0,255});
-
-    barHeightToDraw = barTotalHeight * spiceStored;
-    if (barHeightToDraw > barTotalHeight) barHeightToDraw = barTotalHeight;
-    int powerOutY = barY + (barTotalHeight - barHeightToDraw);
-
-    auto spiceCapacityRatio = static_cast<float>(m_player->getCredits() + 1) / (m_player->getMaxCredits() + 1);
-    spiceCapacityRatio = std::clamp(spiceCapacityRatio, 0.0f, 1.0f);
-    int r = spiceCapacityRatio * 255;
-    int g = (1.1 - spiceCapacityRatio) * 255;
-
-    if (r > 255) r = 255;
-    if (g > 255) g = 255;
-
-    if (m_player->bEnoughSpiceCapacityToStoreCredits()) {
-        m_sdlDrawer->renderRectFillColor(barX, powerOutY, barWidth, barY + barTotalHeight - powerOutY, static_cast<Uint8>(r),static_cast<Uint8>(g), 32,255);
-    }
-    else {
-        m_sdlDrawer->renderRectFillColor(barX, powerOutY, barWidth, barY + barTotalHeight - powerOutY, m_player->getErrorFadingColor());
-    }
-
-    m_sdlDrawer->renderLine( barX, powerOutY, barX+barWidth, powerOutY, Color{255, 255, 255,255});
-
-    // draw darker 'sides' at the left and top
-    Color darker = Color{89, 56, 0,255};
-    m_sdlDrawer->renderLine( barX, barY, barX, barY + barTotalHeight, darker); // left side |
-    m_sdlDrawer->renderLine( barX, barY, barX+barWidth, barY, darker); // top side _
-
-    if (spiceCapacityRatio>0.95) {
-        m_sdlDrawer->renderSprite(m_gfxinter->getTexture(ICON_SOLARIS_FULL), barX-5, barY-20);
-    } else  if (spiceCapacityRatio<0.05) {
-        m_sdlDrawer->renderSprite(m_gfxinter->getTexture(ICON_SOLARIS_LOW), barX-5, barY-20);
-    } else {
-        m_sdlDrawer->renderSprite(m_gfxinter->getTexture(ICON_SOLARIS), barX-5, barY-20);
+    if (selectedList != nullptr &&
+        selectedList->getType() == eListType::LIST_STARPORT) {
+        m_services->drawManager->getOrderDrawer()->drawOrderButton(m_player);
     }
 }

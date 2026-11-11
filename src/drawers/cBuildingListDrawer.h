@@ -19,6 +19,10 @@ class cTextDrawer;
 class cGameObjectContext;
 #include "observers/cInputObserver.h"
 #include "sidebar/cBuildingList.h"
+#include "sidebar/HudLayout.hpp"
+
+#include <array>
+#include <string>
 
 class cPlayer;
 class GameContext;
@@ -66,6 +70,8 @@ private:
     cGameObjectContext *m_objects = nullptr;
 
     bool m_renderListIds;
+    std::array<int, cSideBar::LIST_MAX> m_scrollRows{};
+    std::string m_readyLabel;
 
     void drawStructureSize(int structureId, int x, int y);
     void drawMaxBuilt(int x, int y, int width, int height);
@@ -74,6 +80,14 @@ private:
     void drawListWithUnitsOrAbilities(cBuildingList *list); // used for units or palace / starport
 
     bool isOverItemCoordinates_Boolean(int x, int y, int drawX, int drawY);
+    [[nodiscard]] int getCardWidth() const;
+    [[nodiscard]] int getCardHeight() const;
+    void drawHdCard(cBuildingListItem *item, int x, int y);
+    void drawHdScrollbar(cBuildingList *list, const HudLayout &layout);
+    [[nodiscard]] HudLayout getLayout(cBuildingList *list = nullptr) const;
+    [[nodiscard]] int getScrollRow(cBuildingList *list) const;
+    void setScrollRow(cBuildingList *list, int row);
+    void scrollSelectedList(int rowDelta);
 
     void onKeyHold(const cKeyboardEvent &event);
 

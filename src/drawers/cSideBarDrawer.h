@@ -21,7 +21,8 @@ class cKeyboardEvent;
 #include "observers/cInputObserver.h"
 struct s_MouseEvent;
 
-#include <memory>
+#include <array>
+#include <string>
 
 class Texture;
 class cPlayer;
@@ -50,14 +51,6 @@ public:
 
     void setPlayer(cPlayer *pPlayer);
 
-protected:
-    void drawBuildingLists();
-    void drawCapacities();
-
-    void drawCandybar();
-
-    void drawMinimap();
-
 private:
     cPlayer *m_player;
     Graphics *m_gfxinter;
@@ -69,14 +62,20 @@ private:
     cBuildingListDrawer m_buildingListDrawer;
     cSideBar *m_sidebar;
     Color m_sidebarColor;
+    cTextDrawer* m_smallTextDrawer = nullptr;
+    std::array<Texture *, 3> m_houseCrests{};
 
-    void createCandyBar();
-    void createPlayerCandyBar();
-
-    void drawPowerUsage() const;
-    void drawCreditsUsage();
-    std::unique_ptr<Texture> m_candyBarBall;
-    std::unique_ptr<Texture> m_candyBarPiece;
-    std::unique_ptr<Texture> m_candyHorizonBar;
-    Texture *m_candiBarRenderer= nullptr;
+    void drawHdSidebar();
+    void drawHdBuildingLists();
+    void drawHdRadarPanel();
+    void drawHdCapacities();
+    void drawHdMeter(
+        const cRectangle &rect,
+        const std::string &label,
+        int value,
+        int maximum,
+        Color fill,
+        bool warning) const;
+    [[nodiscard]] Texture *getHouseCrest() const;
+    [[nodiscard]] std::string getHouseDisplayName() const;
 };

@@ -98,7 +98,6 @@ void cDrawManager::reset()
     m_messageDrawer = std::make_unique<cMessageDrawer>(m_ctx, m_services);
     m_placeitDrawer = std::make_unique<cPlaceItDrawer>(m_ctx, m_player, m_structureUtils);
     m_structureDrawer = std::make_unique<cStructureDrawer>(m_ctx, m_player, m_structureUtils);
-    m_btnOptions.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_ctx->getSDLDrawer(),m_player, m_gfxinter->getSurface(BTN_OPTIONS), TransparentColorIndex, m_gfxinter->getDensity()));
     m_mouseDrawer = std::make_unique<cMouseDrawer>(m_player, m_ctx->getTextContext()->getSmallTextDrawer());
 
     m_sidebarDrawer->serviceInit(m_services);
@@ -157,8 +156,6 @@ void cDrawManager::drawCombatState()
 
     // GUI
     drawSidebar();
-
-    drawOptionBar();
 
     m_sdlDrawer->setClippingFor(0, cSideBar::TopBarHeight, m_mapCamera->getWindowWidth(), m_mapCamera->getWindowHeight() + cSideBar::TopBarHeight);
     drawStructurePlacing();
@@ -300,27 +297,53 @@ void cDrawManager::drawMouse()
 
 void cDrawManager::drawTopBarBackground()
 {
-    Texture *topbarPiece = m_gfxinter->getTexture(BMP_TOPBAR_BACKGROUND);
-    for (int x = 0; x < m_gameSettings->getScreenW(); x+= topbarPiece->w) {
-        m_sdlDrawer->renderSprite(topbarPiece, x, 0);
-    }
+    const Color panel{17, 21, 23, 255};
+    const Color border{151, 113, 43, 255};
+    const Color text{232, 222, 188, 255};
+    m_sdlDrawer->renderRectFillColor(
+        0,
+        0,
+        m_gameSettings->getScreenW(),
+        cSideBar::TopBarHeight,
+        panel
+    );
+    m_sdlDrawer->renderLine(
+        0,
+        cSideBar::TopBarHeight - 2,
+        m_gameSettings->getScreenW(),
+        cSideBar::TopBarHeight - 2,
+        border
+    );
 
-    m_sdlDrawer->renderSprite(m_btnOptions.get(), 1, 0);
-
-    //HACK HACK: for now do it like this, instead of using an actual GUI object here
-    cRectangle optionsRect = cRectangle(0,0, 162, 30);
-    if (m_mouse->isLeftButtonClicked() && m_mouse->isOverRectangle(&optionsRect)) {
+    const cRectangle optionsRect(7, 4, 126, 33);
+    m_sdlDrawer->renderRectFillColor(
+        optionsRect.getX(),
+        optionsRect.getY(),
+        optionsRect.getWidth(),
+        optionsRect.getHeight(),
+        Color{27, 31, 33, 255}
+    );
+    m_sdlDrawer->renderRectColor(
+        optionsRect.getX(),
+        optionsRect.getY(),
+        optionsRect.getWidth(),
+        optionsRect.getHeight(),
+        border
+    );
+    m_textDrawer->drawTextCenteredInBox("OPTIONS", optionsRect, text);
+    if (m_mouse->isLeftButtonClicked() &&
+        m_mouse->isOverRectangle(
+            optionsRect.getX(),
+            optionsRect.getY(),
+            optionsRect.getWidth(),
+            optionsRect.getHeight())) {
         m_stateTransitions->setNextState(GAME_OPTIONS);
     }
 }
 
 void cDrawManager::setPlayerToDraw(cPlayer *playerToDraw)
 {
-    const bool houseChanged = m_player->getHouse() != playerToDraw->getHouse();
     m_player = playerToDraw;
-    if (houseChanged) {
-        m_btnOptions.reset(createPlayerTextureFromIndexedSurfaceWithPalette(m_ctx->getSDLDrawer(), m_player, m_gfxinter->getSurface(BTN_OPTIONS), TransparentColorIndex, m_gfxinter->getDensity()));
-    }
     m_creditsDrawer->setPlayer(playerToDraw);
     m_sidebarDrawer->setPlayer(playerToDraw);
     m_orderDrawer->setPlayer(playerToDraw);
@@ -328,17 +351,6 @@ void cDrawManager::setPlayerToDraw(cPlayer *playerToDraw)
     m_mapDrawer->setPlayer(playerToDraw);
     m_structureDrawer->setPlayer(playerToDraw);
     m_placeitDrawer->setPlayer(playerToDraw);
-}
-
-void cDrawManager::drawOptionBar()
-{
-    // upper bar
-    m_sdlDrawer->renderRectFillColor(0, 0, m_gameSettings->getScreenW(), cSideBar::TopBarHeight, Color{0, 0, 0,255});
-    m_sdlDrawer->renderRectFillColor(0,m_gameSettings->getScreenW(), 40,32, Color{214,149,20,255});
-
-    for (int w = 0; w < (m_gameSettings->getScreenW() + 800); w += 789) {
-        m_sdlDrawer->renderSprite(m_gfxinter->getTexture(BMP_GERALD_TOP_BAR), w, 31);
-    }
 }
 
 void cDrawManager::think()
