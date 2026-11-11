@@ -206,6 +206,24 @@
   document.getElementById("wm").src = A + "hd4/" + house[0] + ".png";
   document.getElementById("hname").innerHTML = (wide ? "<small>" + house[2] + "</small>" : "") + house[1];
   if (!wide) document.querySelector(".clock").style.display = "none";
+  if (location.search.indexOf("v=starport") >= 0) {
+    const order = [["0060_ICON_UNIT_QUAD", 262, 2], ["0068_ICON_UNIT_TANK", 283, 1], ["0058_ICON_UNIT_MCV", 1129, 0], ["0055_ICON_UNIT_HARVESTER", 337, 1],
+      ["0057_ICON_UNIT_LAUNCHER", 585, 0], ["0065_ICON_UNIT_SIEGETANK", 463, 1], ["0059_ICON_UNIT_ORNITHOPTER", 468, 0], ["0051_ICON_UNIT_CARRYALL", 420, 0]];
+    host.innerHTML = order.map(function (item, index) {
+      return '<div class="card' + (index === 2 ? " poor" : index === 5 ? " hover" : "") + '" style="background-image:url(' + A + "sdl_inter_hd4/" + item[0] + '.png)"><div class="price">' + item[1] + "</div>" + (item[2] ? '<div class="q">' + item[2] + "</div>" : "") + "</div>";
+    }).join("");
+    const tabs = document.querySelectorAll(".ltab");
+    tabs.forEach(function (tab) { tab.className = "ltab"; });
+    tabs[3].className = "ltab selected"; tabs[4].className = "ltab disabled";
+    document.getElementById("credits").textContent = "2 480";
+    document.querySelector(".info").innerHTML = '<div class="row" style="height:100%;gap:10px"><div class="grow"><div class="nm">Заказ: 5 единиц</div><div class="row st" style="margin-top:6px"><span class="gold"><i data-i="coin"></i>1 870</span></div></div><div class="btn sm primary hover" style="height:30px;padding:0 12px">Заказать</div></div>';
+    const power = document.querySelectorAll(".mtr")[0];
+    power.querySelector(".ln").className = "row ln bad";
+    power.querySelector(".v").innerHTML = '<span style="color:var(--bad-text)">520</span><small>/405</small>';
+    power.querySelector(".meter").className = "meter bad"; power.querySelector(".meter").style.setProperty("--v", "100%");
+    document.querySelector(".toast div").innerHTML = '<i data-i="warn"></i>Не хватает энергии: постройте ветроловушку';
+    document.querySelector(".toast .ico, .toast i").style.color = "var(--warn)";
+  }
 })();
 </script>
 </body></html>

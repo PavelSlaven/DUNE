@@ -14,8 +14,8 @@ SIZES = ((800, 600), (1920, 1080))
 TRUE_POINTS = ("6-battle", "9-components")
 
 
-def render(page, width, height, query=""):
-    target = OUT / f"{page.stem}-{width}x{height}.png"
+def render(page, width, height, query="", tag=""):
+    target = OUT / f"{page.stem}{"-" + tag if tag else ""}-{width}x{height}.png"
     scale = 1.0
     view = (width, height)
     if height > 600 and page.stem not in TRUE_POINTS:
@@ -42,12 +42,18 @@ def main(names):
         index = names.index("--size")
         sizes = tuple(tuple(int(part) for part in item.split("x")) for item in names[index + 1].split(","))
         names = names[:index] + names[index + 2:]
+    query = tag = ""
+    if "--variant" in names:
+        index = names.index("--variant")
+        tag = names[index + 1]
+        query = "?v=" + tag
+        names = names[:index] + names[index + 2:]
     pages = sorted(HERE.glob("[0-9]*.html"))
     if names:
         pages = [page for page in pages if any(page.stem.startswith(name) for name in names)]
     for page in pages:
         for width, height in sizes:
-            print(render(page, width, height).name, flush=True)
+            print(render(page, width, height, query, tag).name, flush=True)
 
 
 if __name__ == "__main__":
