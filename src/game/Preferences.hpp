@@ -17,6 +17,11 @@
 #pragma once
 
 #include <filesystem>
+#include <array>
+#include <span>
+#include <string_view>
+#include <utility>
+#include <vector>
 #include <string>
 
 class cSection;
@@ -46,5 +51,34 @@ bool loadScales(const std::filesystem::path &file, InitialGameSettings &settings
 bool saveLanguage(const std::filesystem::path &file, const std::string &language, std::string &error);
 
 bool loadLanguage(const std::filesystem::path &file, InitialGameSettings &settings, std::string &error);
+
+// The values the options menu lets the player choose: read on every start, written only by the options menu.
+inline constexpr std::array<std::string_view, 21> CHOSEN_KEYS = {
+    "RenderScale", "WorldScale", "Language", "ScreenWidth", "ScreenHeight", "FullScreen",
+    "CameraEdgeMove", "CameraBorderOrKeyMoveSpeed", "CameraDragMoveSpeed", "pauseWhenLosingFocus",
+    "AllowRepeatingReinforcements", "AllTurretsDownOnLowPower", "RocketTurretsDownOnLowPower",
+    "Debug", "NoAI", "oneAi", "disableWormAi", "disableReinforcements", "noAiRest", "drawUnitDebug", "drawUsages",
+};
+
+using KeyValues = std::vector<std::pair<std::string, std::string>>;
+
+// Loads only the chosen keys over the settings; the other settings stay as they are.
+bool loadChosenOptions(const std::filesystem::path &file, InitialGameSettings &settings, std::string &error);
+
+// The text values of the given settings keys in the order of `keys`; a key that is not a settings key is skipped.
+KeyValues valuesOf(const InitialGameSettings &settings, std::span<const std::string_view> keys);
+
+// Writes the values to [SETTINGS] and keeps every other key and section of the file.
+bool saveValues(const std::filesystem::path &file, const KeyValues &values, std::string &error);
+
+// The save at the end of the game: writes every setting except the chosen keys and keeps the chosen keys and
+// every other section of the file as they are.
+bool saveOnExit(const std::filesystem::path &file, const InitialGameSettings &settings, std::string &error);
+
+// The [KEYS] section of the file; false when the file has no such section.
+bool loadKeyBindings(const std::filesystem::path &file, cSection &section, std::string &error);
+
+// Writes the values to [KEYS] and keeps every other key and section of the file.
+bool saveKeyBindings(const std::filesystem::path &file, const KeyValues &values, std::string &error);
 
 }

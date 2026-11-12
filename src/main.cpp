@@ -104,12 +104,10 @@ int main(int argc, char **argv)
 
     std::unique_ptr<InitialGameSettings> settings = loadSettingsFromIni("settings.ini");
 
-    // the scales and the language chosen in the options menu apply on every start, the other preferences only with -prefs
+    // the values chosen in the options menu apply on every start, the other preferences only with -prefs
     if (const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME)) {
-        std::string scalesError;
-        Preferences::loadScales(*prefsFile, *settings, scalesError);
-        std::string languageError;
-        Preferences::loadLanguage(*prefsFile, *settings, languageError);
+        std::string chosenError;
+        Preferences::loadChosenOptions(*prefsFile, *settings, chosenError);
     }
     
     // -prefs: start from the options saved at the end of the previous run, the other arguments still override them
@@ -161,7 +159,7 @@ int main(int argc, char **argv)
             if (!uiaudit::isEnabled()) {
                 if (const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME)) {
                     std::string prefsError;
-                    if (!Preferences::save(*prefsFile, game.currentSettings(), prefsError)) {
+                    if (!Preferences::saveOnExit(*prefsFile, game.currentSettings(), prefsError)) {
                         Logger::warn(COMP_GAMERULES, "Preferences", "Could not save preferences: {}", prefsError);
                     }
                 }

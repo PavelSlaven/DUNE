@@ -19,9 +19,13 @@
 class cKeyboardEvent;
 struct s_MouseEvent;
 #include "include/Texture.hpp"
+#include "controls/cKeyBindings.h"
+#include "gamestates/OptionsPageData.hpp"
+#include "utils/InitialGameSettings.hpp"
 
 #include <cstddef>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -35,11 +39,14 @@ class GuiLabel;
 class GameStateTransition;
 class cMouse;
 class cGameSettings;
+class cKeyboard;
 class SaveSlotsDialog;
 
 class cOptionsState : public cGameState {
     friend class UiAuditAccess;
 public:
+    enum class OptionsPage { Main, Gameplay, Controls, Diagnostics };
+
     explicit cOptionsState(sGameServices* services, int prevState);
     ~cOptionsState() override;
 
@@ -61,6 +68,7 @@ private:
     cGameSettings* m_settings = nullptr;
     GameStateTransition* m_stateTransitions = nullptr;
     cMouse* m_mouse = nullptr;
+    cKeyboard* m_keyboard = nullptr;
 
     int m_prevState;
 
@@ -75,6 +83,21 @@ private:
     GuiButton *m_applyButton = nullptr;
     GuiButton *m_languageButton = nullptr;
     GuiButton *m_loadGameButton = nullptr;
+    GuiLabel *m_resolutionValueLabel = nullptr;
+    OptionsPage m_optionsPage = OptionsPage::Main;
+    std::optional<OptionsPage> m_pendingOptionsPage;
+    bool m_refreshRequested = false;
+    InitialGameSettings m_selected;
+    cKeyBindings m_selectedBindings;
+    std::optional<eKeyAction> m_bindingCapture;
+    bool m_bindingCaptureFinished = false;
+    std::string m_bindingMessage;
+    int m_controlsScrollRow = 0;
+    std::vector<ResolutionOption> m_resolutionChoices;
+    std::size_t m_selectedResolutionIndex = 0;
+    ResolutionOption m_savedResolution;
+    bool m_selectedFullscreen = false;
+    bool m_savedFullscreen = false;
 
     std::unique_ptr<GuiWindow> m_guiWindow;
     std::unique_ptr<SaveSlotsDialog> m_saveDialog;
@@ -85,5 +108,11 @@ private:
     void selectLanguage();
     void updateScaleControls();
     void applyScaleSettings();
+    void selectResolution(int step);
+    void loadSelectedOptions();
+    void switchOptionsPage(OptionsPage page);
+    void requestOptionsPage(OptionsPage page);
+    void constructAdvancedWindow(int prevState);
+    void applyAdvancedPage();
     Texture *const *m_backgroundTexture = nullptr;
 };

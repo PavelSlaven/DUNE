@@ -135,6 +135,7 @@ set(D2TM_SOURCES
     gamestates/cMentatState.cpp
     gamestates/cNewmapEditorState.cpp
     gamestates/cOptionsState.cpp
+    gamestates/cOptionsPages.cpp
     gamestates/cScoringState.cpp
     gamestates/cSelectMissionState.cpp
     gamestates/cSelectYourNextConquestState.cpp

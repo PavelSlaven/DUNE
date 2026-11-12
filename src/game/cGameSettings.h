@@ -163,11 +163,63 @@ public:
     bool isWindowed() const {
         return m_windowed;
     }
+    int getRequestedScreenW() const {
+        return m_requestedScreenW;
+    }
+    int getRequestedScreenH() const {
+        return m_requestedScreenH;
+    }
+    bool isCameraEdgeMove() const {
+        return m_cameraEdgeMove;
+    }
+    float getCameraDragMoveSpeed() const {
+        return m_cameraDragMoveSpeed;
+    }
+    float getCameraBorderOrKeyMoveSpeed() const {
+        return m_cameraBorderOrKeyMoveSpeed;
+    }
+    bool isPauseWhenLosingFocus() const {
+        return m_pauseWhenLosingFocus;
+    }
+    void setAllowRepeatingReinforcements(bool value) {
+        m_allowRepeatingReinforcements = value;
+    }
+    void setDebugMode(bool value) {
+        m_debugMode = value;
+    }
+    void setDisableAI(bool value) {
+        m_disableAI = value;
+    }
+    void setOneAi(bool value) {
+        m_oneAi = value;
+    }
+    void setDisableWormAi(bool value) {
+        m_disableWormAi = value;
+    }
+    void setDisableReinforcements(bool value) {
+        m_disableReinforcements = value;
+    }
+    void setNoAiRest(bool value) {
+        m_noAiRest = value;
+    }
+    void setDrawUnitDebug(bool value) {
+        m_drawUnitDebug = value;
+    }
+    void setDrawUsages(bool value) {
+        m_drawUsages = value;
+    }
 
 private:
     // resolution of the game
     int m_screenW;
     int m_screenH;
+    // the window size and the camera and focus values the game was started with; they apply only after a restart
+    int m_requestedScreenW = 0;
+    int m_requestedScreenH = 0;
+    bool m_cameraEdgeMove = true;
+    float m_cameraDragMoveSpeed = 0.5f;
+    float m_cameraBorderOrKeyMoveSpeed = 0.5f;
+    bool m_pauseWhenLosingFocus = false;
     int m_worldScalePercent = 0;
     int m_renderScalePercent = 0;
     int m_outputH = 0;
@@ -204,7 +256,7 @@ private:
     bool m_playSound;
     bool m_debugMode;
     bool m_cheatMode;
-    bool m_windowed;
+    bool m_windowed = false;
     //-----------------------
 
     friend class cGame;

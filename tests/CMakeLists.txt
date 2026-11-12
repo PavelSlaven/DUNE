@@ -54,6 +54,9 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_RenderScale.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_AdaptiveMenus.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_OptionsMenu.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_KeyRebinding.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_OptionPages.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_PreferencesPages.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_HudLayout.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_UiAuditArguments.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/UiAuditRecordStub.cpp

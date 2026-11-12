@@ -225,6 +225,30 @@ bool readyOptionsMenu(cGame &game)
     }
 }
 
+template <int Variant>
+bool readyOptionsPage(cGame &game)
+{
+    switch (g_step) {
+        case 0:
+            UiAuditAccess::setState(game, GAME_OPTIONS);
+            g_step = 1;
+            g_wait = 0;
+            return false;
+        case 1:
+            if (!pause(4)) {
+                return false;
+            }
+            UiAuditAccess::optionsPage(game, Variant == 4 ? 2 : Variant);
+            if (Variant == 4) {
+                UiAuditAccess::optionsBinding(game);
+            }
+            g_step = 2;
+            return false;
+        default:
+            return pause(4);
+    }
+}
+
 bool prepareCredits(cGame &game)
 {
     resetSteps();
@@ -478,6 +502,10 @@ const std::vector<Scene> g_catalog = {
     scene("skirmish-setup-ready-map", "skirmish-setup", "", "FixedFrames(2, no readiness flag)", prepareSkirmishSetup<1>),
     scene("options-menu-main", "options-menu", "", "FixedFrames(14, no readiness flag)", prepareOptionsMenu<0>, readyOptionsMenu<0>),
     scene("options-menu-applied", "options-menu", "", "FixedFrames(14, no readiness flag)", prepareOptionsMenu<1>, readyOptionsMenu<1>),
+    scene("options-game-game", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsPage<1>),
+    scene("options-game-controls", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsPage<2>),
+    scene("options-game-diagnostics", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsPage<3>),
+    scene("options-game-keybind", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsPage<4>),
     scene("credits-title", "credits", "", "CreditsScrollPosition", prepareCredits, readyCredits<0>),
     scene("credits-1", "credits", "", "CreditsScrollPosition", prepareCredits, readyCredits<1>),
     scene("credits-2", "credits", "", "CreditsScrollPosition", prepareCredits, readyCredits<2>),

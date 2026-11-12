@@ -72,6 +72,21 @@ bool cKeyboardEvent::isType(eKeyEventType type) const
     return m_eventType == type;
 }
 
+SDL_Scancode cKeyboardEvent::getFirstKey() const
+{
+    for (int scancode = 0; scancode < SDL_SCANCODE_COUNT; ++scancode) {
+        if (m_keys.test(static_cast<size_t>(scancode))) {
+            return static_cast<SDL_Scancode>(scancode);
+        }
+    }
+    return SDL_SCANCODE_UNKNOWN;
+}
+
+const s_KeysCombo &cKeyboardEvent::getCombo() const
+{
+    return m_combo;
+}
+
 bool cKeyboardEvent::isAction(eKeyAction action) const
 {
     if (!m_keyBindings) return false;

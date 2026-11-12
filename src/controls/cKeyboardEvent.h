@@ -85,6 +85,11 @@ public:
 
     bool hasKeys(SDL_Scancode firstScanCode, SDL_Scancode secondScanCode) const;
 
+    // The lowest scancode of the event, SDL_SCANCODE_UNKNOWN when the event has no key (text input).
+    SDL_Scancode getFirstKey() const;
+
+    const s_KeysCombo &getCombo() const;
+
     bool hasEitherKey(SDL_Scancode firstScanCode, SDL_Scancode secondScanCode) const;
 
 private:

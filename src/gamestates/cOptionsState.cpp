@@ -46,8 +46,14 @@
 #include "utils/Localization.hpp"
 #include "save/SaveGameManager.hpp"
 #include "save/SaveSlotsDialog.hpp"
+#include "controls/cKeyboard.h"
+#include "controls/cKeyboardEvent.h"
+#include "controls/sMouseEvent.h"
+#include "gamestates/OptionsKeyLabels.hpp"
 
 #include <algorithm>
+#include <SDL3/SDL.h>
+#include <format>
 
 namespace {
 
@@ -64,6 +70,7 @@ cOptionsState::cOptionsState(sGameServices* services, int prevState)
     m_settings(services->settings),
     m_stateTransitions(services->stateTransitions),
     m_mouse(services->mouse),
+    m_keyboard(services->keyboard),
     m_prevState(prevState),
     m_guiWindow(nullptr)
 {
@@ -71,6 +78,8 @@ cOptionsState::cOptionsState(sGameServices* services, int prevState)
     d2tm_assert(m_settings != nullptr);
     d2tm_assert(m_stateTransitions != nullptr);
     d2tm_assert(m_mouse != nullptr);
+    d2tm_assert(m_keyboard != nullptr);
+    d2tm_assert(m_keyboard->getKeyBindings() != nullptr);
 
     m_renderScaleChoices = renderScaleChoices(m_settings->getOutputW(), m_settings->getOutputH());
     m_worldScaleChoices = worldScaleChoices();
@@ -92,12 +101,17 @@ cOptionsState::cOptionsState(sGameServices* services, int prevState)
             m_loadGameButton->setEnabled(true);
             m_loadGameButton->setTheme(GuiTheme::Remaster());
         });
+    loadSelectedOptions();
     refresh();
     m_backgroundTexture = &services->screenTexture;
 }
 
 void cOptionsState::constructWindow(int prevState)
 {
+    if (m_optionsPage != OptionsPage::Main) {
+        constructAdvancedWindow(prevState);
+        return;
+    }
     const int margin = 8;
     const int buttonHeight = std::max(32, m_textDrawer->getFontHeight() + 10);
     const OptionsMenuLayout menuLayout = OptionsMenuLayout::create(
@@ -105,7 +119,8 @@ void cOptionsState::constructWindow(int prevState)
         m_settings->getScreenH(),
         buttonHeight,
         m_prevState == GAME_PLAYING,
-        m_textDrawer->getFontHeight()
+        m_textDrawer->getFontHeight(),
+        2
     );
     const GuiTheme controlTheme = GuiTheme::Remaster();
     const GuiRenderKind buttonKind = GuiRenderKind::REMASTER_BUTTON;
@@ -238,7 +253,7 @@ void cOptionsState::constructWindow(int prevState)
     }
 
     if (m_settings->isCheatMode()) {
-        const cRectangle &cheatRect = rect(contentX, contentRowY(9), checkLabelWidth, buttonHeight);
+        const cRectangle &cheatRect = rect(contentX, contentRowY(11), checkLabelWidth, buttonHeight);
         auto gui_cheatLabel = GuiLabelBuilder()
                 .withLabel(localization::text("Cheat mode enabled", "Режим читов включён"))
                 .withTextDrawer(m_textDrawer)
@@ -558,6 +573,85 @@ void cOptionsState::constructWindow(int prevState)
     m_languageButton = languageButton.get();
     m_guiWindow->addGuiObject(std::move(languageButton));
 
+    const cRectangle &resolutionRect = rect(contentX, contentRowY(9), displayLabelWidth, buttonHeight);
+    auto resolutionLabel = GuiLabelBuilder()
+            .withRect(resolutionRect)
+            .withLabel(localization::text("Resolution", "Разрешение"))
+            .withTextDrawer(m_textDrawer)
+            .withRenderer(m_sdlDrawer)
+            .withTheme(controlTheme)
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTextAlign(GuiTextAlignHorizontal::LEFT)
+            .build();
+    m_guiWindow->addGuiObject(std::move(resolutionLabel));
+
+    const cRectangle &previousResolutionRect = rect(selectorX, contentRowY(9), arrowWidth, buttonHeight);
+    auto previousResolutionButton = GuiButtonBuilder()
+            .withRect(previousResolutionRect)
+            .withLabel("◄")
+            .withTextDrawer(m_textDrawer)
+            .withRenderer(m_sdlDrawer)
+            .withTheme(controlTheme)
+            .withKind(buttonKind)
+            .onClick([this]() { selectResolution(-1); })
+            .build();
+    m_guiWindow->addGuiObject(std::move(previousResolutionButton));
+
+    const cRectangle &resolutionValueRect = rect(selectorX + arrowWidth + margin, contentRowY(9), scaleValueWidth, buttonHeight);
+    auto resolutionValueLabel = GuiLabelBuilder()
+            .withRect(resolutionValueRect)
+            .withLabel("")
+            .withTextDrawer(m_textDrawer)
+            .withRenderer(m_sdlDrawer)
+            .withTheme(controlTheme)
+            .withKind(GuiRenderKind::OPAQUE_WITH_BORDER)
+            .build();
+    m_resolutionValueLabel = resolutionValueLabel.get();
+    m_guiWindow->addGuiObject(std::move(resolutionValueLabel));
+
+    const cRectangle &nextResolutionRect = rect(selectorX + arrowWidth + margin + scaleValueWidth + margin, contentRowY(9), arrowWidth, buttonHeight);
+    auto nextResolutionButton = GuiButtonBuilder()
+            .withRect(nextResolutionRect)
+            .withLabel("►")
+            .withTextDrawer(m_textDrawer)
+            .withRenderer(m_sdlDrawer)
+            .withTheme(controlTheme)
+            .withKind(buttonKind)
+            .onClick([this]() { selectResolution(1); })
+            .build();
+    m_guiWindow->addGuiObject(std::move(nextResolutionButton));
+
+    const cRectangle &fullscreenRect = rect(contentX, contentRowY(10), checkLabelWidth, buttonHeight);
+    auto fullscreenLabel = GuiLabelBuilder()
+            .withRect(fullscreenRect)
+            .withLabel(localization::text("Fullscreen", "Полноэкранный режим"))
+            .withTextDrawer(m_textDrawer)
+            .withRenderer(m_sdlDrawer)
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTextAlign(GuiTextAlignHorizontal::LEFT)
+            .withTheme(controlTheme)
+            .build();
+    m_guiWindow->addGuiObject(std::move(fullscreenLabel));
+
+    const cRectangle &fullscreenCheckRect = rect(checkX, contentRowY(10), buttonHeight, buttonHeight);
+    auto fullscreenCheck = GuiCheckBoxBuilder()
+            .withRect(fullscreenCheckRect)
+            .withRenderer(m_sdlDrawer)
+            .withTheme(controlTheme)
+            .onCheck([this]() {
+                m_selectedFullscreen = true;
+                m_statusLabel->setText("");
+                updateScaleControls();
+            })
+            .onUnCheck([this]() {
+                m_selectedFullscreen = false;
+                m_statusLabel->setText("");
+                updateScaleControls();
+            })
+            .build();
+    fullscreenCheck->setChecked(m_selectedFullscreen);
+    m_guiWindow->addGuiObject(std::move(fullscreenCheck));
+
     const cRectangle &applyRect = relativeRect(menuLayout.apply);
     auto applyButton = GuiButtonBuilder()
             .withRect(applyRect)
@@ -590,9 +684,9 @@ void cOptionsState::constructWindow(int prevState)
             .withLabel(localization::text("More settings", "Ещё настройки"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
-            .withTheme(GuiTheme::RemasterInactive())
+            .withTheme(controlTheme)
             .withKind(buttonKind)
-            .withEnabled(false)
+            .onClick([this]() { requestOptionsPage(OptionsPage::Gameplay); })
             .build();
     m_guiWindow->addGuiObject(std::move(advancedButton));
 
@@ -622,6 +716,14 @@ void cOptionsState::selectLanguage()
     updateScaleControls();
 }
 
+void cOptionsState::selectResolution(int step)
+{
+    const int count = static_cast<int>(m_resolutionChoices.size());
+    m_selectedResolutionIndex = static_cast<std::size_t>((static_cast<int>(m_selectedResolutionIndex) + step + count) % count);
+    m_statusLabel->setText("");
+    updateScaleControls();
+}
+
 void cOptionsState::updateScaleControls()
 {
     const int outputW = m_settings->getOutputW();
@@ -630,12 +732,15 @@ void cOptionsState::updateScaleControls()
     const int worldScale = m_worldScaleChoices[m_selectedWorldScaleIndex];
     m_renderScaleValueLabel->setText(scaleChoiceText(renderScale, calculateAutomaticRenderScalePercent(outputW, outputH)));
     m_worldScaleValueLabel->setText(scaleChoiceText(worldScale, calculateAutomaticWorldScalePercent(outputH)));
+    const ResolutionOption &resolution = m_resolutionChoices[m_selectedResolutionIndex];
+    m_resolutionValueLabel->setText(std::format("{}×{}", resolution.width, resolution.height));
     m_languageButton->setText(m_selectedLanguage == "en" ? "English" : "Русский");
     const std::string savedLanguage = normalizeLanguage(m_settings->getSavedLanguage());
     m_applyButton->setEnabled(
         renderScale != m_settings->getSavedRenderScalePercent() ||
         worldScale != m_settings->getSavedWorldScalePercent() ||
-        m_selectedLanguage != savedLanguage
+        m_selectedLanguage != savedLanguage ||
+        resolution != m_savedResolution || m_selectedFullscreen != m_savedFullscreen
     );
 }
 
@@ -643,25 +748,91 @@ void cOptionsState::applyScaleSettings()
 {
     const int renderScale = m_renderScaleChoices[m_selectedRenderScaleIndex];
     const int worldScale = m_worldScaleChoices[m_selectedWorldScaleIndex];
-    std::string scaleError = "Could not get the user data directory";
-    std::string languageError = "Could not get the user data directory";
+    const ResolutionOption resolution = m_resolutionChoices[m_selectedResolutionIndex];
+    m_selected.renderScalePercent = renderScale;
+    m_selected.worldScalePercent = worldScale;
+    m_selected.language = m_selectedLanguage;
+    m_selected.screenW = resolution.width;
+    m_selected.screenH = resolution.height;
+    m_selected.windowed = !m_selectedFullscreen;
+    std::string error = "Could not get the user data directory";
     const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME);
-    bool scalesSaved = false;
-    bool languageSaved = false;
-    if (prefsFile) {
-        scalesSaved = Preferences::saveScales(*prefsFile, renderScale, worldScale, scaleError);
-        languageSaved = Preferences::saveLanguage(*prefsFile, m_selectedLanguage, languageError);
-    }
-    if (scalesSaved && languageSaved) {
+    const bool saved = prefsFile && Preferences::saveValues(*prefsFile, Preferences::valuesOf(m_selected, MAIN_PAGE_KEYS), error);
+    if (saved) {
         m_settings->setSavedScalePercents(renderScale, worldScale);
         m_settings->setSavedLanguage(m_selectedLanguage);
+        m_savedResolution = resolution;
+        m_savedFullscreen = m_selectedFullscreen;
         m_statusLabel->setText(localization::text("Saved. Restart the game.", "Сохранено. Перезапустите игру."));
     } else {
-        const std::string &error = scalesSaved ? languageError : scaleError;
         Logger::warn(COMP_GAMERULES, "Preferences", "Could not save preferences: {}", error);
         m_statusLabel->setText(localization::text("Could not save preferences.ini", "Не удалось сохранить preferences.ini"));
     }
     updateScaleControls();
+}
+
+void cOptionsState::loadSelectedOptions()
+{
+    InitialGameSettings selected;
+    selected.screenW = m_settings->getRequestedScreenW();
+    selected.screenH = m_settings->getRequestedScreenH();
+    selected.windowed = m_settings->isWindowed();
+    selected.renderScalePercent = m_settings->getSavedRenderScalePercent();
+    selected.worldScalePercent = m_settings->getSavedWorldScalePercent();
+    selected.language = normalizeLanguage(m_settings->getSavedLanguage());
+    selected.cameraEdgeMove = m_settings->isCameraEdgeMove();
+    selected.cameraDragMoveSpeed = m_settings->getCameraDragMoveSpeed();
+    selected.cameraBorderOrKeyMoveSpeed = m_settings->getCameraBorderOrKeyMoveSpeed();
+    selected.pauseWhenLosingFocus = m_settings->isPauseWhenLosingFocus();
+    selected.allowRepeatingReinforcements = m_settings->isAllowRepeatingReinforcements();
+    selected.turretsDownOnLowPower = m_settings->isTurretsDownOnLowPower();
+    selected.rocketTurretsDownOnLowPower = m_settings->isRocketTurretsDownOnLowPower();
+    selected.debugMode = m_settings->isDebugMode();
+    selected.disableAI = m_settings->isDisableAI();
+    selected.oneAi = m_settings->isOneAi();
+    selected.disableWormAi = m_settings->isDisableWormAi();
+    selected.disableReinforcements = m_settings->isDisableReinforcements();
+    selected.noAiRest = m_settings->isNoAiRest();
+    selected.drawUnitDebug = m_settings->isDrawUnitDebug();
+    selected.drawUsages = m_settings->isDrawUsages();
+    if (const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME)) {
+        std::string error;
+        Preferences::loadChosenOptions(*prefsFile, selected, error);
+    }
+    m_selected = selected;
+    m_selectedBindings = *m_keyboard->getKeyBindings();
+    m_bindingCapture.reset();
+    m_bindingCaptureFinished = false;
+    m_bindingMessage.clear();
+    m_controlsScrollRow = 0;
+
+    int desktopWidth = m_settings->getScreenW();
+    int desktopHeight = m_settings->getScreenH();
+    SDL_Rect bounds{};
+    if (SDL_GetDisplayBounds(SDL_GetPrimaryDisplay(), &bounds)) {
+        desktopWidth = bounds.w;
+        desktopHeight = bounds.h;
+    }
+    m_savedResolution = {selected.screenW, selected.screenH};
+    m_resolutionChoices = resolutionChoices(desktopWidth, desktopHeight, m_savedResolution);
+    m_selectedResolutionIndex = resolutionChoiceIndex(m_resolutionChoices, m_savedResolution);
+    m_savedFullscreen = !selected.windowed;
+    m_selectedFullscreen = m_savedFullscreen;
+}
+
+void cOptionsState::switchOptionsPage(OptionsPage page)
+{
+    m_bindingCapture.reset();
+    m_bindingCaptureFinished = false;
+    m_bindingMessage.clear();
+    m_controlsScrollRow = 0;
+    m_optionsPage = page;
+    refresh();
+}
+
+void cOptionsState::requestOptionsPage(OptionsPage page)
+{
+    m_pendingOptionsPage = page;
 }
 
 cOptionsState::~cOptionsState()
@@ -671,6 +842,23 @@ cOptionsState::~cOptionsState()
 
 void cOptionsState::thinkFast()
 {
+    if (m_pendingOptionsPage) {
+        const OptionsPage page = *m_pendingOptionsPage;
+        m_pendingOptionsPage.reset();
+        switchOptionsPage(page);
+        return;
+    }
+    if (m_bindingCaptureFinished) {
+        m_bindingCaptureFinished = false;
+        m_bindingCapture.reset();
+        m_refreshRequested = false;
+        refresh();
+        return;
+    }
+    if (m_refreshRequested) {
+        m_refreshRequested = false;
+        refresh();
+    }
 }
 
 void cOptionsState::draw() const
@@ -693,6 +881,13 @@ void cOptionsState::onNotifyMouseEvent(const s_MouseEvent &event)
         m_saveDialog->onMouseEvent(event);
         return;
     }
+    const bool isWheelEvent = event.eventType == eMouseEventType::MOUSE_SCROLLED_UP ||
+                              event.eventType == eMouseEventType::MOUSE_SCROLLED_DOWN;
+    if (isWheelEvent && m_optionsPage == OptionsPage::Controls && !m_bindingCapture) {
+        m_controlsScrollRow += event.eventType == eMouseEventType::MOUSE_SCROLLED_UP ? -3 : 3;
+        refresh();
+        return;
+    }
     m_guiWindow->onNotifyMouseEvent(event);
 }
 
@@ -705,6 +900,34 @@ void cOptionsState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 {
     if (m_saveDialog->isOpen()) {
         m_saveDialog->onKeyboardEvent(event);
+        return;
+    }
+    if (m_optionsPage != OptionsPage::Controls || !m_bindingCapture || m_bindingCaptureFinished ||
+        !event.isType(eKeyEventType::PRESSED) || event.hasTextInput()) {
+        return;
+    }
+    const SDL_Scancode key = event.getFirstKey();
+    if (key == SDL_SCANCODE_UNKNOWN) {
+        return;
+    }
+    // The capture ends in thinkFast, so that the game's global key actions do not receive the key just chosen.
+    m_bindingCaptureFinished = true;
+    m_bindingMessage.clear();
+    if (key == SDL_SCANCODE_ESCAPE) {
+        return;
+    }
+    if (!cKeyBindings::canStoreKey(key)) {
+        m_bindingMessage = localization::text("This key cannot be assigned.", "Эту клавишу нельзя назначить.");
+        return;
+    }
+    const s_KeyBinding binding = cKeyBindings::makeCapturedBinding(key, event.getCombo());
+    const std::optional<eKeyAction> conflict = m_selectedBindings.trySetBinding(*m_bindingCapture, binding);
+    if (conflict) {
+        m_bindingMessage = localization::format(
+            "Key {} is already assigned to {}.",
+            "Клавиша {} уже назначена команде «{}».",
+            cKeyBindings::describeBinding(binding),
+            keyActionLabelText(*conflict));
     }
 }
 
@@ -715,6 +938,9 @@ void cOptionsState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 void cOptionsState::setPrevState(int prevState)
 {
     m_prevState = prevState;
+    m_optionsPage = OptionsPage::Main;
+    m_pendingOptionsPage.reset();
+    loadSelectedOptions();
     refresh();
 }
 
@@ -730,11 +956,12 @@ void cOptionsState::refresh()
     m_applyButton = nullptr;
     m_languageButton = nullptr;
     m_loadGameButton = nullptr;
+    m_resolutionValueLabel = nullptr;
     constructWindow(m_prevState);
     m_backgroundTexture = nullptr;
 }
 
 bool cOptionsState::isKeyboardCapturedByUi() const
 {
-    return m_saveDialog->isCapturingText();
+    return m_bindingCapture.has_value() || m_saveDialog->isCapturingText();
 }
