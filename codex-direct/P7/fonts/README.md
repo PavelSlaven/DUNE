@@ -6,3 +6,4 @@
 - `sheet3.png` — по трём видам текста игры: оригинал, Sangyo, предложение ведущего.
 
 Предложение ведущего: меню и диалоги — Northrup Serif Large 12 px (novov, SIL OFL 1.1, `github.com/mirnovov/northrup`, выпуск 2.0); мелкий текст — Pixeloid Sans Bold 9 px (GGBotNet, SIL OFL 1.1, `ggbot.itch.io/pixeloid-font`). Fantasy Warrior отброшен: моноширинный и без длинного тире; Cairopixel — моноширинный; Sangyo — узкий, не похож на шрифты игры.
+- `sheet4.png` — сглаживание: пиксельные шрифты без него и с ним; Russo One и PT Sans Narrow со сглаживанием мелко с растяжением и сразу в размере экрана. Владелец 2026-11-12: «Может сглаживание включим? Тяжело читать».
