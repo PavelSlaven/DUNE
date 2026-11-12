@@ -35,6 +35,7 @@ class cRectangle;
 #include <vector>
 #include <array>
 #include <memory>
+#include <cstdint>
 
 class cItemBuilder;
 class cBuildingListUpdater;
@@ -624,6 +625,8 @@ private:
     cGameObjectContext *m_objects = nullptr;
     cEventEmitter *m_eventEmitter = nullptr;
     AudioContext *m_audioContext = nullptr;
+    std::uint64_t m_lastEnemyWarningMs = 0;
+    bool m_hasPlayedEnemyWarning = false;
     cScreenFader *m_screenFader = nullptr;
     cStructureUtils *m_structureUtils = nullptr;
     cLog *m_log = nullptr;

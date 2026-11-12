@@ -28,10 +28,16 @@
 #include "include/cAssert.h"
 #include "game/cGameSettings.h"
 #include "include/Texture.hpp"
+#include "drawers/OrderButtonPolicy.hpp"
+#include "drawers/cTextDrawer.h"
+#include "context/TextContext.hpp"
+#include "utils/Localization.hpp"
+#include "utils/Color.hpp"
 
 cOrderDrawer::cOrderDrawer(GameContext *ctx, cPlayer *player, sGameServices *services) :
     m_ctx(ctx),
     m_sdlDrawer(ctx->getSDLDrawer()),
+    m_textDrawer(ctx->getTextContext()->getSmallTextDrawer()),
     m_player(player)
 {
     d2tm_assert(player != nullptr);
@@ -60,6 +66,11 @@ void cOrderDrawer::drawOrderButton(cPlayer *thePlayer)
 
     d2tm_assert(orderProcesser);
     m_sdlDrawer->renderSprite(m_buttonBitmap.get(), m_buttonRect.getX(), m_buttonRect.getY());
+    const Color labelColor = orderProcesser->isOrderPlaced()
+        ? Color{105, 99, 83, 255}
+        : Color{92, 12, 8, 255};
+    m_textDrawer->drawTextScaledCenteredInBox(localization::text("ORDER", "ЗАКАЗ"), m_buttonRect, 0.92F, labelColor,
+                                              shouldDrawOrderLabelShadow());
 
     bool canOrder = orderProcesser->canPlaceOrder();
     if (!canOrder) {

@@ -8,6 +8,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_MouseClickInit.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CommandBarLayout.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CreditsMath.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/structures/test_StarportOrders.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map/test_MapGeometry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map/test_FogMemory.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map/test_cSeedMapGenerator.cpp
@@ -20,6 +21,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_IniScenarioParsing.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Utf8.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MentatTextLayout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MentatHdLayout.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_CampaignTextRu.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_CampaignProgress.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_FontCoverage.cpp
@@ -31,6 +33,10 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_d2tm_math.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_SfxTrackAllocator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicJukeBox.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicPlaylist.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicTransitionPolicy.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicControlsLayout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_MusicKeyBindings.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Packs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Loading.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_HdRender.cpp
@@ -70,6 +76,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/utils/Log.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/SfxTrackAllocator.cpp
     ${CMAKE_SOURCE_DIR}/src/context/MusicJukeBox.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/MusicPlaylist.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cDataPack.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cPack.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Graphics.cpp

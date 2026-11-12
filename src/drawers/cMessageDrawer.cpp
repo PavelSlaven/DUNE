@@ -26,6 +26,9 @@
 #include <SDL3/SDL.h>
 #include "include/cAssert.h"
 #include "context/TextContext.hpp"
+#include "sidebar/HudLayout.hpp"
+#include "sidebar/MusicControlsLayout.hpp"
+#include <algorithm>
 
 // Game Playing State and SelectYourNextConquestState have their own version
 // this class has to be abstracted in such a way so it is used in both those states, yet without the wonky init
@@ -58,11 +61,87 @@ cMessageDrawer::~cMessageDrawer()
 void cMessageDrawer::draw()
 {
     if (m_state == messages::eMessageDrawerState::COMBAT) {
-        m_sdlDrawer->renderFromSurface(m_bmpBar, m_position.x, m_position.y, 255, m_gfxinter->getDensity());
+        const HudLayout layout = HudLayout::create(
+            m_services->settings->getScreenW(),
+            m_services->settings->getScreenH()
+        );
+        const int left = 143;
+        const int right = layout.battlefield.getEndX() - 8;
+        const int reservedMessageWidth = m_message.empty()
+            ? 0
+            : m_textDrawer->getTextLength(m_message) + 16;
+        const MusicControlsLayout music = MusicControlsLayout::create(
+            left,
+            right,
+            reservedMessageWidth
+        );
+        const int messageX = music.visible
+            ? music.panel.getEndX() + 8
+            : left;
+        const cRectangle messageRect(
+            messageX,
+            4,
+            std::max(0, right - messageX),
+            33
+        );
+        m_sdlDrawer->renderRectFillColor(
+            messageRect.getX(),
+            messageRect.getY(),
+            messageRect.getWidth(),
+            messageRect.getHeight(),
+            Color{20, 24, 26, 255}
+        );
+        m_sdlDrawer->renderRectColor(
+            messageRect.getX(),
+            messageRect.getY(),
+            messageRect.getWidth(),
+            messageRect.getHeight(),
+            Color{112, 87, 42, 255}
+        );
+        const int messageTextWidth = m_message.empty()
+            ? 0
+            : m_textDrawer->getTextLength(m_message);
+        const int messageContentWidth = messageRect.getWidth() - 16;
+        if (m_alpha > -1 && messageTextWidth > 0 && messageContentWidth > 0) {
+            const Color messageColor{232, 225, 196, Uint8(m_alpha)};
+            if (messageTextWidth <= messageContentWidth) {
+                m_textDrawer->drawText(
+                    messageRect.getX() + 8,
+                    messageRect.getY() + 10,
+                    messageColor,
+                    m_message,
+                    false
+                );
+            } else {
+                const float scale = static_cast<float>(messageContentWidth) /
+                    static_cast<float>(messageTextWidth);
+                if (scale >= 0.5F) {
+                    m_textDrawer->drawTextScaledOpticallyCenteredInBox(
+                        m_message,
+                        cRectangle(
+                            messageRect.getX() + 8,
+                            messageRect.getY(),
+                            messageContentWidth,
+                            messageRect.getHeight()
+                        ),
+                        scale,
+                        messageColor,
+                        false
+                    );
+                }
+            }
+        }
+        return;
     }
 
     if (m_alpha > -1) {
-        m_sdlDrawer->renderFromSurface(m_bmpBar, m_position.x, m_position.y, m_alpha, m_gfxinter->getDensity());
+        m_sdlDrawer->renderFromSurface(
+            m_bmpBar,
+            m_position.x,
+            m_position.y,
+            m_alpha,
+            m_gfxinter->getDensity()
+        );
         // draw message
         m_textDrawer->drawText(m_position.x+13, m_position.y+6, Color{0, 0, 0,Uint8(m_alpha)}, m_message, false);
     }

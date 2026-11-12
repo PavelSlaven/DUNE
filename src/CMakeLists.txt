@@ -6,6 +6,8 @@ set(D2TM_SOURCES
     building/cItemBuilder.cpp
     context/AudioContext.cpp
     context/MusicJukeBox.cpp
+    audio/MusicController.cpp
+    audio/MusicPlaylist.cpp
     context/cGameObjectContext.cpp
     context/cGameObjectContextCreator.cpp
     context/cInfoContext.cpp

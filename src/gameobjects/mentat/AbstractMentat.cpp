@@ -286,7 +286,13 @@ void AbstractMentat::draw()
 
     Texture *tmp = getBackgroundBitmap();
     cRectangle dest = {offsetX, offsetY, MENTAT_SCREEN_W, MENTAT_SCREEN_H};
-    m_sdlDrawer->renderStrechFullSprite(tmp, dest);
+    const bool hasMovie = gfxmovie != nullptr && iMovieFrame >= 0;
+    if (m_hdLayout != nullptr && hasMovie) {
+        m_sdlDrawer->renderStrechFullSprite(getHdForegroundLayer(tmp), dest);
+    }
+    else {
+        m_sdlDrawer->renderStrechFullSprite(tmp, dest);
+    }
 
     draw_eyes();
     draw_mouth();
@@ -337,7 +343,37 @@ void AbstractMentat::draw_movie()
     // drawing only, circulating is done in think function
     Texture *tmp = gfxmovie->getTexture(iMovieFrame);
     cRectangle dest = {movieTopleftX, movieTopleftY,tmp->w, tmp->h};
+    if (m_hdLayout != nullptr) {
+        const MentatHdRect &frame = m_hdLayout->sceneFrame;
+        dest = cRectangle(offsetX + frame.x, offsetY + frame.y, frame.width, frame.height);
+    }
     m_sdlDrawer->renderStrechFullSprite(tmp, dest);
+}
+
+void AbstractMentat::drawMentatTexture(Texture *texture, const MentatHdPoint &position)
+{
+    m_sdlDrawer->renderSprite(texture, offsetX + position.x, offsetY + position.y);
+}
+
+Texture *AbstractMentat::getHdForegroundLayer(Texture *background)
+{
+    if (background == nullptr) return nullptr;
+    if (m_hdForegroundLayer) return m_hdForegroundLayer.get();
+
+    m_hdForegroundLayer.reset(m_sdlDrawer->createRenderTargetTexture(background->w, background->h, background->density));
+    m_sdlDrawer->beginDrawingToTexture(m_hdForegroundLayer.get());
+    m_sdlDrawer->renderClearToColor(Color{0, 0, 0, 0});
+    m_sdlDrawer->renderStrechFullSprite(background, cRectangle(0, 0, background->w, background->h));
+    const MentatHdRect &opening = m_hdLayout->sceneOpening;
+    for (int y = opening.y; y < opening.y + opening.height; ++y) {
+        const MentatHdRowSpan span = sceneOpeningSpan(*m_hdLayout, y);
+        if (span.right > span.left) {
+            m_sdlDrawer->clearRectToTransparent(cRectangle(span.left, y, span.right - span.left, 1));
+        }
+    }
+    m_sdlDrawer->endDrawingToTexture();
+    SDL_SetTextureBlendMode(m_hdForegroundLayer->tex.get(), SDL_BLENDMODE_BLEND);
+    return m_hdForegroundLayer.get();
 }
 
 void AbstractMentat::initSentences()

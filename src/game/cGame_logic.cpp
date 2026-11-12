@@ -1544,7 +1544,9 @@ void cGame::onKeyPressedGame(const cKeyboardEvent &event)
 
     if (event.isAction(eKeyAction::TOGGLE_MUSIC)) {
         m_audioContext->toggleMusic();
-        m_notificationArea->addNotification(localization::text("Music toggle successfully", "Музыка переключена"), eNotificationType::NEUTRAL);
+        m_notificationArea->addNotification(
+            m_gameSettings->isPlayMusic() ? localization::text("Music on", "Музыка включена") : localization::text("Music off", "Музыка выключена"),
+            eNotificationType::NEUTRAL);
     }
 
     if (event.isAction(eKeyAction::MUSIC_VOLUME_DOWN)) {
@@ -1555,6 +1557,14 @@ void cGame::onKeyPressedGame(const cKeyboardEvent &event)
     if (event.isAction(eKeyAction::MUSIC_VOLUME_UP)) {
         m_audioContext->changeMusicVolume(10);
         m_notificationArea->addNotification(localization::text("Music volume up", "Музыка громче"), eNotificationType::NEUTRAL);
+    }
+
+    if (event.isAction(eKeyAction::MUSIC_PREVIOUS_TRACK) && isState(GAME_PLAYING)) {
+        m_audioContext->playPreviousTrack();
+    }
+
+    if (event.isAction(eKeyAction::MUSIC_NEXT_TRACK) && isState(GAME_PLAYING)) {
+        m_audioContext->playNextTrack();
     }
 
     if (event.isAction(eKeyAction::GAME_SPEED_UP)) {

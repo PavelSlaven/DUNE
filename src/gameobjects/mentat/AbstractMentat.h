@@ -17,6 +17,7 @@
 
 #include "utils/cRectangle.h"
 #include "observers/cInputObserver.h"
+#include "gameobjects/mentat/MentatHdLayout.hpp"
 class Graphics;
 
 #include <array>
@@ -78,6 +79,8 @@ protected:
     virtual void draw_other() = 0;
 
     void draw_movie();
+    void drawMentatTexture(Texture *texture, const MentatHdPoint &position);
+    Texture *getHdForegroundLayer(Texture *background);
 
     // Timed animation
     int TIMER_Mouth;
@@ -120,6 +123,8 @@ protected:
     int offsetY;
     int movieTopleftX;
     int movieTopleftY;
+    const MentatHdLayout *m_hdLayout = nullptr;
+    std::unique_ptr<Texture> m_hdForegroundLayer;
 
     std::unique_ptr<GuiButton> m_guiBtnToMissionSelect;
     Graphics* gfxmentat;
