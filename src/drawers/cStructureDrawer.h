@@ -49,6 +49,7 @@ protected:
     void drawStructurePrebuildAnimation(cAbstractStructure *structure);
     void drawStructureAnimation(cAbstractStructure *structure);
     void drawStructureAnimationRefinery(cAbstractStructure *structure);
+    void drawHarvesterOnRefineryPad(cAbstractStructure *structure) const;
     void drawStructureAnimationTurret(cAbstractStructure *structure);
     void drawStructureForLayer(cAbstractStructure *structure, int layer);
 

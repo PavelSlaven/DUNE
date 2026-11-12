@@ -36,6 +36,7 @@ class AudioContext;
 class cGameSettings;
 struct sGameServices;
 class SDLDrawer;
+class cStructureUtils;
 
 class cAbstractStructure : public cScenarioObserver {
     friend class SaveGameManager;
@@ -70,6 +71,7 @@ protected:
     cScreenShake *m_screenShake = nullptr;
     AudioContext *m_audioContext = nullptr;
     SDLDrawer *m_renderer = nullptr;
+    cStructureUtils *m_structureUtils = nullptr;
 
     bool shouldAnimateWhenUnitHeadsTowardsStructure;
     int id;				// the id within the structure[] array
@@ -138,6 +140,8 @@ public:
     int getSmokeChance();             // probability to create smoke particle
 
     void die(int originId = -1, eBuildType originType = eBuildType::UNKNOWN, int killingDamage = 0); // die
+
+    virtual void releasePad() {}
 
     // drawing
     int iDrawX();

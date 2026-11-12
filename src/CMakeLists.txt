@@ -116,6 +116,7 @@ set(D2TM_SOURCES
     gameobjects/structures/cSpiceSilo.cpp
     gameobjects/structures/cStarPort.cpp
     gameobjects/structures/cStructureFactory.cpp
+    gameobjects/structures/cUnitFactory.cpp
     gameobjects/structures/cWindTrap.cpp
     gameobjects/structures/cWor.cpp
     gameobjects/units/cPathFinder.cpp

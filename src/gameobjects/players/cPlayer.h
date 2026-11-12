@@ -70,6 +70,8 @@ struct s_PlaceResult {
 
     bool outOfBounds = false; // (one of the cells) is out of bounds
 
+    bool outOfBuildDistance = false; // no own structure, wall or slab next to the footprint
+
     // these units block it
     std::set<int> unitIds = std::set<int>();
 
@@ -516,6 +518,7 @@ public:
     s_PlaceResult canPlaceStructureAt(int iCell, int iStructureType, int iUnitIDToIgnore);
     s_PlaceResult canPlaceStructureAt(int iCell, int iStructureType);
     s_PlaceResult canPlaceConcreteAt(int iCell);
+    s_PlaceResult canPlaceBuildingListItemAt(int iCell, int iStructureType);
 
     void log(const std::string &txt) const;
 

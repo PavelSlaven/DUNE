@@ -50,6 +50,10 @@
 #include "game/cGameSettings.h"
 #include "include/Texture.hpp"
 #include "utils/cRectangle.h"
+#include "utils/WorldObjectScale.hpp"
+#include "include/Facing.h"
+#include "gameobjects/structures/cUnitFactory.h"
+#include <cmath>
 
 cStructureDrawer::cStructureDrawer(GameContext *ctx, cPlayer *player, cStructureUtils *structureUtils) :
     m_sdlDrawer(ctx->getSDLDrawer()),
@@ -287,6 +291,52 @@ void cStructureDrawer::drawStructureAnimationRefinery(cAbstractStructure *struct
     d2tm_assert(structure->getType() == REFINERY);
 
     drawStructureAnimation(structure);
+    if (structure->hasUnitWithin()) {
+        drawHarvesterOnRefineryPad(structure);
+    }
+}
+
+void cStructureDrawer::drawHarvesterOnRefineryPad(cAbstractStructure *structure) const
+{
+    if (!structure || !structure->hasUnitWithin()) {
+        return;
+    }
+    const int unitId = structure->getUnitIdWithin();
+    if (unitId < 0 || unitId >= m_objects->getUnitsSize()) {
+        return;
+    }
+    cUnit *harvester = m_objects->getUnit(unitId);
+    if (!harvester->isValid() || harvester->iType != HARVESTER) {
+        return;
+    }
+
+    Texture *bitmap = m_objects->getPlayer(structure->getOwner())->getUnitBitmap(HARVESTER);
+    if (!bitmap) {
+        return;
+    }
+    const int frameWidth = harvester->getBmpWidth();
+    const int frameHeight = harvester->getBmpHeight();
+    const int bodyFrame = convertAngleToDrawIndex(facingToInt(Facing::DOWN));
+    const cRectangle source = {
+        bodyFrame * frameWidth,
+        0,
+        frameWidth,
+        frameHeight,
+    };
+
+    const WorldObjectLayout harvesterVisual = refineryHarvesterLayout(
+        structure->iDrawX(),
+        structure->iDrawY(),
+        static_cast<int>(std::lround(m_mapCamera->factorZoomLevel(structure->getWidthInPixels()))),
+        static_cast<int>(std::lround(m_mapCamera->factorZoomLevel(structure->getHeightInPixels())))
+    );
+    const cRectangle destination = {
+        harvesterVisual.x,
+        harvesterVisual.y,
+        harvesterVisual.width,
+        harvesterVisual.height,
+    };
+    m_sdlDrawer->renderStrechSprite(bitmap, source, destination);
 }
 
 bool cStructureDrawer::drawHdHouseFlag(cAbstractStructure *structure)
@@ -341,6 +391,9 @@ void cStructureDrawer::drawStructureForLayer(cAbstractStructure *structure, int 
             }
             else {
                 drawStructureAnimation(structure);
+                if (auto *factory = dynamic_cast<cUnitFactory *>(structure)) {
+                    factory->drawUnitOnPad();
+                }
             }
             if (!drawHdHouseFlag(structure)) {
                 structure->drawFlags();

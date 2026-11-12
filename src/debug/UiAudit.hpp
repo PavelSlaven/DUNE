@@ -33,7 +33,10 @@ enum GameKind {
     Rally,
     DamagedUnit,
     Harvester,
-    Mcv
+    Mcv,
+    RadarDish,
+    RefineryHarvester,
+    FactoryPad
 };
 
 struct Rect {
@@ -112,4 +115,5 @@ public:
     static bool saveDialog(cGame &game, int action);
     static bool startSkirmish(cGame &game);
     static bool saveRoundTrip(cGame &game);
+    static bool addFactoryPads(cGame &game);
 };

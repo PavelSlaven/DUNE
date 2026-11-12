@@ -223,3 +223,22 @@ TEST_CASE("P8 save body rejects values out of range", "[P8]")
     REQUIRE_FALSE(save_game_detail::deserializeBody(
         save_game_detail::serializeBody(invalidCell), restored, error));
 }
+
+TEST_CASE("P8A save body keeps factory pads", "[P8A][P8A-save]")
+{
+    auto save = sample();
+    save.structures[1].type = LIGHTFACTORY;
+    save_game_detail::FactoryPadSave factoryPad;
+    factoryPad.structureId = 3;
+    factoryPad.pad.phase = factory_pad::Phase::Standing;
+    factoryPad.pad.unitType = 4;
+    factoryPad.pad.waiting = {5, 6};
+    save.factoryPads.push_back(factoryPad);
+
+    save_game_detail::SaveSnapshot restored;
+    std::string error;
+    REQUIRE(save_game_detail::deserializeBody(save_game_detail::serializeBody(save), restored, error));
+    REQUIRE(restored.factoryPads.size() == 1);
+    CHECK(restored.factoryPads[0].pad.waiting == std::vector<int>({5, 6}));
+    CHECK(save_game_detail::serializeBody(restored) == save_game_detail::serializeBody(save));
+}

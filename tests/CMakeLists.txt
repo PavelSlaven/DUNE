@@ -44,6 +44,12 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Packs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Loading.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_HdRender.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/players/test_PlacementRule.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/structures/test_FactoryPad.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/structures/test_FactoryPadEngine.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/structures/test_OutpostDish.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/save/test_FactoryPadSave.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_WorldObjectScale.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_FactionTintTerrain.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_RenderScale.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_AdaptiveMenus.cpp

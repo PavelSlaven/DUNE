@@ -115,6 +115,7 @@ void cAbstractStructure::serviceInit(sGameServices *services)
     m_screenShake = services->screenShake;
     m_audioContext = services->ctx->getAudioContext();
     m_renderer = services->ctx->getSDLDrawer();
+    m_structureUtils = services->structureUtils;
 }
 
 int cAbstractStructure::pos_x()
@@ -186,6 +187,8 @@ int cAbstractStructure::getRange()
 // this structure dies
 void cAbstractStructure::die(int originId, eBuildType originType, int killingDamage)
 {
+    releasePad();
+
     // selected structure
     // TODO: remove this, based on events
     cPlayer *pPlayer = getPlayer();
@@ -737,6 +740,8 @@ bool cAbstractStructure::belongsTo(const cPlayer *other) const
  */
 void cAbstractStructure::getsCapturedBy(cPlayer *pPlayer)
 {
+    releasePad();
+
     getPlayer()->decreaseStructureAmount(getType());
     iPlayer = pPlayer->getId();
     pPlayer->increaseStructureAmount(getType());

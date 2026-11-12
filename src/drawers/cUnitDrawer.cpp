@@ -18,6 +18,7 @@
 
 #include "gameobjects/units/cUnit.h"
 #include "gameobjects/map/cMapCamera.h"
+#include "gameobjects/map/cMap.h"
 #include "gameobjects/players/cPlayer.h"
 #include "drawers/SDLDrawer.hpp"
 #include "drawers/cTextDrawer.h"
@@ -32,6 +33,7 @@
 #include "include/Facing.h"
 #include "include/cAssert.h"
 #include "include/Texture.hpp"
+#include "utils/Log.h"
 
 #include <SDL3/SDL.h>
 #include <cmath>
@@ -58,6 +60,85 @@ cUnitDrawer::cUnitDrawer(cUnit &unit, SDLDrawer *renderer, Graphics *gfxdata) :
 {
     d2tm_assert(renderer != nullptr);
     d2tm_assert(gfxdata != nullptr);
+}
+
+cRectangle cUnitDrawer::visualRectangleAt(cMapCamera *mapCamera, const s_UnitInfo &info, float x, float y)
+{
+    const int offsetX = (TILESIZE_WIDTH_PIXELS - info.bmp_width) / 2;
+    const int offsetY = (TILESIZE_HEIGHT_PIXELS - info.bmp_height) / 2;
+    return {
+        mapCamera->getWindowXPositionWithOffset(static_cast<int>(x), offsetX),
+        mapCamera->getWindowYPositionWithOffset(static_cast<int>(y), offsetY),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(info.bmp_width))),
+        static_cast<int>(std::lround(mapCamera->factorZoomLevel(info.bmp_height)))
+    };
+}
+
+void cUnitDrawer::drawSprites(SDLDrawer *renderer, cMapCamera *mapCamera, cPlayer *owner, int unitType,
+                              const s_UnitInfo &info, Facing bodyFacing, Facing headFacing, int frameIndex,
+                              const cRectangle &visual, bool drawTop)
+{
+    const int bmp_width = info.bmp_width;
+    const int bmp_height = info.bmp_height;
+    const int bmp_head = convertAngleToDrawIndex(facingToInt(headFacing));
+    const int bmp_body = convertAngleToDrawIndex(facingToInt(bodyFacing));
+
+    const UnitSpriteRectangle visualRectangle{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()};
+    const float cameraZoom = mapCamera->factorZoomLevel(1.0f);
+
+    Texture *shadow = owner->getUnitShadowBitmap(unitType);
+    if (shadow) {
+        const UnitSpriteFrame frame = resolveUnitSpriteFrame(
+            bmp_width, bmp_height, info.hd_frame_width, info.hd_frame_height, shadow->density);
+        const UnitSpriteRectangle s = unitSpriteSourceRectangle(frame, bmp_body, frameIndex);
+        const UnitSpriteFloatRectangle d = unitSpriteDestinationRectangle(frame, visualRectangle, cameraZoom);
+        cRectangle src{s.x, s.y, s.width, s.height};
+        cRectangle dest{
+            static_cast<int>(std::lround(d.x)),
+            static_cast<int>(std::lround(d.y)),
+            static_cast<int>(d.width),
+            static_cast<int>(d.height)
+        };
+        if (unitType == CARRYALL) {
+            dest.move(dest.getX(), dest.getY() + 24);
+        }
+        renderer->renderStrechSprite(shadow, src, dest, ShadowTrans);
+    }
+
+    Texture *bitmap = owner->getUnitBitmap(unitType);
+    if (bitmap) {
+        const UnitSpriteFrame frame = resolveUnitSpriteFrame(
+            bmp_width, bmp_height, info.hd_frame_width, info.hd_frame_height, bitmap->density);
+        const UnitSpriteRectangle s = unitSpriteSourceRectangle(frame, bmp_body, frameIndex);
+        const UnitSpriteFloatRectangle d = unitSpriteDestinationRectangle(frame, visualRectangle, cameraZoom);
+        cRectangle src{s.x, s.y, s.width, s.height};
+        cRectangle dest{
+            static_cast<int>(std::lround(d.x)),
+            static_cast<int>(std::lround(d.y)),
+            static_cast<int>(d.width),
+            static_cast<int>(d.height)
+        };
+        renderer->renderStrechSprite(bitmap, src, dest);
+    }
+    else {
+        Logger::warn(COMP_UNITS, "cUnitDrawer", "unit of type {} did not have a bitmap", unitType);
+    }
+
+    Texture *top = owner->getUnitTopBitmap(unitType);
+    if (top && drawTop) {
+        const UnitSpriteFrame frame = resolveUnitSpriteFrame(
+            bmp_width, bmp_height, info.hd_frame_width, info.hd_frame_height, top->density);
+        const UnitSpriteRectangle s = unitSpriteSourceRectangle(frame, bmp_head, frameIndex);
+        const UnitSpriteFloatRectangle d = unitSpriteDestinationRectangle(frame, visualRectangle, cameraZoom);
+        cRectangle src{s.x, s.y, s.width, s.height};
+        cRectangle dest{
+            static_cast<int>(std::lround(d.x)),
+            static_cast<int>(std::lround(d.y)),
+            static_cast<int>(d.width),
+            static_cast<int>(d.height)
+        };
+        renderer->renderStrechSprite(top, src, dest);
+    }
 }
 
 void cUnitDrawer::draw_spice()
@@ -254,80 +335,15 @@ void cUnitDrawer::draw()
         return;
     }
 
-    s_UnitInfo &unitType = m_unit.getUnitInfo();
-    const int bmp_width = unitType.bmp_width;
-    const int bmp_height = unitType.bmp_height;
-
-    // the multiplier we will use to draw the unit
-    const int bmp_head = convertAngleToDrawIndex(facingToInt(m_unit.rendering.iHeadFacing));
-    const int bmp_body = convertAngleToDrawIndex(facingToInt(m_unit.rendering.iBodyFacing));
-
-    // draw body first
-    cPlayer *cPlayer = m_unit.getPlayer();
-
-    const float scaledWidth = m_unit.getMapCamera()->factorZoomLevel(bmp_width);
-    const float scaledHeight = m_unit.getMapCamera()->factorZoomLevel(bmp_height);
-    const int roundedScaledWidth = static_cast<int>(std::lround(scaledWidth));
-    const int roundedScaledHeight = static_cast<int>(std::lround(scaledHeight));
-    const UnitSpriteRectangle visual{ux, uy, roundedScaledWidth, roundedScaledHeight};
-    const float cameraZoom = m_unit.getMapCamera()->factorZoomLevel(1.0f);
-
-    Texture *shadow = cPlayer->getUnitShadowBitmap(m_unit.iType);
-    if (shadow) {
-        const UnitSpriteFrame frame = resolveUnitSpriteFrame(
-            bmp_width, bmp_height, unitType.hd_frame_width, unitType.hd_frame_height, shadow->density);
-        const UnitSpriteRectangle s = unitSpriteSourceRectangle(frame, bmp_body, m_unit.rendering.iFrame);
-        const UnitSpriteFloatRectangle d = unitSpriteDestinationRectangle(frame, visual, cameraZoom);
-        cRectangle src{s.x, s.y, s.width, s.height};
-        cRectangle dest{
-            static_cast<int>(std::lround(d.x)),
-            static_cast<int>(std::lround(d.y)),
-            static_cast<int>(d.width),
-            static_cast<int>(d.height)
-        };
-        if (m_unit.iType == CARRYALL) {
-            dest.move(dest.getX(), dest.getY() + 24);
-        }
-        m_renderer->renderStrechSprite(shadow,src, dest, ShadowTrans);
-    }
-
-    // Draw BODY
-    Texture *bitmap = cPlayer->getUnitBitmap(m_unit.iType);
-    if (bitmap) {
-        const UnitSpriteFrame frame = resolveUnitSpriteFrame(
-            bmp_width, bmp_height, unitType.hd_frame_width, unitType.hd_frame_height, bitmap->density);
-        const UnitSpriteRectangle s = unitSpriteSourceRectangle(frame, bmp_body, m_unit.rendering.iFrame);
-        const UnitSpriteFloatRectangle d = unitSpriteDestinationRectangle(frame, visual, cameraZoom);
-        cRectangle src{s.x, s.y, s.width, s.height};
-        cRectangle dest{
-            static_cast<int>(std::lround(d.x)),
-            static_cast<int>(std::lround(d.y)),
-            static_cast<int>(d.width),
-            static_cast<int>(d.height)
-        };
-        m_renderer->renderStrechSprite(bitmap,src, dest);
-    }
-    else {
-        m_unit.log(std::format("unit of iType [{}] did not have a bitmap!?", m_unit.iType));
-    }
-
-
-    // Draw TOP
-    Texture *top = cPlayer->getUnitTopBitmap(m_unit.iType);
-    if (top && m_unit.getHitPoints() > -1) {
-        const UnitSpriteFrame frame = resolveUnitSpriteFrame(
-            bmp_width, bmp_height, unitType.hd_frame_width, unitType.hd_frame_height, top->density);
-        const UnitSpriteRectangle s = unitSpriteSourceRectangle(frame, bmp_head, m_unit.rendering.iFrame);
-        const UnitSpriteFloatRectangle d = unitSpriteDestinationRectangle(frame, visual, cameraZoom);
-        cRectangle src{s.x, s.y, s.width, s.height};
-        cRectangle dest{
-            static_cast<int>(std::lround(d.x)),
-            static_cast<int>(std::lround(d.y)),
-            static_cast<int>(d.width),
-            static_cast<int>(d.height)
-        };
-        m_renderer->renderStrechSprite(top,src, dest);
-    }
+    const cRectangle visual = {
+        ux,
+        uy,
+        static_cast<int>(std::lround(m_unit.getMapCamera()->factorZoomLevel(m_unit.getBmpWidth()))),
+        static_cast<int>(std::lround(m_unit.getMapCamera()->factorZoomLevel(m_unit.getBmpHeight())))
+    };
+    drawSprites(m_renderer, m_unit.getMapCamera(), m_unit.getPlayer(), m_unit.iType, m_unit.getUnitInfo(),
+                m_unit.rendering.iBodyFacing, m_unit.rendering.iHeadFacing, m_unit.rendering.iFrame, visual,
+                m_unit.getHitPoints() > -1);
 
     // when we want to be picked up..
     if (m_unit.bCarryMe) {

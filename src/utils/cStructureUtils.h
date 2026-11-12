@@ -35,6 +35,8 @@ public:
 
     int findStructureToDeployUnit(cPlayer *pPlayer, int structureType);
 
+    int findFactoryForFinishedUnit(cPlayer *pPlayer, int structureType);
+
     int findStarportToDeployUnit(cPlayer *pPlayer);
 
     int findHiTechToDeployAirUnit(cPlayer *pPlayer);
