@@ -147,6 +147,25 @@ void SDLDrawer::renderRectColor(const cRectangle &rect, Color color, unsigned ch
         color.r,color.g,color.b,opacity);
 }
 
+void SDLDrawer::clearRectToTransparent(const cRectangle &rect)
+{
+    Uint8 previousR = 0;
+    Uint8 previousG = 0;
+    Uint8 previousB = 0;
+    Uint8 previousA = 0;
+    SDL_BlendMode previousBlendMode = SDL_BLENDMODE_BLEND;
+    SDL_GetRenderDrawColor(renderer, &previousR, &previousG, &previousB, &previousA);
+    SDL_GetRenderDrawBlendMode(renderer, &previousBlendMode);
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    const SDL_FRect destination = rect.toSDLF();
+    SDL_RenderFillRect(renderer, &destination);
+
+    SDL_SetRenderDrawColor(renderer, previousR, previousG, previousB, previousA);
+    SDL_SetRenderDrawBlendMode(renderer, previousBlendMode);
+}
+
 void SDLDrawer::resetClippingFor()
 {
     SDL_SetRenderClipRect(renderer, nullptr);

@@ -31,6 +31,7 @@ HarkonnenMentat::HarkonnenMentat(GameContext* ctx, cGameSettings* settings, Game
     d2tm_assert(ctx != nullptr);
     d2tm_assert(m_mentatFlow != nullptr);
     iBackgroundFrame = MENTATH;
+    m_hdLayout = &kHarkonnenMentatHdLayout;
     buildLeftButton(gfxmentat->getTexture(BTN_REPEAT), 293, 423);
     buildRightButton(gfxmentat->getTexture(BTN_PROCEED), 466, 423);
     leftGuiButton = GuiButtonBuilder()
@@ -71,10 +72,10 @@ void HarkonnenMentat::draw_other()
 
 void HarkonnenMentat::draw_eyes()
 {
-    m_sdlDrawer->renderSprite(gfxmentat->getTexture(HAR_EYES01+ iMentatEyes), offsetX + 64, offsetY + 256);
+    drawMentatTexture(gfxmentat->getTexture(HAR_EYES01 + iMentatEyes), kHarkonnenMentatHdLayout.eyes);
 }
 
 void HarkonnenMentat::draw_mouth()
 {
-    m_sdlDrawer->renderSprite(gfxmentat->getTexture(HAR_MOUTH01+ iMentatMouth), offsetX + 64, offsetY + 288);
+    drawMentatTexture(gfxmentat->getTexture(HAR_MOUTH01 + iMentatMouth), kHarkonnenMentatHdLayout.mouth);
 }

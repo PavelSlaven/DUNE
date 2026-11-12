@@ -44,6 +44,7 @@ public:
     void renderRectColor(int x, int y, int width, int height, Color color);
     void renderRectColor(const cRectangle &rect, Uint8 r, Uint8 g, Uint8 b, unsigned char opacity=255);
     void renderRectColor(const cRectangle &rect, Color color, unsigned char opacity=255);
+    void clearRectToTransparent(const cRectangle &rect);
 
     void resetClippingFor();
     void setClippingFor(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY);
