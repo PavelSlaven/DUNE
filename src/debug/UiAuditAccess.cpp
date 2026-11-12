@@ -55,6 +55,8 @@
 #include "save/SaveGameManager.hpp"
 #include "save/SaveSlotsDialog.hpp"
 #include "drawers/cCommandBarDrawer.h"
+#include "gameobjects/structures/OutpostDish.hpp"
+#include "gameobjects/structures/cUnitFactory.h"
 
 #include <algorithm>
 #include <cstdlib>
@@ -871,6 +873,43 @@ bool UiAuditAccess::prepareGameScreen(cGame &currentGame, int house, int kind)
             }
             return true;
         }
+        case GameKind::RadarDish: {
+            for (int i = 0; i < MAX_STRUCTURES; i++) {
+                cAbstractStructure *s = currentGame.m_gameObjectsContext->getStructures()[i];
+                if (s != nullptr && s->isValid() && s->getOwner() == HUMAN && s->getType() == RADAR) {
+                    s->setFrame(outpost_dish::FrameCount - 1);
+                    s->TIMER_flag = -1000000;
+                    return true;
+                }
+            }
+            return false;
+        }
+        case GameKind::RefineryHarvester: {
+            for (int i = 0; i < MAX_STRUCTURES; i++) {
+                cAbstractStructure *s = currentGame.m_gameObjectsContext->getStructures()[i];
+                if (s != nullptr && s->isValid() && s->getOwner() == HUMAN && s->getType() == REFINERY) {
+                    s->enterStructure(base.harvesterId);
+                    return s->hasUnitWithin();
+                }
+            }
+            return false;
+        }
+        case GameKind::FactoryPad: {
+            int filled = 0;
+            for (int i = 0; i < MAX_STRUCTURES; i++) {
+                cAbstractStructure *s = currentGame.m_gameObjectsContext->getStructures()[i];
+                if (s == nullptr || !s->isValid() || s->getOwner() != HUMAN) {
+                    continue;
+                }
+                auto *factory = dynamic_cast<cUnitFactory *>(s);
+                if (factory == nullptr) {
+                    continue;
+                }
+                factory->acceptReadyUnit(s->getType() == LIGHTFACTORY ? QUAD : TANK);
+                filled++;
+            }
+            return filled == 2;
+        }
         case GameKind::GroupSelect: {
             const int cell1 = cellAt(currentGame, 24, 26);
             const int cell2 = cellAt(currentGame, 31, 29);
@@ -999,4 +1038,89 @@ bool UiAuditAccess::saveRoundTrip(cGame &currentGame)
     }
     return SaveGameManager::loadQuickGame(currentGame, error) &&
            SaveGameManager::saveQuickGame(currentGame, error);
+}
+
+bool UiAuditAccess::addFactoryPads(cGame &currentGame)
+{
+    cGameObjectContext *objects = currentGame.m_gameObjectsContext.get();
+    cMap *map = objects->getMap();
+    MapGeometry *geometry = map->getGeometry();
+    auto findLocation = [&](int type, int &foundColumn, int &foundRow) {
+        const s_StructureInfo &info = currentGame.m_infoContext->getStructureInfo(type);
+        const int width = info.bmp_width / TILESIZE_WIDTH_PIXELS;
+        const int height = info.bmp_height / TILESIZE_HEIGHT_PIXELS;
+        for (int row = 3; row <= geometry->getHeight() - 6; row++) {
+            for (int column = 3; column <= geometry->getWidth() - 6; column++) {
+                bool fits = true;
+                for (int y = row - 1; y <= row + height && fits; y++) {
+                    for (int x = column - 1; x <= column + width; x++) {
+                        const int cell = geometry->makeCell(x, y);
+                        if (!geometry->isValidCell(cell) || map->getCellIdStructuresLayer(cell) > -1 ||
+                            map->getCellIdUnitLayer(cell) > -1) {
+                            fits = false;
+                            break;
+                        }
+                        const bool inFootprint = x >= column && x < column + width && y >= row && y < row + height;
+                        if (inFootprint && !map->isValidTerrainForStructureAtCell(cell)) {
+                            fits = false;
+                            break;
+                        }
+                    }
+                }
+                if (fits) {
+                    foundColumn = column;
+                    foundRow = row;
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    int lightColumn = -1;
+    int lightRow = -1;
+    if (!findLocation(LIGHTFACTORY, lightColumn, lightRow)) {
+        return false;
+    }
+    cAbstractStructure *lightStructure = objects->getStructureFactory()->createStructure(
+        geometry->makeCell(lightColumn, lightRow), LIGHTFACTORY, HUMAN, 100);
+    if (lightStructure == nullptr) {
+        return false;
+    }
+    lightStructure->setBuildingFase(10);
+    auto *lightFactory = static_cast<cUnitFactory *>(lightStructure);
+    lightFactory->acceptReadyUnit(TRIKE);
+    lightFactory->acceptReadyUnit(QUAD);
+    lightFactory->acceptReadyUnit(TRIKE);
+
+    int heavyColumn = -1;
+    int heavyRow = -1;
+    if (!findLocation(HEAVYFACTORY, heavyColumn, heavyRow)) {
+        return false;
+    }
+    cAbstractStructure *heavyStructure = objects->getStructureFactory()->createStructure(
+        geometry->makeCell(heavyColumn, heavyRow), HEAVYFACTORY, HUMAN, 100);
+    if (heavyStructure == nullptr) {
+        return false;
+    }
+    heavyStructure->setBuildingFase(10);
+    auto *heavyFactory = static_cast<cUnitFactory *>(heavyStructure);
+    const int tankCell = geometry->makeCell(heavyColumn + 2, heavyRow + 2);
+    const int tankId = cUnits::unitCreate(objects, currentGame.m_infoContext.get(), currentGame.m_eventEmitter.get(),
+                                          tankCell, TANK, HUMAN, true, false);
+    if (tankId < 0) {
+        return false;
+    }
+    cUnit *tank = objects->getUnit(tankId);
+    tank->bRollingOffFactoryPad = true;
+    tank->iRollingOffFactoryPadStructureId = heavyStructure->getStructureId();
+    factory_pad::PadState pad;
+    pad.phase = factory_pad::Phase::Rolling;
+    pad.unitType = TANK;
+    pad.rollUnitId = tankId;
+    pad.rollStep = 12;
+    pad.rollTick = 2;
+    pad.waiting = {HARVESTER};
+    heavyFactory->restorePad(pad);
+    return true;
 }

@@ -138,6 +138,10 @@ def main():
                 second_bytes = second.read_bytes()
                 if not first_bytes.startswith(b"D2TM_SAVE 3 "):
                     errors.append("save-roundtrip: first save does not start with D2TM_SAVE 3")
+                if b"\nFACTORYPADS 2\n" not in first_bytes:
+                    errors.append("save-roundtrip: first save has no FACTORYPADS section with two pads")
+                if first_bytes.count(b"\nFACTORYPAD ") != 2:
+                    errors.append("save-roundtrip: first save does not hold two FACTORYPAD records")
                 if first_bytes != second_bytes:
                     errors.append("save-roundtrip: quick save bytes differ after loading and saving")
             else:
