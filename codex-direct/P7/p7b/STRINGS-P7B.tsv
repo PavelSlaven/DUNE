@@ -1,0 +1,283 @@
+путь	строка	английский	русский	замена
+src/building/cItemBuilder.cpp	206	Unable to create more.	Больше построить нельзя.	
+src/context/cInfoContextCreator.cpp	197	Carry-All	Транспортник	
+src/context/cInfoContextCreator.cpp	217	Ornithopter	Орнитоптер	
+src/context/cInfoContextCreator.cpp	237	Devastator	Девастатор	
+src/context/cInfoContextCreator.cpp	255	Harvester	Харвестер	
+src/context/cInfoContextCreator.cpp	275	Tank	Танк	
+src/context/cInfoContextCreator.cpp	299	Siege Tank	Осадный танк	
+src/context/cInfoContextCreator.cpp	315	MCV	Мобильная база	
+src/context/cInfoContextCreator.cpp	335	Deviator	Девиатор	
+src/context/cInfoContextCreator.cpp	357	Launcher	Ракетная установка	
+src/context/cInfoContextCreator.cpp	378	Quad	Квад	
+src/context/cInfoContextCreator.cpp	399	Trike	Трайк	
+src/context/cInfoContextCreator.cpp	410	Raider Trike	Рейдерский трайк	
+src/context/cInfoContextCreator.cpp	437	Frigate	Фрегат	
+src/context/cInfoContextCreator.cpp	467	Sonic Tank	Звуковой танк	
+src/context/cInfoContextCreator.cpp	490	Soldier	Солдат	
+src/context/cInfoContextCreator.cpp	515	Light Infantry	Отряд пехоты	
+src/context/cInfoContextCreator.cpp	525	Trooper	Ракетчик	
+src/context/cInfoContextCreator.cpp	550	Troopers	Отряд ракетчиков	
+src/context/cInfoContextCreator.cpp	576	Fremen (1)	Фримен	
+src/context/cInfoContextCreator.cpp	598	Fremen (3)	Отряд фрименов	
+src/context/cInfoContextCreator.cpp	627	Saboteur	Диверсант	
+src/context/cInfoContextCreator.cpp	649	Sandworm	Песчаный червь	
+src/context/cInfoContextCreator.cpp	871	Saboteur	Диверсант	
+src/context/cInfoContextCreator.cpp	885	Fremen	Фримены	
+src/context/cInfoContextCreator.cpp	904	Death Hand	Рука Смерти	
+src/context/cInfoContextCreator.cpp	1154	Upgrade	Улучшение	
+src/context/cInfoContextCreator.cpp	1172	Build 4 concrete slabs at once	Укладка плит 2×2	
+src/context/cInfoContextCreator.cpp	1188	Build Rocket Turret	Ракетные башни	
+src/context/cInfoContextCreator.cpp	1204	Build Quad at Light Factory	Квады на лёгком заводе	
+src/context/cInfoContextCreator.cpp	1222	Build MCV at Heavy Factory	Мобильные базы на тяжёлом заводе	
+src/context/cInfoContextCreator.cpp	1238	Build Rocket Launcher at Heavy Factory	Ракетные установки на тяжёлом заводе	
+src/context/cInfoContextCreator.cpp	1253	Build Siege Tank at Heavy Factory	Осадные танки на тяжёлом заводе	
+src/context/cInfoContextCreator.cpp	1268	Build Siege Tank at Heavy Factory	Осадные танки на тяжёлом заводе	
+src/context/cInfoContextCreator.cpp	1283	Build Ornithopter at Hi-Tech	Орнитоптеры на авиазаводе	
+src/context/cInfoContextCreator.cpp	1300	Build Troopers at WOR	Ракетчики в военной академии	
+src/context/cInfoContextCreator.cpp	1317	Build Infantry at Barracks	Пехота в казармах	
+src/context/cInfoContextCreator.cpp	1336	Build SonicTank at Heavy Factory	Звуковые танки на тяжёлом заводе	
+src/context/cInfoContextCreator.cpp	1355	Build Deviator at Heavy Factory	Девиаторы на тяжёлом заводе	
+src/context/cInfoContextCreator.cpp	1374	Build Devastator at Heavy Factory	Девастаторы на тяжёлом заводе	
+src/context/cInfoContextCreator.cpp	1413	Unknown	Неизвестно	
+src/context/cInfoContextCreator.cpp	1424	Concrete Slab	Бетонная плита	
+src/context/cInfoContextCreator.cpp	1433	4 Concrete Slabs	Бетонная площадка 2×2	
+src/context/cInfoContextCreator.cpp	1444	Concrete Wall	Бетонная стена	
+src/context/cInfoContextCreator.cpp	1459	Windtrap	Ветроловушка	
+src/context/cInfoContextCreator.cpp	1476	Heavy Factory	Тяжёлый завод	
+src/context/cInfoContextCreator.cpp	1492	Hi-Tech	Авиазавод	
+src/context/cInfoContextCreator.cpp	1508	Repair Facility	Ремонтный центр	
+src/context/cInfoContextCreator.cpp	1523	Palace	Дворец	
+src/context/cInfoContextCreator.cpp	1540	Light Factory	Лёгкий завод	
+src/context/cInfoContextCreator.cpp	1563	Outpost	Командный пост	
+src/context/cInfoContextCreator.cpp	1584	Barracks	Казармы	
+src/context/cInfoContextCreator.cpp	1600	WOR	Военная академия	
+src/context/cInfoContextCreator.cpp	1618	Spice Storage Silo	Хранилище пряности	
+src/context/cInfoContextCreator.cpp	1634	Spice Refinery	Переработчик пряности	
+src/context/cInfoContextCreator.cpp	1652	Construction Yard	Стройбаза	
+src/context/cInfoContextCreator.cpp	1668	Starport	Космопорт	
+src/context/cInfoContextCreator.cpp	1684	House of IX	Техноцентр Икс	
+src/context/cInfoContextCreator.cpp	1699	Gun Turret	Пушечная башня	
+src/context/cInfoContextCreator.cpp	1715	Rocket Turret	Ракетная башня	
+src/controls/mousestates/cMouseNormalState.cpp	97	{} units selected	Выбрано юнитов: {}	
+src/controls/mousestates/cMousePlaceState.cpp	88	Unable to create more.	Больше построить нельзя.	
+src/drawers/CreditsDrawer.cpp	259	CREDITS	КРЕДИТЫ	
+src/drawers/cBuildingListDrawer.cpp	80	Spice Refinery ‖ Refinery	Переработчик пряности ‖ Переработчик	
+src/drawers/cBuildingListDrawer.cpp	82	Light Infantry ‖ Infantry	Отряд пехоты ‖ Пехота	
+src/drawers/cBuildingListDrawer.cpp	83	Troopers ‖ Troopers	Отряд ракетчиков ‖ Ракетчики	
+src/drawers/cBuildingListDrawer.cpp	95	READY	ГОТОВО	
+src/drawers/cBuildingListDrawer.cpp	316	Paused	Пауза	
+src/drawers/cBuildingListDrawer.cpp	412	Upgrade	Улучшение	
+src/drawers/cBuildingListDrawer.cpp	444	OCCUPIED	ЗАНЯТО	
+src/drawers/cBuildingListDrawer.cpp	607	Max	Больше	
+src/drawers/cBuildingListDrawer.cpp	608	built	нельзя	
+src/drawers/cMouseDrawer.cpp	199	Sight : {}	Обзор: {}	
+src/drawers/cMouseDrawer.cpp	200	Range : {}	Дальность: {}	
+src/drawers/cMouseDrawer.cpp	203	Sight : Unknown	Обзор: неизвестно	
+src/drawers/cMouseDrawer.cpp	204	Range : Unknown	Дальность: неизвестно	
+src/drawers/cMouseDrawer.cpp	215	{} (PRIMARY)	{} (основное)	
+src/drawers/cMouseDrawer.cpp	221	Hitpoints : {}/{}	Прочность: {}/{}	
+src/drawers/cMouseDrawer.cpp	222	Armor : {}	Броня: {}	
+src/drawers/cMouseDrawer.cpp	223	Protected : {}%%	Защита: {} %	
+src/drawers/cMouseDrawer.cpp	234	Total usage : {}/{} (OK)	Расход: {}/{} (норма)	
+src/drawers/cMouseDrawer.cpp	237	Total usage : {}/{} (LOW)	Расход: {}/{} (мало)	
+src/drawers/cMouseDrawer.cpp	239	Windtrap outage : {}/{}	Выработка: {}/{}	
+src/drawers/cMouseDrawer.cpp	242	Total usage : Unknown	Расход: неизвестно	
+src/drawers/cMouseDrawer.cpp	243	Windtrap outage : Unknown	Выработка: неизвестно	
+src/drawers/cMouseDrawer.cpp	270	Total usage : {}/{} (OK)	Запас: {}/{} (норма)	
+src/drawers/cMouseDrawer.cpp	273	Total usage : {}/{} (NOK)	Запас: {}/{} (не норма)	
+src/drawers/cMouseDrawer.cpp	275	Silo capacity : {}/{}	Ёмкость хранилища: {}/{}	
+src/drawers/cMouseDrawer.cpp	278	Spice usage : Unknown	Пряность: неизвестно	
+src/drawers/cSideBarDrawer.cpp	169	HOUSE ATREIDES	ДОМ АТРЕЙДЕС	
+src/drawers/cSideBarDrawer.cpp	172	HOUSE HARKONNEN	ДОМ ХАРКОННЕН	
+src/drawers/cSideBarDrawer.cpp	175	HOUSE ORDOS	ДОМ ОРДОС	
+src/drawers/cSideBarDrawer.cpp	178	SARDAUKAR	САРДАУКАРЫ	
+src/drawers/cSideBarDrawer.cpp	180	UNKNOWN HOUSE	НЕИЗВЕСТНЫЙ ДОМ	
+src/drawers/cSideBarDrawer.cpp	360	PWR ‖ POWER	ЭНЕРГ. ‖ ЭНЕРГИЯ	
+src/drawers/cSideBarDrawer.cpp	369	SPC ‖ SPICE	ПРЯН. ‖ ПРЯНОСТЬ	
+src/game/cGame_logic.cpp	1522	Screenshot saved.	Снимок экрана сохранён.	
+src/game/cGame_logic.cpp	1539	Music toggle successfully	Музыка переключена	
+src/game/cGame_logic.cpp	1544	Music volume down	Музыка тише	
+src/game/cGame_logic.cpp	1549	Music volume up	Музыка громче	
+src/game/cGame_logic.cpp	1555	Game speed up	Игра быстрее	
+src/game/cGame_logic.cpp	1561	Game speed down	Игра медленнее	
+src/game/cGame_logic.cpp	1576	Cheat mode {}	Режим читов {}	std::format("Cheat mode {}", m_gameSettings->m_cheatMode ? "enabled" : "disabled") → (m_gameSettings->m_cheatMode ? std::string(localization::text("Cheat mode enabled", "Режим читов включён")) : std::string(localization::text("Cheat mode disabled", "Режим читов выключен")))
+src/game/cSDLSystem.cpp	78	Auto ({}%)	Авто ({}%)	
+src/gameobjects/map/cPreviewMaps.cpp	419	Random map	Случайная карта	
+src/gameobjects/map/cPreviewMaps.cpp	445	Invalid	ОШИБКА	
+src/gameobjects/map/cPreviewMaps.cpp	449	SMALL	МАЛАЯ	
+src/gameobjects/map/cPreviewMaps.cpp	452	MEDIUM	СРЕДНЯЯ	
+src/gameobjects/map/cPreviewMaps.cpp	455	LARGE	БОЛЬШАЯ	
+src/gameobjects/map/cPreviewMaps.cpp	457	HUGE	ОГРОМНАЯ	
+src/gameobjects/mentat/AbstractMentat.cpp	83	Mission select	Выбор миссии	
+src/gameobjects/mentat/AbstractMentat.cpp	86	Mission select	Выбор миссии	
+src/gameobjects/mentat/AbstractMentat.cpp	90	Mission select	Выбор миссии	
+src/gameobjects/mentat/AtreidesMentat.cpp	38	Repeat	Повторить	
+src/gameobjects/mentat/AtreidesMentat.cpp	47	Yes	Да	
+src/gameobjects/mentat/BeneMentat.cpp	45	No	Нет	
+src/gameobjects/mentat/BeneMentat.cpp	54	Yes	Да	
+src/gameobjects/mentat/BeneMentat.cpp	96	Do you wish to join house {} ?	Хотите присоединиться к Дому {}?	
+src/gameobjects/mentat/HarkonnenMentat.cpp	37	Repeat	Повторить	
+src/gameobjects/mentat/HarkonnenMentat.cpp	46	Yes	Да	
+src/gameobjects/mentat/OrdosMentat.cpp	36	Repeat	Повторить	
+src/gameobjects/mentat/OrdosMentat.cpp	45	Yes	Да	
+src/gameobjects/mentat/SardaukarMentat.cpp	37	Repeat	Повторить	
+src/gameobjects/mentat/SardaukarMentat.cpp	46	Yes	Да	
+src/gameobjects/players/cPlayer.cpp	825	Atreides	Атрейдес	
+src/gameobjects/players/cPlayer.cpp	828	Harkonnen	Харконнен	
+src/gameobjects/players/cPlayer.cpp	831	Ordos	Ордос	
+src/gameobjects/players/cPlayer.cpp	834	Sardaukar	Сардаукары	
+src/gameobjects/players/cPlayer.cpp	837	Fremen	Фримены	
+src/gameobjects/players/cPlayer.cpp	840	Mercenary	Наёмники	
+src/gameobjects/players/cPlayer.cpp	1649	Player {} ({}) has been defeated.	Игрок {} ({}) повержен.	
+src/gameobjects/players/cPlayer.cpp	1670	{} launched!	Запуск: {}!	
+src/gameobjects/players/cPlayer.cpp	1688	{} is ready for deployment.	Готово к высадке: {}.	
+src/gameobjects/players/cPlayer.cpp	1745	Upgrade: {} completed.	Улучшение завершено: {}.	
+src/gameobjects/players/cPlayer.cpp	2231	You've lost a Harvester	Вы потеряли харвестер.	
+src/gameobjects/players/cPlayer.cpp	2247	You have one Harvester left	У вас остался один харвестер.	
+src/gameobjects/players/cPlayer.cpp	2269	No harvesters and refineries left!	Не осталось харвестеров и переработчиков!	
+src/gameobjects/players/cPlayer.cpp	2299	No more Harvester left, reinforcing...	Харвестеров не осталось. Прибывает подкрепление…	
+src/gameobjects/structures/cAbstractStructure.cpp	1013	{} at {} percent health	{}: состояние {} %	
+src/gameobjects/structures/cOrderProcesser.cpp	160	Frigate is arriving...	Фрегат прибывает…	
+src/gameobjects/structures/cOrderProcesser.cpp	164	T-{} before Frigate arrival.	Фрегат прибудет через {} с.	
+src/gameobjects/structures/cOrderProcesser.cpp	172	Frigate is arriving...	Фрегат прибывает…	
+src/gameobjects/structures/cWindTrap.cpp	73	{} and producing at {} percent capacity	{}, мощность {} %	
+src/gameobjects/units/cUnit.cpp	3823	{} at {} percent health and {} percent harvested	{}: состояние {} %, груз {} %	
+src/gameobjects/units/cUnit.cpp	3833	{} at {} percent health	{}: состояние {} %	
+src/gamestates/cChooseHouseState.cpp	124	CHOOSE YOUR HOUSE	ВЫБЕРИТЕ ДОМ	
+src/gamestates/cChooseHouseState.cpp	132	ATREIDES	АТРЕЙДЕС	
+src/gamestates/cChooseHouseState.cpp	133	ORDOS	ОРДОС	
+src/gamestates/cChooseHouseState.cpp	134	HARKONNEN	ХАРКОННЕН	
+src/gamestates/cChooseHouseState.cpp	135	SARDAUKAR	САРДАУКАРЫ	
+src/gamestates/cCreditsState.cpp	82	Back	Назад	
+src/gamestates/cCreditsState.cpp	89	Back	Назад	
+src/gamestates/cCreditsState.cpp	118	Version {}	Версия {}	
+src/gamestates/cCreditsState.cpp	124	by Stefan Hendriks	автор — Stefan Hendriks	
+src/gamestates/cCreditsState.cpp	131	a remake of	ремейк игры	
+src/gamestates/cCreditsState.cpp	146	--- CONTRIBUTORS ---	--- УЧАСТНИКИ ---	
+src/gamestates/cCreditsState.cpp	152	Developer	Разработчик	
+src/gamestates/cCreditsState.cpp	158	Developer & Sparring partner	Разработчик и спарринг-партнёр	
+src/gamestates/cCreditsState.cpp	164	Developer	Разработчик	
+src/gamestates/cCreditsState.cpp	170	Bugfixes	Исправление ошибок	
+src/gamestates/cCreditsState.cpp	176	Graphics	Графика	
+src/gamestates/cCreditsState.cpp	182	Graphics	Графика	
+src/gamestates/cCreditsState.cpp	188	Graphics	Графика	
+src/gamestates/cCreditsState.cpp	194	Graphics	Графика	
+src/gamestates/cCreditsState.cpp	200	Graphics	Графика	
+src/gamestates/cCreditsState.cpp	206	Internal Editor UI graphics and miscellaneous assets	Графика редактора и другие ресурсы	
+src/gamestates/cCreditsState.cpp	212	Support at Discord, testing & Skirmish Maps	Поддержка в Discord, тестирование и карты схваток	
+src/gamestates/cCreditsState.cpp	218	For your lifelong support & valuable feedback	За многолетнюю поддержку и ценные отзывы	
+src/gamestates/cCreditsState.cpp	227	--- ACKNOWLEDGEMENTS ---	--- БЛАГОДАРНОСТИ ---	
+src/gamestates/cCreditsState.cpp	233	for producing Dune 2	за создание Dune 2	
+src/gamestates/cCreditsState.cpp	239	by Sam Lantinga and contributors	Sam Lantinga и соавторы	
+src/gamestates/cCreditsState.cpp	245	with SDL_image, SDL_ttf and SDL_mixer	с SDL_image, SDL_ttf и SDL_mixer	
+src/gamestates/cCreditsState.cpp	251	Dune Legacy, Dune Dynasty and Dune The Golden Path	Dune Legacy, Dune Dynasty и Dune The Golden Path	
+src/gamestates/cCreditsState.cpp	260	--- KO-FI SUPPORTERS ---	--- ПОДДЕРЖКА НА KO-FI ---	
+src/gamestates/cCreditsState.cpp	328	--- SPECIAL THANKS TO ---	--- ОСОБАЯ БЛАГОДАРНОСТЬ ---	
+src/gamestates/cCreditsState.cpp	334	for Dune2K, and hosting arrakis.dune2k.com	за Dune2K и сайт arrakis.dune2k.com	
+src/gamestates/cCreditsState.cpp	340	for help with the Dune 2 Seed Generator	за помощь с генератором карт Dune 2	
+src/gamestates/cCreditsState.cpp	346	for the D2TM Java Map Editor	за редактор карт D2TM на Java	
+src/gamestates/cCreditsState.cpp	352	for porting D2TM to SDL2	за перенос D2TM на SDL2	
+src/gamestates/cCreditsState.cpp	388	for nudging me to work on D2TM again in C++	за то, что вернул меня к D2TM на C++	
+src/gamestates/cCreditsState.cpp	394	For all the good times at the arrakis forums	За хорошие времена на форумах arrakis	
+src/gamestates/cCreditsState.cpp	405	Thank you for playing	Спасибо за игру	
+src/gamestates/cEditorState.cpp	242	size	размер	
+src/gamestates/cGamePlaying.cpp	280	Tracking 1 unit ‖ Tracking {} units	Слежение за юнитами: {}	count == 1 ? "Tracking 1 unit" : std::format("Tracking {} units", count) → (localization::isEnglish() ? (count == 1 ? std::string("Tracking 1 unit") : std::format("Tracking {} units", count)) : std::format("Слежение за юнитами: {}", count))
+src/gamestates/cMainMenuState.cpp	155	Campaign	Кампания	
+src/gamestates/cMainMenuState.cpp	158	Skirmish	Схватка	
+src/gamestates/cMainMenuState.cpp	162	Load	Загрузить	
+src/gamestates/cMainMenuState.cpp	163	Map Editor	Редактор карт	
+src/gamestates/cMainMenuState.cpp	166	Options	Настройки	
+src/gamestates/cMainMenuState.cpp	169	Hall of Fame	Зал славы	
+src/gamestates/cMainMenuState.cpp	173	Introduction	Вступление	
+src/gamestates/cMainMenuState.cpp	176	Exit	Выход	
+src/gamestates/cMainMenuState.cpp	183	CREDITS	АВТОРЫ	
+src/gamestates/cNewmapEditorState.cpp	85	Map editor configuration	Новая карта	
+src/gamestates/cNewmapEditorState.cpp	94	Name your map:	Название карты:	
+src/gamestates/cNewmapEditorState.cpp	113	Name of author:	Автор:	
+src/gamestates/cNewmapEditorState.cpp	132	Description:	Описание:	
+src/gamestates/cNewmapEditorState.cpp	151	Width size:	Ширина:	
+src/gamestates/cNewmapEditorState.cpp	176	Height size:	Высота:	
+src/gamestates/cNewmapEditorState.cpp	201	Random:	Случайно:	
+src/gamestates/cNewmapEditorState.cpp	229	Dune 2 seed: 	Зерно Dune 2: 	
+src/gamestates/cNewmapEditorState.cpp	251	Return to menu	В меню	
+src/gamestates/cNewmapEditorState.cpp	268	Create map	Создать карту	
+src/gamestates/cOptionsState.cpp	129	Dune II - The Maker - version 	Dune II - The Maker - версия 	Dune II - The Maker - version  + D2TM_VERSION → localization::text("Dune II - The Maker - version ", "Dune II - The Maker - версия ") + D2TM_VERSION
+src/gamestates/cOptionsState.cpp	134	Main menu	В главное меню	
+src/gamestates/cOptionsState.cpp	148	Quit game	Выйти из игры	
+src/gamestates/cOptionsState.cpp	163	Back	Назад	
+src/gamestates/cOptionsState.cpp	178	Save game	Сохранить игру	
+src/gamestates/cOptionsState.cpp	190	Load game	Загрузить игру	
+src/gamestates/cOptionsState.cpp	204	Mission select	Выбор миссии	
+src/gamestates/cOptionsState.cpp	219	Cheat mode enabled	Режим читов включён	
+src/gamestates/cOptionsState.cpp	232	Music	Музыка	
+src/gamestates/cOptionsState.cpp	258	Volume	Громкость	
+src/gamestates/cOptionsState.cpp	283	Sound	Звук	
+src/gamestates/cOptionsState.cpp	309	Volume	Громкость	
+src/gamestates/cOptionsState.cpp	334	Game speed	Скорость игры	
+src/gamestates/cOptionsState.cpp	363	FOW	Туман войны	
+src/gamestates/cOptionsState.cpp	391	Game scale	Масштаб игры	
+src/gamestates/cOptionsState.cpp	439	Object size	Размер объектов	
+src/gamestates/cOptionsState.cpp	486	Low power icon	Значок энергии	
+src/gamestates/cOptionsState.cpp	540	Apply	Применить	
+src/gamestates/cOptionsState.cpp	566	More settings	Ещё настройки	
+src/gamestates/cOptionsState.cpp	634	Saved. Restart the game.	Сохранено. Перезапустите игру.	
+src/gamestates/cOptionsState.cpp	638	Could not save preferences.ini	Не удалось сохранить preferences.ini	
+src/gamestates/cScoringState.cpp	64	MISSION REPORT	ОТЧЁТ О МИССИИ	
+src/gamestates/cScoringState.cpp	69	Mission time: {:02}:{:02}	Время миссии: {:02}:{:02}	
+src/gamestates/cScoringState.cpp	83	YOU ‖ ENEMY	ВЫ ‖ ВРАГ	
+src/gamestates/cScoringState.cpp	90	Units built: {}   lost: {}   destroyed: {}	Юниты: создано {}   потеряно {}   уничтожено {}	
+src/gamestates/cScoringState.cpp	95	Structures built: {}   lost: {}   destroyed: {}	Здания: создано {}   потеряно {}   уничтожено {}	
+src/gamestates/cScoringState.cpp	100	Damage dealt: {}   received: {}	Урон: нанесён {}   получен {}	
+src/gamestates/cScoringState.cpp	104	Spice harvested: {}	Собрано пряности: {}	
+src/gamestates/cScoringState.cpp	109	Click to continue	Щёлкните, чтобы продолжить	
+src/gamestates/cSelectMissionState.cpp	88	 Campaign	Кампания: {}	humanPlayer->getHouseName() + " Campaign" → localization::format("{} Campaign", "Кампания: {}", humanPlayer->getHouseName())
+src/gamestates/cSelectMissionState.cpp	113	CONTINUE	ПРОДОЛЖИТЬ	
+src/gamestates/cSelectMissionState.cpp	136	MISSION {}	МИССИЯ {}	
+src/gamestates/cSelectMissionState.cpp	157	Back	Назад	
+src/gamestates/cSelectMissionState.cpp	216	REPLAY MISSION	ПОВТОРИТЬ МИССИЮ	
+src/gamestates/cSelectYourNextConquestState.cpp	167	Mission select	Выбор миссии	
+src/gamestates/cSelectYourNextConquestState.cpp	227	3 Houses have come to Dune.	Три Дома прибыли на Дюну.	
+src/gamestates/cSelectYourNextConquestState.cpp	232	To take control of the land.	Чтобы покорить её земли.	
+src/gamestates/cSelectYourNextConquestState.cpp	238	That has become divided.	Теперь Дюна разделена.	
+src/gamestates/cSelectYourNextConquestState.cpp	453	SELECT YOUR NEXT REGION	ВЫБЕРИТЕ СЛЕДУЮЩИЙ РЕГИОН	
+src/gamestates/cSelectYourNextConquestState.cpp	709	Select your next region.	Выберите следующий регион.	
+src/gamestates/cSelectYourNextConquestState.cpp	731	Select your next region.	Выберите следующий регион.	
+src/gamestates/cSelectYourNextConquestState.cpp	901	region {}	регион {}	
+src/gamestates/cSetupSkirmishState.cpp	261	Next	Далее	
+src/gamestates/cSetupSkirmishState.cpp	271	Previous	Предыдущие	
+src/gamestates/cSetupSkirmishState.cpp	324	Back	Назад	
+src/gamestates/cSetupSkirmishState.cpp	344	Start	Старт	
+src/gamestates/cSetupSkirmishState.cpp	361	Surprise me	Удиви меня	
+src/gamestates/cSetupSkirmishState.cpp	377	New Map	Новая карта	
+src/gamestates/cSetupSkirmishState.cpp	391	Modify	Изменить	
+src/gamestates/cSetupSkirmishState.cpp	448	Skirmish	Схватка	
+src/gamestates/cSetupSkirmishState.cpp	457	Maps	Карты	
+src/gamestates/cSetupSkirmishState.cpp	465	Preview	Предпросмотр	
+src/gamestates/cSetupSkirmishState.cpp	484	Player ‖ House ‖ Credits ‖ Units ‖ Team	Игрок ‖ Дом ‖ Кредиты ‖ Войска ‖ Команда	
+src/gamestates/cSetupSkirmishState.cpp	623	Random	Случайно	
+src/gamestates/cSetupSkirmishState.cpp	637	Human	Человек	
+src/gamestates/cSetupSkirmishState.cpp	647	CPU	ИИ	
+src/gamestates/cSetupSkirmishState.cpp	668	Startpoints: {}	Стартовых позиций: {}	
+src/gamestates/cSetupSkirmishState.cpp	705	Name: {}	Название: {}	
+src/gamestates/cSetupSkirmishState.cpp	718	Author: {}	Автор: {}	
+src/gamestates/cSetupSkirmishState.cpp	734	Auto-detonate : {} ‖ YES ‖ NO	Автоподрыв: {} ‖ ДА ‖ НЕТ	
+src/gamestates/cSetupSkirmishState.cpp	737	Auto-detonate : -	Автоподрыв: -	
+src/gamestates/cSetupSkirmishState.cpp	745	Spice blooms : {} ‖ YES ‖ NO	Цветки пряности: {} ‖ ДА ‖ НЕТ	
+src/gamestates/cSetupSkirmishState.cpp	752	Worms? : {}	Черви: {}	
+src/gamestates/cSetupSkirmishState.cpp	759	TechLevel : {}	Техуровень: {}	
+src/gamestates/cWinLoseState.cpp	58	outcome_defeat_en.png	outcome_defeat_ru.png	
+src/gamestates/cWinLoseState.cpp	59	outcome_victory_en.png	outcome_victory_ru.png	
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp	72	Malformed command: {}	Неверная команда: {}	
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp	84	Help mode.	Режим справки.	
+src/managers/cDrawManager.cpp	340	OPTIONS	НАСТРОЙКИ	
+src/sidebar/cBuildingListItem.cpp	408	${} | {} | {} Power | {} Secs	${} | {} | {} энергии | {} с	
+src/sidebar/cBuildingListItem.cpp	413	${} | {} | {} Secs	${} | {} | {} с	
+src/sidebar/cBuildingListItem.cpp	416	{} | {} Secs	{} | {} с	
+src/sidebar/cBuildingListItem.cpp	421	UPGRADE: ${} | {} | {} Secs	УЛУЧШЕНИЕ: ${} | {} | {} с	
+src/sidebar/cBuildingListItem.cpp	425	${} | {} | {} Secs	${} | {} | {} с	
+src/sidebar/cBuildingListItem.cpp	428	ERROR: UNKNOWN BUILD TYPE	ОШИБКА: НЕИЗВЕСТНЫЙ ТИП	
+src/sidebar/cBuildingListItem.cpp	467	Unknown type.	Неизвестный тип.	
+src/sidebar/cSideBar.cpp	108	Unable to create more.	Больше построить нельзя.	
+src/sidebar/cSideBar.cpp	113	Unable to create more.	Больше построить нельзя.	
+src/utils/ScaleChoices.cpp	39	Auto ({}%)	Авто ({}%)	
