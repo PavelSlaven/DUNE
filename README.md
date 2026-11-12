@@ -1,3 +1,44 @@
+# Dune II — The Maker RU/HD Remaster
+
+Hi everyone! I made a small remaster of the game. I did not change any of the mechanics; I simply updated the visuals, added support for high-resolution displays, refreshed the music while avoiding copyright infringement, and redesigned the interface.
+
+The entire project was created with the help of Codex and Suno. I made it for my father, who has been playing Dune for almost his entire life. I originally had no plans to release it online, but a friend of mine, after seeing the results, strongly encouraged me to do so. And here we are.
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/main-menu.png" alt="Remastered main menu" width="100%">
+</p>
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/house-selection.png" alt="House selection screen"></td>
+    <td width="50%"><img src="docs/screenshots/ordos-briefing.png" alt="Ordos campaign briefing"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Choose your House</sub></td>
+    <td align="center"><sub>Remastered campaign briefing</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/skirmish-gameplay.png" alt="HD skirmish gameplay"></td>
+    <td width="50%"><img src="docs/screenshots/victory-screen.png" alt="Victory screen"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>HD gameplay and redesigned interface</sub></td>
+    <td align="center"><sub>Victory screen</sub></td>
+  </tr>
+</table>
+
+## Downloads
+
+Ready-to-run builds are published on the [GitHub Releases page](https://github.com/PavelSlaven/DUNE/releases) for Windows x64, Linux x64, macOS Apple Silicon and macOS Intel.
+
+Download the `common-assets` archive and one archive for your operating system, then extract both into the same folder. Platform-specific requirements are included in each archive.
+
+The interface text uses **PT Sans Narrow** and **Russo One**, with **PT Mono** as the fallback font. All three are distributed under the SIL Open Font License 1.1; their copyright and license notices are in [`resources/bin/OFL_PT_FONTS.txt`](resources/bin/OFL_PT_FONTS.txt) and [`resources/bin/data/OFL_RUSSO_ONE.txt`](resources/bin/data/OFL_RUSSO_ONE.txt).
+
+---
+
 [![Latest](https://img.shields.io/github/downloads/stefanhendriks/Dune-II---The-Maker/latest/total)]()
 [![v0.7.0](https://img.shields.io/github/downloads/stefanhendriks/Dune-II---The-Maker/v0.7.0/total)]()
 [![v0.6.0](https://img.shields.io/github/downloads/stefanhendriks/Dune-II---The-Maker/v0.6.0/total)]()
