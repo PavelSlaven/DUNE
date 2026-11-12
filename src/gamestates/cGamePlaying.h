@@ -31,6 +31,7 @@ class cTimeManager;
 class cMapCamera;
 class ScenarioFlow;
 class MissionFlow;
+class SaveGameFlow;
 class GameStateTransition;
 class cStructureFactory;
 class cDrawManager;
@@ -81,6 +82,7 @@ private:
     ScenarioFlow* m_scenarioFlow = nullptr;
     GameStateTransition* m_stateTransitions = nullptr;
     MissionFlow* m_missionFlow = nullptr;
+    SaveGameFlow* m_saveGameFlow = nullptr;
     AudioContext* m_audioContext = nullptr;
     cScreenFader* m_screenFader = nullptr;
     cMapCamera* m_mapCamera = nullptr;

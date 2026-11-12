@@ -47,6 +47,10 @@ set(D2TM_SOURCES
     game/CampaignProgress.cpp
     game/Preferences.cpp
     game/PreferencesPath.cpp
+    save/SaveBody.cpp
+    save/SaveFileCodec.cpp
+    save/SaveGameManager.cpp
+    save/SaveSlotsDialog.cpp
     game/cMissionStatsCollector.cpp
     game/cNotificationArea.cpp
     game/cSDLSystem.cpp

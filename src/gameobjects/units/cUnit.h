@@ -144,6 +144,7 @@ private:
 
 
 class cUnit {
+    friend class SaveGameManager;
 
 public:
 

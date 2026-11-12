@@ -93,6 +93,7 @@ class cStructureUtils;
 class cLog;
 
 class cPlayer : public cScenarioObserver {
+    friend class SaveGameManager;
 
 public:
     static constexpr int MAX_STRUCTURE_BMPS = MAX_STRUCTURETYPES*2;

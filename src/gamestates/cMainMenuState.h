@@ -31,8 +31,10 @@ class cMouse;
 class GuiButton;
 class GuiWindow;
 class cGameSettings;
+class SaveSlotsDialog;
 
 class cMainMenuState : public cGameState {
+    friend class UiAuditAccess;
 public:
     explicit cMainMenuState(sGameServices* services);
     ~cMainMenuState() override;
@@ -44,6 +46,8 @@ public:
     void onNotifyKeyboardEvent(const cKeyboardEvent &event) override;
 
     eGameStateType getType() override;
+
+    bool isKeyboardCapturedByUi() const override;
 
 private:
     void buildHdMenu();
@@ -72,4 +76,5 @@ private:
     Texture *m_hdMenuBackground = nullptr;
     Texture *m_hdMenuLogo = nullptr;
     std::unique_ptr<Texture> backGroundDebug;
+    std::unique_ptr<SaveSlotsDialog> m_saveDialog;
 };

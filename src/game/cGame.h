@@ -70,6 +70,7 @@ class MentatFlow;
 class MissionFlow;
 class ScenarioFlow;
 class VideoFlow;
+class SaveGameFlow;
 
 struct s_DataCampaign;
 // struct s_PreviewMap;
@@ -87,6 +88,7 @@ struct sGameServices;
 
 class cGame : public cScenarioObserver, cInputObserver {
     friend class UiAuditAccess;
+    friend class SaveGameManager;
 
 public:
     cGame();
@@ -261,6 +263,7 @@ private:
     std::unique_ptr<MissionFlow> m_missionFlow;
     std::unique_ptr<ScenarioFlow> m_scenarioFlow;
     std::unique_ptr<VideoFlow> m_videoFlow;
+    std::unique_ptr<SaveGameFlow> m_saveGameFlow;
 
     std::unique_ptr<sGameServices> m_services;
     std::unique_ptr<cIni> m_cIni;

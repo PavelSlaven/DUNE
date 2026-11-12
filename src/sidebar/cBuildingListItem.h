@@ -36,6 +36,7 @@ struct s_StructureInfo;
 struct s_TerrainInfo;
 
 class cBuildingListItem {
+    friend class SaveGameManager;
 
 public:
     ~cBuildingListItem();

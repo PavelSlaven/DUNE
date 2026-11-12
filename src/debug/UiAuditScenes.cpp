@@ -54,6 +54,8 @@ const GroupScreen kGroupScreens[] = {
     {"skirmish-setup", "GAME_SETUPSKIRMISH", "cSetupSkirmishState"},
     {"game-playing", "GAME_PLAYING", "cGamePlaying"},
     {"options-game", "GAME_OPTIONS", "cOptionsState"},
+    {"save-dialog-menu", "GAME_MENU", "SaveSlotsDialog"},
+    {"save-dialog", "GAME_OPTIONS", "SaveSlotsDialog"},
     {"scoring", "GAME_SCORING", "cScoringState"},
     {"new-map-editor", "GAME_NEW_MAP_EDITOR", "cNewMapEditorState"},
     {"editor", "GAME_EDITOR", "cEditorState"},
@@ -286,6 +288,71 @@ bool prepareGameOptions(cGame &game)
     return UiAuditAccess::enterPlaying(game, ATREIDES, 1);
 }
 
+bool prepareMenuWithSaves(cGame &game)
+{
+    resetSteps();
+    if (!UiAuditAccess::enterPlaying(game, ATREIDES, 1)) {
+        return false;
+    }
+    UiAuditAccess::writeSaves(game);
+    UiAuditAccess::setState(game, GAME_MENU);
+    return true;
+}
+
+bool readyMenuSaveDialog(cGame &game)
+{
+    if (g_step == 0) {
+        if (!pause(4)) {
+            return false;
+        }
+        if (!UiAuditAccess::openMenuSaveDialog(game)) {
+            return false;
+        }
+        g_step = 1;
+        return false;
+    }
+    return pause(4);
+}
+
+bool prepareGameOptionsWithSaves(cGame &game)
+{
+    resetSteps();
+    if (!UiAuditAccess::enterPlaying(game, ATREIDES, 1)) {
+        return false;
+    }
+    UiAuditAccess::writeSaves(game);
+    return true;
+}
+
+template <int Action>
+bool readySaveDialog(cGame &game)
+{
+    switch (g_step) {
+        case 0:
+            UiAuditAccess::setState(game, GAME_OPTIONS);
+            g_step = 1;
+            g_wait = 0;
+            return false;
+        case 1:
+            if (!pause(4)) {
+                return false;
+            }
+            if (!UiAuditAccess::saveDialog(game, Action)) {
+                return false;
+            }
+            g_step = 2;
+            return false;
+        default:
+            return pause(4);
+    }
+}
+
+bool prepareSaveRoundTrip(cGame &game)
+{
+    resetSteps();
+    return UiAuditAccess::startSkirmish(game) && UiAuditAccess::saveRoundTrip(game);
+}
+
 template <int Type>
 bool prepareUnitLabels(cGame &game)
 {
@@ -309,6 +376,7 @@ bool prepareGame(cGame &game)
 
 const std::vector<Scene> g_catalog = {
     scene("main-menu", "main-menu", "", "StateSettled", prepareMainMenu),
+    scene("main-menu-saves", "main-menu", "", "StateSettled", prepareMenuWithSaves),
     scene("region-atreides-intro-1", "region", "atreides", "RegionIntroScene", prepareRegion<ATREIDES, 1, false>, readyRegionIntro<1>),
     scene("region-atreides-intro-2", "region", "atreides", "RegionIntroScene", prepareRegion<ATREIDES, 1, false>, readyRegionIntro<2>),
     scene("region-atreides-intro-3", "region", "atreides", "RegionIntroScene", prepareRegion<ATREIDES, 1, false>, readyRegionIntro<3>),
@@ -426,6 +494,21 @@ const std::vector<Scene> g_catalog = {
     scene("editor-start-cells", "editor", "", "StateSettled", prepareEditor<1>),
     scene("editor-symmetry", "editor", "", "StateSettled", prepareEditor<2>),
     scene("options-game-main-nosaves", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsMenu<0>),
+    scene("save-dialog-menu", "save-dialog-menu", "", "FixedFrames(10, no readiness flag)", prepareMenuWithSaves,
+          readyMenuSaveDialog),
+    scene("options-game-main-saves", "options-game", "", "FixedFrames(14, no readiness flag)",
+          prepareGameOptionsWithSaves, readyOptionsMenu<0>),
+    scene("save-dialog-load", "save-dialog", "", "FixedFrames(14, no readiness flag)", prepareGameOptionsWithSaves,
+          readySaveDialog<0>),
+    scene("save-dialog-save-new", "save-dialog", "", "FixedFrames(14, no readiness flag)",
+          prepareGameOptionsWithSaves, readySaveDialog<1>),
+    scene("save-dialog-overwrite", "save-dialog", "", "FixedFrames(14, no readiness flag)",
+          prepareGameOptionsWithSaves, readySaveDialog<2>),
+    scene("save-dialog-load-error", "save-dialog", "", "FixedFrames(14, no readiness flag)",
+          prepareGameOptionsWithSaves, readySaveDialog<3>),
+    scene("save-dialog-save-error", "save-dialog", "", "FixedFrames(14, no readiness flag)",
+          prepareGameOptionsWithSaves, readySaveDialog<4>),
+    onGameScreen(scene("save-roundtrip", "game-playing", "", kFixedGameFrames, prepareSaveRoundTrip), false),
     scene("options-game-applied", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsMenu<1>),
     onGameScreen(scene("structure-label-top", "game-playing", "atreides", kFixedGameFrames, prepareStructureLabel<0>,
                        nullptr, 5), true),

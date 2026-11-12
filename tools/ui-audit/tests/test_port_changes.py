@@ -224,19 +224,21 @@ class PortChanges(unittest.TestCase):
                 "src/include/eGameState.h": "inline constexpr int GAME_MENU = 1;\ninline constexpr int GAME_REGION = 6;\n",
                 "src/gamestates/cA.h": "class cA {\n",
                 "src/gameobjects/mentat/M.h": "class M : public X {\n",
+                "src/save/SaveSlotsDialog.hpp": "class SaveSlotsDialog {\n",
             }
             for name, text in sources.items():
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(text, encoding="utf-8")
-            self.assertEqual(check_screens.collect_code_names(root), ["GAME_MENU", "GAME_REGION", "M", "cA"])
+            self.assertEqual(check_screens.collect_code_names(root),
+                             ["GAME_MENU", "GAME_REGION", "M", "cA", "SaveSlotsDialog"])
 
-    def test_e_has_no_class_files(self):
-        self.assertFalse(hasattr(check_screens, "CLASS_FILES"))
+    def test_e_class_files(self):
+        self.assertEqual(check_screens.CLASS_FILES, ("src/save/SaveSlotsDialog.hpp",))
 
     def test_f_directories(self):
         self.assertEqual(find_hit_tests.DIRECTORIES, (
-            "src/gui", "src/drawers", "src/gamestates", "src/managers", "src/sidebar",
+            "src/gui", "src/drawers", "src/gamestates", "src/managers", "src/save", "src/sidebar",
             "src/gameobjects/mentat", "src/controls", "src/debug",
         ))
 
@@ -249,7 +251,7 @@ class PortChanges(unittest.TestCase):
                 path.write_text("void A::f()\n{\n    if (isInside(1, 2)) {\n    }\n}\n", encoding="utf-8")
             rows = find_hit_tests.scan(root)
             self.assertTrue(rows)
-            self.assertEqual({row[0] for row in rows}, {"src/gameobjects/mentat/x.cpp"})
+            self.assertEqual({row[0] for row in rows}, {"src/gameobjects/mentat/x.cpp", "src/save/z.cpp"})
 
     def test_g_exclusions_text(self):
         path = Path(__file__).resolve().parents[1] / "exclusions.tsv"

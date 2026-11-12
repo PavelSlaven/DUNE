@@ -7,6 +7,7 @@ from pathlib import Path
 STATE_DEFINE = re.compile(r"(?m)^inline constexpr int\s+(GAME_\w+)\s*=\s*-?\d+;")
 CLASS_DEFINITION = re.compile(r"(?m)^[ \t]*class\s+(\w+)[^;{]*\{")
 CLASS_DIRECTORIES = ("src/gamestates", "src/gameobjects/mentat")
+CLASS_FILES = ("src/save/SaveSlotsDialog.hpp",)
 
 
 def code_states(text):
@@ -60,7 +61,10 @@ def collect_code_names(root):
     for directory in CLASS_DIRECTORIES:
         for path in sorted((root / directory).glob("*.h")) + sorted((root / directory).glob("*.hpp")):
             sources.append(path.read_text(encoding="utf-8", errors="replace"))
-    return states + code_classes(sources)
+    dialog = root / CLASS_FILES[0]
+    dialog_classes = [name for name in code_classes([dialog.read_text(encoding="utf-8", errors="replace")])
+                      if name == "SaveSlotsDialog"]
+    return states + code_classes(sources) + dialog_classes
 
 
 def main(argv=None):

@@ -31,6 +31,8 @@
 #include "game/GameStateTransition.hpp"
 #include "game/MissionFlow.hpp"
 #include "game/VideoFlow.hpp"
+#include "save/SaveGameManager.hpp"
+#include "save/SaveSlotsDialog.hpp"
 
 #include <SDL3/SDL.h>
 #include <algorithm>
@@ -67,6 +69,14 @@ cMainMenuState::cMainMenuState(sGameServices* services) :
     auto *gfxinter = m_ctx->getGraphicsContext()->gfxinter.get();
     bmp_D2TM_Title = gfxinter->getTexture(BMP_D2TM);
     buildHdMenu();
+    m_saveDialog = std::make_unique<SaveSlotsDialog>(
+        services->saveGameFlow,
+        m_sdlDrawer,
+        m_textDrawer,
+        m_settings,
+        [this]() {
+            m_stateTransitions->fadeOut();
+        });
 
     // prepare to drawing in cache texture
     if (m_settings->isDebugMode()) {
@@ -160,7 +170,9 @@ void cMainMenuState::buildHdMenu()
         m_missionFlow->init();
         m_stateTransitions->setNextStateWithFade(GAME_SETUPSKIRMISH);
     });
-    addButton(localization::text("Load", "Загрузить"), false, nullptr);
+    addButton(localization::text("Saved games", "Сохранения"), SaveGameManager::hasAnySave(), [this]() {
+        m_saveDialog->open(false, false);
+    });
     addButton(localization::text("Map Editor", "Редактор карт"), true, [this]() {
         m_stateTransitions->setNextStateWithFade(GAME_NEW_MAP_EDITOR);
     });
@@ -262,6 +274,10 @@ void cMainMenuState::draw() const
         m_textDrawer->drawText(0, 0, std::format("{}, {}", m_mouse->getX(), m_mouse->getY()).c_str());
     }
 
+    if (m_saveDialog->isOpen()) {
+        m_saveDialog->draw();
+    }
+
     // MOUSE
     m_mouse->draw();
 
@@ -269,6 +285,10 @@ void cMainMenuState::draw() const
 
 void cMainMenuState::onNotifyMouseEvent(const s_MouseEvent &event)
 {
+    if (m_saveDialog->isOpen()) {
+        m_saveDialog->onMouseEvent(event);
+        return;
+    }
     gui_window->onNotifyMouseEvent(event);
     gui_btn_credits->onNotifyMouseEvent(event);
 }
@@ -280,6 +300,10 @@ eGameStateType cMainMenuState::getType()
 
 void cMainMenuState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 {
+    if (m_saveDialog->isOpen()) {
+        m_saveDialog->onKeyboardEvent(event);
+        return;
+    }
     if (event.isType(eKeyEventType::PRESSED)) {
         if (event.isAction(eKeyAction::MENU_BACK)) {
             m_settings->setPlaying(false);
@@ -293,4 +317,9 @@ void cMainMenuState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
             }
         }
     }
+}
+
+bool cMainMenuState::isKeyboardCapturedByUi() const
+{
+    return m_saveDialog->isCapturingText();
 }

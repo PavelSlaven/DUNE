@@ -35,6 +35,7 @@ class GuiLabel;
 class GameStateTransition;
 class cMouse;
 class cGameSettings;
+class SaveSlotsDialog;
 
 class cOptionsState : public cGameState {
     friend class UiAuditAccess;
@@ -52,6 +53,8 @@ public:
 
     void setPrevState(int prevState);
     void refresh();
+
+    bool isKeyboardCapturedByUi() const override;
 
 private:
     cTextDrawer* m_textDrawer = nullptr;
@@ -71,8 +74,10 @@ private:
     GuiLabel *m_statusLabel = nullptr;
     GuiButton *m_applyButton = nullptr;
     GuiButton *m_languageButton = nullptr;
+    GuiButton *m_loadGameButton = nullptr;
 
     std::unique_ptr<GuiWindow> m_guiWindow;
+    std::unique_ptr<SaveSlotsDialog> m_saveDialog;
 
     void constructWindow(int prevState);
     void selectRenderScale(int step);
