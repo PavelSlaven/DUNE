@@ -24,7 +24,8 @@ struct OptionsMenuLayout {
         int canvasHeight,
         int buttonHeight,
         bool playing,
-        int titleFontHeight = -1)
+        int titleFontHeight = -1,
+        int extraContentRows = 0)
     {
         const int margin = 8;
         const int actionGap = std::max(2, margin / 2);
@@ -40,7 +41,7 @@ struct OptionsMenuLayout {
         const int measuredTitleFontHeight = titleFontHeight >= 0
             ? titleFontHeight
             : std::max(0, buttonHeight - 10);
-        const int preferredApplyY = (contentGap + buttonHeight) * 10;
+        const int preferredApplyY = (contentGap + buttonHeight) * (10 + extraContentRows);
         const int preferredHeight = preferredApplyY + buttonHeight + margin
             + actionRows * buttonHeight + (actionRows - 1) * actionGap + margin;
         const bool compact = preferredHeight > availableHeight;
@@ -52,7 +53,7 @@ struct OptionsMenuLayout {
         const int applyGap = compact ? 2 : margin;
         const int bottomMargin = compact ? 4 : margin;
         const int applyY = compact
-            ? contentTop + 9 * (buttonHeight + contentGap)
+            ? contentTop + (9 + extraContentRows) * (buttonHeight + contentGap)
             : preferredApplyY;
         const int requiredHeight = applyY + buttonHeight + applyGap
             + actionRows * buttonHeight + (actionRows - 1) * compactActionGap + bottomMargin;
