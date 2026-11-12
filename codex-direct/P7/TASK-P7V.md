@@ -14,9 +14,10 @@
 
 - **Механизм языка** — `src/utils/Localization.hpp`: `localization::isEnglish()` — `true` в английской игре; `localization::setLanguage("en")` и `localization::setLanguage("ru")` выбирают язык. В тестах Catch2 язык по умолчанию — русский.
 - **Данные кампании** — папка `campaign_ru/` в папке задания, 36 файлов: `briefings/mentata.ini`, `briefings/mentath.ini`, `briefings/mentato.ini`, `briefings/mentats.ini` и `<дом>/mission1.ini` … `<дом>/mission8.ini` для домов `atreides`, `harkonnen`, `ordos`, `sardaukar`. Каждый файл — английский файл `resources/bin/campaign/<тот же путь>`, в котором заменены только значения строк `Text=`: строк столько же, все остальные строки байт в байт те же. Файлы собрал ведущий; их текст не меняй.
-- **Таблица названий карт** `TITLES-P7V.tsv` в папке задания (UTF-8, разделитель — табуляция, первая строка — заголовок, 37 строк данных). Столбцы: `файл` — имя файла в `resources/bin/skirmish/`; `Title` — нынешнее значение ключа `Title` этого файла без кавычек; `TitleRu` — русское название.
+- **Таблица названий карт** `TITLES-P7V.tsv` в папке задания (UTF-8, разделитель — табуляция, первая строка — заголовок, 37 строк данных). В папке `resources/bin/skirmish/` ревизии `B` ровно 37 файлов, все с расширением `.ini`, и каждый из них — в таблице. Столбцы: `файл` — имя файла в `resources/bin/skirmish/`; `Title` — нынешнее значение ключа `Title` этого файла без кавычек; `TitleRu` — русское название.
 - **Чтение текстов кампании** — `src/utils/ini.cpp`: `cIni::loadRegionfile` открывает `std::format("campaign/{}/mission{}.ini", getHouseDirectoryName(iHouse), iMission)`, `cIni::loadBriefing` — `std::string("campaign/briefings/") + getBriefingFileName(iHouse)`. Функции `getHouseDirectoryName` и `getBriefingFileName` объявлены в `src/utils/IniParsing.hpp` и определены в `src/utils/IniParsing.cpp`. Карты миссий `campaign/maps/scen*.ini` читает `src/utils/cIniUtils.cpp`; это не текст, они остаются в `campaign/`.
 - **Ментат** — `src/gameobjects/mentat/AbstractMentat.cpp`:
+  - `parseBriefing` (`src/utils/IniParsing.cpp`) возвращает не больше 10 фраз (`MAX_SENTENCES = 10`);
   - страница — пара фраз `sentence[iMentatSentence]` и `sentence[iMentatSentence + 1]`; `draw()` рисует каждую фразу одной строкой без переноса четырьмя вызовами `m_textDrawer->drawText(offsetX + 17, …)` внутри `if (iMentatSentence >= 0) {`;
   - время речи считается по байтам: строки `int iLength = static_cast<int>(sentence[iMentatSentence].size());` и `iLength += static_cast<int>(sentence[iMentatSentence + 1].size());`;
   - шрифт фраз — `getBeneTextDrawer()`: PT Sans Narrow размера 14 (`kBeneFontSize` в `src/context/ContextCreator.cpp`); экран ментата — 640 точек, текст начинается в 17 точках от левого края, ширина строки — 606 точек.
@@ -94,7 +95,7 @@
    - `src/gamestates/cSetupSkirmishState.cpp`: в строке, где есть `"Name: {}"`, выражение `selectedMap->name` становится `displayName(*selectedMap)`; в трёх строках списка карт из раздела «Что уже решено» выражение `mapToRender->name` становится `displayName(*mapToRender)`; строка `truncatedName.pop_back();` становится `removeLastUtf8CodePoint(truncatedName);`; добавляется `#include "utils/Utf8.hpp"`. Другие места с `->name` в этом файле не меняются.
    - Файлы карт: в каждый файл `resources/bin/skirmish/<файл>` из таблицы `TITLES-P7V.tsv` сразу после первой строки, которая после пробелов в начале начинается с `Title` и следующий непробельный знак после `Title` — `=`, вставляется строка `TitleRu="<TitleRu>"` и знак перевода строки `\n`. Вставку делает скрипт `.tmp/p7v/add_titles.py` (Python 3, стандартная библиотека). Значение этой строки `Title` без пробелов и кавычек по краям не равно столбцу `Title` таблицы, или в файле уже есть строка `TitleRu` — блок `## Q-P7V-NN` и стоп.
 6. **Список исключений T6.** Из `tests/ui_audit/data/latin-ru-allowed.tsv` удаляются все строки, у которых второй столбец кончается на `переводит П7в`: 59 текстов кампании и 5 названий карт, всего 64 строки. Остальные строки и их порядок не меняются.
-7. **Подключение.** В `src/utils/IniParsing.cpp` нужна строка `#include "utils/Localization.hpp"`. Она и каждая новая строка `#include "…"` из пунктов 3–5 добавляются сразу после последней строки вида `#include "…"` в начале файла, если такой строки в файле ещё нет.
+7. **Подключение.** В `src/utils/IniParsing.cpp` нужна строка `#include "utils/Localization.hpp"`. Она и каждая новая строка `#include "…"` из пунктов 3–5 добавляются сразу после последней строки вида `#include "…"` в начале файла, если такой строки в файле ещё нет. Если в один файл добавляются две строки, они идут подряд в порядке пунктов контракта: в `AbstractMentat.cpp` сначала `#include "gameobjects/mentat/MentatTextLayout.hpp"` (пункт 3), затем `#include "utils/Utf8.hpp"` (пункт 4).
 8. **Ничего сверх контракта.** Других изменений нет: ни переформатирования, ни новых комментариев, кроме комментария к `MENTAT_TEXT_WIDTH` из пункта 3, ни переноса строк сверх нужного для правки.
 
 ## Тесты
@@ -178,7 +179,7 @@
   1. `create_goal` первым действием, по правилам исполнителя ниже; objective — текст раздела «Цель» дословно.
   2. Раздел «Прочитать до работы».
   3. Шаг 1 (помощник A), шаг 3 (помощник B) и шаг 4 (помощник C) — одновременно.
-  4. Шаг 2 (помощник A) — после шага 1, до того как помощники B и C закончат: T6 на имеющейся сборке `.tmp/out/run/bin` не зависит от правок шагов 3 и 4.
+  4. Шаг 2 (помощник A) — сразу после шага 1. Конца шагов 3 и 4 не жди и не задерживай их: T6 идёт на имеющейся сборке `.tmp/out/run/bin`, и правки шагов 3 и 4 в неё не попадают.
   5. Шаг 5 (помощник A) — после шагов 2, 3 и 4.
   6. Сдача и стоп.
 - **Параллельно:** шаги 1, 3 и 4 правят разные файлы и не зависят друг от друга. Собирает их вместе проверка 1 шага 5.
