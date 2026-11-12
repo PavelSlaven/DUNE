@@ -74,6 +74,7 @@
 #include "gameobjects/cSpecialInfos.h"
 #include "include/eGameState.h"
 #include "utils/Localization.hpp"
+#include "drawers/cCommandBarDrawer.h"
 
 cGamePlaying::cGamePlaying(sGameServices* services) :
     cGameState(services),
@@ -324,9 +325,11 @@ void cGamePlaying::onNotifyMouseEvent(const s_MouseEvent &event)
     cGameControlsContext *pContext = m_controlledPlayer->getGameControlsContext();
     pContext->onNotifyMouseEvent(event); // must be first because other classes rely on this context
 
+    m_drawManager->getCommandBarDrawer()->onNotifyMouseEvent(event);
+
     m_controlledPlayer->getSideBar()->onNotifyMouseEvent(event);
     const bool isWheelEvent = event.eventType == eMouseEventType::MOUSE_SCROLLED_UP || event.eventType == eMouseEventType::MOUSE_SCROLLED_DOWN;
-    if (!isWheelEvent || !pContext->isMouseOnSidebarOrMinimap()) {
+    if ((!isWheelEvent || !pContext->isMouseOnSidebarOrMinimap()) && !pContext->isMouseOnCommandBar()) {
         m_mapCamera->onNotifyMouseEvent(event);
     }
 

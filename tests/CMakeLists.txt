@@ -3,6 +3,10 @@ find_package(Catch2 3 REQUIRED)
 # Test files
 set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_cKeyBindings.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_CommandKeys.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_CommandPolicies.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_MouseClickInit.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CommandBarLayout.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CreditsMath.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/structures/test_StarportOrders.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map/test_MapGeometry.cpp

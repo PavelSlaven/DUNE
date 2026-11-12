@@ -60,6 +60,8 @@ public:
     void onFocus() override;
     void onBlur() override;
 
+    void setRallyPointCommandMode();
+
 private:
     eMouseNormalState m_state;
 

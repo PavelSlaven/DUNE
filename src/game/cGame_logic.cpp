@@ -115,6 +115,8 @@
 #include "context/TextContext.hpp"
 #include "drawers/cMouseDrawer.h"
 #include "utils/Localization.hpp"
+#include "drawers/CommandBarLayout.hpp"
+#include "sidebar/cSideBar.h"
 
 namespace {
 bool isConsoleToggleKey(const cKeyboardEvent &event) {
@@ -580,7 +582,11 @@ void cGame::drawState()
     }
 
     m_currentState->draw();
-    m_notificationArea->draw(m_textDrawer, 14, m_gameSettings->getScreenH() - 64);
+    int notificationY = m_gameSettings->getScreenH() - 64;
+    if (isState(GAME_PLAYING)) {
+        notificationY = CommandBarLayout::create(m_gameSettings->getScreenW(), m_gameSettings->getScreenH(), cSideBar::SidebarWidth).panel.getY() - 18;
+    }
+    m_notificationArea->draw(m_textDrawer, 14, notificationY);
     m_guiConsole->draw();
 }
 
@@ -775,6 +781,7 @@ bool cGame::setupGame()
         m_keyboard->loadKeyBindings();
     }
     Logger::info(COMP_INIT, "Initializing Key Bindings", "Loaded from [KEYS] section");
+    m_services->keyboard = m_keyboard.get();
 
     m_Screen = std::make_unique<cSDLSystem>(m_gameSettings->m_screenW, m_gameSettings->m_screenH, title, m_windowed);
     if (!m_windowed) {

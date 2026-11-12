@@ -121,8 +121,8 @@ private:
     bool m_leftButtonReleased;
     bool m_rightButtonReleased;
 
-    bool m_leftButtonClicked;
-    bool m_rightButtonClicked;
+    bool m_leftButtonClicked = false;
+    bool m_rightButtonClicked = false;
     bool m_leftButtonDoubleClicked;
 
     bool m_leftButtonClickedInPreviousFrame;

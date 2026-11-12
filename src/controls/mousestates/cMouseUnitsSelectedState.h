@@ -63,6 +63,7 @@ public:
 
     void selectSameUnitsOnScreen(int iType);
     void selectSameUnitsOnMap(int iType);
+    void setCommandState(eMouseUnitsSelectedState newState);
 private:
     // A list of unit id's that we have selected
     std::vector<int> m_selectedUnits;

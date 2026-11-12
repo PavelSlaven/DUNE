@@ -27,6 +27,7 @@ class cDrawManager;
 class cRectangle;
 class cReinforcements;
 class cMouse;
+class cKeyboard;
 class cMissionStatsCollector;
 class cGameConditionChecker;
 class cScreenShake;
@@ -53,6 +54,7 @@ struct sGameServices
     cRectangle *mapViewport = nullptr;
     cReinforcements *reinforcements = nullptr;
     cMouse *mouse = nullptr;
+    cKeyboard *keyboard = nullptr;
     cMissionStatsCollector *missionStatsCollector = nullptr;
     cGameConditionChecker *gameConditionChecker = nullptr;
     cScreenShake *screenShake = nullptr;

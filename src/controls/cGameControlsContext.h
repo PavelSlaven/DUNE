@@ -96,6 +96,10 @@ public:
     bool isMouseOnMiniMap() const {
         return m_mouseCell == MOUSE_CELL_HOVER_MINIMAP;
     }
+    bool isMouseOnCommandBar() const {
+        return m_mouseCell == MOUSE_CELL_HOVER_COMMAND_BAR;
+    }
+
     bool isMouseOnSidebarOrMinimap() const {
         return isMouseOnSidebar() || isMouseOnMiniMap();
     }
@@ -122,6 +126,10 @@ public:
     bool isState(eMouseState other) const;
 
     void onFocusMouseStateEvent();
+
+    void activateMoveCommand();
+    void activateAttackCommand();
+    void activateRallyPointCommand();
 
 protected:
     void determineHoveringOverStructureId();
@@ -177,4 +185,5 @@ private:
     static constexpr int MOUSE_CELL_HOVER_TOPBAR = -1;
     static constexpr int MOUSE_CELL_HOVER_MINIMAP = -2;
     static constexpr int MOUSE_CELL_HOVER_SIDEBAR = -3;
+    static constexpr int MOUSE_CELL_HOVER_COMMAND_BAR = -4;
 };
