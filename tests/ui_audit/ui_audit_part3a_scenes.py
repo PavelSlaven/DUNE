@@ -177,6 +177,7 @@ def check_for(scene_id):
         "outcome-win": check_outcome,
         "outcome-lose": check_outcome,
         "options-game-main-nosaves": check_options_game_main,
+        "options-game-main-saves": check_options_game_main,
         "options-game-applied": check_options_game_applied,
     }
     if scene_id in fixed:

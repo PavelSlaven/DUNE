@@ -21,6 +21,10 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_FontCoverage.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Localization.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Preferences.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/save/test_SaveFileCodec.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/save/test_SaveSlotName.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/save/test_SaveBody.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/save/test_QuickSaveKeys.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_cPoint.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_LowPowerBlink.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_cRectangle.cpp
@@ -63,6 +67,8 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/utils/cIniUtils.cpp
     ${CMAKE_SOURCE_DIR}/src/game/CampaignProgress.cpp
     ${CMAKE_SOURCE_DIR}/src/game/Preferences.cpp
+    ${CMAKE_SOURCE_DIR}/src/save/SaveBody.cpp
+    ${CMAKE_SOURCE_DIR}/src/save/SaveFileCodec.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Log.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/SfxTrackAllocator.cpp
     ${CMAKE_SOURCE_DIR}/src/context/MusicJukeBox.cpp
