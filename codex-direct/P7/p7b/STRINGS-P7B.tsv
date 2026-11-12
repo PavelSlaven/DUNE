@@ -61,6 +61,7 @@ src/context/cInfoContextCreator.cpp	1699	Gun Turret	Пушечная башня
 src/context/cInfoContextCreator.cpp	1715	Rocket Turret	Ракетная башня	
 src/controls/mousestates/cMouseNormalState.cpp	97	{} units selected	Выбрано юнитов: {}	
 src/controls/mousestates/cMousePlaceState.cpp	88	Unable to create more.	Больше построить нельзя.	
+src/debug/UiAuditAccess.cpp	177	Saved. Restart the game.	Сохранено. Перезапустите игру.	
 src/drawers/CreditsDrawer.cpp	259	CREDITS	КРЕДИТЫ	
 src/drawers/cBuildingListDrawer.cpp	80	Spice Refinery ‖ Refinery	Переработчик пряности ‖ Переработчик	
 src/drawers/cBuildingListDrawer.cpp	82	Light Infantry ‖ Infantry	Отряд пехоты ‖ Пехота	
@@ -149,6 +150,7 @@ src/gamestates/cChooseHouseState.cpp	132	ATREIDES	АТРЕЙДЕС
 src/gamestates/cChooseHouseState.cpp	133	ORDOS	ОРДОС	
 src/gamestates/cChooseHouseState.cpp	134	HARKONNEN	ХАРКОННЕН	
 src/gamestates/cChooseHouseState.cpp	135	SARDAUKAR	САРДАУКАРЫ	
+src/gamestates/cChooseHouseState.cpp	141	Back	Назад	
 src/gamestates/cCreditsState.cpp	82	Back	Назад	
 src/gamestates/cCreditsState.cpp	89	Back	Назад	
 src/gamestates/cCreditsState.cpp	118	Version {}	Версия {}	
@@ -268,6 +270,7 @@ src/gamestates/cSetupSkirmishState.cpp	752	Worms? : {}	Черви: {}
 src/gamestates/cSetupSkirmishState.cpp	759	TechLevel : {}	Техуровень: {}	
 src/gamestates/cWinLoseState.cpp	58	outcome_defeat_en.png	outcome_defeat_ru.png	
 src/gamestates/cWinLoseState.cpp	59	outcome_victory_en.png	outcome_victory_ru.png	
+src/gamestates/cWinLoseState.cpp	87	Click to continue	Щёлкните, чтобы продолжить	
 src/gui/GuiConsole/GuiConsoleMessageParser.cpp	72	Malformed command: {}	Неверная команда: {}	
 src/gui/GuiConsole/GuiConsoleMessageParser.cpp	84	Help mode.	Режим справки.	
 src/managers/cDrawManager.cpp	340	OPTIONS	НАСТРОЙКИ	
