@@ -46,6 +46,7 @@
 #include "data/gfxaudio.h"
 #include "gameobjects/cSpecialInfos.h"
 #include "utils/Localization.hpp"
+#include "gameobjects/structures/cUnitFactory.h"
 #include <algorithm>
 
 cItemBuilder::cItemBuilder(cPlayer *thePlayer, cBuildingListUpdater *buildingListUpdater) :
@@ -439,6 +440,15 @@ void cItemBuilder::deployUnit(cBuildingListItem *item, int buildId) const
 {
     int structureTypeByItem = m_services->structureUtils->findStructureTypeByTypeOfList(item);
     d2tm_assert(structureTypeByItem > -1);
+
+    if (structureTypeByItem == LIGHTFACTORY || structureTypeByItem == HEAVYFACTORY) {
+        const int factoryId = m_services->structureUtils->findFactoryForFinishedUnit(m_player, structureTypeByItem);
+        if (factoryId > -1) {
+            static_cast<cUnitFactory *>(m_services->objects->getStructures()[factoryId])->acceptReadyUnit(buildId);
+        }
+        return;
+    }
+
     int structureToDeployUnit = m_services->structureUtils->findStructureToDeployUnit(m_player, structureTypeByItem);
     int buildIdToProduce = buildId;
     if (structureToDeployUnit > -1) {
@@ -807,6 +817,20 @@ cBuildingListItem *cItemBuilder::getItem(int position)
     d2tm_assert(position > -1);
     d2tm_assert(position < MAX_ITEMS);
     return m_items[position];
+}
+
+bool cItemBuilder::isBuildingUnitForStructureType(int structureType)
+{
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        cBuildingListItem *item = m_items[i];
+        if (item == nullptr || !item->isBuilding() || item->getBuildType() != UNIT) {
+            continue;
+        }
+        if (m_services->structureUtils->getStructureTypeByUnitBuildId(item->getBuildId()) == structureType) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void cItemBuilder::startBuilding(cBuildingListItem *item)

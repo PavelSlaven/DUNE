@@ -49,6 +49,8 @@
 #include "game/cGameSettings.h"
 #include "gameobjects/players/cPlayerDifficultySettings.h"
 #include "utils/Localization.hpp"
+#include "gameobjects/structures/cUnitFactory.h"
+#include "gameobjects/units/cUnits.h"
 #include <algorithm>
 
 
@@ -101,6 +103,8 @@ void cUnit::init(int i)
     lastDroppedOffCell = -1;
 
     bCarryMe = false;        // carry this unit when moving it around?
+    bRollingOffFactoryPad = false;
+    iRollingOffFactoryPadStructureId = -1;
     iCarryAll = -1;        // any carry-all that will pickup this unit... so this unit knows
     // it should wait when moving, etc, etc
 
@@ -1000,6 +1004,10 @@ void cUnit::think()
 {
     revealTimer.decrementUntil();
 
+    if (bRollingOffFactoryPad) {
+        return;
+    }
+
     thinkActionAgnostic();
 
     // Think attack style
@@ -1466,6 +1474,12 @@ void cUnit::thinkFast_move_airUnit()
             }
         }
 
+        if (m_transferType == eTransferType::PAD_PICKUP_STAY ||
+                m_transferType == eTransferType::PAD_PICKUP_LEAVE) {
+            pickUpUnitFromFactoryPad();
+            return;
+        }
+
         // transfer is to create a new unit
         if (m_transferType == eTransferType::NEW_LEAVE ||
                 m_transferType == eTransferType::NEW_STAY) {
@@ -1720,6 +1734,56 @@ void cUnit::forgetAboutUnitToPickUp()  // forget about this
     iUnitID = -1;
 }
 
+void cUnit::pickUpUnitFromFactoryPad()
+{
+    const bool leaveAfterwards = m_transferType == eTransferType::PAD_PICKUP_LEAVE;
+
+    cUnitFactory *factory = nullptr;
+    const int structureId = m_map->getCellIdStructuresLayer(getCell());
+    if (structureId > -1 && m_objects->getStructure(structureId)) {
+        factory = dynamic_cast<cUnitFactory *>(m_objects->getStructure(structureId));
+    }
+
+    if (factory && factory->getOwner() == iPlayer && factory->hasUnitStandingOnPad() &&
+            m_objects->getUnits()->isUnitLimitReached()) {
+        return;
+    }
+
+    int unitType = -1;
+    if (factory && factory->getOwner() == iPlayer) {
+        unitType = factory->takeUnitForCarryall(iID);
+    }
+
+    if (unitType < 0) {
+        if (leaveAfterwards) {
+            m_transferType = eTransferType::DIE;
+            setGoalCell(iFindCloseBorderCell(getCell(), m_objects));
+        }
+        else {
+            m_transferType = eTransferType::NONE;
+            setGoalCell(getCell());
+        }
+        return;
+    }
+
+    iNewUnitType = unitType;
+    m_transferType = leaveAfterwards ? eTransferType::NEW_LEAVE : eTransferType::NEW_STAY;
+
+    int dropCell = factory->getRallyPoint();
+    if (dropCell < 0) {
+        updateCellXAndY();
+        dropCell = findNewDropLocation(unitType, getCell());
+    }
+    if (dropCell < 0) {
+        dropCell = getCell();
+    }
+    setGoalCell(dropCell);
+    iBringTarget = movement.iGoalCell;
+    movedelayTimer.reset(300);
+
+    cParticle::create(pos_x() + getBmpWidth() / 2, pos_y() + getBmpHeight() / 2, D2TM_PARTICLE_CARRYPUFF, -1, -1, m_objects, m_infos);
+}
+
 cUnit &cUnit::getUnitToPickupOrDrop() const
 {
     d2tm_assert(iUnitID > -1 && "cUnit::getUnitToPickupOrDrop() called for invalid iUnitIDWithinStructure!");
@@ -1781,6 +1845,14 @@ void cUnit::carryall_order(int iuID, eTransferType transferType, int iBring, int
 
         bPickedUp = false;
         // DONE!
+    }
+    else if (transferType == eTransferType::PAD_PICKUP_STAY || transferType == eTransferType::PAD_PICKUP_LEAVE) {
+        m_transferType = transferType;
+        setGoalCell(iBring);
+        iBringTarget = movement.iGoalCell;
+        iUnitID = -1;
+        iNewUnitType = -1;
+        bPickedUp = false;
     }
     else if (transferType == eTransferType::PICKUP && iuID > -1) {
         // the carryall must pickup the unit, and then bring it to the iBring stuff
@@ -3489,6 +3561,10 @@ void cUnit::thinkFast()
 {
     thinkFast_position();
 
+    if (bRollingOffFactoryPad) {
+        return;
+    }
+
     // aircraft
     if (isAirbornUnit()) {
         thinkFast_move_airUnit();
@@ -4019,6 +4095,51 @@ int cUnit::carryallTransfer(int iuID, int iGoal, cGameObjectContext* objects)
         cUnit->carryall_order(iuID, eTransferType::PICKUP, iGoal, -1);
     }
     return carryAllUnitId;
+}
+
+int cUnit::carryallNearestFree(int iPlayer, int iCell, cGameObjectContext *objects)
+{
+    int nearestId = -1;
+    double nearestDistance = 0;
+    for (int i = 0; i < objects->getUnitsSize(); i++) {
+        cUnit *candidate = objects->getUnit(i);
+        if (!candidate->isValid()) continue;
+        if (candidate->iPlayer != iPlayer) continue;
+        if (candidate->iType != CARRYALL) continue;
+        if (candidate->m_transferType != eTransferType::NONE) continue;
+        if (candidate->isHidden()) continue;
+
+        const double distance = objects->getMapGeometry()->distance(candidate->getCell(), iCell);
+        if (nearestId < 0 || distance < nearestDistance) {
+            nearestId = i;
+            nearestDistance = distance;
+        }
+    }
+    return nearestId;
+}
+
+int cUnit::spawnCarryallAtBorder(int iPlayer, int iCell, cGameObjectContext *objects, cInfoContext *infos, cEventEmitter *eventEmitter)
+{
+    const int startCell = iFindCloseBorderCell(iCell, objects);
+    if (startCell < 0) {
+        return -1;
+    }
+
+    const int carryallId = cUnits::unitCreate(objects, infos, eventEmitter, startCell, CARRYALL, iPlayer, true, false, 1.0f, true);
+    if (carryallId < 0) {
+        return -1;
+    }
+
+    MapGeometry *geometry = objects->getMapGeometry();
+    const Facing facing = facingFromInt(faceAngle(fDegrees(geometry->getCellX(startCell), geometry->getCellY(startCell),
+                                                           geometry->getCellX(iCell), geometry->getCellY(iCell))));
+    cUnit *carryall = objects->getUnit(carryallId);
+    carryall->rendering.iBodyShouldFace = facing;
+    carryall->rendering.iBodyFacing = facing;
+    carryall->rendering.iHeadShouldFace = facing;
+    carryall->rendering.iHeadFacing = facing;
+    carryall->carryall_order(-1, eTransferType::PAD_PICKUP_LEAVE, iCell, -1);
+    return carryallId;
 }
 
 int cUnit::freeAroundMove(int iUnit, cGameObjectContext* objects)

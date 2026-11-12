@@ -44,6 +44,7 @@ class cEventEmitter;
 class cMapCamera;
 class cMap;
 class cPathFinder;
+class cUnitFactory;
 
 enum class eTransferType {
     NONE,                               // nothing to transfer
@@ -51,6 +52,8 @@ enum class eTransferType {
     NEW_LEAVE,                          // bring a new unit, and let the carryall go back (and die)
     PICKUP,                             // carry an existing unit, bring to new location
     DIE,                                // will die when reaching goal-cell (added for proper animation)
+    PAD_PICKUP_STAY,
+    PAD_PICKUP_LEAVE,
 };
 
 enum class eActionType {
@@ -145,6 +148,7 @@ private:
 
 class cUnit {
     friend class SaveGameManager;
+    friend class cUnitFactory;
 
 public:
 
@@ -164,6 +168,8 @@ public:
 
     // carryall stuff
     bool bCarryMe;		// carry this unit when moving it around?
+    bool bRollingOffFactoryPad;
+    int iRollingOffFactoryPadStructureId;
     int  iCarryAll;		// any carry-all that will pickup this unit... so this unit knows
     // it should wait when moving, etc, etc
 
@@ -507,6 +513,8 @@ public:
 
     static int findHarvestSpot(int id, cGameObjectContext* objects);
     static int carryallTransfer(int iuID, int iGoal, cGameObjectContext* objects);
+    static int carryallNearestFree(int iPlayer, int iCell, cGameObjectContext *objects);
+    static int spawnCarryallAtBorder(int iPlayer, int iCell, cGameObjectContext *objects, cInfoContext *infos, cEventEmitter *eventEmitter);
     static int freeAroundMove(int iUnit, cGameObjectContext* objects);
 
 private:
@@ -605,6 +613,7 @@ private:
     void createSquishedParticle();
 
     void forgetAboutUnitToPickUp();
+    void pickUpUnitFromFactoryPad();
 
     void tellCarryAllThatWouldPickMeUpToForgetAboutMe();
 

@@ -21,7 +21,7 @@
 #include "gameobjects/players/cPlayer.h"
 
 // Constructor
-cLightFactory::cLightFactory() : cAbstractStructure()
+cLightFactory::cLightFactory() : cUnitFactory()
 {
     // other variables (class specific)
     drawFlash = false;
@@ -66,6 +66,7 @@ void cLightFactory::think_animation()
     cAbstractStructure::think_animation();
     cAbstractStructure::think_flag_new();
     think_animation_unitDeploy();
+    thinkPad();
 }
 
 void cLightFactory::think_guard()
