@@ -17,6 +17,7 @@
 #include "gameobjects/projectiles/bullet.h"
 #include "gameobjects/projectiles/cBullets.h"
 #include "gameobjects/structures/cAbstractStructure.h"
+#include "gameobjects/structures/cUnitFactory.h"
 #include "gameobjects/units/cReinforcements.h"
 #include "gameobjects/units/cUnit.h"
 #include "gameobjects/units/cUnits.h"
@@ -325,6 +326,12 @@ save_game_detail::SaveSnapshot SaveGameManager::captureSnapshot(cGame &game)
         target.decayTimer = source->TIMER_decay;
         target.prebuildTimer = source->TIMER_prebuild;
         save.structures.push_back(target);
+
+        if (const auto *factory = dynamic_cast<const cUnitFactory *>(source)) {
+            if (!factory->isPadFree()) {
+                save.factoryPads.push_back({index, factory->getPad()});
+            }
+        }
     }
 
     for (int index = 0; index < cUnits::TOTAL_SLOTS; ++index) {
@@ -614,6 +621,20 @@ bool SaveGameManager::restoreSnapshot(
         target->setUnitIdWithin(source.unitWithin);
         target->setUnitIdEntering(source.unitEntering);
         target->setUnitIdHeadingTowards(source.unitHeading);
+    }
+
+    for (const save_game_detail::FactoryPadSave &source : save.factoryPads) {
+        const int newId = structureMapping[source.structureId];
+        auto *factory = newId >= 0 ? dynamic_cast<cUnitFactory *>(game.m_gameObjectsContext->getStructure(newId)) : nullptr;
+        if (factory == nullptr) {
+            continue;
+        }
+        factory->restorePad(source.pad);
+        if (source.pad.phase == factory_pad::Phase::Rolling) {
+            cUnit *rolling = game.m_gameObjectsContext->getUnit(source.pad.rollUnitId);
+            rolling->bRollingOffFactoryPad = true;
+            rolling->iRollingOffFactoryPadStructureId = newId;
+        }
     }
 
     restoreCellState(*map, save);

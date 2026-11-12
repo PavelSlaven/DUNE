@@ -55,6 +55,7 @@
 #include "context/GraphicsContext.hpp"
 #include "gameobjects/cSpecialInfos.h"
 #include "utils/Localization.hpp"
+#include "gameobjects/players/PlacementRule.hpp"
 
 int cPlayer::groupIdToIndex(int groupId)
 {
@@ -1603,7 +1604,10 @@ cAbstractStructure *cPlayer::placeItem(int destinationCell, cBuildingListItem *i
     int iStructureTypeId = itemToPlace->getBuildId();
     cStructureFactory *pStructureFactory = m_objects->getStructureFactory();
 
-    bool canPlace = canPlaceStructureAt(destinationCell, iStructureTypeId).success;
+    const bool isHumanPlayer = isHuman();
+    const bool canPlace = isHumanPlayer
+                          ? canPlaceBuildingListItemAt(destinationCell, iStructureTypeId).success
+                          : canPlaceStructureAt(destinationCell, iStructureTypeId).success;
     if (!canPlace) {
         return nullptr;
     }
@@ -1631,6 +1635,10 @@ cAbstractStructure *cPlayer::placeItem(int destinationCell, cBuildingListItem *i
                                      iStructureTypeId,
                                      getId(),
                                      healthPercentage);
+
+    if (isHumanPlayer && pStructure == nullptr && !cStructureFactory::isModifyingTerrain(iStructureTypeId)) {
+        return nullptr;
+    }
 
     buildingListUpdater->onBuildItemCompleted(itemToPlace);
     itemToPlace->decreaseTimesToBuild();
@@ -2160,6 +2168,91 @@ s_PlaceResult cPlayer::canPlaceConcreteAt(int iCell)
     result.success = true;
     result.onlyMyUnitsBlock = false;
 
+    return result;
+}
+
+s_PlaceResult cPlayer::canPlaceBuildingListItemAt(int iCell, int iStructureType)
+{
+    s_PlaceResult result;
+    MapGeometry *geometry = m_objects->getMapGeometry();
+    cMap *map = m_objects->getMap();
+
+    if (iStructureType < 0 || iStructureType >= MAX_STRUCTURETYPES || !geometry->isValidCell(iCell)) {
+        result.outOfBounds = true;
+        return result;
+    }
+
+    const s_StructureInfo &info = m_infos->getStructureInfo(iStructureType);
+    const int width = info.bmp_width / TILESIZE_WIDTH_PIXELS;
+    const int height = info.bmp_height / TILESIZE_HEIGHT_PIXELS;
+    if (width < 1 || height < 1) {
+        result.outOfBounds = true;
+        return result;
+    }
+
+    const int startX = geometry->getCellX(iCell);
+    const int startY = geometry->getCellY(iCell);
+
+    for (int offsetX = 0; offsetX < width; offsetX++) {
+        for (int offsetY = 0; offsetY < height; offsetY++) {
+            placement_rule::CellFacts facts;
+            facts.withinBoundaries = geometry->isWithinBoundaries(startX + offsetX, startY + offsetY);
+            int structureId = -1;
+            int unitId = -1;
+            if (facts.withinBoundaries) {
+                const int cell = geometry->makeCell(startX + offsetX, startY + offsetY);
+                facts.validTerrain = map->isValidTerrainForStructureAtCell(cell);
+                structureId = map->getCellIdStructuresLayer(cell);
+                unitId = map->getCellIdUnitLayer(cell);
+                facts.structurePresent = structureId > -1;
+                facts.livingUnitPresent = unitId > -1 && !m_objects->getUnit(unitId)->isDead();
+            }
+
+            const placement_rule::CellVerdict verdict = placement_rule::judgeCell(iStructureType, facts);
+            result.outOfBounds = result.outOfBounds || verdict.outOfBounds;
+            result.badTerrain = result.badTerrain || verdict.badTerrain;
+            if (verdict.structureBlocks) {
+                result.structureIds.insert(structureId);
+            }
+            if (verdict.unitBlocks) {
+                result.unitIds.insert(unitId);
+            }
+        }
+    }
+
+    bool withinBuildDistance = false;
+    const int firstX = std::max(0, startX - 1);
+    const int firstY = std::max(0, startY - 1);
+    const int endX = std::min(geometry->getWidth(), startX + width + 1);
+    const int endY = std::min(geometry->getHeight(), startY + height + 1);
+
+    for (int x = firstX; x < endX && !withinBuildDistance; x++) {
+        for (int y = firstY; y < endY; y++) {
+            const int cell = geometry->getCellWithMapDimensions(x, y);
+            if (cell < 0) {
+                continue;
+            }
+
+            placement_rule::AnchorFacts anchor;
+            const int structureId = map->getCellIdStructuresLayer(cell);
+            if (structureId > -1) {
+                cAbstractStructure *other = m_objects->getStructure(structureId);
+                anchor.ownStructure = other != nullptr && other->getOwner() == getId();
+                anchor.otherStructure = !anchor.ownStructure;
+            }
+            const int terrain = map->getCellType(cell);
+            anchor.wallOrSlab = terrain == TERRAIN_WALL || terrain == TERRAIN_SLAB;
+            if (placement_rule::isBuildAnchor(anchor)) {
+                withinBuildDistance = true;
+                break;
+            }
+        }
+    }
+
+    result.outOfBuildDistance = !withinBuildDistance;
+    result.success = !result.outOfBounds && !result.badTerrain && result.unitIds.empty() &&
+                     result.structureIds.empty() && !result.outOfBuildDistance;
+    result.onlyMyUnitsBlock = false;
     return result;
 }
 

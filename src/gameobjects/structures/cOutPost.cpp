@@ -16,6 +16,7 @@
 #include "cOutPost.h"
 
 #include "definitions.h"
+#include "gameobjects/structures/OutpostDish.hpp"
 
 cOutPost::cOutPost()
 {
@@ -34,18 +35,7 @@ void cOutPost::thinkFast()
 
     // this is not really flag animation anymore, but just base animation (ie, turning around of
     // dish on outpost)
-    TIMER_flag++;
-
-    if (TIMER_flag > 54) {
-        iFrame++;
-
-        // switch between 0 and 7.
-        if (iFrame > 7) {
-            iFrame=0;
-        }
-
-        TIMER_flag=0;
-    }
+    outpost_dish::advance(iFrame, TIMER_flag);
 }
 
 void cOutPost::think_animation()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "include/definitions.h"
+#include "gameobjects/structures/FactoryPad.hpp"
 
 #include <array>
 #include <cstddef>
@@ -175,6 +176,11 @@ struct BuildQueueState {
     int timerCap = DefaultTimerCap;
 };
 
+struct FactoryPadSave {
+    int structureId = -1;
+    factory_pad::PadState pad;
+};
+
 struct SaveSnapshot {
     std::string saveName;
     bool skirmish = false;
@@ -197,6 +203,7 @@ struct SaveSnapshot {
     std::vector<UnitState> units;
     std::vector<ReinforcementState> reinforcements;
     std::vector<BuildQueueState> buildQueue;
+    std::vector<FactoryPadSave> factoryPads;
 };
 
 }

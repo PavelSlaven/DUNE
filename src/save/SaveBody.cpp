@@ -195,6 +195,12 @@ std::string serializeBody(const SaveSnapshot &save)
                << item.progressFrameTimer << ' ' << item.flashingTimer << ' '
                << item.timerCap << '\n';
     }
+    output << "FACTORYPADS " << save.factoryPads.size() << '\n';
+    for (const FactoryPadSave &item : save.factoryPads) {
+        output << "FACTORYPAD " << item.structureId << ' ';
+        factory_pad::write(output, item.pad);
+        output << '\n';
+    }
     output << "END\n";
     return output.str();
 }
@@ -475,6 +481,64 @@ bool deserializeBody(std::string_view body, SaveSnapshot &save, std::string &err
             error = localization::text("Invalid construction queue entry", "Некорректная запись очереди строительства");
             return false;
         }
+    }
+    if (!expectTag(input, "FACTORYPADS") || !readValue(input, count) || count > MAX_STRUCTURES) {
+        error = localization::text("Invalid factory pad list", "Некорректный список площадок заводов");
+        return false;
+    }
+    std::array<bool, MAX_STRUCTURES> padStructureSeen{};
+    save.factoryPads.resize(count);
+    for (FactoryPadSave &item : save.factoryPads) {
+        if (!expectTag(input, "FACTORYPAD") ||
+            !readValue(input, item.structureId) ||
+            !factory_pad::read(input, item.pad, MaximumSaveBytes)) {
+            error = localization::text("Factory pad data is corrupted", "Повреждены данные площадок заводов");
+            return false;
+        }
+        bool isFactory = false;
+        int factoryOwner = -1;
+        for (const StructureState &structureItem : save.structures) {
+            if (structureItem.oldId == item.structureId) {
+                isFactory = structureItem.type == LIGHTFACTORY || structureItem.type == HEAVYFACTORY;
+                if (isFactory) {
+                    factoryOwner = structureItem.player;
+                }
+            }
+        }
+        bool referencesAreValid = item.structureId >= 0 && item.structureId < MAX_STRUCTURES &&
+                                  isFactory && !padStructureSeen[item.structureId] &&
+                                  item.pad.phase != factory_pad::Phase::Empty &&
+                                  item.pad.unitType >= 0 && item.pad.unitType < UnitTypeCount &&
+                                  item.pad.carryallId >= -1 && item.pad.carryallId < UnitSlots;
+        if (referencesAreValid && item.pad.carryallId >= 0) {
+            referencesAreValid = usedUnitIds[item.pad.carryallId];
+            for (const UnitState &unitItem : save.units) {
+                if (unitItem.oldId == item.pad.carryallId) {
+                    referencesAreValid = referencesAreValid && unitItem.type == CARRYALL &&
+                                         unitItem.player == factoryOwner;
+                    break;
+                }
+            }
+        }
+        for (const int waitingType : item.pad.waiting) {
+            referencesAreValid = referencesAreValid && waitingType >= 0 && waitingType < UnitTypeCount;
+        }
+        if (referencesAreValid && item.pad.phase == factory_pad::Phase::Rolling) {
+            referencesAreValid = item.pad.rollUnitId >= 0 && item.pad.rollUnitId < UnitSlots && usedUnitIds[item.pad.rollUnitId];
+            bool foundMatchingRoller = false;
+            for (const UnitState &unitItem : save.units) {
+                if (unitItem.oldId == item.pad.rollUnitId) {
+                    foundMatchingRoller = unitItem.type == item.pad.unitType && unitItem.player == factoryOwner;
+                    break;
+                }
+            }
+            referencesAreValid = referencesAreValid && foundMatchingRoller;
+        }
+        if (!referencesAreValid) {
+            error = localization::text("Invalid factory pad data", "Некорректные данные площадки завода");
+            return false;
+        }
+        padStructureSeen[item.structureId] = true;
     }
     if (!expectTag(input, "END")) {
         error = localization::text("Save data is incomplete", "Данные сохранения неполны");

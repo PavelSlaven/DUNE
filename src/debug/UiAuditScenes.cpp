@@ -374,7 +374,7 @@ bool readySaveDialog(cGame &game)
 bool prepareSaveRoundTrip(cGame &game)
 {
     resetSteps();
-    return UiAuditAccess::startSkirmish(game) && UiAuditAccess::saveRoundTrip(game);
+    return UiAuditAccess::startSkirmish(game) && UiAuditAccess::addFactoryPads(game) && UiAuditAccess::saveRoundTrip(game);
 }
 
 template <int Type>
@@ -573,6 +573,9 @@ const std::vector<Scene> g_catalog = {
     onGameScreen(scene("game-radar-nopower", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::RadarNoPower>), false),
     onGameScreen(scene("game-place-allowed", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::PlaceAllowed>), true),
     onGameScreen(scene("game-place-forbidden", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::PlaceForbidden>), true),
+    onGameScreen(scene("game-radar-dish", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::RadarDish>), false),
+    onGameScreen(scene("game-refinery-harvester", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::RefineryHarvester>), false),
+    onGameScreen(scene("game-factory-pad", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::FactoryPad>), false),
     onGameScreen(scene("game-group-select", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::GroupSelect>), true),
     onGameScreen(scene("game-messages", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::Messages>), false),
     onGameScreen(scene("game-item-hover", "game-playing", "atreides", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ItemHover>), true),

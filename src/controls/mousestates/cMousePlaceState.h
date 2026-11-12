@@ -20,6 +20,7 @@ class cMouse;
 #include "cMouseState.h"
 #include "sGameEvent.h"
 class cBuildingListItem;
+struct s_PlaceResult;
 struct s_MouseEvent;
 
 class cGameControlsContext;
@@ -51,5 +52,7 @@ private:
 
     void onMouseMovedTo();
 
-    bool mayPlaceIt(cBuildingListItem *itemToPlace, int mouseCell);
+    bool mayPlaceIt(cBuildingListItem *itemToPlace, int mouseCell, s_PlaceResult *result = nullptr);
+
+    void notifyPlacementFailure(const s_PlaceResult &result);
 };

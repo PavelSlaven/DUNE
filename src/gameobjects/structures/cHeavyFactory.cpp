@@ -20,12 +20,11 @@
 #include "gameobjects/map/cMapCamera.h"
 #include "gameobjects/players/cPlayer.h"
 
-cHeavyFactory::cHeavyFactory() : cAbstractStructure()
+cHeavyFactory::cHeavyFactory() : cUnitFactory()
 {
     // other variables (class specific)
     drawFlash = false;
     flashes = 0;
-    TIMER_animation = 0;
 }
 
 int cHeavyFactory::getType() const
@@ -48,14 +47,6 @@ void cHeavyFactory::think_animation_unitDeploy()
         return; // do nothing when not animating
     }
 
-    if (iFrame < 10) {
-        TIMER_animation++;
-        if (TIMER_animation > 35) {
-            TIMER_animation = 0;
-            iFrame++;
-        }
-    }
-
     if (flashes > 0) {
         TIMER_flag++;
         if (TIMER_flag > 70) {
@@ -65,11 +56,6 @@ void cHeavyFactory::think_animation_unitDeploy()
         }
     }
     else {
-        TIMER_flag = 0;
-        drawFlash = false;
-    }
-
-    if (iFrame > 9) {
         setAnimating(false);
     }
 }
@@ -80,6 +66,7 @@ void cHeavyFactory::think_animation()
     cAbstractStructure::think_animation();
     cAbstractStructure::think_flag_new();
     think_animation_unitDeploy();
+    thinkPad();
 }
 
 void cHeavyFactory::think_guard()
@@ -119,7 +106,6 @@ void cHeavyFactory::startAnimating()
         drawFlash = true;
     }
     else {
-        iFrame = 0;
         flashes = 0;
         drawFlash = false;
         TIMER_flag = 0;

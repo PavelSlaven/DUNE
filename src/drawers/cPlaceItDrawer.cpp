@@ -72,121 +72,48 @@ void cPlaceItDrawer::drawStatusOfStructureAtCell(cBuildingListItem *itemToPlace,
 {
     d2tm_assert(itemToPlace);
     if (mouseCell < 0) return;
-    Color itemToPlaceColor;
 
-    int structureId = itemToPlace->getBuildId();
+    const int structureId = itemToPlace->getBuildId();
     d2tm_assert(structureId > -1);
 
-    bool bWithinBuildDistance = false;
-    int cellWidth = m_structureUtils->getWidthOfStructureTypeInCells(structureId);
-    int cellHeight = m_structureUtils->getHeightOfStructureTypeInCells(structureId);
+    const s_PlaceResult placement = m_player->canPlaceBuildingListItemAt(mouseCell, structureId);
+    const int cellWidth = m_structureUtils->getWidthOfStructureTypeInCells(structureId);
+    const int cellHeight = m_structureUtils->getHeightOfStructureTypeInCells(structureId);
 
-#define SCANWIDTH	1
+    const int iCellX = m_objects->getMapGeometry()->getCellX(mouseCell);
+    const int iCellY = m_objects->getMapGeometry()->getCellY(mouseCell);
 
-    int iCellX = m_objects->getMapGeometry()->getCellX(mouseCell);
-    int iCellY = m_objects->getMapGeometry()->getCellY(mouseCell);
+    const int iDrawX = m_objects->getMap()->mouse_draw_x(mouseCell);
+    const int iDrawY = m_objects->getMap()->mouse_draw_y(mouseCell);
 
-    // check
-    int iStartX = iCellX-SCANWIDTH;
-    int iStartY = iCellY-SCANWIDTH;
-
-    int iEndX = iCellX + SCANWIDTH + cellWidth;
-    int iEndY = iCellY + SCANWIDTH + cellHeight;
-
-    // Fix up the boundaries
-    cPoint::split(iStartX, iStartY) = m_objects->getMapGeometry()->fixCoordinatesToBeWithinMap(iStartX, iStartY);
-    cPoint::split(iEndX, iEndY) = m_objects->getMapGeometry()->fixCoordinatesToBeWithinMap(iEndX, iEndY);
-
-    // Determine if structure to be placed is within build distance
-    for (int iX=iStartX; iX < iEndX; iX++) {
-        for (int iY=iStartY; iY < iEndY; iY++) {
-            int iCll = m_objects->getMapGeometry()->getCellWithMapDimensions(iX, iY);
-
-            if (iCll > -1) {
-                int idOfStructureAtCell = m_objects->getMap()->getCellIdStructuresLayer(iCll);
-                if (idOfStructureAtCell > -1) {
-                    int iID = idOfStructureAtCell;
-
-                    if (m_objects->getStructures()[iID]->getOwner() == m_player->getId()) {
-                        bWithinBuildDistance = true; // connection!
-                        break;
-                    }
-
-                    // TODO: Allow placement nearby allies?
-
-                    // structure owned by someone else: its foundation slab must not
-                    // count as a build anchor, so skip the wall/slab check for this cell
-                    continue;
-                }
-
-                if (m_objects->getMap()->getCellType(iCll) == TERRAIN_WALL ||
-                        m_objects->getMap()->getCellType(iCll) == TERRAIN_SLAB) {
-                    bWithinBuildDistance=true;
-                    // TODO: here we should actually find out if the slab is ours or not??
-                    break;
-                }
+    for (int iX = 0; iX < cellWidth; iX++) {
+        for (int iY = 0; iY < cellHeight; iY++) {
+            const int cellX = iCellX + iX;
+            const int cellY = iCellY + iY;
+            if (!m_objects->getMapGeometry()->isWithinBoundaries(cellX, cellY)) {
+                continue;
             }
-        }
-    }
 
-    int iDrawX = m_objects->getMap()->mouse_draw_x(mouseCell);
-    int iDrawY = m_objects->getMap()->mouse_draw_y(mouseCell);
-
-    if (!bWithinBuildDistance) {
-        itemToPlaceColor = Color::PlaceNeutral;
-    }
-    else {
-        // Draw over it the mask for good/bad placing (decorates temp bitmap)
-        for (int iX=0; iX < cellWidth; iX++) {
-            for (int iY=0; iY < cellHeight; iY++) {
-                itemToPlaceColor = Color::PlaceNeutral;
-                const char *auditType = "NEUTRAL";
-
-                int cellX = iCellX + iX;
-                int cellY = iCellY + iY;
-
-                if (!m_objects->getMapGeometry()->isWithinBoundaries(cellX, cellY)) {
-                    continue;
-                }
-
-                int iCll = m_objects->getMapGeometry()->makeCell(cellX, cellY);
-
-                if (!m_objects->getMap()->isCellPassable(iCll) || m_objects->getMap()->getCellType(iCll) != TERRAIN_ROCK) {
-                    itemToPlaceColor = Color::PlaceBad;
-                    auditType = "BAD";
-                }
-
-                if (m_objects->getMap()->getCellType(iCll) == TERRAIN_SLAB) {
+            const int cell = m_objects->getMapGeometry()->makeCell(cellX, cellY);
+            Color itemToPlaceColor = Color::PlaceBad;
+            const char *auditType = "BAD";
+            if (placement.success) {
+                if (m_objects->getMap()->getCellType(cell) == TERRAIN_SLAB) {
                     itemToPlaceColor = Color::PlaceGood;
                     auditType = "GOOD";
                 }
-
-                // occupied by units or structures
-                int idOfStructureAtCell = m_objects->getMap()->getCellIdStructuresLayer(iCll);
-                if (idOfStructureAtCell > -1) {
-                    itemToPlaceColor = Color::PlaceBad;
-                    auditType = "BAD";
+                else {
+                    itemToPlaceColor = Color::PlaceNeutral;
+                    auditType = "NEUTRAL";
                 }
-
-                int unitIdOnMap = m_objects->getMap()->getCellIdUnitLayer(iCll);
-                if (unitIdOnMap > -1) {
-                    // temporarily dead units do not block, but alive units (non-dead) do block placement
-                    if (!m_objects->getUnit(unitIdOnMap)->isDead()) {
-                        itemToPlaceColor = Color::PlaceBad;
-                        auditType = "BAD";
-                    }
-                    // TODO: Allow placement, let units move aside when clicking before placement?
-                }
-
-                // Draw bad gfx on spot
-                float desiredWidth = m_mapCamera->getZoomedTileWidth();
-                float desiredHeight = m_mapCamera->getZoomedTileHeight();
-                float posX = iX * desiredWidth;
-                float posY = iY * desiredHeight;
-                // cRectangle rectangle = cRectangle(posX, posY, desiredWidth, desiredHeight);
-                if (uiaudit::isEnabled()) { uiaudit::recordLabel("place-cell", structureId, auditType, static_cast<int>(iDrawX + posX), static_cast<int>(iDrawY + posY), static_cast<int>(desiredWidth), static_cast<int>(desiredHeight), uiaudit::Rect{iDrawX, iDrawY, static_cast<int>(cellWidth * desiredWidth), static_cast<int>(cellHeight * desiredHeight)}); }
-                m_sdlDrawer->renderRectFillColor(iDrawX+posX, iDrawY+posY, desiredWidth, desiredHeight,itemToPlaceColor);
             }
+
+            const float desiredWidth = m_mapCamera->getZoomedTileWidth();
+            const float desiredHeight = m_mapCamera->getZoomedTileHeight();
+            const float posX = iX * desiredWidth;
+            const float posY = iY * desiredHeight;
+            if (uiaudit::isEnabled()) { uiaudit::recordLabel("place-cell", structureId, auditType, static_cast<int>(iDrawX + posX), static_cast<int>(iDrawY + posY), static_cast<int>(desiredWidth), static_cast<int>(desiredHeight), uiaudit::Rect{iDrawX, iDrawY, static_cast<int>(cellWidth * desiredWidth), static_cast<int>(cellHeight * desiredHeight)}); }
+            m_sdlDrawer->renderRectFillColor(iDrawX + posX, iDrawY + posY, desiredWidth, desiredHeight, itemToPlaceColor);
         }
     }
 }

@@ -15,10 +15,16 @@
 
 #pragma once
 
+#include "include/Facing.h"
+#include "utils/cRectangle.h"
+#include "gameobjects/units/cUnitInfos.h"
+
 class cUnit;
 class SDLDrawer;
 class Graphics;
 class cTextDrawer;
+class cMapCamera;
+class cPlayer;
 
 class cUnitDrawer {
 public:
@@ -26,6 +32,9 @@ public:
     ~cUnitDrawer() = default;
 
     void draw();
+    static cRectangle visualRectangleAt(cMapCamera *mapCamera, const s_UnitInfo &info, float x, float y);
+    static void drawSprites(SDLDrawer *renderer, cMapCamera *mapCamera, cPlayer *owner, int unitType, const s_UnitInfo &info,
+                            Facing bodyFacing, Facing headFacing, int frameIndex, const cRectangle &visual, bool drawTop);
     void draw_health();
     void draw_experience();
     void draw_spice();
