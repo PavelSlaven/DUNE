@@ -47,7 +47,7 @@ void cOptionsState::constructAdvancedWindow(int)
     m_guiWindow->setTheme(theme);
     m_guiWindow->setTitle(localization::text("Dune II - Settings", "Dune II — Настройки"));
 
-    const auto addTab = [this, theme, buttonKind](
+    const auto addTab = [this, theme](
                             const cRectangle &rect, std::string_view label, OptionsPage page) {
         auto button = GuiButtonBuilder()
                 .withRect(m_guiWindow->getRelativeRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()))
