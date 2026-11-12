@@ -1,0 +1,134 @@
+ревизия	что	путь@ревизия:строка	строка или значение
+FORK1	workflow-файл	.github/workflows/build_manual.yml@9208dcf:18	Windows job MSYS2; runs-on: [ windows-latest ]
+FORK1	Windows: шаг установки зависимостей	.github/workflows/build_manual.yml@9208dcf:23	      - name: Install MSYS2 with MinGW 64-bit
+FORK1	Windows: установка зависимостей	.github/workflows/build_manual.yml@9208dcf:24	        uses: msys2/setup-msys2@v2
+FORK1	Windows: установка зависимостей	.github/workflows/build_manual.yml@9208dcf:26	          msystem: MINGW64 # D2TM is built within a MinGW64 bit environment
+FORK1	Windows: установка зависимостей	.github/workflows/build_manual.yml@9208dcf:27	          update: true
+FORK1	Windows: установка зависимостей	.github/workflows/build_manual.yml@9208dcf:28	          install: git gzip zip unzip mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-SDL2 mingw64/mingw-w64-x86_64-SDL2_mixer mingw64/mingw-w64-x86_64-SDL2_image mingw64/mingw-w64-x86_64-SDL2_ttf mingw64/mingw-w64-x86_64-cmake
+FORK1	Windows: CMake configure	.github/workflows/build_manual.yml@9208dcf:46	cmake .. -DENV_D2TM_VERSION=${{inputs.tag}} -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles"
+FORK1	Windows: сборка	.github/workflows/build_manual.yml@9208dcf:50	cmake --build . --target all -- -j -l 3
+FORK1	Ubuntu job	.github/workflows/build_manual.yml@9208dcf:82	runs-on: [ ubuntu-latest ]
+FORK1	Ubuntu: шаг установки зависимостей	.github/workflows/build_manual.yml@9208dcf:96	      - name: Install dependencies
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_manual.yml@9208dcf:97	        run: |
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_manual.yml@9208dcf:98	          cd "${{ github.workspace }}"
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_manual.yml@9208dcf:99	          chmod +x install_dependencies_ubuntu.sh
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_manual.yml@9208dcf:100	          ./install_dependencies_ubuntu.sh
+FORK1	Ubuntu: CMake configure	.github/workflows/build_manual.yml@9208dcf:106	cmake .. -DENV_D2TM_VERSION=${{inputs.tag}} -DCMAKE_BUILD_TYPE=Release
+FORK1	Ubuntu: сборка	.github/workflows/build_manual.yml@9208dcf:110	make -j4
+FORK1	workflow-файл	.github/workflows/build_master.yml@9208dcf:15	Windows job MSYS2; runs-on: [ windows-latest ]
+FORK1	Windows: шаг установки зависимостей	.github/workflows/build_master.yml@9208dcf:20	      - name: Install MSYS2 with MinGW 64-bit
+FORK1	Windows: установка зависимостей	.github/workflows/build_master.yml@9208dcf:21	        uses: msys2/setup-msys2@v2
+FORK1	Windows: установка зависимостей	.github/workflows/build_master.yml@9208dcf:23	          msystem: MINGW64 # D2TM is built within a MinGW64 bit environment
+FORK1	Windows: установка зависимостей	.github/workflows/build_master.yml@9208dcf:24	          update: true
+FORK1	Windows: установка зависимостей	.github/workflows/build_master.yml@9208dcf:25	          install: git gzip zip unzip mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-SDL2 mingw64/mingw-w64-x86_64-SDL2_mixer mingw64/mingw-w64-x86_64-SDL2_image mingw64/mingw-w64-x86_64-SDL2_ttf mingw64/mingw-w64-x86_64-cmake
+FORK1	Windows: CMake configure	.github/workflows/build_master.yml@9208dcf:42	cmake .. -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles"
+FORK1	Windows: сборка	.github/workflows/build_master.yml@9208dcf:46	cmake --build . --target all -- -j -l 3
+FORK1	Ubuntu job	.github/workflows/build_master.yml@9208dcf:78	runs-on: [ ubuntu-latest ]
+FORK1	Ubuntu: шаг установки зависимостей	.github/workflows/build_master.yml@9208dcf:91	      - name: Install dependencies
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_master.yml@9208dcf:92	        run: |
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_master.yml@9208dcf:93	          cd "${{ github.workspace }}"
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_master.yml@9208dcf:94	          chmod +x install_dependencies_ubuntu.sh
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_master.yml@9208dcf:95	          ./install_dependencies_ubuntu.sh
+FORK1	Ubuntu: CMake configure	.github/workflows/build_master.yml@9208dcf:101	cmake .. -DCMAKE_BUILD_TYPE=Release
+FORK1	Ubuntu: сборка	.github/workflows/build_master.yml@9208dcf:105	make -j4
+FORK1	workflow-файл	.github/workflows/build_pr.yml@9208dcf:9	Windows job MSYS2; runs-on: [windows-latest]
+FORK1	Windows: шаг установки зависимостей	.github/workflows/build_pr.yml@9208dcf:14	      - name: Install MSYS2 with MinGW 64-bit
+FORK1	Windows: установка зависимостей	.github/workflows/build_pr.yml@9208dcf:15	        uses: msys2/setup-msys2@v2
+FORK1	Windows: установка зависимостей	.github/workflows/build_pr.yml@9208dcf:17	          msystem: MINGW64 # D2TM is built within a MinGW64 bit environment
+FORK1	Windows: установка зависимостей	.github/workflows/build_pr.yml@9208dcf:18	          update: true
+FORK1	Windows: установка зависимостей	.github/workflows/build_pr.yml@9208dcf:19	          install: mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-SDL2 mingw64/mingw-w64-x86_64-SDL2_mixer mingw64/mingw-w64-x86_64-SDL2_image mingw64/mingw-w64-x86_64-SDL2_ttf mingw64/mingw-w64-x86_64-cmake
+FORK1	Windows: CMake configure	.github/workflows/build_pr.yml@9208dcf:35	cmake .. -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles"
+FORK1	Windows: сборка	.github/workflows/build_pr.yml@9208dcf:39	cmake --build . --target all -- -j 4
+FORK1	Ubuntu job	.github/workflows/build_pr.yml@9208dcf:50	runs-on: [ ubuntu-latest ]
+FORK1	Ubuntu: шаг установки зависимостей	.github/workflows/build_pr.yml@9208dcf:62	      - name: Install dependencies
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_pr.yml@9208dcf:63	        run: |
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_pr.yml@9208dcf:64	          cd "${{ github.workspace }}"
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_pr.yml@9208dcf:65	          chmod +x install_dependencies_ubuntu.sh
+FORK1	Ubuntu: установка зависимостей	.github/workflows/build_pr.yml@9208dcf:66	          ./install_dependencies_ubuntu.sh
+FORK1	Ubuntu: CMake configure	.github/workflows/build_pr.yml@9208dcf:72	cmake .. -DCMAKE_BUILD_TYPE=Release
+FORK1	Ubuntu: сборка	.github/workflows/build_pr.yml@9208dcf:76	make -j4
+FORK1	workflow-файл	.github/workflows/release.yml@9208dcf:149	Windows job; runs-on: windows-latest
+FORK1	Windows: шаг установки зависимостей	.github/workflows/release.yml@9208dcf:154	      - name: Install MSYS2 toolchain
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:155	        uses: msys2/setup-msys2@v2
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:157	          msystem: MINGW64
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:158	          update: true
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:159	          install: >-
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:160	            git zip
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:161	            mingw-w64-x86_64-toolchain
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:162	            mingw-w64-x86_64-cmake
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:163	            mingw-w64-x86_64-ninja
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:164	            mingw-w64-x86_64-SDL2
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:165	            mingw-w64-x86_64-SDL2_image
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:166	            mingw-w64-x86_64-SDL2_ttf
+FORK1	Windows: установка зависимостей	.github/workflows/release.yml@9208dcf:167	            mingw-w64-x86_64-SDL2_mixer
+FORK1	Windows: CMake configure	.github/workflows/release.yml@9208dcf:179	cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+FORK1	Windows: сборка	.github/workflows/release.yml@9208dcf:180	cmake --build build --parallel 3
+FORK1	Linux job	.github/workflows/release.yml@9208dcf:215	runs-on: ubuntu-24.04
+FORK1	Linux: установка зависимостей	.github/workflows/release.yml@9208dcf:226	          sudo apt-get update
+FORK1	Linux: установка зависимостей	.github/workflows/release.yml@9208dcf:227	          sudo apt-get install -y \
+FORK1	Linux: установка зависимостей	.github/workflows/release.yml@9208dcf:228	            build-essential gcc-14 g++-14 cmake ninja-build pkg-config \
+FORK1	Linux: установка зависимостей	.github/workflows/release.yml@9208dcf:229	            libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+FORK1	Linux: CMake configure	.github/workflows/release.yml@9208dcf:236	          cmake -S . -B build -G Ninja \
+FORK1	Linux: CMake configure	.github/workflows/release.yml@9208dcf:237	            -DCMAKE_BUILD_TYPE=Release \
+FORK1	Linux: CMake configure	.github/workflows/release.yml@9208dcf:238	            -DCMAKE_C_COMPILER=gcc-14 \
+FORK1	Linux: CMake configure	.github/workflows/release.yml@9208dcf:239	            -DCMAKE_CXX_COMPILER=g++-14
+FORK1	Linux: сборка	.github/workflows/release.yml@9208dcf:240	cmake --build build --parallel 4
+FORK1	Ubuntu job без сборки приложения	.github/workflows/release.yml@9208dcf:27	prepare-release; runs-on: ubuntu-latest; проверяет тег и управляет черновиком релиза
+FORK1	Ubuntu job без сборки приложения	.github/workflows/release.yml@9208dcf:77	common-assets; runs-on: ubuntu-latest; архивирует ресурсы
+FORK1	Ubuntu job без сборки приложения	.github/workflows/release.yml@9208dcf:329	publish-release; runs-on: ubuntu-latest; публикует релиз
+FORK1	Ubuntu workflow без сборки	.github/workflows/release-notes.yml@9208dcf:8	runs-on: ubuntu-latest; шаги создают заметки релиза и страницу Wiki; шагов install dependencies/CMake/build нет
+FORK1	cmake_minimum_required	CMakeLists.txt@9208dcf:1	cmake_minimum_required(VERSION 3.21)
+FORK1	project	CMakeLists.txt@9208dcf:5	project(d2tm)
+FORK1	find_package	CMakeLists.txt@9208dcf:39	find_package(PkgConfig REQUIRED)
+FORK1	find_package	CMakeLists.txt@9208dcf:87	find_package(SDL2 REQUIRED)
+FORK1	find_package	CMakeLists.txt@9208dcf:88	find_package(SDL2_ttf REQUIRED)
+FORK1	find_package	CMakeLists.txt@9208dcf:89	find_package(SDL2_image REQUIRED)
+FORK1	find_package	CMakeLists.txt@9208dcf:90	find_package(SDL2_mixer REQUIRED)
+FORK1	add_subdirectory	CMakeLists.txt@9208dcf:95	add_subdirectory(src)
+FORK1	option	CMakeLists.txt@9208dcf:456	option(D2TM_UI_AUDIT_RUNTIME_TESTS "Run the UI audit tests that start the game; they need the real resources/ files" OFF)
+PORT	Аргументы: usage	tools/upstream/build_upstream_linux.sh@010a6eb:21	    printf 'Использование: %s <SHA базы апстрима> [--pristine]\n' "$0" >&2
+PORT	Аргументы: usage	tools/upstream/build_upstream_linux.sh@010a6eb:22	    exit 2
+PORT	Разбор аргументов	tools/upstream/build_upstream_linux.sh@010a6eb:276	if (( $# < 1 || $# > 2 )) || [[ ! ${1:-} =~ ^[[:xdigit:]]{40}$ ]] ||
+PORT	Разбор аргументов	tools/upstream/build_upstream_linux.sh@010a6eb:277	    { (( $# == 2 )) && [[ $2 != --pristine ]]; }; then
+PORT	Разбор аргументов	tools/upstream/build_upstream_linux.sh@010a6eb:278	    usage
+PORT	Разбор аргументов	tools/upstream/build_upstream_linux.sh@010a6eb:279	fi
+PORT	Сохранение ревизии	tools/upstream/build_upstream_linux.sh@010a6eb:280	upstream_base=$1
+PORT	Разбор аргументов	tools/upstream/build_upstream_linux.sh@010a6eb:281	pristine=0
+PORT	Разбор аргументов	tools/upstream/build_upstream_linux.sh@010a6eb:282	if (( $# == 2 )); then
+PORT	Разбор аргументов	tools/upstream/build_upstream_linux.sh@010a6eb:283	    pristine=1
+PORT	Разбор аргументов	tools/upstream/build_upstream_linux.sh@010a6eb:284	fi
+PORT	Применение ревизии: вывод HEAD и аргумента	tools/upstream/build_upstream_linux.sh@010a6eb:182	    printf 'База апстрима: %s; HEAD: %s\n' "$upstream_base" "$(git -C "$repo_root" rev-parse HEAD)"
+PORT	Применение ревизии: проверка ancestry	tools/upstream/build_upstream_linux.sh@010a6eb:183	    git -C "$repo_root" merge-base --is-ancestor "$upstream_base" HEAD ||
+PORT	Применение ревизии: проверка ancestry	tools/upstream/build_upstream_linux.sh@010a6eb:184	        question 'База апстрима не является предком HEAD.'
+PORT	Применение ревизии при --pristine	tools/upstream/build_upstream_linux.sh@010a6eb:185	    if [[ "$pristine" == 1 ]]; then
+PORT	Применение ревизии при --pristine	tools/upstream/build_upstream_linux.sh@010a6eb:186	        git -C "$repo_root" diff --quiet "$upstream_base" -- . ':(exclude)tools/upstream' ||
+PORT	Применение ревизии при --pristine	tools/upstream/build_upstream_linux.sh@010a6eb:187	            question 'Отслеживаемые файлы вне tools/upstream отличаются от базы апстрима.'
+FORK1	Пакет при запуске: GFXAUDIO	src/cGame_logic.cpp@9208dcf:1055,1106; resources/bin/settings.ini@9208dcf:70	resources/bin/data/sdl_audio.dat; Git blob 1315544 байта; обычный blob, первые байты cat-file: D2TMl\0MIDI_ATTACK01\0
+FORK1	Пакет при запуске: GFXDATA	src/cGame_logic.cpp@9208dcf:125,1047-1048; resources/bin/settings.ini@9208dcf:73	resources/bin/data/sdl_data_hd4.dat; Git blob 133 байта; указатель git-lfs
+FORK1	Пакет при запуске: GFXINTER	src/cGame_logic.cpp@9208dcf:126,1049-1050; resources/bin/settings.ini@9208dcf:74	resources/bin/data/sdl_inter_hd4.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Пакет при запуске: GFXMENTAT	src/cGame_logic.cpp@9208dcf:128,1053-1054; resources/bin/settings.ini@9208dcf:76	resources/bin/data/sdl_mentat_hd4.dat; Git blob 133 байта; указатель git-lfs
+FORK1	Пакет при запуске: GFXWORLD	src/cGame_logic.cpp@9208dcf:127,1051-1052; resources/bin/settings.ini@9208dcf:75	resources/bin/data/sdl_world_hd4.dat; Git blob 133 байта; указатель git-lfs
+FORK1	Шаблон динамической загрузки сцены	src/mentat/AbstractMentat.cpp@9208dcf:645-658	data/scenes/hd4/sdl_{}.dat; список файлов ниже; не является пакетом из первоначальной загрузки
+FORK1	Файл сцены HD4: sdl_harvest.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_harvest.dat; Git blob 133 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_headqrts.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_headqrts.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_hitcftry.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_hitcftry.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_hvyftry.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_hvyftry.dat; Git blob 133 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_ix.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_ix.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_liteftry.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_liteftry.dat; Git blob 133 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_lose01.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_lose01.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_lose02.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_lose02.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_ltank.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_ltank.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_palace.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_palace.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_platr.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_platr.dat; Git blob 133 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_plhar.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_plhar.dat; Git blob 133 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_plord.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_plord.dat; Git blob 134 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_quad.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_quad.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_repair.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_repair.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_sardukar.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_sardukar.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_win01.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_win01.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Файл сцены HD4: sdl_win02.dat	src/mentat/AbstractMentat.cpp@9208dcf:649-658	resources/bin/data/scenes/hd4/sdl_win02.dat; Git blob 132 байта; указатель git-lfs
+FORK1	Старая строка комментария, не загрузка	src/utils/cFileValidator.cpp@9208dcf:14	gfxdata.dat; commented out; отсутствует в списке ресурсов; пакет не открывается
+FORK1	Старая строка комментария, не загрузка	src/utils/cFileValidator.cpp@9208dcf:15	gfxinter.dat; commented out; отсутствует в списке ресурсов; пакет не открывается
+FORK1	Старая строка комментария, не загрузка	src/utils/cFileValidator.cpp@9208dcf:16	gfxworld.dat; commented out; отсутствует в списке ресурсов; пакет не открывается
+FORK1	Старая строка комментария, не загрузка	src/utils/cFileValidator.cpp@9208dcf:17	gfxmentat.dat; commented out; отсутствует в списке ресурсов; пакет не открывается
+FORK1	Старая строка комментария, не загрузка	src/utils/cFileValidator.cpp@9208dcf:18	gfxaudio.dat; commented out; отсутствует в списке ресурсов; пакет не открывается

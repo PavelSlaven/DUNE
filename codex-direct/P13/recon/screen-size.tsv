@@ -1,0 +1,146 @@
+ревизия	что	путь@ревизия:строка	строка кода
+FORK1	Аргумент -windowed зарегистрирован	src/utils/cHandleArgument.cpp@9208dcf:9	{"-windowed",               Options::WINDOWED},
+FORK1	Аргумент -screenWidth зарегистрирован	src/utils/cHandleArgument.cpp@9208dcf:19	{"-screenWidth",            Options::SCREENX},
+FORK1	Аргумент -screenHeight зарегистрирован	src/utils/cHandleArgument.cpp@9208dcf:20	{"-screenHeight",           Options::SCREENY},
+FORK1	- windowed записывается в поле настроек	src/utils/cHandleArgument.cpp@9208dcf:53	settings->windowed = true;
+FORK1	- screenWidth записывается в поле screenW	src/utils/cHandleArgument.cpp@9208dcf:86	settings->screenW = std::stoi(argv[i]);
+FORK1	- screenHeight записывается в поле screenH	src/utils/cHandleArgument.cpp@9208dcf:94	settings->screenH = std::stoi(argv[i]);
+FORK1	Поля и значения по умолчанию GameSettings	src/utils/GameSettings.hpp@9208dcf:7	int screenW = 800;
+FORK1	Поле и значение по умолчанию screenH	src/utils/GameSettings.hpp@9208dcf:8	int screenH = 600;
+FORK1	Поле и значение по умолчанию renderScalePercent	src/utils/GameSettings.hpp@9208dcf:9	int renderScalePercent = 0;
+FORK1	Аргумент --ui-audit-scales разбирается как строка разрешения для списка масштабов	src/debug/UiAuditArguments.cpp@9208dcf:26	else if (std::strcmp(argv[i], "--ui-audit-scales") == 0 && i + 1 < argc) {
+FORK1	--ui-audit-scales сохраняется в options.scales	src/debug/UiAuditArguments.cpp@9208dcf:27	            s_options.scales = argv[++i];
+FORK1	--ui-audit-scales обрабатывается с ранним выходом, не задаёт окно снимка	src/debug/UiAuditCapture.cpp@9208dcf:371	    if (!options().scales.empty()) {
+FORK1	Передача размеров в cScreenInit	src/cGame_logic.cpp@9208dcf:1075	m_Screen = std::make_unique<cScreenInit>(
+FORK1	Поля screenW/screenH копируются в поля cGame	src/cGame_logic.cpp@9208dcf:188	m_screenW = gs->screenW;
+FORK1	Высота копируется в поле cGame	src/cGame_logic.cpp@9208dcf:189	m_screenH = gs->screenH;
+FORK1	Передача ширины в cScreenInit	src/cGame_logic.cpp@9208dcf:1076	    m_screenW,
+FORK1	Передача высоты в cScreenInit	src/cGame_logic.cpp@9208dcf:1077	    m_screenH,
+FORK1	Аргументы cScreenInit включают render scale	src/cGame_logic.cpp@9208dcf:1078	    m_renderScalePercent,
+FORK1	Результат ширины холста возвращается в поле игры	src/cGame_logic.cpp@9208dcf:1085	m_screenW = m_Screen->Width();
+FORK1	Результат высоты холста возвращается в поле игры	src/cGame_logic.cpp@9208dcf:1086	m_screenH = m_Screen->Height();
+FORK1	Минимальная ширина outputResolution — 800	src/utils/RenderScale.hpp@9208dcf:12	constexpr int MinimumRenderWidth = 800;
+FORK1	Минимальная высота outputResolution — 600	src/utils/RenderScale.hpp@9208dcf:13	constexpr int MinimumRenderHeight = 600;
+FORK1	Запрошенная ширина ограничивается минимумом	src/utils/cScreenInit.cpp@9208dcf:66	        std::max(desiredWidth, MinimumRenderWidth),
+FORK1	Запрошенная высота ограничивается минимумом	src/utils/cScreenInit.cpp@9208dcf:67	        std::max(desiredHeight, MinimumRenderHeight)
+FORK1	Разрешение рабочего стола по умолчанию	src/utils/cScreenInit.cpp@9208dcf:51	    windowResolution = {800, 600};
+FORK1	Размер экрана читается через SDL_GetCurrentDisplayMode	src/utils/cScreenInit.cpp@9208dcf:52	    if (SDL_GetCurrentDisplayMode(0, &mode) == 0) {
+FORK1	При успешном чтении сохраняется ширина рабочего стола	src/utils/cScreenInit.cpp@9208dcf:54	        windowResolution.width = mode.w;
+FORK1	При успешном чтении сохраняется высота рабочего стола	src/utils/cScreenInit.cpp@9208dcf:55	        windowResolution.height = mode.h;
+FORK1	Для UI audit оконный размер равен outputResolution, проверка desktop fit пропускается	src/utils/cScreenInit.cpp@9208dcf:127	    if (uiaudit::isEnabled()) {
+FORK1	Для UI audit возвращается outputResolution	src/utils/cScreenInit.cpp@9208dcf:128	        return outputResolution;
+FORK1	Резервный доступный размер — размер рабочего стола	src/utils/cScreenInit.cpp@9208dcf:131	    int availableWidth = windowResolution.width;
+FORK1	Резервный доступный размер — высота рабочего стола	src/utils/cScreenInit.cpp@9208dcf:132	    int availableHeight = windowResolution.height;
+FORK1	Доступная область окна берётся через SDL_GetDisplayUsableBounds	src/utils/cScreenInit.cpp@9208dcf:133	    if (SDL_GetDisplayUsableBounds(0, &usableBounds) == 0) {
+FORK1	При наличии usable bounds подменяется доступная ширина	src/utils/cScreenInit.cpp@9208dcf:134	        availableWidth = usableBounds.w;
+FORK1	При наличии usable bounds подменяется доступная высота	src/utils/cScreenInit.cpp@9208dcf:135	        availableHeight = usableBounds.h;
+FORK1	Оконный размер уменьшается до размеров usable area через минимум коэффициентов	src/utils/cScreenInit.cpp@9208dcf:138	    const double fitScale = std::min({
+FORK1	Коэффициент не превышает 1	src/utils/cScreenInit.cpp@9208dcf:139	        1.0,
+FORK1	Ограничение по доступной ширине	src/utils/cScreenInit.cpp@9208dcf:140	        static_cast<double>(availableWidth) / outputResolution.width,
+FORK1	Ограничение по доступной высоте	src/utils/cScreenInit.cpp@9208dcf:141	        static_cast<double>(availableHeight) / outputResolution.height
+FORK1	После fit масштабированная ширина не ниже 1	src/utils/cScreenInit.cpp@9208dcf:144	        std::max(1, static_cast<int>(std::lround(outputResolution.width * fitScale))),
+FORK1	После fit масштабированная высота не ниже 1	src/utils/cScreenInit.cpp@9208dcf:145	        std::max(1, static_cast<int>(std::lround(outputResolution.height * fitScale)))
+FORK1	Оконный размер передаётся в SDL_CreateWindow	src/utils/cScreenInit.cpp@9208dcf:161	    window = SDL_CreateWindow(
+FORK1	SDL_CreateWindow получает ширину окна	src/utils/cScreenInit.cpp@9208dcf:165	        windowedSize.width,
+FORK1	SDL_CreateWindow получает высоту окна	src/utils/cScreenInit.cpp@9208dcf:166	        windowedSize.height,
+FORK1	Размер окна повторно задаётся через SDL_SetWindowSize	src/utils/cScreenInit.cpp@9208dcf:196	    SDL_SetWindowSize(window, windowedSize.width, windowedSize.height);
+FORK1	В меню разрешений текущий размер рабочего стола определяется через SDL_GetCurrentDisplayMode	src/gamestates/cOptionsState.cpp@9208dcf:140	    if (SDL_GetCurrentDisplayMode(0, &desktopMode) == 0) {
+FORK1	Стандартные разрешения меню ограничены размером рабочего стола	src/gamestates/cOptionsState.cpp@9208dcf:192	        if (resolution.width <= desktopWidth && resolution.height <= desktopHeight) {
+FORK1	Output размер нормализуется до минимумов	src/utils/RenderScale.cpp@9208dcf:9	    return std::max(outputWidth, MinimumRenderWidth);
+FORK1	Output высота нормализуется до минимумов	src/utils/RenderScale.cpp@9208dcf:14	    return std::max(outputHeight, MinimumRenderHeight);
+FORK1	Автоматический масштаб берёт меньший из горизонтального и вертикального	src/utils/RenderScale.cpp@9208dcf:23	    return std::min(horizontalScale, verticalScale);
+FORK1	Холст вычисляется из output размера и выбранного масштаба	src/utils/cScreenInit.cpp@9208dcf:90	    const RenderCanvasSize canvas = calculateRenderCanvasSize(
+FORK1	В расчёт холста передаётся ширина outputResolution	src/utils/cScreenInit.cpp@9208dcf:91	        outputResolution.width,
+FORK1	В расчёт холста передаётся высота outputResolution	src/utils/cScreenInit.cpp@9208dcf:92	        outputResolution.height,
+FORK1	В расчёт холста передаётся выбранный масштаб	src/utils/cScreenInit.cpp@9208dcf:93	        selectedScale
+FORK1	Результат расчёта становится renderResolution	src/utils/cScreenInit.cpp@9208dcf:95	    renderResolution = {canvas.width, canvas.height};
+FORK1	Полноэкранный режим меняет размер окна на desktop fullscreen	src/utils/cScreenInit.cpp@9208dcf:15	    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+FORK1	Полноэкранный режим сохраняет логический размер renderResolution	src/utils/cScreenInit.cpp@9208dcf:16	    SDL_RenderSetLogicalSize(renderer, renderResolution.width, renderResolution.height);
+FORK1	Размеры логического холста передаются renderer	src/utils/cScreenInit.cpp@9208dcf:198	    SDL_RenderSetLogicalSize(renderer, renderResolution.width, renderResolution.height);
+FORK1	Ширина холста ограничивается минимумом 800	src/utils/RenderScale.cpp@9208dcf:64	        std::max(
+FORK1	Значение ширины холста после расчёта	src/utils/RenderScale.cpp@9208dcf:66	            static_cast<int>(std::lround(static_cast<double>(width) / scale))
+FORK1	Высота холста ограничивается минимумом 600	src/utils/RenderScale.cpp@9208dcf:68	        std::max(
+FORK1	Значение высоты холста после расчёта	src/utils/RenderScale.cpp@9208dcf:70	            static_cast<int>(std::lround(static_cast<double>(height) / scale))
+PORT	Аргумент --ui-audit-scales разбирается как строка разрешения для списка масштабов	src/debug/UiAuditArguments.cpp@010a6eb:26	else if (std::strcmp(argv[i], "--ui-audit-scales") == 0 && i + 1 < argc) {
+PORT	--ui-audit-scales сохраняется в options.scales	src/debug/UiAuditArguments.cpp@010a6eb:27	            s_options.scales = argv[++i];
+PORT	--ui-audit-scales обрабатывается с ранним выходом, не задаёт окно снимка	src/debug/UiAuditCapture.cpp@010a6eb:390	    if (!options().scales.empty()) {
+PORT	Аргумент -windowed зарегистрирован	src/utils/cHandleArgument.cpp@010a6eb:23	{"-windowed",               Options::WINDOWED},
+PORT	Аргумент -fullscreen зарегистрирован	src/utils/cHandleArgument.cpp@010a6eb:24	{"-fullscreen",             Options::FULLSCREEN},
+PORT	Аргумент -screenWidth зарегистрирован	src/utils/cHandleArgument.cpp@010a6eb:34	{"-screenWidth",            Options::SCREENX},
+PORT	Аргумент -screenHeight зарегистрирован	src/utils/cHandleArgument.cpp@010a6eb:35	{"-screenHeight",           Options::SCREENY},
+PORT	-windowed записывается в поле настроек	src/utils/cHandleArgument.cpp@010a6eb:72	                settings->windowed = true;
+PORT	-fullscreen записывается как windowed=false	src/utils/cHandleArgument.cpp@010a6eb:75	                settings->windowed = false;
+PORT	-screenWidth записывается в поле screenW	src/utils/cHandleArgument.cpp@010a6eb:108	                    settings->screenW = std::stoi(argv[i]);
+PORT	-screenHeight записывается в поле screenH	src/utils/cHandleArgument.cpp@010a6eb:116	                    settings->screenH = std::stoi(argv[i]);
+PORT	Поля и значения по умолчанию screenW и screenH	src/utils/InitialGameSettings.hpp@010a6eb:20	    int screenW = 800;
+PORT	Поле screenH и значение по умолчанию	src/utils/InitialGameSettings.hpp@010a6eb:21	    int screenH = 600;
+PORT	Поле renderScalePercent и значение по умолчанию	src/utils/InitialGameSettings.hpp@010a6eb:27	    int renderScalePercent = 0;
+PORT	Ширина из InitialGameSettings передаётся в cGameSettings	src/game/cGame_logic.cpp@010a6eb:322	    m_gameSettings->m_screenW = gs->screenW;
+PORT	Высота из InitialGameSettings передаётся в cGameSettings	src/game/cGame_logic.cpp@010a6eb:328	    m_gameSettings->m_screenH = gs->screenH;
+PORT	Внутреннее поле игрового разрешения screenW	src/game/cGameSettings.h@010a6eb:169	    int m_screenW;
+PORT	Внутреннее поле игрового разрешения screenH	src/game/cGameSettings.h@010a6eb:170	    int m_screenH;
+PORT	Создание cSDLSystem получает размеры и режим окна из настроек	src/game/cGame_logic.cpp@010a6eb:786	    m_Screen = std::make_unique<cSDLSystem>(m_gameSettings->m_screenW, m_gameSettings->m_screenH, title, m_windowed);
+PORT	Запрошенная ширина ограничивается минимумом	src/game/cSDLSystem.cpp@010a6eb:202	    if (desiredWidth<MIN_RENDER_WIDTH)
+PORT	Ширина назначается минимумом 800	src/game/cSDLSystem.cpp@010a6eb:203	        desiredWidth = MIN_RENDER_WIDTH;
+PORT	Запрошенная высота ограничивается минимумом	src/game/cSDLSystem.cpp@010a6eb:204	    if (desiredHeight<MIN_RENDER_HEIGHT)
+PORT	Высота назначается минимумом 600	src/game/cSDLSystem.cpp@010a6eb:205	        desiredHeight = MIN_RENDER_HEIGHT;
+PORT	Для UI audit desktop-based изменение разрешения обходится после min clamp	src/game/cSDLSystem.cpp@010a6eb:207	    if (uiaudit::isEnabled()) {
+PORT	UI audit ширина renderResolution равна desiredWidth	src/game/cSDLSystem.cpp@010a6eb:208	        renderResolution.width = desiredWidth;
+PORT	UI audit высота renderResolution равна desiredHeight	src/game/cSDLSystem.cpp@010a6eb:209	        renderResolution.height = desiredHeight;
+PORT	UI audit выходит до расчёта относительно desktop	src/game/cSDLSystem.cpp@010a6eb:211	        return;
+PORT	SDL3 display bounds задают ширину экрана в логических пикселях	src/game/cSDLSystem.cpp@010a6eb:120	    if (SDL_GetDisplayBounds(SDL_GetPrimaryDisplay(), &bounds)) {
+PORT	Display bounds сохраняют ширину рабочего стола	src/game/cSDLSystem.cpp@010a6eb:122	        windowResolution.width = bounds.w;
+PORT	Display bounds сохраняют высоту рабочего стола	src/game/cSDLSystem.cpp@010a6eb:123	        windowResolution.height = bounds.h;
+PORT	usableResolution изначально равна display bounds	src/game/cSDLSystem.cpp@010a6eb:130	    usableResolution = windowResolution;
+PORT	usable desktop bounds меняют ширину usableResolution	src/game/cSDLSystem.cpp@010a6eb:132	    if (SDL_GetDisplayUsableBounds(SDL_GetPrimaryDisplay(), &usableBounds)) {
+PORT	usable desktop bounds сохраняют ширину	src/game/cSDLSystem.cpp@010a6eb:134	        usableResolution.width = usableBounds.w;
+PORT	usable desktop bounds сохраняют высоту	src/game/cSDLSystem.cpp@010a6eb:135	        usableResolution.height = usableBounds.h;
+PORT	Вне UI audit ширина/высота сначала вычисляются с аспектом display	src/game/cSDLSystem.cpp@010a6eb:214	    int tmpWidth =  windowResolution.width * desiredHeight / windowResolution.height;
+PORT	Сравнение ширины с желаемой шириной определяет размер renderResolution	src/game/cSDLSystem.cpp@010a6eb:215	    if (tmpWidth > desiredWidth) {
+PORT	Первый вариант сохраняет desiredHeight	src/game/cSDLSystem.cpp@010a6eb:216	        renderResolution.height = desiredHeight;
+PORT	Первый вариант назначает ширину с аспектом display	src/game/cSDLSystem.cpp@010a6eb:217	        renderResolution.width = tmpWidth;
+PORT	Второй вариант сохраняет desiredWidth	src/game/cSDLSystem.cpp@010a6eb:219	        renderResolution.width = desiredWidth;
+PORT	Второй вариант вычисляет высоту с аспектом display	src/game/cSDLSystem.cpp@010a6eb:220	        renderResolution.height = windowResolution.height * desiredWidth / windowResolution.width;
+PORT	Запрошенная ширина ограничивается шириной дисплея через std::min	src/game/cSDLSystem.cpp@010a6eb:228	    renderResolution.width = std::min(renderResolution.width, windowResolution.width);
+PORT	Запрошенная высота ограничивается высотой дисплея через std::min	src/game/cSDLSystem.cpp@010a6eb:229	    renderResolution.height = std::min(renderResolution.height, windowResolution.height);
+PORT	Проверка ограничивает подгонку размерами usable area	src/game/cSDLSystem.cpp@010a6eb:146	    if (usableResolution.width < MIN_RENDER_WIDTH || usableResolution.height < MIN_RENDER_HEIGHT) {
+PORT	Если desktop меньше минимума, исходное разрешение оставляется	src/game/cSDLSystem.cpp@010a6eb:147	        return; // desktop too small to honour, keep what we have
+PORT	Если renderResolution уже помещается, fit завершается	src/game/cSDLSystem.cpp@010a6eb:150	    if (renderResolution.width <= usableResolution.width &&
+PORT	Проверка высоты fit завершается при вмещении	src/game/cSDLSystem.cpp@010a6eb:151	            renderResolution.height <= usableResolution.height) {
+PORT	Fit выбирает ширину не больше usable bounds	src/game/cSDLSystem.cpp@010a6eb:155	    int fittedWidth = std::min(renderResolution.width, usableResolution.width);
+PORT	Fit вычисляет пропорциональную высоту	src/game/cSDLSystem.cpp@010a6eb:156	    int fittedHeight = renderResolution.height * fittedWidth / renderResolution.width;
+PORT	Если пропорциональная высота больше usable bounds, она ограничивается	src/game/cSDLSystem.cpp@010a6eb:158	    if (fittedHeight > usableResolution.height) {
+PORT	Высота ограничивается usable bounds	src/game/cSDLSystem.cpp@010a6eb:159	        fittedHeight = usableResolution.height;
+PORT	Ширина пересчитывается при ограничении высоты	src/game/cSDLSystem.cpp@010a6eb:160	        fittedWidth = renderResolution.width * fittedHeight / renderResolution.height;
+PORT	После fit ширина не ниже UI минимума	src/game/cSDLSystem.cpp@010a6eb:163	    renderResolution.width = std::max(fittedWidth, MIN_RENDER_WIDTH);
+PORT	После fit высота не ниже UI минимума	src/game/cSDLSystem.cpp@010a6eb:164	    renderResolution.height = std::max(fittedHeight, MIN_RENDER_HEIGHT);
+PORT	При создании окна запрашиваются renderResolution.width и renderResolution.height	src/game/cSDLSystem.cpp@010a6eb:306	    window = SDL_CreateWindow(title.c_str(), renderResolution.width, renderResolution.height, 0);
+PORT	После создания окно получает тот же размер	src/game/cSDLSystem.cpp@010a6eb:338	    SDL_SetWindowSize(window, renderResolution.width, renderResolution.height);
+PORT	В оконном режиме после SDL_SetWindowSize сверяется фактический renderer output	src/game/cSDLSystem.cpp@010a6eb:340	    if (windowed) {
+PORT	Сверка фактического размера окна обновляет renderResolution или оставляет letterbox	src/game/cSDLSystem.cpp@010a6eb:343	        syncRenderResolutionToWindow();
+PORT	Полноэкранный режим переключает SDL window в fullscreen	src/game/cSDLSystem.cpp@010a6eb:87	    SDL_SetWindowFullscreen(window, true);
+PORT	Fullscreen canvas выбирает коэффициент по размеру renderer output	src/game/cSDLSystem.cpp@010a6eb:48	    float scaleToFillScreen = std::min(static_cast<float>(renderW) / static_cast<float>(canvasResolution.width),
+PORT	Fullscreen canvas выбирает коэффициент по высоте renderer output	src/game/cSDLSystem.cpp@010a6eb:49	                                       static_cast<float>(renderH) / static_cast<float>(canvasResolution.height));
+PORT	Fullscreen использует letterbox presentation с canvasResolution	src/game/cSDLSystem.cpp@010a6eb:51	    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+PORT	Фактический output проверяется против renderResolution	src/game/cSDLSystem.cpp@010a6eb:183	    if (outputWidth == renderResolution.width && outputHeight == renderResolution.height) return;
+PORT	Фактический размер ниже минимума не принимается	src/game/cSDLSystem.cpp@010a6eb:185	    if (outputWidth < MIN_RENDER_WIDTH || outputHeight < MIN_RENDER_HEIGHT) {
+PORT	Фактическая output ширина принимается как renderResolution	src/game/cSDLSystem.cpp@010a6eb:195	    renderResolution.width = outputWidth;
+PORT	Фактическая output высота принимается как renderResolution	src/game/cSDLSystem.cpp@010a6eb:196	    renderResolution.height = outputHeight;
+PORT	Минимальная ширина canvas	src/utils/RenderScale.hpp@010a6eb:12	constexpr int MinimumRenderWidth = 800;
+PORT	Минимальная высота canvas	src/utils/RenderScale.hpp@010a6eb:13	constexpr int MinimumRenderHeight = 600;
+PORT	Output ширина нормализуется до минимума	src/utils/RenderScale.cpp@010a6eb:9	    return std::max(outputWidth, MinimumRenderWidth);
+PORT	Output высота нормализуется до минимума	src/utils/RenderScale.cpp@010a6eb:14	    return std::max(outputHeight, MinimumRenderHeight);
+PORT	Автоматический масштаб берёт меньший горизонтальный/вертикальный множитель	src/utils/RenderScale.cpp@010a6eb:23	    return std::min(horizontalScale, verticalScale);
+PORT	Холст вычисляется из SDL render output в applyRenderScale	src/game/cSDLSystem.cpp@010a6eb:65	    SDL_GetRenderOutputSize(renderer, &outputWidth, &outputHeight);
+PORT	Измеренный output записывается	src/game/cSDLSystem.cpp@010a6eb:66	    outputResolution = {outputWidth, outputHeight};
+PORT	Функция вычисляет холст из output и выбранного масштаба	src/game/cSDLSystem.cpp@010a6eb:74	    const RenderCanvasSize canvas = calculateRenderCanvasSize(outputWidth, outputHeight, selectedScale);
+PORT	Результат расчёта задаёт canvasResolution	src/game/cSDLSystem.cpp@010a6eb:75	    canvasResolution = {canvas.width, canvas.height};
+PORT	Размеры canvas передаются в logical presentation	src/game/cSDLSystem.cpp@010a6eb:76	    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+PORT	Выбранное canvas шириной возвращается игрой как Width()	src/game/cSDLSystem.h@010a6eb:42	    int Width() const {
+PORT	Width() читает canvasResolution.width	src/game/cSDLSystem.h@010a6eb:43	        return canvasResolution.width;
+PORT	Выбранное canvas высотой возвращается игрой как Height()	src/game/cSDLSystem.h@010a6eb:45	    int Height() const {
+PORT	Height() читает canvasResolution.height	src/game/cSDLSystem.h@010a6eb:46	        return canvasResolution.height;
+PORT	applyRenderScale вызывается после создания окна	src/game/cGame_logic.cpp@010a6eb:790	    m_Screen->applyRenderScale(m_gameSettings->m_renderScalePercent);
+PORT	Размер canvas переносится в m_screenW	src/game/cGame_logic.cpp@010a6eb:805	    m_gameSettings->m_screenW = m_Screen->Width();
+PORT	Размер canvas переносится в m_screenH	src/game/cGame_logic.cpp@010a6eb:806	    m_gameSettings->m_screenH = m_Screen->Height();
+PORT	SDL_SetRenderLogicalPresentation в ctor получает canvasResolution	src/game/cSDLSystem.cpp@010a6eb:346	    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);

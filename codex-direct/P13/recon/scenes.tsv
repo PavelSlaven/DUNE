@@ -1,0 +1,343 @@
+ревизия	идентификатор	регистрация	функция подготовки	состояние	строка состояния
+FORK1	main-menu	src/debug/UiAuditScenes.cpp@9208dcf:363	prepareMainMenu	GAME_MENU	src/debug/UiAuditScenes.cpp@9208dcf:50
+FORK1	region-atreides-intro-1	src/debug/UiAuditScenes.cpp@9208dcf:364	prepareRegion<ATREIDES, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-intro-2	src/debug/UiAuditScenes.cpp@9208dcf:365	prepareRegion<ATREIDES, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-intro-3	src/debug/UiAuditScenes.cpp@9208dcf:366	prepareRegion<ATREIDES, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-conquer-3	src/debug/UiAuditScenes.cpp@9208dcf:367	prepareRegion<ATREIDES, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-conquer-5	src/debug/UiAuditScenes.cpp@9208dcf:368	prepareRegion<ATREIDES, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-conquer-7	src/debug/UiAuditScenes.cpp@9208dcf:369	prepareRegion<ATREIDES, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-conquer-9	src/debug/UiAuditScenes.cpp@9208dcf:370	prepareRegion<ATREIDES, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-select-2	src/debug/UiAuditScenes.cpp@9208dcf:371	prepareRegion<ATREIDES, 2, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-select-3	src/debug/UiAuditScenes.cpp@9208dcf:372	prepareRegion<ATREIDES, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-select-4	src/debug/UiAuditScenes.cpp@9208dcf:373	prepareRegion<ATREIDES, 4, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-select-5	src/debug/UiAuditScenes.cpp@9208dcf:374	prepareRegion<ATREIDES, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-select-6	src/debug/UiAuditScenes.cpp@9208dcf:375	prepareRegion<ATREIDES, 6, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-select-7	src/debug/UiAuditScenes.cpp@9208dcf:376	prepareRegion<ATREIDES, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-select-8	src/debug/UiAuditScenes.cpp@9208dcf:377	prepareRegion<ATREIDES, 8, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-atreides-select-9	src/debug/UiAuditScenes.cpp@9208dcf:378	prepareRegion<ATREIDES, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-intro-1	src/debug/UiAuditScenes.cpp@9208dcf:379	prepareRegion<HARKONNEN, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-intro-2	src/debug/UiAuditScenes.cpp@9208dcf:380	prepareRegion<HARKONNEN, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-intro-3	src/debug/UiAuditScenes.cpp@9208dcf:381	prepareRegion<HARKONNEN, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-conquer-3	src/debug/UiAuditScenes.cpp@9208dcf:382	prepareRegion<HARKONNEN, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-conquer-5	src/debug/UiAuditScenes.cpp@9208dcf:383	prepareRegion<HARKONNEN, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-conquer-7	src/debug/UiAuditScenes.cpp@9208dcf:384	prepareRegion<HARKONNEN, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-conquer-9	src/debug/UiAuditScenes.cpp@9208dcf:385	prepareRegion<HARKONNEN, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-select-2	src/debug/UiAuditScenes.cpp@9208dcf:386	prepareRegion<HARKONNEN, 2, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-select-3	src/debug/UiAuditScenes.cpp@9208dcf:387	prepareRegion<HARKONNEN, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-select-4	src/debug/UiAuditScenes.cpp@9208dcf:388	prepareRegion<HARKONNEN, 4, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-select-5	src/debug/UiAuditScenes.cpp@9208dcf:389	prepareRegion<HARKONNEN, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-select-6	src/debug/UiAuditScenes.cpp@9208dcf:390	prepareRegion<HARKONNEN, 6, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-select-7	src/debug/UiAuditScenes.cpp@9208dcf:391	prepareRegion<HARKONNEN, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-select-8	src/debug/UiAuditScenes.cpp@9208dcf:392	prepareRegion<HARKONNEN, 8, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-harkonnen-select-9	src/debug/UiAuditScenes.cpp@9208dcf:393	prepareRegion<HARKONNEN, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-intro-1	src/debug/UiAuditScenes.cpp@9208dcf:394	prepareRegion<ORDOS, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-intro-2	src/debug/UiAuditScenes.cpp@9208dcf:395	prepareRegion<ORDOS, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-intro-3	src/debug/UiAuditScenes.cpp@9208dcf:396	prepareRegion<ORDOS, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-conquer-3	src/debug/UiAuditScenes.cpp@9208dcf:397	prepareRegion<ORDOS, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-conquer-5	src/debug/UiAuditScenes.cpp@9208dcf:398	prepareRegion<ORDOS, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-conquer-7	src/debug/UiAuditScenes.cpp@9208dcf:399	prepareRegion<ORDOS, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-conquer-9	src/debug/UiAuditScenes.cpp@9208dcf:400	prepareRegion<ORDOS, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-select-2	src/debug/UiAuditScenes.cpp@9208dcf:401	prepareRegion<ORDOS, 2, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-select-3	src/debug/UiAuditScenes.cpp@9208dcf:402	prepareRegion<ORDOS, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-select-4	src/debug/UiAuditScenes.cpp@9208dcf:403	prepareRegion<ORDOS, 4, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-select-5	src/debug/UiAuditScenes.cpp@9208dcf:404	prepareRegion<ORDOS, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-select-6	src/debug/UiAuditScenes.cpp@9208dcf:405	prepareRegion<ORDOS, 6, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-select-7	src/debug/UiAuditScenes.cpp@9208dcf:406	prepareRegion<ORDOS, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-select-8	src/debug/UiAuditScenes.cpp@9208dcf:407	prepareRegion<ORDOS, 8, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	region-ordos-select-9	src/debug/UiAuditScenes.cpp@9208dcf:408	prepareRegion<ORDOS, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@9208dcf:51
+FORK1	choose-house	src/debug/UiAuditScenes.cpp@9208dcf:409	prepareChooseHouse	GAME_SELECT_HOUSE	src/debug/UiAuditScenes.cpp@9208dcf:52
+FORK1	select-mission-atreides	src/debug/UiAuditScenes.cpp@9208dcf:410	prepareSelectMission<ATREIDES>	GAME_MISSIONSELECT	src/debug/UiAuditScenes.cpp@9208dcf:53
+FORK1	select-mission-harkonnen	src/debug/UiAuditScenes.cpp@9208dcf:411	prepareSelectMission<HARKONNEN>	GAME_MISSIONSELECT	src/debug/UiAuditScenes.cpp@9208dcf:53
+FORK1	select-mission-ordos	src/debug/UiAuditScenes.cpp@9208dcf:413	prepareSelectMission<ORDOS>	GAME_MISSIONSELECT	src/debug/UiAuditScenes.cpp@9208dcf:53
+FORK1	tellhouse-atreides-speak	src/debug/UiAuditScenes.cpp@9208dcf:414	prepareTellHouse<ATREIDES, false>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@9208dcf:54
+FORK1	tellhouse-atreides-await	src/debug/UiAuditScenes.cpp@9208dcf:416	prepareTellHouse<ATREIDES, true>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@9208dcf:54
+FORK1	tellhouse-harkonnen-speak	src/debug/UiAuditScenes.cpp@9208dcf:418	prepareTellHouse<HARKONNEN, false>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@9208dcf:54
+FORK1	tellhouse-harkonnen-await	src/debug/UiAuditScenes.cpp@9208dcf:420	prepareTellHouse<HARKONNEN, true>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@9208dcf:54
+FORK1	tellhouse-ordos-speak	src/debug/UiAuditScenes.cpp@9208dcf:422	prepareTellHouse<ORDOS, false>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@9208dcf:54
+FORK1	tellhouse-ordos-await	src/debug/UiAuditScenes.cpp@9208dcf:424	prepareTellHouse<ORDOS, true>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@9208dcf:54
+FORK1	mentat-briefing-atreides-speak	src/debug/UiAuditScenes.cpp@9208dcf:426	prepareMentat<ATREIDES, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@9208dcf:427
+FORK1	mentat-briefing-atreides-await	src/debug/UiAuditScenes.cpp@9208dcf:428	prepareMentat<ATREIDES, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@9208dcf:429
+FORK1	mentat-win-atreides-speak	src/debug/UiAuditScenes.cpp@9208dcf:430	prepareMentat<ATREIDES, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:431
+FORK1	mentat-win-atreides-await	src/debug/UiAuditScenes.cpp@9208dcf:432	prepareMentat<ATREIDES, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:433
+FORK1	mentat-lose-atreides-speak	src/debug/UiAuditScenes.cpp@9208dcf:434	prepareMentat<ATREIDES, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:435
+FORK1	mentat-lose-atreides-await	src/debug/UiAuditScenes.cpp@9208dcf:436	prepareMentat<ATREIDES, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:437
+FORK1	mentat-briefing-harkonnen-speak	src/debug/UiAuditScenes.cpp@9208dcf:438	prepareMentat<HARKONNEN, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@9208dcf:439
+FORK1	mentat-briefing-harkonnen-await	src/debug/UiAuditScenes.cpp@9208dcf:440	prepareMentat<HARKONNEN, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@9208dcf:441
+FORK1	mentat-win-harkonnen-speak	src/debug/UiAuditScenes.cpp@9208dcf:442	prepareMentat<HARKONNEN, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:443
+FORK1	mentat-win-harkonnen-await	src/debug/UiAuditScenes.cpp@9208dcf:444	prepareMentat<HARKONNEN, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:445
+FORK1	mentat-lose-harkonnen-speak	src/debug/UiAuditScenes.cpp@9208dcf:446	prepareMentat<HARKONNEN, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:447
+FORK1	mentat-lose-harkonnen-await	src/debug/UiAuditScenes.cpp@9208dcf:448	prepareMentat<HARKONNEN, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:449
+FORK1	mentat-briefing-ordos-speak	src/debug/UiAuditScenes.cpp@9208dcf:450	prepareMentat<ORDOS, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@9208dcf:451
+FORK1	mentat-briefing-ordos-await	src/debug/UiAuditScenes.cpp@9208dcf:452	prepareMentat<ORDOS, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@9208dcf:453
+FORK1	mentat-win-ordos-speak	src/debug/UiAuditScenes.cpp@9208dcf:454	prepareMentat<ORDOS, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:455
+FORK1	mentat-win-ordos-await	src/debug/UiAuditScenes.cpp@9208dcf:456	prepareMentat<ORDOS, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:457
+FORK1	mentat-lose-ordos-speak	src/debug/UiAuditScenes.cpp@9208dcf:458	prepareMentat<ORDOS, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:459
+FORK1	mentat-lose-ordos-await	src/debug/UiAuditScenes.cpp@9208dcf:460	prepareMentat<ORDOS, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@9208dcf:461
+FORK1	skirmish-setup-random	src/debug/UiAuditScenes.cpp@9208dcf:462	prepareSkirmishSetup<0>	GAME_SETUPSKIRMISH	src/debug/UiAuditScenes.cpp@9208dcf:61
+FORK1	skirmish-setup-ready-map	src/debug/UiAuditScenes.cpp@9208dcf:463	prepareSkirmishSetup<1>	GAME_SETUPSKIRMISH	src/debug/UiAuditScenes.cpp@9208dcf:61
+FORK1	outcome-win	src/debug/UiAuditScenes.cpp@9208dcf:465	prepareOutcome<true>	GAME_WINNING	src/debug/UiAuditScenes.cpp@9208dcf:466
+FORK1	outcome-lose	src/debug/UiAuditScenes.cpp@9208dcf:467	prepareOutcome<false>	GAME_LOSING	src/debug/UiAuditScenes.cpp@9208dcf:468
+FORK1	options-menu-main	src/debug/UiAuditScenes.cpp@9208dcf:469	prepareOptionsMenu<0>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:55
+FORK1	options-menu-applied	src/debug/UiAuditScenes.cpp@9208dcf:471	prepareOptionsMenu<1>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:55
+FORK1	options-menu-game	src/debug/UiAuditScenes.cpp@9208dcf:473	prepareOptionsMenu<2>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:55
+FORK1	options-menu-controls	src/debug/UiAuditScenes.cpp@9208dcf:475	prepareOptionsMenu<3>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:55
+FORK1	options-menu-diagnostics	src/debug/UiAuditScenes.cpp@9208dcf:477	prepareOptionsMenu<4>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:55
+FORK1	options-menu-keybind	src/debug/UiAuditScenes.cpp@9208dcf:479	prepareOptionsMenu<5>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:55
+FORK1	main-menu-saves	src/debug/UiAuditScenes.cpp@9208dcf:481	prepareMenuWithSaves	GAME_MENU	src/debug/UiAuditScenes.cpp@9208dcf:50
+FORK1	save-dialog-menu	src/debug/UiAuditScenes.cpp@9208dcf:482	prepareMenuWithSaves	GAME_MENU	src/debug/UiAuditScenes.cpp@9208dcf:57
+FORK1	options-game-main-saves	src/debug/UiAuditScenes.cpp@9208dcf:484	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:56
+FORK1	options-game-main-nosaves	src/debug/UiAuditScenes.cpp@9208dcf:486	prepareGameOptions<false>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:56
+FORK1	options-game-applied	src/debug/UiAuditScenes.cpp@9208dcf:488	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:56
+FORK1	options-game-game	src/debug/UiAuditScenes.cpp@9208dcf:490	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:56
+FORK1	options-game-controls	src/debug/UiAuditScenes.cpp@9208dcf:492	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:56
+FORK1	options-game-diagnostics	src/debug/UiAuditScenes.cpp@9208dcf:494	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:56
+FORK1	options-game-keybind	src/debug/UiAuditScenes.cpp@9208dcf:496	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:56
+FORK1	save-dialog-load	src/debug/UiAuditScenes.cpp@9208dcf:498	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:58
+FORK1	save-dialog-save-new	src/debug/UiAuditScenes.cpp@9208dcf:500	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:58
+FORK1	save-dialog-overwrite	src/debug/UiAuditScenes.cpp@9208dcf:502	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:58
+FORK1	save-dialog-load-error	src/debug/UiAuditScenes.cpp@9208dcf:504	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:58
+FORK1	save-dialog-save-error	src/debug/UiAuditScenes.cpp@9208dcf:506	prepareGameOptions<true>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@9208dcf:58
+FORK1	credits-title	src/debug/UiAuditScenes.cpp@9208dcf:508	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@9208dcf:59
+FORK1	credits-1	src/debug/UiAuditScenes.cpp@9208dcf:509	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@9208dcf:59
+FORK1	credits-2	src/debug/UiAuditScenes.cpp@9208dcf:510	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@9208dcf:59
+FORK1	credits-3	src/debug/UiAuditScenes.cpp@9208dcf:511	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@9208dcf:59
+FORK1	credits-4	src/debug/UiAuditScenes.cpp@9208dcf:512	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@9208dcf:59
+FORK1	credits-5	src/debug/UiAuditScenes.cpp@9208dcf:513	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@9208dcf:59
+FORK1	structure-label-top	src/debug/UiAuditScenes.cpp@9208dcf:514	prepareStructureLabel<0>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	structure-label-right	src/debug/UiAuditScenes.cpp@9208dcf:516	prepareStructureLabel<1>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-trike	src/debug/UiAuditScenes.cpp@9208dcf:518	prepareUnitLabels<TRIKE>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-raider	src/debug/UiAuditScenes.cpp@9208dcf:519	prepareUnitLabels<RAIDER>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-quad	src/debug/UiAuditScenes.cpp@9208dcf:520	prepareUnitLabels<QUAD>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-tank	src/debug/UiAuditScenes.cpp@9208dcf:521	prepareUnitLabels<TANK>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-siegetank	src/debug/UiAuditScenes.cpp@9208dcf:522	prepareUnitLabels<SIEGETANK>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-launcher	src/debug/UiAuditScenes.cpp@9208dcf:523	prepareUnitLabels<LAUNCHER>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-deviator	src/debug/UiAuditScenes.cpp@9208dcf:524	prepareUnitLabels<DEVIATOR>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-sonictank	src/debug/UiAuditScenes.cpp@9208dcf:525	prepareUnitLabels<SONICTANK>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-devastator	src/debug/UiAuditScenes.cpp@9208dcf:526	prepareUnitLabels<DEVASTATOR>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-harvester	src/debug/UiAuditScenes.cpp@9208dcf:527	prepareUnitLabels<HARVESTER>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-mcv	src/debug/UiAuditScenes.cpp@9208dcf:528	prepareUnitLabels<MCV>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-soldier	src/debug/UiAuditScenes.cpp@9208dcf:529	prepareUnitLabels<SOLDIER>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-infantry	src/debug/UiAuditScenes.cpp@9208dcf:530	prepareUnitLabels<INFANTRY>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-trooper	src/debug/UiAuditScenes.cpp@9208dcf:531	prepareUnitLabels<TROOPER>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-troopers	src/debug/UiAuditScenes.cpp@9208dcf:532	prepareUnitLabels<TROOPERS>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-unit-fremen-one	src/debug/UiAuditScenes.cpp@9208dcf:533	prepareUnitLabels<UNIT_FREMEN_ONE>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-unit-fremen-three	src/debug/UiAuditScenes.cpp@9208dcf:534	prepareUnitLabels<UNIT_FREMEN_THREE>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	units-label-saboteur	src/debug/UiAuditScenes.cpp@9208dcf:535	prepareUnitLabels<SABOTEUR>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-hud	src/debug/UiAuditScenes.cpp@9208dcf:536	prepareGame<ATREIDES, uiaudit::Hud>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-music	src/debug/UiAuditScenes.cpp@9208dcf:537	prepareGame<ATREIDES, uiaudit::Music>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-command-damaged-unit	src/debug/UiAuditScenes.cpp@9208dcf:538	prepareGame<ATREIDES, uiaudit::DamagedUnit>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-command-harvester	src/debug/UiAuditScenes.cpp@9208dcf:539	prepareGame<ATREIDES, uiaudit::Harvester>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-command-mcv	src/debug/UiAuditScenes.cpp@9208dcf:540	prepareGame<ATREIDES, uiaudit::Mcv>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-structure-selected	src/debug/UiAuditScenes.cpp@9208dcf:541	prepareGame<ATREIDES, uiaudit::Structure>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-list-build	src/debug/UiAuditScenes.cpp@9208dcf:542	prepareGame<ATREIDES, uiaudit::ListBuild>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-list-infantry	src/debug/UiAuditScenes.cpp@9208dcf:543	prepareGame<ATREIDES, uiaudit::ListInfantry>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-list-vehicles	src/debug/UiAuditScenes.cpp@9208dcf:544	prepareGame<ATREIDES, uiaudit::ListVehicles>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-list-starport	src/debug/UiAuditScenes.cpp@9208dcf:545	prepareGame<ATREIDES, uiaudit::ListStarport>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-list-palace	src/debug/UiAuditScenes.cpp@9208dcf:546	prepareGame<ATREIDES, uiaudit::ListPalace>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-list-upgrades	src/debug/UiAuditScenes.cpp@9208dcf:547	prepareGame<ATREIDES, uiaudit::ListUpgrades>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-radar-none	src/debug/UiAuditScenes.cpp@9208dcf:548	prepareGame<ATREIDES, uiaudit::RadarNone>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-radar-nopower	src/debug/UiAuditScenes.cpp@9208dcf:549	prepareGame<ATREIDES, uiaudit::RadarNoPower>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-place-allowed	src/debug/UiAuditScenes.cpp@9208dcf:550	prepareGame<ATREIDES, uiaudit::PlaceAllowed>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-place-forbidden	src/debug/UiAuditScenes.cpp@9208dcf:551	prepareGame<ATREIDES, uiaudit::PlaceForbidden>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-group-select	src/debug/UiAuditScenes.cpp@9208dcf:552	prepareGame<ATREIDES, uiaudit::GroupSelect>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-messages	src/debug/UiAuditScenes.cpp@9208dcf:553	prepareGame<ATREIDES, uiaudit::Messages>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-item-hover	src/debug/UiAuditScenes.cpp@9208dcf:554	prepareGame<ATREIDES, uiaudit::ItemHover>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-list-scroll-end	src/debug/UiAuditScenes.cpp@9208dcf:555	prepareGame<ATREIDES, uiaudit::ScrollEnd>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-rally-point	src/debug/UiAuditScenes.cpp@9208dcf:556	prepareGame<ATREIDES, uiaudit::Rally>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-harkonnen-list-build	src/debug/UiAuditScenes.cpp@9208dcf:557	prepareGame<HARKONNEN, uiaudit::ListBuild>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-harkonnen-list-infantry	src/debug/UiAuditScenes.cpp@9208dcf:558	prepareGame<HARKONNEN, uiaudit::ListInfantry>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-harkonnen-list-vehicles	src/debug/UiAuditScenes.cpp@9208dcf:559	prepareGame<HARKONNEN, uiaudit::ListVehicles>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-harkonnen-list-starport	src/debug/UiAuditScenes.cpp@9208dcf:560	prepareGame<HARKONNEN, uiaudit::ListStarport>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-harkonnen-list-palace	src/debug/UiAuditScenes.cpp@9208dcf:561	prepareGame<HARKONNEN, uiaudit::ListPalace>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-harkonnen-list-upgrades	src/debug/UiAuditScenes.cpp@9208dcf:562	prepareGame<HARKONNEN, uiaudit::ListUpgrades>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-ordos-list-build	src/debug/UiAuditScenes.cpp@9208dcf:563	prepareGame<ORDOS, uiaudit::ListBuild>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-ordos-list-infantry	src/debug/UiAuditScenes.cpp@9208dcf:564	prepareGame<ORDOS, uiaudit::ListInfantry>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-ordos-list-vehicles	src/debug/UiAuditScenes.cpp@9208dcf:565	prepareGame<ORDOS, uiaudit::ListVehicles>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-ordos-list-starport	src/debug/UiAuditScenes.cpp@9208dcf:566	prepareGame<ORDOS, uiaudit::ListStarport>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-ordos-list-palace	src/debug/UiAuditScenes.cpp@9208dcf:567	prepareGame<ORDOS, uiaudit::ListPalace>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+FORK1	game-ordos-list-upgrades	src/debug/UiAuditScenes.cpp@9208dcf:568	prepareGame<ORDOS, uiaudit::ListUpgrades>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@9208dcf:60
+PORT	main-menu	src/debug/UiAuditScenes.cpp@010a6eb:378	prepareMainMenu	GAME_MENU	src/debug/UiAuditScenes.cpp@010a6eb:47
+PORT	main-menu-saves	src/debug/UiAuditScenes.cpp@010a6eb:379	prepareMenuWithSaves	GAME_MENU	src/debug/UiAuditScenes.cpp@010a6eb:47
+PORT	region-atreides-intro-1	src/debug/UiAuditScenes.cpp@010a6eb:380	prepareRegion<ATREIDES, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-intro-2	src/debug/UiAuditScenes.cpp@010a6eb:381	prepareRegion<ATREIDES, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-intro-3	src/debug/UiAuditScenes.cpp@010a6eb:382	prepareRegion<ATREIDES, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-conquer-3	src/debug/UiAuditScenes.cpp@010a6eb:383	prepareRegion<ATREIDES, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-conquer-5	src/debug/UiAuditScenes.cpp@010a6eb:384	prepareRegion<ATREIDES, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-conquer-7	src/debug/UiAuditScenes.cpp@010a6eb:385	prepareRegion<ATREIDES, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-conquer-9	src/debug/UiAuditScenes.cpp@010a6eb:386	prepareRegion<ATREIDES, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-select-2	src/debug/UiAuditScenes.cpp@010a6eb:387	prepareRegion<ATREIDES, 2, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-select-3	src/debug/UiAuditScenes.cpp@010a6eb:388	prepareRegion<ATREIDES, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-select-4	src/debug/UiAuditScenes.cpp@010a6eb:389	prepareRegion<ATREIDES, 4, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-select-5	src/debug/UiAuditScenes.cpp@010a6eb:390	prepareRegion<ATREIDES, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-select-6	src/debug/UiAuditScenes.cpp@010a6eb:391	prepareRegion<ATREIDES, 6, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-select-7	src/debug/UiAuditScenes.cpp@010a6eb:392	prepareRegion<ATREIDES, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-select-8	src/debug/UiAuditScenes.cpp@010a6eb:393	prepareRegion<ATREIDES, 8, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-atreides-select-9	src/debug/UiAuditScenes.cpp@010a6eb:394	prepareRegion<ATREIDES, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-intro-1	src/debug/UiAuditScenes.cpp@010a6eb:395	prepareRegion<HARKONNEN, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-intro-2	src/debug/UiAuditScenes.cpp@010a6eb:396	prepareRegion<HARKONNEN, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-intro-3	src/debug/UiAuditScenes.cpp@010a6eb:397	prepareRegion<HARKONNEN, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-conquer-3	src/debug/UiAuditScenes.cpp@010a6eb:398	prepareRegion<HARKONNEN, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-conquer-5	src/debug/UiAuditScenes.cpp@010a6eb:399	prepareRegion<HARKONNEN, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-conquer-7	src/debug/UiAuditScenes.cpp@010a6eb:400	prepareRegion<HARKONNEN, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-conquer-9	src/debug/UiAuditScenes.cpp@010a6eb:401	prepareRegion<HARKONNEN, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-select-2	src/debug/UiAuditScenes.cpp@010a6eb:402	prepareRegion<HARKONNEN, 2, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-select-3	src/debug/UiAuditScenes.cpp@010a6eb:403	prepareRegion<HARKONNEN, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-select-4	src/debug/UiAuditScenes.cpp@010a6eb:404	prepareRegion<HARKONNEN, 4, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-select-5	src/debug/UiAuditScenes.cpp@010a6eb:405	prepareRegion<HARKONNEN, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-select-6	src/debug/UiAuditScenes.cpp@010a6eb:406	prepareRegion<HARKONNEN, 6, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-select-7	src/debug/UiAuditScenes.cpp@010a6eb:407	prepareRegion<HARKONNEN, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-select-8	src/debug/UiAuditScenes.cpp@010a6eb:408	prepareRegion<HARKONNEN, 8, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-harkonnen-select-9	src/debug/UiAuditScenes.cpp@010a6eb:409	prepareRegion<HARKONNEN, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-intro-1	src/debug/UiAuditScenes.cpp@010a6eb:410	prepareRegion<ORDOS, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-intro-2	src/debug/UiAuditScenes.cpp@010a6eb:411	prepareRegion<ORDOS, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-intro-3	src/debug/UiAuditScenes.cpp@010a6eb:412	prepareRegion<ORDOS, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-conquer-3	src/debug/UiAuditScenes.cpp@010a6eb:413	prepareRegion<ORDOS, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-conquer-5	src/debug/UiAuditScenes.cpp@010a6eb:414	prepareRegion<ORDOS, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-conquer-7	src/debug/UiAuditScenes.cpp@010a6eb:415	prepareRegion<ORDOS, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-conquer-9	src/debug/UiAuditScenes.cpp@010a6eb:416	prepareRegion<ORDOS, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-select-2	src/debug/UiAuditScenes.cpp@010a6eb:417	prepareRegion<ORDOS, 2, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-select-3	src/debug/UiAuditScenes.cpp@010a6eb:418	prepareRegion<ORDOS, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-select-4	src/debug/UiAuditScenes.cpp@010a6eb:419	prepareRegion<ORDOS, 4, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-select-5	src/debug/UiAuditScenes.cpp@010a6eb:420	prepareRegion<ORDOS, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-select-6	src/debug/UiAuditScenes.cpp@010a6eb:421	prepareRegion<ORDOS, 6, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-select-7	src/debug/UiAuditScenes.cpp@010a6eb:422	prepareRegion<ORDOS, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-select-8	src/debug/UiAuditScenes.cpp@010a6eb:423	prepareRegion<ORDOS, 8, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-ordos-select-9	src/debug/UiAuditScenes.cpp@010a6eb:424	prepareRegion<ORDOS, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-intro-1	src/debug/UiAuditScenes.cpp@010a6eb:425	prepareRegion<SARDAUKAR, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-intro-2	src/debug/UiAuditScenes.cpp@010a6eb:426	prepareRegion<SARDAUKAR, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-intro-3	src/debug/UiAuditScenes.cpp@010a6eb:427	prepareRegion<SARDAUKAR, 1, false>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-conquer-3	src/debug/UiAuditScenes.cpp@010a6eb:428	prepareRegion<SARDAUKAR, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-conquer-5	src/debug/UiAuditScenes.cpp@010a6eb:429	prepareRegion<SARDAUKAR, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-conquer-7	src/debug/UiAuditScenes.cpp@010a6eb:430	prepareRegion<SARDAUKAR, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-conquer-9	src/debug/UiAuditScenes.cpp@010a6eb:431	prepareRegion<SARDAUKAR, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-select-2	src/debug/UiAuditScenes.cpp@010a6eb:432	prepareRegion<SARDAUKAR, 2, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-select-3	src/debug/UiAuditScenes.cpp@010a6eb:433	prepareRegion<SARDAUKAR, 3, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-select-4	src/debug/UiAuditScenes.cpp@010a6eb:434	prepareRegion<SARDAUKAR, 4, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-select-5	src/debug/UiAuditScenes.cpp@010a6eb:435	prepareRegion<SARDAUKAR, 5, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-select-6	src/debug/UiAuditScenes.cpp@010a6eb:436	prepareRegion<SARDAUKAR, 6, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-select-7	src/debug/UiAuditScenes.cpp@010a6eb:437	prepareRegion<SARDAUKAR, 7, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-select-8	src/debug/UiAuditScenes.cpp@010a6eb:438	prepareRegion<SARDAUKAR, 8, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	region-sardaukar-select-9	src/debug/UiAuditScenes.cpp@010a6eb:439	prepareRegion<SARDAUKAR, 9, true>	GAME_REGION	src/debug/UiAuditScenes.cpp@010a6eb:48
+PORT	choose-house	src/debug/UiAuditScenes.cpp@010a6eb:440	prepareChooseHouse	GAME_SELECT_HOUSE	src/debug/UiAuditScenes.cpp@010a6eb:49
+PORT	select-mission-atreides	src/debug/UiAuditScenes.cpp@010a6eb:441	prepareSelectMission<ATREIDES>	GAME_MISSIONSELECT	src/debug/UiAuditScenes.cpp@010a6eb:50
+PORT	select-mission-harkonnen	src/debug/UiAuditScenes.cpp@010a6eb:442	prepareSelectMission<HARKONNEN>	GAME_MISSIONSELECT	src/debug/UiAuditScenes.cpp@010a6eb:50
+PORT	select-mission-ordos	src/debug/UiAuditScenes.cpp@010a6eb:443	prepareSelectMission<ORDOS>	GAME_MISSIONSELECT	src/debug/UiAuditScenes.cpp@010a6eb:50
+PORT	select-mission-sardaukar	src/debug/UiAuditScenes.cpp@010a6eb:444	prepareSelectMission<SARDAUKAR>	GAME_MISSIONSELECT	src/debug/UiAuditScenes.cpp@010a6eb:50
+PORT	tellhouse-atreides-speak	src/debug/UiAuditScenes.cpp@010a6eb:445	prepareTellHouse<ATREIDES, false>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@010a6eb:51
+PORT	tellhouse-atreides-await	src/debug/UiAuditScenes.cpp@010a6eb:446	prepareTellHouse<ATREIDES, true>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@010a6eb:51
+PORT	tellhouse-harkonnen-speak	src/debug/UiAuditScenes.cpp@010a6eb:447	prepareTellHouse<HARKONNEN, false>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@010a6eb:51
+PORT	tellhouse-harkonnen-await	src/debug/UiAuditScenes.cpp@010a6eb:448	prepareTellHouse<HARKONNEN, true>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@010a6eb:51
+PORT	tellhouse-ordos-speak	src/debug/UiAuditScenes.cpp@010a6eb:449	prepareTellHouse<ORDOS, false>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@010a6eb:51
+PORT	tellhouse-ordos-await	src/debug/UiAuditScenes.cpp@010a6eb:450	prepareTellHouse<ORDOS, true>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@010a6eb:51
+PORT	tellhouse-sardaukar-speak	src/debug/UiAuditScenes.cpp@010a6eb:451	prepareTellHouse<SARDAUKAR, false>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@010a6eb:51
+PORT	tellhouse-sardaukar-await	src/debug/UiAuditScenes.cpp@010a6eb:452	prepareTellHouse<SARDAUKAR, true>	GAME_TELLHOUSE	src/debug/UiAuditScenes.cpp@010a6eb:51
+PORT	mentat-briefing-atreides-speak	src/debug/UiAuditScenes.cpp@010a6eb:453	prepareMentat<ATREIDES, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@010a6eb:453
+PORT	mentat-briefing-atreides-await	src/debug/UiAuditScenes.cpp@010a6eb:454	prepareMentat<ATREIDES, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@010a6eb:454
+PORT	mentat-win-atreides-speak	src/debug/UiAuditScenes.cpp@010a6eb:455	prepareMentat<ATREIDES, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:455
+PORT	mentat-win-atreides-await	src/debug/UiAuditScenes.cpp@010a6eb:456	prepareMentat<ATREIDES, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:456
+PORT	mentat-lose-atreides-speak	src/debug/UiAuditScenes.cpp@010a6eb:457	prepareMentat<ATREIDES, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:457
+PORT	mentat-lose-atreides-await	src/debug/UiAuditScenes.cpp@010a6eb:458	prepareMentat<ATREIDES, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:458
+PORT	mentat-briefing-harkonnen-speak	src/debug/UiAuditScenes.cpp@010a6eb:459	prepareMentat<HARKONNEN, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@010a6eb:459
+PORT	mentat-briefing-harkonnen-await	src/debug/UiAuditScenes.cpp@010a6eb:460	prepareMentat<HARKONNEN, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@010a6eb:460
+PORT	mentat-win-harkonnen-speak	src/debug/UiAuditScenes.cpp@010a6eb:461	prepareMentat<HARKONNEN, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:461
+PORT	mentat-win-harkonnen-await	src/debug/UiAuditScenes.cpp@010a6eb:462	prepareMentat<HARKONNEN, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:462
+PORT	mentat-lose-harkonnen-speak	src/debug/UiAuditScenes.cpp@010a6eb:463	prepareMentat<HARKONNEN, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:463
+PORT	mentat-lose-harkonnen-await	src/debug/UiAuditScenes.cpp@010a6eb:464	prepareMentat<HARKONNEN, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:464
+PORT	mentat-briefing-ordos-speak	src/debug/UiAuditScenes.cpp@010a6eb:465	prepareMentat<ORDOS, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@010a6eb:465
+PORT	mentat-briefing-ordos-await	src/debug/UiAuditScenes.cpp@010a6eb:466	prepareMentat<ORDOS, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@010a6eb:466
+PORT	mentat-win-ordos-speak	src/debug/UiAuditScenes.cpp@010a6eb:467	prepareMentat<ORDOS, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:467
+PORT	mentat-win-ordos-await	src/debug/UiAuditScenes.cpp@010a6eb:468	prepareMentat<ORDOS, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:468
+PORT	mentat-lose-ordos-speak	src/debug/UiAuditScenes.cpp@010a6eb:469	prepareMentat<ORDOS, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:469
+PORT	mentat-lose-ordos-await	src/debug/UiAuditScenes.cpp@010a6eb:470	prepareMentat<ORDOS, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:470
+PORT	mentat-briefing-sardaukar-speak	src/debug/UiAuditScenes.cpp@010a6eb:471	prepareMentat<SARDAUKAR, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@010a6eb:471
+PORT	mentat-briefing-sardaukar-await	src/debug/UiAuditScenes.cpp@010a6eb:472	prepareMentat<SARDAUKAR, 0>	GAME_BRIEFING	src/debug/UiAuditScenes.cpp@010a6eb:472
+PORT	mentat-win-sardaukar-speak	src/debug/UiAuditScenes.cpp@010a6eb:473	prepareMentat<SARDAUKAR, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:473
+PORT	mentat-win-sardaukar-await	src/debug/UiAuditScenes.cpp@010a6eb:474	prepareMentat<SARDAUKAR, 1>	GAME_WINBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:474
+PORT	mentat-lose-sardaukar-speak	src/debug/UiAuditScenes.cpp@010a6eb:475	prepareMentat<SARDAUKAR, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:475
+PORT	mentat-lose-sardaukar-await	src/debug/UiAuditScenes.cpp@010a6eb:476	prepareMentat<SARDAUKAR, 2>	GAME_LOSEBRIEF	src/debug/UiAuditScenes.cpp@010a6eb:476
+PORT	skirmish-setup-random	src/debug/UiAuditScenes.cpp@010a6eb:477	prepareSkirmishSetup<0>	GAME_SETUPSKIRMISH	src/debug/UiAuditScenes.cpp@010a6eb:54
+PORT	skirmish-setup-ready-map	src/debug/UiAuditScenes.cpp@010a6eb:478	prepareSkirmishSetup<1>	GAME_SETUPSKIRMISH	src/debug/UiAuditScenes.cpp@010a6eb:54
+PORT	options-menu-main	src/debug/UiAuditScenes.cpp@010a6eb:479	prepareOptionsMenu<0>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@010a6eb:52
+PORT	options-menu-applied	src/debug/UiAuditScenes.cpp@010a6eb:480	prepareOptionsMenu<1>	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@010a6eb:52
+PORT	credits-title	src/debug/UiAuditScenes.cpp@010a6eb:481	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@010a6eb:53
+PORT	credits-1	src/debug/UiAuditScenes.cpp@010a6eb:482	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@010a6eb:53
+PORT	credits-2	src/debug/UiAuditScenes.cpp@010a6eb:483	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@010a6eb:53
+PORT	credits-3	src/debug/UiAuditScenes.cpp@010a6eb:484	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@010a6eb:53
+PORT	credits-4	src/debug/UiAuditScenes.cpp@010a6eb:485	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@010a6eb:53
+PORT	credits-5	src/debug/UiAuditScenes.cpp@010a6eb:486	prepareCredits	GAME_CREDITS	src/debug/UiAuditScenes.cpp@010a6eb:53
+PORT	outcome-win	src/debug/UiAuditScenes.cpp@010a6eb:487	prepareOutcome<true>	GAME_WINNING	src/debug/UiAuditScenes.cpp@010a6eb:488
+PORT	outcome-lose	src/debug/UiAuditScenes.cpp@010a6eb:489	prepareOutcome<false>	GAME_LOSING	src/debug/UiAuditScenes.cpp@010a6eb:490
+PORT	scoring	src/debug/UiAuditScenes.cpp@010a6eb:491	prepareOutcome<true>	GAME_SCORING	src/debug/UiAuditScenes.cpp@010a6eb:59
+PORT	editor-new-map	src/debug/UiAuditScenes.cpp@010a6eb:492	prepareNewMapEditor	GAME_NEW_MAP_EDITOR	src/debug/UiAuditScenes.cpp@010a6eb:60
+PORT	editor-topology	src/debug/UiAuditScenes.cpp@010a6eb:493	prepareEditor<0>	GAME_EDITOR	src/debug/UiAuditScenes.cpp@010a6eb:61
+PORT	editor-start-cells	src/debug/UiAuditScenes.cpp@010a6eb:494	prepareEditor<1>	GAME_EDITOR	src/debug/UiAuditScenes.cpp@010a6eb:61
+PORT	editor-symmetry	src/debug/UiAuditScenes.cpp@010a6eb:495	prepareEditor<2>	GAME_EDITOR	src/debug/UiAuditScenes.cpp@010a6eb:61
+PORT	options-game-main-nosaves	src/debug/UiAuditScenes.cpp@010a6eb:496	prepareGameOptions	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@010a6eb:56
+PORT	save-dialog-menu	src/debug/UiAuditScenes.cpp@010a6eb:497	prepareMenuWithSaves	GAME_MENU	src/debug/UiAuditScenes.cpp@010a6eb:57
+PORT	options-game-main-saves	src/debug/UiAuditScenes.cpp@010a6eb:499	prepareGameOptionsWithSaves	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@010a6eb:56
+PORT	save-dialog-load	src/debug/UiAuditScenes.cpp@010a6eb:501	prepareGameOptionsWithSaves	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@010a6eb:58
+PORT	save-dialog-save-new	src/debug/UiAuditScenes.cpp@010a6eb:503	prepareGameOptionsWithSaves	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@010a6eb:58
+PORT	save-dialog-overwrite	src/debug/UiAuditScenes.cpp@010a6eb:505	prepareGameOptionsWithSaves	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@010a6eb:58
+PORT	save-dialog-load-error	src/debug/UiAuditScenes.cpp@010a6eb:507	prepareGameOptionsWithSaves	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@010a6eb:58
+PORT	save-dialog-save-error	src/debug/UiAuditScenes.cpp@010a6eb:509	prepareGameOptionsWithSaves	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@010a6eb:58
+PORT	save-roundtrip	src/debug/UiAuditScenes.cpp@010a6eb:511	prepareSaveRoundTrip	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	options-game-applied	src/debug/UiAuditScenes.cpp@010a6eb:512	prepareGameOptions	GAME_OPTIONS	src/debug/UiAuditScenes.cpp@010a6eb:56
+PORT	structure-label-top	src/debug/UiAuditScenes.cpp@010a6eb:513	prepareStructureLabel<0>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	structure-label-right	src/debug/UiAuditScenes.cpp@010a6eb:515	prepareStructureLabel<1>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-trike	src/debug/UiAuditScenes.cpp@010a6eb:517	prepareUnitLabels<TRIKE>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-raider	src/debug/UiAuditScenes.cpp@010a6eb:518	prepareUnitLabels<RAIDER>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-quad	src/debug/UiAuditScenes.cpp@010a6eb:519	prepareUnitLabels<QUAD>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-tank	src/debug/UiAuditScenes.cpp@010a6eb:520	prepareUnitLabels<TANK>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-siegetank	src/debug/UiAuditScenes.cpp@010a6eb:521	prepareUnitLabels<SIEGETANK>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-launcher	src/debug/UiAuditScenes.cpp@010a6eb:522	prepareUnitLabels<LAUNCHER>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-deviator	src/debug/UiAuditScenes.cpp@010a6eb:523	prepareUnitLabels<DEVIATOR>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-sonictank	src/debug/UiAuditScenes.cpp@010a6eb:524	prepareUnitLabels<SONICTANK>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-devastator	src/debug/UiAuditScenes.cpp@010a6eb:525	prepareUnitLabels<DEVASTATOR>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-harvester	src/debug/UiAuditScenes.cpp@010a6eb:526	prepareUnitLabels<HARVESTER>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-mcv	src/debug/UiAuditScenes.cpp@010a6eb:527	prepareUnitLabels<MCV>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-soldier	src/debug/UiAuditScenes.cpp@010a6eb:528	prepareUnitLabels<SOLDIER>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-infantry	src/debug/UiAuditScenes.cpp@010a6eb:529	prepareUnitLabels<INFANTRY>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-trooper	src/debug/UiAuditScenes.cpp@010a6eb:530	prepareUnitLabels<TROOPER>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-troopers	src/debug/UiAuditScenes.cpp@010a6eb:531	prepareUnitLabels<TROOPERS>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-unit-fremen-one	src/debug/UiAuditScenes.cpp@010a6eb:532	prepareUnitLabels<UNIT_FREMEN_ONE>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-unit-fremen-three	src/debug/UiAuditScenes.cpp@010a6eb:533	prepareUnitLabels<UNIT_FREMEN_THREE>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	units-label-saboteur	src/debug/UiAuditScenes.cpp@010a6eb:534	prepareUnitLabels<SABOTEUR>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-hud	src/debug/UiAuditScenes.cpp@010a6eb:535	prepareGame<ATREIDES, uiaudit::Hud>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-music	src/debug/UiAuditScenes.cpp@010a6eb:536	prepareGame<ATREIDES, uiaudit::Music>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-structure-selected	src/debug/UiAuditScenes.cpp@010a6eb:537	prepareGame<ATREIDES, uiaudit::Structure>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-list-build	src/debug/UiAuditScenes.cpp@010a6eb:538	prepareGame<ATREIDES, uiaudit::ListBuild>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-list-infantry	src/debug/UiAuditScenes.cpp@010a6eb:539	prepareGame<ATREIDES, uiaudit::ListInfantry>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-list-vehicles	src/debug/UiAuditScenes.cpp@010a6eb:540	prepareGame<ATREIDES, uiaudit::ListVehicles>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-list-starport	src/debug/UiAuditScenes.cpp@010a6eb:541	prepareGame<ATREIDES, uiaudit::ListStarport>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-list-palace	src/debug/UiAuditScenes.cpp@010a6eb:542	prepareGame<ATREIDES, uiaudit::ListPalace>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-list-upgrades	src/debug/UiAuditScenes.cpp@010a6eb:543	prepareGame<ATREIDES, uiaudit::ListUpgrades>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-radar-none	src/debug/UiAuditScenes.cpp@010a6eb:544	prepareGame<ATREIDES, uiaudit::RadarNone>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-radar-nopower	src/debug/UiAuditScenes.cpp@010a6eb:545	prepareGame<ATREIDES, uiaudit::RadarNoPower>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-place-allowed	src/debug/UiAuditScenes.cpp@010a6eb:546	prepareGame<ATREIDES, uiaudit::PlaceAllowed>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-place-forbidden	src/debug/UiAuditScenes.cpp@010a6eb:547	prepareGame<ATREIDES, uiaudit::PlaceForbidden>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-group-select	src/debug/UiAuditScenes.cpp@010a6eb:548	prepareGame<ATREIDES, uiaudit::GroupSelect>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-messages	src/debug/UiAuditScenes.cpp@010a6eb:549	prepareGame<ATREIDES, uiaudit::Messages>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-item-hover	src/debug/UiAuditScenes.cpp@010a6eb:550	prepareGame<ATREIDES, uiaudit::ItemHover>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-list-scroll-end	src/debug/UiAuditScenes.cpp@010a6eb:551	prepareGame<ATREIDES, uiaudit::ScrollEnd>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-rally-point	src/debug/UiAuditScenes.cpp@010a6eb:552	prepareGame<ATREIDES, uiaudit::Rally>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-command-damaged-unit	src/debug/UiAuditScenes.cpp@010a6eb:553	prepareGame<ATREIDES, uiaudit::DamagedUnit>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-command-harvester	src/debug/UiAuditScenes.cpp@010a6eb:554	prepareGame<ATREIDES, uiaudit::Harvester>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-command-mcv	src/debug/UiAuditScenes.cpp@010a6eb:555	prepareGame<ATREIDES, uiaudit::Mcv>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-harkonnen-list-build	src/debug/UiAuditScenes.cpp@010a6eb:556	prepareGame<HARKONNEN, uiaudit::ListBuild>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-harkonnen-list-infantry	src/debug/UiAuditScenes.cpp@010a6eb:557	prepareGame<HARKONNEN, uiaudit::ListInfantry>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-harkonnen-list-vehicles	src/debug/UiAuditScenes.cpp@010a6eb:558	prepareGame<HARKONNEN, uiaudit::ListVehicles>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-harkonnen-list-starport	src/debug/UiAuditScenes.cpp@010a6eb:559	prepareGame<HARKONNEN, uiaudit::ListStarport>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-harkonnen-list-palace	src/debug/UiAuditScenes.cpp@010a6eb:560	prepareGame<HARKONNEN, uiaudit::ListPalace>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-harkonnen-list-upgrades	src/debug/UiAuditScenes.cpp@010a6eb:561	prepareGame<HARKONNEN, uiaudit::ListUpgrades>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-ordos-list-build	src/debug/UiAuditScenes.cpp@010a6eb:562	prepareGame<ORDOS, uiaudit::ListBuild>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-ordos-list-infantry	src/debug/UiAuditScenes.cpp@010a6eb:563	prepareGame<ORDOS, uiaudit::ListInfantry>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-ordos-list-vehicles	src/debug/UiAuditScenes.cpp@010a6eb:564	prepareGame<ORDOS, uiaudit::ListVehicles>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-ordos-list-starport	src/debug/UiAuditScenes.cpp@010a6eb:565	prepareGame<ORDOS, uiaudit::ListStarport>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-ordos-list-palace	src/debug/UiAuditScenes.cpp@010a6eb:566	prepareGame<ORDOS, uiaudit::ListPalace>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-ordos-list-upgrades	src/debug/UiAuditScenes.cpp@010a6eb:567	prepareGame<ORDOS, uiaudit::ListUpgrades>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-sardaukar-list-build	src/debug/UiAuditScenes.cpp@010a6eb:568	prepareGame<SARDAUKAR, uiaudit::ListBuild>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-sardaukar-list-infantry	src/debug/UiAuditScenes.cpp@010a6eb:569	prepareGame<SARDAUKAR, uiaudit::ListInfantry>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-sardaukar-list-vehicles	src/debug/UiAuditScenes.cpp@010a6eb:570	prepareGame<SARDAUKAR, uiaudit::ListVehicles>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-sardaukar-list-starport	src/debug/UiAuditScenes.cpp@010a6eb:571	prepareGame<SARDAUKAR, uiaudit::ListStarport>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-sardaukar-list-palace	src/debug/UiAuditScenes.cpp@010a6eb:572	prepareGame<SARDAUKAR, uiaudit::ListPalace>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
+PORT	game-sardaukar-list-upgrades	src/debug/UiAuditScenes.cpp@010a6eb:573	prepareGame<SARDAUKAR, uiaudit::ListUpgrades>	GAME_PLAYING	src/debug/UiAuditScenes.cpp@010a6eb:55
