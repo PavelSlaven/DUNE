@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <string>
 #include "game/Preferences.hpp"
+#include "utils/cIniFile.h"
 #include "utils/InitialGameSettings.hpp"
 
 namespace {
@@ -189,4 +190,93 @@ TEST_CASE("P5B preferences loadScales reads only the scale keys", "[P5B]")
     CHECK(missingError.empty() == false);
     CHECK(untouched.renderScalePercent == 100);
     CHECK(untouched.worldScalePercent == 110);
+}
+
+TEST_CASE("Preferences default language is Russian", "[preferences]")
+{
+    CHECK(InitialGameSettings{}.language == "ru");
+}
+
+TEST_CASE("Preferences readSettings reads Language", "[preferences]")
+{
+    cSection section("SETTINGS");
+    section.setValue("Language", "en");
+    InitialGameSettings settings;
+
+    Preferences::readSettings(section, settings);
+
+    CHECK(settings.language == "en");
+}
+
+TEST_CASE("Preferences save writes Language", "[preferences]")
+{
+    const auto file = freshDirectory("d2tm_prefs_language_save") / "preferences.ini";
+    InitialGameSettings settings;
+    settings.language = "en";
+    std::string error;
+    REQUIRE(Preferences::save(file, settings, error));
+
+    cIniFile ini;
+    REQUIRE(ini.load(file.string()));
+    CHECK(ini.getSection("SETTINGS").getStringValue("Language") == "en");
+}
+
+TEST_CASE("Preferences loadLanguage reads only Language", "[preferences]")
+{
+    const auto file = freshDirectory("d2tm_prefs_language_load") / "preferences.ini";
+    InitialGameSettings saved;
+    saved.language = "en";
+    saved.renderScalePercent = 150;
+    std::string error;
+    REQUIRE(Preferences::save(file, saved, error));
+
+    InitialGameSettings loaded;
+    loaded.language = "ru";
+    loaded.renderScalePercent = 125;
+    REQUIRE(Preferences::loadLanguage(file, loaded, error));
+    CHECK(loaded.language == "en");
+    CHECK(loaded.renderScalePercent == 125);
+}
+
+TEST_CASE("Preferences loadLanguage leaves settings unchanged for a missing file", "[preferences]")
+{
+    InitialGameSettings settings;
+    settings.language = "ru";
+    settings.renderScalePercent = 125;
+    std::string error;
+
+    CHECK_FALSE(Preferences::loadLanguage(
+        freshDirectory("d2tm_prefs_language_missing") / "preferences.ini", settings, error));
+    CHECK_FALSE(error.empty());
+    CHECK(settings.language == "ru");
+    CHECK(settings.renderScalePercent == 125);
+}
+
+TEST_CASE("Preferences saveLanguage preserves other keys", "[preferences]")
+{
+    const auto file = freshDirectory("d2tm_prefs_language_preserve") / "preferences.ini";
+    InitialGameSettings saved;
+    saved.renderScalePercent = 150;
+    std::string error;
+    REQUIRE(Preferences::save(file, saved, error));
+    REQUIRE(Preferences::saveLanguage(file, "en", error));
+
+    cIniFile ini;
+    REQUIRE(ini.load(file.string()));
+    const auto section = ini.getSection("SETTINGS");
+    CHECK(section.getInt("RenderScale") == 150);
+    CHECK(section.getStringValue("Language") == "en");
+}
+
+TEST_CASE("Preferences saveLanguage creates a missing file", "[preferences]")
+{
+    const auto file = freshDirectory("d2tm_prefs_language_new") / "nested" / "preferences.ini";
+    std::string error;
+
+    REQUIRE(Preferences::saveLanguage(file, "en", error));
+    CHECK(std::filesystem::exists(file));
+
+    cIniFile ini;
+    REQUIRE(ini.load(file.string()));
+    CHECK(ini.getSection("SETTINGS").getStringValue("Language") == "en");
 }

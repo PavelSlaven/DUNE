@@ -15,6 +15,8 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_IniParsing.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_IniScenarioParsing.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_CampaignProgress.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_FontCoverage.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Localization.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Preferences.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_cPoint.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_LowPowerBlink.cpp
