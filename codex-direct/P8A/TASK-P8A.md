@@ -2,7 +2,7 @@
 
 Исполнитель: корневая нить Codex `gpt-6.1-sol` `high` и помощники `gpt-6-luna` `xhigh` (раздел «Организация работы»).
 
-Рабочая копия: `/srv/library/dune/worktrees/p8a`, ветка `codex/p8a`, `HEAD` — вершина ветки порта `port/up-d06f2fcd` после слияния шага П8 (дерево равно ревизии `B`, см. «Что уже решено»). Файлы Git LFS в этой рабочей копии — настоящие данные. Временные файлы — в `.tmp/p8a/`. Коммитов не делай: коммиты делает ведущий по списку из сдачи. Файлы задания лежат в папке `/srv/dune/tasks/p8a/` (дальше — «папка задания»).
+Рабочая копия: `/srv/library/dune/worktrees/p8a`, ветка `codex/p8a`, `HEAD` — вершина ветки порта `port/up-d06f2fcd` после слияния шага П8 — `010a6eb134661660a077279bb94a36f063b97d7a` (слияние PR #142; дерево равно ревизии `B`, см. «Что уже решено»). Файлы Git LFS в этой рабочей копии — настоящие данные. Временные файлы — в `.tmp/p8a/`. Коммитов не делай: коммиты делает ведущий по списку из сдачи. Файлы задания лежат в папке `/srv/dune/tasks/p8a/` (дальше — «папка задания»).
 
 ## Цель
 
@@ -22,7 +22,7 @@
 - Р49, Р53, Р54: у Лёгкого и Тяжёлого заводов правая часть — площадка, как у Завода переработки; пока юнит строится, площадка пуста, а огни в щелях мерцают кадрами 0–6 с тем же шагом, что у Завода переработки; в момент готовности юнит появляется в центре площадки, сам съезжает на свободную клетку, а если все выезды заняты — его забирает Карриер.
 - Р55, Р56: тарелка Командного поста — 32 кадра атласа `BUILD_RADAR` (256 × 8192), 55 вызовов `thinkFast` на кадр. Атлас уже лежит в паке порта: `tests/data/hd4_packs_expected.tsv`, строка `sdl_data_hd4.dat 26 BUILD_RADAR PNG 256 8192`. Данные не меняются.
 - Р63: новинки апстрима берутся как есть; где они спорят с функцией форка, решает владелец. Три таких места — пункты 1.5–1.7 раздела «Контракт поведения».
-- Р81: владелец решил эти три места так, как они записаны в пунктах 1.5–1.7: юнит запрещает бетон 1×1, как в апстриме; плита или стена под чужим зданием не опора, как в апстриме; шесть причин отказа форка в уведомлениях, основание одним цветом, при пределе построек — строка апстрима.
+- Р81: владелец решил эти три места так, как они записаны в пунктах 1.5–1.7: юнит запрещает бетон 1×1, как в апстриме; плита или стена под чужим зданием не опора, как в апстриме; причины отказа форка уведомлениями (функция `notifyPlacementFailure` контракта), основание одним цветом, при пределе построек — строка апстрима.
 - Р70: вид оценивает только ведущий; ты даёшь снимки сцен.
 - Р78 и решение шага П8: формат сохранения — версия 3; раздел `FACTORYPADS` добавляется в версию 3 перед записью `END`, номер версии не меняется, старые файлы версии 3 без этого раздела не читаются (это допустимо: релизов между шагами нет).
 
@@ -957,7 +957,7 @@ bool cItemBuilder::isBuildingUnitForStructureType(int structureType)
           bool referencesAreValid = item.structureId >= 0 && item.structureId < MAX_STRUCTURES &&
                                     isFactory && !padStructureSeen[item.structureId] &&
                                     item.pad.phase != factory_pad::Phase::Empty &&
-                                    item.pad.unitType < UnitTypeCount &&
+                                    item.pad.unitType >= 0 && item.pad.unitType < UnitTypeCount &&
                                     item.pad.carryallId >= -1 && item.pad.carryallId < UnitSlots;
           if (referencesAreValid && item.pad.carryallId >= 0) {
               referencesAreValid = usedUnitIds[item.pad.carryallId];
@@ -970,10 +970,10 @@ bool cItemBuilder::isBuildingUnitForStructureType(int structureType)
               }
           }
           for (const int waitingType : item.pad.waiting) {
-              referencesAreValid = referencesAreValid && waitingType < UnitTypeCount;
+              referencesAreValid = referencesAreValid && waitingType >= 0 && waitingType < UnitTypeCount;
           }
           if (referencesAreValid && item.pad.phase == factory_pad::Phase::Rolling) {
-              referencesAreValid = item.pad.rollUnitId < UnitSlots && usedUnitIds[item.pad.rollUnitId];
+              referencesAreValid = item.pad.rollUnitId >= 0 && item.pad.rollUnitId < UnitSlots && usedUnitIds[item.pad.rollUnitId];
               bool foundMatchingRoller = false;
               for (const UnitState &unitItem : save.units) {
                   if (unitItem.oldId == item.pad.rollUnitId) {
@@ -1200,6 +1200,8 @@ inline void advance(int &frame, int &timer)
 ### T3. `tests/save/test_FactoryPadSave.cpp` — подключает `save/SaveBody.hpp`, `save/SaveFileCodec.hpp`, `save/SaveGameManager.hpp`, `data/gfxdata.h`
 
 Четыре случая — по одному на каждую функцию `FORK1:tests/FactoryPadSaveTests.cpp` (строки 99–216): `padsSurviveWritingAndReading`, `saveWithoutPadsIsReadable`, `damagedPadsAreRejected`, `truncatedAndOldBodiesAreRejected`; вспомогательные функции форка (`factoryState`, `unitState`, `baseSnapshot`, `standingPad`, `rollingPad`, `samePad`, `parses`) переносятся в анонимное пространство имён. Замены: `SaveSnapshot`, `StructureState`, `UnitState`, `serializeBody`, `deserializeBody` — из `namespace save_game_detail` порта; `MAX_UNITTYPES` → `save_game_detail::UnitTypeCount`; `MAX_UNITS` → `save_game_detail::UnitSlots`; `save_file::decode(…, SaveGameManager::FormatVersion, 16 * 1024 * 1024)` → `save_file::decode(…, SaveGameManager::FormatVersion, save_game_detail::MaximumSaveBytes)`. Если заготовка `baseSnapshot()` не проходит разбор порта, заполнение игроков и ячеек копируется из `sample()` в `tests/save/test_SaveBody.cpp`; ожидания случаев не меняются.
+
+Случай `saveWithoutPadsIsReadable` — как в форке: снимок без площадок записывается `serializeBody` (тело содержит `FACTORYPADS 0`) и читается `deserializeBody` с пустым `factoryPads`. Файлы версии 3, записанные сборкой шага П8 без раздела `FACTORYPADS`, не читаются: релизов между шагами не было.
 
 ### T4. `tests/utils/test_WorldObjectScale.cpp` — подключает `utils/WorldObjectScale.hpp`
 
