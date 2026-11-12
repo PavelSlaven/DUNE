@@ -2,16 +2,21 @@
 #include "utils/UnitSpriteLayout.hpp"
 #include "utils/WindTrapFlag.hpp"
 #include "drawers/SDLDrawer.hpp"
+#include "drawers/cTextDrawer.h"
+#include "drawers/cTextTextureCache.h"
 #include "game/Preferences.hpp"
+#include "game/cGameSettings.h"
 #include "include/Texture.hpp"
 #include "utils/Graphics.hpp"
 #include "utils/InitialGameSettings.hpp"
 #include "utils/cIniFile.h"
 #include "utils/cRectangle.h"
+#include "utils/Color.hpp"
 
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include <array>
 #include <filesystem>
@@ -91,6 +96,13 @@ void checkLogicalPresentation(SDL_Renderer *renderer, int expectedWidth, int exp
     CHECK(height == expectedHeight);
     CHECK(mode == expectedMode);
 }
+
+struct TtfSession {
+    ~TtfSession()
+    {
+        TTF_Quit();
+    }
+};
 
 }
 
@@ -344,4 +356,141 @@ TEST_CASE("P4 nested render target keeps the frame target state", "[P4]")
     checkColor(readPixel(canvas, 2, 2), {0, 0, 0, 255});
     delete inner;
     delete frame;
+}
+
+TEST_CASE("Text drawer measures in canvas points at every frame density", "[text]")
+{
+    SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "dummy");
+    REQUIRE(SDL_Init(SDL_INIT_VIDEO));
+    REQUIRE(TTF_Init());
+    SoftwareRenderer canvas(64, 64);
+    TtfSession ttfSession;
+
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font(
+        TTF_OpenFont(D2TM_SOURCE_DIR "/resources/bin/data/PTSansNarrow-Regular.ttf", 14), TTF_CloseFont);
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> fallback(
+        TTF_OpenFont(D2TM_SOURCE_DIR "/resources/bin/data/PTMono-Regular.ttf", 14), TTF_CloseFont);
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> reference14(
+        TTF_OpenFont(D2TM_SOURCE_DIR "/resources/bin/data/PTSansNarrow-Regular.ttf", 14), TTF_CloseFont);
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> referenceFallback14(
+        TTF_OpenFont(D2TM_SOURCE_DIR "/resources/bin/data/PTMono-Regular.ttf", 14), TTF_CloseFont);
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> reference28(
+        TTF_OpenFont(D2TM_SOURCE_DIR "/resources/bin/data/PTSansNarrow-Regular.ttf", 28), TTF_CloseFont);
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> referenceFallback28(
+        TTF_OpenFont(D2TM_SOURCE_DIR "/resources/bin/data/PTMono-Regular.ttf", 28), TTF_CloseFont);
+    REQUIRE(font != nullptr);
+    REQUIRE(fallback != nullptr);
+    REQUIRE(reference14 != nullptr);
+    REQUIRE(referenceFallback14 != nullptr);
+    REQUIRE(reference28 != nullptr);
+    REQUIRE(referenceFallback28 != nullptr);
+    REQUIRE(TTF_AddFallbackFont(font.get(), fallback.get()));
+    REQUIRE(TTF_AddFallbackFont(reference14.get(), referenceFallback14.get()));
+    REQUIRE(TTF_AddFallbackFont(reference28.get(), referenceFallback28.get()));
+
+    int w14 = 0;
+    int h14 = 0;
+    int w28 = 0;
+    int h28 = 0;
+    REQUIRE(TTF_GetStringSize(reference14.get(), "Настройки ◄", 0, &w14, &h14));
+    REQUIRE(TTF_GetStringSize(reference28.get(), "Настройки ◄", 0, &w28, &h28));
+
+    {
+        SDLDrawer drawer(canvas.renderer);
+        cGameSettings settings;
+        cTextDrawer text(font.get(), fallback.get(), 14.0F, &settings, &drawer);
+
+        CHECK(text.getTextLength("Настройки ◄") == w14);
+        CHECK(text.getFontHeight() == TTF_GetFontHeight(reference14.get()));
+
+        drawer.setFrameDensity(2);
+        CHECK(text.getTextLength("Настройки ◄") == (w28 + 1) / 2);
+        CHECK(text.getFontHeight() == (TTF_GetFontHeight(reference28.get()) + 1) / 2);
+        CHECK(TTF_GetFontSize(font.get()) == 28.0F);
+        CHECK(TTF_GetFontSize(fallback.get()) == 28.0F);
+
+        drawer.setFrameDensity(1);
+        CHECK(text.getTextLength("Настройки ◄") == w14);
+        CHECK(TTF_GetFontSize(font.get()) == 14.0F);
+        CHECK(TTF_GetFontSize(fallback.get()) == 14.0F);
+    }
+}
+
+TEST_CASE("Text is drawn anti-aliased", "[text]")
+{
+    SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "dummy");
+    REQUIRE(SDL_Init(SDL_INIT_VIDEO));
+    REQUIRE(TTF_Init());
+    SoftwareRenderer canvas(160, 40);
+    TtfSession ttfSession;
+
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font(
+        TTF_OpenFont(D2TM_SOURCE_DIR "/resources/bin/data/PTSansNarrow-Regular.ttf", 14), TTF_CloseFont);
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> fallback(
+        TTF_OpenFont(D2TM_SOURCE_DIR "/resources/bin/data/PTMono-Regular.ttf", 14), TTF_CloseFont);
+    REQUIRE(font != nullptr);
+    REQUIRE(fallback != nullptr);
+    REQUIRE(TTF_AddFallbackFont(font.get(), fallback.get()));
+
+    {
+        SDLDrawer drawer(canvas.renderer);
+        cGameSettings settings;
+        cTextDrawer text(font.get(), fallback.get(), 14.0F, &settings, &drawer);
+
+        REQUIRE(SDL_SetRenderDrawColor(canvas.renderer, 0, 0, 0, 255));
+        REQUIRE(SDL_RenderClear(canvas.renderer));
+        text.drawText(4, 4, Color::White, "Ремонт", false);
+
+        int full = 0;
+        int partial = 0;
+        for (int y = 0; y < 40; ++y) {
+            for (int x = 0; x < 160; ++x) {
+                const SDL_Color pixel = readPixel(canvas, x, y);
+                if (pixel.r == 255) {
+                    ++full;
+                } else if (pixel.r > 0 && pixel.r < 255) {
+                    ++partial;
+                }
+            }
+        }
+        CHECK(full > 0);
+        CHECK(partial > 0);
+    }
+}
+
+TEST_CASE("Text cache keeps pixel size and canvas size apart", "[text]")
+{
+    SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "dummy");
+    REQUIRE(SDL_Init(SDL_INIT_VIDEO));
+    REQUIRE(TTF_Init());
+    SoftwareRenderer canvas(64, 64);
+    TtfSession ttfSession;
+
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font(
+        TTF_OpenFont(D2TM_SOURCE_DIR "/resources/bin/data/PTSansNarrow-Regular.ttf", 28), TTF_CloseFont);
+    REQUIRE(font != nullptr);
+
+    {
+        SDLDrawer drawer(canvas.renderer);
+        [[maybe_unused]] cGameSettings settings;
+        cTextTextureCache cache(font.get(), &drawer);
+        cache.setDensity(2);
+        textCacheEntry *entry = cache.findOrCreate(Color::White, "Repair");
+        REQUIRE(entry != nullptr);
+
+        float textureWidth = 0.0F;
+        float textureHeight = 0.0F;
+        REQUIRE(SDL_GetTextureSize(entry->texture, &textureWidth, &textureHeight));
+        CHECK(textureWidth == entry->pixelWidth);
+        CHECK(textureHeight == entry->pixelHeight);
+        CHECK(entry->width == (entry->pixelWidth + 1) / 2);
+        CHECK(entry->height == (entry->pixelHeight + 1) / 2);
+
+        SDL_ScaleMode textureScaleMode;
+        SDL_ScaleMode shadowScaleMode;
+        REQUIRE(SDL_GetTextureScaleMode(entry->texture, &textureScaleMode));
+        REQUIRE(SDL_GetTextureScaleMode(entry->shadowsTexture, &shadowScaleMode));
+        CHECK(textureScaleMode == SDL_SCALEMODE_LINEAR);
+        CHECK(shadowScaleMode == SDL_SCALEMODE_LINEAR);
+    }
 }
