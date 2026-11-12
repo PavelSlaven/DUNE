@@ -30,6 +30,7 @@ OrdosMentat::OrdosMentat(GameContext* ctx, cGameSettings* settings, GameStateTra
     d2tm_assert(ctx != nullptr);
     d2tm_assert(m_mentatFlow != nullptr);
     iBackgroundFrame = MENTATO;
+    m_hdLayout = &kOrdosMentatHdLayout;
     buildLeftButton(gfxmentat->getTexture(BTN_REPEAT), 293, 423);
     buildRightButton(gfxmentat->getTexture(BTN_PROCEED), 466, 423);
     leftGuiButton = GuiButtonBuilder()
@@ -70,10 +71,10 @@ void OrdosMentat::draw_other()
 
 void OrdosMentat::draw_eyes()
 {
-    m_sdlDrawer->renderSprite(gfxmentat->getTexture(ORD_EYES01+ iMentatEyes), offsetX + 32, offsetY + 240);
+    drawMentatTexture(gfxmentat->getTexture(ORD_EYES01 + iMentatEyes), kOrdosMentatHdLayout.eyes);
 }
 
 void OrdosMentat::draw_mouth()
 {
-    m_sdlDrawer->renderSprite(gfxmentat->getTexture(ORD_MOUTH01+ iMentatMouth), offsetX + 31, offsetY + 270);
+    drawMentatTexture(gfxmentat->getTexture(ORD_MOUTH01 + iMentatMouth), kOrdosMentatHdLayout.mouth);
 }

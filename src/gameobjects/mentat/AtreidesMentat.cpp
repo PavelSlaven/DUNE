@@ -30,6 +30,7 @@ AtreidesMentat::AtreidesMentat(GameContext* ctx, cGameSettings* settings, GameSt
     d2tm_assert(ctx != nullptr);
     d2tm_assert(m_mentatFlow != nullptr);
     iBackgroundFrame = MENTATA;
+    m_hdLayout = &kAtreidesMentatHdLayout;
     buildLeftButton(gfxmentat->getTexture(BTN_REPEAT), 293, 423);
     buildRightButton(gfxmentat->getTexture(BTN_PROCEED), 466, 423);
 
@@ -73,10 +74,10 @@ void AtreidesMentat::draw_other()
 
 void AtreidesMentat::draw_eyes()
 {
-    m_sdlDrawer->renderSprite(gfxmentat->getTexture(ATR_EYES01+ iMentatEyes),  offsetX + 80, offsetY + 241);
+    drawMentatTexture(gfxmentat->getTexture(ATR_EYES01 + iMentatEyes), kAtreidesMentatHdLayout.eyes);
 }
 
 void AtreidesMentat::draw_mouth()
 {
-    m_sdlDrawer->renderSprite(gfxmentat->getTexture(ATR_MOUTH01+ iMentatMouth),  offsetX + 80, offsetY + 273);
+    drawMentatTexture(gfxmentat->getTexture(ATR_MOUTH01 + iMentatMouth), kAtreidesMentatHdLayout.mouth);
 }
