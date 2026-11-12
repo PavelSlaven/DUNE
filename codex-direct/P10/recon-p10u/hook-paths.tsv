@@ -1,0 +1,17 @@
+путь	есть в OLD	есть в PORT
+CMakeLists.txt	да	да
+src/context/TextContext.cpp	да	да
+src/context/TextContext.hpp	да	да
+src/controls/cGameControlsContext.cpp	да	да
+src/controls/cGameControlsContext.h	да	да
+src/controls/mousestates/cMouseNormalState.cpp	да	да
+src/controls/mousestates/cMouseNormalState.h	да	да
+src/controls/mousestates/cMouseRepairState.cpp	да	да
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	да	да
+src/controls/mousestates/cMouseUnitsSelectedState.h	да	да
+src/game/cGame.h	да	да
+src/game/cGame_logic.cpp	да	да
+src/managers/cDrawManager.h	да	да
+src/utils/InitialGameSettings.hpp	да	да
+src/utils/common.cpp	да	да
+нет	нет	нет
