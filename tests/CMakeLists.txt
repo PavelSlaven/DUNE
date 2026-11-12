@@ -16,6 +16,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_IniScenarioParsing.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Utf8.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MentatTextLayout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MentatHdLayout.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_CampaignTextRu.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_CampaignProgress.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_FontCoverage.cpp
