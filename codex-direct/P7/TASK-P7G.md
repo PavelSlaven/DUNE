@@ -2,7 +2,7 @@
 
 Исполнитель: корневая нить Codex `gpt-6.1-sol` `high` и помощники `gpt-6-luna` `xhigh` (раздел «Организация работы»).
 
-Рабочая копия: `/srv/dune/worktrees/u34`, ветка `codex/p7g`, `HEAD` — `<BASE-P7G>` (вершина ветки порта `port/up-d06f2fcd` после слияния части П7а). Файлы Git LFS в этой рабочей копии — настоящие данные. Временные файлы — в `.tmp/p7g/`. Коммитов не делай: коммиты делает ведущий по списку из сдачи.
+Рабочая копия: `/srv/dune/worktrees/u34`, ветка `codex/p7g`, `HEAD` — `b9f6b0242` (вершина ветки порта `port/up-d06f2fcd` после слияния части П7а). Файлы Git LFS в этой рабочей копии — настоящие данные. Временные файлы — в `.tmp/p7g/`. Коммитов не делай: коммиты делает ведущий по списку из сдачи.
 
 ## Цель
 
@@ -129,7 +129,7 @@
 1. **Место и сборка.**
    - `df -m /srv` — в столбце `Available` не меньше 5000, иначе блок `## Q-P7G-01` и стоп.
    - Сборка: `mkdir -p .tmp/p7g && CCACHE_DISABLE=1 DUNE_DEPS_DIR=$PWD/.tmp/deps DUNE_OUT_DIR=$PWD/.tmp/out bash tools/upstream/build_upstream_linux.sh d06f2fcd2a347182c3774fb96e9a85570405c489 > .tmp/p7g/build.log 2>&1; echo exit=$?` — `exit=0`.
-   - Итоговая строка `ctest.log` последней папки логов `.tmp/out/logs/` — `100% tests passed, 0 tests failed out of <N>`, где `<N>` не меньше `<N-P7G>`.
+   - Итоговая строка `ctest.log` последней папки логов `.tmp/out/logs/` — `100% tests passed, 0 tests failed out of <N>`, где `<N>` не меньше 337.
    - `CCACHE_DISABLE=1` обязателен: `ccache` пишет в `/root/.cache`, который песочница нити держит только для чтения.
 2. `grep -n 'warning:' .tmp/out/logs/<последняя папка>/full.log | grep -E 'src/(drawers/(SDLDrawer|cTextTextureCache|cTextDrawer)|context/ContextCreator)|tests/utils/test_HdRender'` — пустой вывод.
 3. В `game-dummy.log` и `stdout-dummy.log` последней папки логов нет строки `Imminent crash`.
