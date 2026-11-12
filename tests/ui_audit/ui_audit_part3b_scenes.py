@@ -24,6 +24,8 @@ PLACE_CELLS = 4
 HOVERED_ITEM = 2
 LIST_BUTTON = "list-button:"
 BUILD_ITEM = "build-item:"
+COMMAND_CLICK = "command:"
+COMMAND_BUTTONS = 3
 
 
 def named(body, kind, name):
@@ -76,7 +78,12 @@ def check_common(scene_id, body):
     sidebar_clicks = [record for record in base.records_of(body, "click")
                       if record["name"].startswith(base.SIDEBAR_CLICK_PREFIXES) or record["name"] == "build-scrollbar"]
     outside = [record for record in sidebar_clicks if not base.inside(record, base.SIDEBAR)]
-    wrong_labels = [record for record in base.records_of(body, "label") if record["kind"] not in LABEL_KINDS]
+    allowed_label_kinds = LABEL_KINDS.copy()
+    if scene_id in {"game-command-damaged-unit", "game-command-harvester", "game-command-mcv"}:
+        allowed_label_kinds.add("health")
+    if scene_id == "game-command-harvester":
+        allowed_label_kinds.add("spice")
+    wrong_labels = [record for record in base.records_of(body, "label") if record["kind"] not in allowed_label_kinds]
     foreign = sorted(f"{kind} {name}" for (kind, name), owners in OWN_RECORDS.items()
                      if scene_id not in owners and named(body, kind, name))
     return base.first_error(
@@ -195,6 +202,20 @@ def check_scroll_end(scene_id, header, body, bodies):
     )
 
 
+def check_command_bar(scene_id, header, body, bodies):
+    panel, error = base.one_record(body, "area", "n", "command-bar")
+    if error:
+        return error
+    commands = [record for record in base.records_of(body, "click") if record["name"].startswith(COMMAND_CLICK)]
+    outside = [record for record in commands if not base.inside(record, panel)]
+    return base.first_error(
+        None if visible(panel) else f"the area record command-bar must have w > 0 and h > 0: {panel}",
+        None if len(commands) == COMMAND_BUTTONS
+        else f"expected {COMMAND_BUTTONS} click records {COMMAND_CLICK}<name>, got {commands}",
+        f"command click records outside the panel {base.rect(panel)}: {outside}" if outside else None,
+    )
+
+
 def check_for(scene_id):
     fixed = {
         "game-hud": check_nothing_more,
@@ -202,6 +223,9 @@ def check_for(scene_id):
         "game-radar-nopower": check_nothing_more,
         "game-structure-selected": check_structure_selected,
         "game-rally-point": check_rally_point,
+        "game-command-damaged-unit": check_command_bar,
+        "game-command-harvester": check_command_bar,
+        "game-command-mcv": check_command_bar,
         "game-place-allowed": check_place({"GOOD", "NEUTRAL"}, False),
         "game-place-forbidden": check_place({"GOOD", "NEUTRAL", "BAD"}, True),
         "game-group-select": check_group_select,

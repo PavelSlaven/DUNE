@@ -13,8 +13,9 @@ HOUSE_LIST_PREFIXES = (("atreides", "game-list-"), ("harkonnen", "game-harkonnen
 HOVER_SCENES = ("game-place-allowed", "game-place-forbidden", "game-group-select", "game-item-hover")
 BASE_SCENES = ("game-hud", "game-structure-selected", "game-radar-none", "game-radar-nopower", "game-place-allowed",
                "game-place-forbidden", "game-group-select", "game-messages", "game-item-hover",
-               "game-list-scroll-end", "game-rally-point")
-EXPECTED_COUNT = 35
+               "game-list-scroll-end", "game-rally-point", "game-command-damaged-unit", "game-command-harvester",
+               "game-command-mcv")
+EXPECTED_COUNT = 38
 
 
 def game_scene(scene_id, house="atreides"):

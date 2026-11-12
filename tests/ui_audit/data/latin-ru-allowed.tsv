@@ -39,3 +39,6 @@ Construction\ complete:\ the\ Windtrap\ is\ ready\ to\ be\ placed	сообщен
 Neutral\ notification	сообщение, которое подставляет сцена режима отладки (src/debug/UiAuditAccess.cpp)
 Priority\ notification:\ Harvester\ is\ full	сообщение, которое подставляет сцена режима отладки (src/debug/UiAuditAccess.cpp)
 Bad\ news:\ a\ structure\ is\ under\ attack	сообщение, которое подставляет сцена режима отладки (src/debug/UiAuditAccess.cpp)
+CTRL	подпись клавиши на кнопке панели приказов (src/drawers/cCommandBarDrawer.cpp)
+R	подпись клавиши на кнопке панели приказов (src/drawers/cCommandBarDrawer.cpp)
+D	подпись клавиши на кнопке панели приказов (src/drawers/cCommandBarDrawer.cpp)
