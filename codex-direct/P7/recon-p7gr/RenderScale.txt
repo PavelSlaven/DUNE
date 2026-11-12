@@ -1,0 +1,73 @@
+     1	#include "RenderScale.hpp"
+     2	
+     3	#include <algorithm>
+     4	#include <cmath>
+     5	
+     6	namespace {
+     7	int normalizedOutputWidth(int outputWidth)
+     8	{
+     9	    return std::max(outputWidth, MinimumRenderWidth);
+    10	}
+    11	
+    12	int normalizedOutputHeight(int outputHeight)
+    13	{
+    14	    return std::max(outputHeight, MinimumRenderHeight);
+    15	}
+    16	
+    17	double automaticRenderScale(int outputWidth, int outputHeight)
+    18	{
+    19	    const double horizontalScale =
+    20	        static_cast<double>(normalizedOutputWidth(outputWidth)) / MinimumRenderWidth;
+    21	    const double verticalScale =
+    22	        static_cast<double>(normalizedOutputHeight(outputHeight)) / MinimumRenderHeight;
+    23	    return std::min(horizontalScale, verticalScale);
+    24	}
+    25	}
+    26	
+    27	int calculateAutomaticRenderScalePercent(int outputWidth, int outputHeight)
+    28	{
+    29	    return static_cast<int>(std::lround(automaticRenderScale(outputWidth, outputHeight) * 100.0));
+    30	}
+    31	
+    32	bool isManualRenderScaleAvailable(
+    33	    int outputWidth,
+    34	    int outputHeight,
+    35	    int renderScalePercent)
+    36	{
+    37	    if (std::ranges::find(ManualRenderScales, renderScalePercent) ==
+    38	        ManualRenderScales.end()) {
+    39	        return false;
+    40	    }
+    41	
+    42	    const int width = normalizedOutputWidth(outputWidth);
+    43	    const int height = normalizedOutputHeight(outputHeight);
+    44	    return
+    45	        static_cast<long long>(width) * 100 >=
+    46	            static_cast<long long>(MinimumRenderWidth) * renderScalePercent &&
+    47	        static_cast<long long>(height) * 100 >=
+    48	            static_cast<long long>(MinimumRenderHeight) * renderScalePercent;
+    49	}
+    50	
+    51	RenderCanvasSize calculateRenderCanvasSize(
+    52	    int outputWidth,
+    53	    int outputHeight,
+    54	    int renderScalePercent)
+    55	{
+    56	    const int width = normalizedOutputWidth(outputWidth);
+    57	    const int height = normalizedOutputHeight(outputHeight);
+    58	    const double scale =
+    59	        isManualRenderScaleAvailable(width, height, renderScalePercent)
+    60	            ? static_cast<double>(renderScalePercent) / 100.0
+    61	            : automaticRenderScale(width, height);
+    62	
+    63	    return {
+    64	        std::max(
+    65	            MinimumRenderWidth,
+    66	            static_cast<int>(std::lround(static_cast<double>(width) / scale))
+    67	        ),
+    68	        std::max(
+    69	            MinimumRenderHeight,
+    70	            static_cast<int>(std::lround(static_cast<double>(height) / scale))
+    71	        )
+    72	    };
+    73	}

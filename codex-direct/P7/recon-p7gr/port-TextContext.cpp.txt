@@ -1,0 +1,48 @@
+     1	/**
+     2	 * @file TextContext.cpp
+     3	 *
+     4	 * Dune 2 - The Maker
+     5	 *
+     6	 * @author Stefan Hendriks & the D2TM Team
+     7	 * @www http://www.dune2themaker.com
+     8	 * @copyright Copyright (c) 2002 - 2026 Stefan Hendriks and contributors
+     9	 * @license This software is released under the MIT License. See LICENSE.md.
+    10	 *
+    11	 * Note: Dune 2 is a trademark of Westwood Studios/Electronic Arts.
+    12	 *
+    13	 * This is a non-commercial educational project.
+    14	 */
+    15	
+    16	#include "context/TextContext.hpp"
+    17	
+    18	#include "drawers/cTextDrawer.h"
+    19	
+    20	TextContext::TextContext(
+    21	    std::unique_ptr<cTextDrawer> smallTextDrawer,
+    22	    std::unique_ptr<cTextDrawer> beneTextDrawer,
+    23	    std::unique_ptr<cTextDrawer> gameTextDrawer) :
+    24	m_smallTextDrawer(std::move(smallTextDrawer)),
+    25	m_beneTextDrawer(std::move(beneTextDrawer)),
+    26	m_gameTextDrawer(std::move(gameTextDrawer))
+    27	{
+    28	}
+    29	
+    30	TextContext::~TextContext() = default;
+    31	
+    32	void TextContext::resetCache() const {
+    33	    m_smallTextDrawer->resetCache();
+    34	    m_beneTextDrawer->resetCache();
+    35	    m_gameTextDrawer->resetCache();
+    36	}
+    37	
+    38	cTextDrawer * TextContext::getSmallTextDrawer() const {
+    39	    return m_smallTextDrawer.get();
+    40	}
+    41	
+    42	cTextDrawer * TextContext::getBeneTextDrawer() const {
+    43	    return m_beneTextDrawer.get();
+    44	}
+    45	
+    46	cTextDrawer * TextContext::getGameTextDrawer() const {
+    47	    return m_gameTextDrawer.get();
+    48	}

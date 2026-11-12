@@ -1,0 +1,36 @@
+bb60a275be8074ed71da861cb83fe813066698fa:src/debug/UiAuditCapture.cpp:233:    if (!SDL_GetRenderOutputSize(renderer, &outputW, &outputH)) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/debug/UiAuditCapture.cpp:239:    if (!SDL_GetRenderLogicalPresentation(renderer, &logicalW, &logicalH, &logicalPresentation)) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/debug/UiAuditCapture.cpp:242:    if (!SDL_SetRenderLogicalPresentation(renderer, 0, 0, SDL_LOGICAL_PRESENTATION_DISABLED)) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/debug/UiAuditCapture.cpp:251:    const bool restored = SDL_SetRenderLogicalPresentation(renderer, logicalW, logicalH, logicalPresentation);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:72:    SDL_SetTextureScaleMode(texture, normalizedDensity > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:312:    SDL_Texture* texture = SDL_CreateTexture(renderer,
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:320:    SDL_SetTextureScaleMode(texture, d > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:323:        SDL_SetRenderTarget(renderer, texture);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:324:        SDL_SetRenderLogicalPresentation(renderer, width, height, SDL_LOGICAL_PRESENTATION_STRETCH);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:325:        SDL_SetRenderTarget(renderer, previousTarget);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:348:    if (!SDL_SetRenderTarget(renderer, targetTexture->tex.get())) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:361:    if (!SDL_SetRenderTarget(renderer, previousTarget)) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:377:        SDL_SetTextureScaleMode(texture, density > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:459:    SDL_SetTextureScaleMode(texture, density > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMapDrawer.cpp:95:    SDL_SetTextureScaleMode(fogTexture, m_gfxdata->getDensity() > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cTextTextureCache.cpp:105:    SDL_SetTextureScaleMode(newCacheEntry->shadowsTexture, SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cTextTextureCache.cpp:114:    SDL_SetTextureScaleMode(newCacheEntry->texture, SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGame_logic.cpp:1516:    SDL_SetRenderTarget(renderer, actualRenderer->tex.get());
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGame_logic.cpp:1518:    SDL_SetRenderTarget(renderer, nullptr);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:45:    SDL_GetRenderOutputSize(renderer, &renderW, &renderH);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:50:    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:64:    SDL_GetRenderOutputSize(renderer, &outputWidth, &outputHeight);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:75:    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:108:    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:180:    if (!SDL_GetRenderOutputSize(renderer, &outputWidth, &outputHeight)) return;
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:258:    if (!SDL_GetRenderLogicalPresentationRect(renderer, &rect)) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:331:    // every SDL_SetRenderLogicalPresentation call (now and later) creates its
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:334:    SDL_SetDefaultTextureScaleMode(renderer, SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:345:    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/map/cPreviewMaps.cpp:280:        SDL_SetTextureScaleMode(out, SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectYourNextConquestState.cpp:579:    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_LINEAR);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectYourNextConquestState.cpp:656:    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_LINEAR);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:1472:    SDL_SetTextureScaleMode(out, SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.cpp:65:    SDL_SetTextureScaleMode(outTexture, getDensity() > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.cpp:106:    SDL_SetTextureScaleMode(texture, getDensity() > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/HdUiTextureLoader.cpp:20:                SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_LINEAR);

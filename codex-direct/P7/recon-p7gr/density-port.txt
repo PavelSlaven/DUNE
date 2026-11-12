@@ -1,0 +1,42 @@
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:61:void SDLDrawer::renderFromSurface(SDL_Surface *src, int x, int y, Uint8 opacity, int density)
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:63:    const int normalizedDensity = std::max(1, density);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:64:    SDL_FRect tmp = {static_cast<float>(x), static_cast<float>(y), static_cast<float>(src->w / normalizedDensity), static_cast<float>(src->h / normalizedDensity)};
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:72:    SDL_SetTextureScaleMode(texture, normalizedDensity > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:84:    const float density = static_cast<float>(src->density);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:85:    SDL_FRect srcRect = {static_cast<float>(src_pos.getX()) * density,
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:86:                         static_cast<float>(src_pos.getY()) * density,
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:87:                         static_cast<float>(src_pos.getWidth()) * density,
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:88:                         static_cast<float>(src_pos.getHeight()) * density};
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:309:Texture* SDLDrawer::createRenderTargetTexture(int width, int height, int density)
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:311:    const int d = std::max(1, density);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:330:void SDLDrawer::setFrameDensity(int density)
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:332:    frameDensity = std::max(1, density);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:335:int SDLDrawer::getFrameDensity() const
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:337:    return frameDensity;
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:366:Texture *SDLDrawer::createTextureFromIndexedSurfaceWithPalette(SDL_Surface *referenceSurface, int paletteIndexForTransparency, const HouseColors& houseColors, int assetDensity)
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:376:        const int density = std::max(1, assetDensity);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:377:        SDL_SetTextureScaleMode(texture, density > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:378:        return new Texture(texture, referenceSurface->w, referenceSurface->h, false, assetDensity);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:458:    const int density = std::max(1, assetDensity);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:459:    SDL_SetTextureScaleMode(texture, density > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:461:    auto *newTexture = new Texture(texture, rgbaSurface->w, rgbaSurface->h, false, assetDensity);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.hpp:36:    void renderFromSurface(SDL_Surface *src, int x, int y, Uint8 opacity = 255, int density = 1);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.hpp:67:    Texture *createRenderTargetTexture(int width, int height, int density = 1);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.hpp:68:    void setFrameDensity(int density);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.hpp:69:    int getFrameDensity() const;
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.hpp:72:    Texture *createTextureFromIndexedSurfaceWithPalette(SDL_Surface *referenceSurface, int paletteIndexForTransparency, const HouseColors& houseColors, int assetDensity = 1);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.hpp:77:    int frameDensity = 1;
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.cpp:23:Graphics::Graphics(SDL_Renderer *_renderer,const std::string &filePackName, int assetDensity)
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.cpp:24:    : renderer(_renderer), assetDensity(assetDensity)
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.cpp:65:    SDL_SetTextureScaleMode(outTexture, getDensity() > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.cpp:66:    texCache.emplace(index, std::make_unique<Texture>(outTexture, outSurface->w, outSurface->h, false, getDensity()));
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.cpp:106:    SDL_SetTextureScaleMode(texture, getDensity() > 1 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.cpp:107:    return new Texture(texture, width, height, false, getDensity());
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.hpp:39:    explicit Graphics(SDL_Renderer *_renderer, const std::string &filePackName, int assetDensity = 1);
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.hpp:53:    int getDensity() const {
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.hpp:54:        return std::max(1, assetDensity);
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.hpp:58:    int assetDensity;
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.hpp:64:inline constexpr int kHd4AssetDensity = 4;
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.hpp:76:inline int calculateFrameDensity(float presentationWidth, float presentationHeight, int logicalWidth, int logicalHeight)
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/Graphics.hpp:83:    return std::clamp(static_cast<int>(std::ceil(scale - 0.01f)), 1, kHd4AssetDensity);
+нет пути src/drawers/SDLDrawer.h

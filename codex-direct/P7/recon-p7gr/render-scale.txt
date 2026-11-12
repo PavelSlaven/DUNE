@@ -1,0 +1,170 @@
+bb60a275be8074ed71da861cb83fe813066698fa:src/controls/cGameControlsContext.cpp:100:    if (coords.x > (m_settings->getScreenW() - cSideBar::SidebarWidth)) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/controls/cMouse.cpp:288:            if (m_coords.x > m_settings->getScreenW() - cSideBar::SidebarWidth) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/controls/cMouse.cpp:289:                m_mouseCoX2 = m_settings->getScreenW() - cSideBar::SidebarWidth - 1;
+bb60a275be8074ed71da861cb83fe813066698fa:src/debug/UiAuditAccess.cpp:73:    return currentGame.m_gameSettings->m_renderScalePercent;
+bb60a275be8074ed71da861cb83fe813066698fa:src/debug/UiAuditAccess.cpp:193:    const int limit = currentGame.m_gameSettings->getScreenH() - 128;
+bb60a275be8074ed71da861cb83fe813066698fa:src/debug/UiAuditCapture.cpp:176:         << currentGame.m_gameSettings->getScreenW() << ",\"h\":" << currentGame.m_gameSettings->getScreenH()
+bb60a275be8074ed71da861cb83fe813066698fa:src/debug/UiAuditCapture.cpp:475:    g_canvasW = currentGame.m_gameSettings->getScreenW();
+bb60a275be8074ed71da861cb83fe813066698fa:src/debug/UiAuditCapture.cpp:476:    g_canvasH = currentGame.m_gameSettings->getScreenH();
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/CreditsDrawer.cpp:80:    m_drawX = settings->getScreenW() - (cSideBar::SidebarWidthWithoutCandyBar / 2) - (widthCreditsBar / 2);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/CreditsDrawer.cpp:218:        m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/CreditsDrawer.cpp:219:        m_settings->getScreenH()
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:840:        m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:841:        m_settings->getScreenH(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMessageDrawer.cpp:151:    int desiredWidth = m_services->settings->getScreenW() - (cSideBar::SidebarWidth + widthOfOptionsButton);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMiniMapDrawer.cpp:68:    const cRectangle minimapArea = HudLayout::create(settings->getScreenW(), settings->getScreenH()).radarViewport;
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMouseDrawer.cpp:58:    int diffX = (x + width) - m_settings->getScreenW();
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMouseDrawer.cpp:70:    int diffY = (y + height) - m_settings->getScreenH();
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cOrderDrawer.cpp:46:    m_buttonRect = cRectangle((services->settings->getScreenW() - halfOfSidebar) - halfOfButton,
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cOrderDrawer.cpp:47:                            (services->settings->getScreenH() - halfOfHeightLeftForButton) - halfOfButtonHeight,
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:116:        m_services->settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:117:        m_services->settings->getScreenH()
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:133:        m_services->settings->getScreenH() - cSideBar::TopBarHeight,
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:140:        m_services->settings->getScreenH(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:186:        m_services->settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:187:        m_services->settings->getScreenH()
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:353:        m_services->settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:354:        m_services->settings->getScreenH()
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:387:        m_services->settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:388:        m_services->settings->getScreenH(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cStructureDrawer.cpp:474:    m_sdlDrawer->renderRectFillColor((m_settings->getScreenW() - cSideBar::SidebarWidth), 0,
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cStructureDrawer.cpp:475:                                      cSideBar::SidebarWidth, m_settings->getScreenH(), 0, 0, 0,255);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cTextDrawer.cpp:81:    int xPos = (m_settings->getScreenW() / 2) - half;
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cTextDrawer.cpp:205:    int x = m_settings->getScreenW() - lenghtInPixels-margin;
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cTextDrawer.cpp:206:    int y = m_settings->getScreenH() - getFontHeight()-20-margin;
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cTextDrawer.cpp:220:    int y = m_settings->getScreenH() - h-20-margin;
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGameSettings.h:30:    int getScreenW() const {
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGameSettings.h:33:    int getScreenH() const {
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGameSettings.h:36:    int getOutputW() const {
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGameSettings.h:39:    int getOutputH() const {
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGameSettings.h:165:    int m_renderScalePercent = 0;
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGameSettings.h:168:    // written to preferences.ini; the running game keeps m_renderScalePercent and m_worldScalePercent until restart
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGame_logic.cpp:305:    m_gameSettings->m_renderScalePercent = gs->renderScalePercent;
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGame_logic.cpp:564:    m_notificationArea->draw(m_textDrawer, 14, m_gameSettings->getScreenH() - 64);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGame_logic.cpp:764:    m_Screen->applyRenderScale(m_gameSettings->m_renderScalePercent);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGame_logic.cpp:783:    cSideBar::configureLayout(m_gameSettings->getScreenW(), m_gameSettings->getScreenH());
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGame_logic.cpp:818:        m_gameSettings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGame_logic.cpp:819:        m_gameSettings->getScreenH());
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGame_logic.cpp:833:    m_mapViewport = std::make_unique<cRectangle>(0, cSideBar::TopBarHeight, m_gameSettings->getScreenW() - cSideBar::SidebarWidth, m_gameSettings->getScreenH() - cSideBar::TopBarHeight);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cGame_logic.cpp:1317:        setMousePosition(m_gameSettings->getScreenW() / 2, m_gameSettings->getScreenH() / 2);
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:60:void cSDLSystem::applyRenderScale(int renderScalePercent)
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.cpp:78:        ? std::format("Auto ({}%)", calculateAutomaticRenderScalePercent(outputWidth, outputHeight))
+bb60a275be8074ed71da861cb83fe813066698fa:src/game/cSDLSystem.h:35:    void applyRenderScale(int renderScalePercent);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/cFlag.cpp:50:    if ((drawX >= 0 && drawX < m_settings->getScreenW()) && (drawY >= 0 && drawY < m_settings->getScreenH())) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/map/cMapCamera.cpp:50:    m_windowWidth= m_gameSettings->getScreenW() - widthOfSidebar;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/map/cMapCamera.cpp:51:    m_windowHeight= m_gameSettings->getScreenH() - m_heightOfTopBar;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/map/cMapCamera.cpp:297:        else if (mouseX >= (m_gameSettings->getScreenW() - 2)) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/map/cMapCamera.cpp:311:        else if (mouseY >= (m_gameSettings->getScreenH() - 2)) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/mentat/AbstractMentat.cpp:84:        const cRectangle &toMissionSelectRect = m_textDrawer->getAsRectangle(settings->getScreenW() - length,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/mentat/AbstractMentat.cpp:85:                                                settings->getScreenH() - m_textDrawer->getFontHeight(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/mentat/AbstractMentat.cpp:107:    offsetX = (settings->getScreenW() - MENTAT_SCREEN_W) / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/mentat/AbstractMentat.cpp:108:    offsetY = (settings->getScreenH() - MENTAT_SCREEN_H) / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/projectiles/bullet.cpp:121:    if (x < -getBulletBmpWidth() || x > (m_settings->getScreenW() + getBulletBmpWidth()))
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/projectiles/bullet.cpp:124:    if (y < getBulletBmpHeight() || y > m_settings->getScreenH() + getBulletBmpHeight())
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:67:    const int gap = std::clamp(m_settings->getScreenW() / 48, 16, 32);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:68:    const int horizontalMargin = std::clamp(m_settings->getScreenW() / 24, 28, 72);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:70:        m_settings->getScreenW() - horizontalMargin * 2 - gap * 3) / 4;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:73:    const int firstX = (m_settings->getScreenW() - cardsWidth) / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:74:    const int cardsY = std::clamp(m_settings->getScreenH() / 6, 96, 150);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:76:    const int backY = m_settings->getScreenH() - backHeight - 18;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:79:        m_settings->getScreenH() * 3 / 5, 320, 520);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:90:        (m_settings->getScreenW() - backWidth) / 2,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:127:        (m_settings->getScreenW() - titleWidth) / 2,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:162:    const float screenAspect = static_cast<float>(m_settings->getScreenW()) /
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:163:        std::max(1, m_settings->getScreenH());
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:166:        const int width = static_cast<int>(m_settings->getScreenH() * sourceAspect);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:168:            (m_settings->getScreenW() - width) / 2,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:171:            m_settings->getScreenH());
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:173:        const int height = static_cast<int>(m_settings->getScreenW() / sourceAspect);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:176:            (m_settings->getScreenH() - height) / 2,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:177:            m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:184:        m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:185:        m_settings->getScreenH(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:70:    const int teamAtTheRight = m_settings->getScreenW() - (m_teamBmp->w * 1.1f);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:71:    const int teamAlmostAtBottom = m_settings->getScreenH() - (m_teamBmp->h * 1.1f);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:77:    int centerOfScreen = m_settings->getScreenW() / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:84:    const int backButtonY = m_settings->getScreenH() - backButtonHeight;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:413:    m_crawlerY = m_settings->getScreenH() + 1;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:450:    int halfScreen = m_settings->getScreenW() / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cEditorState.cpp:82:    const cRectangle &selectRect = cRectangle(0, 0, m_settings->getScreenW(), heightBarSize);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cEditorState.cpp:83:    const cRectangle &modifRect = cRectangle(m_settings->getScreenW()-heightBarSize, heightBarSize, heightBarSize, m_settings->getScreenH()-heightBarSize);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cEditorState.cpp:84:    mapSizeArea = cRectangle(0,heightBarSize,m_settings->getScreenW()-heightBarSize,m_settings->getScreenH()-heightBarSize);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cEditorState.cpp:150:    rectGui = cRectangle(m_settings->getScreenW()-heightButtonSize*3, (heightBarSize-heightButtonSize)/2, heightButtonSize, heightButtonSize);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cEditorState.cpp:1361:            if (x + tileLenSize > 0 && x < m_settings->getScreenW() &&y + tileLenSize > heightBarSize && y < m_settings->getScreenH()) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cGamePlaying.cpp:487:    m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1, Color::White, time);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cGamePlaying.cpp:489:    m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1 + 15, Color::White, time);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:72:        backGroundDebug.reset(m_sdlDrawer->createRenderTargetTexture(m_settings->getScreenW(), m_settings->getScreenH()));
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:74:        for (int x = 0; x < m_settings->getScreenW(); x += 60) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:75:            for (int y = 0; y < m_settings->getScreenH(); y += 20) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:103:    const int buttonWidth = std::clamp(m_settings->getScreenW() / 4, 280, 360);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:104:    const int buttonHeight = std::clamp(m_settings->getScreenH() / 15, 40, 48);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:105:    const int buttonGap = std::clamp(m_settings->getScreenH() / 90, 6, 10);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:110:    const int panelX = (m_settings->getScreenW() - panelWidth) / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:112:        (m_settings->getScreenH() - panelHeight) / 2 + 28,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:114:        std::max(132, m_settings->getScreenH() - panelHeight - 46));
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:123:    const int logoWidth = std::clamp(m_settings->getScreenW() * 2 / 5, 310, 430);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:125:    logoX = (m_settings->getScreenW() - logoWidth) / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:182:        .withRect(cRectangle(m_settings->getScreenW() - 132 - 18, 16, 132, 34))
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:203:        cRectangle(0, 0, m_settings->getScreenW(), m_settings->getScreenH()),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:208:    const float screenAspect = static_cast<float>(m_settings->getScreenW()) /
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:209:        std::max(1, m_settings->getScreenH());
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:211:    int drawWidth = m_settings->getScreenW();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:212:    int drawHeight = m_settings->getScreenH();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:214:        drawHeight = m_settings->getScreenH();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:217:        drawWidth = m_settings->getScreenW();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:220:        drawHeight = m_settings->getScreenH();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:226:        cRectangle((m_settings->getScreenW() - drawWidth) / 2,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:227:                   (m_settings->getScreenH() - drawHeight) / 2,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:257:        m_settings->getScreenH() - m_textDrawer->getFontHeight() - 22,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cNewmapEditorState.cpp:70:    int margin = m_settings->getScreenH() * 0.3;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cNewmapEditorState.cpp:73:    int mainMenuWidth = m_settings->getScreenW() - (margin * 2);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cNewmapEditorState.cpp:74:    int mainMenuHeight = m_settings->getScreenH() - (margin * 2);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cOptionsState.cpp:63:    m_renderScaleChoices = renderScaleChoices(m_settings->getOutputW(), m_settings->getOutputH());
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cOptionsState.cpp:76:        m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cOptionsState.cpp:77:        m_settings->getScreenH(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cOptionsState.cpp:559:    const int outputW = m_settings->getOutputW();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cOptionsState.cpp:560:    const int outputH = m_settings->getOutputH();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cOptionsState.cpp:563:    m_renderScaleValueLabel->setText(scaleChoiceText(renderScale, calculateAutomaticRenderScalePercent(outputW, outputH)));
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cScoringState.cpp:109:    m_textDrawer->drawTextCentered("Click to continue", m_settings->getScreenH() - lineHeight - 8, Color::White);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:79:    const int mainMenuWidth = std::clamp(m_settings->getScreenW() - 64, 440, 600);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:80:    const int mainMenuHeight = std::min(m_settings->getScreenH() - 64, 500);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:81:    const int mainMenuFrameX = (m_settings->getScreenW() - mainMenuWidth) / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:82:    const int mainMenuFrameY = (m_settings->getScreenH() - mainMenuHeight) / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:185:        const float screenAspect = static_cast<float>(m_settings->getScreenW()) /
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:186:            std::max(1, m_settings->getScreenH());
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:189:            const int width = static_cast<int>(m_settings->getScreenH() * sourceAspect);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:191:                (m_settings->getScreenW() - width) / 2,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:194:                m_settings->getScreenH());
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:196:            const int height = static_cast<int>(m_settings->getScreenW() / sourceAspect);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:199:                (m_settings->getScreenH() - height) / 2,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:200:                m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:207:            m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:208:            m_settings->getScreenH(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectYourNextConquestState.cpp:121:        m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectYourNextConquestState.cpp:122:        m_settings->getScreenH()
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectYourNextConquestState.cpp:386:    const int screenWidth = m_settings->getScreenW();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectYourNextConquestState.cpp:387:    const int screenHeight = m_settings->getScreenH();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:172:    screen_x = m_settings->getScreenW();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:173:    screen_y = m_settings->getScreenH();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cVideoState.cpp:60:        m_offsetX = (m_settings->getScreenW() - VIDEO_WIDTH) / 2 - VIDEO_CENTER_SHIFT;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cVideoState.cpp:61:        m_offsetY = (m_settings->getScreenH() - VIDEO_MAX_HEIGHT) / 2 - VIDEO_CENTER_SHIFT;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cWinLoseState.cpp:89:            m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cWinLoseState.cpp:90:            m_settings->getScreenH(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cWinLoseState.cpp:108:        const int posW = (m_settings->getScreenW() - m_tex->w) / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cWinLoseState.cpp:109:        const int posH = (m_settings->getScreenH() - m_tex->h) / 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/managers/cDrawManager.cpp:123:    m_sdlDrawer->setClippingFor(0, cSideBar::TopBarHeight, m_mapCamera->getWindowWidth(), m_gameSettings->getScreenH());
+bb60a275be8074ed71da861cb83fe813066698fa:src/managers/cDrawManager.cpp:259:    m_sdlDrawer->setClippingFor(m_gameSettings->getScreenW() - cSideBar::SidebarWidth, 0, m_gameSettings->getScreenW(), m_gameSettings->getScreenH());
+bb60a275be8074ed71da861cb83fe813066698fa:src/managers/cDrawManager.cpp:305:        uiaudit::recordArea("top-panel", 0, 0, m_gameSettings->getScreenW(), cSideBar::TopBarHeight);
+bb60a275be8074ed71da861cb83fe813066698fa:src/managers/cDrawManager.cpp:313:        m_gameSettings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/managers/cDrawManager.cpp:320:        m_gameSettings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/sidebar/cBuildingListFactory.cpp:27:        m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/sidebar/cBuildingListFactory.cpp:28:        m_settings->getScreenH()
+bb60a275be8074ed71da861cb83fe813066698fa:src/sidebar/cBuildingListFactory.cpp:35:        m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/sidebar/cBuildingListFactory.cpp:36:        m_settings->getScreenH()
+bb60a275be8074ed71da861cb83fe813066698fa:src/sidebar/cBuildingListFactory.cpp:52:        m_settings->getScreenW(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/sidebar/cBuildingListFactory.cpp:53:        m_settings->getScreenH()
+bb60a275be8074ed71da861cb83fe813066698fa:src/sidebar/cSideBar.cpp:183:    m_isMouseOverSidebarValue = event.coords.x > (m_settings->getScreenW() - cSideBar::SidebarWidth);
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/RenderScale.cpp:27:int calculateAutomaticRenderScalePercent(int outputWidth, int outputHeight)
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/RenderScale.hpp:17:[[nodiscard]] int calculateAutomaticRenderScalePercent(int outputWidth, int outputHeight);
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/cStructureUtils.cpp:278:    return (drawX + width  >= 0 && drawX < m_settings->getScreenW()) &&
+bb60a275be8074ed71da861cb83fe813066698fa:src/utils/cStructureUtils.cpp:279:           (drawY + height >= 0 && drawY < m_settings->getScreenH());

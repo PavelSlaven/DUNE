@@ -1,0 +1,252 @@
+     1	#include "context/ContextCreator.hpp"
+     2	#include "utils/Graphics.hpp"
+     3	#include "utils/cLog.h"
+     4	#include "utils/cFileValidator.h"
+     5	#include "context/GraphicsContext.hpp"
+     6	#include "context/TextContext.hpp"
+     7	#include "drawers/cTextDrawer.h"
+     8	#include "utils/Localization.hpp"
+     9	
+    10	#include <algorithm>
+    11	#include <filesystem>
+    12	
+    13	ContextCreator::ContextCreator(
+    14	    SDL_Renderer *renderer,
+    15	    cFileValidator *settingsValidator,
+    16	    int assetDensity)
+    17	    : density(std::max(1, assetDensity))
+    18	{
+    19	    // 
+    20	    // loading all datapacks
+    21	    //
+    22	    gfxmentat = std::make_shared<Graphics>(
+    23	        renderer,
+    24	        settingsValidator->getFullName(eGameDirFileName::GFXMENTAT),
+    25	        density
+    26	    );
+    27	    if (gfxmentat == nullptr) {
+    28	        cLogger::getInstance()->log(LOG_ERROR, COMP_INIT, "Load data", "Could not hook/load datafile:" + settingsValidator->getName(eGameDirFileName::GFXMENTAT), OUTC_FAILED);
+    29	    }
+    30	    else {
+    31	        cLogger::getInstance()->log(LOG_INFO, COMP_INIT, "Load data", "Hooked datafile: " + settingsValidator->getName(eGameDirFileName::GFXMENTAT), OUTC_SUCCESS);
+    32	    }
+    33	
+    34	    gfxworld = std::make_shared<Graphics>(
+    35	        renderer,
+    36	        settingsValidator->getFullName(eGameDirFileName::GFXWORLD),
+    37	        density
+    38	    );
+    39	    if (gfxworld == nullptr) {
+    40	        cLogger::getInstance()->log(LOG_ERROR, COMP_INIT, "Load data", "Could not hook/load datafile:" + settingsValidator->getName(eGameDirFileName::GFXWORLD), OUTC_FAILED);
+    41	    }
+    42	    else {
+    43	        cLogger::getInstance()->log(LOG_INFO, COMP_INIT, "Load data", "Hooked datafile: " + settingsValidator->getName(eGameDirFileName::GFXWORLD), OUTC_SUCCESS);
+    44	    }
+    45	
+    46	    gfxinter = std::make_shared<Graphics>(
+    47	        renderer,
+    48	        settingsValidator->getFullName(eGameDirFileName::GFXINTER),
+    49	        density
+    50	    );
+    51	    if (gfxinter == nullptr) {
+    52	        cLogger::getInstance()->log(LOG_ERROR, COMP_INIT, "Load data", "Could not hook/load datafile:" + settingsValidator->getName(eGameDirFileName::GFXINTER), OUTC_FAILED);
+    53	    }
+    54	    else {
+    55	        cLogger::getInstance()->log(LOG_INFO, COMP_INIT, "Load data", "Hooked datafile: " + settingsValidator->getName(eGameDirFileName::GFXINTER), OUTC_SUCCESS);
+    56	    }
+    57	
+    58	    gfxdata = std::make_shared<Graphics>(
+    59	        renderer,
+    60	        settingsValidator->getFullName(eGameDirFileName::GFXDATA),
+    61	        density
+    62	    );
+    63	    if (gfxdata == nullptr) {
+    64	        cLogger::getInstance()->log(LOG_ERROR, COMP_INIT, "Load data", "Could not hook/load datafile:" + settingsValidator->getName(eGameDirFileName::GFXDATA), OUTC_FAILED);
+    65	    }
+    66	    else {
+    67	        cLogger::getInstance()->log(LOG_INFO, COMP_INIT, "Load data", "Hooked datafile: " + settingsValidator->getName(eGameDirFileName::GFXDATA), OUTC_SUCCESS);
+    68	    }
+    69	
+    70	    //
+    71	    // loading all fonts
+    72	    //
+    73	    const auto gameFontFallback = std::filesystem::path(
+    74	        settingsValidator->getFullName(eGameDirFileName::ARRAKEEN)
+    75	    );
+    76	    const auto beneFontFallback = std::filesystem::path(
+    77	        settingsValidator->getFullName(eGameDirFileName::BENEGESS)
+    78	    );
+    79	    const auto smallFontFallback = std::filesystem::path(
+    80	        settingsValidator->getFullName(eGameDirFileName::SMALL)
+    81	    );
+    82	    const auto fontDirectory = beneFontFallback.parent_path();
+    83	    const auto russianFontPath = fontDirectory / "Sangyo-Regular.otf";
+    84	    const auto russoFontPath = fontDirectory / "RussoOne-Regular.ttf";
+    85	    const bool useRussianFont = !localization::isEnglish() &&
+    86	        std::filesystem::is_regular_file(russianFontPath);
+    87	
+    88	    const auto openLocalizedFont = [this, useRussianFont, &russianFontPath](
+    89	        const std::filesystem::path &fallback,
+    90	        int pointSize,
+    91	        const char *role,
+    92	        TTF_Font *&fallbackFont) {
+    93	        fallbackFont = nullptr;
+    94	        const std::filesystem::path primary = useRussianFont
+    95	            ? russianFontPath
+    96	            : fallback;
+    97	        TTF_Font *font = TTF_OpenFont(
+    98	            primary.string().c_str(),
+    99	            pointSize * density
+   100	        );
+   101	        if (!font && primary != fallback) {
+   102	            cLogger::getInstance()->log(
+   103	                LOG_WARN,
+   104	                COMP_INIT,
+   105	                "Load data",
+   106	                std::string("Could not load Sangyo for ") + role +
+   107	                    "; using the configured fallback",
+   108	                OUTC_FAILED
+   109	            );
+   110	            font = TTF_OpenFont(
+   111	                fallback.string().c_str(),
+   112	                pointSize * density
+   113	            );
+   114	        }
+   115	        else if (font && primary != fallback) {
+   116	            fallbackFont = TTF_OpenFont(
+   117	                fallback.string().c_str(),
+   118	                pointSize * density
+   119	            );
+   120	            if (!fallbackFont) {
+   121	                cLogger::getInstance()->log(
+   122	                    LOG_WARN,
+   123	                    COMP_INIT,
+   124	                    "Load data",
+   125	                    std::string("Could not load the symbol fallback for ") + role,
+   126	                    OUTC_FAILED
+   127	                );
+   128	            }
+   129	        }
+   130	        return font;
+   131	    };
+   132	
+   133	    game_font = openLocalizedFont(
+   134	        gameFontFallback, 12, "game text", game_fallback_font
+   135	    );
+   136	    if (game_font == nullptr) {
+   137	        cLogger::getInstance()->log(LOG_ERROR, COMP_INIT, "Load data", "Could not hook/load font:" + settingsValidator->getName(eGameDirFileName::ARRAKEEN), OUTC_FAILED);
+   138	    }
+   139	    else {
+   140	        cLogger::getInstance()->log(LOG_INFO, COMP_INIT, "Load data", useRussianFont ? "Hooked game font: Sangyo-Regular.otf" : "Hooked font: " + settingsValidator->getName(eGameDirFileName::ARRAKEEN), OUTC_SUCCESS);
+   141	    }  
+   142	
+   143	    bene_font = openLocalizedFont(
+   144	        beneFontFallback, 12, "dialog text", bene_fallback_font
+   145	    );
+   146	    if (bene_font == nullptr) {
+   147	        cLogger::getInstance()->log(LOG_ERROR, COMP_INIT, "Load data", "Could not hook/load font:" + settingsValidator->getName(eGameDirFileName::BENEGESS), OUTC_FAILED);
+   148	    }
+   149	    else {
+   150	        cLogger::getInstance()->log(LOG_INFO, COMP_INIT, "Load data", useRussianFont ? "Hooked dialog font: Sangyo-Regular.otf" : "Hooked font: " + settingsValidator->getName(eGameDirFileName::BENEGESS), OUTC_SUCCESS);
+   151	    }  
+   152	
+   153	    small_font = openLocalizedFont(
+   154	        smallFontFallback, 12, "small UI text", small_fallback_font
+   155	    );
+   156	    if (small_font == nullptr) {
+   157	        cLogger::getInstance()->log(LOG_ERROR, COMP_INIT, "Load data", "Could not hook/load font:" + settingsValidator->getName(eGameDirFileName::SMALL), OUTC_FAILED);
+   158	    }
+   159	    else {
+   160	        cLogger::getInstance()->log(LOG_INFO, COMP_INIT, "Load data", useRussianFont ? "Hooked small UI font: Sangyo-Regular.otf" : "Hooked font: " + settingsValidator->getName(eGameDirFileName::SMALL), OUTC_SUCCESS);
+   161	    }
+   162	
+   163	    menu_font = openLocalizedFont(
+   164	        beneFontFallback, 24, "menu text", menu_fallback_font
+   165	    );
+   166	    if (menu_font == nullptr) {
+   167	        cLogger::getInstance()->log(
+   168	            LOG_ERROR,
+   169	            COMP_INIT,
+   170	            "Load data",
+   171	            "Could not load configured HD menu font",
+   172	            OUTC_FAILED
+   173	        );
+   174	    }
+   175	    else {
+   176	        cLogger::getInstance()->log(
+   177	            LOG_INFO,
+   178	            COMP_INIT,
+   179	            "Load data",
+   180	            useRussianFont
+   181	                ? "Hooked HD menu font: Sangyo-Regular.otf"
+   182	                : "Hooked HD menu font: " + settingsValidator->getName(eGameDirFileName::BENEGESS),
+   183	            OUTC_SUCCESS
+   184	        );
+   185	    }
+   186	
+   187	    mentat_hd_font = openLocalizedFont(
+   188	        russoFontPath, 20, "Mentat text", mentat_hd_fallback_font
+   189	    );
+   190	    if (mentat_hd_font == nullptr) {
+   191	        cLogger::getInstance()->log(
+   192	            LOG_WARN,
+   193	            COMP_INIT,
+   194	            "Load data",
+   195	            "Could not load remastered Mentat font; using configured Bene Gesserit font",
+   196	            OUTC_FAILED
+   197	        );
+   198	        mentat_hd_font = TTF_OpenFont(
+   199	            settingsValidator->getFullName(eGameDirFileName::BENEGESS).c_str(),
+   200	            20 * density
+   201	        );
+   202	    }
+   203	    else {
+   204	        cLogger::getInstance()->log(
+   205	            LOG_INFO,
+   206	            COMP_INIT,
+   207	            "Load data",
+   208	            useRussianFont
+   209	                ? "Hooked remastered Mentat font: Sangyo-Regular.otf"
+   210	                : "Hooked remastered Mentat font: RussoOne-Regular.ttf",
+   211	            OUTC_SUCCESS
+   212	        );
+   213	    }
+   214	}
+   215	
+   216	ContextCreator::~ContextCreator()
+   217	{
+   218	    TTF_CloseFont(game_font);
+   219	    TTF_CloseFont(bene_font);
+   220	    TTF_CloseFont(small_font);
+   221	    TTF_CloseFont(menu_font);
+   222	    TTF_CloseFont(mentat_hd_font);
+   223	    if (game_fallback_font) TTF_CloseFont(game_fallback_font);
+   224	    if (bene_fallback_font) TTF_CloseFont(bene_fallback_font);
+   225	    if (small_fallback_font) TTF_CloseFont(small_fallback_font);
+   226	    if (menu_fallback_font) TTF_CloseFont(menu_fallback_font);
+   227	    if (mentat_hd_fallback_font) TTF_CloseFont(mentat_hd_fallback_font);
+   228	}
+   229	
+   230	std::unique_ptr<GraphicsContext> ContextCreator::createGraphicsContext()
+   231	{
+   232	    auto gtx = std::make_unique<GraphicsContext>();
+   233	    gtx->gfxmentat = gfxmentat;
+   234	    gtx->gfxworld = gfxworld;
+   235	    gtx->gfxinter = gfxinter;
+   236	    gtx->gfxdata = gfxdata;
+   237	    return gtx;
+   238	}
+   239	
+   240	std::unique_ptr<TextContext> ContextCreator::createTextContext() {
+   241	    return std::make_unique<TextContext>(
+   242	        std::make_unique<cTextDrawer>(small_font, density, small_fallback_font),
+   243	        std::make_unique<cTextDrawer>(
+   244	            small_fallback_font ? small_fallback_font : small_font,
+   245	            density
+   246	        ),
+   247	        std::make_unique<cTextDrawer>(bene_font, density, bene_fallback_font),
+   248	        std::make_unique<cTextDrawer>(game_font, density, game_fallback_font),
+   249	        std::make_unique<cTextDrawer>(menu_font, density, menu_fallback_font),
+   250	        std::make_unique<cTextDrawer>(mentat_hd_font, density, mentat_hd_fallback_font)
+   251	    );
+   252	}

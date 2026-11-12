@@ -1,0 +1,38 @@
+путь	строка	что делает со значением density одной строкой	откуда значение
+src/drawers/cTextDrawer.cpp@9208dcf	15	Объявляет density как входной параметр конструктора cTextDrawer.	src/context/ContextCreator.cpp@9208dcf:242; src/context/ContextCreator.cpp@9208dcf:247; src/context/ContextCreator.cpp@9208dcf:248; src/context/ContextCreator.cpp@9208dcf:249; src/context/ContextCreator.cpp@9208dcf:250
+src/drawers/cTextDrawer.cpp@9208dcf	18	Зажимает переданную плотность снизу до 1 и сохраняет её в m_density.	src/drawers/cTextDrawer.cpp@9208dcf:15
+src/drawers/cTextDrawer.cpp@9208dcf	19	Передаёт m_density в кэш текстур основного шрифта.	src/drawers/cTextDrawer.cpp@9208dcf:18
+src/drawers/cTextDrawer.cpp@9208dcf	21	Если есть резервный шрифт, передаёт ему в кэш ту же m_density.	src/drawers/cTextDrawer.cpp@9208dcf:18
+src/drawers/cTextDrawer.cpp@9208dcf	88	Переводит ширину измеренного текста из пикселей шрифта в логические единицы делением с округлением вверх на m_density.	src/drawers/cTextDrawer.cpp@9208dcf:18
+src/drawers/cTextDrawer.cpp@9208dcf	99	Переводит измеренную ширину текста в логические единицы делением с округлением вверх на m_density.	src/drawers/cTextDrawer.cpp@9208dcf:18
+src/drawers/cTextDrawer.cpp@9208dcf	100	Переводит измеренную высоту текста в логические единицы делением с округлением вверх на m_density.	src/drawers/cTextDrawer.cpp@9208dcf:18
+src/drawers/cTextDrawer.cpp@9208dcf	190	Переводит ширину измеренного текста в логические единицы делением с округлением вверх на m_density.	src/drawers/cTextDrawer.cpp@9208dcf:18
+src/drawers/cTextDrawer.cpp@9208dcf	216	Переводит ширину измеренного текста в логические единицы делением с округлением вверх на m_density.	src/drawers/cTextDrawer.cpp@9208dcf:18
+src/drawers/cTextDrawer.cpp@9208dcf	227	Возвращает высоту большего из двух шрифтов в логических единицах с округлением вверх на m_density.	src/drawers/cTextDrawer.cpp@9208dcf:18
+src/drawers/cTextDrawer.cpp@9208dcf	235	Переводит высоту измеренного текста в логические единицы делением с округлением вверх на m_density.	src/drawers/cTextDrawer.cpp@9208dcf:18
+src/drawers/cTextDrawer.cpp@9208dcf	244	Возвращает ширину текста в логических единицах с округлением вверх на m_density.	src/drawers/cTextDrawer.cpp@9208dcf:18
+src/drawers/cTextTextureCache.cpp@9208dcf	56	Объявляет density как входной параметр конструктора кэша текстур.	src/drawers/cTextDrawer.cpp@9208dcf:19; src/drawers/cTextDrawer.cpp@9208dcf:21
+src/drawers/cTextTextureCache.cpp@9208dcf	58	Зажимает переданную плотность снизу до 1 и сохраняет её в m_density.	src/drawers/cTextTextureCache.cpp@9208dcf:56
+src/drawers/cTextTextureCache.cpp@9208dcf	81	Выбирает линейный фильтр для плотности больше 1, иначе ближайший сосед, для текстуры тени.	src/drawers/cTextTextureCache.cpp@9208dcf:58
+src/drawers/cTextTextureCache.cpp@9208dcf	89	Выбирает линейный фильтр для плотности больше 1, иначе ближайший сосед, для цветной текстуры.	src/drawers/cTextTextureCache.cpp@9208dcf:58
+src/drawers/cTextTextureCache.cpp@9208dcf	91	Пересчитывает ширину поверхности текста в логические единицы делением с округлением вверх на m_density.	src/drawers/cTextTextureCache.cpp@9208dcf:58
+src/drawers/cTextTextureCache.cpp@9208dcf	92	Пересчитывает высоту поверхности текста в логические единицы делением с округлением вверх на m_density.	src/drawers/cTextTextureCache.cpp@9208dcf:58
+src/context/ContextCreator.cpp@9208dcf	17	Зажимает assetDensity снизу до 1 и сохраняет результат в поле density.	src/context/ContextCreator.cpp@9208dcf:16; src/cGame_logic.cpp@9208dcf:1095; src/cGame.h@9208dcf:284
+src/context/ContextCreator.cpp@9208dcf	25	Передаёт поле density в Graphics для набора GFXMENTAT.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	37	Передаёт поле density в Graphics для набора GFXWORLD.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	49	Передаёт поле density в Graphics для набора GFXINTER.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	61	Передаёт поле density в Graphics для набора GFXDATA.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	99	Умножает размер шрифта в пунктах на density для получения размера в пикселях при открытии шрифта.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	112	Умножает размер резервного шрифта в пунктах на density при повторном открытии.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	118	Умножает размер шрифта подстановки символов в пунктах на density при открытии.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	200	Умножает резервный размер шрифта Mentat на density при открытии.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	242	Передаёт density в cTextDrawer для малого шрифта.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	245	Передаёт density в cTextDrawer для текста малого размера с резервным шрифтом или основным.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	247	Передаёт density в cTextDrawer для шрифта диалогов.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	248	Передаёт density в cTextDrawer для игрового шрифта.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	249	Передаёт density в cTextDrawer для шрифта меню.	src/context/ContextCreator.cpp@9208dcf:17
+src/context/ContextCreator.cpp@9208dcf	250	Передаёт density в cTextDrawer для шрифта Mentat HD.	src/context/ContextCreator.cpp@9208dcf:17
+src/cGame_logic.cpp@9208dcf	121	Объявляет density параметром defaultHdDataFileName.	src/cGame_logic.cpp@9208dcf:141
+src/cGame_logic.cpp@9208dcf	123	Явно помечает параметр density как неиспользуемый.	src/cGame_logic.cpp@9208dcf:121
+src/cGame_logic.cpp@9208dcf	136	Объявляет density параметром graphicsDataFileName.	src/cGame_logic.cpp@9208dcf:1048; src/cGame_logic.cpp@9208dcf:1050; src/cGame_logic.cpp@9208dcf:1052; src/cGame_logic.cpp@9208dcf:1054; src/cGame.h@9208dcf:284
+src/cGame_logic.cpp@9208dcf	141	Передаёт параметр density в defaultHdDataFileName, когда настройка имени файла пуста.	src/cGame_logic.cpp@9208dcf:136

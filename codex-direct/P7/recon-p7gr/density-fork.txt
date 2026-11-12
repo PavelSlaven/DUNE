@@ -1,0 +1,93 @@
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:121:    int density)
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:123:    static_cast<void>(density);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:136:    int density)
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/cGame_logic.cpp:141:        ? defaultHdDataFileName(key, density)
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:17:    : density(std::max(1, assetDensity))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:25:        density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:37:        density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:49:        density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:61:        density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:99:            pointSize * density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:112:                pointSize * density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:118:                pointSize * density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:200:            20 * density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:242:        std::make_unique<cTextDrawer>(small_font, density, small_fallback_font),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:245:            density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:247:        std::make_unique<cTextDrawer>(bene_font, density, bene_fallback_font),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:248:        std::make_unique<cTextDrawer>(game_font, density, game_fallback_font),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:249:        std::make_unique<cTextDrawer>(menu_font, density, menu_fallback_font),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:250:        std::make_unique<cTextDrawer>(mentat_hd_font, density, mentat_hd_fallback_font)
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.hpp:42:    int density = 1;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.cpp:51:    int density)
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.cpp:53:    const int safeDensity = std::max(1, density);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.cpp:85:    srcRect.x *= src->density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.cpp:86:    srcRect.y *= src->density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.cpp:87:    srcRect.w *= src->density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.cpp:88:    srcRect.h *= src->density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.cpp:106:    srcRect.x *= src->density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.cpp:107:    srcRect.y *= src->density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.cpp:108:    srcRect.w *= src->density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.cpp:109:    srcRect.h *= src->density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/SDLDrawer.hpp:38:        int density = 1
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMessageDrawer.cpp:236:    const int density = m_gfxinter->getDensity();
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMessageDrawer.cpp:239:        desiredWidth * density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMessageDrawer.cpp:240:        30 * density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMessageDrawer.cpp:249:        int drawX = 11 * density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMessageDrawer.cpp:251:        drawX += 55 * density) {
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cMessageDrawer.cpp:259:        m_bmpBar->w - 11 * density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cSideBarDrawer.cpp:30:    const int density = game.getGraphicsDensity();
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cSideBarDrawer.cpp:33:        density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cSideBarDrawer.cpp:38:        density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cSideBarDrawer.cpp:43:        density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:15:cTextDrawer::cTextDrawer(TTF_Font *theFont, int density, TTF_Font *fallbackFont) :
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:18:    m_density(std::max(1, density)),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:19:    m_textCache(std::make_unique<cTextTextureCache>(theFont, m_density)),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:21:        ? std::make_unique<cTextTextureCache>(fallbackFont, m_density)
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:88:    w = (w + m_density - 1) / m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:99:    w = (w + m_density - 1) / m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:100:    h = (h + m_density - 1) / m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:190:    w = (w + m_density - 1) / m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:216:    w = (w + m_density - 1) / m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:227:    return (std::max(primaryHeight, fallbackHeight) + m_density - 1) / m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:235:    h = (h + m_density - 1) / m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.cpp:244:    return (w + m_density - 1) / m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.h:15:    explicit cTextDrawer(TTF_Font *theFont, int density = 1, TTF_Font *fallbackFont = nullptr);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextDrawer.h:70:    int m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextTextureCache.cpp:56:cTextTextureCache::cTextTextureCache(TTF_Font *font, int density)
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextTextureCache.cpp:58:    m_density(std::max(1, density))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextTextureCache.cpp:81:        m_density > 1 ? SDL_ScaleModeLinear : SDL_ScaleModeNearest
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextTextureCache.cpp:89:        m_density > 1 ? SDL_ScaleModeLinear : SDL_ScaleModeNearest
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextTextureCache.cpp:91:    newCacheEntry->width = (textSurface->w + m_density - 1) / m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextTextureCache.cpp:92:    newCacheEntry->height = (textSurface->h + m_density - 1) / m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextTextureCache.h:41:    explicit cTextTextureCache(TTF_Font *font, int density = 1);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/drawers/cTextTextureCache.h:50:    int m_density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gameobjects/units/cUnit.cpp:801:            shadow->density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gameobjects/units/cUnit.cpp:852:            bitmap->density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gameobjects/units/cUnit.cpp:888:            top->density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:46:    const int density = m_game.getGraphicsDensity();
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:49:        density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/gamestates/cMainMenuState.cpp:54:        density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/include/Texture.hpp:13:    int density=1;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/include/Texture.hpp:27:        density(std::max(1, assetDensity)),
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:14:    density(std::max(1, assetDensity))
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:67:        density > 1 ? SDL_ScaleModeLinear : SDL_ScaleModeNearest
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:74:        density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:117:        logicalFrame.getX() * density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:118:        logicalFrame.getY() * density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:119:        logicalFrame.getWidth() * density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:120:        logicalFrame.getHeight() * density,
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:169:        density > 1 ? SDL_ScaleModeLinear : SDL_ScaleModeNearest
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:176:        density
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:244:    const HouseTexCacheKey cacheKey{baseIndex, houseId, density};
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:252:        density > 1 && baseName.starts_with("BUILD_");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:254:        density > 1 &&
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:463:        density > 1 ? SDL_ScaleModeLinear : SDL_ScaleModeNearest
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:466:        new Texture(texture, prepared->w, prepared->h, false, density);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:485:    return surface ? surface->w / density : 0;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.cpp:491:    return surface ? surface->h / density : 0;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.hpp:57:        return density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.hpp:65:        int density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.hpp:75:            hash ^= std::hash<int>{}(key.density) + 0x9e3779b9U +
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/Graphics.hpp:82:    int density;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/HdUiTextureLoader.cpp:20:    constexpr int density = 4;
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/HdUiTextureLoader.cpp:39:                    density

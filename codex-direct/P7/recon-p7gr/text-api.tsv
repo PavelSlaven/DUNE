@@ -1,0 +1,23 @@
+метод	строка объявления	строка определения	вызовов в src	файлов
+cTextDrawer	31	29	0	0
+~cTextDrawer	32	40	0	0
+drawText	35	65	57	21
+drawText	37	60	57	21
+drawText	39	45	57	21
+drawTextCentered	41	70	25	7
+drawTextCentered	43	75	25	7
+drawTextCentered	45	174	25	7
+drawTextCenteredInBox	52	85	13	5
+drawTextCenteredInBox	54	104	13	5
+drawTextCenteredInBox	56	109	13	5
+drawTextScaledCenteredInBox	57	114	4	3
+drawTextScaledOpticallyCenteredInBox	58	139	1	1
+drawTextBottomRight	60	189	1	1
+drawTextBottomLeft	62	194	0	0
+drawTextBottomRight	64	199	1	1
+drawTextBottomLeft	66	215	0	0
+getTextLength	68	224	24	10
+getFontHeight	70	210	27	13
+resetCache	72	241	6	4
+getRect	74	231	0	0
+getAsRectangle	76	236	1	1

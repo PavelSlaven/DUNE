@@ -1,0 +1,153 @@
+     1	/**
+     2	 * @file cTextTextureCache.cpp
+     3	 *
+     4	 * Dune 2 - The Maker
+     5	 *
+     6	 * @author Stefan Hendriks & the D2TM Team
+     7	 * @www http://www.dune2themaker.com
+     8	 * @copyright Copyright (c) 2002 - 2026 Stefan Hendriks and contributors
+     9	 * @license This software is released under the MIT License. See LICENSE.md.
+    10	 *
+    11	 * Note: Dune 2 is a trademark of Westwood Studios/Electronic Arts.
+    12	 *
+    13	 * This is a non-commercial educational project.
+    14	 */
+    15	
+    16	#include "drawers/cTextTextureCache.h"
+    17	#include "drawers/SDLDrawer.hpp"
+    18	
+    19	#include "include/cAssert.h"
+    20	#include "utils/Log.h"
+    21	
+    22	#include <algorithm>
+    23	
+    24	namespace {
+    25	TextInkBounds findInkBounds(SDL_Surface *surface)
+    26	{
+    27	    TextInkBounds result;
+    28	    if (!surface || surface->w <= 0 || surface->h <= 0) return result;
+    29	
+    30	    result.textureWidth = surface->w;
+    31	    result.textureHeight = surface->h;
+    32	    result.width = surface->w;
+    33	    result.height = surface->h;
+    34	
+    35	    SDL_Surface *rgba = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA32);
+    36	    if (!rgba) return result;
+    37	
+    38	    if (!SDL_LockSurface(rgba)) {
+    39	        SDL_DestroySurface(rgba);
+    40	        return result;
+    41	    }
+    42	
+    43	    int minX = rgba->w;
+    44	    int minY = rgba->h;
+    45	    int maxX = -1;
+    46	    int maxY = -1;
+    47	    const auto *pixels = static_cast<const Uint8 *>(rgba->pixels);
+    48	    for (int y = 0; y < rgba->h; ++y) {
+    49	        const Uint8 *row = pixels + y * rgba->pitch;
+    50	        for (int x = 0; x < rgba->w; ++x) {
+    51	            if (row[x * 4 + 3] == 0) continue;
+    52	            minX = std::min(minX, x);
+    53	            minY = std::min(minY, y);
+    54	            maxX = std::max(maxX, x);
+    55	            maxY = std::max(maxY, y);
+    56	        }
+    57	    }
+    58	
+    59	    SDL_UnlockSurface(rgba);
+    60	    SDL_DestroySurface(rgba);
+    61	
+    62	    if (maxX >= minX && maxY >= minY) {
+    63	        result.x = minX;
+    64	        result.y = minY;
+    65	        result.width = maxX - minX + 1;
+    66	        result.height = maxY - minY + 1;
+    67	    }
+    68	    return result;
+    69	}
+    70	}
+    71	
+    72	cTextTextureCache::cTextTextureCache(TTF_Font *font, SDLDrawer *renderer)
+    73	    : m_font(font), m_renderer(renderer)
+    74	{
+    75	    d2tm_assert(font != nullptr);
+    76	    d2tm_assert(renderer != nullptr);
+    77	}
+    78	
+    79	cTextTextureCache::~cTextTextureCache()
+    80	{
+    81	    for (auto &pair : m_textCache) {
+    82	        auto &cacheEntry = pair.second;
+    83	        if (cacheEntry->texture) {
+    84	            SDL_DestroyTexture(cacheEntry->texture);
+    85	        }
+    86	        if (cacheEntry->shadowsTexture) {
+    87	            SDL_DestroyTexture(cacheEntry->shadowsTexture);
+    88	        }
+    89	    }
+    90	}
+    91	
+    92	std::unique_ptr<textCacheEntry> cTextTextureCache::createCacheEntry(Color color, const std::string &msg) const
+    93	{
+    94	    auto newCacheEntry = std::make_unique<textCacheEntry>();
+    95	    // TTF_RenderText_Solid produces a crisp, non-anti-aliased 8-bit palette surface
+    96	    // (fully transparent background, fully opaque foreground). This scales cleanly
+    97	    // with nearest-neighbour upscaling, whereas Blended's partial-alpha edges produce
+    98	    // a visible haze on light backgrounds and look inconsistent at non-integer scales.
+    99	    SDL_Surface *textSurface = TTF_RenderText_Solid(m_font, msg.c_str(), 0, Color::Black.toSDL());
+   100	    if (!textSurface) {
+   101	        Logger::error(COMP_TEXT, "cTextTextureCache", "Failed to create shadow surface for text '{}': {}", msg, SDL_GetError());
+   102	        return nullptr;
+   103	    }
+   104	    newCacheEntry->shadowsTexture = SDL_CreateTextureFromSurface(m_renderer->getRenderer(), textSurface);
+   105	    SDL_SetTextureScaleMode(newCacheEntry->shadowsTexture, SDL_SCALEMODE_NEAREST);
+   106	    SDL_DestroySurface(textSurface);
+   107	
+   108	    textSurface = TTF_RenderText_Solid(m_font, msg.c_str(), 0, color.toSDL());
+   109	    if (!textSurface) {
+   110	        Logger::error(COMP_TEXT, "cTextTextureCache", "Failed to create surface for text '{}': {}", msg, SDL_GetError());
+   111	        return nullptr;
+   112	    }
+   113	    newCacheEntry->texture = SDL_CreateTextureFromSurface(m_renderer->getRenderer(), textSurface);
+   114	    SDL_SetTextureScaleMode(newCacheEntry->texture, SDL_SCALEMODE_NEAREST);
+   115	    newCacheEntry->width = textSurface->w;
+   116	    newCacheEntry->height = textSurface->h;
+   117	    newCacheEntry->inkBounds = findInkBounds(textSurface);
+   118	    newCacheEntry->lifeCounter = 10;
+   119	    SDL_DestroySurface(textSurface);
+   120	
+   121	    return newCacheEntry;
+   122	}
+   123	
+   124	textCacheEntry* cTextTextureCache::findOrCreate(const Color color, const std::string &msg) const
+   125	{
+   126	    textKey key{msg, color};
+   127	    const auto it = m_textCache.find(key);
+   128	    if (it == m_textCache.end()) {
+   129	        auto newCacheEntry = createCacheEntry(color, msg);
+   130	        if (!newCacheEntry) {
+   131	            return nullptr;
+   132	        }
+   133	        auto result = m_textCache.emplace(key, std::move(newCacheEntry));
+   134	        return result.first->second.get();
+   135	    }
+   136	    return it->second.get();
+   137	}
+   138	
+   139	void cTextTextureCache::resetCache() const
+   140	{
+   141	    auto it = m_textCache.begin();
+   142	    while (it != m_textCache.end()) {
+   143	        auto &cacheEntry = it->second;
+   144	        if (cacheEntry->lifeCounter == 0) {
+   145	            if (cacheEntry->texture) SDL_DestroyTexture(cacheEntry->texture);
+   146	            if (cacheEntry->shadowsTexture) SDL_DestroyTexture(cacheEntry->shadowsTexture);
+   147	            it = m_textCache.erase(it);
+   148	        } else {
+   149	            cacheEntry->lifeCounter = 0;
+   150	            ++it;
+   151	        }
+   152	    }
+   153	}

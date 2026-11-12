@@ -1,0 +1,126 @@
+     1	#include "drawers/cTextTextureCache.h"
+     2	#include "drawers/SDLDrawer.hpp"
+     3	#include "include/d2tmc.h"
+     4	
+     5	#include <algorithm>
+     6	
+     7	namespace {
+     8	TextInkBounds findInkBounds(SDL_Surface *surface)
+     9	{
+    10	    TextInkBounds result;
+    11	    if (!surface || surface->w <= 0 || surface->h <= 0) return result;
+    12	
+    13	    result.textureWidth = surface->w;
+    14	    result.textureHeight = surface->h;
+    15	    result.width = surface->w;
+    16	    result.height = surface->h;
+    17	
+    18	    SDL_Surface *rgba = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
+    19	    if (!rgba) return result;
+    20	
+    21	    const bool locked = SDL_MUSTLOCK(rgba) != 0;
+    22	    if (locked && SDL_LockSurface(rgba) != 0) {
+    23	        SDL_FreeSurface(rgba);
+    24	        return result;
+    25	    }
+    26	
+    27	    int minX = rgba->w;
+    28	    int minY = rgba->h;
+    29	    int maxX = -1;
+    30	    int maxY = -1;
+    31	    const auto *pixels = static_cast<const Uint8 *>(rgba->pixels);
+    32	    for (int y = 0; y < rgba->h; ++y) {
+    33	        const Uint8 *row = pixels + y * rgba->pitch;
+    34	        for (int x = 0; x < rgba->w; ++x) {
+    35	            if (row[x * 4 + 3] == 0) continue;
+    36	            minX = std::min(minX, x);
+    37	            minY = std::min(minY, y);
+    38	            maxX = std::max(maxX, x);
+    39	            maxY = std::max(maxY, y);
+    40	        }
+    41	    }
+    42	
+    43	    if (locked) SDL_UnlockSurface(rgba);
+    44	    SDL_FreeSurface(rgba);
+    45	
+    46	    if (maxX >= minX && maxY >= minY) {
+    47	        result.x = minX;
+    48	        result.y = minY;
+    49	        result.width = maxX - minX + 1;
+    50	        result.height = maxY - minY + 1;
+    51	    }
+    52	    return result;
+    53	}
+    54	}
+    55	
+    56	cTextTextureCache::cTextTextureCache(TTF_Font *font, int density)
+    57	    : m_font(font),
+    58	    m_density(std::max(1, density))
+    59	{}
+    60	
+    61	cTextTextureCache::~cTextTextureCache()
+    62	{
+    63	    for (auto &pair : m_textCache) {
+    64	        auto &cacheEntry = pair.second;
+    65	        if (cacheEntry->texture) {
+    66	            SDL_DestroyTexture(cacheEntry->texture);
+    67	        }
+    68	        if (cacheEntry->shadowsTexture) {
+    69	            SDL_DestroyTexture(cacheEntry->shadowsTexture);
+    70	        }
+    71	    }
+    72	}
+    73	
+    74	std::unique_ptr<textCacheEntry> cTextTextureCache::createCacheEntry(Color color, const std::string &msg) const
+    75	{
+    76	    auto newCacheEntry = std::make_unique<textCacheEntry>();
+    77	    SDL_Surface *textSurface = TTF_RenderUTF8_Blended(m_font, msg.c_str(), Color::black().toSDL());
+    78	    newCacheEntry->shadowsTexture = SDL_CreateTextureFromSurface(renderDrawer->getRenderer(), textSurface);
+    79	    SDL_SetTextureScaleMode(
+    80	        newCacheEntry->shadowsTexture,
+    81	        m_density > 1 ? SDL_ScaleModeLinear : SDL_ScaleModeNearest
+    82	    );
+    83	    SDL_FreeSurface(textSurface);
+    84	
+    85	    textSurface = TTF_RenderUTF8_Blended(m_font, msg.c_str(), color.toSDL());
+    86	    newCacheEntry->texture = SDL_CreateTextureFromSurface(renderDrawer->getRenderer(), textSurface);
+    87	    SDL_SetTextureScaleMode(
+    88	        newCacheEntry->texture,
+    89	        m_density > 1 ? SDL_ScaleModeLinear : SDL_ScaleModeNearest
+    90	    );
+    91	    newCacheEntry->width = (textSurface->w + m_density - 1) / m_density;
+    92	    newCacheEntry->height = (textSurface->h + m_density - 1) / m_density;
+    93	    newCacheEntry->inkBounds = findInkBounds(textSurface);
+    94	    newCacheEntry->lifeCounter = 10;
+    95	    SDL_FreeSurface(textSurface);
+    96	
+    97	    return newCacheEntry;
+    98	}
+    99	
+   100	textCacheEntry* cTextTextureCache::findOrCreate(const Color color, const std::string &msg) const
+   101	{
+   102	    textKey key{msg, color};
+   103	    const auto it = m_textCache.find(key);
+   104	    if (it == m_textCache.end()) {
+   105	        auto newCacheEntry = createCacheEntry(color, msg);
+   106	        auto result = m_textCache.emplace(key, std::move(newCacheEntry));
+   107	        return result.first->second.get();
+   108	    }
+   109	    return it->second.get();
+   110	}
+   111	
+   112	void cTextTextureCache::resetCache() const
+   113	{
+   114	    auto it = m_textCache.begin();
+   115	    while (it != m_textCache.end()) {
+   116	        auto &cacheEntry = it->second;
+   117	        if (cacheEntry->lifeCounter == 0) {
+   118	            if (cacheEntry->texture) SDL_DestroyTexture(cacheEntry->texture);
+   119	            if (cacheEntry->shadowsTexture) SDL_DestroyTexture(cacheEntry->shadowsTexture);
+   120	            it = m_textCache.erase(it);
+   121	        } else {
+   122	            cacheEntry->lifeCounter = 0;
+   123	            ++it;
+   124	        }
+   125	    }
+   126	}
