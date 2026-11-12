@@ -72,6 +72,7 @@
 #include "include/sGameServices.h"
 #include "gameobjects/cSpecialInfos.h"
 #include "include/eGameState.h"
+#include "utils/Localization.hpp"
 
 cGamePlaying::cGamePlaying(sGameServices* services) :
     cGameState(services),
@@ -277,7 +278,7 @@ void cGamePlaying::drawTrackingOverlays() const
     Color fadingYellow = Color::Yellow.withAlpha(alpha);
 
     int count = static_cast<int>(m_trackedUnitIds.size());
-    std::string label = count == 1 ? "Tracking 1 unit" : std::format("Tracking {} units", count);
+    std::string label = (localization::isEnglish() ? (count == 1 ? std::string("Tracking 1 unit") : std::format("Tracking {} units", count)) : std::format("Слежение за юнитами: {}", count));
 
     const cRectangle* battlefield = m_mapViewport;
     m_textDrawer->drawTextCentered(label, battlefield->getX(), battlefield->getWidth(), cSideBar::TopBarHeight + 10, fadingYellow);

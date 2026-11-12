@@ -29,6 +29,7 @@
 #include <algorithm>
 #include "include/cAssert.h"
 #include "game/cGameSettings.h"
+#include "utils/Localization.hpp"
 
 void cMouseDrawer::serviceInit(sGameServices* services)
 {
@@ -196,12 +197,12 @@ void cMouseDrawer::drawToolTipTurretInformation(cAbstractStructure *theStructure
 {
     d2tm_assert(theStructure);
     if (theStructure->belongsTo(m_player)) {
-        m_textWriter->write(std::format("Sight : {}", theStructure->getSight()));
-        m_textWriter->write(std::format("Range : {}", theStructure->getRange()));
+        m_textWriter->write(localization::format("Sight : {}", "Обзор: {}", theStructure->getSight()));
+        m_textWriter->write(localization::format("Range : {}", "Дальность: {}", theStructure->getRange()));
     }
     else {
-        m_textWriter->write("Sight : Unknown");
-        m_textWriter->write("Range : Unknown");
+        m_textWriter->write(localization::text("Sight : Unknown", "Обзор: неизвестно"));
+        m_textWriter->write(localization::text("Range : Unknown", "Дальность: неизвестно"));
     }
 }
 
@@ -212,15 +213,15 @@ void cMouseDrawer::drawToolTipGeneralInformation(cAbstractStructure *theStructur
 
     std::string description;
     if (theStructure->isPrimary()) {
-        description=std::format("{} (PRIMARY)", structureType.name);
+        description=localization::format("{} (PRIMARY)", "{} (основное)", structureType.name);
     }
     else {
         description=std::format("{}", structureType.name);
     }
     m_textWriter->write(description.c_str(), Color{255, 255, 0,255});
-    m_textWriter->writef("Hitpoints : {}/{}", theStructure->getHitPoints(), theStructure->getMaxHP());
-    m_textWriter->writef("Armor : {}", theStructure->getArmor());
-    m_textWriter->writef("Protected : {}%%", (100-theStructure->getPercentageNotPaved()));
+    m_textWriter->write(localization::format("Hitpoints : {}/{}", "Прочность: {}/{}", theStructure->getHitPoints(), theStructure->getMaxHP()));
+    m_textWriter->write(localization::format("Armor : {}", "Броня: {}", theStructure->getArmor()));
+    m_textWriter->write(localization::format("Protected : {}%%", "Защита: {} %", (100-theStructure->getPercentageNotPaved())));
 }
 
 void cMouseDrawer::drawToolTipWindTrapInformation(cWindTrap *theWindTrap)
@@ -231,16 +232,16 @@ void cMouseDrawer::drawToolTipWindTrapInformation(cWindTrap *theWindTrap)
         int powerUse = theWindTrap->getPlayer()->getPowerUsage();
 
         if (powerUse <= powerOut) {
-            m_textWriter->writef("Total usage : {}/{} (OK)", powerUse, powerOut);
+            m_textWriter->write(localization::format("Total usage : {}/{} (OK)", "Расход: {}/{} (норма)", powerUse, powerOut));
         }
         else {
-            m_textWriter->writef("Total usage : {}/{} (LOW)", powerUse, powerOut);
+            m_textWriter->write(localization::format("Total usage : {}/{} (LOW)", "Расход: {}/{} (мало)", powerUse, powerOut));
         }
-        m_textWriter->writef("Windtrap outage : {}/{}", theWindTrap->getPowerOut(), theWindTrap->getMaxPowerOut());
+        m_textWriter->write(localization::format("Windtrap outage : {}/{}", "Выработка: {}/{}", theWindTrap->getPowerOut(), theWindTrap->getMaxPowerOut()));
     }
     else {
-        m_textWriter->write("Total usage : Unknown");
-        m_textWriter->write("Windtrap outage : Unknown");
+        m_textWriter->write(localization::text("Total usage : Unknown", "Расход: неизвестно"));
+        m_textWriter->write(localization::text("Windtrap outage : Unknown", "Выработка: неизвестно"));
     }
 }
 
@@ -267,15 +268,15 @@ void cMouseDrawer::drawToolTipSiloInformation(cAbstractStructure *theStructure)
         int maxSpice = thePlayer->getMaxCredits();
         int currentSpice =  thePlayer->getCredits();
         if (currentSpice <= maxSpice) {
-            m_textWriter->writef("Total usage : {}/{} (OK)", currentSpice, maxSpice);
+            m_textWriter->write(localization::format("Total usage : {}/{} (OK)", "Запас: {}/{} (норма)", currentSpice, maxSpice));
         }
         else {
-            m_textWriter->writef("Total usage : {}/{} (NOK)", currentSpice, maxSpice);
+            m_textWriter->write(localization::format("Total usage : {}/{} (NOK)", "Запас: {}/{} (не норма)", currentSpice, maxSpice));
         }
-        m_textWriter->writef("Silo capacity : {}/{}", spiceCapacityOfStructure, 1000);
+        m_textWriter->write(localization::format("Silo capacity : {}/{}", "Ёмкость хранилища: {}/{}", spiceCapacityOfStructure, 1000));
     }
     else {
-        m_textWriter->write("Spice usage : Unknown");
+        m_textWriter->write(localization::text("Spice usage : Unknown", "Пряность: неизвестно"));
     }
 }
 

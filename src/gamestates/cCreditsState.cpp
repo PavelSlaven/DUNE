@@ -34,6 +34,7 @@
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
 #include "debug/UiAudit.hpp"
+#include "utils/Localization.hpp"
 
 #include <algorithm>
 
@@ -79,14 +80,14 @@ cCreditsState::cCreditsState(sGameServices* services) :
     m_titleX = centerOfScreen - (titleWidth / 2);
     resetCrawler();
 
-    const int backButtonWidth = std::max(140, m_textDrawer->getTextLength("Back") + 24);
+    const int backButtonWidth = std::max(140, m_textDrawer->getTextLength(localization::text("Back", "Назад")) + 24);
     const int backButtonHeight = std::max(36, m_textDrawer->getFontHeight() + 10);
     const int backButtonY = m_settings->getScreenH() - backButtonHeight;
     const int backButtonX = 0;
     cRectangle backButtonRect(backButtonX, backButtonY, backButtonWidth, backButtonHeight);
     backButton = GuiButtonBuilder()
             .withRect(backButtonRect)
-            .withLabel("Back")
+            .withLabel(localization::text("Back", "Назад"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::Remaster())
@@ -115,20 +116,20 @@ void cCreditsState::prepareCrawlerLines()
 
     m_lines.push_back(s_CreditLine {
         .name = "",
-        .txt = std::format("Version {}", D2TM_VERSION),
+        .txt = localization::format("Version {}", "Версия {}", D2TM_VERSION),
         .color = Color::Yellow,
         .height = spacerAfterHeadline
     });
     m_lines.push_back(s_CreditLine {
         .name = "",
-        .txt = "by Stefan Hendriks",
+        .txt = localization::text("by Stefan Hendriks", "автор — Stefan Hendriks"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(spacer);
     m_lines.push_back(s_CreditLine {
         .name = "",
-        .txt = "a remake of",
+        .txt = localization::text("a remake of", "ремейк игры"),
         .color = Color::White,
         .height = spacerAfterHeadline
     });
@@ -143,79 +144,79 @@ void cCreditsState::prepareCrawlerLines()
 
     m_lines.push_back(s_CreditLine {
         .name = "",
-        .txt = "--- CONTRIBUTORS ---",
+        .txt = localization::text("--- CONTRIBUTORS ---", "--- УЧАСТНИКИ ---"),
         .color = colorHeadlines,
         .height = spacerAfterHeadline,
     });
     m_lines.push_back(s_CreditLine {
         .name = "Paul",
-        .txt = "Developer",
+        .txt = localization::text("Developer", "Разработчик"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Arjen",
-        .txt = "Developer & Sparring partner",
+        .txt = localization::text("Developer & Sparring partner", "Разработчик и спарринг-партнёр"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
         m_lines.push_back(s_CreditLine {
         .name = "Mira",
-        .txt = "Developer",
+        .txt = localization::text("Developer", "Разработчик"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Matt Van Horn",
-        .txt = "Bugfixes",
+        .txt = localization::text("Bugfixes", "Исправление ошибок"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Rozmy",
-        .txt = "Graphics",
+        .txt = localization::text("Graphics", "Графика"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Nema Fakei",
-        .txt = "Graphics",
+        .txt = localization::text("Graphics", "Графика"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Vidiware",
-        .txt = "Graphics",
+        .txt = localization::text("Graphics", "Графика"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Timenn",
-        .txt = "Graphics",
+        .txt = localization::text("Graphics", "Графика"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "MrFlibble",
-        .txt = "Graphics",
+        .txt = localization::text("Graphics", "Графика"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Ravenborn",
-        .txt = "Internal Editor UI graphics and miscellaneous assets",
+        .txt = localization::text("Internal Editor UI graphics and miscellaneous assets", "Графика редактора и другие ресурсы"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Ripps",
-        .txt = "Support at Discord, testing & Skirmish Maps",
+        .txt = localization::text("Support at Discord, testing & Skirmish Maps", "Поддержка в Discord, тестирование и карты схваток"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Bruno",
-        .txt = "For your lifelong support & valuable feedback",
+        .txt = localization::text("For your lifelong support & valuable feedback", "За многолетнюю поддержку и ценные отзывы"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
@@ -224,31 +225,31 @@ void cCreditsState::prepareCrawlerLines()
 
     m_lines.push_back(s_CreditLine {
         .name = "",
-        .txt = "--- ACKNOWLEDGEMENTS ---",
+        .txt = localization::text("--- ACKNOWLEDGEMENTS ---", "--- БЛАГОДАРНОСТИ ---"),
         .color = colorHeadlines,
         .height = spacerAfterHeadline
     });
     m_lines.push_back(s_CreditLine {
         .name = "Westwood Studios",
-        .txt = "for producing Dune 2",
+        .txt = localization::text("for producing Dune 2", "за создание Dune 2"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "SDL3",
-        .txt = "by Sam Lantinga and contributors",
+        .txt = localization::text("by Sam Lantinga and contributors", "Sam Lantinga и соавторы"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "",
-        .txt = "with SDL_image, SDL_ttf and SDL_mixer",
+        .txt = localization::text("with SDL_image, SDL_ttf and SDL_mixer", "с SDL_image, SDL_ttf и SDL_mixer"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "",
-        .txt = "Dune Legacy, Dune Dynasty and Dune The Golden Path",
+        .txt = localization::text("Dune Legacy, Dune Dynasty and Dune The Golden Path", "Dune Legacy, Dune Dynasty и Dune The Golden Path"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
@@ -257,7 +258,7 @@ void cCreditsState::prepareCrawlerLines()
 
     m_lines.push_back(s_CreditLine {
         .name = "",
-        .txt = "--- KO-FI SUPPORTERS ---",
+        .txt = localization::text("--- KO-FI SUPPORTERS ---", "--- ПОДДЕРЖКА НА KO-FI ---"),
         .color = colorHeadlines,
         .height = spacerAfterHeadline
     });
@@ -325,31 +326,31 @@ void cCreditsState::prepareCrawlerLines()
 
     m_lines.push_back(s_CreditLine {
         .name = "",
-        .txt = "--- SPECIAL THANKS TO ---",
+        .txt = localization::text("--- SPECIAL THANKS TO ---", "--- ОСОБАЯ БЛАГОДАРНОСТЬ ---"),
         .color = colorHeadlines,
         .height = spacerAfterHeadline
     });
     m_lines.push_back(s_CreditLine {
         .name = "Gobalopper",
-        .txt = "for Dune2K, and hosting arrakis.dune2k.com",
+        .txt = localization::text("for Dune2K, and hosting arrakis.dune2k.com", "за Dune2K и сайт arrakis.dune2k.com"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Jpexs",
-        .txt = "for help with the Dune 2 Seed Generator",
+        .txt = localization::text("for help with the Dune 2 Seed Generator", "за помощь с генератором карт Dune 2"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Rene",
-        .txt = "for the D2TM Java Map Editor",
+        .txt = localization::text("for the D2TM Java Map Editor", "за редактор карт D2TM на Java"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Mira",
-        .txt = "for porting D2TM to SDL2",
+        .txt = localization::text("for porting D2TM to SDL2", "за перенос D2TM на SDL2"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
@@ -385,13 +386,13 @@ void cCreditsState::prepareCrawlerLines()
     });
     m_lines.push_back(s_CreditLine {
         .name = "Non sono Mandrake",
-        .txt = "for nudging me to work on D2TM again in C++",
+        .txt = localization::text("for nudging me to work on D2TM again in C++", "за то, что вернул меня к D2TM на C++"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
     m_lines.push_back(s_CreditLine {
         .name = "Dune2k.com",
-        .txt = "For all the good times at the arrakis forums",
+        .txt = localization::text("For all the good times at the arrakis forums", "За хорошие времена на форумах arrakis"),
         .color = Color::White,
         .height = fontHeightWithALittlePadding
     });
@@ -402,7 +403,7 @@ void cCreditsState::prepareCrawlerLines()
 
     m_lines.push_back(s_CreditLine {
         .name = "",
-        .txt = "Thank you for playing",
+        .txt = localization::text("Thank you for playing", "Спасибо за игру"),
         .color = Color::White,
         .height = spacerAfterHeadline
     });

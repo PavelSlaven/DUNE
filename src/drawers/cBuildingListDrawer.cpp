@@ -43,6 +43,7 @@
 #include "drawers/cTextDrawer.h"
 #include "game/cGameSettings.h"
 #include "gameobjects/structures/cStructureInfo.h"
+#include "utils/Localization.hpp"
 
 namespace {
 void removeLastUtf8CodePoint(std::string &text)
@@ -77,10 +78,10 @@ std::string fitWithEllipsis(
 std::string compactCardName(const std::string &name)
 {
     if (name == "Hi-Tech") return "Hi-Tech";
-    if (name == "Spice Refinery") return "Refinery";
+    if (name == localization::text("Spice Refinery", "Переработчик пряности")) return localization::text("Refinery", "Переработчик");
     if (name == "MCV") return "MCV";
-    if (name == "Light Infantry") return "Infantry";
-    if (name == "Troopers") return "Troopers";
+    if (name == localization::text("Light Infantry", "Отряд пехоты")) return localization::text("Infantry", "Пехота");
+    if (name == localization::text("Troopers", "Отряд ракетчиков")) return localization::text("Troopers", "Ракетчики");
     return name;
 }
 }
@@ -92,7 +93,7 @@ cBuildingListDrawer::cBuildingListDrawer(const GameContext *ctx, cPlayer *player
     m_sdlDrawer(ctx->getSDLDrawer()),
     m_player(player),
     m_renderListIds(false),
-    m_readyLabel("READY")
+    m_readyLabel(localization::text("READY", "ГОТОВО"))
 {
     d2tm_assert(player != nullptr);
     d2tm_assert(ctx != nullptr);
@@ -313,7 +314,7 @@ void cBuildingListDrawer::drawList(cBuildingList *list, const bool shouldDrawStr
                 );
                 if (item->isPaused()) {
                     m_smallTextDrawer->drawTextCenteredInBox(
-                        "Paused",
+                        localization::text("Paused", "Пауза"),
                         iDrawX + 2,
                         iDrawY + 2,
                         withOfIcon - 4,
@@ -409,7 +410,7 @@ void cBuildingListDrawer::drawList(cBuildingList *list, const bool shouldDrawStr
                             errorFadingColor
                         );
                         m_smallTextDrawer->drawTextCenteredInBox(
-                            "Upgrade",
+                            localization::text("Upgrade", "Улучшение"),
                             iDrawX,
                             iDrawY,
                             withOfIcon,
@@ -441,7 +442,7 @@ void cBuildingListDrawer::drawList(cBuildingList *list, const bool shouldDrawStr
                             errorFadingColor
                         );
                         m_smallTextDrawer->drawTextCenteredInBox(
-                            "OCCUPIED",
+                            localization::text("OCCUPIED", "ЗАНЯТО"),
                             iDrawX,
                             iDrawY,
                             withOfIcon,
@@ -604,8 +605,8 @@ void cBuildingListDrawer::drawMaxBuilt(int x, int y, int width, int height)
     m_sdlDrawer->renderLine(x, y + height, x + width, y, errorFadingColor);
 
     int halfHeight = height / 2;
-    m_smallTextDrawer->drawTextCenteredInBox("Max", x, y, width, halfHeight, Color::Red);
-    m_smallTextDrawer->drawTextCenteredInBox("built", x, y + halfHeight, width, halfHeight, Color::Red);
+    m_smallTextDrawer->drawTextCenteredInBox(localization::text("Max", "Больше"), x, y, width, halfHeight, Color::Red);
+    m_smallTextDrawer->drawTextCenteredInBox(localization::text("built", "нельзя"), x, y + halfHeight, width, halfHeight, Color::Red);
 }
 
 /**

@@ -31,6 +31,7 @@ namespace fs = std::filesystem;
 
 #include <algorithm>
 #include "include/cAssert.h"
+#include "utils/Localization.hpp"
 #include <format>
 // #include <iostream>
 
@@ -416,7 +417,7 @@ void cPreviewMaps::initRandomMap()
 {
     // std::cout << "Initializing random map" << std::endl;
     auto firstSkirmishMap = std::make_unique<PreviewMapView>();
-    firstSkirmishMap->map.name = "Random map";
+    firstSkirmishMap->map.name = localization::text("Random map", "Случайная карта");
     firstSkirmishMap->map.validMap = false;
 
     firstSkirmishMap->map.terrainType = std::vector<int>(1, -1);
@@ -442,19 +443,19 @@ void cPreviewMaps::initRandomMap()
 std::string cPreviewMaps::getMapSize(int i) const
 {
     if (i < 0 || i >= static_cast<int>(m_PreviewMap.size()) || m_PreviewMap[i] == nullptr) {
-        return "Invalid";
+        return localization::text("Invalid", "ОШИБКА");
     }
     int playableCells = (m_PreviewMap[i]->map.width-2) * (m_PreviewMap[i]->map.height-2);
     if (playableCells <= 32 *32) {
-        return "SMALL";
+        return localization::text("SMALL", "МАЛАЯ");
     }
     if (playableCells <= 64 * 64) {
-        return "MEDIUM";
+        return localization::text("MEDIUM", "СРЕДНЯЯ");
     }
     if (playableCells <= 128 * 64) {
-        return "LARGE";
+        return localization::text("LARGE", "БОЛЬШАЯ");
     }
-    return "HUGE";
+    return localization::text("HUGE", "ОГРОМНАЯ");
 }
 
 void cPreviewMaps::createEmptyMap(const std::string &name, const std::string &author, 

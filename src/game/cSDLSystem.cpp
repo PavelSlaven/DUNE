@@ -29,6 +29,7 @@
 #include <algorithm>
 #include <array>
 #include "include/cAssert.h"
+#include "utils/Localization.hpp"
 #include <optional>
 #include <span>
 #include <vector>
@@ -75,7 +76,7 @@ void cSDLSystem::applyRenderScale(int renderScalePercent)
     SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
     const std::string scaleText = selectedScale == AutomaticRenderScale
-        ? std::format("Auto ({}%)", calculateAutomaticRenderScalePercent(outputWidth, outputHeight))
+        ? localization::format("Auto ({}%)", "Авто ({}%)", calculateAutomaticRenderScalePercent(outputWidth, outputHeight))
         : std::format("{}%", selectedScale);
     Logger::info(COMP_SDL2, "Resolution", "Output {}x{}, render scale {}, logical canvas {}x{}",
                  outputWidth, outputHeight, scaleText, canvasResolution.width, canvasResolution.height);

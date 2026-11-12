@@ -23,6 +23,7 @@
 #include "game/GameStateTransition.hpp"
 #include "game/MentatFlow.hpp"
 #include "include/cAssert.h"
+#include "utils/Localization.hpp"
 
 AtreidesMentat::AtreidesMentat(GameContext* ctx, cGameSettings* settings, GameStateTransition* stateTransitions, MentatFlow* mentatFlow, bool allowMissionSelect) : AbstractMentat(ctx, settings, stateTransitions, mentatFlow, allowMissionSelect)
 {
@@ -35,7 +36,7 @@ AtreidesMentat::AtreidesMentat(GameContext* ctx, cGameSettings* settings, GameSt
 
     leftGuiButton = GuiButtonBuilder()
             .withRect(*leftButton)        
-            .withLabel("Repeat")
+            .withLabel(localization::text("Repeat", "Повторить"))
             .withTexture(gfxmentat->getTexture(BTN_REPEAT))
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::WITH_TEXTURE)
@@ -44,7 +45,7 @@ AtreidesMentat::AtreidesMentat(GameContext* ctx, cGameSettings* settings, GameSt
 
     rightGuiButton = GuiButtonBuilder()
             .withRect(*rightButton)        
-            .withLabel("Yes")
+            .withLabel(localization::text("Yes", "Да"))
             .withTexture(gfxmentat->getTexture(BTN_YES))
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::WITH_TEXTURE)

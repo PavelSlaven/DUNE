@@ -24,6 +24,7 @@
 #include "game/GameStateTransition.hpp"
 #include "game/MentatFlow.hpp"
 #include "include/cAssert.h"
+#include "utils/Localization.hpp"
 
 SardaukarMentat::SardaukarMentat(GameContext* ctx, cGameSettings* settings, GameStateTransition* stateTransitions, MentatFlow* mentatFlow, bool allowMissionSelect) : AbstractMentat(ctx, settings, stateTransitions, mentatFlow, allowMissionSelect)
 {
@@ -34,7 +35,7 @@ SardaukarMentat::SardaukarMentat(GameContext* ctx, cGameSettings* settings, Game
     buildRightButton(gfxmentat->getTexture(BTN_PROCEED), 466, 423);
     leftGuiButton = GuiButtonBuilder()
             .withRect(*leftButton)        
-            .withLabel("Repeat")
+            .withLabel(localization::text("Repeat", "Повторить"))
             .withTexture(gfxmentat->getTexture(BTN_REPEAT))
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::WITH_TEXTURE)
@@ -43,7 +44,7 @@ SardaukarMentat::SardaukarMentat(GameContext* ctx, cGameSettings* settings, Game
 
     rightGuiButton = GuiButtonBuilder()
             .withRect(*rightButton)        
-            .withLabel("Yes")
+            .withLabel(localization::text("Yes", "Да"))
             .withTexture(gfxmentat->getTexture(BTN_YES))
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::WITH_TEXTURE)

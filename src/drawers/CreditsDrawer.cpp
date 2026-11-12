@@ -36,6 +36,7 @@
 #include <SDL3/SDL.h>
 #include "include/cAssert.h"
 #include "include/Texture.hpp"
+#include "utils/Localization.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <format>
@@ -256,7 +257,7 @@ void CreditsDrawer::draw()
         rect.getX() + 26,
         rect.getY() + 10,
         label,
-        "CREDITS",
+        localization::text("CREDITS", "КРЕДИТЫ"),
         false
     );
 

@@ -43,6 +43,7 @@
 #include "gamestates/cGameState.h"
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
+#include "utils/Localization.hpp"
 #include <memory>
 
 const int heightBarSize = 48;
@@ -239,7 +240,7 @@ void cEditorState::populateTopologyBar()
             .withRenderer(m_sdlDrawer)
             .withTextDrawer(m_textDrawer)
             .withTheme(cGuiThemeBuilder().light().build())
-            .withLabel("size")
+            .withLabel(localization::text("size", "размер"))
             .withInitialValue(m_topologyCursorSize)
             .withStepValue(2)
             .withMinValue(1)

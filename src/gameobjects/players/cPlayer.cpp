@@ -54,6 +54,7 @@
 #include "data/gfxaudio.h"
 #include "context/GraphicsContext.hpp"
 #include "gameobjects/cSpecialInfos.h"
+#include "utils/Localization.hpp"
 
 int cPlayer::groupIdToIndex(int groupId)
 {
@@ -822,22 +823,22 @@ std::string cPlayer::getHouseName() const
 std::string cPlayer::getHouseNameForId(int house)
 {
     if (house == ATREIDES) {
-        return "Atreides";
+        return localization::text("Atreides", "Атрейдес");
     }
     else if (house == HARKONNEN) {
-        return "Harkonnen";
+        return localization::text("Harkonnen", "Харконнен");
     }
     else if (house == ORDOS) {
-        return "Ordos";
+        return localization::text("Ordos", "Ордос");
     }
     else if (house == SARDAUKAR) {
-        return "Sardaukar";
+        return localization::text("Sardaukar", "Сардаукары");
     }
     else if (house == FREMEN) {
-        return "Fremen";
+        return localization::text("Fremen", "Фримены");
     }
     else if (house == MERCENARY) {
-        return "Mercenary";
+        return localization::text("Mercenary", "Наёмники");
     }
     else if (house == GENERALHOUSE) {
         return "Generalhouse (none)";
@@ -1646,7 +1647,7 @@ void cPlayer::onNotifyGameEvent(const s_GameEvent &event)
     switch (event.eventType) {
         case eGameEventType::GAME_EVENT_PLAYER_DEFEATED:
             if (const auto *commonEvent = std::get_if<CommonEvent>(&event.data)) {
-                auto msg = std::format("Player {} ({}) has been defeated.", commonEvent->player->getId(),
+                auto msg = localization::format("Player {} ({}) has been defeated.", "Игрок {} ({}) повержен.", commonEvent->player->getId(),
                                        commonEvent->player->getHouseName());
                 if (commonEvent->player != this) {
                     break;
@@ -1667,7 +1668,7 @@ void cPlayer::onNotifyGameEvent(const s_GameEvent &event)
 
         case eGameEventType::GAME_EVENT_SPECIAL_LAUNCHED:
             if (const auto *buildEvent = std::get_if<BuildingEvent>(&event.data)) {
-                auto msg = std::format("{} launched!", buildEvent->buildingListItem->getNameString());
+                auto msg = localization::format("{} launched!", "Запуск: {}!", buildEvent->buildingListItem->getNameString());
                 // addNotification(msg, eNotificationType::BAD);
                 const s_GameEvent newEvent {
                     .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
@@ -1685,7 +1686,7 @@ void cPlayer::onNotifyGameEvent(const s_GameEvent &event)
         case eGameEventType::GAME_EVENT_SPECIAL_SELECT_TARGET:
             if (const auto *buildEvent = std::get_if<BuildingEvent>(&event.data)) {
                 if (buildEvent->player == this) {
-                    auto msg = std::format("{} is ready for deployment.",
+                    auto msg = localization::format("{} is ready for deployment.", "Готово к высадке: {}.",
                                            buildEvent->buildingListItem->getNameString());
                     // addNotification(msg, eNotificationType::PRIORITY);
                     const s_GameEvent newEvent {
@@ -1742,7 +1743,7 @@ void cPlayer::onNotifyGameEvent(const s_GameEvent &event)
         case eGameEventType::GAME_EVENT_LIST_ITEM_FINISHED:
             if (const auto *buildEvent = std::get_if<BuildingEvent>(&event.data)) {
                 if (buildEvent->player == this && buildEvent->entityType == eBuildType::UPGRADE) {
-                    auto msg = std::format("Upgrade: {} completed.", buildEvent->buildingListItem->getNameString());
+                    auto msg = localization::format("Upgrade: {} completed.", "Улучшение завершено: {}.", buildEvent->buildingListItem->getNameString());
                     //addNotification(msg, eNotificationType::PRIORITY);
                     const s_GameEvent newEvent {
                         .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
@@ -2228,7 +2229,7 @@ void cPlayer::onMyUnitDestroyed(const CommonEvent &event)
         const s_GameEvent newEvent {
             .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
             .data = NotificationEvent {
-                .message = "You've lost a Harvester",
+                .message = localization::text("You've lost a Harvester", "Вы потеряли харвестер."),
                 .type = eNotificationType::PRIORITY,
                 .player = this,
             }
@@ -2244,7 +2245,7 @@ void cPlayer::onMyUnitDestroyed(const CommonEvent &event)
             const s_GameEvent newEvent {
                 .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
                 .data = NotificationEvent {
-                    .message = "You have one Harvester left",
+                    .message = localization::text("You have one Harvester left", "У вас остался один харвестер."),
                     .type = eNotificationType::NEUTRAL,
                     .player = this,
                 }
@@ -2266,7 +2267,7 @@ void cPlayer::onMyUnitDestroyed(const CommonEvent &event)
                 const s_GameEvent newEvent {
                     .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
                     .data = NotificationEvent {
-                        .message = "No harvesters and refineries left!",
+                        .message = localization::text("No harvesters and refineries left!", "Не осталось харвестеров и переработчиков!"),
                         .type = eNotificationType::BAD,
                         .player = this,
                     }
@@ -2296,7 +2297,7 @@ void cPlayer::reinforceHarvesterIfNeeded(int cell)
             const s_GameEvent event {
                 .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
                 .data = NotificationEvent {
-                    .message = "No more Harvester left, reinforcing...",
+                    .message = localization::text("No more Harvester left, reinforcing...", "Харвестеров не осталось. Прибывает подкрепление…"),
                     .type = eNotificationType::BAD,
                     .player = this,
                 }

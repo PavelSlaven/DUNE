@@ -39,6 +39,7 @@
 
 #include "data/gfxaudio.h"
 #include "sidebar/cSideBar.h"
+#include "utils/Localization.hpp"
 
 cMouseNormalState::cMouseNormalState(cPlayer *player, cGameControlsContext *context, cMouse *mouse) :
     cMouseState(player, context, mouse),
@@ -94,7 +95,7 @@ void cMouseNormalState::onMouseLeftButtonClicked()
 
         if (!ids.empty()) {
             if (ids.size() > 1) {
-                m_context->getDrawManager()->setMessage(std::format("{} units selected", ids.size()));
+                m_context->getDrawManager()->setMessage(localization::format("{} units selected", "Выбрано юнитов: {}", ids.size()));
             }
             else {
                 cUnit *pUnit = m_context->getObjects()->getUnit(ids[0]);

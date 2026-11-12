@@ -38,6 +38,7 @@
 #include "data/gfxaudio.h"
 #include "sidebar/cBuildingList.h"
 #include "sidebar/cSideBar.h"
+#include "utils/Localization.hpp"
 #include <algorithm>
 
 cOrderProcesser::cOrderProcesser(cPlayer *thePlayer)
@@ -157,11 +158,11 @@ void cOrderProcesser::think()
         if (m_secondsUntilArrival == 0) {
             sendFrigate();
             if (m_frigateSent) {
-                m_drawManager->setMessage("Frigate is arriving...");
+                m_drawManager->setMessage(localization::text("Frigate is arriving...", "Фрегат прибывает…"));
             }
         }
         else if (m_secondsUntilArrival <= 10) {
-            std::string msg = std::format("T-{} before Frigate arrival.", m_secondsUntilArrival);
+            std::string msg = localization::format("T-{} before Frigate arrival.", "Фрегат прибудет через {} с.", m_secondsUntilArrival);
             m_drawManager->setMessage(msg);
         }
     }
@@ -169,7 +170,7 @@ void cOrderProcesser::think()
         // the frigate could not be spawned (ie all unit slots taken), try again
         sendFrigate();
         if (m_frigateSent) {
-            m_drawManager->setMessage("Frigate is arriving...");
+            m_drawManager->setMessage(localization::text("Frigate is arriving...", "Фрегат прибывает…"));
         }
     }
 

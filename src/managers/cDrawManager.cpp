@@ -56,6 +56,7 @@
 #include "drawers/cPlaceItDrawer.h"
 #include "game/cGameSettings.h"
 #include "include/Texture.hpp"
+#include "utils/Localization.hpp"
 
 cDrawManager::cDrawManager(GameContext *ctx, cPlayer *thePlayer, sGameServices *services) :
     m_sidebarColor(Color{214, 149, 20,255}),
@@ -337,7 +338,7 @@ void cDrawManager::drawTopBarBackground()
         optionsRect.getHeight(),
         border
     );
-    m_textDrawer->drawTextCenteredInBox("OPTIONS", optionsRect, text);
+    m_textDrawer->drawTextCenteredInBox(localization::text("OPTIONS", "НАСТРОЙКИ"), optionsRect, text);
     if (uiaudit::isEnabled()) {
         uiaudit::recordClick("top-options", optionsRect.getX(), optionsRect.getY(), optionsRect.getWidth(), optionsRect.getHeight());
     }

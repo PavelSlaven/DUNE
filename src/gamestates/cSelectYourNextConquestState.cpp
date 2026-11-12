@@ -52,6 +52,7 @@
 #include <algorithm>
 #include "utils/HdUiTextureLoader.hpp"
 #include "debug/UiAudit.hpp"
+#include "utils/Localization.hpp"
 
 // Return color index from pixel (x, y) in surface
 static Uint8 getPixelColorIndexFromSurface(SDL_Surface *surface, int x, int y)
@@ -164,7 +165,7 @@ cSelectYourNextConquestState::cSelectYourNextConquestState(sGameServices* servic
     const cRectangle toMissionSelectRect = m_hdCampaignLayout.missionButton;
     m_guiBtnToMissionSelect = GuiButtonBuilder()
             .withRect(toMissionSelectRect)        
-            .withLabel("Mission select")
+            .withLabel(localization::text("Mission select", "Выбор миссии"))
             .withKind(GuiRenderKind::REMASTER_BUTTON)
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
@@ -224,18 +225,18 @@ void cSelectYourNextConquestState::thinkFast()
 
         if (regionSceneState == SCENE_INIT) {
             regionSetupNextMission(iMission, iHouse);
-            m_drawManager->setMessage("3 Houses have come to Dune.");
+            m_drawManager->setMessage(localization::text("3 Houses have come to Dune.", "Три Дома прибыли на Дюну."));
             transitionToNextRegionSceneState(SCENE_THREE_HOUSES_COME_FOR_DUNE);
         }
         else if (regionSceneState == SCENE_THREE_HOUSES_COME_FOR_DUNE) {
             if (!hasMessage && iRegionSceneAlpha >= 255) {
-                m_drawManager->setMessage("To take control of the land.");
+                m_drawManager->setMessage(localization::text("To take control of the land.", "Чтобы покорить её земли."));
                 transitionToNextRegionSceneState(SCENE_TO_TAKE_CONTROL_OF_THE_LAND);
             }
         }
         else if (regionSceneState == SCENE_TO_TAKE_CONTROL_OF_THE_LAND) {
             if (!hasMessage && iRegionSceneAlpha >= 255) {
-                m_drawManager->setMessage("That has become divided.");
+                m_drawManager->setMessage(localization::text("That has become divided.", "Теперь Дюна разделена."));
                 transitionToNextRegionSceneState(SCENE_THAT_HAS_BECOME_DIVIDED);
             }
         }
@@ -450,7 +451,7 @@ void cSelectYourNextConquestState::drawHdChrome() const
         Color{112, 82, 36, 255}
     );
     m_textDrawer->drawTextCenteredInBox(
-        "SELECT YOUR NEXT REGION",
+        localization::text("SELECT YOUR NEXT REGION", "ВЫБЕРИТЕ СЛЕДУЮЩИЙ РЕГИОН"),
         m_hdCampaignLayout.title,
         Color{239, 194, 88, 255}
     );
@@ -706,7 +707,7 @@ void cSelectYourNextConquestState::drawStateConquerRegions() const   // draw dun
 
     // Animate here (so add regions that are conquered)
     if (isFinishedConqueringRegions && !m_drawManager->hasMessage()) {
-        m_drawManager->setMessage("Select your next region.", true);
+        m_drawManager->setMessage(localization::text("Select your next region.", "Выберите следующий регион."), true);
     }
 }
 
@@ -728,7 +729,7 @@ void cSelectYourNextConquestState::drawStateSelectYourNextConquest() const
 
     // Animate here (so add regions that are conquered)
     if (isFinishedConqueringRegions && !m_drawManager->hasMessage()) {
-        m_drawManager->setMessage("Select your next region.", true);
+        m_drawManager->setMessage(localization::text("Select your next region.", "Выберите следующий регион."), true);
     }
 }
 
@@ -898,7 +899,7 @@ int cSelectYourNextConquestState::regionOver(int mouseX, int mouseY)
     const int hCalc = m_hdCampaignLayout.clickMapY(mouseY, regionClickMapBmp->h);
     int c = getPixelColorIndexFromSurface(regionClickMapBmp, wCalc, hCalc);
     //std::cout << "REGION_OVER " << mouseX-offsetX << " " << mouseY-offsetY << " " << c << std::endl;
-    m_drawManager->setMessage(std::format("region {}",c-1));
+    m_drawManager->setMessage(localization::format("region {}", "регион {}",c-1));
     return c - 1;
 }
 

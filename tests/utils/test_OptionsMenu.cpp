@@ -2,6 +2,7 @@
 #include "utils/ScaleChoices.hpp"
 #include "gamestates/OptionsMenuLayout.hpp"
 #include "utils/RenderScale.hpp"
+#include "utils/Localization.hpp"
 
 #include <algorithm>
 #include <array>
@@ -383,6 +384,7 @@ TEST_CASE("P5B render scale choices follow the 800x600 minimum", "[P5B]")
 
 TEST_CASE("P5B world scale choices indexes and labels", "[P5B]")
 {
+    localization::setLanguage("en");
     CHECK(worldScaleChoices() == std::vector<int>{0, 100, 110, 125, 150});
     CHECK(scaleChoiceIndex(std::vector<int>{0, 100, 125, 150, 175}, 175) == 4);
     CHECK(scaleChoiceIndex(std::vector<int>{0, 100, 125, 150, 175}, 200) == 0);
@@ -392,4 +394,5 @@ TEST_CASE("P5B world scale choices indexes and labels", "[P5B]")
     CHECK(scaleChoiceText(125, 180) == std::string{"125%"});
     CHECK(scaleChoiceText(0, 110) == std::string{"Auto (110%)"});
     CHECK(scaleChoiceText(150, 110) == std::string{"150%"});
+    localization::setLanguage("ru");
 }

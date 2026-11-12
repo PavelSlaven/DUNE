@@ -34,6 +34,7 @@
 #include "debug/UiAudit.hpp"
 
 #include "utils/HdUiTextureLoader.hpp"
+#include "utils/Localization.hpp"
 
 #include <algorithm>
 #include <string>
@@ -121,7 +122,7 @@ void cChooseHouseState::draw() const
 
     drawHdBackground();
 
-    const std::string title = "CHOOSE YOUR HOUSE";
+    const std::string title = localization::text("CHOOSE YOUR HOUSE", "ВЫБЕРИТЕ ДОМ");
     const int titleWidth = m_textDrawer->getTextLength(title);
     m_textDrawer->drawText(
         (m_settings->getScreenW() - titleWidth) / 2,
@@ -129,16 +130,16 @@ void cChooseHouseState::draw() const
         Color{231, 190, 91, 255},
         title);
 
-    drawHdHouseCard(houseAtreides, bmp_HouseAtreides, "ATREIDES");
-    drawHdHouseCard(houseOrdos, bmp_HouseOrdos, "ORDOS");
-    drawHdHouseCard(houseHarkonnen, bmp_HouseHarkonnen, "HARKONNEN");
-    drawHdHouseCard(houseSardaukar, bmp_HouseSardaukar, "SARDAUKAR");
+    drawHdHouseCard(houseAtreides, bmp_HouseAtreides, localization::text("ATREIDES", "АТРЕЙДЕС"));
+    drawHdHouseCard(houseOrdos, bmp_HouseOrdos, localization::text("ORDOS", "ОРДОС"));
+    drawHdHouseCard(houseHarkonnen, bmp_HouseHarkonnen, localization::text("HARKONNEN", "ХАРКОННЕН"));
+    drawHdHouseCard(houseSardaukar, bmp_HouseSardaukar, localization::text("SARDAUKAR", "САРДАУКАРЫ"));
 
     m_sdlDrawer->renderRectFillColor(
         backButtonRect,
         hoversOverBackButton ? Color{43, 49, 53, 245} : Color{25, 31, 35, 245});
     m_sdlDrawer->renderRectColor(backButtonRect, Color{195, 142, 43, 255});
-    const std::string backLabel = "Back";
+    const std::string backLabel = localization::text("Back", "Назад");
     const int backLabelWidth = m_textDrawer->getTextLength(backLabel);
     m_textDrawer->drawText(
         backButtonRect.getX() + (backButtonRect.getWidth() - backLabelWidth) / 2,

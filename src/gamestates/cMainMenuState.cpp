@@ -47,6 +47,7 @@
 #include "include/Texture.hpp"
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
+#include "utils/Localization.hpp"
 
 cMainMenuState::cMainMenuState(sGameServices* services) :
     cGameState(services),
@@ -152,35 +153,35 @@ void cMainMenuState::buildHdMenu()
         buttonY += buttonHeight + buttonGap;
     };
 
-    addButton("Campaign", true, [this]() {
+    addButton(localization::text("Campaign", "Кампания"), true, [this]() {
         m_stateTransitions->setNextStateWithFade(GAME_SELECT_HOUSE);
     });
-    addButton("Skirmish", true, [this]() {
+    addButton(localization::text("Skirmish", "Схватка"), true, [this]() {
         m_missionFlow->init();
         m_stateTransitions->setNextStateWithFade(GAME_SETUPSKIRMISH);
     });
-    addButton("Load", false, nullptr);
-    addButton("Map Editor", true, [this]() {
+    addButton(localization::text("Load", "Загрузить"), false, nullptr);
+    addButton(localization::text("Map Editor", "Редактор карт"), true, [this]() {
         m_stateTransitions->setNextStateWithFade(GAME_NEW_MAP_EDITOR);
     });
-    addButton("Options", true, [this]() {
+    addButton(localization::text("Options", "Настройки"), true, [this]() {
         m_stateTransitions->setNextState(GAME_OPTIONS);
     });
-    addButton("Hall of Fame", false, nullptr);
+    addButton(localization::text("Hall of Fame", "Зал славы"), false, nullptr);
 
     const std::string introMoviePack = "intro.pak";
     const bool hasIntroMoviePack = std::filesystem::exists(introMoviePack);
-    addButton("Introduction", hasIntroMoviePack, [this, introMoviePack]() {
+    addButton(localization::text("Introduction", "Вступление"), hasIntroMoviePack, [this, introMoviePack]() {
         m_videoFlow->play(introMoviePack);
     });
-    addButton("Exit", true, [this]() {
+    addButton(localization::text("Exit", "Выход"), true, [this]() {
         m_settings->setPlaying(false);
         m_stateTransitions->fadeOut();
     });
 
     gui_btn_credits = GuiButtonBuilder()
         .withRect(cRectangle(m_settings->getScreenW() - 132 - 18, 16, 132, 34))
-        .withLabel("CREDITS")
+        .withLabel(localization::text("CREDITS", "АВТОРЫ"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withTheme(GuiTheme::Remaster())

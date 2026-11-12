@@ -26,6 +26,7 @@
 #include "gameobjects/cUpgradeInfo.h"
 #include "gameobjects/structures/cStructureInfo.h"
 #include "gameobjects/units/cUnitInfos.h"
+#include "utils/Localization.hpp"
 
 cBuildingListItem::cBuildingListItem(eBuildType type, int buildId, int cost, int icon, cBuildingList *list, int subList, bool queuable)
 {
@@ -405,27 +406,27 @@ std::string cBuildingListItem::getInfo()
 
     if (isTypeStructure()) {
         s_StructureInfo structureType = getStructureInfo();
-        msg = std::format("${} | {} | {} Power | {} Secs", getBuildCost(), structureType.name, (structureType.power_give - structureType.power_drain), seconds);
+        msg = localization::format("${} | {} | {} Power | {} Secs", "${} | {} | {} энергии | {} с", getBuildCost(), structureType.name, (structureType.power_give - structureType.power_drain), seconds);
     }
     else if (isTypeUnit()) {
         s_UnitInfo unitType = getUnitInfo();
         if (getBuildCost() > 0) {
-            msg = std::format("${} | {} | {} Secs", getBuildCost(), unitType.name, seconds);
+            msg = localization::format("${} | {} | {} Secs", "${} | {} | {} с", getBuildCost(), unitType.name, seconds);
         }
         else {
-            msg = std::format("{} | {} Secs", m_info->getUnitInfo(getBuildId()).name, seconds);
+            msg = localization::format("{} | {} Secs", "{} | {} с", m_info->getUnitInfo(getBuildId()).name, seconds);
         }
     }
     else if (isTypeUpgrade()) {
         s_UpgradeInfo upgrade = getUpgradeInfo();
-        msg = std::format("UPGRADE: ${} | {} | {} Secs", getBuildCost(), upgrade.description, seconds);
+        msg = localization::format("UPGRADE: ${} | {} | {} Secs", "УЛУЧШЕНИЕ: ${} | {} | {} с", getBuildCost(), upgrade.description, seconds);
     }
     else if (isTypeSpecial()) {
         s_SpecialInfo special = getSpecialInfo();
-        msg = std::format("${} | {} | {} Secs", getBuildCost(), special.description, seconds);
+        msg = localization::format("${} | {} | {} Secs", "${} | {} | {} с", getBuildCost(), special.description, seconds);
     }
     else {
-        msg = "ERROR: UNKNOWN BUILD TYPE";
+        msg = localization::text("ERROR: UNKNOWN BUILD TYPE", "ОШИБКА: НЕИЗВЕСТНЫЙ ТИП");
     }
     return msg;
 }
@@ -464,5 +465,5 @@ std::string cBuildingListItem::getNameString()
         return std::string(special.description);
     }
 
-    return std::string("Unknown type.");
+    return std::string(localization::text("Unknown type.", "Неизвестный тип."));
 }

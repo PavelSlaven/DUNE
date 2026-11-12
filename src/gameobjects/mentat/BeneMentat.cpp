@@ -30,6 +30,7 @@
 #include "gui/GuiButton.h"
 #include "context/GameContext.hpp"
 #include "context/cInfoContext.h"
+#include "utils/Localization.hpp"
 #include <iostream>
 
 BeneMentat::BeneMentat(GameContext* ctx, cGameSettings* settings, GameStateTransition* stateTransitions, MissionFlow* missionFlow, cPlayer* humanPlayer, s_DataCampaign* dataCampaign) : AbstractMentat(ctx, settings, stateTransitions, nullptr, false), m_humanPlayer(humanPlayer), m_missionFlow(missionFlow), m_dataCampaign(dataCampaign)
@@ -42,7 +43,7 @@ BeneMentat::BeneMentat(GameContext* ctx, cGameSettings* settings, GameStateTrans
 
     leftGuiButton = GuiButtonBuilder()
             .withRect(*leftButton)
-            .withLabel("No")
+            .withLabel(localization::text("No", "Нет"))
             .withTexture(gfxmentat->getTexture(BTN_NO))
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::WITH_TEXTURE)
@@ -51,7 +52,7 @@ BeneMentat::BeneMentat(GameContext* ctx, cGameSettings* settings, GameStateTrans
 
     rightGuiButton = GuiButtonBuilder()
             .withRect(*rightButton)
-            .withLabel("Yes")
+            .withLabel(localization::text("Yes", "Да"))
             .withTexture(gfxmentat->getTexture(BTN_YES))
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::WITH_TEXTURE)
@@ -93,7 +94,7 @@ void BeneMentat::draw()
     // when not speaking, draw 'do you wish to join house x'
     if (state == AWAITING_RESPONSE) {
         std::string houseName = cPlayer::getHouseNameForId(house);
-        std::string msg = std::format("Do you wish to join house {} ?", houseName);
+        std::string msg = localization::format("Do you wish to join house {} ?", "Хотите присоединиться к Дому {}?", houseName);
         m_textDrawer->drawText(offsetX + 17, offsetY + 17, Color{0, 0, 0,255}, msg);
         m_textDrawer->drawText(offsetX + 16, offsetY + 16, Color{255, 214, 137,255}, msg);
     }

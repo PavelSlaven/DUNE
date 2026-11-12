@@ -34,6 +34,7 @@
 #include "include/sGameServices.h"
 #include "context/GraphicsContext.hpp"
 #include "include/eGameState.h"
+#include "utils/Localization.hpp"
 
 cWinLoseState::cWinLoseState(sGameServices* services, Outcome value) : 
     cGameState(services),
@@ -55,8 +56,8 @@ cWinLoseState::cWinLoseState(sGameServices* services, Outcome value) :
     d2tm_assert(gfxinter != nullptr);
 
     const char *outcomeFile = m_statement == Outcome::Lose
-        ? "outcome_defeat_en.png"
-        : "outcome_victory_en.png";
+        ? localization::text("outcome_defeat_en.png", "outcome_defeat_ru.png")
+        : localization::text("outcome_victory_en.png", "outcome_victory_ru.png");
     m_hdOutcomeTexture = loadHdUiTexture(
         m_sdlDrawer->getRenderer(),
         outcomeFile,
@@ -84,7 +85,7 @@ void cWinLoseState::thinkFast()
 void cWinLoseState::draw() const
 {
     if (m_hdOutcomeTexture) {
-        const std::string prompt = "Click to continue";
+        const std::string prompt = localization::text("Click to continue", "Щёлкните, чтобы продолжить");
         const OutcomeScreenLayout layout = calculateOutcomeScreenLayout(
             m_settings->getScreenW(),
             m_settings->getScreenH(),

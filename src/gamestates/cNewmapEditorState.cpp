@@ -39,6 +39,7 @@
 #include "gamestates/cGameState.h"
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
+#include "utils/Localization.hpp"
 #include <charconv>
 #include <chrono>
 #include <optional>
@@ -82,7 +83,7 @@ void cNewMapEditorState::constructWindow()
     m_guiWindow->setTheme(cGuiThemeBuilder().light().build());
 
     // Title
-    m_guiWindow->setTitle("Map editor configuration");
+    m_guiWindow->setTitle(localization::text("Map editor configuration", "Новая карта"));
 
     int labelX = 55;
     int labelY = 45;
@@ -91,7 +92,7 @@ void cNewMapEditorState::constructWindow()
     // name
     const cRectangle &nameRect = m_guiWindow->getRelativeRect(labelX, labelY, 75, buttonHeight);
     auto gui_NameLabel = GuiLabelBuilder()
-        .withLabel("Name your map:")
+        .withLabel(localization::text("Name your map:", "Название карты:"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -110,7 +111,7 @@ void cNewMapEditorState::constructWindow()
     // author
     const cRectangle &authorRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY, 75, buttonHeight);
     auto gui_authorLabel = GuiLabelBuilder()
-        .withLabel("Name of author:")
+        .withLabel(localization::text("Name of author:", "Автор:"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -129,7 +130,7 @@ void cNewMapEditorState::constructWindow()
     // Description
     const cRectangle &descriptionRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY*2, 75, buttonHeight);
     auto gui_descriptionLabel = GuiLabelBuilder()
-        .withLabel("Description:")
+        .withLabel(localization::text("Description:", "Описание:"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -148,7 +149,7 @@ void cNewMapEditorState::constructWindow()
     // width
     const cRectangle &widthRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY*3, 75, buttonHeight);
     auto gui_widthLabel = GuiLabelBuilder()
-        .withLabel("Width size:")
+        .withLabel(localization::text("Width size:", "Ширина:"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -173,7 +174,7 @@ void cNewMapEditorState::constructWindow()
     // height
     const cRectangle &heightRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY*4, 75, buttonHeight);
     auto gui_heightLabel = GuiLabelBuilder()
-        .withLabel("Height size:")
+        .withLabel(localization::text("Height size:", "Высота:"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -198,7 +199,7 @@ void cNewMapEditorState::constructWindow()
     // random map
     const cRectangle &randomRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY*5, 75, buttonHeight);
     auto gui_randomLabel = GuiLabelBuilder()
-        .withLabel("Random:")
+        .withLabel(localization::text("Random:", "Случайно:"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -226,7 +227,7 @@ void cNewMapEditorState::constructWindow()
     // Dune 2 seed
     const cRectangle &seedRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY*6, 75, buttonHeight);
     auto gui_seedLabel = GuiLabelBuilder()
-        .withLabel("Dune 2 seed: ")
+        .withLabel(localization::text("Dune 2 seed: ", "Зерно Dune 2: "))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -248,7 +249,7 @@ void cNewMapEditorState::constructWindow()
     const cRectangle &quitRect = m_guiWindow->getRelativeRect(margin, quit, width, buttonHeight);
     auto gui_btn_Quit = GuiButtonBuilder()
         .withRect(quitRect)        
-        .withLabel("Return to menu")
+        .withLabel(localization::text("Return to menu", "В меню"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withTextAlign(GuiTextAlignHorizontal::CENTER)
@@ -265,7 +266,7 @@ void cNewMapEditorState::constructWindow()
     
     auto gui_btn_Back = GuiButtonBuilder()
         .withRect(backRect)        
-        .withLabel("Create map")
+        .withLabel(localization::text("Create map", "Создать карту"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withTheme(cGuiThemeBuilder().light().build())

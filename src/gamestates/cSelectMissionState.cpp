@@ -38,6 +38,7 @@
 #include "context/TextContext.hpp"
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
+#include "utils/Localization.hpp"
 
 #include <algorithm>
 #include <format>
@@ -85,7 +86,7 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
     gui_window = std::make_unique<GuiWindow>(m_sdlDrawer, window, m_textDrawer);
     gui_window->setTheme(GuiTheme::Remaster());
 
-    gui_window->setTitle(humanPlayer->getHouseName() + " Campaign");
+    gui_window->setTitle(localization::format("{} Campaign", "Кампания: {}", humanPlayer->getHouseName()));
 
     constexpr int flagMaxWidth = 270;
     constexpr int flagMaxHeight = 220;
@@ -110,7 +111,7 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
 
     auto continueButton = GuiButtonBuilder()
         .withRect(cRectangle(leftButtonX, mainMenuFrameY + 340, buttonWidth, buttonHeight))
-        .withLabel("CONTINUE")
+        .withLabel(localization::text("CONTINUE", "ПРОДОЛЖИТЬ"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withTheme(GuiTheme::Remaster())
@@ -133,7 +134,7 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
                 missionButtonY + (i - 1) * missionButtonSpacing,
                 buttonWidth,
                 missionButtonHeight))
-            .withLabel(std::format("MISSION {}", i))
+            .withLabel(localization::format("MISSION {}", "МИССИЯ {}", i))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::Remaster())
@@ -154,7 +155,7 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
         backButtonHeight);
     auto gui_btn_Back = GuiButtonBuilder()
             .withRect(backRect)
-            .withLabel("Back")
+            .withLabel(localization::text("Back", "Назад"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::Remaster())
@@ -213,7 +214,7 @@ void cSelectMissionState::draw() const
     m_sdlDrawer->renderTexture(
         m_houseFlag->tex.get(), m_flagX, m_flagY, m_flagWidth, m_flagHeight);
     m_textDrawer->drawTextCentered(
-        "REPLAY MISSION",
+        localization::text("REPLAY MISSION", "ПОВТОРИТЬ МИССИЮ"),
         m_headerX,
         m_headerWidth,
         m_headerY,
