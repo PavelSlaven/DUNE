@@ -7,6 +7,7 @@
 class cGame;
 class cGameState;
 class cSideBarDrawer;
+class cCommandBarDrawer;
 struct SDL_Renderer;
 
 namespace uiaudit {
@@ -29,7 +30,10 @@ enum GameKind {
     Messages,
     ItemHover,
     ScrollEnd,
-    Rally
+    Rally,
+    DamagedUnit,
+    Harvester,
+    Mcv
 };
 
 struct Rect {
@@ -96,6 +100,7 @@ public:
     static void stopCameraEdgeMove(cGame &game);
     static void missionOutcome(cGame &game, bool victory);
     static void recordSidebarClicks(cSideBarDrawer &drawer);
+    static void recordCommandBarClicks(cCommandBarDrawer &drawer);
     static bool enterPlaying(cGame &game, int house, int region);
     static bool openEditor(cGame &game, int bar);
     static bool placeLabelUnits(cGame &game, int unitType);

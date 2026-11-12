@@ -17,6 +17,7 @@
 
 class cKeyboardEvent;
 class cBuildingListDrawer;
+class cCommandBarDrawer;
 class cMapDrawer;
 class cMessageDrawer;
 class cMiniMapDrawer;
@@ -71,6 +72,10 @@ public:
 
     cOrderDrawer *getOrderDrawer() {
         return m_orderDrawer.get();
+    }
+
+    cCommandBarDrawer *getCommandBarDrawer() {
+        return m_commandBarDrawer.get();
     }
 
     cMouseDrawer *getMouseDrawer() {
@@ -136,6 +141,7 @@ private:
     std::unique_ptr<cSideBarDrawer> m_sidebarDrawer;
     std::unique_ptr<CreditsDrawer> m_creditsDrawer;
     std::unique_ptr<cOrderDrawer> m_orderDrawer;
+    std::unique_ptr<cCommandBarDrawer> m_commandBarDrawer;
     std::unique_ptr<cMapDrawer> m_mapDrawer;
     std::unique_ptr<cMiniMapDrawer> m_miniMapDrawer;
     std::unique_ptr<cParticleDrawer> m_particleDrawer;

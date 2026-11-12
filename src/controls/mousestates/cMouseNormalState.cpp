@@ -40,6 +40,7 @@
 #include "data/gfxaudio.h"
 #include "sidebar/cSideBar.h"
 #include "utils/Localization.hpp"
+#include "controls/CommandModePolicy.hpp"
 
 cMouseNormalState::cMouseNormalState(cPlayer *player, cGameControlsContext *context, cMouse *mouse) :
     cMouseState(player, context, mouse),
@@ -178,6 +179,16 @@ void cMouseNormalState::onMouseRightButtonPressed()
 
 void cMouseNormalState::onMouseRightButtonClicked()
 {
+    if (rightClickCommandPolicy(
+            m_state == SELECT_STATE_RALLY
+                ? ActiveCommandMode::Rally
+                : ActiveCommandMode::Normal
+        ) == RightClickCommandPolicy::CancelCommand) {
+        setState(SELECT_STATE_NORMAL);
+        m_mouseTile = MOUSE_NORMAL;
+        m_mouse->resetDragViewportInteraction();
+        return;
+    }
     if (!m_mouse->isMapScrolling()) {
         m_player->deselectAllUnits();
         m_player->deselectStructure();
@@ -383,4 +394,11 @@ void cMouseNormalState::onBlur()
 {
     m_mouse->resetBoxSelect();
     m_mouse->resetDragViewportInteraction();
+}
+
+void cMouseNormalState::setRallyPointCommandMode()
+{
+    setState(SELECT_STATE_RALLY);
+    m_mouseTile = MOUSE_RALLY;
+    m_mouse->setTile(m_mouseTile);
 }

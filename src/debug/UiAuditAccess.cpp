@@ -51,6 +51,7 @@
 #include "sidebar/cBuildingListUpdater.h"
 #include "utils/cRectangle.h"
 #include "utils/Localization.hpp"
+#include "drawers/cCommandBarDrawer.h"
 
 #include <algorithm>
 #include <cstdlib>
@@ -295,6 +296,17 @@ void UiAuditAccess::stopCameraEdgeMove(cGame &currentGame)
         currentGame.m_mapCamera->m_cameraEdgeMove = false;
         currentGame.m_mapCamera->m_moveX = 0.0f;
         currentGame.m_mapCamera->m_moveY = 0.0f;
+    }
+}
+
+void UiAuditAccess::recordCommandBarClicks(cCommandBarDrawer &drawer)
+{
+    for (const auto &button : drawer.m_buttons) {
+        if (!button.enabled) {
+            continue;
+        }
+        uiaudit::recordClick(("command:" + button.label).c_str(),
+                             button.rect.getX(), button.rect.getY(), button.rect.getWidth(), button.rect.getHeight());
     }
 }
 
@@ -676,7 +688,7 @@ int spawnUnit(cGame &currentGame, cEventEmitter *events, int type, int column, i
     return id;
 }
 
-bool buildBase(cGame &currentGame, cEventEmitter *events, bool withRadar, BaseResult &result)
+bool buildBase(cGame &currentGame, cEventEmitter *events, bool withRadar, float tankHp, BaseResult &result)
 {
     cPlayer *player = currentGame.m_gameObjectsContext->getPlayer(HUMAN);
     player->setTechLevel(9);
@@ -708,7 +720,7 @@ bool buildBase(cGame &currentGame, cEventEmitter *events, bool withRadar, BaseRe
         return false;
     }
 
-    result.tankId = spawnUnit(currentGame, events, TANK, 25, kStreetRow, 1.0f);
+    result.tankId = spawnUnit(currentGame, events, TANK, 25, kStreetRow, tankHp);
     result.harvesterId = spawnUnit(currentGame, events, HARVESTER, 29, kStreetRow, 1.0f);
     result.mcvId = spawnUnit(currentGame, events, MCV, 33, kStreetRow, 1.0f);
     const int others[3] = {spawnUnit(currentGame, events, SOLDIER, 27, kStreetRow, 1.0f),
@@ -729,6 +741,13 @@ void hoverOnCell(cGame &currentGame, int column, int row)
     const int half = static_cast<int>(currentGame.m_mapCamera->factorZoomLevel(kTile)) / 2;
     uiaudit::setHover(currentGame.m_mapCamera->getWindowXPositionFromCell(cell) + half,
                       currentGame.m_mapCamera->getWindowYPositionFromCell(cell) + half);
+}
+
+void selectOnly(cGame &currentGame, int unitId)
+{
+    cPlayer *player = currentGame.m_gameObjectsContext->getPlayer(HUMAN);
+    player->deselectAllUnits();
+    player->selectUnits({unitId});
 }
 
 eListType listForKind(int kind)
@@ -755,7 +774,7 @@ bool UiAuditAccess::prepareGameScreen(cGame &currentGame, int house, int kind)
     cPlayer *player = currentGame.m_gameObjectsContext->getPlayer(HUMAN);
     BaseResult base;
     const bool withRadar = kind != GameKind::RadarNone;
-    if (!buildBase(currentGame, currentGame.m_eventEmitter.get(), withRadar, base)) {
+    if (!buildBase(currentGame, currentGame.m_eventEmitter.get(), withRadar, kind == GameKind::DamagedUnit ? 0.4f : 1.0f, base)) {
         return false;
     }
     if (kind == GameKind::RadarNoPower) {
@@ -815,6 +834,15 @@ bool UiAuditAccess::prepareGameScreen(cGame &currentGame, int house, int kind)
             currentGame.m_gameObjectsContext->getStructures()[base.factoryId]->setRallyPoint(
                 cellAt(currentGame, 28, 32));
             return currentGame.m_gameObjectsContext->getStructures()[base.factoryId]->getRallyPoint() >= 0;
+        case GameKind::DamagedUnit:
+            selectOnly(currentGame, base.tankId);
+            return true;
+        case GameKind::Harvester:
+            selectOnly(currentGame, base.harvesterId);
+            return true;
+        case GameKind::Mcv:
+            selectOnly(currentGame, base.mcvId);
+            return true;
         case GameKind::PlaceAllowed:
         case GameKind::PlaceForbidden: {
             cBuildingList *list = sidebar->getList(eListType::LIST_CONSTYARD);
