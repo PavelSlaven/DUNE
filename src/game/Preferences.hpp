@@ -43,4 +43,8 @@ bool saveScales(const std::filesystem::path &file, int renderScalePercent, int w
 // Loads scale percentages without changing the other settings.
 bool loadScales(const std::filesystem::path &file, InitialGameSettings &settings, std::string &error);
 
+bool saveLanguage(const std::filesystem::path &file, const std::string &language, std::string &error);
+
+bool loadLanguage(const std::filesystem::path &file, InitialGameSettings &settings, std::string &error);
+
 }

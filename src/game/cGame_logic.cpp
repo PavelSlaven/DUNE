@@ -304,6 +304,7 @@ void cGame::applySettings(std::unique_ptr<InitialGameSettings> gs)
     m_gameSettings->m_worldScalePercent = gs->worldScalePercent;
     m_gameSettings->m_renderScalePercent = gs->renderScalePercent;
     m_gameSettings->setSavedScalePercents(gs->renderScalePercent, gs->worldScalePercent);
+    m_gameSettings->setSavedLanguage(gs->language);
 
     m_gameSettings->m_screenH = gs->screenH;
 
@@ -353,6 +354,7 @@ InitialGameSettings cGame::currentSettings() const
     gs.windowed = m_windowed;
     gs.renderScalePercent = m_gameSettings->getSavedRenderScalePercent();
     gs.worldScalePercent = m_gameSettings->getSavedWorldScalePercent();
+    gs.language = m_gameSettings->getSavedLanguage();
     gs.allowRepeatingReinforcements = m_gameSettings->m_allowRepeatingReinforcements;
     gs.turretsDownOnLowPower = m_gameSettings->isTurretsDownOnLowPower();
     gs.rocketTurretsDownOnLowPower = m_gameSettings->isRocketTurretsDownOnLowPower();

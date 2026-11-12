@@ -10,6 +10,7 @@ struct Options {
     std::string scene;
     std::string outDir;
     std::string frames;
+    std::string language;
 };
 
 extern bool g_enabled;

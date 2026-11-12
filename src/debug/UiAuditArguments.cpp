@@ -35,6 +35,9 @@ void consumeArguments(int &argc, char **argv)
         else if (std::strcmp(argv[i], "--ui-audit-frames") == 0 && i + 1 < argc) {
             s_options.frames = argv[++i];
         }
+        else if (std::strcmp(argv[i], "--ui-audit-language") == 0 && i + 1 < argc) {
+            s_options.language = argv[++i];
+        }
         else {
             argv[kept++] = argv[i];
         }

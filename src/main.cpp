@@ -25,6 +25,7 @@
 #include "utils/common.h"
 #include "game/Preferences.hpp"
 #include "game/PreferencesPath.hpp"
+#include "utils/Localization.hpp"
 
 
 #include <algorithm>
@@ -78,10 +79,12 @@ int main(int argc, char **argv)
 
     std::unique_ptr<InitialGameSettings> settings = loadSettingsFromIni("settings.ini");
 
-    // the scales chosen in the options menu apply on every start, the other preferences only with -prefs
+    // the scales and the language chosen in the options menu apply on every start, the other preferences only with -prefs
     if (const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME)) {
         std::string scalesError;
         Preferences::loadScales(*prefsFile, *settings, scalesError);
+        std::string languageError;
+        Preferences::loadLanguage(*prefsFile, *settings, languageError);
     }
     
     // -prefs: start from the options saved at the end of the previous run, the other arguments still override them
@@ -112,6 +115,11 @@ int main(int argc, char **argv)
         std::cerr << std::format("Error: {}\n\n", e.what());
         return 1;
     }
+
+    if (uiaudit::isEnabled()) {
+        settings->language = uiaudit::options().language.empty() ? "en" : uiaudit::options().language;
+    }
+    localization::setLanguage(settings->language);
 
     m_log->setDebug(settings->debugMode);
     

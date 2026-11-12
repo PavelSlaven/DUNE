@@ -22,6 +22,7 @@ struct s_MouseEvent;
 
 #include <cstddef>
 #include <memory>
+#include <string>
 #include <vector>
 
 struct SDL_Surface;
@@ -64,16 +65,19 @@ private:
     std::vector<int> m_worldScaleChoices;
     std::size_t m_selectedRenderScaleIndex = 0;
     std::size_t m_selectedWorldScaleIndex = 0;
+    std::string m_selectedLanguage = "ru";
     GuiLabel *m_renderScaleValueLabel = nullptr;
     GuiLabel *m_worldScaleValueLabel = nullptr;
     GuiLabel *m_statusLabel = nullptr;
     GuiButton *m_applyButton = nullptr;
+    GuiButton *m_languageButton = nullptr;
 
     std::unique_ptr<GuiWindow> m_guiWindow;
 
     void constructWindow(int prevState);
     void selectRenderScale(int step);
     void selectWorldScale(int step);
+    void selectLanguage();
     void updateScaleControls();
     void applyScaleSettings();
     Texture *const *m_backgroundTexture = nullptr;
