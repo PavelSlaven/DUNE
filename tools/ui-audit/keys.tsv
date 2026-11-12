@@ -1,0 +1,310 @@
+file	function	key	mods	line	state	action	reason
+src/building/cItemBuilder.cpp	cItemBuilder::onKeyPressed	SDL_SCANCODE_LSHIFT		872	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	build-multiplier	
+src/building/cItemBuilder.cpp	cItemBuilder::onKeyPressed	SDL_SCANCODE_RSHIFT		872	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	build-multiplier	
+src/controls/cKeyBindings.h	-	SDL_SCANCODE_COUNT		47	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyBindings.h	-	SDL_SCANCODE_COUNT		53	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboard.cpp	isValidScancode	SDL_SCANCODE_COUNT		25	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboard.cpp	isPressed	SDL_SCANCODE_COUNT		33	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboard.cpp	isModifierKey	SDL_SCANCODE_LCTRL		45	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	isModifierKey	SDL_SCANCODE_RCTRL		45	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	isModifierKey	SDL_SCANCODE_LALT		46	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	isModifierKey	SDL_SCANCODE_RALT		46	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	isModifierKey	SDL_SCANCODE_LSHIFT		47	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	isModifierKey	SDL_SCANCODE_RSHIFT		47	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	cKeyboard::handleEvent	SDL_SCANCODE_LALT		99	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	cKeyboard::handleEvent	SDL_SCANCODE_RALT		99	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	cKeyboard::handleEvent	SDL_SCANCODE_LCTRL		100	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	cKeyboard::handleEvent	SDL_SCANCODE_RCTRL		100	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	cKeyboard::handleEvent	SDL_SCANCODE_LSHIFT		101	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	cKeyboard::handleEvent	SDL_SCANCODE_RSHIFT		101	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	cKeyboard::handleEvent	SDL_SCANCODE_TAB		102	-	-	учёт состояния клавиш-модификаторов, не обработчик клавиши
+src/controls/cKeyboard.cpp	cKeyboard::updateState	SDL_SCANCODE_COUNT		107	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboard.cpp	cKeyboard::updateState	SDL_SCANCODE_COUNT		116	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboard.cpp	cKeyboard::updateState	SDL_SCANCODE_COUNT		117	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboard.h	-	SDL_SCANCODE_COUNT		51	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboard.h	-	SDL_SCANCODE_COUNT		52	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboard.h	-	SDL_SCANCODE_COUNT		54	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::cKeyboardEvent	SDL_SCANCODE_COUNT		39	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::toString	SDL_SCANCODE_COUNT		53	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getFirstKey	SDL_SCANCODE_COUNT		77	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getFirstKey	SDL_SCANCODE_UNKNOWN		82	-	-	значение «нет клавиши», не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	eKeyAction::GROUP_1		104	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	eKeyAction::GROUP_2		105	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	eKeyAction::GROUP_3		106	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	eKeyAction::GROUP_4		107	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	eKeyAction::GROUP_5		108	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getGroupNumber	eKeyAction::GROUP_6		109	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAssignGroupNumber	eKeyAction::GROUP_ASSIGN_1		115	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAssignGroupNumber	eKeyAction::GROUP_ASSIGN_2		116	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAssignGroupNumber	eKeyAction::GROUP_ASSIGN_3		117	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAssignGroupNumber	eKeyAction::GROUP_ASSIGN_4		118	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAssignGroupNumber	eKeyAction::GROUP_ASSIGN_5		119	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAssignGroupNumber	eKeyAction::GROUP_ASSIGN_6		120	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAddToSelGroupNumber	eKeyAction::GROUP_ADDTOSEL_1		126	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAddToSelGroupNumber	eKeyAction::GROUP_ADDTOSEL_2		127	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAddToSelGroupNumber	eKeyAction::GROUP_ADDTOSEL_3		128	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAddToSelGroupNumber	eKeyAction::GROUP_ADDTOSEL_4		129	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAddToSelGroupNumber	eKeyAction::GROUP_ADDTOSEL_5		130	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getAddToSelGroupNumber	eKeyAction::GROUP_ADDTOSEL_6		131	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getSaveViewportBookmarkNumber	eKeyAction::SAVE_VIEWPORT_BOOKMARK_1		137	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getSaveViewportBookmarkNumber	eKeyAction::SAVE_VIEWPORT_BOOKMARK_2		138	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getSaveViewportBookmarkNumber	eKeyAction::SAVE_VIEWPORT_BOOKMARK_3		139	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getSaveViewportBookmarkNumber	eKeyAction::SAVE_VIEWPORT_BOOKMARK_4		140	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getSaveViewportBookmarkNumber	eKeyAction::SAVE_VIEWPORT_BOOKMARK_5		141	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getJumpToViewportBookmarkNumber	eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_1		147	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getJumpToViewportBookmarkNumber	eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_2		148	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getJumpToViewportBookmarkNumber	eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_3		149	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getJumpToViewportBookmarkNumber	eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_4		150	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::getJumpToViewportBookmarkNumber	eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_5		151	-	-	вспомогательное сопоставление действия, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::hasKey	SDL_SCANCODE_COUNT		157	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::isBackspace	SDL_SCANCODE_BACKSPACE		173	-	-	вспомогательная проверка клавиатуры, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::isEnter	SDL_SCANCODE_RETURN		178	-	-	вспомогательная проверка клавиатуры, не обработчик клавиши
+src/controls/cKeyboardEvent.cpp	cKeyboardEvent::isEnter	SDL_SCANCODE_KP_ENTER		178	-	-	вспомогательная проверка клавиатуры, не обработчик клавиши
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_COUNT		30	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/cKeyboardEvent.h	-	SDL_SCANCODE_COUNT		97	-	-	размер или граница диапазона скан-кодов, не обработчик клавиши
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::ATTACK_MODE		253	game: nothing selected | game: structure selected	attack-mode	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_INFANTRY_ON_MAP		261	game: nothing selected | game: structure selected	select-infantry-on-map	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_INFANTRY_ON_SCREEN		269	game: nothing selected | game: structure selected	select-infantry-on-screen	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_WHEELS_ON_MAP		278	game: nothing selected | game: structure selected	select-wheels-on-map	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_WHEELS_ON_SCREEN		286	game: nothing selected | game: structure selected	select-wheels-on-screen	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_TANKS_ON_MAP		294	game: nothing selected | game: structure selected	select-tanks-on-map	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_TANKS_ON_SCREEN		302	game: nothing selected | game: structure selected	select-tanks-on-screen	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_LAUNCHERS_ON_MAP		310	game: nothing selected | game: structure selected	select-launchers-on-map	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_LAUNCHERS_ON_SCREEN		319	game: nothing selected | game: structure selected	select-launchers-on-screen	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_HARVESTERS_ON_MAP		328	game: nothing selected | game: structure selected	select-harvesters-on-map	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_HARVESTERS_ON_SCREEN		337	game: nothing selected | game: structure selected	select-harvesters-on-screen	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyDown	eKeyAction::SELECT_ATTACKING_ON_MAP		346	game: nothing selected | game: structure selected	select-attacking-on-map	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyPressed	eKeyAction::ATTACK_MODE		357	game: nothing selected | game: structure selected	attack-mode	
+src/controls/mousestates/cMouseNormalState.cpp	cMouseNormalState::onKeyPressed	eKeyAction::REPAIR_UNIT		377	game: nothing selected | game: structure selected	repair-unit	
+src/controls/mousestates/cMouseRepairState.cpp	cMouseRepairState::onNotifyKeyboardEvent	eKeyAction::REPAIR_UNIT		115	game: repair mode	repair-unit	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::ATTACK_MODE		460	game: units selected	attack-mode	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::ADD_TO_SELECTION		465	game: units selected	add-to-selection	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::ATTACK_MODE		491	game: units selected	attack-mode	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_SAME_TYPE_ON_SCREEN		510	game: units selected	select-same-type-on-screen	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_SAME_TYPE_ON_MAP		517	game: units selected	select-same-type-on-map	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_INFANTRY_ON_MAP		524	game: units selected	select-infantry-on-map	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_INFANTRY_ON_SCREEN		530	game: units selected	select-infantry-on-screen	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_WHEELS_ON_MAP		536	game: units selected	select-wheels-on-map	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_WHEELS_ON_SCREEN		542	game: units selected	select-wheels-on-screen	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_TANKS_ON_MAP		548	game: units selected	select-tanks-on-map	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_TANKS_ON_SCREEN		554	game: units selected	select-tanks-on-screen	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_LAUNCHERS_ON_MAP		560	game: units selected	select-launchers-on-map	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_LAUNCHERS_ON_SCREEN		566	game: units selected	select-launchers-on-screen	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_HARVESTERS_ON_MAP		572	game: units selected	select-harvesters-on-map	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_HARVESTERS_ON_SCREEN		578	game: units selected	select-harvesters-on-screen	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyDown	eKeyAction::SELECT_ATTACKING_ON_MAP		584	game: units selected	select-attacking-on-map	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyPressed	eKeyAction::ATTACK_MODE		595	game: units selected	attack-mode	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyPressed	eKeyAction::ADD_TO_SELECTION		600	game: units selected	add-to-selection	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyPressed	eKeyAction::REPAIR_UNIT		606	game: units selected	repair-unit	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyPressed	eKeyAction::SEND_TO_REFINERY		625	game: units selected	send-to-refinery	
+src/controls/mousestates/cMouseUnitsSelectedState.cpp	cMouseUnitsSelectedState::onKeyPressed	eKeyAction::RETURN_TO_BASE		638	game: units selected	return-to-base	
+src/debug/UiAuditAccess.cpp	UiAuditAccess::optionsBinding	eKeyAction::SCREENSHOT		207	-	-	установка действия для сцены аудита, не обработчик клавиши
+src/drawers/cBuildingListDrawer.cpp	cBuildingListDrawer::onKeyHold	SDL_SCANCODE_TAB		981	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-list-ids	
+src/drawers/cBuildingListDrawer.cpp	cBuildingListDrawer::onKeyHold	SDL_SCANCODE_D		981	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-list-ids	
+src/drawers/cBuildingListDrawer.cpp	cBuildingListDrawer::onKeyPressed	SDL_SCANCODE_TAB		988	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-list-ids	
+src/drawers/cBuildingListDrawer.cpp	cBuildingListDrawer::onKeyPressed	SDL_SCANCODE_D		988	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-list-ids	
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	eKeyAction::ATTACK_MODE		106	-	-	подпись клавиши на кнопке, не обработчик клавиши
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	eKeyAction::REPAIR_UNIT		107	-	-	подпись клавиши на кнопке, не обработчик клавиши
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	eKeyAction::SEND_TO_REFINERY		108	-	-	подпись клавиши на кнопке, не обработчик клавиши
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	eKeyAction::DEPLOY_UNIT		109	-	-	подпись клавиши на кнопке, не обработчик клавиши
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	eKeyAction::ATTACK_MODE		110	-	-	подпись клавиши на кнопке, не обработчик клавиши
+src/drawers/cCommandBarDrawer.cpp	cCommandBarDrawer::rebuildLayout	eKeyAction::DEPLOY_UNIT		111	-	-	подпись клавиши на кнопке, не обработчик клавиши
+src/game/cGame_logic.cpp	isConsoleToggleKey	SDL_SCANCODE_GRAVE		124	any state	toggle-console	
+src/game/cGame_logic.cpp	cGame::onKeyPressedGame	eKeyAction::SCREENSHOT		1572	any state	screenshot	
+src/game/cGame_logic.cpp	cGame::onKeyPressedGame	eKeyAction::TOGGLE_MUSIC		1576	any state	toggle-music	
+src/game/cGame_logic.cpp	cGame::onKeyPressedGame	eKeyAction::MUSIC_VOLUME_DOWN		1583	any state	music-volume-down	
+src/game/cGame_logic.cpp	cGame::onKeyPressedGame	eKeyAction::MUSIC_VOLUME_UP		1588	any state	music-volume-up	
+src/game/cGame_logic.cpp	cGame::onKeyPressedGame	eKeyAction::MUSIC_PREVIOUS_TRACK		1593	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	music-previous-track	
+src/game/cGame_logic.cpp	cGame::onKeyPressedGame	eKeyAction::MUSIC_NEXT_TRACK		1597	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	music-next-track	
+src/game/cGame_logic.cpp	cGame::onKeyPressedGame	eKeyAction::GAME_SPEED_UP		1601	any state	game-speed-up	
+src/game/cGame_logic.cpp	cGame::onKeyPressedGame	eKeyAction::GAME_SPEED_DOWN		1607	any state	game-speed-down	
+src/game/cGame_logic.cpp	cGame::onKeyPressedGame	eKeyAction::TOGGLE_FULLSCREEN		1613	any state	toggle-fullscreen	
+src/game/cGame_logic.cpp	cGame::onKeyPressedGame	eKeyAction::TOGGLE_CHEAT		1624	any state	toggle-cheat	
+src/game/cGame_logic.cpp	cGame::onKeyDownDebugMode	eKeyAction::DEBUG_WIN		1681	game: debug mode	debug-win	
+src/game/cGame_logic.cpp	cGame::onKeyDownDebugMode	eKeyAction::DEBUG_LOSE		1685	game: debug mode	debug-lose	
+src/game/cGame_logic.cpp	cGame::onKeyDownDebugMode	eKeyAction::DEBUG_GIVE_CREDITS		1689	game: debug mode	debug-give-credits	
+src/game/cGame_logic.cpp	cGame::onKeyDownDebugMode	eKeyAction::DEBUG_DESTROY_AT_CURSOR		1695	game: debug mode	debug-destroy-at-cursor	
+src/game/cGame_logic.cpp	cGame::onKeyDownDebugMode	eKeyAction::DEBUG_DAMAGE_AT_CURSOR		1720	game: debug mode	debug-damage-at-cursor	
+src/game/cGame_logic.cpp	cGame::onKeyDownDebugMode	eKeyAction::DEBUG_REVEAL_MAP		1732	game: debug mode	debug-reveal-map	
+src/game/cGame_logic.cpp	cGame::onKeyDownDebugMode	eKeyAction::DEBUG_KILL_CARRYALLS		1738	game: debug mode	debug-kill-carryalls	
+src/gameobjects/map/cMapCamera.cpp	cMapCamera::onKeyHold	eKeyAction::SCROLL_LEFT		390	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-left	
+src/gameobjects/map/cMapCamera.cpp	cMapCamera::onKeyHold	eKeyAction::SCROLL_UP		396	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-up	
+src/gameobjects/map/cMapCamera.cpp	cMapCamera::onKeyHold	eKeyAction::SCROLL_RIGHT		402	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-right	
+src/gameobjects/map/cMapCamera.cpp	cMapCamera::onKeyHold	eKeyAction::SCROLL_DOWN		408	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-down	
+src/gameobjects/map/cMapCamera.cpp	cMapCamera::onKeyPressed	eKeyAction::SCROLL_LEFT		418	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-left	
+src/gameobjects/map/cMapCamera.cpp	cMapCamera::onKeyPressed	eKeyAction::SCROLL_UP		423	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-up	
+src/gameobjects/map/cMapCamera.cpp	cMapCamera::onKeyPressed	eKeyAction::SCROLL_RIGHT		428	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-right	
+src/gameobjects/map/cMapCamera.cpp	cMapCamera::onKeyPressed	eKeyAction::SCROLL_DOWN		433	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-down	
+src/gameobjects/mentat/BeneMentat.cpp	BeneMentat::onNotifyKeyboardEvent	eKeyAction::MENU_CONFIRM		120	mentat	menu-confirm	
+src/gameobjects/mentat/BeneMentat.cpp	BeneMentat::onNotifyKeyboardEvent	eKeyAction::MENU_CANCEL		124	mentat	menu-cancel	
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SCREENSHOT		16	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::TOGGLE_MUSIC		17	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::MUSIC_VOLUME_DOWN		18	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::MUSIC_VOLUME_UP		19	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::MUSIC_PREVIOUS_TRACK		20	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::MUSIC_NEXT_TRACK		21	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::GAME_SPEED_UP		22	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::GAME_SPEED_DOWN		23	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::TOGGLE_FULLSCREEN		24	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::TOGGLE_CHEAT		25	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SCROLL_LEFT		26	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SCROLL_RIGHT		27	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SCROLL_UP		28	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SCROLL_DOWN		29	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::CENTER_ON_HOME		30	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::CENTER_ON_STRUCTURE		31	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::ZOOM_RESET		32	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SAVE_VIEWPORT_BOOKMARK_1		33	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SAVE_VIEWPORT_BOOKMARK_2		34	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SAVE_VIEWPORT_BOOKMARK_3		35	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SAVE_VIEWPORT_BOOKMARK_4		36	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SAVE_VIEWPORT_BOOKMARK_5		37	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_1		38	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_2		39	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_3		40	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_4		41	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_5		42	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::QUICK_SAVE		43	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::QUICK_LOAD		44	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::TOGGLE_FPS		45	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::TOGGLE_TIME_DISPLAY		46	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::OPEN_MENU		47	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEPLOY_UNIT		48	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SET_PRIMARY		49	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::ATTACK_MODE		50	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::ADD_TO_SELECTION		51	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::REPAIR_UNIT		52	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::RETURN_TO_BASE		53	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SEND_TO_REFINERY		54	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_SAME_TYPE_ON_MAP		55	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_SAME_TYPE_ON_SCREEN		56	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_INFANTRY_ON_MAP		57	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_INFANTRY_ON_SCREEN		58	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_WHEELS_ON_MAP		59	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_WHEELS_ON_SCREEN		60	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_TANKS_ON_MAP		61	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_TANKS_ON_SCREEN		62	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::TRACK_UNIT		63	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_LAUNCHERS_ON_MAP		64	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_LAUNCHERS_ON_SCREEN		65	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_HARVESTERS_ON_MAP		66	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_HARVESTERS_ON_SCREEN		67	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::SELECT_ATTACKING_ON_MAP		68	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::GROUP_1		69	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::GROUP_2		70	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::GROUP_3		71	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::GROUP_4		72	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::GROUP_5		73	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::GROUP_6		74	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::EDITOR_SAVE		75	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::EDITOR_ZOOM_IN		76	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::EDITOR_ZOOM_OUT		77	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::EDITOR_DISPLAY_GRID		78	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::EDITOR_DISPLAY_AXES		79	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::EDITOR_UNDO		80	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::EDITOR_REDO		81	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::EDITOR_COPY		82	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::EDITOR_PASTE		83	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::EDITOR_CUT		84	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::MENU_BACK		85	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::MENU_CONFIRM		86	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::MENU_CANCEL		87	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_WIN		88	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_LOSE		89	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_GIVE_CREDITS		90	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_DESTROY_AT_CURSOR		91	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_REVEAL_MAP		92	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_DAMAGE_AT_CURSOR		93	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_KILL_CARRYALLS		94	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_SPAWN_ORNITHOPTER		95	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_SPAWN_WORM		96	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_CLEAR_SHROUD_AT_CURSOR		97	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_SWITCH_PLAYER_0		98	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_SWITCH_PLAYER_1		99	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_SWITCH_PLAYER_2		100	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/OptionsKeyLabels.hpp	-	eKeyAction::DEBUG_SWITCH_PLAYER_3		101	-	-	подпись действия в таблице, не обработчик клавиши
+src/gamestates/cChooseHouseState.cpp	cChooseHouseState::onNotifyKeyboardEvent	eKeyAction::MENU_BACK		283	choose house	menu-back	
+src/gamestates/cCreditsState.cpp	cCreditsState::onNotifyKeyboardEvent	eKeyAction::MENU_BACK		496	credits	menu-back	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::MENU_BACK		507	editor	menu-back	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::MENU_BACK		513	editor	menu-back	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::EDITOR_SAVE		521	editor	editor-save	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::EDITOR_ZOOM_IN		527	editor	editor-zoom-in	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::EDITOR_ZOOM_OUT		531	editor	editor-zoom-out	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::EDITOR_DISPLAY_GRID		539	editor	editor-display-grid	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::EDITOR_DISPLAY_AXES		545	editor	editor-display-axes	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::EDITOR_UNDO		550	editor	editor-undo	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::EDITOR_REDO		555	editor	editor-redo	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::EDITOR_COPY		560	editor	editor-copy	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::EDITOR_PASTE		564	editor	editor-paste	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::EDITOR_CUT		568	editor	editor-cut	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::SCROLL_LEFT		578	editor	scroll-left	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::SCROLL_RIGHT		582	editor	scroll-right	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::SCROLL_UP		586	editor	scroll-up	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::SCROLL_DOWN		590	editor	scroll-down	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::SCROLL_UP		594	editor	scroll-up	
+src/gamestates/cEditorState.cpp	cEditorState::onNotifyKeyboardEvent	eKeyAction::SCROLL_DOWN		599	editor	scroll-down	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	SDL_SCANCODE_TAB		517	-	-	проверка модификатора Tab перед отладочными действиями, не обработчик клавиши
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	eKeyAction::DEBUG_CLEAR_SHROUD_AT_CURSOR		521	game: debug mode	debug-clear-shroud-at-cursor	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	eKeyAction::SCROLL_LEFT		530	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-left	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	eKeyAction::SCROLL_RIGHT		530	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-right	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	eKeyAction::SCROLL_UP		531	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-up	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	eKeyAction::SCROLL_DOWN		531	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	scroll-down	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	eKeyAction::ZOOM_RESET		535	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	zoom-reset	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	eKeyAction::CENTER_ON_HOME		539	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	center-on-home	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	eKeyAction::CENTER_ON_STRUCTURE		543	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	center-on-structure	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	eKeyAction::OPEN_MENU		550	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	open-menu	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownGamePlaying	eKeyAction::TOGGLE_FPS		554	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	toggle-fps	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyPressedGamePlaying	eKeyAction::QUICK_SAVE		575	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	quick-save	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyPressedGamePlaying	eKeyAction::QUICK_LOAD		587	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	quick-load	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyPressedGamePlaying	eKeyAction::TRACK_UNIT		602	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	track-unit	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyPressedGamePlaying	eKeyAction::TOGGLE_FPS		636	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	toggle-fps	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyPressedGamePlaying	eKeyAction::TOGGLE_TIME_DISPLAY		640	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	toggle-time-display	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyPressedGamePlaying	eKeyAction::DEPLOY_UNIT		644	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	deploy-unit	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyPressedGamePlaying	eKeyAction::CENTER_ON_HOME		669	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	center-on-home	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyPressedGamePlaying	eKeyAction::CENTER_ON_STRUCTURE		673	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	center-on-structure	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyPressedGamePlaying	eKeyAction::DEPLOY_UNIT		682	game: structure selected	deploy-unit	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyPressedGamePlaying	eKeyAction::SET_PRIMARY		694	game: structure selected	set-primary	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SWITCH_PLAYER_0		736	-	-	выбор действия для переключения игрока
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SWITCH_PLAYER_0		738	game: debug mode	debug-switch-player-0	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SWITCH_PLAYER_0		739	-	-	выбор действия для переключения игрока
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SWITCH_PLAYER_1		741	game: debug mode	debug-switch-player-1	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SWITCH_PLAYER_1		742	-	-	выбор действия для переключения игрока
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SWITCH_PLAYER_2		744	game: debug mode	debug-switch-player-2	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SWITCH_PLAYER_2		745	-	-	выбор действия для переключения игрока
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SWITCH_PLAYER_3		747	game: debug mode	debug-switch-player-3	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SWITCH_PLAYER_3		748	-	-	выбор действия для переключения игрока
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_WIN		761	game: debug mode	debug-win	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_LOSE		765	game: debug mode	debug-lose	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_GIVE_CREDITS		769	game: debug mode	debug-give-credits	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_DESTROY_AT_CURSOR		775	game: debug mode	debug-destroy-at-cursor	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_DAMAGE_AT_CURSOR		795	game: debug mode	debug-damage-at-cursor	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_REVEAL_MAP		807	game: debug mode	debug-reveal-map	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_KILL_CARRYALLS		811	game: debug mode	debug-kill-carryalls	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SPAWN_ORNITHOPTER		819	game: debug mode	debug-spawn-ornithopter	
+src/gamestates/cGamePlaying.cpp	cGamePlaying::onKeyDownDebugMode	eKeyAction::DEBUG_SPAWN_WORM		824	game: debug mode	debug-spawn-worm	
+src/gamestates/cMainMenuState.cpp	cMainMenuState::onNotifyKeyboardEvent	eKeyAction::MENU_BACK		308	main menu	menu-back	
+src/gamestates/cMainMenuState.cpp	cMainMenuState::onNotifyKeyboardEvent	eKeyAction::TOGGLE_MUSIC		312	main menu	toggle-music	
+src/gamestates/cMainMenuState.cpp	cMainMenuState::onNotifyKeyboardEvent	SDL_SCANCODE_MUTE		312	main menu	toggle-music	
+src/gamestates/cOptionsState.cpp	cOptionsState::onNotifyKeyboardEvent	SDL_SCANCODE_UNKNOWN		910	-	-	сравнение с отсутствием клавиши
+src/gamestates/cOptionsState.cpp	cOptionsState::onNotifyKeyboardEvent	SDL_SCANCODE_ESCAPE		916	options: key capture	cancel-capture	
+src/gamestates/cSelectYourNextConquestState.cpp	cSelectYourNextConquestState::onNotifyKeyboardEvent	eKeyAction::MENU_BACK		1050	select next conquest	menu-back	
+src/gamestates/cSetupSkirmishState.cpp	cSetupSkirmishState::onNotifyKeyboardEvent	eKeyAction::MENU_BACK		1649	skirmish setup	menu-back	
+src/gamestates/cSetupSkirmishState.cpp	cSetupSkirmishState::onNotifyKeyboardEvent	eKeyAction::SCROLL_LEFT		1652	skirmish setup	scroll-left	
+src/gamestates/cSetupSkirmishState.cpp	cSetupSkirmishState::onNotifyKeyboardEvent	eKeyAction::SCROLL_RIGHT		1655	skirmish setup	scroll-right	
+src/gamestates/cSetupSkirmishState.cpp	cSetupSkirmishState::onNotifyKeyboardEvent	eKeyAction::SCROLL_UP		1658	skirmish setup	scroll-up	
+src/gamestates/cSetupSkirmishState.cpp	cSetupSkirmishState::onNotifyKeyboardEvent	eKeyAction::SCROLL_DOWN		1661	skirmish setup	scroll-down	
+src/gamestates/cSetupSkirmishState.cpp	cSetupSkirmishState::onNotifyKeyboardEvent	eKeyAction::MENU_CONFIRM		1664	skirmish setup	menu-confirm	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyDown	SDL_SCANCODE_TAB		550	game: debug mode	draw-without-shroud	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyDown	SDL_SCANCODE_D		550	game: debug mode	draw-without-shroud	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyDown	SDL_SCANCODE_G		553	game: debug mode	show-grid	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyDown	SDL_SCANCODE_T		557	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-tooltip	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyPressed	SDL_SCANCODE_TAB		567	game: debug mode	draw-without-shroud	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyPressed	SDL_SCANCODE_D		567	game: debug mode	draw-without-shroud	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyPressed	SDL_SCANCODE_G		570	game: debug mode	show-grid	
+src/managers/cDrawManager.cpp	cDrawManager::onKeyPressed	SDL_SCANCODE_T		574	game: nothing selected | game: structure selected | game: units selected | game: repair mode | game: debug mode	show-tooltip	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_ESCAPE		458	save/load dialog	close-dialog	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_UP		462	save/load dialog	previous-slot	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_DOWN		470	save/load dialog	next-slot	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_BACKSPACE		478	save/load dialog	delete-name-character	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_RETURN		488	save/load dialog	confirm-slot	
+src/save/SaveSlotsDialog.cpp	SaveSlotsDialog::onKeyboardEvent	SDL_SCANCODE_KP_ENTER		488	save/load dialog	confirm-slot	
