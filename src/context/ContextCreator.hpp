@@ -43,8 +43,10 @@ private:
     std::shared_ptr<Graphics> gfxdata;
     std::shared_ptr<Graphics> gfxeditor;
 
-    TTF_Font *game_font = nullptr; 	// arrakeen.fon
-    TTF_Font *bene_font = nullptr;	// benegesserit font.
+    TTF_Font *game_font = nullptr;
+    TTF_Font *bene_font = nullptr;
     TTF_Font *small_font = nullptr;	// small font.
-    TTF_Font *symbol_fallback_font = nullptr;
+    TTF_Font *game_fallback_font = nullptr;
+    TTF_Font *bene_fallback_font = nullptr;
+    TTF_Font *small_fallback_font = nullptr;
 };
