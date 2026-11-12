@@ -31,7 +31,6 @@
 #include "context/GraphicsContext.hpp"
 #include "context/TextContext.hpp"
 #include "sidebar/HudLayout.hpp"
-#include "data/gfxaudio.h"
 
 #include <SDL3/SDL.h>
 #include "include/cAssert.h"
@@ -85,6 +84,8 @@ CreditsDrawer::CreditsDrawer(GameContext* ctx, cGameSettings *settings, cPlayer 
 void CreditsDrawer::serviceInit(sGameServices* services)
 {
     m_audioContext = services->ctx->getAudioContext();
+    m_creditUpSound = m_audioContext->indexOf("SOUND_CREDIT_UP");
+    m_creditDownSound = m_audioContext->indexOf("SOUND_CREDIT_DOWN");
     m_mapCamera = services->mapCamera;
     m_objects = services->objects;
 }
@@ -127,10 +128,10 @@ void CreditsDrawer::thinkFast()
 
         // decide what sound to play when done
         if (m_currentCredits > m_previousCredits) {
-            m_soundType = SOUND_CREDITUP;
+            m_soundType = m_creditUpSound;
         }
         else if (m_currentCredits < m_previousCredits) {
-            m_soundType = SOUND_CREDITDOWN;
+            m_soundType = m_creditDownSound;
         }
         else {
             m_soundType = -1;

@@ -16,11 +16,13 @@
 #pragma once
 
 #include "definitions.h"
+#include "utils/SoundPool.hpp"
 #include <filesystem>
 #include <optional>
 
 #include <memory>
 #include <string>
+#include <string_view>
 
 class cSoundPlayer;
 class cGameSettings;
@@ -38,7 +40,11 @@ public:
 
     void playSound(int sampleId) const; // Maximum volume
     void playSound(int sampleId, int vol) const;
-    void playVoice(int sampleId, int house) const;
+    // `voice` lists the voice line per house (Atreides, Harkonnen, Ordos); other houses use the Atreides one
+    void playVoice(const SoundPool &voice, int house) const;
+    // Index of the named entry in the audio pack, or -1 (and an error in the log) when it is not in the pack.
+    // Owners of a sound look it up once and keep the index.
+    [[nodiscard]] int indexOf(std::string_view name) const;
     [[nodiscard]] int getMaxVolume() const;
 
     void playMusicByTypeForStateTransition(eMusicType iType, int humanHouse);

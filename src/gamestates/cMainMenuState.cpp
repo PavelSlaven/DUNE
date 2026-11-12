@@ -164,20 +164,20 @@ void cMainMenuState::buildHdMenu()
     };
 
     addButton(localization::text("Campaign", "Кампания"), true, [this]() {
-        m_stateTransitions->setNextStateWithFade(GAME_SELECT_HOUSE);
+        m_stateTransitions->setNextStateWithFade(eGameState::SELECT_HOUSE);
     });
     addButton(localization::text("Skirmish", "Схватка"), true, [this]() {
         m_missionFlow->init();
-        m_stateTransitions->setNextStateWithFade(GAME_SETUPSKIRMISH);
+        m_stateTransitions->setNextStateWithFade(eGameState::SETUPSKIRMISH);
     });
     addButton(localization::text("Saved games", "Сохранения"), SaveGameManager::hasAnySave(), [this]() {
         m_saveDialog->open(false, false);
     });
     addButton(localization::text("Map Editor", "Редактор карт"), true, [this]() {
-        m_stateTransitions->setNextStateWithFade(GAME_NEW_MAP_EDITOR);
+        m_stateTransitions->setNextStateWithFade(eGameState::NEW_MAP_EDITOR);
     });
     addButton(localization::text("Options", "Настройки"), true, [this]() {
-        m_stateTransitions->setNextState(GAME_OPTIONS);
+        m_stateTransitions->setNextState(eGameState::OPTIONS);
     });
     addButton(localization::text("Hall of Fame", "Зал славы"), false, nullptr);
 
@@ -199,7 +199,7 @@ void cMainMenuState::buildHdMenu()
         .withTheme(GuiTheme::Remaster())
         .withKind(GuiRenderKind::REMASTER_BUTTON)
         .onClick([this]() {
-            m_stateTransitions->setNextStateWithFade(GAME_CREDITS);
+            m_stateTransitions->setNextStateWithFade(eGameState::CREDITS);
         })
         .build();
 }

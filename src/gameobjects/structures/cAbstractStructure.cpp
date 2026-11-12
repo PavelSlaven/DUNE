@@ -40,7 +40,7 @@
 #include <SDL3/SDL.h>
 #include <format>
 
-#include "data/gfxaudio.h"
+#include "data/SoundPools.h"
 #include "gameobjects/cFlag.h"
 #include "utils/Localization.hpp"
 
@@ -271,7 +271,7 @@ void cAbstractStructure::die(int originId, eBuildType originType, int killingDam
     }
 
     // play sound
-    playSoundWithDistance(m_audioContext, m_mapCamera, m_objects, SOUND_CRUMBLE01 + RNG::rnd(2), distanceBetweenCellAndCenterOfScreen(iCell, m_objects, m_mapCamera));
+    playSoundWithDistance(m_audioContext, m_mapCamera, m_objects, soundpools::structureCrumble.pick(), distanceBetweenCellAndCenterOfScreen(iCell, m_objects, m_mapCamera));
 
     // remove from the playground
     m_objects->getMap()->remove_id(id, MAPID_STRUCTURES);

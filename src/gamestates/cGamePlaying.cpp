@@ -46,7 +46,6 @@
 #include "game/cEventEmitter.h"
 #include "controls/cMouse.h"
 #include "controls/eKeyAction.h"
-#include "data/gfxaudio.h"
 #include "gameobjects/map/cMapCamera.h"
 #include "gameobjects/map/MapGeometry.hpp"
 #include "gameobjects/map/cMap.h"
@@ -100,6 +99,7 @@ cGamePlaying::cGamePlaying(sGameServices* services) :
     d2tm_assert(m_stateTransitions != nullptr);
     m_audioContext = m_ctx->getAudioContext();
     d2tm_assert(m_audioContext != nullptr);
+    m_placeSound = m_audioContext->indexOf("SOUND_PLACE");
     m_screenFader = services->screenFader;
     d2tm_assert(m_screenFader != nullptr);
     m_mapCamera = services->mapCamera;
@@ -548,7 +548,7 @@ void cGamePlaying::onKeyDownGamePlaying(const cKeyboardEvent &event)
     }
 
     if (event.isAction(eKeyAction::OPEN_MENU)) {
-        m_stateTransitions->setNextState(GAME_OPTIONS);
+        m_stateTransitions->setNextState(eGameState::OPTIONS);
     }
 
     if (event.isAction(eKeyAction::TOGGLE_FPS)) {
@@ -923,7 +923,7 @@ void cGamePlaying::onEventSpecialLaunch(const LaunchDeathHandEvent &event)
             if (structureId > -1) {
                 cAbstractStructure *pStructure = m_objects->getStructures()[structureId];
                 if (pStructure && pStructure->isValid()) {
-                    m_audioContext->playSound(SOUND_PLACE);
+                    m_audioContext->playSound(m_placeSound);
                     createBullet(special.providesTypeId, pStructure->getCell(), deployCell, -1, structureId, m_objects, m_info, m_audioContext, m_mapCamera);
 
                     const s_GameEvent launchedEvent{

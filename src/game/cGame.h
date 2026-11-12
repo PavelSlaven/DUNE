@@ -20,8 +20,11 @@ class cMouse;
 #include "definitions.h"
 class cRectangle;
 #include "observers/cScenarioObserver.h"
+#include "game/IStateCallbacks.hpp"
+#include "include/eGameState.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <SDL3/SDL.h>
 #include <SDL3_mixer/SDL_mixer.h>
@@ -65,6 +68,7 @@ class cIni;
 class cEventEmitter;
 class cCreatorState;
 class CampaignProgress;
+class GameStateMachine;
 class GameStateTransition;
 class MentatFlow;
 class MissionFlow;
@@ -82,11 +86,10 @@ struct s_DataCampaign;
 // think()
 // thinkFast_...()
 // thinkSlow_....() --> for now used to distinguish certain speed of "thinking" / invocations
-// state_...() --> because elegible for moving away
 
 struct sGameServices;
 
-class cGame : public cScenarioObserver, cInputObserver {
+class cGame : public cScenarioObserver, cInputObserver, IStateCallbacks {
     friend class UiAuditAccess;
     friend class SaveGameManager;
 
@@ -137,10 +140,10 @@ public:
     void initiateFadingOut();        // fade out with current screen_bmp, this is a little game loop itself!
     void prepareMentatForPlayer();
 
-    bool isState(int thisState) const;
+    bool isState(eGameState thisState) const;
 
     // Use this instead
-    void setNextStateToTransitionTo(int newState);
+    void setNextStateToTransitionTo(eGameState newState);
 
     // Game acts as a facade, delegates to sound player
     void playSound(int sampleId); // Maximum volume
@@ -178,7 +181,7 @@ public:
 
     void takeBackGroundScreen();
 
-    void goingToWinLoseBrief(int value);
+    void goingToWinLoseBrief(eGameState value);
 
     s_DataCampaign* getDataCampaign() const;
 
@@ -225,14 +228,28 @@ private:
     void thinkFast_fading();
 
 
-    int m_state; // TODO: Replace with enum, and later even remove with pointer to state
-    int m_nextState; // TODO: Replace with enum, and later even remove with pointer to state
+    std::optional<eGameState> m_nextState; // TODO: later even remove with pointer to state
 
-    cGameState *m_currentState;
 
     void transitionStateIfRequired();
-    void setState(int newState);
+    void setState(eGameState newState);
     void ensureFrameTargets();
+
+    // IStateCallbacks: the side effects of a state transition
+    void onTransitionStarting(eGameState from, eGameState to) override;
+    void playMusic(eMusicType musicType) override;
+    void setCheatMode(bool enabled) override;
+    void setMouseNormal() override;
+    void takeBackgroundScreen() override;
+    void onTransitionToPlaying(cGameState *state, bool isNew) override;
+    void onTransitionToPlayingFromOptions() override;
+    void onTransitionToOptions(bool fromPlaying) override;
+    void onTransitionToOptionsExisting(cGameState *state, eGameState from) override;
+    void onTransitionToRegionNew(cGameState *state) override;
+    void onTransitionToRegionExisting(cGameState *state, bool fromWinLoseBrief) override;
+    void onTransitionToSkirmish() override;
+    void onEnteringTellHouse() override;
+    void onEnteringLoseBrief() override;
 
     void updateMouseAndKeyboardState();
     bool shouldCaptureTextInput() const;
@@ -269,5 +286,6 @@ private:
     std::unique_ptr<cIni> m_cIni;
     std::unique_ptr<cEventEmitter> m_eventEmitter;
     std::unique_ptr<cCreatorState> m_creatorState;
+    std::unique_ptr<GameStateMachine> m_stateMachine;
     std::unique_ptr<CampaignProgress> m_campaignProgress;
 };

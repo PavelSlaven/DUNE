@@ -20,10 +20,12 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <unordered_map>
 #include <algorithm>
 
 
 #include <SDL3/SDL.h>
+#include <optional>
 
 struct FileInPack {
     std::string name;
@@ -48,14 +50,29 @@ public:
     //! get index from ressource named fileId
     int getIndexFromName(const std::string &fileId) const;
     std::string getNameFromIndex(int index) const;
+    //! get the name of every file in the pack, in index order
+    std::vector<std::string> getNames() const;
+    //! extension of the entry at index ("txt", "wav", ...), empty for an invalid index
+    std::string getExtension(unsigned int index) const;
+    //! contents of a text entry (extension "txt", raw UTF-8 bytes); nullopt for an unknown name or a non-text entry
+    std::optional<std::string> getText(const std::string &fileId) const;
     //! print all files in Pack
     void displayPackFile();
     //! get the number of files in the pack
     int getNumberOfFiles() const {
         return fileInPak;
     }
+    //! author from the pack header, empty for packs without header
+    const std::string &getAuthor() const {
+        return author;
+    }
+    //! pack version from the pack header, 0 for packs without header
+    unsigned int getVersion() const {
+        return version;
+    }
 private:
     std::vector<FileInPack> fileInPack;
+    std::unordered_map<std::string, int> nameToIndex; // first index wins on duplicate names
     bool readHeader();
     void readFileLines();
     void readDataIntoMemory();
@@ -63,6 +80,9 @@ private:
     std::unique_ptr<SDL_IOStream, decltype(&SDL_CloseIO)> rfp{nullptr, SDL_CloseIO};  //rfp as readFilePack
     std::string fpName;
     int fileInPak = 0;
+    uint32_t headerSize = 0; // bytes before the entry table
+    std::string author;
+    unsigned int version = 0;
     uint64_t sizeInMemory =0;
 };
 
@@ -71,7 +91,9 @@ public:
     //! Create the archive skeleton
     WriterPack(const std::string &packName);
     ~WriterPack();
-    //! add individual file fileName in archive and rename it by fileId
+    //! write a header after the "D2TM" magic with author (max 14 chars) and version (max 9999), returns false and writes no header when out of range; without it the old layout (no header) is written
+    bool setHeader(const std::string &packAuthor, unsigned int packVersion);
+    //! add individual file fileName in archive and rename it by fileId (fileId max 39 chars)
     bool addFile(const std::string &fileName, const std::string &fileId);
     //! Create PackFile after add all files in archive
     bool writePackFilesOnDisk();
@@ -83,5 +105,8 @@ private:
     void copyFile();
     std::unique_ptr<SDL_IOStream, decltype(&SDL_CloseIO)> wfp{nullptr, SDL_CloseIO}; //wfp as writeFilePack
     std::vector<FileInPack> fileInPack;
+    bool hasHeader = false;
+    std::string author;
+    unsigned int version = 0;
 };
 

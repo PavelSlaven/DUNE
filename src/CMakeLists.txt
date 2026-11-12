@@ -43,6 +43,7 @@ set(D2TM_SOURCES
     drawers/cUnitDrawer.cpp
     drawers/SDLDrawer.cpp
     game/cGame_logic.cpp
+    game/GameStateMachine.cpp
     game/cGameConditionChecker.cpp
     game/CampaignProgress.cpp
     game/Preferences.cpp

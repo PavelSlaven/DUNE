@@ -64,6 +64,8 @@
 #include "sidebar/MusicControlsLayout.hpp"
 #include <algorithm>
 
+#include "controls/cKeyboardEvent.h"
+
 cDrawManager::cDrawManager(GameContext *ctx, cPlayer *thePlayer, sGameServices *services) :
     m_sidebarColor(Color{214, 149, 20,255}),
     m_player(thePlayer),
@@ -358,7 +360,7 @@ void cDrawManager::drawTopBarBackground()
             optionsRect.getY(),
             optionsRect.getWidth(),
             optionsRect.getHeight())) {
-        m_stateTransitions->setNextState(GAME_OPTIONS);
+        m_stateTransitions->setNextState(eGameState::OPTIONS);
     }
 }
 

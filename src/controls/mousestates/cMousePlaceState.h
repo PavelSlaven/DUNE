@@ -16,6 +16,7 @@
 #pragma once
 
 class cKeyboardEvent;
+class AudioContext;
 class cMouse;
 #include "cMouseState.h"
 #include "sGameEvent.h"
@@ -34,6 +35,9 @@ class cMousePlaceState : public cMouseState {
 public:
     explicit cMousePlaceState(cPlayer *player, cGameControlsContext *context, cMouse *mouse);
 
+    // looks up the sounds this state plays; called once the audio context is available
+    void resolveSounds(const AudioContext *audioContext);
+
     void onNotifyMouseEvent(const s_MouseEvent &event) override;
     void onNotifyKeyboardEvent(const cKeyboardEvent &event) override;
     void onNotifyGameEvent(const s_GameEvent &) override {}
@@ -44,6 +48,8 @@ public:
     void onBlur() override;
 
 private:
+    int m_placeSound = -1;
+
     void onMouseLeftButtonClicked();
 
     void onMouseRightButtonPressed();

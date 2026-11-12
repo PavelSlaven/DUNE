@@ -64,7 +64,7 @@ std::string normalizeLanguage(const std::string &language)
 
 }
 
-cOptionsState::cOptionsState(sGameServices* services, int prevState)
+cOptionsState::cOptionsState(sGameServices* services, eGameState prevState)
     : cGameState(services),
     m_textDrawer(m_ctx->getTextContext()->getBeneTextDrawer()),
     m_settings(services->settings),
@@ -106,7 +106,7 @@ cOptionsState::cOptionsState(sGameServices* services, int prevState)
     m_backgroundTexture = &services->screenTexture;
 }
 
-void cOptionsState::constructWindow(int prevState)
+void cOptionsState::constructWindow(eGameState prevState)
 {
     if (m_optionsPage != OptionsPage::Main) {
         constructAdvancedWindow(prevState);
@@ -118,7 +118,7 @@ void cOptionsState::constructWindow(int prevState)
         m_settings->getScreenW(),
         m_settings->getScreenH(),
         buttonHeight,
-        m_prevState == GAME_PLAYING,
+        m_prevState == eGameState::PLAYING,
         m_textDrawer->getFontHeight(),
         2
     );
@@ -169,7 +169,7 @@ void cOptionsState::constructWindow(int prevState)
             .withTheme(controlTheme)
             .withKind(buttonKind)
             .onClick([this]() {
-                m_stateTransitions->setNextStateWithFade(GAME_MENU);
+                m_stateTransitions->setNextStateWithFade(eGameState::MENU);
             })
             .build();
     m_guiWindow->addGuiObject(std::move(gui_btn_toMenu));
@@ -203,7 +203,7 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     m_guiWindow->addGuiObject(std::move(gui_btn_Back));
 
-    if (m_prevState == GAME_PLAYING) {
+    if (m_prevState == eGameState::PLAYING) {
         const bool hasSaves = SaveGameManager::hasAnySave();
         const cRectangle &saveRect = relativeRect(menuLayout.save);
         auto saveButton = GuiButtonBuilder()
@@ -236,7 +236,7 @@ void cOptionsState::constructWindow(int prevState)
         m_guiWindow->addGuiObject(std::move(loadButton));
     }
 
-    if (m_prevState == GAME_PLAYING && !m_settings->isSkirmish()) {
+    if (m_prevState == eGameState::PLAYING && !m_settings->isSkirmish()) {
         const cRectangle &toMissionSelectRect = relativeRect(menuLayout.missionSelect);
         auto gui_btn_toMissionSelect = GuiButtonBuilder()
                 .withRect(toMissionSelectRect)
@@ -246,7 +246,7 @@ void cOptionsState::constructWindow(int prevState)
                 .withTheme(controlTheme)
                 .withKind(buttonKind)
                 .onClick([this]() {
-                    m_stateTransitions->setNextState(GAME_MISSIONSELECT);
+                    m_stateTransitions->setNextState(eGameState::MISSIONSELECT);
                 })
                 .build();
         m_guiWindow->addGuiObject(std::move(gui_btn_toMissionSelect));
@@ -935,7 +935,7 @@ void cOptionsState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
  * Reconstructs window so that it knows to which previous state it should go 'back to'
  * @param prevState
  */
-void cOptionsState::setPrevState(int prevState)
+void cOptionsState::setPrevState(eGameState prevState)
 {
     m_prevState = prevState;
     m_optionsPage = OptionsPage::Main;

@@ -43,7 +43,7 @@
 #include <algorithm>
 #include <format>
 
-cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState) :
+cSelectMissionState::cSelectMissionState(sGameServices* services, eGameState prevState) :
     cGameState(services),
     m_textDrawer(m_ctx->getTextContext()->getBeneTextDrawer()),
     m_settings(services->settings),
@@ -122,7 +122,7 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
             }
             m_missionFlow->jumpToSelectYourNextConquest(highestUnlockedMission);
             m_stateTransitions->setNextStateWithFade(
-                highestUnlockedMission == CampaignProgress::FIRST_MISSION ? GAME_BRIEFING : GAME_REGION);
+                highestUnlockedMission == CampaignProgress::FIRST_MISSION ? eGameState::BRIEFING : eGameState::REGION);
         })
         .build();
     gui_window->addGuiObject(std::move(continueButton));
@@ -141,7 +141,7 @@ cSelectMissionState::cSelectMissionState(sGameServices* services, int prevState)
             .withKind(GuiRenderKind::REMASTER_BUTTON)
             .onClick([this, i]() {
                 m_missionFlow->jumpToSelectYourNextConquest(i);
-                m_stateTransitions->setNextStateWithFade(i == CampaignProgress::FIRST_MISSION ? GAME_BRIEFING : GAME_REGION);
+                m_stateTransitions->setNextStateWithFade(i == CampaignProgress::FIRST_MISSION ? eGameState::BRIEFING : eGameState::REGION);
             })
             .build();
         gui_window->addGuiObject(std::move(btnMission));

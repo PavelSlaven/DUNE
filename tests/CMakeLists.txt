@@ -6,8 +6,12 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_CommandKeys.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_CommandPolicies.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_MouseClickInit.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_cKeyboardEvent.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CommandBarLayout.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CreditsMath.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/game/test_GameStateMachine.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/game/test_cTimeCounter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gameobjects/test_cPlayerNotification.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/structures/test_StarportOrders.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map/test_MapGeometry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map/test_FogMemory.cpp
@@ -36,6 +40,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_cRectangle.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_d2tm_math.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_SfxTrackAllocator.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_SoundPool.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicJukeBox.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicPlaylist.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicTransitionPolicy.cpp
@@ -60,6 +65,12 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_HudLayout.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_UiAuditArguments.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/UiAuditRecordStub.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Color.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_cEnumArray.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_cMatrix.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_RNG.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_cFileValidator.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_cPack.cpp
 )
 
 # Production source files the tests depend on.
@@ -67,6 +78,9 @@ set(TEST_FILES
 # types like cRectangle (which declares an inline toSDL() helper using SDL_Rect).
 set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/controls/cKeyBindings.cpp
+    ${CMAKE_SOURCE_DIR}/src/controls/cKeyboardEvent.cpp
+    ${CMAKE_SOURCE_DIR}/src/game/cTimeCounter.cpp
+    ${CMAKE_SOURCE_DIR}/src/gameobjects/players/cPlayerNotification.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cHandleArgument.cpp
     ${CMAKE_SOURCE_DIR}/src/gameobjects/map/MapGeometry.cpp
     ${CMAKE_SOURCE_DIR}/src/gameobjects/map/cSeedMap.cpp
@@ -85,6 +99,8 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/utils/IniParsing.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cIniUtils.cpp
     ${CMAKE_SOURCE_DIR}/src/game/CampaignProgress.cpp
+    ${CMAKE_SOURCE_DIR}/src/game/GameStateMachine.cpp
+    ${CMAKE_SOURCE_DIR}/src/include/eGameState.cpp
     ${CMAKE_SOURCE_DIR}/src/game/Preferences.cpp
     ${CMAKE_SOURCE_DIR}/src/save/SaveBody.cpp
     ${CMAKE_SOURCE_DIR}/src/save/SaveFileCodec.cpp
@@ -93,6 +109,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/context/MusicJukeBox.cpp
     ${CMAKE_SOURCE_DIR}/src/audio/MusicPlaylist.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cDataPack.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/cFileValidator.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cPack.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Graphics.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/HouseMaskTint.cpp
@@ -111,6 +128,7 @@ add_executable(d2tm_tests
 # On Linux/Windows it is empty: the SDL3 targets from link_libraries() provide the includes.
 target_include_directories(d2tm_tests
     PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/game
         ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_SOURCE_DIR}/src/include
         ${SDL3_INCLUDE_DIRS}

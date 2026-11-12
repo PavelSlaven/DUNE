@@ -51,7 +51,7 @@
 
 #include <algorithm>
 
-#include "data/gfxaudio.h"
+#include "data/SoundPools.h"
 #include "context/GraphicsContext.hpp"
 #include "gameobjects/cSpecialInfos.h"
 #include "utils/Localization.hpp"
@@ -96,6 +96,8 @@ void cPlayer::serviceInit(sGameServices* services)
     d2tm_assert(m_eventEmitter != nullptr);
     m_audioContext = services->ctx->getAudioContext();
     d2tm_assert(m_audioContext != nullptr);
+    m_reportingSound = m_audioContext->indexOf("SOUND_REPORTING");
+    m_yesSirSound = m_audioContext->indexOf("SOUND_YESSIR");
     m_screenFader = services->screenFader;
     d2tm_assert(m_screenFader != nullptr);
     m_structureUtils = services->structureUtils;
@@ -2093,7 +2095,7 @@ void cPlayer::onEntityDiscovered(const CommonEvent &event)
     }
     m_lastEnemyWarningMs = now;
     m_hasPlayedEnemyWarning = true;
-    m_audioContext->playVoice(pUnit->iType == SANDWORM ? SOUND_VOICE_10_ATR : SOUND_VOICE_09_ATR, getHouse());
+    m_audioContext->playVoice(pUnit->iType == SANDWORM ? soundpools::voice10 : soundpools::voice09, getHouse());
 }
 
 bool cPlayer::startBuilding(eBuildType buildType, int buildId)
@@ -2654,11 +2656,11 @@ bool cPlayer::selectUnits(const std::vector<int> &ids) const
     }
 
     if (unitSelected) {
-        m_audioContext->playSound(SOUND_REPORTING);
+        m_audioContext->playSound(m_reportingSound);
     }
 
     if (infantrySelected) {
-        m_audioContext->playSound(SOUND_YESSIR);
+        m_audioContext->playSound(m_yesSirSound);
     }
 
     // return true if we selected any unit

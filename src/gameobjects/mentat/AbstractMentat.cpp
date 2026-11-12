@@ -40,6 +40,7 @@
 #include "utils/Localization.hpp"
 #include "gameobjects/mentat/MentatTextLayout.hpp"
 #include "utils/Utf8.hpp"
+#include "controls/sMouseEvent.h"
 
 // The mentat screen artwork was designed for 640x480. On higher resolutions it
 // is centered, so the offset is half the extra pixels on each axis.
@@ -96,7 +97,7 @@ AbstractMentat::AbstractMentat(GameContext* ctx, cGameSettings* settings, GameSt
             .withTheme(cGuiThemeBuilder().light().build())
             .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([this] {
-                m_stateTransitions->setNextState(GAME_MISSIONSELECT);
+                m_stateTransitions->setNextState(eGameState::MISSIONSELECT);
             })
             .build();
         m_guiBtnToMissionSelect = std::move(gui_btn_toMissionSelect);

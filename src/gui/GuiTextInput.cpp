@@ -17,6 +17,8 @@
 #include "debug/UiAudit.hpp"
 #include "drawers/cTextDrawer.h"
 #include "include/cAssert.h"
+#include "controls/cKeyboardEvent.h"
+#include "controls/sMouseEvent.h"
 
 #include <SDL3/SDL.h>
 

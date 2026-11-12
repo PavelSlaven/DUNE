@@ -20,6 +20,7 @@
 #include "drawers/cTextDrawer.h"
 #include "game/cGameSettings.h"
 #include "include/cAssert.h"
+#include "controls/sMouseEvent.h"
 
 #include <algorithm>
 #include <cmath>

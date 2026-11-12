@@ -19,6 +19,7 @@
 #include "drawers/SDLDrawer.hpp"
 #include <iostream>
 #include "include/cAssert.h"
+#include "controls/sMouseEvent.h"
 
 GuiCheckBox::GuiCheckBox(SDLDrawer* drawer,const cRectangle &rect)
     : GuiObject(drawer, rect)

@@ -20,8 +20,10 @@
 #include <SDL3_mixer/SDL_mixer.h>
 #include <string>
 #include <memory>
+#include <optional>
 #include <SDL3/SDL.h>
 #include <unordered_map>
+#include <vector>
 
 // **********************
 //
@@ -59,13 +61,17 @@ public:
     // return a surface from his name
     SDL_Surface *getSurface(const std::string &name);
     // return index of a surface or audio
-    int getIndexFromName(const std::string &name);
+    int getIndexFromName(const std::string &name) const;
     int getIndexFromSurface(const SDL_Surface *surface) const;
     std::string getNameFromIndex(int index) const;
     // return audio from his index in pack (music or sfx)
     MIX_Audio *getAudio(int index);
     // return audio from his name
     MIX_Audio *getAudio(const std::string &name);
+    // contents of a text entry (extension txt, UTF-8) from its name; nullopt if unknown or not a text entry
+    std::optional<std::string> getText(const std::string &name) const;
+    // name of every file in the pack, in index order
+    std::vector<std::string> getNames() const;
     // for debug
     void displayPackFile();
     int getNumberOfFile() const;

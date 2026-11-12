@@ -17,6 +17,7 @@
 #include "context/TextContext.hpp"
 #include "include/eGameState.h"
 #include "utils/Localization.hpp"
+#include "controls/sMouseEvent.h"
 
 #include <format>
 
@@ -42,7 +43,7 @@ cScoringState::cScoringState(sGameServices* services) :
 
 void cScoringState::continueToWinBrief() const
 {
-    m_missionFlow->goingToWinLoseBrief(GAME_WINBRIEF);
+    m_missionFlow->goingToWinLoseBrief(eGameState::WINBRIEF);
     m_stateTransitions->fadeOut();
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "debug/UiAuditArguments.hpp"
+#include "include/eGameState.h"
 
 #include <string>
 
@@ -84,7 +85,7 @@ public:
     static SDL_Renderer *renderer(cGame &game);
     static int renderScale(const cGame &game);
     static int worldScale(const cGame &game);
-    static void setState(cGame &game, int state);
+    static void setState(cGame &game, eGameState state);
     static void freezeClock(cGame &game);
     static void resumeClock(cGame &game);
     static bool notFadingOut(const cGame &game);

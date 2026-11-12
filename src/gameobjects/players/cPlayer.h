@@ -38,6 +38,8 @@ class cRectangle;
 #include <cstdint>
 
 class cItemBuilder;
+class cBuildingListItem;
+struct CommonEvent;
 class cBuildingListUpdater;
 class cHousesInfo;
 class Texture;
@@ -631,6 +633,8 @@ private:
     AudioContext *m_audioContext = nullptr;
     std::uint64_t m_lastEnemyWarningMs = 0;
     bool m_hasPlayedEnemyWarning = false;
+    int m_reportingSound = -1;
+    int m_yesSirSound = -1;
     cScreenFader *m_screenFader = nullptr;
     cStructureUtils *m_structureUtils = nullptr;
     cLog *m_log = nullptr;
