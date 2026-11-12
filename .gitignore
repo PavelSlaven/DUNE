@@ -32,3 +32,4 @@ config.h
 *.spirv
 test
 *.bmp
+resources/bin/d2tm.exe
