@@ -2,7 +2,7 @@
 
 Исполнитель: корневая нить Codex `gpt-6.1-sol` `high` и помощники `gpt-6-luna` `xhigh` (раздел «Организация работы»).
 
-Рабочая копия: `/srv/dune/worktrees/u34`, ветка `codex/p7v`, `HEAD` — `@@B@@` (вершина ветки порта `port/up-d06f2fcd` после слияния части П7б). Файлы Git LFS в этой рабочей копии — настоящие данные. Временные файлы — в `.tmp/p7v/`. Коммитов не делай: коммиты делает ведущий по списку из сдачи. Файлы задания лежат в папке `/srv/dune/tasks/p7v/` (дальше — «папка задания»).
+Рабочая копия: `/srv/dune/worktrees/u34`, ветка `codex/p7v`, `HEAD` — `c106b54a2` (вершина ветки `codex/p7b`: часть П7б, перевод надписей интерфейса, PR #132). Файлы Git LFS в этой рабочей копии — настоящие данные. Временные файлы — в `.tmp/p7v/`. Коммитов не делай: коммиты делает ведущий по списку из сдачи. Файлы задания лежат в папке `/srv/dune/tasks/p7v/` (дальше — «папка задания»).
 
 ## Цель
 
@@ -10,7 +10,7 @@
 
 ## Что уже решено
 
-Ревизия `B` = `@@B@@`. Все факты о коде ниже — о файлах ревизии `B`.
+Ревизия `B` = `c106b54a21af3577ce98c38330455be8c0b15d89`. Все факты о коде ниже — о файлах ревизии `B`.
 
 - **Механизм языка** — `src/utils/Localization.hpp`: `localization::isEnglish()` — `true` в английской игре; `localization::setLanguage("en")` и `localization::setLanguage("ru")` выбирают язык. В тестах Catch2 язык по умолчанию — русский.
 - **Данные кампании** — папка `campaign_ru/` в папке задания, 36 файлов: `briefings/mentata.ini`, `briefings/mentath.ini`, `briefings/mentato.ini`, `briefings/mentats.ini` и `<дом>/mission1.ini` … `<дом>/mission8.ini` для домов `atreides`, `harkonnen`, `ordos`, `sardaukar`. Каждый файл — английский файл `resources/bin/campaign/<тот же путь>`, в котором заменены только значения строк `Text=`: строк столько же, все остальные строки байт в байт те же. Файлы собрал ведущий; их текст не меняй.
@@ -138,7 +138,7 @@
 1. **Место и сборка.**
    - `df -m /srv` — в столбце `Available` не меньше 5000, иначе блок `## Q-P7V-NN` и стоп.
    - Сборка: `mkdir -p .tmp/p7v && CCACHE_DISABLE=1 DUNE_DEPS_DIR=$PWD/.tmp/deps DUNE_OUT_DIR=$PWD/.tmp/out bash tools/upstream/build_upstream_linux.sh d06f2fcd2a347182c3774fb96e9a85570405c489 > .tmp/p7v/build.log 2>&1; echo exit=$?` — `exit=0`.
-   - Итоговая строка `ctest.log` последней папки логов `.tmp/out/logs/` — `100% tests passed, 0 tests failed out of <N>`, где `<N>` больше @@N@@.
+   - Итоговая строка `ctest.log` последней папки логов `.tmp/out/logs/` — `100% tests passed, 0 tests failed out of <N>`, где `<N>` больше 337.
    - `CCACHE_DISABLE=1` обязателен: `ccache` пишет в `/root/.cache`, который песочница нити держит только для чтения.
 2. `grep -n 'warning:' .tmp/out/logs/<последняя папка>/full.log | grep -F -f .tmp/p7v/changed-paths.txt` — пустой вывод. Файл `.tmp/p7v/changed-paths.txt` — пути файлов `.cpp`, `.hpp` и `.h` из шагов 1 и 4 плана, по одному на строку.
 3. В `game-dummy.log` и `stdout-dummy.log` последней папки логов нет строки `Imminent crash`.
