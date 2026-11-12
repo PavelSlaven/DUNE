@@ -202,7 +202,7 @@ src/gamestates/cNewmapEditorState.cpp	201	Random:	Случайно:
 src/gamestates/cNewmapEditorState.cpp	229	Dune 2 seed: 	Зерно Dune 2: 	
 src/gamestates/cNewmapEditorState.cpp	251	Return to menu	В меню	
 src/gamestates/cNewmapEditorState.cpp	268	Create map	Создать карту	
-src/gamestates/cOptionsState.cpp	129	Dune II - The Maker - version 	Dune II - The Maker - версия 	Dune II - The Maker - version  + D2TM_VERSION → localization::text("Dune II - The Maker - version ", "Dune II - The Maker - версия ") + D2TM_VERSION
+src/gamestates/cOptionsState.cpp	129	Dune II - The Maker - version 	Dune II - The Maker - версия 	"Dune II - The Maker - version " + D2TM_VERSION → localization::text("Dune II - The Maker - version ", "Dune II - The Maker - версия ") + D2TM_VERSION
 src/gamestates/cOptionsState.cpp	134	Main menu	В главное меню	
 src/gamestates/cOptionsState.cpp	148	Quit game	Выйти из игры	
 src/gamestates/cOptionsState.cpp	163	Back	Назад	
