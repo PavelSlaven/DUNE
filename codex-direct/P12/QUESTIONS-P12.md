@@ -104,3 +104,12 @@
 ## Заметка (не вопрос)
 
 В брифе «четыре прочих workflow» — в `B` их четыре с `claude-code-review.yml`, после его удаления три; в задании записано три.
+
+## Ответы ведущего (2026-11-12)
+
+- **Q-P12-01 — вариант B без `patchelf`** (его на сервере нет, ставить пакеты нельзя). Linux-архив: `d2tm`, `d2tm.sh`, `INSTALL.txt` и папка `lib/` с `libSDL3*.so*`, `libSDL3_image*.so*`, `libSDL3_ttf*.so*`, `libSDL3_mixer*.so*` (в CI — файлы из вывода `ldd build/d2tm` с путём под `/usr/local/lib`, со всеми символическими ссылками). `d2tm.sh` (права 755): `#!/bin/sh`, `HERE="$(cd "$(dirname "$0")" && pwd)"`, `LD_LIBRARY_PATH="$HERE/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" exec "$HERE/d2tm" "$@"`. `LINUX_README.txt`: шаг сборки SDL3 убран, запуск — `./d2tm.sh`. Сухой прогон на сервере: библиотеки из `/srv/library/dune/deps/prefix/lib`; `ldd` с `LD_LIBRARY_PATH=<пакет>/lib` без `not found`, каждая `libSDL3*` указывает в `<пакет>/lib`; запуск сцены `main-menu` через `d2tm.sh` с драйверами `dummy`/`software`, код 0 и файл `main-menu.png`. В задании: пункты 3 (E5a), 7, проверки C8, C15, C16.
+- **Q-P12-02 (Р83) — вариант C.** Снимки и галерея как есть; новые снимки и правка README — на шаге П13.
+- **Q-P12-03 — A.**
+- **Q-P12-04 (Р83).** `THIRD_PARTY_ASSETS_RU.txt` форка переносится в `resources/bin/` с правками строк 1, 4, 43 и добавленным абзацем о PT Sans Narrow и PT Mono; `README_RU.txt` не переносится. В задании: пункт 13, проверка C17.
+- **Q-P12-05 — A. Q-P12-06 — A. Q-P12-07 — A.**
+- Заметка о трёх workflow — верно, три.
