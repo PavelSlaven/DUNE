@@ -1,0 +1,55 @@
+английский	строк в PORT	места в PORT
+Carry-All	6	src/context/cInfoContextCreator.cpp:197 | src/gameobjects/players/brains/missions/cPlayerBrainMissionKind.h:40 | src/gameobjects/units/cUnit.cpp:121 | src/gameobjects/units/cUnit.cpp:519 | src/gameobjects/units/cUnit.h:180
+Ornithopter	9	src/context/cInfoContextCreator.cpp:200 | src/context/cInfoContextCreator.cpp:217 | src/context/cInfoContextCreator.cpp:1283 | src/gameobjects/units/cUnit.cpp:1126 | src/gameobjects/units/cUnit.cpp:1133
+Devastator	10	src/context/cInfoContextCreator.cpp:220 | src/context/cInfoContextCreator.cpp:221 | src/context/cInfoContextCreator.cpp:237 | src/context/cInfoContextCreator.cpp:1357 | src/context/cInfoContextCreator.cpp:1374
+Harvester	62	src/context/cInfoContextCreator.cpp:240 | src/context/cInfoContextCreator.cpp:241 | src/context/cInfoContextCreator.cpp:255 | src/controls/mousestates/cMouseNormalState.cpp:317 | src/controls/mousestates/cMouseNormalState.cpp:326
+Tank	27	src/context/cInfoContextCreator.cpp:275 | src/context/cInfoContextCreator.cpp:279 | src/context/cInfoContextCreator.cpp:299 | src/context/cInfoContextCreator.cpp:450 | src/context/cInfoContextCreator.cpp:467
+Siege Tank	7	src/context/cInfoContextCreator.cpp:279 | src/context/cInfoContextCreator.cpp:299 | src/context/cInfoContextCreator.cpp:1253 | src/context/cInfoContextCreator.cpp:1268 | src/include/definitions.h:143
+MCV	41	src/context/cInfoContextCreator.cpp:302 | src/context/cInfoContextCreator.cpp:304 | src/context/cInfoContextCreator.cpp:305 | src/context/cInfoContextCreator.cpp:306 | src/context/cInfoContextCreator.cpp:307
+Deviator	9	src/context/cInfoContextCreator.cpp:319 | src/context/cInfoContextCreator.cpp:320 | src/context/cInfoContextCreator.cpp:335 | src/context/cInfoContextCreator.cpp:1338 | src/context/cInfoContextCreator.cpp:1355
+Launcher	20	src/context/cInfoContextCreator.cpp:338 | src/context/cInfoContextCreator.cpp:339 | src/context/cInfoContextCreator.cpp:357 | src/context/cInfoContextCreator.cpp:1238 | src/context/cInfoContextCreator.cpp:1247
+Quad	7	src/context/cInfoContextCreator.cpp:360 | src/context/cInfoContextCreator.cpp:361 | src/context/cInfoContextCreator.cpp:378 | src/context/cInfoContextCreator.cpp:1204 | src/gameobjects/units/cUnitInfos.h:77
+Trike	9	src/context/cInfoContextCreator.cpp:382 | src/context/cInfoContextCreator.cpp:383 | src/context/cInfoContextCreator.cpp:399 | src/context/cInfoContextCreator.cpp:402 | src/context/cInfoContextCreator.cpp:403
+Raider Trike	4	src/context/cInfoContextCreator.cpp:402 | src/context/cInfoContextCreator.cpp:403 | src/context/cInfoContextCreator.cpp:410 | src/utils/cIniUtils.cpp:130
+Frigate	27	src/context/cInfoContextCreator.cpp:422 | src/context/cInfoContextCreator.cpp:423 | src/context/cInfoContextCreator.cpp:434 | src/context/cInfoContextCreator.cpp:437 | src/drawers/cBuildingListDrawer.cpp:465
+Sonic Tank	5	src/context/cInfoContextCreator.cpp:450 | src/context/cInfoContextCreator.cpp:467 | src/context/cInfoContextCreator.cpp:1319 | src/include/definitions.h:154 | src/utils/cIniUtils.cpp:126
+Soldier	7	src/context/cInfoContextCreator.cpp:471 | src/context/cInfoContextCreator.cpp:490 | src/gameobjects/players/cPlayer.cpp:1832 | src/gameobjects/players/cPlayer.cpp:2187 | src/gameobjects/players/cPlayer.h:522
+Light Infantry	2	src/context/cInfoContextCreator.cpp:515 | src/drawers/cBuildingListDrawer.cpp:82
+Trooper	9	src/context/cInfoContextCreator.cpp:518 | src/context/cInfoContextCreator.cpp:525 | src/context/cInfoContextCreator.cpp:543 | src/context/cInfoContextCreator.cpp:550 | src/context/cInfoContextCreator.cpp:1300
+Troopers	5	src/context/cInfoContextCreator.cpp:550 | src/context/cInfoContextCreator.cpp:1300 | src/drawers/cBuildingListDrawer.cpp:83 | src/include/definitions.h:149 | src/utils/cIniUtils.cpp:125
+Fremen (1)	1	src/context/cInfoContextCreator.cpp:576
+Fremen (3)	1	src/context/cInfoContextCreator.cpp:598
+Saboteur	34	src/CMakeLists.txt:84 | src/building/cItemBuilder.cpp:319 | src/context/cInfoContextCreator.cpp:612 | src/context/cInfoContextCreator.cpp:627 | src/context/cInfoContextCreator.cpp:859
+Sandworm	72	src/CMakeLists.txt:76 | src/context/cInfoContextCreator.cpp:639 | src/context/cInfoContextCreator.cpp:649 | src/drawers/cUnitDrawer.cpp:253 | src/drawers/cUnitDrawer.cpp:364
+Fremen	59	src/CMakeLists.txt:83 | src/CMakeLists.txt:85 | src/building/cItemBuilder.cpp:327 | src/context/cInfoContextCreator.cpp:569 | src/context/cInfoContextCreator.cpp:576
+Death Hand	2	src/context/cInfoContextCreator.cpp:887 | src/context/cInfoContextCreator.cpp:904
+Upgrade	239	src/building/cItemBuilder.cpp:424 | src/building/cItemBuilder.cpp:426 | src/context/cInfoContext.cpp:21 | src/context/cInfoContext.cpp:72 | src/context/cInfoContext.cpp:74
+Build 4 concrete slabs at once	1	src/context/cInfoContextCreator.cpp:1172
+Build Rocket Turret	1	src/context/cInfoContextCreator.cpp:1188
+Build Quad at Light Factory	1	src/context/cInfoContextCreator.cpp:1204
+Build MCV at Heavy Factory	1	src/context/cInfoContextCreator.cpp:1222
+Build Rocket Launcher at Heavy Factory	1	src/context/cInfoContextCreator.cpp:1238
+Build Siege Tank at Heavy Factory	2	src/context/cInfoContextCreator.cpp:1253 | src/context/cInfoContextCreator.cpp:1268
+Build Ornithopter at Hi-Tech	1	src/context/cInfoContextCreator.cpp:1283
+Build Troopers at WOR	1	src/context/cInfoContextCreator.cpp:1300
+Build Infantry at Barracks	1	src/context/cInfoContextCreator.cpp:1317
+Unknown	28	src/context/cInfoContextCreator.cpp:850 | src/context/cInfoContextCreator.cpp:932 | src/context/cInfoContextCreator.cpp:1413 | src/controls/cKeyBindings.cpp:354 | src/drawers/cMouseDrawer.cpp:203
+Concrete Slab	2	src/context/cInfoContextCreator.cpp:1424 | src/context/cInfoContextCreator.cpp:1433
+4 Concrete Slabs	1	src/context/cInfoContextCreator.cpp:1433
+Concrete Wall	2	src/context/cInfoContextCreator.cpp:1436 | src/context/cInfoContextCreator.cpp:1444
+Windtrap	7	src/context/cInfoContextCreator.cpp:1446 | src/context/cInfoContextCreator.cpp:1459 | src/debug/UiAuditAccess.cpp:828 | src/drawers/cMouseDrawer.cpp:239 | src/drawers/cMouseDrawer.cpp:243
+Heavy Factory	14	src/context/cInfoContextCreator.cpp:1222 | src/context/cInfoContextCreator.cpp:1238 | src/context/cInfoContextCreator.cpp:1253 | src/context/cInfoContextCreator.cpp:1268 | src/context/cInfoContextCreator.cpp:1336
+Hi-Tech	5	src/context/cInfoContextCreator.cpp:1283 | src/context/cInfoContextCreator.cpp:1492 | src/drawers/cBuildingListDrawer.cpp:79 | src/include/definitions.h:146 | src/utils/cIniUtils.cpp:105
+Repair Facility	1	src/context/cInfoContextCreator.cpp:1508
+Palace	39	src/CMakeLists.txt:104 | src/context/cInfoContextCreator.cpp:1510 | src/context/cInfoContextCreator.cpp:1523 | src/debug/UiAudit.hpp:21 | src/debug/UiAuditAccess.cpp:729
+Light Factory	4	src/context/cInfoContextCreator.cpp:1204 | src/context/cInfoContextCreator.cpp:1525 | src/context/cInfoContextCreator.cpp:1540 | src/gameobjects/units/cUnitInfos.h:77
+Outpost	2	src/context/cInfoContextCreator.cpp:1563 | src/utils/cIniUtils.cpp:108
+Barracks	21	src/CMakeLists.txt:95 | src/context/cInfoContextCreator.cpp:1317 | src/context/cInfoContextCreator.cpp:1565 | src/context/cInfoContextCreator.cpp:1584 | src/gameobjects/players/cPlayer.cpp:691
+WOR	181	resources/bin/settings.ini:84 | resources/bin/settings.ini:154 | src/context/ContextCreator.cpp:43 | src/context/ContextCreator.cpp:45 | src/context/ContextCreator.cpp:48
+Spice Storage Silo	1	src/context/cInfoContextCreator.cpp:1618
+Spice Refinery	2	src/context/cInfoContextCreator.cpp:1634 | src/drawers/cBuildingListDrawer.cpp:80
+Construction Yard	3	src/context/cInfoContextCreator.cpp:1636 | src/context/cInfoContextCreator.cpp:1652 | src/gamestates/cGamePlaying.cpp:616
+Starport	35	src/context/cInfoContextCreator.cpp:1654 | src/context/cInfoContextCreator.cpp:1668 | src/debug/UiAudit.hpp:20 | src/debug/UiAuditAccess.cpp:728 | src/debug/UiAuditScenes.cpp:457
+House of IX	3	src/context/cInfoContextCreator.cpp:1670 | src/context/cInfoContextCreator.cpp:1684 | src/sidebar/cBuildingListUpdater.cpp:365
+Gun Turret	1	src/context/cInfoContextCreator.cpp:1699
+Rocket Turret	3	src/context/cInfoContextCreator.cpp:1188 | src/context/cInfoContextCreator.cpp:1701 | src/context/cInfoContextCreator.cpp:1715

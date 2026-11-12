@@ -1,0 +1,71 @@
+     1	#!/usr/bin/env python3
+     2	"""Fast regression checks for the localized skirmish and Mentat layouts."""
+     3	
+     4	from __future__ import annotations
+     5	
+     6	import re
+     7	from pathlib import Path
+     8	
+     9	ROOT = Path(__file__).resolve().parents[1]
+    10	SKIRMISH_SOURCE = ROOT / "src" / "gamestates" / "cSetupSkirmishState.cpp"
+    11	MENTAT_SOURCE = ROOT / "src" / "mentat" / "AbstractMentat.cpp"
+    12	MAPS = ROOT / "resources" / "bin" / "skirmish"
+    13	MAX_MAP_TITLE_CHARACTERS = 13
+    14	
+    15	
+    16	def check_skirmish(failures: list[str]) -> None:
+    17	    source = SKIRMISH_SOURCE.read_text(encoding="utf-8")
+    18	    for abbreviation in ("Кр.", "Ком."):
+    19	        if abbreviation in source:
+    20	            failures.append(f"Skirmish header still contains {abbreviation!r}")
+    21	    for label in ("Игрок", "Дом", "Кредиты", "Войска", "Команда"):
+    22	        if f'"{label}"' not in source:
+    23	            failures.append(f"Skirmish header is missing {label!r}")
+    24	    if "SkirmishPlayerTableLayout" not in source:
+    25	        failures.append("Skirmish rows and headers do not share one column layout")
+    26	
+    27	    for path in sorted(MAPS.glob("*.ini")):
+    28	        text = path.read_text(encoding="utf-8-sig")
+    29	        match = re.search(r'^Title="(.*)"$', text, flags=re.MULTILINE)
+    30	        if not match:
+    31	            failures.append(f"{path.name}: no Title entry")
+    32	            continue
+    33	        title = match.group(1)
+    34	        if len(title) > MAX_MAP_TITLE_CHARACTERS:
+    35	            failures.append(
+    36	                f"{path.name}: {title!r} has {len(title)} characters, "
+    37	                f"maximum is {MAX_MAP_TITLE_CHARACTERS}"
+    38	            )
+    39	
+    40	
+    41	def check_mentat_header(failures: list[str]) -> None:
+    42	    source = MENTAT_SOURCE.read_text(encoding="utf-8")
+    43	    expected_rect = "baseRect(20, 6, 600, 78)"
+    44	    if expected_rect not in source:
+    45	        failures.append(f"Mentat text area is not the expanded {expected_rect}")
+    46	    if "drawHdTextHeader();" not in source:
+    47	        failures.append("Mentat draw path does not install the shared HD text header")
+    48	    if "gfxmentat->getTexture(MENTATA)" not in source:
+    49	        failures.append("Mentat HD text header does not reuse the Atreides frame")
+    50	    if "HD_MENTAT_TEXT_HEADER_HEIGHT = 90" not in source:
+    51	        failures.append("Mentat shared HD text header has an unexpected height")
+    52	
+    53	
+    54	def main() -> int:
+    55	    failures: list[str] = []
+    56	    check_skirmish(failures)
+    57	    check_mentat_header(failures)
+    58	    if failures:
+    59	        print("FAIL")
+    60	        for failure in failures:
+    61	            print(f"- {failure}")
+    62	        return 1
+    63	    print(
+    64	        "PASS: skirmish columns use full labels, every map title is at most "
+    65	        "13 characters, and all Mentat headers share the expanded frame"
+    66	    )
+    67	    return 0
+    68	
+    69	
+    70	if __name__ == "__main__":
+    71	    raise SystemExit(main())

@@ -1,0 +1,1466 @@
+    83	        unitInfo.smokeHpFactor = 0.0f;
+    84	
+    85	        unitInfo.canGuard = false;
+    86	
+    87	        strcpy(unitInfo.name, "\0");
+    88	    }
+    89	
+    90	    // Unit        : CarryAll
+    91	    // Description : CarryAll, the flying pickuptruck
+    92	    sUnitInfo[CARRYALL].bmp = gfxdata->getSurface(UNIT_CARRYALL);      // pointer to the original 8bit bitmap
+    93	    sUnitInfo[CARRYALL].shadow = gfxdata->getTexture(UNIT_CARRYALL_SHADOW);      // pointer to the original 8bit bitmap
+    94	    sUnitInfo[CARRYALL].bmp_width = 24 * 2;
+    95	    sUnitInfo[CARRYALL].bmp_height = 24 * 2;
+    96	    sUnitInfo[CARRYALL].bmp_startpixel = 0;
+    97	    sUnitInfo[CARRYALL].bmp_frames = 2; // we have at max 1 extra frame
+    98	    sUnitInfo[CARRYALL].icon = ICON_UNIT_CARRYALL;
+    99	    sUnitInfo[CARRYALL].airborn = true;   // is airborn
+   100	    sUnitInfo[CARRYALL].free_roam = true; // may freely roam the air
+   101	    sUnitInfo[CARRYALL].listType = eListType::LIST_UNITS;
+   102	    sUnitInfo[CARRYALL].subListId = SUBLIST_HIGHTECH;
+   103	    strcpy(sUnitInfo[CARRYALL].name, localization::text("Carry-All", "Транспортник"));
+   104	
+   105	    // Unit        : Ornithopter
+   106	    // Description : Pesty little aircraft shooting bastard
+   107	    sUnitInfo[ORNITHOPTER].bmp = gfxdata->getSurface(UNIT_ORNITHOPTER);      // pointer to the original 8bit bitmap
+   108	    sUnitInfo[ORNITHOPTER].shadow = gfxdata->getTexture(UNIT_ORNITHOPTER_SHADOW);      // pointer to the original 8bit bitmap
+   109	    sUnitInfo[ORNITHOPTER].bmp_width = 24 * 2;
+   110	    sUnitInfo[ORNITHOPTER].bmp_height = 24 * 2;
+   111	    sUnitInfo[ORNITHOPTER].bmp_startpixel = 0;
+   112	    sUnitInfo[ORNITHOPTER].bmp_frames = 4; // we have at max 3 extra frames
+   113	    sUnitInfo[ORNITHOPTER].icon = ICON_UNIT_ORNITHOPTER;
+   114	    sUnitInfo[ORNITHOPTER].bulletType = ROCKET_SMALL_ORNI;
+   115	    sUnitInfo[ORNITHOPTER].fireTwice = true;
+   116	    sUnitInfo[ORNITHOPTER].airborn = true;   // is airborn
+   117	    sUnitInfo[ORNITHOPTER].squish = false;   // can't squish infantry
+   118	    sUnitInfo[ORNITHOPTER].free_roam = true; // may freely roam the air
+   119	    sUnitInfo[ORNITHOPTER].listType = eListType::LIST_UNITS;
+   120	    sUnitInfo[ORNITHOPTER].subListId = SUBLIST_HIGHTECH;
+   121	//    sUnitInfo[ORNITHOPTER].canAttackAirUnits = true; // orni's can attack other air units
+   122	    strcpy(sUnitInfo[ORNITHOPTER].name, localization::text("Ornithopter", "Орнитоптер"));
+   123	
+   124	    // Unit        : Devastator
+   125	    // Description : Devastator
+   126	    sUnitInfo[DEVASTATOR].bmp = gfxdata->getSurface(UNIT_DEVASTATOR);      // pointer to the original 8bit bitmap
+   127	    sUnitInfo[DEVASTATOR].shadow = gfxdata->getTexture(UNIT_DEVASTATOR_SHADOW);      // pointer to the original bitmap shadow
+   128	    sUnitInfo[DEVASTATOR].bmp_width = 19 * 2;
+   129	    sUnitInfo[DEVASTATOR].bmp_startpixel = 0;
+   130	    sUnitInfo[DEVASTATOR].bmp_height = 23 * 2;
+   131	    sUnitInfo[DEVASTATOR].bmp_frames = 1;
+   132	    sUnitInfo[DEVASTATOR].bulletType = BULLET_DEVASTATOR;
+   133	    sUnitInfo[DEVASTATOR].fireTwice = true;
+   134	    sUnitInfo[DEVASTATOR].icon = ICON_UNIT_DEVASTATOR;
+   135	    sUnitInfo[DEVASTATOR].listType = eListType::LIST_UNITS;
+   136	    sUnitInfo[DEVASTATOR].subListId = SUBLIST_HEAVYFCTRY;
+   137	    sUnitInfo[DEVASTATOR].renderSmokeOnUnitWhenThresholdMet = true;
+   138	    sUnitInfo[DEVASTATOR].smokeHpFactor = 0.5f;
+   139	    sUnitInfo[DEVASTATOR].canGuard = true;
+   140	    sUnitInfo[DEVASTATOR].canAttackUnits = true;
+   141	    strcpy(sUnitInfo[DEVASTATOR].name, localization::text("Devastator", "Девастатор"));
+   142	
+   143	    // Unit        : Harvester
+   144	    // Description : Harvester
+   145	    sUnitInfo[HARVESTER].bmp = gfxdata->getSurface(UNIT_HARVESTER);      // pointer to the original 8bit bitmap
+   146	    sUnitInfo[HARVESTER].shadow = gfxdata->getTexture(UNIT_HARVESTER_SHADOW);      // pointer to the original 8bit bitmap
+   147	    sUnitInfo[HARVESTER].bmp_width = 40 * 2;
+   148	    sUnitInfo[HARVESTER].bmp_startpixel = 24;
+   149	    sUnitInfo[HARVESTER].bmp_height = 26 * 2;
+   150	    sUnitInfo[HARVESTER].bmp_frames = 4;
+   151	    sUnitInfo[HARVESTER].icon = ICON_UNIT_HARVESTER;
+   152	    sUnitInfo[HARVESTER].credit_capacity = 700;
+   153	    sUnitInfo[HARVESTER].harvesting_amount = 5;
+   154	    sUnitInfo[HARVESTER].listType = eListType::LIST_UNITS;
+   155	    sUnitInfo[HARVESTER].subListId = SUBLIST_HEAVYFCTRY;
+   156	    sUnitInfo[HARVESTER].renderSmokeOnUnitWhenThresholdMet = true;
+   157	    sUnitInfo[HARVESTER].smokeHpFactor = 0.5f;
+   158	    strcpy(sUnitInfo[HARVESTER].name, localization::text("Harvester", "Харвестер"));
+   159	
+   160	    // Unit        : Combattank
+   161	    // Description : Combattank
+   162	    sUnitInfo[TANK].bmp = gfxdata->getSurface(UNIT_TANKBASE);      // pointer to the original 8bit bitmap
+   163	    sUnitInfo[TANK].shadow = gfxdata->getTexture(UNIT_TANKBASE_SHADOW);      // pointer to the original 8bit bitmap
+   164	    sUnitInfo[TANK].top = gfxdata->getSurface(UNIT_TANKTOP);      // pointer to the original 8bit bitmap
+   165	    sUnitInfo[TANK].bmp_width = 16 * 2;
+   166	    sUnitInfo[TANK].bmp_startpixel = 0;
+   167	    sUnitInfo[TANK].bmp_height = 16 * 2;
+   168	    sUnitInfo[TANK].bmp_frames = 0;
+   169	    sUnitInfo[TANK].bulletType = BULLET_TANK;
+   170	    sUnitInfo[TANK].icon = ICON_UNIT_TANK;
+   171	    sUnitInfo[TANK].listType = eListType::LIST_UNITS;
+   172	    sUnitInfo[TANK].subListId = SUBLIST_HEAVYFCTRY;
+   173	    sUnitInfo[TANK].renderSmokeOnUnitWhenThresholdMet = true;
+   174	    sUnitInfo[TANK].smokeHpFactor = 0.5f;
+   175	    sUnitInfo[TANK].canGuard = true;
+   176	    sUnitInfo[TANK].canAttackUnits = true;
+   177	    strcpy(sUnitInfo[TANK].name, localization::text("Tank", "Танк"));
+   178	
+   179	
+   180	    // Unit        : Siege Tank
+   181	    // Description : Siege tank
+   182	    sUnitInfo[SIEGETANK].bmp = gfxdata->getSurface(UNIT_SIEGEBASE);      // pointer to the original 8bit bitmap
+   183	    sUnitInfo[SIEGETANK].shadow = gfxdata->getTexture(UNIT_SIEGEBASE_SHADOW);      // pointer to the original 8bit bitmap
+   184	    sUnitInfo[SIEGETANK].top = gfxdata->getSurface(UNIT_SIEGETOP);      // pointer to the original 8bit bitmap
+   185	    sUnitInfo[SIEGETANK].bmp_width = 18 * 2;
+   186	    sUnitInfo[SIEGETANK].bmp_startpixel = 1;
+   187	    sUnitInfo[SIEGETANK].bmp_height = 18 * 2;
+   188	    sUnitInfo[SIEGETANK].hd_frame_width = 176;
+   189	    sUnitInfo[SIEGETANK].hd_frame_height = 176;
+   190	    sUnitInfo[SIEGETANK].bmp_frames = 0;
+   191	    sUnitInfo[SIEGETANK].bulletType = BULLET_SIEGE;
+   192	    sUnitInfo[SIEGETANK].fireTwice = true;
+   193	    sUnitInfo[SIEGETANK].icon = ICON_UNIT_SIEGETANK;
+   194	    sUnitInfo[SIEGETANK].listType = eListType::LIST_UNITS;
+   195	    sUnitInfo[SIEGETANK].subListId = SUBLIST_HEAVYFCTRY;
+   196	    sUnitInfo[SIEGETANK].renderSmokeOnUnitWhenThresholdMet = true;
+   197	    sUnitInfo[SIEGETANK].smokeHpFactor = 0.5f;
+   198	    sUnitInfo[SIEGETANK].canGuard = true;
+   199	    sUnitInfo[SIEGETANK].canAttackUnits = true;
+   200	    strcpy(sUnitInfo[SIEGETANK].name, localization::text("Siege Tank", "Осадный танк"));
+   201	
+   202	    // Unit        : MCV
+   203	    // Description : Movable Construction Vehicle
+   204	    sUnitInfo[MCV].bmp = gfxdata->getSurface(UNIT_MCV);      // pointer to the original 8bit bitmap
+   205	    sUnitInfo[MCV].shadow = gfxdata->getTexture(UNIT_MCV_SHADOW);      // pointer to the original 8bit bitmap
+   206	    sUnitInfo[MCV].bmp_width = 24 * 2;
+   207	    sUnitInfo[MCV].bmp_startpixel = 0;
+   208	    sUnitInfo[MCV].bmp_height = 25 * 2;
+   209	    sUnitInfo[MCV].bmp_frames = 1;
+   210	    sUnitInfo[MCV].icon = ICON_UNIT_MCV;
+   211	    sUnitInfo[MCV].listType = eListType::LIST_UNITS;
+   212	    sUnitInfo[MCV].subListId = SUBLIST_HEAVYFCTRY;
+   213	    sUnitInfo[MCV].renderSmokeOnUnitWhenThresholdMet = true;
+   214	    sUnitInfo[MCV].smokeHpFactor = 0.5f;
+   215	    strcpy(sUnitInfo[MCV].name, localization::text("MCV", "Мобильная база"));
+   216	
+   217	
+   218	    // Unit        : Deviator
+   219	    // Description : Deviator
+   220	    sUnitInfo[DEVIATOR].bmp = gfxdata->getSurface(UNIT_DEVIATOR);      // pointer to the original 8bit bitmap
+   221	    sUnitInfo[DEVIATOR].bmp_width = 16 * 2;
+   222	    sUnitInfo[DEVIATOR].bmp_height = 16 * 2;
+   223	    sUnitInfo[DEVIATOR].bmp_startpixel = 0;
+   224	    sUnitInfo[DEVIATOR].bmp_frames = 1;
+   225	    sUnitInfo[DEVIATOR].icon = ICON_UNIT_DEVIATOR;
+   226	    sUnitInfo[DEVIATOR].bulletType = BULLET_GAS; // our gassy rocket
+   227	    sUnitInfo[DEVIATOR].listType = eListType::LIST_UNITS;
+   228	    sUnitInfo[DEVIATOR].subListId = SUBLIST_HEAVYFCTRY;
+   229	    sUnitInfo[DEVIATOR].renderSmokeOnUnitWhenThresholdMet = true;
+   230	    sUnitInfo[DEVIATOR].smokeHpFactor = 0.5f;
+   231	    sUnitInfo[DEVIATOR].canGuard = true;
+   232	    sUnitInfo[DEVIATOR].canAttackUnits = true;
+   233	    strcpy(sUnitInfo[DEVIATOR].name, localization::text("Deviator", "Девиатор"));
+   234	
+   235	    // Unit        : Launcher
+   236	    // Description : Rocket Launcher
+   237	    sUnitInfo[LAUNCHER].bmp = gfxdata->getSurface(UNIT_LAUNCHER);      // pointer to the original 8bit bitmap
+   238	    sUnitInfo[LAUNCHER].shadow = gfxdata->getTexture(UNIT_LAUNCHER_SHADOW);      // pointer to the original 8bit bitmap
+   239	    sUnitInfo[LAUNCHER].bmp_width = 16 * 2;
+   240	    sUnitInfo[LAUNCHER].bmp_height = 16 * 2;
+   241	    sUnitInfo[LAUNCHER].bmp_startpixel = 0;
+   242	    sUnitInfo[LAUNCHER].bmp_frames = 1;
+   243	    sUnitInfo[LAUNCHER].icon = ICON_UNIT_LAUNCHER;
+   244	    sUnitInfo[LAUNCHER].fireTwice = true;
+   245	    //units[LAUNCHER].bullets = ROCKET_NORMAL; // our gassy rocket
+   246	    sUnitInfo[LAUNCHER].bulletType = ROCKET_NORMAL; // our gassy rocket
+   247	    sUnitInfo[LAUNCHER].listType = eListType::LIST_UNITS;
+   248	    sUnitInfo[LAUNCHER].subListId = SUBLIST_HEAVYFCTRY;
+   249	    sUnitInfo[LAUNCHER].canAttackAirUnits = true;
+   250	    sUnitInfo[LAUNCHER].renderSmokeOnUnitWhenThresholdMet = true;
+   251	    sUnitInfo[LAUNCHER].smokeHpFactor = 0.5f;
+   252	    sUnitInfo[LAUNCHER].canGuard = true;
+   253	    sUnitInfo[LAUNCHER].canAttackUnits = true;
+   254	    strcpy(sUnitInfo[LAUNCHER].name, localization::text("Launcher", "Ракетная установка"));
+   255	
+   256	    // Unit        : Quad
+   257	    // Description : Quad, 4 wheeled (double gunned)
+   258	    sUnitInfo[QUAD].bmp = gfxdata->getSurface(UNIT_QUAD);      // pointer to the original 8bit bitmap
+   259	    sUnitInfo[QUAD].shadow = gfxdata->getTexture(UNIT_QUAD_SHADOW);      // pointer to the original 8bit bitmap
+   260	    sUnitInfo[QUAD].bmp_width = 16 * 2;
+   261	    sUnitInfo[QUAD].bmp_height = 16 * 2;
+   262	    sUnitInfo[QUAD].bmp_startpixel = 0;
+   263	    sUnitInfo[QUAD].bmp_frames = 1;
+   264	    sUnitInfo[QUAD].icon = ICON_UNIT_QUAD;
+   265	    sUnitInfo[QUAD].fireTwice = true;
+   266	    sUnitInfo[QUAD].bulletType = BULLET_QUAD;
+   267	    sUnitInfo[QUAD].squish = false;
+   268	    sUnitInfo[QUAD].listType = eListType::LIST_UNITS;
+   269	    sUnitInfo[QUAD].subListId = SUBLIST_LIGHTFCTRY;
+   270	    sUnitInfo[QUAD].renderSmokeOnUnitWhenThresholdMet = true;
+   271	    sUnitInfo[QUAD].smokeHpFactor = 0.5f;
+   272	    sUnitInfo[QUAD].canGuard = true;
+   273	    sUnitInfo[QUAD].canAttackUnits = true;
+   274	    strcpy(sUnitInfo[QUAD].name, localization::text("Quad", "Квад"));
+   275	
+   276	
+   277	    // Unit        : Trike (normal trike)
+   278	    // Description : Trike, 3 wheeled (single gunned)
+   279	    sUnitInfo[TRIKE].bmp = gfxdata->getSurface(UNIT_TRIKE);      // pointer to the original 8bit bitmap
+   280	    sUnitInfo[TRIKE].shadow = gfxdata->getTexture(UNIT_TRIKE_SHADOW);      // pointer to the original 8bit bitmap
+   281	    sUnitInfo[TRIKE].bmp_width = 28;
+   282	    sUnitInfo[TRIKE].bmp_height = 26;
+   283	    sUnitInfo[TRIKE].bmp_startpixel = 0;
+   284	    sUnitInfo[TRIKE].bmp_frames = 1;
+   285	    sUnitInfo[TRIKE].icon = ICON_UNIT_TRIKE;
+   286	    sUnitInfo[TRIKE].bulletType = BULLET_TRIKE;
+   287	    sUnitInfo[TRIKE].squish = false;
+   288	    sUnitInfo[TRIKE].listType = eListType::LIST_UNITS;
+   289	    sUnitInfo[TRIKE].subListId = SUBLIST_LIGHTFCTRY;
+   290	    sUnitInfo[TRIKE].renderSmokeOnUnitWhenThresholdMet = true;
+   291	    sUnitInfo[TRIKE].smokeHpFactor = 0.5f;
+   292	    sUnitInfo[TRIKE].canGuard = true;
+   293	    sUnitInfo[TRIKE].canAttackUnits = true;
+   294	    strcpy(sUnitInfo[TRIKE].name, localization::text("Trike", "Трайк"));
+   295	
+   296	    // Unit        : Raider Trike (Ordos trike)
+   297	    // Description : Raider Trike, 3 wheeled (single gunned), weaker, but faster
+   298	    sUnitInfo[RAIDER].bmp = gfxdata->getSurface(UNIT_RAIDER);      // pointer to the original 8bit bitmap
+   299	    sUnitInfo[RAIDER].shadow = gfxdata->getTexture(UNIT_RAIDER_SHADOW);      // pointer to the original 8bit bitmap
+   300	    sUnitInfo[RAIDER].bmp_width = 28;
+   301	    sUnitInfo[RAIDER].bmp_height = 26;
+   302	    sUnitInfo[RAIDER].bmp_startpixel = 0;
+   303	    sUnitInfo[RAIDER].bmp_frames = 1;
+   304	    strcpy(sUnitInfo[RAIDER].name, localization::text("Raider Trike", "Рейдерский трайк"));
+   305	    sUnitInfo[RAIDER].icon = ICON_UNIT_RAIDER;
+   306	    sUnitInfo[RAIDER].bulletType = BULLET_TRIKE;
+   307	    sUnitInfo[RAIDER].squish = false;
+   308	    sUnitInfo[RAIDER].listType = eListType::LIST_UNITS;
+   309	    sUnitInfo[RAIDER].subListId = SUBLIST_LIGHTFCTRY;
+   310	    sUnitInfo[RAIDER].renderSmokeOnUnitWhenThresholdMet = true;
+   311	    sUnitInfo[RAIDER].smokeHpFactor = 0.5f;
+   312	    sUnitInfo[RAIDER].canGuard = true;
+   313	    sUnitInfo[RAIDER].canAttackUnits = true;
+   314	
+   315	    // Unit        : Frigate
+   316	    // Description : Frigate
+   317	    sUnitInfo[FRIGATE].bmp = gfxdata->getSurface(UNIT_FRIGATE);      // pointer to the original 8bit bitmap
+   318	    sUnitInfo[FRIGATE].shadow = gfxdata->getTexture(UNIT_FRIGATE_SHADOW);      // pointer to the original 8bit bitmap
+   319	    sUnitInfo[FRIGATE].bmp_width = 32 * 2;
+   320	    sUnitInfo[FRIGATE].bmp_height = 32 * 2;
+   321	    sUnitInfo[FRIGATE].bmp_startpixel = 0;
+   322	    sUnitInfo[FRIGATE].bmp_frames = 2; // we have at max 1 extra frame
+   323	    sUnitInfo[FRIGATE].speed = 2;
+   324	    sUnitInfo[FRIGATE].turnspeed = 4;
+   325	    sUnitInfo[FRIGATE].airborn = true;
+   326	    sUnitInfo[FRIGATE].squish = false;
+   327	    sUnitInfo[FRIGATE].free_roam = true; // Frigate does not roam, yet needed?
+   328	    sUnitInfo[FRIGATE].hp = 9999;
+   329	    // frigate has no list
+   330	    strcpy(sUnitInfo[FRIGATE].name, localization::text("Frigate", "Фрегат"));
+   331	
+   332	    /*
+   333	    units[FRIGATE].speed     = 0;
+   334	    units[FRIGATE].turnspeed = 1;
+   335	
+   336	    units[FRIGATE].sight      = 3;
+   337	    units[FRIGATE].hp         = 9999;
+   338	    */
+   339	
+   340	    //units[FRIGATE].icon = ICON_FRIGATE;
+   341	
+   342	    // Unit        : Sonic Tank
+   343	    // Description : Sonic tank (using sound waves to destroy)
+   344	    sUnitInfo[SONICTANK].bmp = gfxdata->getSurface(UNIT_SONICTANK);      // pointer to the original 8bit bitmap
+   345	    sUnitInfo[SONICTANK].shadow = gfxdata->getTexture(UNIT_SONICTANK_SHADOW);      // pointer to the original 8bit bitmap
+   346	    sUnitInfo[SONICTANK].bmp_width = 16 * 2;
+   347	    sUnitInfo[SONICTANK].bmp_height = 16 * 2;
+   348	    sUnitInfo[SONICTANK].bmp_startpixel = 0;
+   349	    sUnitInfo[SONICTANK].bmp_frames = 1; // no extra frames
+   350	    sUnitInfo[SONICTANK].bulletType = BULLET_SHIMMER;
+   351	    sUnitInfo[SONICTANK].icon = ICON_UNIT_SONICTANK;
+   352	    sUnitInfo[SONICTANK].listType = eListType::LIST_UNITS;
+   353	    sUnitInfo[SONICTANK].subListId = SUBLIST_HEAVYFCTRY;
+   354	    sUnitInfo[SONICTANK].renderSmokeOnUnitWhenThresholdMet = true;
+   355	    sUnitInfo[SONICTANK].smokeHpFactor = 0.5f;
+   356	    sUnitInfo[SONICTANK].canGuard = true;
+   357	    sUnitInfo[SONICTANK].canAttackUnits = true;
+   358	
+   359	    strcpy(sUnitInfo[SONICTANK].name, localization::text("Sonic Tank", "Звуковой танк"));
+   360	
+   361	
+   362	    // Unit        : Single Soldier
+   363	    // Description : 1 soldier
+   364	    sUnitInfo[SOLDIER].bmp = gfxdata->getSurface(UNIT_SOLDIER);      // pointer to the original 8bit bitmap
+   365	    sUnitInfo[SOLDIER].bmp_width = 16 * 2;
+   366	    sUnitInfo[SOLDIER].bmp_height = 16 * 2;
+   367	    sUnitInfo[SOLDIER].bmp_startpixel = 0;
+   368	    sUnitInfo[SOLDIER].bmp_frames = 3; // 2 extra frames
+   369	    sUnitInfo[SOLDIER].infantry = true;
+   370	    sUnitInfo[SOLDIER].bulletType = BULLET_SMALL;
+   371	    sUnitInfo[SOLDIER].icon = ICON_UNIT_SOLDIER;
+   372	    sUnitInfo[SOLDIER].squish = false;
+   373	    sUnitInfo[SOLDIER].canBeSquished = true;
+   374	    sUnitInfo[SOLDIER].listType = eListType::LIST_FOOT_UNITS;
+   375	    sUnitInfo[SOLDIER].subListId = SUBLIST_INFANTRY;
+   376	    sUnitInfo[SOLDIER].canEnterAndDamageStructure = true;
+   377	    sUnitInfo[SOLDIER].attackIsEnterStructure = false;
+   378	    sUnitInfo[SOLDIER].damageOnEnterStructure = 10.0f;
+   379	    sUnitInfo[SOLDIER].canGuard = true;
+   380	    sUnitInfo[SOLDIER].canAttackUnits = true;
+   381	    strcpy(sUnitInfo[SOLDIER].name, localization::text("Soldier", "Солдат"));
+   382	
+   383	
+   384	    // Unit        : Infantry
+   385	    // Description : 3 soldiers
+   386	    sUnitInfo[INFANTRY].bmp = gfxdata->getSurface(UNIT_SOLDIERS);      // pointer to the original 8bit bitmap
+   387	    sUnitInfo[INFANTRY].bmp_width = 16 * 2;
+   388	    sUnitInfo[INFANTRY].bmp_height = 16 * 2;
+   389	    sUnitInfo[INFANTRY].bmp_startpixel = 0;
+   390	    sUnitInfo[INFANTRY].bmp_frames = 3; // 2 extra frames
+   391	    sUnitInfo[INFANTRY].speed = 8;
+   392	    sUnitInfo[INFANTRY].infantry = true;
+   393	    sUnitInfo[INFANTRY].bulletType = BULLET_SMALL;
+   394	    sUnitInfo[INFANTRY].fireTwice = true;
+   395	    sUnitInfo[INFANTRY].icon = ICON_UNIT_INFANTRY;
+   396	    sUnitInfo[INFANTRY].squish = false;
+   397	    sUnitInfo[INFANTRY].canBeSquished = true;
+   398	    sUnitInfo[INFANTRY].listType = eListType::LIST_FOOT_UNITS;
+   399	    sUnitInfo[INFANTRY].subListId = SUBLIST_INFANTRY;
+   400	    sUnitInfo[INFANTRY].canEnterAndDamageStructure = true;
+   401	    sUnitInfo[INFANTRY].attackIsEnterStructure = false;
+   402	    sUnitInfo[INFANTRY].damageOnEnterStructure = 25.0f;
+   403	    sUnitInfo[INFANTRY].canGuard = true;
+   404	    sUnitInfo[INFANTRY].canAttackUnits = true;
+   405	    strcpy(sUnitInfo[INFANTRY].name, localization::text("Light Infantry", "Отряд пехоты"));
+   406	
+   407	    // Unit        : Single Trooper
+   408	    // Description : 1 trooper
+   409	    sUnitInfo[TROOPER].bmp = gfxdata->getSurface(UNIT_TROOPER);      // pointer to the original 8bit bitmap
+   410	    sUnitInfo[TROOPER].bmp_width = 16 * 2;
+   411	    sUnitInfo[TROOPER].bmp_height = 16 * 2;
+   412	    sUnitInfo[TROOPER].bmp_startpixel = 0;
+   413	    sUnitInfo[TROOPER].bmp_frames = 3; // 2 extra frames
+   414	    strcpy(sUnitInfo[TROOPER].name, localization::text("Trooper", "Ракетчик"));
+   415	    sUnitInfo[TROOPER].infantry = true;
+   416	    sUnitInfo[TROOPER].bulletType = ROCKET_SMALL;
+   417	    sUnitInfo[TROOPER].icon = ICON_UNIT_TROOPER;
+   418	    sUnitInfo[TROOPER].listType = eListType::LIST_FOOT_UNITS;
+   419	    sUnitInfo[TROOPER].subListId = SUBLIST_TROOPERS;
+   420	    sUnitInfo[TROOPER].squish = false;
+   421	    sUnitInfo[TROOPER].canBeSquished = true;
+   422	    sUnitInfo[TROOPER].canAttackAirUnits = true;
+   423	    sUnitInfo[TROOPER].canEnterAndDamageStructure = true;
+   424	    sUnitInfo[TROOPER].attackIsEnterStructure = false;
+   425	    sUnitInfo[TROOPER].damageOnEnterStructure = 12.0f;
+   426	    sUnitInfo[TROOPER].bulletTypeSecondary = BULLET_SMALL;
+   427	    sUnitInfo[TROOPER].fireSecondaryWithinRange = 2;
+   428	    sUnitInfo[TROOPER].canGuard = true;
+   429	    sUnitInfo[TROOPER].canAttackUnits = true;
+   430	
+   431	    // Unit        : Group Trooper
+   432	    // Description : 3 troopers
+   433	    sUnitInfo[TROOPERS].bmp = gfxdata->getSurface(UNIT_TROOPERS);      // pointer to the original 8bit bitmap
+   434	    sUnitInfo[TROOPERS].bmp_width = 16 * 2;
+   435	    sUnitInfo[TROOPERS].bmp_height = 16 * 2;
+   436	    sUnitInfo[TROOPERS].bmp_startpixel = 0;
+   437	    sUnitInfo[TROOPERS].bmp_frames = 3; // 2 extra frames
+   438	    strcpy(sUnitInfo[TROOPERS].name, localization::text("Troopers", "Отряд ракетчиков"));
+   439	    sUnitInfo[TROOPERS].icon = ICON_UNIT_TROOPERS;
+   440	    sUnitInfo[TROOPERS].bulletType = ROCKET_SMALL;
+   441	    sUnitInfo[TROOPERS].fireTwice = true;
+   442	    sUnitInfo[TROOPERS].infantry = true;
+   443	    sUnitInfo[TROOPERS].listType = eListType::LIST_FOOT_UNITS;
+   444	    sUnitInfo[TROOPERS].subListId = SUBLIST_TROOPERS;
+   445	    sUnitInfo[TROOPERS].squish = false;
+   446	    sUnitInfo[TROOPERS].canBeSquished = true;
+   447	    sUnitInfo[TROOPERS].canAttackAirUnits = true;
+   448	    sUnitInfo[TROOPERS].canEnterAndDamageStructure = true;
+   449	    sUnitInfo[TROOPERS].attackIsEnterStructure = false;
+   450	    sUnitInfo[TROOPERS].damageOnEnterStructure = 35.0f;
+   451	    sUnitInfo[TROOPERS].bulletTypeSecondary = BULLET_SMALL;
+   452	    sUnitInfo[TROOPERS].fireSecondaryWithinRange = 2;
+   453	    sUnitInfo[TROOPERS].canGuard = true;
+   454	    sUnitInfo[TROOPERS].canAttackUnits = true;
+   455	
+   456	    // Unit        : Fremen
+   457	    // Description : A single fremen
+   458	    sUnitInfo[UNIT_FREMEN_ONE].bmp = gfxdata->getSurface(UNIT_SINGLEFREMEN);      // pointer to the original 8bit bitmap
+   459	    sUnitInfo[UNIT_FREMEN_ONE].bmp_width = 16 * 2;
+   460	    sUnitInfo[UNIT_FREMEN_ONE].bmp_height = 16 * 2;
+   461	    sUnitInfo[UNIT_FREMEN_ONE].bmp_startpixel = 0;
+   462	    sUnitInfo[UNIT_FREMEN_ONE].bmp_frames = 3; // 2 extra frames
+   463	    strcpy(sUnitInfo[UNIT_FREMEN_ONE].name, localization::text("Fremen (1)", "Фримен"));
+   464	    sUnitInfo[UNIT_FREMEN_ONE].icon = ICON_SPECIAL_FREMEN;
+   465	    sUnitInfo[UNIT_FREMEN_ONE].bulletType = ROCKET_SMALL_FREMEN;
+   466	    sUnitInfo[UNIT_FREMEN_ONE].fireTwice = false;
+   467	    sUnitInfo[UNIT_FREMEN_ONE].infantry = true;
+   468	    sUnitInfo[UNIT_FREMEN_ONE].squish = false;
+   469	    sUnitInfo[UNIT_FREMEN_ONE].canBeSquished = true;
+   470	    sUnitInfo[UNIT_FREMEN_ONE].canAttackAirUnits = true;
+   471	    sUnitInfo[UNIT_FREMEN_ONE].canGuard = true;
+   472	    sUnitInfo[UNIT_FREMEN_ONE].canAttackUnits = true;
+   473	
+   474	//  units[UNIT_FREMEN_ONE].listType=LIST_PALACE;
+   475	//  units[UNIT_FREMEN_ONE].subListId=0;
+   476	
+   477	    // Unit        : Fremen
+   478	    // Description : A group of Fremen
+   479	    sUnitInfo[UNIT_FREMEN_THREE].bmp = gfxdata->getSurface(UNIT_TRIPLEFREMEN);      // pointer to the original 8bit bitmap
+   480	    sUnitInfo[UNIT_FREMEN_THREE].bmp_width = 16 * 2;
+   481	    sUnitInfo[UNIT_FREMEN_THREE].bmp_height = 16 * 2;
+   482	    sUnitInfo[UNIT_FREMEN_THREE].bmp_startpixel = 0;
+   483	    sUnitInfo[UNIT_FREMEN_THREE].bmp_frames = 3; // 2 extra frames
+   484	    strcpy(sUnitInfo[UNIT_FREMEN_THREE].name, localization::text("Fremen (3)", "Отряд фрименов"));
+   485	    sUnitInfo[UNIT_FREMEN_THREE].icon = ICON_SPECIAL_FREMEN;
+   486	    sUnitInfo[UNIT_FREMEN_THREE].bulletType = ROCKET_SMALL_FREMEN;
+   487	    sUnitInfo[UNIT_FREMEN_THREE].fireTwice = true;
+   488	    sUnitInfo[UNIT_FREMEN_THREE].infantry = true;
+   489	    sUnitInfo[UNIT_FREMEN_THREE].squish = false;
+   490	    sUnitInfo[UNIT_FREMEN_THREE].canBeSquished = true;
+   491	    sUnitInfo[UNIT_FREMEN_THREE].canAttackAirUnits = true;
+   492	    sUnitInfo[UNIT_FREMEN_THREE].canGuard = true;
+   493	    sUnitInfo[UNIT_FREMEN_THREE].canAttackUnits = true;
+   494	//  units[UNIT_FREMEN_THREE].listType=LIST_PALACE;
+   495	//  units[UNIT_FREMEN_THREE].subListId=0;
+   496	
+   497	    // Unit        : Saboteur
+   498	    // Description : Special infantry unit, moves like trike, deadly as hell, not detectable on radar!
+   499	    sUnitInfo[SABOTEUR].bmp = gfxdata->getSurface(UNIT_SABOTEUR);
+   500	    sUnitInfo[SABOTEUR].buildTime = 1000;
+   501	    sUnitInfo[SABOTEUR].bmp_width = 16 * 2;
+   502	    sUnitInfo[SABOTEUR].bmp_height = 16 * 2;
+   503	    sUnitInfo[SABOTEUR].bmp_startpixel = 0;
+   504	    sUnitInfo[SABOTEUR].bmp_frames = 3; // 2 extra frames
+   505	    sUnitInfo[SABOTEUR].speed = 0; // very fast
+   506	    sUnitInfo[SABOTEUR].hp = 60;   // quite some health
+   507	    sUnitInfo[SABOTEUR].cost = 0;
+   508	    sUnitInfo[SABOTEUR].sight = 4; // immense sight! (sorta scouting guys)
+   509	    sUnitInfo[SABOTEUR].range = 2;
+   510	    sUnitInfo[SABOTEUR].attack_frequency = 0;
+   511	    sUnitInfo[SABOTEUR].turnspeed = 0; // very fast
+   512	    strcpy(sUnitInfo[SABOTEUR].name, localization::text("Saboteur", "Диверсант"));
+   513	    sUnitInfo[SABOTEUR].icon = ICON_SPECIAL_SABOTEUR;
+   514	    sUnitInfo[SABOTEUR].squish = false;
+   515	    sUnitInfo[SABOTEUR].canBeSquished = true;
+   516	    sUnitInfo[SABOTEUR].infantry = true; // infantry unit, so it can be squished
+   517	    sUnitInfo[SABOTEUR].listType = eListType::LIST_PALACE;
+   518	    sUnitInfo[SABOTEUR].subListId = 0;
+   519	    sUnitInfo[SABOTEUR].canEnterAndDamageStructure = true;
+   520	    sUnitInfo[SABOTEUR].attackIsEnterStructure = true;
+   521	    sUnitInfo[SABOTEUR].damageOnEnterStructure = 9999.99f; // a lot of damage (instant destroy)
+   522	
+   523	    // Unit        : Sandworm
+   524	    sUnitInfo[SANDWORM].speed = 3; // very fast
+   525	    sUnitInfo[SANDWORM].bmp = gfxdata->getSurface(UNIT_SANDWORM);
+   526	    sUnitInfo[SANDWORM].hp = 9999; // set in game.ini to a more sane amount
+   527	    sUnitInfo[SANDWORM].dieWhenLowerThanHP = 1000;
+   528	    sUnitInfo[SANDWORM].appetite = 10;
+   529	    sUnitInfo[SANDWORM].bmp_width = 48;
+   530	    sUnitInfo[SANDWORM].bmp_height = 48;
+   531	    sUnitInfo[SANDWORM].turnspeed = 0; // very fast
+   532	    sUnitInfo[SANDWORM].sight = 16;
+   533	    strcpy(sUnitInfo[SANDWORM].name, localization::text("Sandworm", "Песчаный червь"));
+   534	    sUnitInfo[SANDWORM].icon = ICON_UNIT_SANDWORM;
+   535	    sUnitInfo[SANDWORM].squish = false;
+   536	    sUnitInfo[SANDWORM].canGuard = true;
+   537	    sUnitInfo[SANDWORM].canAttackUnits = true;
+   538	
+   539	
+   540	    // Unit        : <name>
+   541	    // Description : <description>
+   542	
+   543	}
+   544	
+   545	void IniGameRessources::install_particles()
+   546	{
+   547	    for (int i = 0; i < MAX_PARTICLE_TYPES; i++) {
+   548	        s_ParticleInfo &particleInfo = sParticleInfo[i];
+   549	        particleInfo.bmpIndex = -1;
+   550	        particleInfo.startAlpha = -1;
+   551	        particleInfo.usesAdditiveBlending = false;
+   552	
+   553	        particleInfo.layer = RenderLayerParticle::TOP;
+   554	
+   555	        // default to 32x32 (for now)
+   556	        particleInfo.frameWidth = 32;
+   557	        particleInfo.frameHeight = 32;
+   558	
+   559	        // mark particles as old for now
+   560	        particleInfo.oldParticle = true;
+   561	    }
+   562	
+   563	    // move
+   564	    sParticleInfo[D2TM_PARTICLE_MOVE].bmpIndex = MOVE_INDICATOR;
+   565	    sParticleInfo[D2TM_PARTICLE_MOVE].startAlpha = 128;
+   566	
+   567	    // attack
+   568	    sParticleInfo[D2TM_PARTICLE_ATTACK].bmpIndex = ATTACK_INDICATOR;
+   569	    sParticleInfo[D2TM_PARTICLE_ATTACK].startAlpha = 128;
+   570	
+   571	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TRIKE].bmpIndex = EXPLOSION_TRIKE;
+   572	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TRIKE].startAlpha = 255;
+   573	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TRIKE].frameWidth = 48;
+   574	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TRIKE].frameHeight = 48;
+   575	
+   576	    sParticleInfo[D2TM_PARTICLE_SMOKE].bmpIndex = OBJECT_SMOKE;
+   577	    sParticleInfo[D2TM_PARTICLE_SMOKE].startAlpha = 0;
+   578	    sParticleInfo[D2TM_PARTICLE_SMOKE].frameWidth = 32;
+   579	    sParticleInfo[D2TM_PARTICLE_SMOKE].frameHeight = 48;
+   580	
+   581	    sParticleInfo[D2TM_PARTICLE_SMOKE_WITH_SHADOW].bmpIndex = OBJECT_SMOKE;
+   582	    sParticleInfo[D2TM_PARTICLE_SMOKE_WITH_SHADOW].startAlpha = 0;
+   583	    sParticleInfo[D2TM_PARTICLE_SMOKE_WITH_SHADOW].frameWidth = 32;
+   584	    sParticleInfo[D2TM_PARTICLE_SMOKE_WITH_SHADOW].frameHeight = 48;
+   585	
+   586	    sParticleInfo[D2TM_PARTICLE_SMOKE_SHADOW].bmpIndex = OBJECT_SMOKE_SHADOW;
+   587	    sParticleInfo[D2TM_PARTICLE_SMOKE_SHADOW].startAlpha = 0;
+   588	    sParticleInfo[D2TM_PARTICLE_SMOKE_SHADOW].frameWidth = 36;
+   589	    sParticleInfo[D2TM_PARTICLE_SMOKE_SHADOW].frameHeight = 38;
+   590	
+   591	    sParticleInfo[D2TM_PARTICLE_TRACK_DIA].bmpIndex = TRACK_DIA;
+   592	    sParticleInfo[D2TM_PARTICLE_TRACK_DIA].layer = RenderLayerParticle::BOTTOM;
+   593	    sParticleInfo[D2TM_PARTICLE_TRACK_DIA].startAlpha = 128;
+   594	
+   595	    sParticleInfo[D2TM_PARTICLE_TRACK_HOR].bmpIndex = TRACK_HOR;
+   596	    sParticleInfo[D2TM_PARTICLE_TRACK_HOR].layer = RenderLayerParticle::BOTTOM;
+   597	    sParticleInfo[D2TM_PARTICLE_TRACK_HOR].startAlpha = 128;
+   598	
+   599	    sParticleInfo[D2TM_PARTICLE_TRACK_VER].bmpIndex = TRACK_VER;
+   600	    sParticleInfo[D2TM_PARTICLE_TRACK_VER].layer = RenderLayerParticle::BOTTOM;
+   601	    sParticleInfo[D2TM_PARTICLE_TRACK_VER].startAlpha = 128;
+   602	
+   603	    sParticleInfo[D2TM_PARTICLE_TRACK_DIA2].bmpIndex = TRACK_DIA2;
+   604	    sParticleInfo[D2TM_PARTICLE_TRACK_DIA2].layer = RenderLayerParticle::BOTTOM;
+   605	    sParticleInfo[D2TM_PARTICLE_TRACK_DIA2].startAlpha = 128;
+   606	
+   607	    sParticleInfo[D2TM_PARTICLE_BULLET_PUF].bmpIndex = BULLET_PUF;
+   608	    sParticleInfo[D2TM_PARTICLE_BULLET_PUF].frameWidth = 18;
+   609	    sParticleInfo[D2TM_PARTICLE_BULLET_PUF].frameHeight = 18;
+   610	
+   611	
+   612	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_FIRE].bmpIndex = EXPLOSION_FIRE;
+   613	
+   614	    sParticleInfo[D2TM_PARTICLE_WORMEAT].bmpIndex = OBJECT_WORMEAT;
+   615	    sParticleInfo[D2TM_PARTICLE_WORMEAT].startAlpha = 255;
+   616	    sParticleInfo[D2TM_PARTICLE_WORMEAT].frameWidth = 48;
+   617	    sParticleInfo[D2TM_PARTICLE_WORMEAT].frameHeight = 48;
+   618	
+   619	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TANK_ONE].bmpIndex = EXPLOSION_TANK_ONE;
+   620	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TANK_ONE].startAlpha = 255;
+   621	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TANK_ONE].frameWidth = 48;
+   622	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TANK_ONE].frameHeight = 48;
+   623	
+   624	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TANK_TWO].bmpIndex = EXPLOSION_TANK_TWO;
+   625	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TANK_TWO].startAlpha = 255;
+   626	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TANK_TWO].frameWidth = 48;
+   627	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_TANK_TWO].frameHeight = 48;
+   628	
+   629	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_STRUCTURE01].bmpIndex = EXPLOSION_STRUCTURE01;
+   630	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_STRUCTURE01].startAlpha = 255;
+   631	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_STRUCTURE01].frameWidth = 48;
+   632	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_STRUCTURE01].frameHeight = 48;
+   633	
+   634	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_STRUCTURE02].bmpIndex = EXPLOSION_STRUCTURE02;
+   635	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_STRUCTURE02].startAlpha = 255;
+   636	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_STRUCTURE02].frameWidth = 48;
+   637	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_STRUCTURE02].frameHeight = 48;
+   638	
+   639	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_GAS].bmpIndex = EXPLOSION_GAS;
+   640	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_GAS].startAlpha = 255;
+   641	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_GAS].frameWidth = 48;
+   642	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_GAS].frameHeight = 48;
+   643	
+   644	    sParticleInfo[D2TM_PARTICLE_WORMTRAIL].bmpIndex = OBJECT_WORMTRAIL;
+   645	    sParticleInfo[D2TM_PARTICLE_WORMTRAIL].layer = RenderLayerParticle::BOTTOM;
+   646	    sParticleInfo[D2TM_PARTICLE_WORMTRAIL].startAlpha = 96;
+   647	    sParticleInfo[D2TM_PARTICLE_WORMTRAIL].frameWidth = 48;
+   648	    sParticleInfo[D2TM_PARTICLE_WORMTRAIL].frameHeight = 48;
+   649	
+   650	    sParticleInfo[D2TM_PARTICLE_DEADINF01].bmpIndex = OBJECT_DEADINF01;
+   651	    sParticleInfo[D2TM_PARTICLE_DEADINF01].layer = RenderLayerParticle::BOTTOM;
+   652	
+   653	    sParticleInfo[D2TM_PARTICLE_DEADINF02].bmpIndex = OBJECT_DEADINF02;
+   654	    sParticleInfo[D2TM_PARTICLE_DEADINF02].layer = RenderLayerParticle::BOTTOM;
+   655	
+   656	    sParticleInfo[D2TM_PARTICLE_TANKSHOOT].bmpIndex = OBJECT_TANKSHOOT;
+   657	    sParticleInfo[D2TM_PARTICLE_TANKSHOOT].startAlpha = 128;
+   658	    sParticleInfo[D2TM_PARTICLE_TANKSHOOT].frameWidth = 64;
+   659	    sParticleInfo[D2TM_PARTICLE_TANKSHOOT].frameHeight = 64;
+   660	
+   661	    sParticleInfo[D2TM_PARTICLE_SIEGESHOOT].bmpIndex = OBJECT_SIEGESHOOT;
+   662	    sParticleInfo[D2TM_PARTICLE_SIEGESHOOT].startAlpha = 128;
+   663	    sParticleInfo[D2TM_PARTICLE_SIEGESHOOT].frameWidth = 64;
+   664	    sParticleInfo[D2TM_PARTICLE_SIEGESHOOT].frameHeight = 64;
+   665	
+   666	    sParticleInfo[D2TM_PARTICLE_SQUISH01].bmpIndex = EXPLOSION_SQUISH01;
+   667	    sParticleInfo[D2TM_PARTICLE_SQUISH01].layer = RenderLayerParticle::BOTTOM;
+   668	    sParticleInfo[D2TM_PARTICLE_SQUISH01].startAlpha = 255;
+   669	    sParticleInfo[D2TM_PARTICLE_SQUISH01].frameWidth = 32;
+   670	    sParticleInfo[D2TM_PARTICLE_SQUISH01].frameHeight = 32;
+   671	
+   672	    sParticleInfo[D2TM_PARTICLE_SQUISH02].bmpIndex = EXPLOSION_SQUISH02;
+   673	    sParticleInfo[D2TM_PARTICLE_SQUISH02].layer = RenderLayerParticle::BOTTOM;
+   674	    sParticleInfo[D2TM_PARTICLE_SQUISH02].startAlpha = 255;
+   675	    sParticleInfo[D2TM_PARTICLE_SQUISH02].frameWidth = 32;
+   676	    sParticleInfo[D2TM_PARTICLE_SQUISH02].frameHeight = 32;
+   677	
+   678	    sParticleInfo[D2TM_PARTICLE_SQUISH03].bmpIndex = EXPLOSION_SQUISH03;
+   679	    sParticleInfo[D2TM_PARTICLE_SQUISH03].layer = RenderLayerParticle::BOTTOM;
+   680	    sParticleInfo[D2TM_PARTICLE_SQUISH03].startAlpha = 255;
+   681	    sParticleInfo[D2TM_PARTICLE_SQUISH03].frameWidth = 32;
+   682	    sParticleInfo[D2TM_PARTICLE_SQUISH03].frameHeight = 32;
+   683	
+   684	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_ORNI].bmpIndex = EXPLOSION_ORNI;
+   685	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_ORNI].layer = RenderLayerParticle::BOTTOM;
+   686	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_ORNI].startAlpha = 255;
+   687	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_ORNI].frameWidth = 32;
+   688	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_ORNI].frameHeight = 32;
+   689	
+   690	    sParticleInfo[D2TM_PARTICLE_SIEGEDIE].bmpIndex = OBJECT_SIEGEDIE;
+   691	
+   692	    sParticleInfo[D2TM_PARTICLE_CARRYPUFF].bmpIndex = OBJECT_CARRYPUFF;
+   693	    sParticleInfo[D2TM_PARTICLE_CARRYPUFF].layer = RenderLayerParticle::BOTTOM;
+   694	    sParticleInfo[D2TM_PARTICLE_CARRYPUFF].frameWidth = 96;
+   695	    sParticleInfo[D2TM_PARTICLE_CARRYPUFF].frameHeight = 96;
+   696	
+   697	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_ROCKET].bmpIndex = EXPLOSION_ROCKET;
+   698	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_ROCKET_SMALL].bmpIndex = EXPLOSION_ROCKET_SMALL;
+   699	
+   700	    sParticleInfo[D2TM_PARTICLE_EXPLOSION_BULLET].bmpIndex = EXPLOSION_BULLET;
+   701	
+   702	    // the nice flare/light effects that come with explosions
+   703	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM01].bmpIndex = OBJECT_BOOM01;
+   704	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM01].usesAdditiveBlending = true;
+   705	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM01].startAlpha = 240;
+   706	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM01].frameWidth = 512;
+   707	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM01].frameHeight = 512;
+   708	    ;
+   709	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM02].bmpIndex = OBJECT_BOOM02;
+   710	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM02].usesAdditiveBlending = true;
+   711	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM02].startAlpha = 230;
+   712	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM02].frameWidth = 256;
+   713	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM02].frameHeight = 256;
+   714	
+   715	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM03].bmpIndex = OBJECT_BOOM03;
+   716	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM03].usesAdditiveBlending = true;
+   717	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM03].startAlpha = 220;
+   718	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM03].frameWidth = 128;
+   719	    sParticleInfo[D2TM_PARTICLE_OBJECT_BOOM03].frameHeight = 128;
+   720	
+   721	}
+   722	
+   723	void IniGameRessources::install_specials()
+   724	{
+   725	
+   726	    for (int i = 0; i < MAX_SPECIALTYPES; i++) {
+   727	        sSpecialInfo[i].icon = -1;
+   728	        sSpecialInfo[i].providesType = eBuildType::UNIT;
+   729	        sSpecialInfo[i].buildTime = 0;
+   730	        sSpecialInfo[i].deployFrom = eDeployFromType::AT_RANDOM_CELL;
+   731	        sSpecialInfo[i].deployAtStructure = -1;
+   732	        sSpecialInfo[i].units = 0;
+   733	        sSpecialInfo[i].house = eHouseBitFlag::Unknown;
+   734	        sSpecialInfo[i].autoBuild = false;
+   735	        sSpecialInfo[i].deployTargetType = eDeployTargetType::TARGET_NONE;
+   736	        sSpecialInfo[i].deployTargetPrecision = 0;
+   737	        sSpecialInfo[i].listType = eListType::LIST_NONE;
+   738	        sSpecialInfo[i].subListId = -1;
+   739	        strcpy(sSpecialInfo[i].description, "\0");
+   740	    }
+   741	
+   742	    // Deploy Saboteur
+   743	    sSpecialInfo[SPECIAL_SABOTEUR].icon = ICON_SPECIAL_SABOTEUR;
+   744	    sSpecialInfo[SPECIAL_SABOTEUR].house=eHouseBitFlag::Ordos;
+   745	    sSpecialInfo[SPECIAL_SABOTEUR].autoBuild=true;
+   746	    sSpecialInfo[SPECIAL_SABOTEUR].providesType = eBuildType::UNIT;
+   747	    sSpecialInfo[SPECIAL_SABOTEUR].providesTypeId = SABOTEUR;
+   748	    sSpecialInfo[SPECIAL_SABOTEUR].deployFrom = eDeployFromType::AT_STRUCTURE;
+   749	    sSpecialInfo[SPECIAL_SABOTEUR].deployAtStructure = PALACE;
+   750	    sSpecialInfo[SPECIAL_SABOTEUR].units = 1;
+   751	    sSpecialInfo[SPECIAL_SABOTEUR].buildTime = 2468; // ~ 6 minutes (but times 1.2 to compensate for faster Ordos building = 2468 to get real 6 minutes)
+   752	    sSpecialInfo[SPECIAL_SABOTEUR].listType=eListType::LIST_PALACE;
+   753	    sSpecialInfo[SPECIAL_SABOTEUR].subListId=0;
+   754	    strcpy(sSpecialInfo[SPECIAL_SABOTEUR].description, localization::text("Saboteur", "Диверсант"));
+   755	
+   756	    // Deploy Fremen
+   757	    sSpecialInfo[SPECIAL_FREMEN].icon = ICON_SPECIAL_FREMEN;
+   758	    sSpecialInfo[SPECIAL_FREMEN].house=eHouseBitFlag::Atreides;
+   759	    sSpecialInfo[SPECIAL_FREMEN].autoBuild=true;
+   760	    sSpecialInfo[SPECIAL_FREMEN].providesType = eBuildType::UNIT;
+   761	    sSpecialInfo[SPECIAL_FREMEN].providesTypeId = UNIT_FREMEN_THREE;
+   762	    sSpecialInfo[SPECIAL_FREMEN].deployFrom = eDeployFromType::AT_RANDOM_CELL;
+   763	    sSpecialInfo[SPECIAL_FREMEN].deployAtStructure = PALACE; // This is not used with AT_RANDOM_CELL ...
+   764	    sSpecialInfo[SPECIAL_FREMEN].units = 6; // ... but this is
+   765	    sSpecialInfo[SPECIAL_FREMEN].buildTime = 1371; // ~ 4 minutes (atreides has baseline build times, ie = real time)
+   766	    sSpecialInfo[SPECIAL_FREMEN].listType=eListType::LIST_PALACE;
+   767	    sSpecialInfo[SPECIAL_FREMEN].subListId=0;
+   768	    strcpy(sSpecialInfo[SPECIAL_FREMEN].description, localization::text("Fremen", "Фримены"));
+   769	
+   770	    // Launch Death Hand
+   771	    sSpecialInfo[SPECIAL_DEATHHAND].icon = ICON_SPECIAL_MISSILE;
+   772	    sSpecialInfo[SPECIAL_DEATHHAND].house = Harkonnen | Sardaukar;
+   773	    sSpecialInfo[SPECIAL_DEATHHAND].autoBuild=true;
+   774	    sSpecialInfo[SPECIAL_DEATHHAND].providesType = eBuildType::BULLET;
+   775	    sSpecialInfo[SPECIAL_DEATHHAND].providesTypeId = ROCKET_BIG;
+   776	    sSpecialInfo[SPECIAL_DEATHHAND].deployFrom = eDeployFromType::AT_STRUCTURE; // the rocket is fired FROM ...
+   777	    sSpecialInfo[SPECIAL_DEATHHAND].deployAtStructure = PALACE; // ... the palace
+   778	    sSpecialInfo[SPECIAL_DEATHHAND].deployTargetType = eDeployTargetType::TARGET_INACCURATE_CELL;
+   779	    sSpecialInfo[SPECIAL_DEATHHAND].units = 1;
+   780	    sSpecialInfo[SPECIAL_DEATHHAND].buildTime = 3428; // ~ 10 minutes with base line (Atreides difficulty)
+   781	    // (342.8 = ~ 1 minute) -> harkonnen is done * 1.2 so it becomes 12 minutes real-time which is ok)
+   782	    // considering the Dune 2 Insider guide mentions 11 to 12 minutes for Harkonnen.
+   783	
+   784	    sSpecialInfo[SPECIAL_DEATHHAND].deployTargetPrecision = 6;
+   785	    sSpecialInfo[SPECIAL_DEATHHAND].listType=eListType::LIST_PALACE;
+   786	    sSpecialInfo[SPECIAL_DEATHHAND].subListId=0;
+   787	    strcpy(sSpecialInfo[SPECIAL_DEATHHAND].description, localization::text("Death Hand", "Рука Смерти"));
+   788	
+   789	}
+   790	
+   791	
+   792	/****************
+   793	 Install bullets
+   794	 ****************/
+   795	void IniGameRessources::install_bullets()
+   796	{
+   797	    logbook("Installing:  BULLET TYPES");
+   798	
+   799	    for (int i = 0; i < MAX_BULLET_TYPES; i++) {
+   800	        sBulletInfo[i].bmp = nullptr; // in case an invalid bitmap; default is a small rocket
+   801	        sBulletInfo[i].moveSpeed = 2;
+   802	        sBulletInfo[i].deathParticle = -1; // this points to a bitmap (in data file, using index)
+   803	        sBulletInfo[i].damage_vehicles = 0;      // damage to vehicles
+   804	        sBulletInfo[i].damage_infantry = 0;  // damage to infantry
+   805	        sBulletInfo[i].max_frames = 1;  // 1 frame animation
+   806	        sBulletInfo[i].max_deadframes = 4; // 4 frame animation
+   807	        sBulletInfo[i].smokeParticle = -1; // by default no smoke particle is spawned
+   808	        sBulletInfo[i].bmp_width = 8 * 2;
+   809	        sBulletInfo[i].sound = -1;    // no sound
+   810	        sBulletInfo[i].explosionSize = 1; // 1 tile sized explosion
+   811	        sBulletInfo[i].deviateProbability = 0; // no probability of deviating a unit
+   812	        sBulletInfo[i].groundBullet = false; // if true, then it gets blocked by walls, mountains or structures. False == flying bullets, ie, rockets
+   813	        sBulletInfo[i].canDamageAirUnits = false; // if true, then upon impact the bullet can also damage air units
+   814	        sBulletInfo[i].canDamageGround = false; // if true, then upon impact the bullet can also damage ground (walls, slabs, etc)
+   815	        strcpy(sBulletInfo[i].description, "Unknown");
+   816	    }
+   817	
+   818	    // huge rocket/missile
+   819	    sBulletInfo[ROCKET_BIG].bmp = gfxdata->getTexture(BULLET_ROCKET_LARGE);
+   820	    sBulletInfo[ROCKET_BIG].deathParticle = D2TM_PARTICLE_EXPLOSION_STRUCTURE01;
+   821	    sBulletInfo[ROCKET_BIG].bmp_width = 48;
+   822	    sBulletInfo[ROCKET_BIG].damage_vehicles = 999;
+   823	    sBulletInfo[ROCKET_BIG].damage_infantry = 999;
+   824	    sBulletInfo[ROCKET_BIG].max_frames = 1;
+   825	    sBulletInfo[ROCKET_BIG].sound = SOUND_ROCKET;
+   826	    sBulletInfo[ROCKET_BIG].explosionSize = 7;
+   827	    sBulletInfo[ROCKET_BIG].canDamageAirUnits = true;
+   828	    sBulletInfo[ROCKET_BIG].canDamageGround = true;
+   829	    sBulletInfo[ROCKET_BIG].smokeParticle = D2TM_PARTICLE_BULLET_PUF;
+   830	    strcpy(sBulletInfo[ROCKET_BIG].description, "ROCKET_BIG");
+   831	
+   832	    // small rocket (for ornithopter)
+   833	    sBulletInfo[ROCKET_SMALL_ORNI].bmp = gfxdata->getTexture(BULLET_ROCKET_SMALL);
+   834	    sBulletInfo[ROCKET_SMALL_ORNI].deathParticle = D2TM_PARTICLE_EXPLOSION_ROCKET_SMALL;
+   835	    sBulletInfo[ROCKET_SMALL_ORNI].bmp_width = 16;
+   836	    sBulletInfo[ROCKET_SMALL_ORNI].damage_vehicles = 48; // they can do pretty damage
+   837	    sBulletInfo[ROCKET_SMALL_ORNI].damage_infantry = 24;
+   838	    sBulletInfo[ROCKET_SMALL_ORNI].max_frames = 1;
+   839	    sBulletInfo[ROCKET_SMALL_ORNI].sound = SOUND_ROCKET_SMALL;
+   840	    sBulletInfo[ROCKET_SMALL_ORNI].canDamageAirUnits = true;
+   841	    sBulletInfo[ROCKET_SMALL_ORNI].max_deadframes = 1;
+   842	    sBulletInfo[ROCKET_SMALL_ORNI].canDamageGround = true;
+   843	    sBulletInfo[ROCKET_SMALL_ORNI].smokeParticle = D2TM_PARTICLE_BULLET_PUF;
+   844	    strcpy(sBulletInfo[ROCKET_SMALL_ORNI].description, "ROCKET_SMALL_ORNI");
+   845	
+   846	    // small rocket
+   847	    sBulletInfo[ROCKET_SMALL].bmp = gfxdata->getTexture(BULLET_ROCKET_SMALL);
+   848	    sBulletInfo[ROCKET_SMALL].deathParticle = D2TM_PARTICLE_EXPLOSION_ROCKET_SMALL;
+   849	    sBulletInfo[ROCKET_SMALL].bmp_width = 16;
+   850	    sBulletInfo[ROCKET_SMALL].damage_vehicles = 10; // was 8
+   851	    sBulletInfo[ROCKET_SMALL].damage_infantry = 8; // was 4
+   852	    sBulletInfo[ROCKET_SMALL].max_frames = 1;
+   853	    sBulletInfo[ROCKET_SMALL].moveSpeed = 3;
+   854	    sBulletInfo[ROCKET_SMALL].sound = SOUND_ROCKET_SMALL;
+   855	    sBulletInfo[ROCKET_SMALL].canDamageAirUnits = true;
+   856	    sBulletInfo[ROCKET_SMALL].max_deadframes = 1;
+   857	    sBulletInfo[ROCKET_SMALL].canDamageGround = true;
+   858	//    bullets[ROCKET_SMALL].smokeParticle = BULLET_PUF; // small rockets have no smoke trail yet
+   859	    strcpy(sBulletInfo[ROCKET_SMALL].description, "ROCKET_SMALL");
+   860	
+   861	    // small rocket - fremen rocket
+   862	    sBulletInfo[ROCKET_SMALL_FREMEN].bmp = gfxdata->getTexture(BULLET_ROCKET_SMALL);
+   863	    sBulletInfo[ROCKET_SMALL_FREMEN].deathParticle = D2TM_PARTICLE_EXPLOSION_ROCKET_SMALL;
+   864	    sBulletInfo[ROCKET_SMALL_FREMEN].bmp_width = 16;
+   865	    sBulletInfo[ROCKET_SMALL_FREMEN].damage_vehicles = 22;
+   866	    sBulletInfo[ROCKET_SMALL_FREMEN].damage_infantry = 20;
+   867	    sBulletInfo[ROCKET_SMALL_FREMEN].max_frames = 1;
+   868	    sBulletInfo[ROCKET_SMALL_FREMEN].moveSpeed = 4;
+   869	    sBulletInfo[ROCKET_SMALL_FREMEN].sound = SOUND_ROCKET_SMALL;
+   870	    sBulletInfo[ROCKET_SMALL_FREMEN].max_deadframes = 1;
+   871	    sBulletInfo[ROCKET_SMALL_FREMEN].canDamageAirUnits = true;
+   872	    sBulletInfo[ROCKET_SMALL_FREMEN].canDamageGround = true;
+   873	//    bullets[ROCKET_SMALL_FREMEN].smokeParticle = true; // not yet
+   874	    strcpy(sBulletInfo[ROCKET_SMALL_FREMEN].description, "ROCKET_SMALL_FREMEN");
+   875	
+   876	    // normal rocket
+   877	    sBulletInfo[ROCKET_NORMAL].bmp = gfxdata->getTexture(BULLET_ROCKET_NORMAL);
+   878	    sBulletInfo[ROCKET_NORMAL].deathParticle = D2TM_PARTICLE_EXPLOSION_ROCKET;
+   879	    sBulletInfo[ROCKET_NORMAL].bmp_width = 32;
+   880	    sBulletInfo[ROCKET_NORMAL].damage_vehicles = 76;
+   881	    sBulletInfo[ROCKET_NORMAL].damage_infantry = 36;  // less damage on infantry
+   882	    sBulletInfo[ROCKET_NORMAL].max_frames = 1;
+   883	    sBulletInfo[ROCKET_NORMAL].sound = SOUND_ROCKET;
+   884	    sBulletInfo[ROCKET_NORMAL].moveSpeed = 3;
+   885	    sBulletInfo[ROCKET_NORMAL].max_deadframes = 4;
+   886	    sBulletInfo[ROCKET_NORMAL].canDamageAirUnits = true;
+   887	    sBulletInfo[ROCKET_NORMAL].canDamageGround = true;
+   888	    sBulletInfo[ROCKET_NORMAL].smokeParticle = D2TM_PARTICLE_BULLET_PUF;
+   889	    strcpy(sBulletInfo[ROCKET_NORMAL].description, "ROCKET_NORMAL");
+   890	
+   891	    // soldier shot
+   892	    sBulletInfo[BULLET_SMALL].bmp = gfxdata->getTexture(BULLET_DOT_SMALL);
+   893	    sBulletInfo[BULLET_SMALL].deathParticle = D2TM_PARTICLE_EXPLOSION_BULLET; // not used anyway
+   894	    sBulletInfo[BULLET_SMALL].bmp_width = 6;
+   895	    sBulletInfo[BULLET_SMALL].damage_vehicles = 4; // vehicles are no match
+   896	    sBulletInfo[BULLET_SMALL].damage_infantry = 10; // infantry vs infantry means big time damage
+   897	    sBulletInfo[BULLET_SMALL].max_frames = 0;
+   898	    sBulletInfo[BULLET_SMALL].moveSpeed = 4;
+   899	    sBulletInfo[BULLET_SMALL].sound = SOUND_GUN;
+   900	    sBulletInfo[BULLET_SMALL].max_deadframes = 0;
+   901	    sBulletInfo[BULLET_SMALL].groundBullet = true;
+   902	    strcpy(sBulletInfo[BULLET_SMALL].description, "BULLET_SMALL");
+   903	
+   904	    // trike shot
+   905	    sBulletInfo[BULLET_TRIKE].bmp = gfxdata->getTexture(BULLET_DOT_SMALL);
+   906	    sBulletInfo[BULLET_TRIKE].deathParticle = D2TM_PARTICLE_EXPLOSION_BULLET; // not used anyway
+   907	    sBulletInfo[BULLET_TRIKE].bmp_width = 6;
+   908	    sBulletInfo[BULLET_TRIKE].damage_vehicles = 3; // trikes do not do much damage to vehicles
+   909	    sBulletInfo[BULLET_TRIKE].damage_infantry = 6; // but more to infantry
+   910	    sBulletInfo[BULLET_TRIKE].moveSpeed = 4;
+   911	    sBulletInfo[BULLET_TRIKE].max_frames = 0;
+   912	    sBulletInfo[BULLET_TRIKE].sound = SOUND_MACHINEGUN;
+   913	    sBulletInfo[BULLET_TRIKE].max_deadframes = 0;
+   914	    sBulletInfo[BULLET_TRIKE].groundBullet = true;
+   915	    strcpy(sBulletInfo[BULLET_TRIKE].description, "BULLET_TRIKE");
+   916	
+   917	    // quad shot
+   918	    sBulletInfo[BULLET_QUAD].bmp = gfxdata->getTexture(BULLET_DOT_SMALL);
+   919	    sBulletInfo[BULLET_QUAD].deathParticle = D2TM_PARTICLE_EXPLOSION_BULLET; // not used anyway
+   920	    sBulletInfo[BULLET_QUAD].bmp_width = 6;
+   921	    sBulletInfo[BULLET_QUAD].damage_vehicles = 6;
+   922	    sBulletInfo[BULLET_QUAD].damage_infantry = 8; // bigger impact on infantry
+   923	    sBulletInfo[BULLET_QUAD].max_frames = 0;
+   924	    sBulletInfo[BULLET_QUAD].sound = SOUND_MACHINEGUN;
+   925	    sBulletInfo[BULLET_QUAD].max_deadframes = 0;
+   926	    sBulletInfo[BULLET_QUAD].groundBullet = true;
+   927	    strcpy(sBulletInfo[BULLET_QUAD].description, "BULLET_QUAD");
+   928	
+   929	    // normal tank shot
+   930	    sBulletInfo[BULLET_TANK].bmp = gfxdata->getTexture(BULLET_DOT_MEDIUM);
+   931	    sBulletInfo[BULLET_TANK].deathParticle = D2TM_PARTICLE_EXPLOSION_BULLET; // not used anyway
+   932	    sBulletInfo[BULLET_TANK].bmp_width = 8;
+   933	    sBulletInfo[BULLET_TANK].damage_vehicles = 12;
+   934	    sBulletInfo[BULLET_TANK].damage_infantry = 4;  // infantry is not much damaged
+   935	    sBulletInfo[BULLET_TANK].max_frames = 0;
+   936	    sBulletInfo[BULLET_TANK].sound = SOUND_EXPL_ROCKET;
+   937	    sBulletInfo[BULLET_TANK].max_deadframes = 1;
+   938	    sBulletInfo[BULLET_TANK].groundBullet = true;
+   939	    sBulletInfo[BULLET_TANK].canDamageGround = true;
+   940	    strcpy(sBulletInfo[BULLET_TANK].description, "BULLET_TANK");
+   941	
+   942	    // siege tank shot
+   943	    sBulletInfo[BULLET_SIEGE].bmp = gfxdata->getTexture(BULLET_DOT_MEDIUM);
+   944	    sBulletInfo[BULLET_SIEGE].deathParticle = D2TM_PARTICLE_EXPLOSION_BULLET; // not used anyway
+   945	    sBulletInfo[BULLET_SIEGE].bmp_width = 8;
+   946	    sBulletInfo[BULLET_SIEGE].damage_vehicles = 24;
+   947	    sBulletInfo[BULLET_SIEGE].damage_infantry = 6; // infantry is not as much damaged
+   948	    sBulletInfo[BULLET_SIEGE].max_frames = 0;
+   949	    sBulletInfo[BULLET_SIEGE].sound = SOUND_EXPL_ROCKET;
+   950	    sBulletInfo[BULLET_SIEGE].max_deadframes = 2;
+   951	    sBulletInfo[BULLET_SIEGE].groundBullet = true;
+   952	    sBulletInfo[BULLET_SIEGE].canDamageGround = true;
+   953	    strcpy(sBulletInfo[BULLET_SIEGE].description, "BULLET_SIEGE");
+   954	
+   955	    // devastator shot
+   956	    sBulletInfo[BULLET_DEVASTATOR].bmp = gfxdata->getTexture(BULLET_DOT_LARGE);
+   957	    sBulletInfo[BULLET_DEVASTATOR].deathParticle = D2TM_PARTICLE_EXPLOSION_ROCKET_SMALL; // not used anyway
+   958	    sBulletInfo[BULLET_DEVASTATOR].bmp_width = 8;
+   959	    sBulletInfo[BULLET_DEVASTATOR].damage_vehicles = 30;
+   960	    sBulletInfo[BULLET_DEVASTATOR].damage_infantry = 12; // infantry again not much damaged
+   961	    sBulletInfo[BULLET_DEVASTATOR].max_frames = 0;
+   962	    sBulletInfo[BULLET_DEVASTATOR].sound = SOUND_EXPL_ROCKET;
+   963	    sBulletInfo[BULLET_DEVASTATOR].max_deadframes = 1;
+   964	    sBulletInfo[BULLET_DEVASTATOR].groundBullet = true;
+   965	    sBulletInfo[BULLET_DEVASTATOR].canDamageGround = true;
+   966	    strcpy(sBulletInfo[BULLET_DEVASTATOR].description, "BULLET_DEVASTATOR");
+   967	
+   968	    // Gas rocket of a deviator
+   969	    sBulletInfo[BULLET_GAS].bmp = gfxdata->getTexture(BULLET_ROCKET_NORMAL);
+   970	    sBulletInfo[BULLET_GAS].deathParticle = D2TM_PARTICLE_EXPLOSION_GAS;
+   971	    sBulletInfo[BULLET_GAS].bmp_width = 32;
+   972	    sBulletInfo[BULLET_GAS].damage_vehicles = 1;
+   973	    sBulletInfo[BULLET_GAS].damage_infantry = 1;
+   974	    sBulletInfo[BULLET_GAS].max_frames = 1;
+   975	    sBulletInfo[BULLET_GAS].max_deadframes = 4;
+   976	    sBulletInfo[BULLET_GAS].sound = SOUND_ROCKET;
+   977	    sBulletInfo[BULLET_GAS].deviateProbability = 34; // 1 out of 3(ish) should be effective
+   978	    sBulletInfo[BULLET_GAS].smokeParticle = D2TM_PARTICLE_BULLET_PUF;
+   979	    strcpy(sBulletInfo[BULLET_GAS].description, "BULLET_GAS");
+   980	
+   981	    // normal turret shot
+   982	    sBulletInfo[BULLET_TURRET].bmp = gfxdata->getTexture(BULLET_DOT_MEDIUM);
+   983	    sBulletInfo[BULLET_TURRET].deathParticle = D2TM_PARTICLE_EXPLOSION_BULLET; // not used anyway
+   984	    sBulletInfo[BULLET_TURRET].bmp_width = 8;
+   985	    sBulletInfo[BULLET_TURRET].damage_vehicles = 12;
+   986	    sBulletInfo[BULLET_TURRET].damage_infantry = 12; // infantry is a hard target
+   987	    sBulletInfo[BULLET_TURRET].max_frames = 0;
+   988	    sBulletInfo[BULLET_TURRET].max_deadframes = 1;
+   989	    sBulletInfo[BULLET_TURRET].sound = SOUND_GUNTURRET;
+   990	    sBulletInfo[BULLET_TURRET].groundBullet = false; // this can fly over structures, walls, mountains, yes!
+   991	    sBulletInfo[BULLET_TURRET].canDamageGround = true;
+   992	    strcpy(sBulletInfo[BULLET_TURRET].description, "BULLET_TURRET");
+   993	
+   994	    // EXEPTION: Shimmer/ Sonic tank
+   995	    sBulletInfo[BULLET_SHIMMER].bmp = nullptr;
+   996	    sBulletInfo[BULLET_SHIMMER].deathParticle = -1;
+   997	    sBulletInfo[BULLET_SHIMMER].bmp_width = 0;
+   998	    sBulletInfo[BULLET_SHIMMER].damage_vehicles = 55;
+   999	    sBulletInfo[BULLET_SHIMMER].damage_infantry = 70; // infantry cant stand the sound, die very fast
+  1000	    sBulletInfo[BULLET_SHIMMER].max_frames = 0;
+  1001	    sBulletInfo[BULLET_SHIMMER].max_deadframes = 0;
+  1002	    sBulletInfo[BULLET_SHIMMER].sound = SOUND_SHIMMER;
+  1003	    strcpy(sBulletInfo[BULLET_SHIMMER].description, "BULLET_SHIMMER");
+  1004	
+  1005	    // rocket of rocket turret
+  1006	    sBulletInfo[ROCKET_RTURRET].bmp = gfxdata->getTexture(BULLET_ROCKET_NORMAL);
+  1007	    sBulletInfo[ROCKET_RTURRET].deathParticle = D2TM_PARTICLE_EXPLOSION_ROCKET_SMALL;
+  1008	    sBulletInfo[ROCKET_RTURRET].bmp_width = 16 * 2;
+  1009	    sBulletInfo[ROCKET_RTURRET].damage_vehicles = 25;
+  1010	    sBulletInfo[ROCKET_RTURRET].damage_infantry = 10; // infantry is a bit tougher
+  1011	    sBulletInfo[ROCKET_RTURRET].max_frames = 1;
+  1012	    sBulletInfo[ROCKET_RTURRET].sound = SOUND_ROCKET;
+  1013	    sBulletInfo[ROCKET_RTURRET].max_deadframes = 4;
+  1014	    sBulletInfo[ROCKET_RTURRET].canDamageAirUnits = true;
+  1015	    sBulletInfo[ROCKET_RTURRET].canDamageGround = true;
+  1016	    sBulletInfo[ROCKET_RTURRET].smokeParticle = D2TM_PARTICLE_BULLET_PUF;
+  1017	    strcpy(sBulletInfo[ROCKET_RTURRET].description, "ROCKET_RTURRET");
+  1018	}
+  1019	
+  1020	
+  1021	void IniGameRessources::install_upgrades()
+  1022	{
+  1023	    logbook("Installing:  UPGRADES");
+  1024	    for (int i = 0; i < MAX_UPGRADETYPES; i++) {
+  1025	        sUpgradeInfo[i].enabled = false;
+  1026	        sUpgradeInfo[i].techLevel = -1;
+  1027	        sUpgradeInfo[i].house = 0;
+  1028	        sUpgradeInfo[i].needsStructureType = -1;
+  1029	        sUpgradeInfo[i].icon = ICON_STR_PALACE;
+  1030	        sUpgradeInfo[i].cost = 100;
+  1031	        sUpgradeInfo[i].atUpgradeLevel = -1;
+  1032	        sUpgradeInfo[i].structureType = CONSTYARD;
+  1033	        sUpgradeInfo[i].providesTypeId = -1;
+  1034	        sUpgradeInfo[i].providesType = STRUCTURE;
+  1035	        sUpgradeInfo[i].providesTypeList = eListType::LIST_NONE;
+  1036	        sUpgradeInfo[i].providesTypeSubList = -1;
+  1037	        sUpgradeInfo[i].buildTime = 5;
+  1038	        strcpy(sUpgradeInfo[i].description, localization::text("Upgrade", "Улучшение"));
+  1039	    }
+  1040	
+  1041	    // CONSTYARD UPGRADES
+  1042	
+  1043	    // First upgrade Constyard: 4Slabs
+  1044	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].enabled = true;
+  1045	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].house = Atreides | Harkonnen | Ordos | Sardaukar;
+  1046	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].techLevel = 4; // start from mission 4
+  1047	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].icon = ICON_STR_4SLAB;
+  1048	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].cost = 200;
+  1049	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].structureType = CONSTYARD;
+  1050	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].atUpgradeLevel = 0;
+  1051	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].providesType = STRUCTURE;
+  1052	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].providesTypeId = SLAB4;
+  1053	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].providesTypeList = eListType::LIST_CONSTYARD;
+  1054	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].providesTypeSubList = SUBLIST_CONSTYARD;
+  1055	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].buildTime = 50;
+  1056	    strcpy(sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_SLAB4].description, localization::text("Build 4 concrete slabs at once", "Укладка плит 2×2"));
+  1057	
+  1058	    // Second upgrade Constyard: Rturret
+  1059	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].enabled = true;
+  1060	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].house = Atreides | Harkonnen | Ordos | Sardaukar;
+  1061	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].techLevel = 6;
+  1062	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].icon = ICON_STR_RTURRET;
+  1063	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].cost = 200;
+  1064	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].needsStructureType = RADAR;
+  1065	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].structureType = CONSTYARD;
+  1066	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].atUpgradeLevel = 1;
+  1067	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].providesType = STRUCTURE;
+  1068	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].providesTypeId = RTURRET;
+  1069	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].providesTypeList = eListType::LIST_CONSTYARD;
+  1070	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].providesTypeSubList = SUBLIST_CONSTYARD;
+  1071	    sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].buildTime = 150;
+  1072	
+  1073	    strcpy(sUpgradeInfo[UPGRADE_TYPE_CONSTYARD_RTURRET].description, localization::text("Build Rocket Turret", "Ракетные башни"));
+  1074	
+  1075	    // LIGHTFACTORY UPGRADES, only for ATREIDES and ORDOS
+  1076	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].enabled = true;
+  1077	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].house = Atreides | Ordos | Sardaukar;
+  1078	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].techLevel = 3;
+  1079	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].icon = ICON_UNIT_QUAD;
+  1080	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].cost = sStructureInfo[LIGHTFACTORY].cost / 2;
+  1081	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].needsStructureType = LIGHTFACTORY;
+  1082	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].structureType = LIGHTFACTORY;
+  1083	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].atUpgradeLevel = 0;
+  1084	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].providesType = UNIT;
+  1085	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].providesTypeId = QUAD;
+  1086	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].providesTypeList = eListType::LIST_UNITS;
+  1087	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].providesTypeSubList =  SUBLIST_LIGHTFCTRY;
+  1088	    sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].buildTime = 150;
+  1089	
+  1090	    strcpy(sUpgradeInfo[UPGRADE_TYPE_LIGHTFCTRY_QUAD].description, localization::text("Build Quad at Light Factory", "Квады на лёгком заводе"));
+  1091	
+  1092	    // HEAVYFACTORY UPGRADES:
+  1093	
+  1094	    // ALL HOUSES GET MVC
+  1095	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].enabled = true;
+  1096	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].house = Atreides | Ordos | Harkonnen | Sardaukar;
+  1097	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].techLevel = 4;
+  1098	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].icon = ICON_UNIT_MCV;
+  1099	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].cost = sStructureInfo[HEAVYFACTORY].cost / 2;
+  1100	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].needsStructureType = HEAVYFACTORY;
+  1101	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].structureType = HEAVYFACTORY;
+  1102	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].atUpgradeLevel = 0;
+  1103	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].providesType = UNIT;
+  1104	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].providesTypeId = MCV;
+  1105	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].providesTypeList = eListType::LIST_UNITS;
+  1106	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].providesTypeSubList = SUBLIST_HEAVYFCTRY;
+  1107	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].buildTime = 150;
+  1108	
+  1109	    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_MVC].description, localization::text("Build MCV at Heavy Factory", "Мобильные базы на тяжёлом заводе"));
+  1110	
+  1111	    // Harkonnen/Atreides only
+  1112	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].enabled = true;
+  1113	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].house = Atreides | Harkonnen | Sardaukar;
+  1114	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].techLevel = 5;
+  1115	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].icon = ICON_UNIT_LAUNCHER;
+  1116	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].cost = sStructureInfo[HEAVYFACTORY].cost / 2;
+  1117	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].needsStructureType = HEAVYFACTORY;
+  1118	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].structureType = HEAVYFACTORY;
+  1119	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].atUpgradeLevel = 1; // requires MCV upgrade first
+  1120	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].providesType = UNIT;
+  1121	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].providesTypeId = LAUNCHER;
+  1122	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].providesTypeList = eListType::LIST_UNITS;
+  1123	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].providesTypeSubList = SUBLIST_HEAVYFCTRY;
+  1124	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].buildTime = 150;
+  1125	
+  1126	    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].description, localization::text("Build Rocket Launcher at Heavy Factory", "Ракетные установки на тяжёлом заводе"));
+  1127	
+  1128	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].enabled = true;
+  1129	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].house = Atreides | Harkonnen | Sardaukar;
+  1130	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].techLevel = 6;
+  1131	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].icon = ICON_UNIT_SIEGETANK;
+  1132	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].cost = sStructureInfo[HEAVYFACTORY].cost / 2;
+  1133	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].needsStructureType = HEAVYFACTORY;
+  1134	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].structureType = HEAVYFACTORY;
+  1135	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].atUpgradeLevel = 2; // After upgrade to Rocket Launcher
+  1136	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].providesType = UNIT;
+  1137	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].providesTypeId = SIEGETANK;
+  1138	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].providesTypeList = eListType::LIST_UNITS;
+  1139	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].providesTypeSubList = SUBLIST_HEAVYFCTRY;
+  1140	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].buildTime = 150;
+  1141	
+  1142	    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].description, localization::text("Build Siege Tank at Heavy Factory", "Осадные танки на тяжёлом заводе"));
+  1143	
+  1144	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].enabled = true;
+  1145	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].house = Ordos;
+  1146	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].techLevel = 6;
+  1147	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].icon = ICON_UNIT_SIEGETANK;
+  1148	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].cost = sStructureInfo[HEAVYFACTORY].cost / 2;
+  1149	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].needsStructureType = HEAVYFACTORY;
+  1150	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].structureType = HEAVYFACTORY;
+  1151	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].atUpgradeLevel = 1;
+  1152	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].providesType = UNIT;
+  1153	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].providesTypeId = SIEGETANK;
+  1154	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].providesTypeList = eListType::LIST_UNITS;
+  1155	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].providesTypeSubList = SUBLIST_HEAVYFCTRY;
+  1156	    sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].buildTime = 150;
+  1157	
+  1158	    strcpy(sUpgradeInfo[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].description, localization::text("Build Siege Tank at Heavy Factory", "Осадные танки на тяжёлом заводе"));
+  1159	
+  1160	    // HI-TECH UPGRADES (Ordos/Atreides only)
+  1161	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].enabled = true;
+  1162	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].house = Atreides | Ordos | Sardaukar;
+  1163	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].techLevel = 8;
+  1164	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].icon = ICON_UNIT_ORNITHOPTER;
+  1165	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].cost = sStructureInfo[HIGHTECH].cost / 2;
+  1166	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].structureType = HIGHTECH;
+  1167	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].atUpgradeLevel = 0;
+  1168	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].providesType = UNIT;
+  1169	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].providesTypeId = ORNITHOPTER;
+  1170	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].providesTypeList = eListType::LIST_UNITS;
+  1171	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].providesTypeSubList = SUBLIST_HIGHTECH;
+  1172	    sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].buildTime = 150;
+  1173	    strcpy(sUpgradeInfo[UPGRADE_TYPE_HITECH_ORNI].description, localization::text("Build Ornithopter at Hi-Tech", "Орнитоптеры на авиазаводе"));
+  1174	
+  1175	    // WOR (Harkonnen & Ordos)
+  1176	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].enabled = true;
+  1177	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].house = Harkonnen | Ordos | Sardaukar;
+  1178	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].techLevel = 3;
+  1179	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].icon = ICON_UNIT_TROOPERS;
+  1180	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].cost = sStructureInfo[WOR].cost / 2;
+  1181	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].structureType = WOR;
+  1182	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].atUpgradeLevel = 0;
+  1183	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].providesType = UNIT;
+  1184	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].providesTypeId = TROOPERS;
+  1185	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].providesTypeList = eListType::LIST_FOOT_UNITS;
+  1186	    sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].providesTypeSubList = SUBLIST_TROOPERS;
+  1187	    if (!game.isDebugMode()) {
+  1188	        sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].buildTime = 150;
+  1189	    }
+  1190	    strcpy(sUpgradeInfo[UPGRADE_TYPE_WOR_TROOPERS].description, localization::text("Build Troopers at WOR", "Ракетчики в военной академии"));
+  1191	
+  1192	    // BARRACKS (Atreides & Ordos)
+  1193	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].enabled = true;
+  1194	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].house = Atreides | Ordos | Sardaukar;
+  1195	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].techLevel = 3;
+  1196	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].icon = ICON_UNIT_INFANTRY;
+  1197	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].cost = sStructureInfo[BARRACKS].cost / 2;
+  1198	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].structureType = BARRACKS;
+  1199	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].atUpgradeLevel = 0;
+  1200	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].providesType = UNIT;
+  1201	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].providesTypeId = INFANTRY;
+  1202	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].providesTypeList = eListType::LIST_FOOT_UNITS;
+  1203	    sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].providesTypeSubList = SUBLIST_INFANTRY;
+  1204	    if (!game.isDebugMode()) {
+  1205	        sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].buildTime = 150;
+  1206	    }
+  1207	    strcpy(sUpgradeInfo[UPGRADE_TYPE_BARRACKS_INFANTRY].description, localization::text("Build Infantry at Barracks", "Пехота в казармах"));
+  1208	
+  1209	}
+  1210	
+  1211	
+  1212	/*****************************
+  1213	 Structure Rules
+  1214	 *****************************/
+  1215	void IniGameRessources::install_structures()
+  1216	{
+  1217	
+  1218	    logbook("Installing:  STRUCTURES");
+  1219	    for (int i = 0; i < MAX_STRUCTURETYPES; i++) {
+  1220	        s_StructureInfo &structureInfo = sStructureInfo[i];
+  1221	        structureInfo.bmp = gfxdata->getSurface(BUILD_WINDTRAP); // in case an invalid bitmap, we are a windtrap
+  1222	        structureInfo.shadow = nullptr;
+  1223	        structureInfo.flash = nullptr;
+  1224	        structureInfo.flags = std::vector<s_FlagInfo>();
+  1225	        structureInfo.sight = 1;
+  1226	        structureInfo.bmp_width = 32 * 2;
+  1227	        structureInfo.bmp_height = 32 * 2;
+  1228	        structureInfo.hp = 1; // low health
+  1229	        structureInfo.fixhp = -1; // no fixing hp yet
+  1230	        structureInfo.fadecol = -1;
+  1231	        structureInfo.fademax = -1;
+  1232	        structureInfo.power_drain = 0;       // the power that this building drains...
+  1233	        structureInfo.power_give = 0;        // the power that this building gives...
+  1234	        structureInfo.cost = 0;
+  1235	        structureInfo.icon = -1; // stupid default icon
+  1236	        structureInfo.buildTime = 0;
+  1237	        structureInfo.list = -1; // no list attached
+  1238	        structureInfo.queuable = false;
+  1239	        structureInfo.hasConcrete = true;
+  1240	        structureInfo.configured = false;
+  1241	        structureInfo.canAttackAirUnits = false;
+  1242	        structureInfo.canAttackGroundUnits = false;
+  1243	        strcpy(structureInfo.name, localization::text("Unknown", "Неизвестно"));
+  1244	    }
+  1245	
+  1246	    // Single and 4 slabs
+  1247	    sStructureInfo[SLAB1].bmp = gfxdata->getSurface(PLACE_SLAB1); // in case an invalid bitmap, we are a windtrap
+  1248	    sStructureInfo[SLAB1].icon = ICON_STR_1SLAB;
+  1249	    sStructureInfo[SLAB1].hp = 25;            // Not functional in-game, only for building
+  1250	    sStructureInfo[SLAB1].bmp_width = 16 * 2;
+  1251	    sStructureInfo[SLAB1].bmp_height = 16 * 2;
+  1252	    sStructureInfo[SLAB1].configured = true;
+  1253	    sStructureInfo[SLAB1].queuable = true;
+  1254	    strcpy(sStructureInfo[SLAB1].name, localization::text("Concrete Slab", "Бетонная плита"));
+  1255	
+  1256	    sStructureInfo[SLAB4].bmp = gfxdata->getSurface(PLACE_SLAB4); // in case an invalid bitmap, we are a windtrap
+  1257	    sStructureInfo[SLAB4].icon = ICON_STR_4SLAB;
+  1258	    sStructureInfo[SLAB4].hp = 75;            // Not functional in-game, only for building
+  1259	    sStructureInfo[SLAB4].bmp_width = 32 * 2;
+  1260	    sStructureInfo[SLAB4].bmp_height = 32 * 2;
+  1261	    sStructureInfo[SLAB4].configured = true;
+  1262	    sStructureInfo[SLAB4].queuable = true;
+  1263	    strcpy(sStructureInfo[SLAB4].name, localization::text("4 Concrete Slabs", "Бетонная площадка 2×2"));
+  1264	
+  1265	
+  1266	    // Concrete Wall
+  1267	    sStructureInfo[WALL].bmp = gfxdata->getSurface(PLACE_WALL); // in case an invalid bitmap, we are a windtrap
+  1268	    sStructureInfo[WALL].icon = ICON_STR_WALL;
+  1269	    sStructureInfo[WALL].hp = 75;            // Not functional in-game, only for building
+  1270	    sStructureInfo[WALL].bmp_width = 16 * 2;
+  1271	    sStructureInfo[WALL].bmp_height = 16 * 2;
+  1272	    sStructureInfo[WALL].queuable = true;
+  1273	    sStructureInfo[WALL].configured = true;
+  1274	    strcpy(sStructureInfo[WALL].name, localization::text("Concrete Wall", "Бетонная стена"));
+  1275	
+  1276	    // Structure    : Windtrap
+  1277	    // Description  : <none>
+  1278	    sStructureInfo[WINDTRAP].bmp = gfxdata->getSurface(BUILD_WINDTRAP);
+  1279	    sStructureInfo[WINDTRAP].shadow = gfxdata->getTexture(BUILD_WINDTRAP_SHADOW); // shadow
+  1280	    sStructureInfo[WINDTRAP].fadecol = 128;
+  1281	    sStructureInfo[WINDTRAP].fademax = 134;
+  1282	    sStructureInfo[WINDTRAP].icon = ICON_STR_WINDTRAP;
+  1283	    sStructureInfo[WINDTRAP].configured = true;
+  1284	    sStructureInfo[WINDTRAP].flags.push_back(s_FlagInfo{
+  1285	        .big = true,
+  1286	        .relX = 53,
+  1287	        .relY = 37
+  1288	    });
+  1289	    strcpy(sStructureInfo[WINDTRAP].name, localization::text("Windtrap", "Ветроловушка"));
+  1290	
+  1291	    // Structure    : Heavy Factory
+  1292	    // Description  : <none>
+  1293	    sStructureInfo[HEAVYFACTORY].bmp_width = 48 * 2;
+  1294	    sStructureInfo[HEAVYFACTORY].bmp_height = 32 * 2;
+  1295	    sStructureInfo[HEAVYFACTORY].bmp = gfxdata->getSurface(BUILD_HEAVYFACTORY);
+  1296	    sStructureInfo[HEAVYFACTORY].shadow = gfxdata->getTexture(BUILD_HEAVYFACTORY_SHADOW); // shadow
+  1297	    sStructureInfo[HEAVYFACTORY].flash = gfxdata->getSurface(BUILD_HEAVYFACTORY_FLASH);
+  1298	    sStructureInfo[HEAVYFACTORY].fadecol = -1;
+  1299	    sStructureInfo[HEAVYFACTORY].icon = ICON_STR_HEAVYFACTORY;
+  1300	    sStructureInfo[HEAVYFACTORY].configured = true;
+  1301	    sStructureInfo[HEAVYFACTORY].flags.push_back(s_FlagInfo{
+  1302	        .big = false,
+  1303	        .relX = 25,
+  1304	        .relY = 3
+  1305	    });
+  1306	    strcpy(sStructureInfo[HEAVYFACTORY].name, localization::text("Heavy Factory", "Тяжёлый завод"));
+  1307	
+  1308	    // Structure    : Hight Tech Factory (for aircraft only)
+  1309	    // Description  : <none>
+  1310	    sStructureInfo[HIGHTECH].bmp_width = 48 * 2;
+  1311	    sStructureInfo[HIGHTECH].bmp_height = 32 * 2;
+  1312	    sStructureInfo[HIGHTECH].bmp = gfxdata->getSurface(BUILD_HIGHTECH);
+  1313	    sStructureInfo[HIGHTECH].shadow = gfxdata->getTexture(BUILD_HIGHTECH_SHADOW);
+  1314	    sStructureInfo[HIGHTECH].fadecol = -1;
+  1315	    sStructureInfo[HIGHTECH].icon = ICON_STR_HIGHTECH;
+  1316	    sStructureInfo[HIGHTECH].configured = true;
+  1317	    sStructureInfo[HIGHTECH].flags.push_back(s_FlagInfo{
+  1318	        .big = true,
+  1319	        .relX = 19,
+  1320	        .relY = 36
+  1321	    });
+  1322	    strcpy(sStructureInfo[HIGHTECH].name, localization::text("Hi-Tech", "Авиазавод"));
+  1323	
+  1324	    // Structure    : Repair
+  1325	    // Description  : <none>
+  1326	    sStructureInfo[REPAIR].bmp_width = 48 * 2;
+  1327	    sStructureInfo[REPAIR].bmp_height = 32 * 2;
+  1328	    sStructureInfo[REPAIR].bmp = gfxdata->getSurface(BUILD_REPAIR);
+  1329	    sStructureInfo[REPAIR].shadow = gfxdata->getTexture(BUILD_REPAIR_SHADOW);
+  1330	    sStructureInfo[REPAIR].fadecol = -1;
+  1331	    sStructureInfo[REPAIR].icon = ICON_STR_REPAIR;
+  1332	    sStructureInfo[REPAIR].configured = true;
+  1333	    sStructureInfo[REPAIR].flags.push_back(s_FlagInfo{
+  1334	        .big = true,
+  1335	        .relX = 41,
+  1336	        .relY = 3
+  1337	    });
+  1338	    strcpy(sStructureInfo[REPAIR].name, localization::text("Repair Facility", "Ремонтный центр"));
+  1339	
+  1340	    // Structure    : Palace
+  1341	    // Description  : <none>
+  1342	    sStructureInfo[PALACE].bmp_width = 48 * 2;
+  1343	    sStructureInfo[PALACE].bmp_height = 48 * 2;
+  1344	    sStructureInfo[PALACE].bmp = gfxdata->getSurface(BUILD_PALACE);
+  1345	    sStructureInfo[PALACE].shadow = gfxdata->getTexture(BUILD_PALACE_SHADOW);
+  1346	    sStructureInfo[PALACE].icon = ICON_STR_PALACE;
+  1347	    sStructureInfo[PALACE].configured = true;
+  1348	    sStructureInfo[PALACE].flags.push_back(s_FlagInfo{
+  1349	        .big = true,
+  1350	        .relX = 28,
+  1351	        .relY = 14
+  1352	    });
+  1353	    strcpy(sStructureInfo[PALACE].name, localization::text("Palace", "Дворец"));
+  1354	
+  1355	    // Structure    : Light Factory
+  1356	    // Description  : <none>
+  1357	    sStructureInfo[LIGHTFACTORY].bmp_width = 32 * 2;
+  1358	    sStructureInfo[LIGHTFACTORY].bmp_height = 32 * 2;
+  1359	    sStructureInfo[LIGHTFACTORY].bmp = gfxdata->getSurface(BUILD_LIGHTFACTORY);
+  1360	    sStructureInfo[LIGHTFACTORY].shadow = gfxdata->getTexture(BUILD_LIGHTFACTORY_SHADOW);
+  1361	    sStructureInfo[LIGHTFACTORY].flash = gfxdata->getSurface(BUILD_LIGHTFACTORY_FLASH);
+  1362	    sStructureInfo[LIGHTFACTORY].fadecol = -1;
+  1363	    sStructureInfo[LIGHTFACTORY].icon = ICON_STR_LIGHTFACTORY;
+  1364	    sStructureInfo[LIGHTFACTORY].configured = true;
+  1365	    sStructureInfo[LIGHTFACTORY].flags.push_back(s_FlagInfo{
+  1366	        .big = true,
+  1367	        .relX = 41,
+  1368	        .relY = 2
+  1369	    });
+  1370	    strcpy(sStructureInfo[LIGHTFACTORY].name, localization::text("Light Factory", "Лёгкий завод"));
+  1371	
+  1372	    // Structure    : Radar
+  1373	    // Description  : <none>
+  1374	    sStructureInfo[RADAR].bmp_width = 32 * 2;
+  1375	    sStructureInfo[RADAR].bmp_height = 32 * 2;
+  1376	    sStructureInfo[RADAR].bmp = gfxdata->getSurface(BUILD_RADAR);
+  1377	    sStructureInfo[RADAR].shadow = gfxdata->getTexture(BUILD_RADAR_SHADOW); // shadow
+  1378	    sStructureInfo[RADAR].sight = 12;
+  1379	    sStructureInfo[RADAR].fadecol = -1;
+  1380	    sStructureInfo[RADAR].icon = ICON_STR_RADAR;
+  1381	    sStructureInfo[RADAR].configured = true;
+  1382	    // outpost has 2 flags
+  1383	    sStructureInfo[RADAR].flags.push_back(s_FlagInfo{
+  1384	        .big = true,
+  1385	        .relX = 17,
+  1386	        .relY = 38
+  1387	    });
+  1388	    sStructureInfo[RADAR].flags.push_back(s_FlagInfo{
+  1389	        .big = false,
+  1390	        .relX = 12,
+  1391	        .relY = 46
+  1392	    });
+  1393	    strcpy(sStructureInfo[RADAR].name, localization::text("Outpost", "Командный пост"));
+  1394	
+  1395	    // Structure    : Barracks
+  1396	    // Description  : <none>
+  1397	    sStructureInfo[BARRACKS].bmp_width = 32 * 2;
+  1398	    sStructureInfo[BARRACKS].bmp_height = 32 * 2;
+  1399	    sStructureInfo[BARRACKS].bmp = gfxdata->getSurface(BUILD_BARRACKS);
+  1400	    sStructureInfo[BARRACKS].shadow = gfxdata->getTexture(BUILD_BARRACKS_SHADOW);
+  1401	    sStructureInfo[BARRACKS].fadecol = -1;
+  1402	    sStructureInfo[BARRACKS].icon = ICON_STR_BARRACKS;
+  1403	    sStructureInfo[BARRACKS].configured = true;
+  1404	    sStructureInfo[BARRACKS].flags.push_back(s_FlagInfo{
+  1405	        .big = false,
+  1406	        .relX = 60,
+  1407	        .relY = 47
+  1408	    });
+  1409	    sStructureInfo[BARRACKS].flags.push_back(s_FlagInfo{
+  1410	        .big = false,
+  1411	        .relX = 51,
+  1412	        .relY = 50
+  1413	    });
+  1414	    strcpy(sStructureInfo[BARRACKS].name, localization::text("Barracks", "Казармы"));
+  1415	
+  1416	    // Structure    : WOR
+  1417	    // Description  : <none>
+  1418	    sStructureInfo[WOR].bmp_width = 32 * 2;
+  1419	    sStructureInfo[WOR].bmp_height = 32 * 2;
+  1420	    sStructureInfo[WOR].bmp = gfxdata->getSurface(BUILD_WOR);
+  1421	    sStructureInfo[WOR].shadow = gfxdata->getTexture(BUILD_WOR_SHADOW);
+  1422	    sStructureInfo[WOR].fadecol = -1;
+  1423	    sStructureInfo[WOR].icon = ICON_STR_WOR;
+  1424	    sStructureInfo[WOR].configured = true;
+  1425	    sStructureInfo[WOR].flags.push_back(s_FlagInfo{
+  1426	        .big = true,
+  1427	        .relX = 21,
+  1428	        .relY = 31
+  1429	    });
+  1430	    strcpy(sStructureInfo[WOR].name, localization::text("WOR", "Военная академия"));
+  1431	
+  1432	
+  1433	    // Structure    : Silo
+  1434	    // Description  : <none>
+  1435	    sStructureInfo[SILO].bmp_width = 32 * 2;
+  1436	    sStructureInfo[SILO].bmp_height = 32 * 2;
+  1437	    sStructureInfo[SILO].bmp = gfxdata->getSurface(BUILD_SILO);
+  1438	    sStructureInfo[SILO].shadow = gfxdata->getTexture(BUILD_SILO_SHADOW);
+  1439	    sStructureInfo[SILO].fadecol = -1;
+  1440	    sStructureInfo[SILO].icon = ICON_STR_SILO;
+  1441	    sStructureInfo[SILO].configured = true;
+  1442	    sStructureInfo[SILO].queuable = true;
+  1443	    sStructureInfo[SILO].flags.push_back(s_FlagInfo{
+  1444	        .big = true,
+  1445	        .relX = 43,
+  1446	        .relY = 20
+  1447	    });
+  1448	    strcpy(sStructureInfo[SILO].name, localization::text("Spice Storage Silo", "Хранилище пряности"));
+  1449	
+  1450	    // Structure    : Refinery
+  1451	    // Description  : <none>
+  1452	    sStructureInfo[REFINERY].bmp_width = 48 * 2;
+  1453	    sStructureInfo[REFINERY].bmp_height = 32 * 2;
+  1454	    sStructureInfo[REFINERY].bmp = gfxdata->getSurface(BUILD_REFINERY);
+  1455	    sStructureInfo[REFINERY].shadow = gfxdata->getTexture(BUILD_REFINERY_SHADOW);
+  1456	    sStructureInfo[REFINERY].fadecol = -1;
+  1457	    sStructureInfo[REFINERY].icon = ICON_STR_REFINERY;
+  1458	    sStructureInfo[REFINERY].configured = true;
+  1459	    sStructureInfo[REFINERY].flags.push_back(s_FlagInfo{
+  1460	        .big = true,
+  1461	        .relX = 45,
+  1462	        .relY = 12
+  1463	    });
+  1464	    strcpy(sStructureInfo[REFINERY].name, localization::text("Spice Refinery", "Переработчик пряности"));
+  1465	
+  1466	    // Structure    : Construction Yard
+  1467	    // Description  : <none>
+  1468	    sStructureInfo[CONSTYARD].bmp_width = 32 * 2;
+  1469	    sStructureInfo[CONSTYARD].bmp_height = 32 * 2;
+  1470	    sStructureInfo[CONSTYARD].sight = 4;
+  1471	    sStructureInfo[CONSTYARD].bmp = gfxdata->getSurface(BUILD_CONSTYARD);
+  1472	    sStructureInfo[CONSTYARD].shadow = gfxdata->getTexture(BUILD_CONSTYARD_SHADOW);
+  1473	    sStructureInfo[CONSTYARD].hasConcrete = false;
+  1474	    sStructureInfo[CONSTYARD].flags.push_back(s_FlagInfo{
+  1475	        .big = true,
+  1476	        .relX = 14,
+  1477	        .relY = 14
+  1478	    });
+  1479	    sStructureInfo[CONSTYARD].fadecol = -1;
+  1480	    sStructureInfo[CONSTYARD].icon = ICON_STR_CONSTYARD;
+  1481	    sStructureInfo[CONSTYARD].configured = true;
+  1482	    strcpy(sStructureInfo[CONSTYARD].name, localization::text("Construction Yard", "Стройбаза"));
+  1483	
+  1484	    // Structure    : Starport
+  1485	    // Description  : You can order units from this structure
+  1486	    sStructureInfo[STARPORT].bmp_width = 48 * 2;
+  1487	    sStructureInfo[STARPORT].bmp_height = 48 * 2;
+  1488	    sStructureInfo[STARPORT].bmp = gfxdata->getSurface(BUILD_STARPORT);
+  1489	    sStructureInfo[STARPORT].shadow = gfxdata->getTexture(BUILD_STARPORT_SHADOW);
+  1490	    sStructureInfo[STARPORT].fadecol = -1;
+  1491	    sStructureInfo[STARPORT].icon = ICON_STR_STARPORT;
+  1492	    sStructureInfo[STARPORT].configured = true;
+  1493	    sStructureInfo[STARPORT].flags.push_back(s_FlagInfo{
+  1494	        .big = true,
+  1495	        .relX = 16,
+  1496	        .relY = 3
+  1497	    });
+  1498	    strcpy(sStructureInfo[STARPORT].name, localization::text("Starport", "Космопорт"));
+  1499	
+  1500	    // Structure    : House of IX
+  1501	    // Description  : Makes it possible for the player to upgrade its Heavy Factory in order to build their special weapon
+  1502	    sStructureInfo[IX].bmp_width = 32 * 2;
+  1503	    sStructureInfo[IX].bmp_height = 32 * 2;
+  1504	    sStructureInfo[IX].bmp = gfxdata->getSurface(BUILD_IX);
+  1505	    sStructureInfo[IX].shadow = gfxdata->getTexture(BUILD_IX_SHADOW);
+  1506	    sStructureInfo[IX].fadecol = -1;
+  1507	    sStructureInfo[IX].icon = ICON_STR_IX;
+  1508	    sStructureInfo[IX].configured = true;
+  1509	    sStructureInfo[IX].flags.push_back(s_FlagInfo{
+  1510	        .big = true,
+  1511	        .relX = 60, // 60
+  1512	        .relY = 40  // 40
+  1513	    });
+  1514	    strcpy(sStructureInfo[IX].name, localization::text("House of IX", "Техноцентр Икс"));
+  1515	
+  1516	    // Structure    : Normal Turret
+  1517	    // Description  : defence
+  1518	    sStructureInfo[TURRET].bmp_width = 16 * 2;
+  1519	    sStructureInfo[TURRET].bmp_height = 16 * 2;
+  1520	    sStructureInfo[TURRET].bmp = gfxdata->getSurface(BUILD_TURRET);
+  1521	    sStructureInfo[TURRET].shadow = gfxdata->getTexture(BUILD_TURRET_SHADOW);
+  1522	    sStructureInfo[TURRET].fadecol = -1;
+  1523	    sStructureInfo[TURRET].icon = ICON_STR_TURRET;
+  1524	    sStructureInfo[TURRET].sight = 7;
+  1525	    sStructureInfo[TURRET].configured = true;
+  1526	    sStructureInfo[TURRET].canAttackGroundUnits = true;
+  1527	    sStructureInfo[TURRET].fireRate = 275;
+  1528	    strcpy(sStructureInfo[TURRET].name, localization::text("Gun Turret", "Пушечная башня"));
+  1529	
+  1530	    // Structure    : Rocket Turret
+  1531	    // Description  : defence
+  1532	    sStructureInfo[RTURRET].bmp_width = 16 * 2;
+  1533	    sStructureInfo[RTURRET].bmp_height = 16 * 2;
+  1534	    sStructureInfo[RTURRET].bmp = gfxdata->getSurface(BUILD_RTURRET);
+  1535	    sStructureInfo[RTURRET].shadow = gfxdata->getTexture(BUILD_RTURRET_SHADOW);
+  1536	    sStructureInfo[RTURRET].fadecol = -1;
+  1537	    sStructureInfo[RTURRET].icon = ICON_STR_RTURRET;
+  1538	    sStructureInfo[RTURRET].sight = 10;
+  1539	    sStructureInfo[RTURRET].configured = true;
+  1540	    sStructureInfo[RTURRET].canAttackAirUnits = true;
+  1541	    sStructureInfo[RTURRET].canAttackGroundUnits = true;
+  1542	    sStructureInfo[RTURRET].fireRate = 350;
+  1543	    strcpy(sStructureInfo[RTURRET].name, localization::text("Rocket Turret", "Ракетная башня"));
+  1544	
+  1545	    // Structure    : Windtrap
+  1546	    // Description  : <none>
+  1547	
+  1548	}

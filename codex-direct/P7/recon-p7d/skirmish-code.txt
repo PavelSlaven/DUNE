@@ -1,0 +1,90 @@
+git grep -n -E 'skirmish|localization::' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- src/map/cPreviewMaps.cpp
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:158:                            "iniLoader::skirmish() - Could not determine terrain type for char \"{}\", falling back to SAND",
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:188:        logbook(std::format("Loaded skirmish map: {}, width: {}, height: {}",
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:194:Scanning of skirmish maps:
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:196:- for each file in the folder "skirmish"
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:207:        localization::isEnglish() ? "skirmish_en" : "skirmish"
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:211:            "Skirmish language directory '{}' is missing; falling back to 'skirmish'",
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:214:        pathfile = "skirmish";
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:220:            logbook(std::format("Loading skirmish map: {}", fullname));
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:253:    firstSkirmishMap.name = localization::text("Random map", "Случайная карта");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:269:        return localization::text("ERROR", "ОШИБКА");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:273:        return localization::text("SMALL", "МАЛАЯ");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:276:        return localization::text("MEDIUM", "СРЕДНЯЯ");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:279:        return localization::text("LARGE", "БОЛЬШАЯ");
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/map/cPreviewMaps.cpp:281:    return localization::text("HUGE", "ОГРОМНАЯ");
+git grep -n -E 'skirmish' 405355e96f07a83da96b76cc2832a09c9c43e825 -- src
+405355e96f07a83da96b76cc2832a09c9c43e825:src/debug/UiAuditAccess.cpp:165:        setup->skirmishPlayer[2].bPlaying = true;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/debug/UiAuditAccess.cpp:166:        setup->skirmishPlayer[3].bPlaying = true;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/debug/UiAuditScenes.cpp:54:    {"skirmish-setup", "GAME_SETUPSKIRMISH", "cSetupSkirmishState"},
+405355e96f07a83da96b76cc2832a09c9c43e825:src/debug/UiAuditScenes.cpp:409:    scene("skirmish-setup-random", "skirmish-setup", "", "FixedFrames(2, no readiness flag)", prepareSkirmishSetup<0>),
+405355e96f07a83da96b76cc2832a09c9c43e825:src/debug/UiAuditScenes.cpp:410:    scene("skirmish-setup-ready-map", "skirmish-setup", "", "FixedFrames(2, no readiness flag)", prepareSkirmishSetup<1>),
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGameSettings.h:114:        return m_skirmish;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGameSettings.h:117:        m_skirmish = value;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGameSettings.h:188:    bool m_skirmish;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:390:    m_gameSettings->m_skirmish = false;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:823:    previewMaps->loadSkirmishMaps(); // load skirmish maps, so they are ready when we need them in the skirmish setup state
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:1333:            Logger::warn(COMP_GAME, "cProceedButtonCommand", "pressed in skirmish mode but state is not WINBRIEF nor LOSEBRIEF");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:1338:    // NOT a skirmish game
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/SeedMapLoader.cpp:53:    // same layout as skirmish previews (cPreviewMaps::loadSkirmish): a 1 cell border around the seed map
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/cMapCamera.h:170:     * Clears all viewport bookmarks. Called when a new mission/skirmish starts.
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/cPreviewMaps.cpp:73:    return static_cast<int>(m_PreviewMap.size()-1); // -1 because the first map is reserved for the random map, which is not a real skirmish map
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/cPreviewMaps.cpp:283:    Logger::info(COMP_MAP, "cPreviewMaps", "Loaded skirmish map: {}, width: {}, height: {}", previewMap->name, previewMap->width, previewMap->height);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/cPreviewMaps.cpp:288:Scanning of skirmish maps:
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/cPreviewMaps.cpp:290:- for each file in the folder "skirmish"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/cPreviewMaps.cpp:299:    const std::filesystem::path pathfile{"skirmish"};
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/cPreviewMaps.cpp:305:            Logger::info(COMP_MAP, "cPreviewMaps", "Loading skirmish map: {}", fullname);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/cPreviewMaps.cpp:345:        ? "skirmish/backup.ini"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/cPreviewMaps.cpp:346:        : "skirmish/" + normalizeStringForFileName(map.name) + ".ini";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/map/cPreviewMaps.h:18:// #define MAX_SKIRMISHMAPS 100     // max of 100 skirmish maps
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/brains/cPlayerBrainSkirmish.h:58: * The cPlayerBrainSkirmish is responsible for being an AI brain during skirmish games.
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:365:            // Dune 2 non-skirmish AI cheats; else it will be unplayable in some missions.
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cGameState.h:42:    GAMESTATE_SETUP_SKIRMISH,               // #define GAME_SETUPSKIRMISH 16    // set up a skirmish game
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cGameState.h:57:// #define GAME_SKIRMISH    15      // playing a skirmish mission!
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cMentatState.cpp:77:    // this state is cached, so decide per use (not at construction) whether a skirmish game is active
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cNewmapEditorState.cpp:274:            m_scenarioFlow->loadMapFromEditor(-1); // -1 means load the map from the editor, instead of loading a skirmish map
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:122:        s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[i];
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:279:    // Top right skirmish game properties:
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:502:        const s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[p];
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:521:                zone("skirmish-brain:" + row, rowLayout.player);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:523:            if (!skirmishPlayer[p].bPlaying) {
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:526:            zone("skirmish-house:" + row, rowLayout.house);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:527:            zone("skirmish-credits:" + row, rowLayout.credits);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:528:            zone("skirmish-units:" + row, rowLayout.units);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:529:            zone("skirmish-team:" + row, rowLayout.team);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:531:        zone("skirmish-blooms", bloomsRect);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:532:        zone("skirmish-worms", wormsRect);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:533:        zone("skirmish-tech-level", techLevelRect);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:535:            zone("skirmish-detonate-blooms", detonateBloomsRect);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:538:            zone("skirmish-start-points", startPointsRect);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:676:        // Render skirmish map as-is (pre-loaded map)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:695:            // render the 'random generated skirmish map'
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:766:    // levels (cInfoContextCreator) that gate building these units in skirmish
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:808:    // Starting skirmish mode
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:887:        s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[p];
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:906:                    int usedHouse = (skirmishPlayer[pl].iHouse > 0)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:907:                        ? skirmishPlayer[pl].iHouse
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:917:                        skirmishPlayer[0].iHouse, skirmishPlayer[1].iHouse,
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:918:                        skirmishPlayer[2].iHouse, skirmishPlayer[3].iHouse,
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:919:                        skirmishPlayer[4].iHouse);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:997:        s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[p];
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:1015:            s_SkirmishPlayer &pSkirmishPlayer = skirmishPlayer[p];
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:1045:        s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[p];
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:1160:            s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[p];
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:1233:            s_SkirmishPlayer &sSkirmishPlayer = skirmishPlayer[p];
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:1388:                    skirmishPlayer[p].bPlaying = false;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:1435:        s_SkirmishPlayer &player = skirmishPlayer[p];
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:1440:    skirmishPlayer[HUMAN].bPlaying = true;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:1496:            uiaudit::recordClick(("skirmish-map:" + std::to_string(mapIndexToRender)).c_str(), iDrawX, iDrawY, mapItemButtonWidth, mapItemButtonHeight);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:1640:        skirmishPlayer[p].bPlaying = false;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.h:91:    s_SkirmishPlayer skirmishPlayer[MAX_PLAYERS] = {};
+405355e96f07a83da96b76cc2832a09c9c43e825:src/include/definitions.h:69:// #define MAX_SKIRMISHMAPS 100     // max of 100 skirmish maps
+405355e96f07a83da96b76cc2832a09c9c43e825:src/include/eGameState.h:36:    SKIRMISH,              // playing a skirmish mission!
+405355e96f07a83da96b76cc2832a09c9c43e825:src/include/eGameState.h:37:    SETUPSKIRMISH,         // set up a skirmish game
+405355e96f07a83da96b76cc2832a09c9c43e825:src/include/eGameState.h:62:inline constexpr int GAME_SKIRMISH = 15;      // playing a skirmish mission!
+405355e96f07a83da96b76cc2832a09c9c43e825:src/include/eGameState.h:63:inline constexpr int GAME_SETUPSKIRMISH = 16;    // set up a skirmish game
+405355e96f07a83da96b76cc2832a09c9c43e825:src/sidebar/cBuildingListUpdater.cpp:47:        // always strict (skirmish) mode. Which means, do not cheat...
+405355e96f07a83da96b76cc2832a09c9c43e825:src/sidebar/cBuildingListUpdater.cpp:55:            // on skirmish mode use the 'strict' / no cheating mode (same as human m_players)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/sidebar/cBuildingListUpdater.cpp:522:        // always strict (skirmish) mode. Which means, do not cheat...
+405355e96f07a83da96b76cc2832a09c9c43e825:src/sidebar/cBuildingListUpdater.cpp:530:            // on skirmish mode use the 'strict' / no cheating mode (same as human m_players)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/Log.h:48:    COMP_SKIRMISHSETUP, /** When skirmish game is being set up **/

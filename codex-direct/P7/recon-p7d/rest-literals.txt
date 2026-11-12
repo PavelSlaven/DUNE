@@ -1,0 +1,372 @@
+== src/controls/mousestates/cMousePlaceState.cpp
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:16:#include "cMousePlaceState.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:18:#include "gameobjects/map/cMap.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:19:#include "context/AudioContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:20:#include "data/gfxdata.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:21:#include "controls/cGameControlsContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:22:#include "gameobjects/structures/cStructures.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:23:#include "gameobjects/units/cUnits.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:24:#include "utils/cStructureUtils.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:25:#include "gameobjects/players/cPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:26:#include "sidebar/cSideBar.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:27:#include "utils/cSoundPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:28:#include "gameobjects/map/MapGeometry.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:29:#include "context/cInfoContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:30:#include "context/cGameObjectContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:31:#include "managers/cDrawManager.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:33:#include "include/cAssert.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:35:#include "data/gfxaudio.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:36:#include "gameobjects/structures/cStructureFactory.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMousePlaceState.cpp:88:            m_context->getDrawManager()->setMessage("Unable to create more.");
+== src/controls/mousestates/cMouseNormalState.cpp
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:16:#include "cMouseNormalState.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:18:#include "controls/cGameControlsContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:19:#include "controls/eKeyAction.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:21:#include "utils/cRectangle.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:22:#include "utils/cSoundPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:23:#include "managers/cDrawManager.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:24:#include "context/AudioContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:25:#include "gameobjects/units/cUnit.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:26:#include "gameobjects/structures/cAbstractStructure.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:27:#include "gameobjects/players/cPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:31:#include "utils/Log.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:32:#include "data/gfxdata.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:33:#include "context/cInfoContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:34:#include "context/cGameObjectContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:38:#include "include/cAssert.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:40:#include "data/gfxaudio.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:41:#include "sidebar/cSideBar.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:97:                m_context->getDrawManager()->setMessage(std::format("{} units selected", ids.size()));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:206:        // non-selectable units (all from other players), don't give a "pick" mouse tile
+405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp:372:    Logger::debug(COMP_GAMESTATE, "cMouseNormalState::setState", "from {} to {}", mouseNormalStateString(m_state), mouseNormalStateString(newState));
+== src/gameobjects/structures/cAbstractStructure.cpp
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:16:#include "cAbstractStructure.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:18:#include "utils/Log.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:19:#include "game/cGameSettings.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:20:#include "game/cEventEmitter.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:21:#include "game/cScreenShake.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:22:#include "include/sGameServices.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:23:#include "context/GameContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:24:#include "context/cGameObjectContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:25:#include "context/cInfoContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:26:#include "gameobjects/map/cMapCamera.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:27:#include "data/gfxdata.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:28:#include "drawers/SDLDrawer.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:29:#include "gameobjects/particles/cParticle.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:30:#include "gameobjects/particles/cParticles.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:31:#include "gameobjects/structures/cStructures.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:32:#include "gameobjects/units/cUnits.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:33:#include "gameobjects/map/cMapEditor.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:34:#include "gameobjects/map/MapGeometry.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:35:#include "gameobjects/players/cPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:36:#include "gameobjects/players/cPlayers.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:37:#include "utils/cSoundPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:38:#include "include/Texture.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:39:#include "utils/RNG.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:43:#include "data/gfxaudio.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:44:#include "gameobjects/cFlag.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:46:// "default" Constructor
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:94:    Logger::debug(COMP_STRUCTURES, "cAbstractStructure", "(cAbstractStructure)(ID {}) Constructor", this->id);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:100:    Logger::debug(COMP_STRUCTURES, "cAbstractStructure", "(cAbstractStructure)(ID {}) Destructor", this->id);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:208:            Logger::debug(COMP_STRUCTURES, "cAbstractStructure::die",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:209:                "Unit [{}] inside structure [{}] already marked for removal, skipping init.", iUnitIDWithinStructure, id);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:488:        Logger::warn(COMP_STRUCTURES, "cAbstractStructure::decay", "got negative parameter, wrapped");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:522:        Logger::warn(COMP_STRUCTURES, "cAbstractStructure::damage", "got negative parameter, wrapped");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:527:    Logger::info(COMP_STRUCTURES, "cAbstractStructure::damage", "Structure [{}] received [{}] damage from originId [{}], HP is now [{}]", id, damage, originId, iHitPoints);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:571:        Logger::warn(COMP_STRUCTURES, "cAbstractStructure::setHitpoints", "setHitpoints({}) while max is {}; capped at max.", hp, maxHp);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:764:                   "cAbstractStructure::setUnitIdWithin - Cannot set iUnitIDWithinStructure, because it has been set already!");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:775:                   "cAbstractStructure::setUnitIdHeadingTowards - Cannot set iUnitIDHeadingForStructure, because it has been set already!");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:786:                   "cAbstractStructure::setUnitIdHeadingTowards - Cannot set iUnitIDEnteringStructure, because it has been set already!");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:818:        Logger::warn(COMP_STRUCTURES, "cAbstractStructure", "Could not find space for this unit");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cAbstractStructure.cpp:1013:    return std::format("{} at {} percent health", info.name, health);
+== src/gameobjects/structures/cOrderProcesser.cpp
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:22:#include "cOrderProcesser.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:23:#include "utils/Log.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:24:#include "utils/RNG.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:25:#include "managers/cDrawManager.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:26:#include "gameobjects/players/cPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:27:#include "utils/d2tm_math.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:28:#include "gameobjects/structures/cStructures.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:29:#include "gameobjects/units/cUnits.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:30:#include "gameobjects/map/cMap.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:32:#include "context/cInfoContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:33:#include "context/cGameObjectContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:34:#include "context/GameContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:35:#include "include/sGameServices.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:36:#include "context/AudioContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:37:#include "utils/cStructureUtils.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:38:#include "data/gfxaudio.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:39:#include "sidebar/cBuildingList.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:40:#include "sidebar/cSideBar.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:160:                m_drawManager->setMessage("Frigate is arriving...");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:164:            std::string msg = std::format("T-{} before Frigate arrival.", m_secondsUntilArrival);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:172:            m_drawManager->setMessage("Frigate is arriving...");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:286:            Logger::warn(COMP_STRUCTURES, "cOrderProcesser::sendFrigate", "unable to find start cell to spawn frigate");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cOrderProcesser.cpp:293:                Logger::warn(COMP_STRUCTURES, "cOrderProcesser::sendFrigate", "unable to spawn frigate, will retry");
+== src/gameobjects/structures/cWindTrap.cpp
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cWindTrap.cpp:16:#include "cWindTrap.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cWindTrap.cpp:18:#include "utils/Log.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cWindTrap.cpp:19:#include "definitions.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cWindTrap.cpp:20:#include "gameobjects/players/cPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cWindTrap.cpp:21:#include "context/cInfoContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cWindTrap.cpp:27:    Logger::debug(COMP_STRUCTURES, "cWindTrap", "(cWindTrap)(ID {}) Constructor", this->id);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cWindTrap.cpp:39:    Logger::debug(COMP_STRUCTURES, "cWindTrap", "(cWindTrap)(ID {}) Destructor", this->id);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/structures/cWindTrap.cpp:73:    return std::format("{} and producing at {} percent capacity", cAbstractStructure::getDefaultStatusMessageBar(), powerProduction);
+== src/gameobjects/units/cUnit.cpp
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:16:#include "cUnit.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:17:// #include "cUnits.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:20:#include "utils/Log.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:21:#include "data/gfxdata.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:22:#include "gameobjects/particles/cParticle.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:23:#include "gameobjects/particles/cParticles.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:24:#include "gameobjects/projectiles/bullet.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:25:#include "gameobjects/structures/cStarPort.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:26:#include "gameobjects/structures/cStructures.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:27:#include "gameobjects/projectiles/cBullets.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:28:#include "gameobjects/map/cMapCamera.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:29:#include "gameobjects/map/cMapEditor.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:30:#include "gameobjects/map/MapGeometry.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:31:#include "gameobjects/players/cPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:32:#include "gameobjects/players/cPlayers.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:33:#include "utils/cSoundPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:34:#include "utils/RNG.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:36:#include "gameobjects/units/cPathFinder.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:37:#include "utils/d2tm_math.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:38:#include "context/cInfoContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:39:#include "context/cGameObjectContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:40:#include "context/GameContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:41:#include "context/AudioContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:42:#include "include/sGameServices.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:43:#include "game/cScreenShake.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:44:#include "game/cEventEmitter.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:45:#include "gameobjects/map/cMap.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:48:#include "data/gfxaudio.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:49:#include "game/cGameSettings.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:50:#include "gameobjects/players/cPlayerDifficultySettings.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:60:    Logger::debug(eLogComponent::COMP_UNITS, "Initialization", "Initializing unit {}", i);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:197:    // hence we don't want to fiddle with that (for now), but instead we set a "removeMe" flag.
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:268:        Logger::fatal(COMP_UNITS, "die()", "iPlayer became < 0 while it was >= 0 just a moment ago!");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:508: * Any unit this structure was "interacting with" (ie, wanted to enter), make sure
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:664:    log(std::format("attackUnit() : targetUnit is [{}]. Chase target? [{}]", targetUnit, chaseWhenOutOfRange));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:666:        log(std::format("attackUnit() : targetUnit is [{}] Cannot attack self.", targetUnit));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:672:        log(std::format("attackUnit() : targetUnit is [{}] Invalid target.", targetUnit));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:676:        log(std::format("attackUnit() : targetUnit is [{}] Cannot attack allied unit.", targetUnit));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:685:    log(std::format("attackStructure() : target is [{}]", targetStructure));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:688:        log("attackStructure() : unit cannot damage structures, ignoring order.");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:694:        log(std::format("attackStructure() : target is [{}] Invalid target.", targetStructure));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:698:        log(std::format("attackStructure() : target is [{}] Cannot attack allied structure.", targetStructure));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:707:    log(std::format("attackCell() : cell target is [{}]", cell));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:717:    log(std::format("Attacking UNIT ID [{}], STRUCTURE ID [{}], ATTACKCLL [{}], GoalCell [{}]",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:721:        log("What is this? Ordered to attack but no target?");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:726:        log("Cannot attack self");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:733:            log(std::format("attack() : unit target [{}] invalid", unitId));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:737:            log(std::format("attack() : unit target [{}] is allied", unitId));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:745:            log(std::format("attack() : structure target [{}] invalid", structureId));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:749:            log(std::format("attack() : structure target [{}] is allied", structureId));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:754:    // TODO: We have somewhere else something with "intents", so this whole if statement should be removed / replaced?
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:774:    log(std::format("attackAt() : cell target is [{}]", cell));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:777:        log("attackAt() : Invalid cell, aborting");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:784:    log(std::format("attackAt() : cell target is [{}], structureId [{}], unitId [{}], wormId [{}]", cell, structureId, unitId, wormId));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:822:            log("(move_to - IGNORED) : already entering structure");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:827:    log(std::format("(move_to - START) : to cell [{}], iStructureIdToEnter[{}], iUnitIdToPickup[{}] (to attack, if > -1), intent[{}]",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:864:    log("(move_to - FINISHED)");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:1274:        Logger::debug(COMP_UNITS, "cUnit::thinkFast_moveAirUnit", "Air unit [{}] got invalid cell [{}], and thus got killed.", iID, position.iCell);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:1347:                                log("Pick up unit");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:1724:    d2tm_assert(iUnitID > -1 && "cUnit::getUnitToPickupOrDrop() called for invalid iUnitIDWithinStructure!");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:1905:        log("No valid movement.iPath[pathindex], nextCell is < 0");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2068:    m_objects->getPlayer(iPlayer)->log(std::format("[UNIT[{}]: type = {}(={}), iCell = {}, movement.iGoalCell = {}] '{}'",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2119:            log("Destroyed structure target");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2264:        Logger::debug(COMP_UNITS, "cUnit::think_attack_sandworm", "eaten unit. Units eaten {}, TIMER_guard {}", unitsEaten, guardTimer.get());
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2396:        d2tm_assert(false && "Expected to have a valid unit calling thinkFast_move()");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2440:                log(std::format("Create path ... result = {}", iResult));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2461:                                log("Could not find alternative goal");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2470:                                log("Found alternative goal");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2475:                            log("Want to enter structure, yet ID's do not match");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2476:                            log("Resetting structure id and such to redo what i was doing?");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2484:                                log("Path failed toward target structure; will retry.");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2487:                                log("Something else blocks path, but goal itself is not occupied.");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2504:                        log("Units surround me, what to do?");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2507:                        log("I just failed, ugh");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2539:                    //log("SUCCES");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2668:    // TODO: this "thinkFast_move" thing should be abstracted somewhere, so that "occupied" becomes an abstraction
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:2957:            log("A carry all is after me...");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3155:    log(std::format("I'm being assigned to mission {} (prev mission was {})", aMission, mission));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3188:            return "INTENT_CAPTURE";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3190:            return "INTENT_MOVE";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3192:            return "INTENT_ATTACK";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3194:            return "INTENT_NONE";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3196:            return "INTENT_REPAIR";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3198:            return "INTENT_UNLOAD_SPICE";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3240:        // we let the other code that with "entering a structure" deal with any possibly already occupied
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3251:    // so to speak, ie "AVAILABLE, NOT AVAILABLE, ALREADY_HEADING", etc. That way we only need to scan once, and don't
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3300:    log(std::format("cUnit::findBestStructureCandidateAndHeadTowardsItOrWait - Going to look for a [{}]",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3313:    d2tm_assert(pStructure && "Expected to have a valid pStructure pointer here");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3347:    // todo: "getCellWhereToBringUnit"? where to enter structure so to speak?
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3374:        // we let the other code that with "entering a structure" deal with any possibly already occupied
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3775:    log(std::format("setGoalCell() from {} to {}", movement.iGoalCell, goalCell));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3781:    log(std::format("setAction() from {} to {}", eActionTypeString(m_action), eActionTypeString(action)));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3823:    return std::format("{} at {} percent health and {} percent harvested", info.name, getHealthNormalized()*100, harvested);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:3833:            return std::format("{} at {} percent health", info.name, getHealthNormalized()*100);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:4026:        Logger::warn(COMP_UNITS, "cUnit::freeAroundMove", "Invalid unit");
+== src/gameobjects/players/cPlayer.cpp
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:16:#include "cPlayer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:18:#include "building/cItemBuilder.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:19:#include "game/cEventEmitter.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:20:#include "game/cScreenFader.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:21:#include "gameobjects/map/cMap.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:22:#include "data/gfxdata.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:23:#include "gameobjects/units/cReinforcements.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:24:#include "gameobjects/structures/cStructureFactory.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:25:#include "gameobjects/structures/cStructures.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:26:#include "utils/common.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:27:#include "utils/cStructureUtils.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:28:#include "utils/Log.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:29:#include "utils/texture_utils.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:30:#include "gameobjects/players/cHousesInfo.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:31:#include "utils/Graphics.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:32:#include "utils/HouseMaskTint.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:33:#include "include/Texture.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:34:#include "utils/RNG.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:35:#include "gameobjects/map/MapGeometry.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:36:#include "gameobjects/structures/cOrderProcesser.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:37:#include "controls/cGameControlsContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:38:#include "gameobjects/players/cPlayerDifficultySettings.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:39:#include "sidebar/cSideBar.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:40:#include "gameobjects/units/cUnits.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:41:#include "context/cInfoContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:42:#include "context/cGameObjectContext.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:43:#include "game/cGameSettings.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:44:#include "include/sGameServices.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:45:#include "context/GameContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:46:#include "context/AudioContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:54:#include "data/gfxaudio.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:55:#include "context/GraphicsContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:56:#include "gameobjects/cSpecialInfos.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:108:    Logger::info(COMP_PLAYER, "cPlayer", "MAX_STRUCTURE_BMPS=[{}], sizeof bmp_structure={}, sizeof(SDL_Surface *)={}",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:206:        Logger::error(COMP_PLAYER, "cPlayer", "Error initializing player, id {} is not valid.", id);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:262:    Logger::info(COMP_PLAYER, "cPlayer::setHouse", "Current house is [{}/{}], setting house to [{}/{}]",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:271:        Logger::info(COMP_PLAYER, "cPlayer::setHouse", "Current house differs from iHouse, preparing palette.");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:295:                std::cerr << "Could not create bmp structure bitmap!? - Imminent crash.\n";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:303:                    std::cerr << "Could not create FLASH bmp structure bitmap!? - Imminent crash.\n";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:319:                std::cerr << "Could not create bmp unit bitmap!? - Imminent crash.\n";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:382:    return std::format("Player [id={}, human={}, sidebar={:#x}]", this->id, this->m_Human, reinterpret_cast<std::uintptr_t>(this->sidebar));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:587: * Returns the bitmap for structure type "index", this structure has been colorized beforehand for this player and is
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:595:        d2tm_assert(false && "getStructureBitmap called with invalid index");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:607: * Returns the flash bitmap for structure type "index", this structure has been colorized beforehand for this player and is
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:615:        d2tm_assert(false && "getStructureBitmapFlash called with invalid structure type index");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:633: * Returns the bitmap for unit type "index", this unit has been colorized beforehand for this player and is
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:641:        d2tm_assert(false && "getUnitBitmap called with invalid index");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:653: * Returns the bitmap for unit top type "index", this top of unit has been colorized beforehand for this player and is
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:661:        d2tm_assert(false && "getUnitTopBitmap called with invalid index");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:675:        d2tm_assert(false && "getUnitShadowBitmap called with invalid index");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:802:    log(std::format("increaseStructureAmount result: iStructures[{}(={})]={}",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:813:    log(std::format("decreaseStructureAmount result: iStructures[{}(={})]={}",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:825:        return "Atreides";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:828:        return "Harkonnen";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:831:        return "Ordos";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:834:        return "Sardaukar";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:837:        return "Fremen";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:840:        return "Mercenary";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:843:        return "Generalhouse (none)";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:846:        return "Corrino / House for worms";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:848:    return "Unknown !?";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:989:    log(std::format("canBuildUnitType(unitType={}) -> {}", iUnitType, result ? "TRUE" : "FALSE"));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1000:    log(std::format("canBuildSpecialType(iType={}) -> {}", iType, result ? "TRUE" : "FALSE"));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1104:        log(std::format("isUpgradingList for listType [{}] and sublistId [{}], could not find upgradesList!? - will return nullptr.",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1145:        const std::string result = startedBuilding ? "SUCCESS" : "FALSE";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1146:        log(std::format("Wanting to build unit [{}] iUnitType = [{}], with listType[{}] - {}",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1159:        const std::string result = startedBuilding ? "SUCCESS" : "FALSE";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1160:        log(std::format("Wanting to build structure [{}] iStructureType = [{}], with listType[{}] - {}",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1173:        const std::string result = startedBuilding ? "SUCCESS" : "FALSE";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1174:        log(std::format("Wanting to build special [{}] iSpecialType = [{}], with listType[{}] - {}",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1186:        const std::string result = startedBuilding ? "SUCCESS" : "FALSE";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1187:        log(std::format("Wanting to start upgrade [{}] iUpgradeType = [{}], with listType[{}] - {}",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1361:    log(std::format("canBuildUnit: Wanting to build iUnitType = [{}(={})] allowed?...", iUnitType, m_infos->getUnitInfo(iUnitType).name));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1366:            log(std::format("canBuildUnit: FALSE, because cost {} higher than credits {}", m_infos->getUnitInfo(iUnitType).cost, getCredits()));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1373:        log("canBuildUnit: FALSE, because already building unitType");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1381:        log(std::format("canBuildUnit: FALSE, because we do not own the required structure type [{}] for this unit: [{}]",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1388:            log(std::format("canBuildUnit: FALSE, because we do not own the required ADDITIONAL structure type [{}] for this unit: [{}]",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1397:        log(std::format("canBuildUnit: REQUIRES_UPGRADE, because we can't find it in the expected list [{}] for this unit: [{}]",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1403:        log("canBuildUnit: FALSE, reason UNIT_LIMIT_REACHED");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1407:    log("canBuildUnit: ALLOWED");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1417:    log(std::format("canBuildSpecial: Wanting to build iType = [{}(={})] allowed?...", iType, special.description));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1420:    int iStrucType = PALACE; // TODO: get from "special" data structure?
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1422:        log(std::format("canBuildUnit: FALSE, because we do not own the required structure type [{}] for [{}]",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1429:        log("canBuildSpecial: FALSE, because already building it");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1436:        log(std::format("canBuildUnit: REQUIRES_UPGRADE, because we can't find it in the expected list [{}] for this special: [{}]",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1441:    log("canBuildSpecial: ALLOWED");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1475:            log(std::format("Visible = {}", isVisibleForPlayer));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1489:        log(std::format("Targets {}", maxTargets));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1517:        log(std::format("STR] Targets {}", iT));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1525:    log(std::format("canBuildStructure: Wanting to build iStructureType = [{}]", iStructureType));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1527:    d2tm_assert(iStructureType > -1 && "Structure type must be > -1");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1528:    d2tm_assert(iStructureType < MAX_STRUCTURETYPES && "Structure type must be < MAX_STRUCTURETYPES");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1533:    log(std::format("canBuildStructure: Wanting to build iStructureType = [{}(={})], allowed?...",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1538:        log(std::format("canBuildStructure: FALSE, reason NOT_ENOUGH_MONEY: because cost {} > credits {}",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1545:        log(std::format("canBuildStructure: FALSE, reason REQUIRES_STRUCTURE: we do not own the required structure type [{}] for this structure: [{}]",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1552:        log("canBuildStructure: FALSE, reason ALREADY_BUILDING");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1559:        log("canBuildStructure: FALSE, reason REQUIRES_UPGRADE: because we can't find structure in list");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1564:        log("canBuildStructure: FALSE, reason STRUCTURE_LIMIT_REACHED");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1568:    log("canBuildStructure: ALLOWED");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1649:                auto msg = std::format("Player {} ({}) has been defeated.", commonEvent->player->getId(),
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1664:                Logger::warn(COMP_PLAYER, "cPlayer::onNotifyGameEvent", "GAME_EVENT_PLAYER_DEFEATED did not carry a CommonEvent");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1670:                auto msg = std::format("{} launched!", buildEvent->buildingListItem->getNameString());
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1681:                Logger::warn(COMP_PLAYER, "cPlayer::onNotifyGameEvent", "GAME_EVENT_SPECIAL_LAUNCHED did not carry a BuildingEvent");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1688:                    auto msg = std::format("{} is ready for deployment.",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1701:                Logger::warn(COMP_PLAYER, "cPlayer::onNotifyGameEvent", "GAME_EVENT_SPECIAL_SELECT_TARGET did not carry a BuildingEvent");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1711:                Logger::warn(COMP_PLAYER, "cPlayer::onNotifyGameEvent", "GAME_EVENT_DISCOVERED did not carry a CommonEvent");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1724:                Logger::warn(COMP_PLAYER, "cPlayer::onNotifyGameEvent", "GAME_EVENT_DESTROYED did not carry a CommonEvent");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1738:                Logger::warn(COMP_PLAYER, "cPlayer::onNotifyGameEvent", "GAME_EVENT_CREATED did not carry a CommonEvent");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1745:                    auto msg = std::format("Upgrade: {} completed.", buildEvent->buildingListItem->getNameString());
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1761:                Logger::warn(COMP_PLAYER, "cPlayer::onNotifyGameEvent", "GAME_EVENT_LIST_ITEM_FINISHED did not carry a BuildingEvent");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1772:                Logger::warn(COMP_PLAYER, "cPlayer::onNotifyGameEvent", "GAME_EVENT_LIST_ITEM_ADDED/CANCELLED did not carry a BuildingEvent");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1904:    d2tm_assert(structureType > -1 && "hasEnoughPowerFor called with structureType < 0!");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1905:    d2tm_assert(structureType < MAX_STRUCTURETYPES && "hasEnoughPowerFor called with structureType >= MAX_STRUCTURETYPES!");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1912:    log("cPlayer::logStructures() START");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1914:        log(std::format("[{}] amount [{}]", m_infos->getStructureInfo(i).name, iStructures[i]));
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1916:    log("cPlayer::logStructures() END");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1935:	can be placed of type "iStructureType". This is calling  canPlaceStructureAt without any
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:1963:	can be placed of type "iStructureType". If iUnitIDTOIgnore is > -1, then if any unit is
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2012:            // another structure found on this location, "blocked"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2044:        Logger::info(COMP_PLAYER, "cPlayer", "PLAYER [{}(={})] : {}", getId(), getHouseName(), txt);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2060:        log("startBuilding: Cannot start building null item!");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2127:    bool hasVoiceToPlay = isHuman() && voiceId > -1; // don't warn when already in "attack music mode"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2157:            d2tm_assert(false && "startBuilding: Unknown buildType !?");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2227:        // addNotification("You've lost a Harvester.", eNotificationType::PRIORITY);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2231:                .message = "You've lost a Harvester",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2243:            //addNotification("You have one Harvester left.", eNotificationType::NEUTRAL);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2247:                    .message = "You have one Harvester left",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2265:                // addNotification("No harvesters and refineries left!", eNotificationType::BAD);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2269:                        .message = "No harvesters and refineries left!",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2295:            //addNotification("No more Harvester left, reinforcing...", BAD);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp:2299:                    .message = "No more Harvester left, reinforcing...",
+== src/gameobjects/mentat/AbstractMentat.cpp
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:16:#include "AbstractMentat.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:17:#include "definitions.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:18:#include "include/eGameState.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:19:#include "drawers/SDLDrawer.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:20:#include "utils/RNG.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:21:#include "context/GameContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:22:#include "game/GameStateTransition.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:23:#include "game/MentatFlow.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:24:#include "game/cGameSettings.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:25:#include "gui/GuiButton.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:26:#include "utils/Graphics.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:27:// #include "utils/common.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:28:#include "utils/Log.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:29:#include "drawers/cTextDrawer.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:34:#include "include/cAssert.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:35:#include "context/GraphicsContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:36:#include "context/TextContext.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:37:#include "include/Texture.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:38:#include "utils/cRectangle.h"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:39:#include "debug/UiAudit.hpp"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:83:        int length = m_textDrawer->getTextLength("Mission select");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:86:                                                "Mission select");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:90:            .withLabel("Mission select")
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:111:    Logger::info(COMP_GAME, "AbstractMentat::AbstractMentat", "Initialized AbstractMentat with mission select button: {}", canMissionSelect);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:119:    Logger::info(COMP_GAME, "AbstractMentat::~AbstractMentat", "Destroying AbstractMentat");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:294:            uiaudit::recordCanvasClick("mentat-skip");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:348:    Logger::info(COMP_GAME, "AbstractMentat::setSentence", "Sentence[{}]={}", i, text);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:363:        Logger::info(COMP_GAME, "AbstractMentat", "Successful loaded scene [{}]", filename);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/mentat/AbstractMentat.cpp:368:    Logger::error(COMP_GAME, "AbstractMentat", "Failed to load scene [{}]", filename);

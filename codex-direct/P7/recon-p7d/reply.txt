@@ -1,0 +1,145 @@
+## RECON-P7D | 2026-11-12 06:02:05 UTC
+
+Отчёт: [`.tmp/p7d/RECON.md`](/srv/dune/worktrees/u35/.tmp/p7d/RECON.md).
+
+### Числа
+
+- Пункт 1: вывод команды — 288 строк; `port-strings.tsv` — 92 строки данных, `port-only.tsv` — 64, `port-nonliteral.tsv` — 196.
+- Пункт 2: `rest-literals.tsv` — 364 строки данных. По файлам, в порядке задания: 19, 20, 39, 23, 8, 95, 131, 29.
+- Пункт 3(а): 56 строк данных в `fork-names.tsv`.
+- Пункт 3(в): 54 разных английских значения и 54 строки данных в `names-in-port.tsv`.
+- Пункт 5(д): таблица `sardaukar.tsv`:
+
+| путь | строк | строк Text | слов |
+|---|---:|---:|---:|
+| resources/bin/campaign/briefings/mentats.ini | 784 | 439 | 2659 |
+| resources/bin/campaign/sardaukar/mission1.ini | 84 | 3 | 14 |
+| resources/bin/campaign/sardaukar/mission2.ini | 60 | 3 | 16 |
+| resources/bin/campaign/sardaukar/mission3.ini | 44 | 2 | 13 |
+| resources/bin/campaign/sardaukar/mission4.ini | 43 | 2 | 11 |
+| resources/bin/campaign/sardaukar/mission5.ini | 39 | 1 | 6 |
+| resources/bin/campaign/sardaukar/mission6.ini | 42 | 1 | 7 |
+| resources/bin/campaign/sardaukar/mission7.ini | 32 | 1 | 5 |
+| resources/bin/campaign/sardaukar/mission8.ini | 30 | 1 | 5 |
+
+### Сверка корневой нити
+
+По три факта каждой дорожки сверены: совпало 9 из 9.
+
+**Дорожка 1 — пункты 1–2**
+
+1. `src/building/cItemBuilder.cpp@405355e:206` — совпало с `port-strings.tsv`.
+
+   Команда: `export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F 'Unable to create more.' 405355e96f07a83da96b76cc2832a09c9c43e825 -- src/building/cItemBuilder.cpp`
+
+   Вывод: `405355e96f07a83da96b76cc2832a09c9c43e825:src/building/cItemBuilder.cpp:206:                    m_services->drawManager->setMessage("Unable to create more.");`
+
+2. `src/controls/mousestates/cMouseNormalState.cpp@405355e:97` — совпало с `rest-literals.tsv`: литерал `{} units selected`, вызов `std::format`.
+
+   Команда: `export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 405355e96f07a83da96b76cc2832a09c9c43e825:src/controls/mousestates/cMouseNormalState.cpp | nl -ba | sed -n '97p'`
+
+   Вывод: `    97	                m_context->getDrawManager()->setMessage(std::format("{} units selected", ids.size()));`
+
+3. `src/gameobjects/players/cPlayer.cpp@405355e:2231` — совпало с `rest-literals.tsv`: литерал `You've lost a Harvester`, вызов — `нет`.
+
+   Команда: `export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayer.cpp | nl -ba | sed -n '2231p'`
+
+   Вывод: `  2231	                .message = "You've lost a Harvester",`
+
+**Дорожка 2 — пункты 3 и 6**
+
+1. `src/utils/cIniGameRessouces.cpp@9208dcf:103` — совпало с `fork-names.tsv`: `Carry-All`, `Транспортник`.
+
+   Команда: `export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 9208dcf5a358f40afd95c99480e4e09f781ed566:src/utils/cIniGameRessouces.cpp | nl -ba | sed -n '103p'`
+
+   Вывод: `   103	    strcpy(sUnitInfo[CARRYALL].name, localization::text("Carry-All", "Транспортник"));`
+
+2. `Carry-All` в PORT — совпало с `names-in-port.tsv`: шесть строк найдено, в таблице указаны первые пять.
+
+   Команда: `export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git grep -n -F 'Carry-All' 405355e96f07a83da96b76cc2832a09c9c43e825 -- src resources/bin/game.ini resources/bin/settings.ini`
+
+   Вывод:
+   ```text
+   405355e96f07a83da96b76cc2832a09c9c43e825:src/context/cInfoContextCreator.cpp:197:    unitInfos[CARRYALL].name = "Carry-All";
+   405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/brains/missions/cPlayerBrainMissionKind.h:40:     * Improve economy (ie, build Carry-All's, harvesters, etc)
+   405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:121:    // Carry-All specific
+   405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.cpp:519:            // in case I am a Carry-All and Carry-ing a unit
+   405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.h:180:    // Carry-All specific
+   405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/units/cUnit.h:536:    bool isReinforcement; // is this a 'real' reinforcement or not? (applies to Carry-All only)
+   ```
+
+3. `tools/check_skirmish_and_mentat_ui.py@9208dcf:1,71` — совпало с краями `check-tool.txt`.
+
+   Команда: `export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git show 9208dcf5a358f40afd95c99480e4e09f781ed566:tools/check_skirmish_and_mentat_ui.py | nl -ba | sed -n '1p;71p'`
+
+   Вывод:
+   ```text
+        1	#!/usr/bin/env python3
+       71	    raise SystemExit(main())
+   ```
+
+**Дорожка 3 — пункты 4–5**
+
+1. `resources/bin/skirmish/2PL_AncientDelta.ini@9208dcf:2` — совпало со строкой `Title` в `skirmish-keys.tsv`.
+
+   Команда: `export PATH=/srv/dune/tools/git-lfs-3.6.1/usr/bin:$PATH; git diff -U0 e17379ad660fca46859b403a6c3d33ec8d831a40 9208dcf5a358f40afd95c99480e4e09f781ed566 -- resources/bin/skirmish/2PL_AncientDelta.ini`
+
+   Вывод:
+   ```text
+   diff --git a/resources/bin/skirmish/2PL_AncientDelta.ini b/resources/bin/skirmish/2PL_AncientDelta.ini
+   index 8aabe0ff..5a7d9e53 100644
+   --- a/resources/bin/skirmish/2PL_AncientDelta.ini
+   +++ b/resources/bin/skirmish/2PL_AncientDelta.ini
+   @@ -2 +2 @@
+   -Title="Ancient Delta"
+   +Title="Старая дельта"
+   ```
+
+2. `resources/bin/campaign_en/atreides/mission2.ini` — совпало с `campaign-en.tsv`: blob одинаковый в FORK1, BASE и UP1.
+
+   Команды и выводы:
+   ```text
+   git rev-parse 9208dcf5a358f40afd95c99480e4e09f781ed566:resources/bin/campaign_en/atreides/mission2.ini
+   a59034231c52da75f637326ddc82bcdc3a989840
+
+   git rev-parse e17379ad660fca46859b403a6c3d33ec8d831a40:resources/bin/campaign/atreides/mission2.ini
+   a59034231c52da75f637326ddc82bcdc3a989840
+
+   git rev-parse d06f2fcd2a347182c3774fb96e9a85570405c489:resources/bin/campaign/atreides/mission2.ini
+   a59034231c52da75f637326ddc82bcdc3a989840
+   ```
+
+3. `resources/bin/campaign/sardaukar/mission1.ini@405355e` — совпало с `sardaukar.tsv`: 84 строки, 3 строки `Text=`, 14 слов.
+
+   Команды и выводы:
+   ```text
+   git show 405355e96f07a83da96b76cc2832a09c9c43e825:resources/bin/campaign/sardaukar/mission1.ini | wc -l
+   84
+
+   git show 405355e96f07a83da96b76cc2832a09c9c43e825:resources/bin/campaign/sardaukar/mission1.ini | grep '^Text=' | wc -l
+   3
+
+   git show 405355e96f07a83da96b76cc2832a09c9c43e825:resources/bin/campaign/sardaukar/mission1.ini | grep '^Text=' | sed 's/^Text=//' | wc -w
+   14
+   ```
+
+### Чтение
+
+Полностью прочитаны отдельными вызовами `.tmp/p7s/RECON.md` — образец оглавления и формы отчёта — и `.tmp/p7s/fork-pairs.tsv` — пары перевода форка для пунктов 1 и 3. Необходимых для этой разведки правил, норм или контрактов вне задания не обнаружено; команды, ревизии и форматы заданы в нём.
+
+### Не проверено
+
+Сборки, CTest и запуск игры не выполнялись: задание их запрещает.
+
+### Рабочие места
+
+Команда: `python3 /srv/dune/tools/task-places.py inventory .tmp/p7d --size`
+
+Вывод:
+
+```text
+path	kind	branch	head_date	size	dirty	untracked	unpushed	worktrees	procs	refs
+/srv/dune/worktrees/u35/.tmp/p7d	dir	-	-	299117	-	-	-	-	0	0
+```
+
+`.tmp/p7d` — `оставить — разведка для ведущего`.

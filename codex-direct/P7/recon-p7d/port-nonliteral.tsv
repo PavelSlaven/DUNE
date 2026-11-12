@@ -1,0 +1,197 @@
+путь	строка	текст строки
+src/controls/mousestates/cMouseNormalState.cpp	101	m_context->getDrawManager()->setMessage(pUnit->getUnitStatusForMessageBar());
+src/controls/mousestates/cMouseNormalState.cpp	124	m_context->getDrawManager()->setMessage(pUnit->getUnitStatusForMessageBar());
+src/controls/mousestates/cMouseNormalState.cpp	143	m_context->getDrawManager()->setMessage(pStructure->getStatusForMessageBar());
+src/drawers/CreditsDrawer.cpp	255	m_gameTextDrawer->drawText(
+src/drawers/CreditsDrawer.cpp	268	m_gameTextDrawer->drawText(
+src/drawers/cBuildingListDrawer.cpp	315	m_smallTextDrawer->drawTextCenteredInBox(
+src/drawers/cBuildingListDrawer.cpp	330	m_smallTextDrawer->drawTextScaledCenteredInBox(
+src/drawers/cBuildingListDrawer.cpp	341	m_smallTextDrawer->drawTextScaledCenteredInBox(
+src/drawers/cBuildingListDrawer.cpp	411	m_smallTextDrawer->drawTextCenteredInBox(
+src/drawers/cBuildingListDrawer.cpp	443	m_smallTextDrawer->drawTextCenteredInBox(
+src/drawers/cBuildingListDrawer.cpp	545	"m_gameTextDrawer->drawText(textX, textY, std::format(""{}"", amountToShow));"
+src/drawers/cBuildingListDrawer.cpp	551	"m_gameTextDrawer->drawText(textX, textY, std::format(""{}"", item->getSubList()));"
+src/drawers/cBuildingListDrawer.cpp	736	m_smallTextDrawer->drawTextCenteredInBox(
+src/drawers/cBuildingListDrawer.cpp	777	m_smallTextDrawer->drawTextCenteredInBox(
+src/drawers/cBuildingListDrawer.cpp	788	m_smallTextDrawer->drawTextCentered(
+src/drawers/cBuildingListDrawer.cpp	795	m_smallTextDrawer->drawTextCentered(
+src/drawers/cBuildingListDrawer.cpp	826	m_smallTextDrawer->drawText(priceX, y + 4, priceColor, price, false);
+src/drawers/cMapDrawer.cpp	305	//        textDrawer.drawText(0, 100, msg);
+src/drawers/cMessageDrawer.cpp	67	m_textDrawer->drawText(m_position.x+13, m_position.y+6, Color{0, 0, 0,Uint8(m_alpha)}, m_message, false);
+src/drawers/cMessageDrawer.cpp	165	void cMessageDrawer::setMessage(const std::string &msg, bool keepMessage)
+src/drawers/cMessageDrawer.h	60	void setMessage(const std::string &msg, bool keepMessage = false);
+src/drawers/cSideBarDrawer.cpp	237	m_smallTextDrawer->drawText(
+src/drawers/cSideBarDrawer.cpp	314	m_smallTextDrawer->drawText(
+src/drawers/cSideBarDrawer.cpp	323	m_smallTextDrawer->drawText(
+src/drawers/cTextDrawer.cpp	45	void cTextDrawer::drawText(int x, int y, Color color, const std::string &msg, bool applyShadow) const
+src/drawers/cTextDrawer.cpp	60	void cTextDrawer::drawText(cPoint &coords, Color color, const std::string &msg, bool applyShadow) const
+src/drawers/cTextDrawer.cpp	62	drawText(coords.x, coords.y, color, msg, applyShadow);
+src/drawers/cTextDrawer.cpp	65	void cTextDrawer::drawText(int x, int y, const std::string &msg, bool applyShadow) const
+src/drawers/cTextDrawer.cpp	67	drawText(x, y, Color::White , msg, applyShadow);
+src/drawers/cTextDrawer.cpp	70	void cTextDrawer::drawTextCentered(const std::string &msg, int y) const
+src/drawers/cTextDrawer.cpp	72	drawTextCentered(msg, y, Color::White);
+src/drawers/cTextDrawer.cpp	75	void cTextDrawer::drawTextCentered(const std::string &msg, int y, Color color) const
+src/drawers/cTextDrawer.cpp	82	drawText(xPos, y, color, msg);
+src/drawers/cTextDrawer.cpp	85	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, int x, int y, int boxWidth, int boxHeight, Color color) const
+src/drawers/cTextDrawer.cpp	101	drawText(xPos, yPos, color, msg);
+src/drawers/cTextDrawer.cpp	104	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const
+src/drawers/cTextDrawer.cpp	106	drawTextCenteredInBox(msg, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), color);
+src/drawers/cTextDrawer.cpp	109	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const
+src/drawers/cTextDrawer.cpp	111	drawTextCenteredInBox(msg, rect.getX() + offsetX, rect.getY() + offsetY, rect.getWidth(), rect.getHeight(), color);
+src/drawers/cTextDrawer.cpp	114	void cTextDrawer::drawTextScaledCenteredInBox(
+src/drawers/cTextDrawer.cpp	139	void cTextDrawer::drawTextScaledOpticallyCenteredInBox(
+src/drawers/cTextDrawer.cpp	174	void cTextDrawer::drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const
+src/drawers/cTextDrawer.cpp	186	drawText(xPos, y, color, msg);
+src/drawers/cTextDrawer.cpp	189	void cTextDrawer::drawTextBottomRight(const std::string &msg, int margin) const
+src/drawers/cTextDrawer.cpp	191	drawTextBottomRight(Color::White, msg, margin);
+src/drawers/cTextDrawer.cpp	194	void cTextDrawer::drawTextBottomLeft(const std::string &msg, int margin) const
+src/drawers/cTextDrawer.cpp	196	drawTextBottomLeft(Color::White, msg, margin);
+src/drawers/cTextDrawer.cpp	199	void cTextDrawer::drawTextBottomRight(Color color, const std::string &msg, int margin) const
+src/drawers/cTextDrawer.cpp	207	drawText(x, y, color, msg);
+src/drawers/cTextDrawer.cpp	215	void cTextDrawer::drawTextBottomLeft(Color color, const std::string &msg, int margin) const
+src/drawers/cTextDrawer.cpp	221	drawText(margin, y, color, msg);
+src/drawers/cTextDrawer.h	35	void drawText(int x, int y, const std::string &msg, bool applyShadow = true) const;
+src/drawers/cTextDrawer.h	37	void drawText(cPoint &coords, Color color, const std::string &msg, bool applyShadow = true) const;
+src/drawers/cTextDrawer.h	39	void drawText(int x, int y, Color color, const std::string &msg, bool applyShadow = true) const;
+src/drawers/cTextDrawer.h	41	void drawTextCentered(const std::string &msg, int y) const;
+src/drawers/cTextDrawer.h	43	void drawTextCentered(const std::string &msg, int y, Color color) const;
+src/drawers/cTextDrawer.h	45	void drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const;
+src/drawers/cTextDrawer.h	52	void drawTextCenteredInBox(const std::string &msg, int x, int y, int boxWidth, int boxHeight, Color color) const;
+src/drawers/cTextDrawer.h	54	void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const;
+src/drawers/cTextDrawer.h	56	void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const;
+src/drawers/cTextDrawer.h	57	void drawTextScaledCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;
+src/drawers/cTextDrawer.h	58	void drawTextScaledOpticallyCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;
+src/drawers/cTextDrawer.h	60	void drawTextBottomRight(const std::string &msg, int margin=0) const;
+src/drawers/cTextDrawer.h	62	void drawTextBottomLeft(const std::string &msg, int margin=0) const;
+src/drawers/cTextDrawer.h	64	void drawTextBottomRight(Color color, const std::string &msg,int margin =0) const;
+src/drawers/cTextDrawer.h	66	void drawTextBottomLeft(Color color, const std::string &msg,int margin =0) const;
+src/drawers/cUnitDrawer.cpp	143	textDrawer->drawText(drawx + 26, drawy - 11, Color::Black, groups);
+src/drawers/cUnitDrawer.cpp	144	textDrawer->drawText(drawx + 26, drawy - 12, Color::White, groups);
+src/drawers/cUnitDrawer.cpp	363	"textDrawer->drawText(m_unit.draw_x(), m_unit.draw_y(), Color{255, 255, 255,ShadowTrans}, std::format(""{}"", m_unit.iID));"
+src/drawers/cUnitDrawer.cpp	365	"textDrawer->drawText(m_unit.draw_x(), m_unit.draw_y()-16, Color{255,255,255,255}, std::format(""{} / {} / {}"", m_unit.getUnitsEaten(), m_unit.guardTimer.get(), m_unit.movewaitTimer.get()));"
+src/game/cGame_logic.cpp	1411	m_notificationArea->addNotification(notifEvent->message, notifEvent->type);
+src/game/cGame_logic.cpp	1576	m_notificationArea->addNotification(message, eNotificationType::OTHER);
+src/game/cNotificationArea.cpp	35	void cNotificationArea::addNotification(const std::string &msg, eNotificationType type)
+src/game/cNotificationArea.cpp	67	textDrawer->drawText(x, y, notification.getColor(), notification.getMessage());
+src/game/cNotificationArea.h	31	void addNotification(const std::string &msg, eNotificationType type);
+src/gameobjects/mentat/AbstractMentat.cpp	299	m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{0, 0, 0,255},sentence[iMentatSentence]);
+src/gameobjects/mentat/AbstractMentat.cpp	300	m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{255, 255, 255,255},sentence[iMentatSentence]);
+src/gameobjects/mentat/AbstractMentat.cpp	302	m_textDrawer->drawText(offsetX + 17, offsetY + 37,Color{0, 0, 0,255},sentence[iMentatSentence+1]);
+src/gameobjects/mentat/AbstractMentat.cpp	303	m_textDrawer->drawText(offsetX + 17, offsetY + 36,Color{255, 255, 255,255},sentence[iMentatSentence+1]);
+src/gameobjects/mentat/BeneMentat.cpp	97	m_textDrawer->drawText(offsetX + 17, offsetY + 17, Color{0, 0, 0,255}, msg);
+src/gameobjects/mentat/BeneMentat.cpp	98	m_textDrawer->drawText(offsetX + 16, offsetY + 16, Color{255, 214, 137,255}, msg);
+src/gameobjects/players/cPlayer.cpp	1654	// addNotification(msg, eNotificationType::BAD);
+src/gameobjects/players/cPlayer.cpp	1671	// addNotification(msg, eNotificationType::BAD);
+src/gameobjects/players/cPlayer.cpp	1690	// addNotification(msg, eNotificationType::PRIORITY);
+src/gameobjects/players/cPlayer.cpp	1746	//addNotification(msg, eNotificationType::PRIORITY);
+src/gameobjects/players/cPlayer.cpp	2227	"// addNotification(""You've lost a Harvester."", eNotificationType::PRIORITY);"
+src/gameobjects/players/cPlayer.cpp	2243	"//addNotification(""You have one Harvester left."", eNotificationType::NEUTRAL);"
+src/gameobjects/players/cPlayer.cpp	2265	"// addNotification(""No harvesters and refineries left!"", eNotificationType::BAD);"
+src/gameobjects/players/cPlayer.cpp	2295	"//addNotification(""No more Harvester left, reinforcing..."", BAD);"
+src/gameobjects/structures/cOrderProcesser.cpp	165	m_drawManager->setMessage(msg);
+src/gamestates/cChooseHouseState.cpp	126	m_textDrawer->drawText(
+src/gamestates/cChooseHouseState.cpp	143	m_textDrawer->drawText(
+src/gamestates/cChooseHouseState.cpp	228	m_textDrawer->drawText(
+src/gamestates/cCreditsState.cpp	457	m_textDrawer->drawTextCentered(line.txt.c_str(), textCrawlY, line.color);
+src/gamestates/cCreditsState.cpp	460	m_textDrawer->drawTextCentered(line.name.c_str(), textCrawlY, line.color);
+src/gamestates/cCreditsState.cpp	465	m_textDrawer->drawText(halfScreen+spaceBetween, textCrawlY, line.txt.c_str());
+src/gamestates/cCreditsState.cpp	467	m_textDrawer->drawText(halfScreen - (widthOfName + spaceBetween), textCrawlY, line.name.c_str());
+src/gamestates/cGamePlaying.cpp	283	m_textDrawer->drawTextCentered(label, battlefield->getX(), battlefield->getWidth(), cSideBar::TopBarHeight + 10, fadingYellow);
+src/gamestates/cGamePlaying.cpp	306	drawTextFps();
+src/gamestates/cGamePlaying.cpp	312	drawTextTime();
+src/gamestates/cGamePlaying.cpp	479	void cGamePlaying::drawTextFps() const
+src/gamestates/cGamePlaying.cpp	484	void cGamePlaying::drawTextTime() const
+src/gamestates/cGamePlaying.cpp	487	m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1, Color::White, time);
+src/gamestates/cGamePlaying.cpp	489	m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1 + 15, Color::White, time);
+src/gamestates/cGamePlaying.cpp	670	// m_controlledPlayer->addNotification(
+src/gamestates/cGamePlaying.h	74	void drawTextFps() const;
+src/gamestates/cGamePlaying.h	75	void drawTextTime() const;
+src/gamestates/cMainMenuState.cpp	143	.withLabel(label)
+src/gamestates/cMainMenuState.cpp	251	m_textDrawer->drawTextBottomRight(
+src/gamestates/cMainMenuState.cpp	255	m_textDrawer->drawText(
+src/gamestates/cMainMenuState.cpp	261	"m_textDrawer->drawText(0, 0, std::format(""{}, {}"", m_mouse->getX(), m_mouse->getY()).c_str());"
+src/gamestates/cOptionsState.cpp	392	".withLabel(""<"")"
+src/gamestates/cOptionsState.cpp	404	".withLabel("""")"
+src/gamestates/cOptionsState.cpp	416	".withLabel("">"")"
+src/gamestates/cOptionsState.cpp	440	".withLabel(""<"")"
+src/gamestates/cOptionsState.cpp	452	".withLabel("""")"
+src/gamestates/cOptionsState.cpp	464	".withLabel("">"")"
+src/gamestates/cOptionsState.cpp	516	".withLabel("""")"
+src/gamestates/cOptionsState.cpp	545	"m_statusLabel->setText("""");"
+src/gamestates/cOptionsState.cpp	553	"m_statusLabel->setText("""");"
+src/gamestates/cOptionsState.cpp	563	m_renderScaleValueLabel->setText(scaleChoiceText(renderScale, calculateAutomaticRenderScalePercent(outputW, outputH)));
+src/gamestates/cOptionsState.cpp	564	m_worldScaleValueLabel->setText(scaleChoiceText(worldScale, calculateAutomaticWorldScalePercent(outputH)));
+src/gamestates/cScoringState.cpp	87	m_textDrawer->drawTextCentered(playerName, y, nameColor);
+src/gamestates/cScoringState.cpp	89	m_smallTextDrawer->drawTextCentered(
+src/gamestates/cScoringState.cpp	94	m_smallTextDrawer->drawTextCentered(
+src/gamestates/cScoringState.cpp	99	m_smallTextDrawer->drawTextCentered(
+src/gamestates/cScoringState.cpp	103	m_smallTextDrawer->drawTextCentered(
+src/gamestates/cSelectMissionState.cpp	215	m_textDrawer->drawTextCentered(
+src/gamestates/cSelectYourNextConquestState.cpp	289	m_drawManager->setMessage(regionTextString);
+src/gamestates/cSelectYourNextConquestState.cpp	452	m_textDrawer->drawTextCenteredInBox(
+src/gamestates/cSelectYourNextConquestState.cpp	672	m_textDrawer->drawTextScaledCenteredInBox(
+src/gamestates/cSetupSkirmishState.cpp	447	m_textDrawer->drawTextCentered(
+src/gamestates/cSetupSkirmishState.cpp	456	m_textDrawer->drawTextCentered(
+src/gamestates/cSetupSkirmishState.cpp	464	m_textDrawer->drawTextCentered(
+src/gamestates/cSetupSkirmishState.cpp	489	m_textDrawer->drawTextCentered(
+src/gamestates/cSetupSkirmishState.cpp	569	m_textDrawer->drawTextCentered(
+src/gamestates/cSetupSkirmishState.cpp	583	m_textDrawer->drawTextCentered(
+src/gamestates/cSetupSkirmishState.cpp	595	m_textDrawer->drawTextCentered(
+src/gamestates/cSetupSkirmishState.cpp	624	m_textDrawer->drawTextCentered(
+src/gamestates/cSetupSkirmishState.cpp	636	m_textDrawer->drawTextCentered(
+src/gamestates/cSetupSkirmishState.cpp	646	m_textDrawer->drawTextCentered(
+src/gamestates/cSetupSkirmishState.cpp	707	m_textDrawer->drawText(previewMapRect.getX() + 4, infoY, Color::Yellow, mapName);
+src/gamestates/cSetupSkirmishState.cpp	708	m_textDrawer->drawText(
+src/gamestates/cSetupSkirmishState.cpp	714	m_textDrawer->drawText(
+src/gamestates/cSetupSkirmishState.cpp	720	m_textDrawer->drawText(
+src/gamestates/cSetupSkirmishState.cpp	733	m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), textColor,
+src/gamestates/cSetupSkirmishState.cpp	744	m_textDrawer->drawText(bloomsRect.getX(), bloomsRect.getY(), textColor,
+src/gamestates/cSetupSkirmishState.cpp	751	m_textDrawer->drawText(wormsRect.getX(), wormsRect.getY(), textColor,
+src/gamestates/cSetupSkirmishState.cpp	758	m_textDrawer->drawText(techLevelRect.getX(), techLevelRect.getY(), textColor,
+src/gamestates/cSetupSkirmishState.cpp	1536	m_textDrawer->drawText(iDrawX + 4, iDrawY + 4, textColor, *nameToRender);
+src/gamestates/cWinLoseState.cpp	96	m_textDrawer->drawTextScaledCenteredInBox(
+src/gui/GuiButton.cpp	62	drawText();
+src/gui/GuiButton.cpp	65	drawText();
+src/gui/GuiButton.cpp	79	drawText();
+src/gui/GuiButton.cpp	92	drawText();
+src/gui/GuiButton.cpp	148	drawText();
+src/gui/GuiButton.cpp	159	void GuiButton::setText(const std::string& text)
+src/gui/GuiButton.cpp	189	void GuiButton::drawText() const
+src/gui/GuiButton.cpp	217	m_textDrawer->drawTextScaledOpticallyCenteredInBox(
+src/gui/GuiButton.cpp	227	m_textDrawer->drawText(m_rect.getX() + 1, m_rect.getY() + 1, textColor, m_buttonText.c_str());
+src/gui/GuiButton.cpp	230	m_textDrawer->drawText(m_rect.getX(), m_rect.getY(), textColor, m_buttonText.c_str());
+src/gui/GuiButton.h	44	void setText(const std::string& text) override;
+src/gui/GuiButton.h	84	void drawText() const;
+src/gui/GuiButton.h	112	GuiButtonBuilder& withLabel(const std::string& label) {
+src/gui/GuiConsole.cpp	109	"m_input->setText("""");"
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp	79	"//     m_notificationArea->addNotification(std::format(""Unknown command: {}"", text), eNotificationType::BAD);"
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp	88	"m_notificationArea->addNotification(std::format(""> {}"", normalizedText), eNotificationType::NEUTRAL);"
+src/gui/GuiCycleButton.cpp	82	m_textDrawer->drawText(m_rect.getX() + 5, m_rect.getY() + 3, m_theme.textColor, label);
+src/gui/GuiCycleButton.h	42	void setText(const std::string& text) override { m_displayText = text; }
+src/gui/GuiLabel.cpp	48	drawText();
+src/gui/GuiLabel.cpp	51	drawText();
+src/gui/GuiLabel.cpp	57	drawText();
+src/gui/GuiLabel.cpp	61	drawText();
+src/gui/GuiLabel.cpp	77	void GuiLabel::setText(const std::string& text)
+src/gui/GuiLabel.cpp	97	void GuiLabel::drawText() const
+src/gui/GuiLabel.cpp	103	m_textDrawer->drawTextCenteredInBox(m_buttonText.c_str(), m_rect, textColor);
+src/gui/GuiLabel.cpp	106	m_textDrawer->drawText(m_rect.getX(), m_rect.getY(), textColor, m_buttonText.c_str());
+src/gui/GuiLabel.hpp	55	void setText(const std::string& text) override;
+src/gui/GuiLabel.hpp	77	void drawText() const;
+src/gui/GuiLabel.hpp	99	GuiLabelBuilder& withLabel(const std::string& label) {
+src/gui/GuiObject.h	49	virtual void setText(const std::string& text) = 0;
+src/gui/GuiTextInput.cpp	65	m_writer->drawText(m_rect.getX() + kHorizontalPadding, m_rect.getY() + 4, m_theme.textColor, getFittedDisplayText());
+src/gui/GuiTextInput.cpp	85	void GuiTextInput::setText(const std::string& text)
+src/gui/GuiTextInput.h	36	void setText(const std::string& text) override;
+src/gui/GuiValueButton.cpp	123	m_textDrawer->drawTextCenteredInBox(m_label, topRect, textColor);
+src/gui/GuiValueButton.cpp	125	m_textDrawer->drawTextCenteredInBox(std::to_string(m_value), bottomRect, textColor);
+src/gui/GuiValueButton.cpp	129	m_textDrawer->drawTextCenteredInBox(std::to_string(m_value), m_rect, textColor);
+src/gui/GuiValueButton.h	37	void setText(const std::string& label) override { m_label = label; }
+src/gui/GuiValueButton.h	120	GuiValueButtonBuilder& withLabel(const std::string& label) {
+src/gui/GuiWindow.cpp	50	m_textDrawer->drawTextCentered(title.c_str(), m_rect.getX(), m_rect.getWidth(), m_rect.getY() + 2, Color::Yellow);
+src/gui/cTextWriter.cpp	41	m_textDrawer->drawText(drawX, drawY, msg);
+src/gui/cTextWriter.cpp	47	m_textDrawer->drawText(drawX, drawY, color, msg);
+src/managers/cDrawManager.cpp	450	void cDrawManager::setMessage(std::string msg, bool keepMessage)
+src/managers/cDrawManager.cpp	452	m_messageDrawer->setMessage(msg, keepMessage);
+src/managers/cDrawManager.h	104	void setMessage(std::string msg, bool keepMessage = false);
+src/sidebar/cSideBar.cpp	92	m_drawManager->setMessage(item->getInfo());

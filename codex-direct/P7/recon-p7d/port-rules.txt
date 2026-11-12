@@ -1,0 +1,14 @@
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/Preferences.cpp:122:    if (section.hasValue("GameRules")) {
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/Preferences.cpp:123:        settings.gameFilename = section.getStringValue("GameRules");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/Preferences.cpp:194:    set(ini, "GameRules", settings.gameFilename);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame.h:98:        m_gameFilename = filename;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame.h:192:    std::string m_gameFilename;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:338:    m_gameFilename = gs->gameFilename;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:373:    gs.gameFilename = m_gameFilename;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:426:    m_cIni->installGame(m_gameFilename);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:715:    std::shared_ptr<cIniFile> gamesCfg = std::make_shared<cIniFile>(m_gameFilename);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:866:    m_cIni->installGame(m_gameFilename);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/InitialGameSettings.hpp:46:    std::string gameFilename = "game.ini";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/cHandleArgument.cpp:66:                    settings->gameFilename = std::string(argv[i]);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/ini.cpp:380:    Logger::info(COMP_GAMERULES, "cIni::installGame", "[GameRules] Opening file");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/ini.cpp:390:        Logger::error(COMP_GAMERULES, "cIni::installGame", "[GameRules] Error, could not open file");

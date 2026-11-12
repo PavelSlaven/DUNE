@@ -1,0 +1,51 @@
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/CampaignProgress.cpp:55:        error = "Could not check campaign progress file: " + filesystemError.message();
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/CampaignProgress.cpp:65:        error = "Could not open campaign progress file";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/CampaignProgress.cpp:129:        error = "Could not create campaign progress directory: " + filesystemError.message();
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/CampaignProgress.cpp:144:        error = "Could not write campaign progress file";
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/CampaignProgress.cpp:149:        error = "Could not replace campaign progress file: " + filesystemError.message();
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/PreferencesPath.hpp:22:// The one place that knows where per-user data (campaign progress, preferences) lives.
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame.h:269:    std::unique_ptr<CampaignProgress> m_campaignProgress;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:467:    if (!m_campaignProgress->save(error)) {
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:468:        Logger::error(COMP_GAME, "Campaign progress", "Could not save campaign progress: {}", error);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:475:    if (!m_gameSettings->isSkirmish() && m_campaignProgress &&
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:477:        m_campaignProgress->recordMissionVictory(m_dataCampaign->housePlayer, m_dataCampaign->mission)) {
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:766:    const auto progressFile = PreferencesPath::file("campaign-progress.ini");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:768:        Logger::warn(COMP_INIT, "Campaign progress", "Could not get the user data directory, campaign progress is not remembered");
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:770:        m_campaignProgress = std::make_unique<CampaignProgress>(*progressFile);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:771:        m_services->campaignProgress = m_campaignProgress.get();
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:773:        const CampaignProgressLoadResult progressLoadResult = m_campaignProgress->load(progressError);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:951:    if (newState == GAME_BRIEFING && m_state == GAME_TELLHOUSE && m_campaignProgress &&
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:953:        m_campaignProgress->markStarted(m_dataCampaign->housePlayer)) {
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:1022:            // a new campaign starts, so drop the conquest state of the previous one (it would skip the intro)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:1223:                // the defeated human player is reset to GENERALHOUSE, so use the remembered campaign house
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:1263:    const int nextMission = m_campaignProgress && CampaignProgress::supportsHouse(house)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:1264:        ? m_campaignProgress->nextMission(house)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/game/cGame_logic.cpp:1339:    Logger::info(COMP_GAME, "cGame::changeStateFromMentat", "state {}, campaign mission {}, region {}", m_state, m_dataCampaign->mission, m_dataCampaign->region);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/brains/cPlayerBrainCampaign.h:29: * The cPlayerBrainCampaign is responsible for being an AI brain during campaign missions. This is different
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayers.cpp:182:                        autoSlabStructures = true;  // campaign based AI's autoslab structures...
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gameobjects/players/cPlayers.h:104:     * @param dataCampaign Campaign data (for campaign-specific AI brain initialization)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectMissionState.cpp:69:    const int highestUnlockedMission = services->campaignProgress && CampaignProgress::supportsHouse(house)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectMissionState.cpp:70:        ? services->campaignProgress->highestUnlockedMission(house)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectMissionState.cpp:72:    const bool campaignCompleted = services->campaignProgress &&
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectMissionState.cpp:73:        services->campaignProgress->nextMission(house) == CampaignProgress::COMPLETED;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectMissionState.cpp:118:        .onClick([this, campaignCompleted, highestUnlockedMission]() {
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectMissionState.cpp:119:            if (campaignCompleted) {
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectYourNextConquestState.cpp:127:        "HD campaign map background"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectYourNextConquestState.cpp:131:        "campaign_map.png",
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectYourNextConquestState.cpp:132:        "HD campaign map"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectYourNextConquestState.cpp:153:            "HD campaign house crest"
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectYourNextConquestState.cpp:347:        uiaudit::recordClick("campaign-region-map", mapRect.getX(), mapRect.getY(), mapRect.getWidth(), mapRect.getHeight());
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectYourNextConquestState.cpp:835:    // Every house has a different campaign, so...
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSelectYourNextConquestState.h:56:// these are the 3 iconic 'scenes' the campaign overview shows, and ends with "Select your next conquest
+405355e96f07a83da96b76cc2832a09c9c43e825:src/gamestates/cSetupSkirmishState.cpp:1056:            // all other AI's are their own team (campaign == AI's are friends, here they are enemies)
+405355e96f07a83da96b76cc2832a09c9c43e825:src/include/sGameServices.h:59:    CampaignProgress *campaignProgress = nullptr;
+405355e96f07a83da96b76cc2832a09c9c43e825:src/sidebar/cBuildingListUpdater.cpp:60:            // but on campaign missions, the AI has to cheat in order to be more fun...
+405355e96f07a83da96b76cc2832a09c9c43e825:src/sidebar/cBuildingListUpdater.cpp:535:            // but on campaign missions, the AI has to cheat in order to be more fun...
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/IniParsing.hpp:53:// Name of the directory (below campaign/) that holds the files of the given house
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/IniParsing.hpp:57:// Mission (tech level) that belongs to a campaign region
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/IniParsing.hpp:60:// Reads a campaign scenario into ScenarioData. Does not touch any game object.
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/IniParsing.hpp:66:// The content of a campaign missionN.ini file, before any game object is touched
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/ScenarioData.hpp:27: * The content of a campaign scenario INI file, as read from disk and before any game object is touched.
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/cIniUtils.cpp:246:    return std::format("campaign/maps/scen{}{:03}.ini", cHouse, iRegion);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/ini.cpp:83:    auto filename = std::format("campaign/{}/mission{}.ini", getHouseDirectoryName(iHouse), iMission);
+405355e96f07a83da96b76cc2832a09c9c43e825:src/utils/ini.cpp:358:    auto path = std::string("campaign/briefings/") + getBriefingFileName(iHouse);
