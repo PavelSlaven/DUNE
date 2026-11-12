@@ -21,6 +21,42 @@
 #include <format>
 #include <tuple>
 
+namespace {
+
+bool isSameKey(SDL_Scancode first, SDL_Scancode second)
+{
+    if (first == second) {
+        return true;
+    }
+    const auto isShift = [](SDL_Scancode sc) { return sc == SDL_SCANCODE_LSHIFT || sc == SDL_SCANCODE_RSHIFT; };
+    const auto isAlt = [](SDL_Scancode sc) { return sc == SDL_SCANCODE_LALT || sc == SDL_SCANCODE_RALT; };
+    return (isShift(first) && isShift(second)) || (isAlt(first) && isAlt(second));
+}
+
+bool bindingsOverlap(const s_KeyBinding &first, const s_KeyBinding &second)
+{
+    if (first.requireCtrl != second.requireCtrl || first.requireAlt != second.requireAlt ||
+        first.requireShift != second.requireShift || first.requireTab != second.requireTab) {
+        return false;
+    }
+    for (SDL_Scancode firstKey : first.keys) {
+        for (SDL_Scancode secondKey : second.keys) {
+            if (isSameKey(firstKey, secondKey)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+std::string keyName(SDL_Scancode scancode)
+{
+    const char *name = SDL_GetScancodeName(scancode);
+    return name != nullptr ? name : "";
+}
+
+}
+
 void cKeyBindings::loadDefaults()
 {
     // Global
@@ -350,6 +386,163 @@ std::string cKeyBindings::getFirstKeyDisplayName(eKeyAction action) const
     }
     const char *name = SDL_GetScancodeName(first);
     return name != nullptr ? name : "";
+}
+
+std::string cKeyBindings::getActionName(eKeyAction action)
+{
+    for (const auto &[name, candidate] : getActionTable()) {
+        if (candidate == action) {
+            return name;
+        }
+    }
+    return "";
+}
+
+const s_KeyBinding *cKeyBindings::getBinding(eKeyAction action) const
+{
+    const auto it = m_bindings.find(action);
+    return it == m_bindings.end() ? nullptr : &it->second;
+}
+
+void cKeyBindings::setBinding(eKeyAction action, const s_KeyBinding &binding)
+{
+    m_bindings[action] = binding;
+}
+
+std::vector<std::pair<eKeyAction, eKeyAction>> cKeyBindings::getDefaultSharedPairs()
+{
+    cKeyBindings defaults;
+    defaults.loadDefaults();
+    const auto &table = getActionTable();
+    std::vector<std::pair<eKeyAction, eKeyAction>> pairs;
+    for (std::size_t first = 0; first < table.size(); ++first) {
+        for (std::size_t second = first + 1; second < table.size(); ++second) {
+            const s_KeyBinding *firstBinding = defaults.getBinding(table[first].second);
+            const s_KeyBinding *secondBinding = defaults.getBinding(table[second].second);
+            if (firstBinding != nullptr && secondBinding != nullptr && bindingsOverlap(*firstBinding, *secondBinding)) {
+                pairs.emplace_back(table[first].second, table[second].second);
+            }
+        }
+    }
+    return pairs;
+}
+
+std::optional<eKeyAction> cKeyBindings::findConflict(eKeyAction action, const s_KeyBinding &candidate) const
+{
+    static const std::vector<std::pair<eKeyAction, eKeyAction>> sharedPairs = getDefaultSharedPairs();
+    const auto isSharedPair = [action](eKeyAction other) {
+        return std::any_of(sharedPairs.begin(), sharedPairs.end(), [action, other](const auto &pair) {
+            return (pair.first == action && pair.second == other) || (pair.first == other && pair.second == action);
+        });
+    };
+    for (const auto &[name, other] : getActionTable()) {
+        if (other == action || isSharedPair(other)) {
+            continue;
+        }
+        const s_KeyBinding *binding = getBinding(other);
+        if (binding != nullptr && bindingsOverlap(candidate, *binding)) {
+            return other;
+        }
+    }
+    return std::nullopt;
+}
+
+std::optional<eKeyAction> cKeyBindings::trySetBinding(eKeyAction action, const s_KeyBinding &binding)
+{
+    const std::optional<eKeyAction> conflict = findConflict(action, binding);
+    if (!conflict) {
+        setBinding(action, binding);
+    }
+    return conflict;
+}
+
+std::string cKeyBindings::toIniValue(eKeyAction action) const
+{
+    const s_KeyBinding *binding = getBinding(action);
+    if (binding == nullptr) {
+        return "";
+    }
+    std::string value;
+    const auto append = [&value](const std::string &token) {
+        if (!value.empty()) {
+            value += ",";
+        }
+        value += token;
+    };
+    if (binding->requireCtrl) append("Ctrl");
+    if (binding->requireAlt) append("Alt");
+    if (binding->requireShift) append("Shift");
+    if (binding->requireTab) append("Tab");
+    for (SDL_Scancode scancode : binding->keys) {
+        append(keyName(scancode));
+    }
+    return value;
+}
+
+std::string cKeyBindings::describeBinding(const s_KeyBinding &binding)
+{
+    std::string text;
+    if (binding.requireCtrl) text += "Ctrl+";
+    if (binding.requireAlt) text += "Alt+";
+    if (binding.requireShift) text += "Shift+";
+    if (binding.requireTab) text += "Tab+";
+    const auto contains = [&binding](SDL_Scancode scancode) {
+        return std::find(binding.keys.begin(), binding.keys.end(), scancode) != binding.keys.end();
+    };
+    std::string keys;
+    const auto append = [&keys](const std::string &name) {
+        if (!keys.empty()) {
+            keys += " / ";
+        }
+        keys += name;
+    };
+    const auto appendGroup = [&](SDL_Scancode scancode, SDL_Scancode left, SDL_Scancode right, const char *name) {
+        if ((scancode != left && scancode != right) || !contains(left) || !contains(right)) {
+            return false;
+        }
+        if (scancode == left) {
+            append(name);
+        }
+        return true;
+    };
+    for (SDL_Scancode scancode : binding.keys) {
+        if (appendGroup(scancode, SDL_SCANCODE_LCTRL, SDL_SCANCODE_RCTRL, "Ctrl") ||
+            appendGroup(scancode, SDL_SCANCODE_LSHIFT, SDL_SCANCODE_RSHIFT, "Shift") ||
+            appendGroup(scancode, SDL_SCANCODE_LALT, SDL_SCANCODE_RALT, "Alt")) {
+            continue;
+        }
+        append(keyName(scancode));
+    }
+    return text + keys;
+}
+
+std::string cKeyBindings::getBindingDisplayName(eKeyAction action) const
+{
+    const s_KeyBinding *binding = getBinding(action);
+    return binding == nullptr ? "" : describeBinding(*binding);
+}
+
+s_KeyBinding cKeyBindings::makeCapturedBinding(SDL_Scancode key, const s_KeysCombo &combo)
+{
+    s_KeyBinding binding;
+    binding.keys = {key};
+    const bool keyIsCtrl = key == SDL_SCANCODE_LCTRL || key == SDL_SCANCODE_RCTRL;
+    const bool keyIsAlt = key == SDL_SCANCODE_LALT || key == SDL_SCANCODE_RALT;
+    const bool keyIsShift = key == SDL_SCANCODE_LSHIFT || key == SDL_SCANCODE_RSHIFT;
+    binding.requireCtrl = combo.ctrlPressed && !keyIsCtrl;
+    binding.requireAlt = combo.altPressed && !keyIsAlt;
+    binding.requireShift = combo.shiftPressed && !keyIsShift;
+    binding.requireTab = combo.tabPressed && key != SDL_SCANCODE_TAB;
+    return binding;
+}
+
+bool cKeyBindings::canStoreKey(SDL_Scancode key)
+{
+    if (key <= SDL_SCANCODE_UNKNOWN || key >= SDL_SCANCODE_COUNT || key == SDL_SCANCODE_TAB) {
+        return false;
+    }
+    const std::string name = keyName(key);
+    return !name.empty() && name.find(',') == std::string::npos;
 }
 
 void cKeyBindings::bind(eKeyAction action, std::initializer_list<SDL_Scancode> keys,

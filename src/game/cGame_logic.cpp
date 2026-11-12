@@ -117,6 +117,7 @@
 #include "utils/Localization.hpp"
 #include "drawers/CommandBarLayout.hpp"
 #include "sidebar/cSideBar.h"
+#include "game/Preferences.hpp"
 
 namespace {
 bool isConsoleToggleKey(const cKeyboardEvent &event) {
@@ -331,6 +332,13 @@ void cGame::applySettings(std::unique_ptr<InitialGameSettings> gs)
     m_cameraBorderOrKeyMoveSpeed = gs->cameraBorderOrKeyMoveSpeed;
     m_cameraEdgeMove = gs->cameraEdgeMove;
     m_windowed = gs->windowed;
+    m_gameSettings->m_windowed = gs->windowed;
+    m_gameSettings->m_requestedScreenW = gs->screenW;
+    m_gameSettings->m_requestedScreenH = gs->screenH;
+    m_gameSettings->m_cameraEdgeMove = gs->cameraEdgeMove;
+    m_gameSettings->m_cameraDragMoveSpeed = gs->cameraDragMoveSpeed;
+    m_gameSettings->m_cameraBorderOrKeyMoveSpeed = gs->cameraBorderOrKeyMoveSpeed;
+    m_gameSettings->m_pauseWhenLosingFocus = gs->pauseWhenLosingFocus;
 
     m_gameSettings->m_allowRepeatingReinforcements = gs->allowRepeatingReinforcements;
     m_gameSettings->setTurretsDownOnLowPower(gs->turretsDownOnLowPower);
@@ -781,6 +789,13 @@ bool cGame::setupGame()
         m_keyboard->loadKeyBindings();
     }
     Logger::info(COMP_INIT, "Initializing Key Bindings", "Loaded from [KEYS] section");
+    if (const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME)) {
+        cSection chosenKeys;
+        std::string keysError;
+        if (Preferences::loadKeyBindings(*prefsFile, chosenKeys, keysError)) {
+            m_keyboard->getKeyBindings()->loadFromSection(chosenKeys);
+        }
+    }
     m_services->keyboard = m_keyboard.get();
 
     m_Screen = std::make_unique<cSDLSystem>(m_gameSettings->m_screenW, m_gameSettings->m_screenH, title, m_windowed);
@@ -1603,6 +1618,7 @@ void cGame::onKeyPressedGame(const cKeyboardEvent &event)
             m_Screen->setWindowMode();
             m_windowed = true;
         }
+        m_gameSettings->m_windowed = m_windowed;
     }
 
     if (event.isAction(eKeyAction::TOGGLE_CHEAT)) {

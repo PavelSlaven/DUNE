@@ -18,6 +18,7 @@
 
 #include "utils/cIniFile.h"
 #include "utils/InitialGameSettings.hpp"
+#include <algorithm>
 
 namespace Preferences {
 
@@ -41,7 +42,7 @@ void set(cIniFile &ini, const char *key, const std::string &value)
     ini.setValue(SECTION, key, value);
 }
 
-bool loadIni(const std::filesystem::path &file, cIniFile &ini, std::string &error)
+bool loadAnyIni(const std::filesystem::path &file, cIniFile &ini, std::string &error)
 {
     std::error_code filesystemError;
     if (!std::filesystem::exists(file, filesystemError)) {
@@ -49,7 +50,19 @@ bool loadIni(const std::filesystem::path &file, cIniFile &ini, std::string &erro
         return false;
     }
 
-    if (!ini.load(utf8FileName(file)) || !ini.hasSection(SECTION)) {
+    if (!ini.load(utf8FileName(file))) {
+        error = "Preferences file is unusable: " + utf8FileName(file);
+        return false;
+    }
+    return true;
+}
+
+bool loadIni(const std::filesystem::path &file, cIniFile &ini, std::string &error)
+{
+    if (!loadAnyIni(file, ini, error)) {
+        return false;
+    }
+    if (!ini.hasSection(SECTION)) {
         error = "Preferences file is unusable: " + utf8FileName(file);
         return false;
     }
@@ -78,6 +91,54 @@ bool writeIni(const cIniFile &ini, const std::filesystem::path &file, std::strin
         return false;
     }
     return true;
+}
+
+constexpr const char *KEYS_SECTION = "KEYS";
+
+KeyValues settingsValues(const InitialGameSettings &settings)
+{
+    return {
+        {"ScreenWidth", std::to_string(settings.screenW)},
+        {"ScreenHeight", std::to_string(settings.screenH)},
+        {"CameraDragMoveSpeed", std::to_string(settings.cameraDragMoveSpeed)},
+        {"CameraBorderOrKeyMoveSpeed", std::to_string(settings.cameraBorderOrKeyMoveSpeed)},
+        {"FullScreen", toText(!settings.windowed)},
+        {"CameraEdgeMove", toText(settings.cameraEdgeMove)},
+        {"RenderScale", std::to_string(settings.renderScalePercent)},
+        {"WorldScale", std::to_string(settings.worldScalePercent)},
+        {"Language", settings.language},
+        {"AllowRepeatingReinforcements", toText(settings.allowRepeatingReinforcements)},
+        {"AllTurretsDownOnLowPower", toText(settings.turretsDownOnLowPower)},
+        {"RocketTurretsDownOnLowPower", toText(settings.rocketTurretsDownOnLowPower)},
+        {"ShowLowPowerIcon", toText(settings.showLowPowerIcon)},
+        {"GameRules", settings.gameFilename},
+        {"NoAI", toText(settings.disableAI)},
+        {"Debug", toText(settings.debugMode)},
+        {"playMusic", toText(settings.playMusic)},
+        {"customMusic", toText(settings.customMusic)},
+        {"playSound", toText(settings.playSound)},
+        {"playCreditsSound", toText(settings.playCreditsSound)},
+        {"drawUnitDebug", toText(settings.drawUnitDebug)},
+        {"oneAi", toText(settings.oneAi)},
+        {"disableWormAi", toText(settings.disableWormAi)},
+        {"disableReinforcements", toText(settings.disableReinforcements)},
+        {"noAiRest", toText(settings.noAiRest)},
+        {"drawUsages", toText(settings.drawUsages)},
+        {"pauseWhenLosingFocus", toText(settings.pauseWhenLosingFocus)},
+        {"fogOfWarEnabled", toText(settings.fogOfWarEnabled)},
+    };
+}
+
+bool saveInSection(const std::filesystem::path &file, const char *section, const KeyValues &values, std::string &error)
+{
+    cIniFile loaded;
+    std::string loadError;
+    cIniFile fresh;
+    cIniFile &ini = loadAnyIni(file, loaded, loadError) ? loaded : fresh;
+    for (const auto &[key, value] : values) {
+        ini.setValue(section, key, value);
+    }
+    return writeIni(ini, file, error);
 }
 }
 
@@ -182,34 +243,9 @@ bool load(const std::filesystem::path &file, InitialGameSettings &settings, std:
 bool save(const std::filesystem::path &file, const InitialGameSettings &settings, std::string &error)
 {
     cIniFile ini;
-    set(ini, "ScreenWidth", std::to_string(settings.screenW));
-    set(ini, "ScreenHeight", std::to_string(settings.screenH));
-    set(ini, "CameraDragMoveSpeed", std::to_string(settings.cameraDragMoveSpeed));
-    set(ini, "CameraBorderOrKeyMoveSpeed", std::to_string(settings.cameraBorderOrKeyMoveSpeed));
-    set(ini, "FullScreen", toText(!settings.windowed));
-    set(ini, "CameraEdgeMove", toText(settings.cameraEdgeMove));
-    set(ini, "RenderScale", std::to_string(settings.renderScalePercent));
-    set(ini, "WorldScale", std::to_string(settings.worldScalePercent));
-    set(ini, "Language", settings.language);
-    set(ini, "AllowRepeatingReinforcements", toText(settings.allowRepeatingReinforcements));
-    set(ini, "AllTurretsDownOnLowPower", toText(settings.turretsDownOnLowPower));
-    set(ini, "RocketTurretsDownOnLowPower", toText(settings.rocketTurretsDownOnLowPower));
-    set(ini, "ShowLowPowerIcon", toText(settings.showLowPowerIcon));
-    set(ini, "GameRules", settings.gameFilename);
-    set(ini, "NoAI", toText(settings.disableAI));
-    set(ini, "Debug", toText(settings.debugMode));
-    set(ini, "playMusic", toText(settings.playMusic));
-    set(ini, "customMusic", toText(settings.customMusic));
-    set(ini, "playSound", toText(settings.playSound));
-    set(ini, "playCreditsSound", toText(settings.playCreditsSound));
-    set(ini, "drawUnitDebug", toText(settings.drawUnitDebug));
-    set(ini, "oneAi", toText(settings.oneAi));
-    set(ini, "disableWormAi", toText(settings.disableWormAi));
-    set(ini, "disableReinforcements", toText(settings.disableReinforcements));
-    set(ini, "noAiRest", toText(settings.noAiRest));
-    set(ini, "drawUsages", toText(settings.drawUsages));
-    set(ini, "pauseWhenLosingFocus", toText(settings.pauseWhenLosingFocus));
-    set(ini, "fogOfWarEnabled", toText(settings.fogOfWarEnabled));
+    for (const auto &[key, value] : settingsValues(settings)) {
+        set(ini, key.c_str(), value);
+    }
 
     return writeIni(ini, file, error);
 }
@@ -223,7 +259,7 @@ bool saveScales(
     cIniFile loaded;
     std::string loadError;
     cIniFile fresh;
-    cIniFile &ini = loadIni(file, loaded, loadError) ? loaded : fresh;
+    cIniFile &ini = loadAnyIni(file, loaded, loadError) ? loaded : fresh;
     set(ini, "RenderScale", std::to_string(renderScalePercent));
     set(ini, "WorldScale", std::to_string(worldScalePercent));
     return writeIni(ini, file, error);
@@ -251,7 +287,7 @@ bool saveLanguage(const std::filesystem::path &file, const std::string &language
     cIniFile loaded;
     std::string loadError;
     cIniFile fresh;
-    cIniFile &ini = loadIni(file, loaded, loadError) ? loaded : fresh;
+    cIniFile &ini = loadAnyIni(file, loaded, loadError) ? loaded : fresh;
     set(ini, "Language", language);
     return writeIni(ini, file, error);
 }
@@ -268,6 +304,89 @@ bool loadLanguage(const std::filesystem::path &file, InitialGameSettings &settin
         settings.language = section.getStringValue("Language");
     }
     return true;
+}
+
+bool loadChosenOptions(const std::filesystem::path &file, InitialGameSettings &settings, std::string &error)
+{
+    cIniFile ini;
+    if (!loadIni(file, ini, error)) {
+        return false;
+    }
+
+    InitialGameSettings loaded = settings;
+    readSettings(ini.getSection(SECTION), loaded);
+    settings.screenW = loaded.screenW;
+    settings.screenH = loaded.screenH;
+    settings.windowed = loaded.windowed;
+    settings.cameraDragMoveSpeed = loaded.cameraDragMoveSpeed;
+    settings.cameraBorderOrKeyMoveSpeed = loaded.cameraBorderOrKeyMoveSpeed;
+    settings.cameraEdgeMove = loaded.cameraEdgeMove;
+    settings.renderScalePercent = loaded.renderScalePercent;
+    settings.worldScalePercent = loaded.worldScalePercent;
+    settings.language = loaded.language;
+    settings.allowRepeatingReinforcements = loaded.allowRepeatingReinforcements;
+    settings.turretsDownOnLowPower = loaded.turretsDownOnLowPower;
+    settings.rocketTurretsDownOnLowPower = loaded.rocketTurretsDownOnLowPower;
+    settings.disableAI = loaded.disableAI;
+    settings.debugMode = loaded.debugMode;
+    settings.drawUnitDebug = loaded.drawUnitDebug;
+    settings.oneAi = loaded.oneAi;
+    settings.disableWormAi = loaded.disableWormAi;
+    settings.disableReinforcements = loaded.disableReinforcements;
+    settings.noAiRest = loaded.noAiRest;
+    settings.drawUsages = loaded.drawUsages;
+    settings.pauseWhenLosingFocus = loaded.pauseWhenLosingFocus;
+    return true;
+}
+
+KeyValues valuesOf(const InitialGameSettings &settings, std::span<const std::string_view> keys)
+{
+    const KeyValues all = settingsValues(settings);
+    KeyValues result;
+    for (const std::string_view key : keys) {
+        const auto found = std::find_if(all.begin(), all.end(), [key](const auto &entry) { return entry.first == key; });
+        if (found != all.end()) {
+            result.push_back(*found);
+        }
+    }
+    return result;
+}
+
+bool saveValues(const std::filesystem::path &file, const KeyValues &values, std::string &error)
+{
+    return saveInSection(file, SECTION, values, error);
+}
+
+bool saveOnExit(const std::filesystem::path &file, const InitialGameSettings &settings, std::string &error)
+{
+    // The chosen keys are written only by the options menu: values changed by command-line options must not
+    // become the player's choice, and a key the player never chose must not shadow settings.ini.
+    KeyValues unchosen;
+    for (const auto &entry : settingsValues(settings)) {
+        if (std::find(CHOSEN_KEYS.begin(), CHOSEN_KEYS.end(), entry.first) == CHOSEN_KEYS.end()) {
+            unchosen.push_back(entry);
+        }
+    }
+    return saveInSection(file, SECTION, unchosen, error);
+}
+
+bool loadKeyBindings(const std::filesystem::path &file, cSection &section, std::string &error)
+{
+    cIniFile ini;
+    if (!loadAnyIni(file, ini, error)) {
+        return false;
+    }
+    if (!ini.hasSection(KEYS_SECTION)) {
+        error = "No key bindings in " + utf8FileName(file);
+        return false;
+    }
+    section = ini.getSection(KEYS_SECTION);
+    return true;
+}
+
+bool saveKeyBindings(const std::filesystem::path &file, const KeyValues &values, std::string &error)
+{
+    return saveInSection(file, KEYS_SECTION, values, error);
 }
 
 }

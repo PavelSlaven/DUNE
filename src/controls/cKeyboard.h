@@ -43,6 +43,7 @@ public:
     void loadKeyBindings(const cSection *section = nullptr);
 
     [[nodiscard]] const cKeyBindings *getKeyBindings() const { return m_keyBindings.get(); }
+    [[nodiscard]] cKeyBindings *getKeyBindings() { return m_keyBindings.get(); }
 
 private:
     cInputObserver *m_keyboardObserver;
