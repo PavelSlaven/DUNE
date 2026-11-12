@@ -1,6 +1,7 @@
 #include "debug/UiAudit.hpp"
 
 #include "game/cGame.h"
+#include "game/GameStateMachine.hpp"
 #include "game/CampaignProgress.hpp"
 #include "game/cGameSettings.h"
 #include "game/cScreenFader.h"
@@ -67,12 +68,12 @@
 
 int UiAuditAccess::state(const cGame &currentGame)
 {
-    return currentGame.m_currentState == nullptr ? -1 : static_cast<int>(currentGame.m_currentState->getType());
+    return currentGame.m_stateMachine->getCurrentState() == nullptr ? -1 : static_cast<int>(currentGame.m_stateMachine->getCurrentState()->getType());
 }
 
 const cGameState *UiAuditAccess::currentState(const cGame &currentGame)
 {
-    return currentGame.m_currentState;
+    return currentGame.m_stateMachine->getCurrentState();
 }
 
 SDL_Renderer *UiAuditAccess::renderer(cGame &currentGame)
@@ -90,7 +91,7 @@ int UiAuditAccess::worldScale(const cGame &currentGame)
     return currentGame.m_gameSettings->m_worldScalePercent;
 }
 
-void UiAuditAccess::setState(cGame &currentGame, int state)
+void UiAuditAccess::setState(cGame &currentGame, eGameState state)
 {
     currentGame.setState(state);
 }
@@ -123,23 +124,23 @@ bool UiAuditAccess::prepareMentatScene(cGame &currentGame, int house, int kind)
     currentGame.m_dataCampaign->mission = CampaignProgress::FIRST_MISSION;
     currentGame.m_dataCampaign->region = 1;
     if (kind == 0) {
-        currentGame.setNextStateToTransitionTo(GAME_BRIEFING);
+        currentGame.setNextStateToTransitionTo(eGameState::BRIEFING);
         currentGame.transitionStateIfRequired();
     }
     else {
-        currentGame.setState(kind == 1 ? GAME_WINBRIEF : GAME_LOSEBRIEF);
+        currentGame.setState(kind == 1 ? eGameState::WINBRIEF : eGameState::LOSEBRIEF);
     }
-    auto *mentatState = dynamic_cast<cMentatState *>(currentGame.m_currentState);
+    auto *mentatState = dynamic_cast<cMentatState *>(currentGame.m_stateMachine->getCurrentState());
     return mentatState != nullptr && mentatState->m_mentat != nullptr;
 }
 
 bool UiAuditAccess::mentatFreeze(cGame &currentGame, bool awaiting)
 {
     AbstractMentat *mentat = nullptr;
-    if (auto *mentatState = dynamic_cast<cMentatState *>(currentGame.m_currentState)) {
+    if (auto *mentatState = dynamic_cast<cMentatState *>(currentGame.m_stateMachine->getCurrentState())) {
         mentat = mentatState->m_mentat.get();
     }
-    else if (auto *tellHouseState = dynamic_cast<cTellHouseState *>(currentGame.m_currentState)) {
+    else if (auto *tellHouseState = dynamic_cast<cTellHouseState *>(currentGame.m_stateMachine->getCurrentState())) {
         mentat = tellHouseState->m_mentat.get();
     }
     if (mentat == nullptr) {
@@ -166,8 +167,8 @@ bool UiAuditAccess::mentatFreeze(cGame &currentGame, bool awaiting)
 
 bool UiAuditAccess::prepareSkirmish(cGame &currentGame, int variant)
 {
-    currentGame.setState(GAME_SETUPSKIRMISH);
-    auto *setup = dynamic_cast<cSetupSkirmishState *>(currentGame.m_currentState);
+    currentGame.setState(eGameState::SETUPSKIRMISH);
+    auto *setup = dynamic_cast<cSetupSkirmishState *>(currentGame.m_stateMachine->getCurrentState());
     if (setup == nullptr) {
         return false;
     }
@@ -182,7 +183,7 @@ bool UiAuditAccess::prepareSkirmish(cGame &currentGame, int variant)
 
 bool UiAuditAccess::optionsStatus(cGame &currentGame)
 {
-    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_currentState);
+    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_stateMachine->getCurrentState());
     if (options == nullptr || options->m_statusLabel == nullptr) {
         return false;
     }
@@ -192,7 +193,7 @@ bool UiAuditAccess::optionsStatus(cGame &currentGame)
 
 bool UiAuditAccess::optionsPage(cGame &currentGame, int page)
 {
-    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_currentState);
+    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_stateMachine->getCurrentState());
     if (options == nullptr) {
         return false;
     }
@@ -202,7 +203,7 @@ bool UiAuditAccess::optionsPage(cGame &currentGame, int page)
 
 bool UiAuditAccess::optionsBinding(cGame &currentGame)
 {
-    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_currentState);
+    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_stateMachine->getCurrentState());
     if (options == nullptr) {
         return false;
     }
@@ -213,7 +214,7 @@ bool UiAuditAccess::optionsBinding(cGame &currentGame)
 
 bool UiAuditAccess::creditsScroll(cGame &currentGame, int frame)
 {
-    auto *credits = dynamic_cast<cCreditsState *>(currentGame.m_currentState);
+    auto *credits = dynamic_cast<cCreditsState *>(currentGame.m_stateMachine->getCurrentState());
     if (credits == nullptr) {
         return false;
     }
@@ -261,7 +262,7 @@ bool UiAuditAccess::creditsScroll(cGame &currentGame, int frame)
 
 void UiAuditAccess::recordCreditLines(cGame &currentGame)
 {
-    auto *credits = dynamic_cast<cCreditsState *>(currentGame.m_currentState);
+    auto *credits = dynamic_cast<cCreditsState *>(currentGame.m_stateMachine->getCurrentState());
     if (credits == nullptr) {
         return;
     }
@@ -280,24 +281,24 @@ void UiAuditAccess::regionOpen(cGame &currentGame, int mission, bool jump)
     else {
         currentGame.m_dataCampaign->mission = mission;
     }
-    currentGame.setState(GAME_REGION);
+    currentGame.setState(eGameState::REGION);
 }
 
 int UiAuditAccess::regionState(const cGame &currentGame)
 {
-    auto *region = dynamic_cast<const cSelectYourNextConquestState *>(currentGame.m_currentState);
+    auto *region = dynamic_cast<const cSelectYourNextConquestState *>(currentGame.m_stateMachine->getCurrentState());
     return region == nullptr ? -1 : static_cast<int>(region->state);
 }
 
 int UiAuditAccess::regionScene(const cGame &currentGame)
 {
-    auto *region = dynamic_cast<const cSelectYourNextConquestState *>(currentGame.m_currentState);
+    auto *region = dynamic_cast<const cSelectYourNextConquestState *>(currentGame.m_stateMachine->getCurrentState());
     return region == nullptr ? -1 : static_cast<int>(region->regionSceneState);
 }
 
 int UiAuditAccess::regionSceneAlpha(const cGame &currentGame)
 {
-    auto *region = dynamic_cast<const cSelectYourNextConquestState *>(currentGame.m_currentState);
+    auto *region = dynamic_cast<const cSelectYourNextConquestState *>(currentGame.m_stateMachine->getCurrentState());
     return region == nullptr ? -1 : region->iRegionSceneAlpha;
 }
 
@@ -341,7 +342,7 @@ void UiAuditAccess::recordCommandBarClicks(cCommandBarDrawer &drawer)
 void UiAuditAccess::missionOutcome(cGame &currentGame, bool victory)
 {
     currentGame.m_missionWasWon = victory;
-    currentGame.setState(victory ? GAME_WINNING : GAME_LOSING);
+    currentGame.setState(victory ? eGameState::WINNING : eGameState::LOSING);
     currentGame.takeBackGroundScreen();
 }
 
@@ -522,9 +523,9 @@ bool UiAuditAccess::enterPlaying(cGame &currentGame, int house, int region)
     setHouse(currentGame, house);
     currentGame.m_dataCampaign->mission = CampaignProgress::FIRST_MISSION;
     currentGame.m_dataCampaign->region = region;
-    currentGame.setNextStateToTransitionTo(GAME_BRIEFING);
+    currentGame.setNextStateToTransitionTo(eGameState::BRIEFING);
     currentGame.transitionStateIfRequired();
-    currentGame.setNextStateToTransitionTo(GAME_PLAYING);
+    currentGame.setNextStateToTransitionTo(eGameState::PLAYING);
     currentGame.m_drawManager->missionInit();
     currentGame.transitionStateIfRequired();
     // sandworms wander at random, so one could crawl into a scene and change its records
@@ -536,7 +537,7 @@ bool UiAuditAccess::enterPlaying(cGame &currentGame, int house, int region)
         }
     }
     return currentGame.m_gameObjectsContext->getMap()->getGeometry()->getWidth() > 0 &&
-           currentGame.m_state == GAME_PLAYING;
+           currentGame.m_stateMachine->getState() == eGameState::PLAYING;
 }
 
 bool UiAuditAccess::openEditor(cGame &currentGame, int bar)
@@ -548,7 +549,7 @@ bool UiAuditAccess::openEditor(cGame &currentGame, int bar)
     auto *editor = dynamic_cast<cEditorState *>(currentGame.m_creatorState->getState(eGameState::EDITOR));
     GuiBar *bars[] = {editor->m_topologyBar.get(), editor->m_startCellBar.get(), editor->m_symmetricBar.get()};
     editor->setCurrentBar(bars[bar]);
-    return currentGame.m_state == GAME_EDITOR;
+    return currentGame.m_stateMachine->getState() == eGameState::EDITOR;
 }
 
 bool UiAuditAccess::placeLabelUnits(cGame &currentGame, int unitType)
@@ -995,7 +996,7 @@ void UiAuditAccess::writeSaves(cGame &currentGame)
 
 bool UiAuditAccess::openMenuSaveDialog(cGame &currentGame)
 {
-    auto *menu = dynamic_cast<cMainMenuState *>(currentGame.m_currentState);
+    auto *menu = dynamic_cast<cMainMenuState *>(currentGame.m_stateMachine->getCurrentState());
     if (menu == nullptr || menu->m_saveDialog == nullptr) {
         return false;
     }
@@ -1005,7 +1006,7 @@ bool UiAuditAccess::openMenuSaveDialog(cGame &currentGame)
 
 bool UiAuditAccess::saveDialog(cGame &currentGame, int action)
 {
-    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_currentState);
+    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_stateMachine->getCurrentState());
     if (options == nullptr || options->m_saveDialog == nullptr) {
         return false;
     }
@@ -1030,7 +1031,7 @@ bool UiAuditAccess::startSkirmish(cGame &currentGame)
     if (!prepareSkirmish(currentGame, 1)) {
         return false;
     }
-    auto *setup = dynamic_cast<cSetupSkirmishState *>(currentGame.m_currentState);
+    auto *setup = dynamic_cast<cSetupSkirmishState *>(currentGame.m_stateMachine->getCurrentState());
     currentGame.ensureFrameTargets();
     setup->prepareSkirmishGameToPlayAndTransitionToCombatState(setup->iSkirmishMap);
     currentGame.transitionStateIfRequired();
@@ -1041,7 +1042,7 @@ bool UiAuditAccess::startSkirmish(cGame &currentGame)
             unit->die(false, false);
         }
     }
-    return currentGame.m_state == GAME_PLAYING;
+    return currentGame.m_stateMachine->getState() == eGameState::PLAYING;
 }
 
 bool UiAuditAccess::saveRoundTrip(cGame &currentGame)

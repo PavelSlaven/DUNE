@@ -38,6 +38,8 @@
 
 #include <algorithm>
 #include <string>
+#include "controls/cKeyboardEvent.h"
+#include "controls/sMouseEvent.h"
 
 cChooseHouseState::cChooseHouseState(sGameServices* services) :
     cGameState(services),
@@ -268,7 +270,7 @@ void cChooseHouseState::onMouseLeftButtonClicked(const s_MouseEvent &event) cons
         m_mentatFlow->prepareToTellAboutHouse(SARDAUKAR);
     }
     else if (event.coords.isWithinRectangle(&backButtonRect)) {
-        m_stateTransitions->setNextStateWithFade(GAME_MENU);
+        m_stateTransitions->setNextStateWithFade(eGameState::MENU);
     }
 }
 
@@ -281,7 +283,7 @@ void cChooseHouseState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 {
     if (event.isType(eKeyEventType::PRESSED)) {
         if (event.isAction(eKeyAction::MENU_BACK)) {
-            m_stateTransitions->setNextStateWithFade(GAME_MENU);
+            m_stateTransitions->setNextStateWithFade(eGameState::MENU);
         }
     }
 }

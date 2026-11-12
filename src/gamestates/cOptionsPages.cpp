@@ -24,7 +24,7 @@
 #include <cmath>
 #include <string_view>
 
-void cOptionsState::constructAdvancedWindow(int)
+void cOptionsState::constructAdvancedWindow(eGameState)
 {
     const int windowWidth = std::min(m_settings->getScreenW() - 32, 760);
     const int windowHeight = std::min(m_settings->getScreenH() - 32, 640);

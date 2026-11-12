@@ -31,6 +31,7 @@
 #include "context/GameContext.hpp"
 #include "context/cInfoContext.h"
 #include "utils/Localization.hpp"
+#include "controls/cKeyboardEvent.h"
 #include <iostream>
 
 BeneMentat::BeneMentat(GameContext* ctx, cGameSettings* settings, GameStateTransition* stateTransitions, MissionFlow* missionFlow, cPlayer* humanPlayer, s_DataCampaign* dataCampaign) : AbstractMentat(ctx, settings, stateTransitions, nullptr, false), m_humanPlayer(humanPlayer), m_missionFlow(missionFlow), m_dataCampaign(dataCampaign)
@@ -64,7 +65,7 @@ BeneMentat::BeneMentat(GameContext* ctx, cGameSettings* settings, GameStateTrans
 void BeneMentat::onYesButtonPressed()
 {
     Logger::info(COMP_GAME, "BeneMentat::onYesButtonPressed", "Player chose to join house [{}]", cPlayer::getHouseNameForId(this->getHouse()));
-    m_stateTransitions->setNextState(GAME_BRIEFING);
+    m_stateTransitions->setNextState(eGameState::BRIEFING);
     m_dataCampaign->mission = 1; // first mission
     m_dataCampaign->region  = 1; // and the first "region" so to speak
     m_missionFlow->init();
@@ -78,7 +79,7 @@ void BeneMentat::onNoButtonPressed()
     Logger::info(COMP_GAME, "BeneMentat::onNoButtonPressed", "Player chose NOT to join house [{}]", cPlayer::getHouseNameForId(this->getHouse()));
     m_humanPlayer->setHouse(GENERALHOUSE);
     m_dataCampaign->housePlayer = GENERALHOUSE;
-    m_stateTransitions->setNextState(GAME_SELECT_HOUSE);
+    m_stateTransitions->setNextState(eGameState::SELECT_HOUSE);
     m_stateTransitions->fadeOut();
 }
 

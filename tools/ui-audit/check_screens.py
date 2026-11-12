@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 STATE_DEFINE = re.compile(r"(?m)^inline constexpr int\s+(GAME_\w+)\s*=\s*-?\d+;")
+ENUM_STATES = re.compile(r"enum\s+class\s+eGameState\b[^{]*\{([^}]*)\}")
 CLASS_DEFINITION = re.compile(r"(?m)^[ \t]*class\s+(\w+)[^;{]*\{")
 CLASS_DIRECTORIES = ("src/gamestates", "src/gameobjects/mentat")
 CLASS_FILES = ("src/save/SaveSlotsDialog.hpp",)
@@ -12,6 +13,12 @@ CLASS_FILES = ("src/save/SaveSlotsDialog.hpp",)
 
 def code_states(text):
     return STATE_DEFINE.findall(text)
+
+
+def code_enum_states(text):
+    block = ENUM_STATES.search(re.sub(r"//[^\n]*", "", text))
+    names = re.findall(r"\b([A-Z][A-Z0-9_]*)\b", block.group(1)) if block else []
+    return ["GAME_MAX_STATES" if name == "COUNT" else "GAME_" + name for name in names]
 
 
 def code_classes(sources):
@@ -56,7 +63,8 @@ def check_screens(scenes, code_names, exclusions):
 
 def collect_code_names(root):
     root = Path(root)
-    states = code_states((root / "src/include/eGameState.h").read_text(encoding="utf-8", errors="replace"))
+    header = (root / "src/include/eGameState.h").read_text(encoding="utf-8", errors="replace")
+    states = code_states(header) + code_enum_states(header)
     sources = []
     for directory in CLASS_DIRECTORIES:
         for path in sorted((root / directory).glob("*.h")) + sorted((root / directory).glob("*.hpp")):

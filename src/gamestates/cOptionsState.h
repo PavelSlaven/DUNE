@@ -16,6 +16,7 @@
 #pragma once
 
 #include "cGameState.h"
+#include "include/eGameState.h"
 class cKeyboardEvent;
 struct s_MouseEvent;
 #include "include/Texture.hpp"
@@ -47,7 +48,7 @@ class cOptionsState : public cGameState {
 public:
     enum class OptionsPage { Main, Gameplay, Controls, Diagnostics };
 
-    explicit cOptionsState(sGameServices* services, int prevState);
+    explicit cOptionsState(sGameServices* services, eGameState prevState);
     ~cOptionsState() override;
 
     void thinkFast() override;
@@ -58,7 +59,7 @@ public:
 
     eGameStateType getType() override;
 
-    void setPrevState(int prevState);
+    void setPrevState(eGameState prevState);
     void refresh();
 
     bool isKeyboardCapturedByUi() const override;
@@ -70,7 +71,7 @@ private:
     cMouse* m_mouse = nullptr;
     cKeyboard* m_keyboard = nullptr;
 
-    int m_prevState;
+    eGameState m_prevState;
 
     std::vector<int> m_renderScaleChoices;
     std::vector<int> m_worldScaleChoices;
@@ -102,7 +103,7 @@ private:
     std::unique_ptr<GuiWindow> m_guiWindow;
     std::unique_ptr<SaveSlotsDialog> m_saveDialog;
 
-    void constructWindow(int prevState);
+    void constructWindow(eGameState prevState);
     void selectRenderScale(int step);
     void selectWorldScale(int step);
     void selectLanguage();
@@ -112,7 +113,7 @@ private:
     void loadSelectedOptions();
     void switchOptionsPage(OptionsPage page);
     void requestOptionsPage(OptionsPage page);
-    void constructAdvancedWindow(int prevState);
+    void constructAdvancedWindow(eGameState prevState);
     void applyAdvancedPage();
     Texture *const *m_backgroundTexture = nullptr;
 };

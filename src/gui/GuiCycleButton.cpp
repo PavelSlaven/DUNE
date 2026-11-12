@@ -17,6 +17,7 @@
 #include "debug/UiAudit.hpp"
 #include "drawers/cTextDrawer.h"
 #include "include/cAssert.h"
+#include "controls/sMouseEvent.h"
 
 GuiCycleButton::GuiCycleButton(SDLDrawer* drawer,const cRectangle& rect, const std::vector<int>& values) 
         : GuiObject(drawer, rect), m_values(values), m_currentIndex(0), m_textDrawer(nullptr)

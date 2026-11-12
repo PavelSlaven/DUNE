@@ -49,6 +49,8 @@
 #include "include/sGameServices.h"
 #include "include/Texture.hpp"
 #include "include/eGameState.h"
+#include "controls/cKeyboardEvent.h"
+#include "controls/sMouseEvent.h"
 #include <algorithm>
 #include "utils/HdUiTextureLoader.hpp"
 #include "debug/UiAudit.hpp"
@@ -171,7 +173,7 @@ cSelectYourNextConquestState::cSelectYourNextConquestState(sGameServices* servic
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::Remaster())
             .onClick([this]() {
-                m_stateTransitions->setNextState(GAME_MISSIONSELECT);})
+                m_stateTransitions->setNextState(eGameState::MISSIONSELECT);})
             .build();
 }
 
@@ -347,6 +349,11 @@ void cSelectYourNextConquestState::draw() const
         const cRectangle mapRect = m_hdCampaignLayout.map;
         uiaudit::recordClick("campaign-region-map", mapRect.getX(), mapRect.getY(), mapRect.getWidth(), mapRect.getHeight());
     }
+    // STEPS:
+    // 1. Show current conquered regions
+    // 2. Show next progress + story (in message bar)
+    // 3. Click next region
+    // 4. Set up region and go to eGameState::BRIEFING, which will do the rest...-> fade out
 
     drawHdBackground();
     drawHdChrome();
@@ -774,7 +781,7 @@ void cSelectYourNextConquestState::loadScenarioAndTransitionToNextState(int iMis
     iNewReg += iReg;
 
     m_missionFlow->init();
-    m_stateTransitions->setNextState(GAME_BRIEFING);
+    m_stateTransitions->setNextState(eGameState::BRIEFING);
     m_dataCampaign->region = iNewReg;
     m_dataCampaign->mission++;                        // FINALLY ADD MISSION NUMBER...
 
@@ -1048,7 +1055,7 @@ void cSelectYourNextConquestState::onNotifyKeyboardEvent(const cKeyboardEvent &e
 {
     if (event.isType(eKeyEventType::PRESSED)) {
         if (event.isAction(eKeyAction::MENU_BACK)) {
-            m_stateTransitions->setNextState(GAME_OPTIONS);
+            m_stateTransitions->setNextState(eGameState::OPTIONS);
         }
     }
 }

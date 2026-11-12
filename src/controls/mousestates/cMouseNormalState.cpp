@@ -37,7 +37,6 @@
 #include <algorithm>
 #include "include/cAssert.h"
 
-#include "data/gfxaudio.h"
 #include "sidebar/cSideBar.h"
 #include "utils/Localization.hpp"
 #include "controls/CommandModePolicy.hpp"
@@ -49,6 +48,12 @@ cMouseNormalState::cMouseNormalState(cPlayer *player, cGameControlsContext *cont
     d2tm_assert(player!=nullptr);
     d2tm_assert(context!=nullptr);
     d2tm_assert(mouse!=nullptr);
+}
+
+void cMouseNormalState::resolveSounds(const AudioContext *audioContext)
+{
+    m_reportingSound = audioContext->indexOf("SOUND_REPORTING");
+    m_yesSirSound = audioContext->indexOf("SOUND_YESSIR");
 }
 
 void cMouseNormalState::onNotifyMouseEvent(const s_MouseEvent &event)
@@ -155,11 +160,11 @@ void cMouseNormalState::onMouseLeftButtonClicked()
         }
 
         if (unitSelected) {
-            m_context->getAudioContext()->playSound(SOUND_REPORTING);
+            m_context->getAudioContext()->playSound(m_reportingSound);
         }
 
         if (infantrySelected) {
-            m_context->getAudioContext()->playSound(SOUND_YESSIR);
+            m_context->getAudioContext()->playSound(m_yesSirSound);
         }
 
         selectedUnits = unitSelected || infantrySelected;

@@ -84,6 +84,7 @@ private:
     MissionFlow* m_missionFlow = nullptr;
     SaveGameFlow* m_saveGameFlow = nullptr;
     AudioContext* m_audioContext = nullptr;
+    int m_placeSound = -1;
     cScreenFader* m_screenFader = nullptr;
     cMapCamera* m_mapCamera = nullptr;
     cRectangle* m_mapViewport = nullptr;

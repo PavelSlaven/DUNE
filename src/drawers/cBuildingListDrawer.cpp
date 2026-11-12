@@ -73,6 +73,7 @@ std::string compactCardName(const std::string &name)
     return name;
 }
 }
+#include "controls/cKeyboardEvent.h"
 
 cBuildingListDrawer::cBuildingListDrawer(const GameContext *ctx, cPlayer *player) :
     m_gameTextDrawer(ctx->getTextContext()->getGameTextDrawer()),

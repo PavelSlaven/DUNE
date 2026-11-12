@@ -28,16 +28,16 @@
 #include "gameobjects/map/cMapCamera.h"
 #include "gameobjects/players/cPlayer.h"
 #include "utils/Log.h"
-#include "utils/RNG.hpp"
 #include <format>
 
 #include <algorithm>
 #include <string>
 #include "include/cAssert.h"
 
-#include "data/gfxaudio.h"
+#include "data/SoundPools.h"
 #include "gameobjects/structures/cAbstractStructure.h"
 #include "controls/CommandModePolicy.hpp"
+#include "controls/cKeyboardEvent.h"
 
 namespace {
 
@@ -234,11 +234,11 @@ void cMouseUnitsSelectedState::onMouseLeftButtonClicked()
         }
 
         if (infantryAcknowledged) {
-            m_context->getAudioContext()->playSound(SOUND_MOVINGOUT + RNG::rnd(2));
+            m_context->getAudioContext()->playSound(soundpools::infantryAcknowledge.pick());
         }
 
         if (unitAcknowledged) {
-            m_context->getAudioContext()->playSound(SOUND_ACKNOWLEDGED + RNG::rnd(3));
+            m_context->getAudioContext()->playSound(soundpools::vehicleAcknowledge.pick());
         }
     }
 

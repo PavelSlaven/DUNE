@@ -10,7 +10,7 @@ export DUNE_DEPS_DIR=$(cd -- "$DUNE_DEPS_DIR" && pwd -P)
 export DUNE_OUT_DIR=$(cd -- "$DUNE_OUT_DIR" && pwd -P)
 export TMPDIR="$DUNE_OUT_DIR/tmp"
 prefix="$DUNE_DEPS_DIR/prefix"
-menu_text='Setting state from -1(=INITIALIZE) to 1(=MENU)'
+menu_text='Setting state from INITIALIZE to MENU'
 
 question() {
     printf '\nОШИБКА: %s\n' "$*" >&2
@@ -258,7 +258,7 @@ main() {
     done
     printf 'Тесты ctest: %s; %s\n' "$test_count" "$test_summary"
     printf 'Запуск: SDL_VIDEODRIVER=%s; код timeout=%s\n' "$selected_driver" "$game_status"
-    printf 'Строка MENU: %s\nИсточник: src/game/cGame_logic.cpp:945–946\n' "$menu_line"
+    printf 'Строка MENU: %s\nИсточник: src/game/GameStateMachine.cpp:51–52\n' "$menu_line"
     printf 'Лог игры: %s\nКаталог библиотек: %s\n' "$game_log" "$library_dir"
     printf 'Причина переменных окружения: голые имена в CMakeLists.txt:88; в CI апстрима используются стандартные пути /usr/local и ldconfig.\n'
     check_disk

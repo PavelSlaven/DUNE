@@ -24,6 +24,7 @@
 #include <map>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 class Texture;
 
@@ -53,6 +54,8 @@ public:
     int getDensity() const {
         return std::max(1, assetDensity);
     }
+    // name of every file in the pack, in index order
+    std::vector<std::string> getNames() const;
 private:
     SDL_Renderer *renderer;
     int assetDensity;

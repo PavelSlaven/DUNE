@@ -134,7 +134,7 @@ bool readyScoring(cGame &game)
         if (!pause(3)) {
             return false;
         }
-        UiAuditAccess::setState(game, GAME_SCORING);
+        UiAuditAccess::setState(game, eGameState::SCORING);
         g_step = 1;
         return false;
     }
@@ -143,7 +143,7 @@ bool readyScoring(cGame &game)
 
 bool prepareNewMapEditor(cGame &game)
 {
-    UiAuditAccess::setState(game, GAME_NEW_MAP_EDITOR);
+    UiAuditAccess::setState(game, eGameState::NEW_MAP_EDITOR);
     return true;
 }
 
@@ -155,13 +155,13 @@ bool prepareEditor(cGame &game)
 
 bool prepareMainMenu(cGame &game)
 {
-    UiAuditAccess::setState(game, GAME_MENU);
+    UiAuditAccess::setState(game, eGameState::MENU);
     return true;
 }
 
 bool prepareChooseHouse(cGame &game)
 {
-    UiAuditAccess::setState(game, GAME_SELECT_HOUSE);
+    UiAuditAccess::setState(game, eGameState::SELECT_HOUSE);
     return true;
 }
 
@@ -169,7 +169,7 @@ template <int House>
 bool prepareSelectMission(cGame &game)
 {
     UiAuditAccess::setHouse(game, House);
-    UiAuditAccess::setState(game, GAME_MISSIONSELECT);
+    UiAuditAccess::setState(game, eGameState::MISSIONSELECT);
     return true;
 }
 
@@ -178,7 +178,7 @@ bool prepareTellHouse(cGame &game)
 {
     resetSteps();
     UiAuditAccess::setHouse(game, House);
-    UiAuditAccess::setState(game, GAME_TELLHOUSE);
+    UiAuditAccess::setState(game, eGameState::TELLHOUSE);
     return true;
 }
 
@@ -200,7 +200,7 @@ template <int Variant>
 bool prepareOptionsMenu(cGame &game)
 {
     resetSteps();
-    UiAuditAccess::setState(game, GAME_MENU);
+    UiAuditAccess::setState(game, eGameState::MENU);
     return true;
 }
 
@@ -209,7 +209,7 @@ bool readyOptionsMenu(cGame &game)
 {
     switch (g_step) {
         case 0:
-            UiAuditAccess::setState(game, GAME_OPTIONS);
+            UiAuditAccess::setState(game, eGameState::OPTIONS);
             g_step = 1;
             g_wait = 0;
             return false;
@@ -230,7 +230,7 @@ bool readyOptionsPage(cGame &game)
 {
     switch (g_step) {
         case 0:
-            UiAuditAccess::setState(game, GAME_OPTIONS);
+            UiAuditAccess::setState(game, eGameState::OPTIONS);
             g_step = 1;
             g_wait = 0;
             return false;
@@ -252,7 +252,7 @@ bool readyOptionsPage(cGame &game)
 bool prepareCredits(cGame &game)
 {
     resetSteps();
-    UiAuditAccess::setState(game, GAME_CREDITS);
+    UiAuditAccess::setState(game, eGameState::CREDITS);
     setVerticalClipText(true);
     return true;
 }
@@ -319,7 +319,7 @@ bool prepareMenuWithSaves(cGame &game)
         return false;
     }
     UiAuditAccess::writeSaves(game);
-    UiAuditAccess::setState(game, GAME_MENU);
+    UiAuditAccess::setState(game, eGameState::MENU);
     return true;
 }
 
@@ -353,7 +353,7 @@ bool readySaveDialog(cGame &game)
 {
     switch (g_step) {
         case 0:
-            UiAuditAccess::setState(game, GAME_OPTIONS);
+            UiAuditAccess::setState(game, eGameState::OPTIONS);
             g_step = 1;
             g_wait = 0;
             return false;

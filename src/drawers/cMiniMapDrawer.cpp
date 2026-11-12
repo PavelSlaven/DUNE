@@ -43,9 +43,8 @@
 #include <cmath>
 //#include <iostream>
 
-#include "data/gfxaudio.h"
+#include "data/SoundPools.h"
 #include "gameobjects/particles/cParticle.h"
-#include "utils/RNG.hpp"
 
 cMiniMapDrawer::cMiniMapDrawer(GameContext *ctx, cGameSettings *settings, cMap *map, cPlayer *player, cMapCamera *mapCamera) :
     m_isMouseOver(false),
@@ -106,6 +105,7 @@ void cMiniMapDrawer::serviceInit(sGameServices* services)
     m_infos = services->info;
     m_mouse = services->mouse;
     m_audioContext = services->ctx->getAudioContext();
+    m_radarSound = m_audioContext->indexOf("SOUND_RADAR");
 }
 
 void cMiniMapDrawer::draw()
@@ -153,7 +153,7 @@ void cMiniMapDrawer::think()
     if (m_player->hasAtleastOneStructure(RADAR)) {
         if (m_status == eMinimapStatus::NOTAVAILABLE) {
             // Route through POWERDOWN instead of jumping straight to POWERUP, so the
-            // power check below (which plays SOUND_RADAR) always gets a chance to run,
+            // power check below (which plays the radar sound) always gets a chance to run,
             // even when power is already sufficient the instant the radar completes.
             m_status = eMinimapStatus::POWERDOWN;
         }
@@ -172,7 +172,7 @@ void cMiniMapDrawer::think()
             // go to state power down (not enough power)
             m_status = eMinimapStatus::POWERDOWN;
             // "Radar de-activated""
-            m_audioContext->playVoice(SOUND_VOICE_04_ATR, m_player->getHouse());
+            m_audioContext->playVoice(soundpools::voice04, m_player->getHouse());
         }
     }
 
@@ -181,9 +181,9 @@ void cMiniMapDrawer::think()
         if (hasRadarAndEnoughPower) {
             // go to state power up (enough power)
             m_status = eMinimapStatus::POWERUP;
-            m_audioContext->playSound(SOUND_RADAR);
+            m_audioContext->playSound(m_radarSound);
             // "Radar activated"
-            m_audioContext->playVoice(SOUND_VOICE_03_ATR, m_player->getHouse());
+            m_audioContext->playVoice(soundpools::voice03, m_player->getHouse());
         }
     }
 
@@ -448,10 +448,10 @@ void cMiniMapDrawer::onMouseClickedLeft(const s_MouseEvent &event) {
 
             sSelectedUnitTypes selectedUnitTypes = m_player->getSelectedUnitTypes();
             if (selectedUnitTypes.hasInfantry) {
-                m_audioContext->playSound(SOUND_MOVINGOUT + RNG::rnd(2));
+                m_audioContext->playSound(soundpools::infantryAcknowledge.pick());
             }
             if (selectedUnitTypes.hasVehicles) {
-                m_audioContext->playSound(SOUND_ACKNOWLEDGED + RNG::rnd(3));
+                m_audioContext->playSound(soundpools::vehicleAcknowledge.pick());
             }
         }
     }

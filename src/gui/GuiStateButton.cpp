@@ -16,6 +16,8 @@
 #include "gui/GuiStateButton.h"
 #include "debug/UiAudit.hpp"
 #include "gui/GuiButtonGroup.h"
+#include "controls/cKeyboardEvent.h"
+#include "controls/sMouseEvent.h"
 
 GuiStateButton::GuiStateButton(SDLDrawer* drawer, const cRectangle &rect)
     : GuiObject(drawer, rect)

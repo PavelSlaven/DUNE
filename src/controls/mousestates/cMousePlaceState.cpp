@@ -32,7 +32,6 @@
 #include <algorithm>
 #include "include/cAssert.h"
 
-#include "data/gfxaudio.h"
 #include "gameobjects/structures/cStructureFactory.h"
 #include "utils/Localization.hpp"
 #include "game/cEventEmitter.h"
@@ -44,6 +43,11 @@ cMousePlaceState::cMousePlaceState(cPlayer *player, cGameControlsContext *contex
     d2tm_assert(player!=nullptr);
     d2tm_assert(context!=nullptr);
     d2tm_assert(mouse!=nullptr);
+}
+
+void cMousePlaceState::resolveSounds(const AudioContext *audioContext)
+{
+    m_placeSound = audioContext->indexOf("SOUND_PLACE");
 }
 
 void cMousePlaceState::onNotifyMouseEvent(const s_MouseEvent &event)
@@ -104,7 +108,7 @@ void cMousePlaceState::onMouseLeftButtonClicked()
         return;
     }
 
-    m_context->getAudioContext()->playSound(SOUND_PLACE);
+    m_context->getAudioContext()->playSound(m_placeSound);
     m_context->toPreviousState();
 }
 

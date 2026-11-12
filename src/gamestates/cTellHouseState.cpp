@@ -20,7 +20,6 @@
 #include "iniSections.h"
 #include "include/sDataCampaign.h"
 #include "data/gfxdata.h"
-#include "data/gfxaudio.h"
 #include "context/AudioContext.hpp"
 #include "context/GameContext.hpp"
 #include "context/cGameObjectContext.h"
@@ -43,6 +42,9 @@ cTellHouseState::cTellHouseState(sGameServices* services, cIni *ini, s_DataCampa
     m_mouse = services->mouse;
     d2tm_assert(m_mouse != nullptr);
     m_audioContext = services->ctx->getAudioContext();
+    m_atreidesSound = m_audioContext->indexOf("SOUND_ATREIDES");
+    m_harkonnenSound = m_audioContext->indexOf("SOUND_HARKONNEN");
+    m_ordosSound = m_audioContext->indexOf("SOUND_ORDOS");
     m_settings = services->settings;
     m_stateTransitions = services->stateTransitions;
     d2tm_assert(m_stateTransitions != nullptr);
@@ -68,15 +70,15 @@ void cTellHouseState::prepareMentat(int house)
     m_mentat->setHouse(house);
 
     if (house == ATREIDES) {
-        m_audioContext->playSound(SOUND_ATREIDES);
+        m_audioContext->playSound(m_atreidesSound);
         m_cIni->loadBriefing(ATREIDES, 0, eScenarioIniSection::DESCRIPTION, m_mentat.get());
         m_mentat->loadScene("platr");
     } else if (house == HARKONNEN) {
-        m_audioContext->playSound(SOUND_HARKONNEN);
+        m_audioContext->playSound(m_harkonnenSound);
         m_cIni->loadBriefing(HARKONNEN, 0, eScenarioIniSection::DESCRIPTION, m_mentat.get());
         m_mentat->loadScene("plhar");
     } else if (house == ORDOS) {
-        m_audioContext->playSound(SOUND_ORDOS);
+        m_audioContext->playSound(m_ordosSound);
         m_cIni->loadBriefing(ORDOS, 0, eScenarioIniSection::DESCRIPTION, m_mentat.get());
         m_mentat->loadScene("plord");
     } else if (house == SARDAUKAR) {

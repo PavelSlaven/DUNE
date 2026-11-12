@@ -17,9 +17,13 @@
 
 #include "cPack.h"
 #include "include/cAssert.h"
+#include "utils/Log.h"
 
 
 #include <string>
+#include <cctype>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <iomanip>
 #include <map>
@@ -31,7 +35,9 @@
 #include <memory>
 
 const int fileNameSize = 40;
-const int titleSize = 4;    // "D2TM"
+const int titleSize = 4;    // "D2TM"; an optional header (author and version) follows it
+const int authorSize = 15;  // NUL padded text, only in packs with header
+const int versionSize = 5;  // decimal digits, NUL terminated (4+1), only in packs with header
 const int offsetSize = 4+4; // two uint32_t
 const int nbrFilesSize = 2; // one uint16_t
 const int extensionSize = 4; // "WAV", "JPG", ...
@@ -45,11 +51,31 @@ const int extensionSize = 4; // "WAV", "JPG", ...
 
 
 
+// True if the pack layout with its file count at countPosition adds up exactly:
+// count position + count + entry table + sum of all entry sizes == file size.
+static bool layoutFitsFileSize(SDL_IOStream *io, Sint64 countPosition)
+{
+    const Sint64 totalSize = SDL_GetIOSize(io);
+    uint16_t count;
+    if (SDL_SeekIO(io, countPosition, SDL_IO_SEEK_SET) < 0 || SDL_ReadIO(io, &count, sizeof(count)) != sizeof(count)) return false;
+    constexpr int entrySize = fileNameSize + extensionSize + offsetSize;
+    Sint64 expected = countPosition + nbrFilesSize + static_cast<Sint64>(entrySize) * count;
+    if (expected > totalSize) return false;
+    std::array<char, entrySize> entry {};
+    for (int i = 0; i < count; i++) {
+        if (SDL_ReadIO(io, entry.data(), entry.size()) != entry.size()) return false;
+        uint32_t size;
+        std::memcpy(&size, entry.data() + fileNameSize + extensionSize + sizeof(uint32_t), sizeof(size));
+        expected += size;
+    }
+    return expected == totalSize;
+}
+
 ReaderPack::ReaderPack(const std::string &filename)
 {
     fpName = filename;
     if (readHeader()) {
-        sizeInMemory = SDL_GetIOSize(rfp.get()) - titleSize - nbrFilesSize - (fileNameSize+offsetSize)*fileInPak;
+        sizeInMemory = SDL_GetIOSize(rfp.get()) - headerSize - (fileNameSize+extensionSize+offsetSize)*fileInPak;
         fileInMemory = std::make_unique<char[]>(sizeInMemory);
         readFileLines();
     }
@@ -96,6 +122,15 @@ void ReaderPack::readFileLines()
         tmp.extension = std::string(rawExt.data());
         tmp.fileSize = sizeFile;
         tmp.fileOffset = offsetFile;
+        const auto inserted = nameToIndex.emplace(tmp.fileId, static_cast<int>(fileInPack.size()));
+        if (!inserted.second) {
+            // lookups by name keep returning the first entry
+            std::cerr << "Warning: duplicate entry name '" << tmp.fileId << "' in " << fpName
+                      << " (index " << fileInPack.size() << " ignored for name lookup, first is index "
+                      << inserted.first->second << ")" << std::endl;
+            Logger::warn(COMP_INIT, "ReaderPack", "Duplicate entry name '{}' in {} (index {} ignored for name lookup, first is index {})",
+                         tmp.fileId, fpName, fileInPack.size(), inserted.first->second);
+        }
         fileInPack.push_back(tmp);
     }
 }
@@ -108,11 +143,35 @@ bool ReaderPack::readHeader()
         return false;
     }
     std::array<char, 4> title {};
-    if (SDL_ReadIO(rfp.get(), title.data(), 4) != 4 || std::string_view(title.data(), title.size()) != "D2TM") {
+    if (SDL_ReadIO(rfp.get(), title.data(), 4) != 4) {
         std::cerr << "Invalid file format: " << fpName << std::endl;
         rfp.reset();
         return false;
     }
+    if (std::string_view(title.data(), title.size()) != "D2TM") {
+        std::cerr << "Invalid file format: " << fpName << std::endl;
+        rfp.reset();
+        return false;
+    }
+
+    // Packs with and without header share the magic. The old layout (count right after the magic) is used
+    // when its sizes add up exactly to the file size, otherwise the layout with header is read.
+    const Sint64 totalSize = SDL_GetIOSize(rfp.get());
+    headerSize = titleSize + nbrFilesSize;
+    if (!layoutFitsFileSize(rfp.get(), titleSize)) {
+        constexpr int countPosition = titleSize + authorSize + versionSize;
+        if (layoutFitsFileSize(rfp.get(), countPosition)) {
+            std::array<char, authorSize + versionSize> raw {};
+            SDL_SeekIO(rfp.get(), titleSize, SDL_IO_SEEK_SET);
+            SDL_ReadIO(rfp.get(), raw.data(), raw.size());
+            raw[authorSize - 1] = '\0';
+            raw[raw.size() - 1] = '\0';
+            author = std::string(raw.data());
+            version = static_cast<unsigned int>(std::strtoul(raw.data() + authorSize, nullptr, 10));
+            headerSize += authorSize + versionSize;
+        }
+    }
+    SDL_SeekIO(rfp.get(), headerSize - nbrFilesSize, SDL_IO_SEEK_SET);
 
     uint16_t nbrFiles;
     if (SDL_ReadIO(rfp.get(), reinterpret_cast<char *>(&nbrFiles), sizeof(nbrFiles)) != sizeof(nbrFiles)) {
@@ -120,20 +179,30 @@ bool ReaderPack::readHeader()
         rfp.reset();
         return false;
     }
+    if (totalSize < headerSize + (fileNameSize + extensionSize + offsetSize) * nbrFiles) {
+        std::cerr << "Pack is smaller than its entry table: " << fpName << std::endl;
+        rfp.reset();
+        return false;
+    }
     fileInPak = nbrFiles;
+    Logger::info(COMP_INIT, "ReaderPack", "Pack {}: author '{}', version {}, {} files", fpName, author, version, fileInPak);
     return true;
 }
 
 int ReaderPack::getIndexFromName(const std::string &fileId) const
 {
-    auto it = std::find_if( fileInPack.begin(), fileInPack.end(),
-    [&fileId](const FileInPack& element) {
-        return element.fileId == fileId;
-    } );
-    if (it != fileInPack.end())
-        return std::distance(fileInPack.begin(), it);
-    else
-        return -1;
+    auto it = nameToIndex.find(fileId);
+    return it != nameToIndex.end() ? it->second : -1;
+}
+
+std::vector<std::string> ReaderPack::getNames() const
+{
+    std::vector<std::string> names;
+    names.reserve(fileInPack.size());
+    for (const FileInPack &file : fileInPack) {
+        names.push_back(file.fileId);
+    }
+    return names;
 }
 
 std::string ReaderPack::getNameFromIndex(int index) const
@@ -153,6 +222,24 @@ SDL_IOStream *ReaderPack::getData(unsigned int index)
     return SDL_IOFromConstMem( &fileInMemory[fileInPack[index].fileOffset], fileInPack[index].fileSize );
 }
 
+std::string ReaderPack::getExtension(unsigned int index) const
+{
+    if (index >= fileInPack.size()) return {};
+    return fileInPack[index].extension;
+}
+
+std::optional<std::string> ReaderPack::getText(const std::string &fileId) const
+{
+    const int index = getIndexFromName(fileId);
+    if (index < 0) return std::nullopt;
+    const FileInPack &entry = fileInPack[index];
+    const bool isText = std::ranges::equal(entry.extension, std::string_view("txt"), [](char a, char b) {
+        return std::tolower(static_cast<unsigned char>(a)) == b;
+    });
+    if (!isText) return std::nullopt;
+    return std::string(&fileInMemory[entry.fileOffset], entry.fileSize);
+}
+
 void ReaderPack::displayPackFile()
 {
     std::cout << "------------------------------" << std::endl;
@@ -167,7 +254,7 @@ void ReaderPack::displayPackFile()
 
 void ReaderPack::readDataIntoMemory()
 {
-    uint16_t firstData = titleSize + nbrFilesSize + (fileNameSize+extensionSize+offsetSize) * fileInPak;
+    const uint32_t firstData = headerSize + (fileNameSize+extensionSize+offsetSize) * fileInPak;
     SDL_SeekIO(rfp.get(), firstData, SDL_IO_SEEK_SET );
     SDL_ReadIO(rfp.get(), fileInMemory.get(), sizeInMemory);
 }
@@ -189,8 +276,25 @@ WriterPack::~WriterPack()
     fileInPack.clear();
 }
 
+bool WriterPack::setHeader(const std::string &packAuthor, unsigned int packVersion)
+{
+    if (packAuthor.size() >= authorSize || packVersion >= 10000) {
+        std::cerr << "Pack header rejected: author '" << packAuthor << "' (max " << authorSize - 1
+                  << " chars) or version " << packVersion << " (max 9999) is out of range" << std::endl;
+        return false;
+    }
+    author = packAuthor;
+    version = packVersion;
+    hasHeader = true;
+    return true;
+}
+
 bool WriterPack::addFile(const std::string &fileName, const std::string &fileId)
 {
+    if (fileId.size() >= fileNameSize) {
+        std::cerr << "Entry name '" << fileId << "' is longer than " << fileNameSize - 1 << " characters" << std::endl;
+        return false;
+    }
     SDL_IOStream *file = SDL_IOFromFile(fileName.c_str(),"rb");
     if (file!=nullptr) {
 
@@ -216,6 +320,13 @@ void WriterPack::writeHeader()
     constexpr std::string_view str = "D2TM";
     if (SDL_WriteIO(wfp.get(), str.data(), str.size()) != str.size()) {
         std::cerr << "Couldn't fully write string" << std::endl;
+    }
+    if (hasHeader) {
+        std::array<char, authorSize + versionSize> buffer {};
+        std::ranges::copy(author, buffer.begin());
+        const std::string versionText = std::to_string(version);
+        std::ranges::copy(versionText, buffer.begin() + authorSize);
+        SDL_WriteIO(wfp.get(), buffer.data(), buffer.size());
     }
     uint16_t nbFiles = fileInPack.size();
     SDL_WriteIO(wfp.get(), reinterpret_cast<const char *>(&nbFiles), sizeof(uint16_t));

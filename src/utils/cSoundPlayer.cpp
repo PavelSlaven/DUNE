@@ -58,6 +58,11 @@ public:
         return gfxaudio->getAudio(id);
     }
 
+    int getIndexFromName(const std::string &name) const
+    {
+        return gfxaudio->getIndexFromName(name);
+    }
+
 private:
     std::unique_ptr<DataPack> gfxaudio;
 };
@@ -121,6 +126,11 @@ cSoundPlayer::~cSoundPlayer()
     }
 }
 
+int cSoundPlayer::getIndexFromName(const std::string &name) const
+{
+    return soundData->getIndexFromName(name);
+}
+
 int cSoundPlayer::getMaxVolume()
 {
     return MaxVolume;
@@ -159,15 +169,8 @@ void cSoundPlayer::playSoundWithPriority(int sampleId, int vol, int priority)
     }
 }
 
-void cSoundPlayer::playVoice(int sampleId, int house)
+void cSoundPlayer::playVoice(int sampleId)
 {
-    if (house == HARKONNEN) {
-        sampleId += 1;
-    }
-    else if (house == ORDOS) {
-        sampleId += 2;
-    }
-
     if (!m_isSoundEnabled) {
         return;
     }
@@ -177,6 +180,11 @@ void cSoundPlayer::playVoice(int sampleId, int house)
 void cSoundPlayer::playMusic(int sampleId)
 {
     if (!m_isMusicEnabled || !m_musicTrack) {
+        return;
+    }
+    if (sampleId < 0) {
+        // a name that is not in the pack: skip this track, but keep music enabled for the others
+        Logger::warn(COMP_SOUND, "playMusic", "Unresolved music sample [{}], not playing.", sampleId);
         return;
     }
     MIX_Audio *audio = soundData->getAudio(sampleId);

@@ -21,7 +21,7 @@
 #include "utils/cSoundPlayer.h"
 #include "utils/Log.h"
 #include "include/definitions.h"
-#include "data/gfxaudio.h"
+#include "data/SoundPools.h"
 #include "include/cAssert.h"
 
 #include <format>
@@ -51,6 +51,11 @@ AudioContext::AudioContext(std::unique_ptr<cSoundPlayer> soundPlayer, cGameSetti
 {
     d2tm_assert(m_soundPlayer != nullptr);
     d2tm_assert(m_settings != nullptr);
+    const auto lookup = [this](std::string_view name) { return indexOf(name); };
+    const int missing = soundpools::resolve(lookup);
+    if (missing > 0) {
+        Logger::error(COMP_SOUND, "AudioContext", "{} sound names not found in the audio pack", missing);
+    }
     const std::filesystem::path gameDirectory = std::filesystem::current_path();
     struct MusicPool {
         MusicCategory category;
@@ -59,15 +64,16 @@ AudioContext::AudioContext(std::unique_ptr<cSoundPlayer> soundPlayer, cGameSetti
     };
     const std::array<MusicPool, 8> pools{{
         {MusicCategory::Gameplay, "music/gameplay",
-         {MIDI_BUILDING01, MIDI_BUILDING02, MIDI_BUILDING03, MIDI_BUILDING04, MIDI_BUILDING05,
-          MIDI_BUILDING06, MIDI_BUILDING07, MIDI_BUILDING08, MIDI_BUILDING09}},
-        {MusicCategory::Menu, "music/menu", {MIDI_MENU}},
-        {MusicCategory::Conquest, "music/conquest", {MIDI_SCENARIO}},
-        {MusicCategory::BriefingAtreides, "music/briefing/atreides", {MIDI_MENTAT_ATR}},
-        {MusicCategory::BriefingHarkonnen, "music/briefing/harkonnen", {MIDI_MENTAT_HAR}},
-        {MusicCategory::BriefingOrdos, "music/briefing/ordos", {MIDI_MENTAT_ORD}},
-        {MusicCategory::Victory, "music/victory", {MIDI_WIN01, MIDI_WIN02, MIDI_WIN03}},
-        {MusicCategory::Defeat, "music/defeat", {MIDI_LOSE01, MIDI_LOSE02, MIDI_LOSE03}},
+         std::vector<int>(soundpools::ids::musicPeace.begin(), soundpools::ids::musicPeace.end())},
+        {MusicCategory::Menu, "music/menu", {indexOf("MIDI_MENU")}},
+        {MusicCategory::Conquest, "music/conquest", {indexOf("MIDI_SCENARIO")}},
+        {MusicCategory::BriefingAtreides, "music/briefing/atreides", {indexOf("MIDI_MENTAT_ATR")}},
+        {MusicCategory::BriefingHarkonnen, "music/briefing/harkonnen", {indexOf("MIDI_MENTAT_HAR")}},
+        {MusicCategory::BriefingOrdos, "music/briefing/ordos", {indexOf("MIDI_MENTAT_ORD")}},
+        {MusicCategory::Victory, "music/victory",
+         std::vector<int>(soundpools::ids::musicWin.begin(), soundpools::ids::musicWin.end())},
+        {MusicCategory::Defeat, "music/defeat",
+         std::vector<int>(soundpools::ids::musicLose.begin(), soundpools::ids::musicLose.end())},
     }};
     for (const MusicPool &pool : pools) {
         std::error_code createError;
@@ -90,6 +96,15 @@ cSoundPlayer* AudioContext::getSoundPlayer() const
     return m_soundPlayer.get();
 }
 
+int AudioContext::indexOf(std::string_view name) const
+{
+    const int index = m_soundPlayer->getIndexFromName(std::string(name));
+    if (index < 0) {
+        Logger::error(COMP_SOUND, "AudioContext", "sound '{}' not found in the audio pack", name);
+    }
+    return index;
+}
+
 void AudioContext::playSound(int sampleId) const
 {
     m_soundPlayer->playSound(sampleId);
@@ -100,9 +115,16 @@ void AudioContext::playSound(int sampleId, int vol) const
     m_soundPlayer->playSound(sampleId, vol);
 }
 
-void AudioContext::playVoice(int sampleId, int house) const
+void AudioContext::playVoice(const SoundPool &voice, int house) const
 {
-    m_soundPlayer->playVoice(sampleId, house);
+    int variant = 0;
+    if (house == HARKONNEN) {
+        variant = 1;
+    }
+    else if (house == ORDOS) {
+        variant = 2;
+    }
+    m_soundPlayer->playVoice(voice.at(variant));
 }
 
 int AudioContext::getMaxVolume() const

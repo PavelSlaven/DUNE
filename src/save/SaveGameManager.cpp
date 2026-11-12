@@ -3,7 +3,6 @@
 #include "building/cItemBuilder.h"
 #include "context/cGameObjectContext.h"
 #include "context/cInfoContext.h"
-#include "data/gfxaudio.h"
 #include "data/gfxdata.h"
 #include "game/cGame.h"
 #include "game/cGameConditionChecker.h"
@@ -776,10 +775,10 @@ bool SaveGameManager::restoreSnapshot(
     const int viewportY = geometry->getAbsoluteYPositionFromCell(cameraCell) +
         TILESIZE_HEIGHT_PIXELS / 2 - game.m_mapCamera->getViewportHeight() / 2;
     game.m_mapCamera->setViewportPosition(viewportX, viewportY);
-    if (!game.isState(GAME_PLAYING)) {
+    if (!game.isState(eGameState::PLAYING)) {
         game.playMusicByType(eMusicType::PEACE);
     }
-    game.setNextStateToTransitionTo(GAME_PLAYING);
+    game.setNextStateToTransitionTo(eGameState::PLAYING);
     return true;
 }
 
@@ -903,8 +902,8 @@ bool SaveGameManager::saveGame(
         errorMessage = localization::text("Invalid save slot number", "Некорректный номер слота");
         return false;
     }
-    if (!game.isState(GAME_PLAYING) && !game.isState(GAME_OPTIONS) &&
-        game.m_nextState != GAME_PLAYING) {
+    if (!game.isState(eGameState::PLAYING) && !game.isState(eGameState::OPTIONS) &&
+        game.m_nextState != eGameState::PLAYING) {
         errorMessage = localization::text("Saving is only available during a mission", "Сохранять можно только во время миссии");
         return false;
     }

@@ -37,6 +37,8 @@
 #include "utils/Localization.hpp"
 
 #include <algorithm>
+#include "controls/cKeyboardEvent.h"
+#include "controls/sMouseEvent.h"
 
 cCreditsState::cCreditsState(sGameServices* services) :
     cGameState(services),
@@ -93,7 +95,7 @@ cCreditsState::cCreditsState(sGameServices* services) :
             .withTheme(GuiTheme::Remaster())
             .withKind(GuiRenderKind::REMASTER_BUTTON)
             .onClick([this]() {
-                m_stateTransitions->setNextStateWithFade(GAME_MENU);
+                m_stateTransitions->setNextStateWithFade(eGameState::MENU);
             })
             .build();
 
@@ -494,6 +496,6 @@ eGameStateType cCreditsState::getType()
 void cCreditsState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 {
     if (event.isType(eKeyEventType::PRESSED) && event.isAction(eKeyAction::MENU_BACK)) {
-        m_stateTransitions->setNextStateWithFade(GAME_MENU);
+        m_stateTransitions->setNextStateWithFade(eGameState::MENU);
     }
 }
