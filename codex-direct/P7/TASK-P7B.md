@@ -10,7 +10,7 @@
 
 ## Что уже решено
 
-Ревизии: `B` = `b9f6b024246c47209f29259b676dd94512a51553` — вершина ветки порта после части П7а; номера строк таблицы — строки файлов в `B`. Ни один файл таблицы между `B` и `HEAD` не менялся: `git diff --stat b9f6b0242 HEAD -- <все пути столбца путь таблицы>` даёт пустой вывод (проверь это первой командой после чтения).
+Ревизии: `B` = `b9f6b024246c47209f29259b676dd94512a51553` — вершина ветки порта после части П7а; номера строк таблицы — строки файлов в `B`. Ни один файл таблицы между `B` и `HEAD` не менялся: `git diff --stat b9f6b0242 HEAD -- <все пути столбца путь таблицы>` даёт пустой вывод (проверь это первой командой Git после чтения, сразу после `export PATH` из раздела «Прочитать до работы»).
 
 - **Механизм** — `src/utils/Localization.hpp`: `localization::text(englishText, russianText)` возвращает `const char *` выбранного языка; `localization::format(englishFormat, russianFormat, args...)` форматирует выбранный формат через `std::vformat` и возвращает `std::string`. Язык выбирает `src/main.cpp` до `game.setupGame()`, поэтому имена юнитов и построек, которые `cInfoContextCreator` заполняет при подготовке игры, получают язык игры. В режиме отладки интерфейса без `--ui-audit-language` язык — английский (`src/main.cpp`, строка `settings->language = uiaudit::options().language.empty() ? "en" : ...`). В тестах Catch2 язык не выбирается, и `localization::text` возвращает русский текст.
 - **Таблица** `STRINGS-P7B.tsv` (UTF-8, разделитель — табуляция, первая строка — заголовок). Столбцы:
@@ -26,7 +26,7 @@
 
 ## Прочитать до работы
 
-Прочитай до первого действия, каждый файл отдельным вызовом:
+Прочитай сразу после `create_goal` и до любого другого действия, каждый файл отдельным вызовом:
 
 - `src/utils/Localization.hpp` целиком;
 - `/srv/dune/tasks/p7b/STRINGS-P7B.tsv` целиком;
@@ -53,12 +53,12 @@
 
 ## Тесты
 
-Тесты пишутся до кода (шаг 1 плана) и до кода краснеют (шаг 2).
+Тесты пишутся в шаге 1 плана и краснеют в шаге 2 на имеющейся сборке `.tmp/out/run/bin`, собранной до правок этой задачи. Правки исходников шагов 3 и 4 в эту сборку не попадают, поэтому шаги 3 и 4 идут одновременно с шагами 1 и 2; новая сборка собирается только в проверке 1.
 
 - **T6 — новый скрипт `tests/ui_audit/ui_audit_translation.py`** (Python 3, только стандартная библиотека и `ui_audit_runtime_support`, подключённый так же, как в `tests/ui_audit/ui_audit_language.py`).
   - Аргумент `--run-dir` (обязательный) — папка с `d2tm`, как у других скриптов `tests/ui_audit/`.
   - Список сцен: `subprocess.run([<run-dir>/d2tm, "--ui-audit-list"], cwd=<run-dir>, env=<копия os.environ с SDL_VIDEODRIVER=dummy, SDL_RENDER_DRIVER=software, SDL_AUDIODRIVER=dummy>, capture_output=True, text=True, timeout=60, check=True)`; сцены — значения `id` элементов `json.loads(stdout)["scenes"]`.
-  - Съёмка одной сцены на одном языке: `with support.GameRun(<run-dir>) as game:` вызов `game.run(["--ui-audit-scene", <id>, "--ui-audit-out", str(game.out), "--ui-audit-language", <язык>])`. Неудача — `subprocess.TimeoutExpired`, код выхода не 0 или нет файла `game.out / f"{id}.geometry.jsonl"`. При успехе результат — список значений `"s"` записей файла геометрии, у которых `"k"` равно `"text"` (каждая строка файла — JSON). После неудачи — вторая попытка тем же способом. Две неудачи подряд — ошибка `<язык> <id>: the scene did not finish`.
+  - Съёмка одной сцены на одном языке: `with support.GameRun(<run-dir>) as game:` вызов `game.run(["--ui-audit-scene", <id>, "--ui-audit-out", str(game.out), "--ui-audit-language", <язык>])`. Неудача — `subprocess.TimeoutExpired`, код выхода не 0 или нет файла `game.out / f"{id}.geometry.jsonl"`. При успехе результат — список значений `"s"` записей файла геометрии, у которых `"k"` равно `"text"` (каждая строка файла — JSON). После неудачи — вторая попытка тем же способом, в новом `support.GameRun`. Две неудачи подряд — ошибка `<язык> <id>: the scene did not finish`; съёмка остальных сцен продолжается.
   - Языки — `ru` и `en`, каждая сцена на каждом языке. Съёмки идут в `concurrent.futures.ThreadPoolExecutor(max_workers=6)`.
   - Список исключений — файл `tests/ui_audit/data/latin-ru-allowed.tsv` рядом со скриптом (путь от папки скрипта: `data/latin-ru-allowed.tsv`). Чтение: UTF-8, первая строка — заголовок, из каждой следующей строки берётся первый столбец до табуляции — регулярное выражение Python.
   - **Русский:** надпись, где есть буква `[A-Za-z]` и нет ни одной буквы `[А-Яа-яЁё]`, должна целиком совпасть (`re.fullmatch`) хотя бы с одним выражением списка. Иначе ошибка `ru <id>: untranslated text '<надпись>'`.
@@ -66,7 +66,7 @@
   - **Английский:** надпись с буквой `[А-Яа-яЁё]` — ошибка `en <id>: Russian text '<надпись>'`.
   - Вывод: все ошибки по алфавиту, по одной на строку, затем последняя строка `translation: <число сцен> scenes, <число ошибок> failures`. Код выхода — 1 при ошибках, иначе 0.
 - **Данные T6:** файл `/srv/dune/tasks/p7b/latin-ru-allowed.tsv` копируется без изменений в `tests/ui_audit/data/latin-ru-allowed.tsv`.
-- **`tests/utils/test_OptionsMenu.cpp`.** Случай `TEST_CASE`, в котором стоит строка `CHECK(scaleChoiceText(0, 180) == std::string{"Auto (180%)"});`, проверяет английскую подпись. Первой строкой его тела добавляется `localization::setLanguage("en");`, последней — `localization::setLanguage("ru");`. В начало файла добавляется `#include "utils/Localization.hpp"`, если его там нет. Проверки этого случая не меняются.
+- **`tests/utils/test_OptionsMenu.cpp`.** Случай `TEST_CASE`, в котором стоит строка `CHECK(scaleChoiceText(0, 180) == std::string{"Auto (180%)"});`, проверяет английскую подпись. Первой строкой его тела добавляется `localization::setLanguage("en");`, последней — `localization::setLanguage("ru");`. Строка `#include "utils/Localization.hpp"`, если её в файле нет, добавляется сразу после последней строки вида `#include "…"` в начале файла. Проверки этого случая не меняются.
 
 ## PLAN-P7B
 
