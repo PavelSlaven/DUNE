@@ -1604,7 +1604,7 @@ def check_options_controls(header, body):
   4. `mods` — модификаторы, которые условие строки требует вместе с клавишей, заглавными буквами через `+` (`CTRL`, `SHIFT`, `ALT`); пусто, если условие модификаторов не требует. Для ключа `eKeyAction::<ИМЯ>` поле пустое.
   5. Строка, которая не является обработчиком клавиши (сравнение с «нет клавиши», размер таблицы, обработка модификатора, служебная запись), получает `state` = `-`, `action` = `-` и непустую `reason` по-русски одной фразой. У строки с `action` не `-` поле `reason` пустое, а `state` не `-`.
   6. Вызовы `cKeyBindings::`, `cKeyboard::`, `cKeyboardEvent::` в `src/controls/cKeyBindings.h`, `cKeyboard.*`, `cKeyboardEvent.*` — это передача событий, а не обработчики: их строки получают `-` и причину.
-  7. Строка, добавленная этим шагом в `cOptionsState` (`SDL_SCANCODE_ESCAPE`, `SDL_SCANCODE_UNKNOWN` в `onNotifyKeyboardEvent`), получает состояние `options: key capture`; для `SDL_SCANCODE_ESCAPE` — действие `cancel-capture`.
+  7. Строка, добавленная этим шагом в `cOptionsState` (`SDL_SCANCODE_ESCAPE` в `onNotifyKeyboardEvent`; строка `SDL_SCANCODE_UNKNOWN` там же — по правилу 5, ответ `answer-P10C-01.md`), получает состояние `options: key capture`; для `SDL_SCANCODE_ESCAPE` — действие `cancel-capture`.
 
 ### 12. Сохранить из апстрима
 
