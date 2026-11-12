@@ -228,7 +228,7 @@ main() {
         mv "$DUNE_OUT_DIR/xdg" "$log_dir/previous-xdg"
     fi
     mkdir -p "$DUNE_OUT_DIR/run/bin" "$DUNE_OUT_DIR/xdg"
-    cp -a "$repo_root/resources/bin/campaign" "$repo_root/resources/bin/campaign_ru" "$repo_root/resources/bin/data" \
+    cp -a "$repo_root/resources/bin/campaign" "$repo_root/resources/bin/campaign_ru" "$repo_root/resources/bin/music" "$repo_root/resources/bin/data" \
         "$repo_root/resources/bin/skirmish" "$DUNE_OUT_DIR/run/bin/"
     mkdir -p "$DUNE_OUT_DIR/run/bin/data/bmp" \
         "$DUNE_OUT_DIR/run/bin/save/atreides" "$DUNE_OUT_DIR/run/bin/save/harkonnen" \

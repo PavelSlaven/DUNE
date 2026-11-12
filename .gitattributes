@@ -64,3 +64,4 @@
 resources/bin/data/*_hd4.dat filter=lfs diff=lfs merge=lfs -text
 resources/bin/data/scenes/hd4/*.dat filter=lfs diff=lfs merge=lfs -text
 resources/bin/data/hd4/*.png filter=lfs diff=lfs merge=lfs -text
+resources/bin/music/**/*.wav filter=lfs diff=lfs merge=lfs -text
