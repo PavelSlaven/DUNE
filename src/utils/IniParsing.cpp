@@ -21,6 +21,7 @@
 #include "utils/Log.h"
 #include "utils/ScenarioData.hpp"
 #include "utils/cIniUtils.h"
+#include "utils/Localization.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -640,6 +641,11 @@ std::string getBriefingFileName(int iHouse)
         case SARDAUKAR:  return "mentats.ini";
         default:         return "";
     }
+}
+
+std::string getCampaignTextDirectory()
+{
+    return localization::isEnglish() ? "campaign" : "campaign_ru";
 }
 
 std::vector<std::string> parseBriefing(std::istream& file, int iScenarioFind, eScenarioIniSection iSectionFind)

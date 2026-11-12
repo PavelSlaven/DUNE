@@ -63,6 +63,7 @@ set(D2TM_SOURCES
     gameobjects/map/SeedMapLoader.cpp
     gameobjects/map/MapGeometry.cpp
     gameobjects/mentat/AbstractMentat.cpp
+    gameobjects/mentat/MentatTextLayout.cpp
     gameobjects/mentat/AtreidesMentat.cpp
     gameobjects/mentat/BeneMentat.cpp
     gameobjects/mentat/HarkonnenMentat.cpp

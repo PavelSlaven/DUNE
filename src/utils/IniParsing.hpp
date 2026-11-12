@@ -54,6 +54,7 @@ bool isCommentLine(const std::string& linefeed);
 std::string getHouseDirectoryName(int iHouse);
 // Name of the mentat briefing file of the given house, empty when the house has none
 std::string getBriefingFileName(int iHouse);
+std::string getCampaignTextDirectory();
 // Mission (tech level) that belongs to a campaign region
 int getTechLevelByRegion(int iRegion);
 

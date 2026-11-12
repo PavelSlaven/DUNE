@@ -38,6 +38,8 @@
 #include "utils/cRectangle.h"
 #include "debug/UiAudit.hpp"
 #include "utils/Localization.hpp"
+#include "gameobjects/mentat/MentatTextLayout.hpp"
+#include "utils/Utf8.hpp"
 
 // The mentat screen artwork was designed for 640x480. On higher resolutions it
 // is centered, so the offset is half the extra pixels on each axis.
@@ -142,8 +144,8 @@ void AbstractMentat::think()
             }
 
             // lentgh calculation of time
-            int iLength = static_cast<int>(sentence[iMentatSentence].size());
-            iLength += static_cast<int>(sentence[iMentatSentence + 1].size());
+            int iLength = utf8CodePointCount(sentence[iMentatSentence]);
+            iLength += utf8CodePointCount(sentence[iMentatSentence + 1]);
 
             // nothing to say, await response
             if (iLength < 2) {
@@ -297,11 +299,13 @@ void AbstractMentat::draw()
 
         // draw text that is being spoken
         if (iMentatSentence >= 0) {
-            m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{0, 0, 0,255},sentence[iMentatSentence]);
-            m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{255, 255, 255,255},sentence[iMentatSentence]);
+            const auto lines = layoutMentatPage(sentence[iMentatSentence], sentence[iMentatSentence + 1], MENTAT_TEXT_WIDTH,
+                                                [this](const std::string &text) { return m_textDrawer->getTextLength(text); });
+            m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{0, 0, 0,255},lines[0]);
+            m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{255, 255, 255,255},lines[0]);
 
-            m_textDrawer->drawText(offsetX + 17, offsetY + 37,Color{0, 0, 0,255},sentence[iMentatSentence+1]);
-            m_textDrawer->drawText(offsetX + 17, offsetY + 36,Color{255, 255, 255,255},sentence[iMentatSentence+1]);
+            m_textDrawer->drawText(offsetX + 17, offsetY + 37,Color{0, 0, 0,255},lines[1]);
+            m_textDrawer->drawText(offsetX + 17, offsetY + 36,Color{255, 255, 255,255},lines[1]);
         }
     }
 
