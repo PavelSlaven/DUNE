@@ -33,7 +33,7 @@ UNIT_TYPES = (
 GAME_READINESS = "FixedFrames(5, no readiness flag)"
 OUTCOME_READINESS = "FixedFrames(8, no readiness flag)"
 OPTIONS_READINESS = "FixedFrames(14, no readiness flag)"
-EXPECTED_COUNT = 25
+EXPECTED_COUNT = 29
 LATER_SCREENS = ("GAME_EDITOR", "GAME_NEW_MAP_EDITOR", "GAME_SCORING", "GAME_VIDEO", "cEditorState",
                  "cNewMapEditorState", "cScoringState", "cVideoState")
 
@@ -63,7 +63,7 @@ def expected_scenes():
                             GAME_READINESS, game_screen=True, hover={"x": 0, "y": 0}))
     scenes.append(scene("outcome-win", "outcome", "GAME_WINNING", "cWinLoseState", "atreides", OUTCOME_READINESS))
     scenes.append(scene("outcome-lose", "outcome", "GAME_LOSING", "cWinLoseState", "atreides", OUTCOME_READINESS))
-    for variant in ("main-saves", "main-nosaves", "applied"):
+    for variant in ("main-saves", "main-nosaves", "applied", "game", "controls", "diagnostics", "keybind"):
         scenes.append(scene(f"options-game-{variant}", "options-game", "GAME_OPTIONS", "cOptionsState", "",
                             OPTIONS_READINESS))
     return scenes

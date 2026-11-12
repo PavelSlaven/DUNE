@@ -188,6 +188,27 @@ bool UiAuditAccess::optionsStatus(cGame &currentGame)
     return true;
 }
 
+bool UiAuditAccess::optionsPage(cGame &currentGame, int page)
+{
+    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_currentState);
+    if (options == nullptr) {
+        return false;
+    }
+    options->switchOptionsPage(static_cast<cOptionsState::OptionsPage>(page));
+    return true;
+}
+
+bool UiAuditAccess::optionsBinding(cGame &currentGame)
+{
+    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_currentState);
+    if (options == nullptr) {
+        return false;
+    }
+    options->m_bindingCapture = eKeyAction::SCREENSHOT;
+    options->refresh();
+    return true;
+}
+
 bool UiAuditAccess::creditsScroll(cGame &currentGame, int frame)
 {
     auto *credits = dynamic_cast<cCreditsState *>(currentGame.m_currentState);

@@ -41,6 +41,7 @@ UNIT_LABEL_KINDS = {"health", "group", "experience", "spice"}
 STATUS_TEXT = "Saved. Restart the game."
 OUTCOME_TEXT = "Click to continue"
 IN_GAME_OPTIONS_TEXTS = ("Mission select", "Save game", "Load game")
+CONTROLS_RANGE = ("Actions 1-", " of 86")
 
 
 def reject_constant(name):
@@ -170,6 +171,26 @@ def check_options_game_applied(header, body):
                        require_text(body, "Mission select"))
 
 
+def check_options_page(*texts):
+    def check(header, body):
+        return first_error(
+            forbid_kinds(body, ("area", "label")),
+            None if records_of(body, "gui") else "no gui records",
+            *(require_text(body, text) for text in texts),
+            f"the status text {STATUS_TEXT!r} must not be shown before applying"
+            if any(record["s"] == STATUS_TEXT for record in records_of(body, "text")) else None,
+        )
+    return check
+
+
+def check_options_controls(header, body):
+    prefix, suffix = CONTROLS_RANGE
+    ranges = [record["s"] for record in records_of(body, "text")
+              if record["s"].startswith(prefix) and record["s"].endswith(suffix)]
+    return first_error(check_options_page("Take screenshot")(header, body),
+                       None if ranges else f"no text record {prefix}<n>{suffix}")
+
+
 def check_for(scene_id):
     fixed = {
         "structure-label-top": check_structure_label,
@@ -179,6 +200,11 @@ def check_for(scene_id):
         "options-game-main-nosaves": check_options_game_main,
         "options-game-main-saves": check_options_game_main,
         "options-game-applied": check_options_game_applied,
+        "options-game-game": check_options_page("Edge scrolling — move camera at screen edge",
+                                                "Rules file: game.ini (change manually)"),
+        "options-game-controls": check_options_controls,
+        "options-game-diagnostics": check_options_page("Show resource usage"),
+        "options-game-keybind": check_options_page("Take screenshot", "Press key..."),
     }
     if scene_id in fixed:
         return fixed[scene_id]
