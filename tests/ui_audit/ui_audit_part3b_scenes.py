@@ -24,6 +24,7 @@ PLACE_CELLS = 4
 HOVERED_ITEM = 2
 LIST_BUTTON = "list-button:"
 BUILD_ITEM = "build-item:"
+MUSIC_CLICKS = ("music-previous", "music-next", "music-speed-slider")
 
 
 def named(body, kind, name):
@@ -195,9 +196,36 @@ def check_scroll_end(scene_id, header, body, bodies):
     )
 
 
+def check_music(scene_id, header, body, bodies):
+    clicks = []
+    for name in MUSIC_CLICKS:
+        record, error = base.one_record(body, "click", "name", name)
+        if error:
+            return error
+        clicks.append(record)
+    previous, following, slider = clicks
+    options = named(body, "click", "top-options")[0]
+    outside = [record for record in clicks if not base.inside(record, base.TOP_PANEL)]
+    return base.first_error(
+        f"click records outside {base.TOP_PANEL}: {outside}" if outside else None,
+        None if options["x"] + options["w"] <= previous["x"]
+        else f"the music buttons overlap the options button: {options} and {previous}",
+        None if previous["x"] + previous["w"] <= following["x"]
+        else f"the previous button overlaps the next button: {previous} and {following}",
+        None if following["x"] + following["w"] <= slider["x"]
+        else f"the next button overlaps the speed slider: {following} and {slider}",
+        base.require_text(body, "<"),
+        base.require_text(body, ">"),
+        base.require_text(body, "SPEED"),
+        None if any(record["s"].endswith("...") for record in base.records_of(body, "text"))
+        else "no text record with a truncated track name",
+    )
+
+
 def check_for(scene_id):
     fixed = {
         "game-hud": check_nothing_more,
+        "game-music": check_music,
         "game-radar-none": check_nothing_more,
         "game-radar-nopower": check_nothing_more,
         "game-structure-selected": check_structure_selected,

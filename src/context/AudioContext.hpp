@@ -16,15 +16,18 @@
 #pragma once
 
 #include "definitions.h"
-#include "context/MusicChoice.hpp"
+#include <filesystem>
+#include <optional>
 
 #include <memory>
+#include <string>
 
 class cSoundPlayer;
 class cGameSettings;
-class MusicJukeBox;
+class MusicController;
 
 class AudioContext {
+    friend class UiAuditAccess;
 public:
     AudioContext(std::unique_ptr<cSoundPlayer> soundPlayer, cGameSettings* settings);
     ~AudioContext();
@@ -42,18 +45,16 @@ public:
     bool playMusicByType(eMusicType iType, bool triggerWithVoice, bool isCurrentlyPlayingMission, int humanHouse);
 
     void thinkFast();
+    void playPreviousTrack();
+    void playNextTrack();
+    [[nodiscard]] std::string getCurrentMusicTrackName() const;
 
     void toggleMusic();
     void setMusicEnabled(bool enabled);
     void changeMusicVolume(int delta) const;
 
 private:
-    void startMusic(const MusicChoice &choice) const;
-
     std::unique_ptr<cSoundPlayer> m_soundPlayer;
     cGameSettings* m_settings = nullptr;
-
-    std::unique_ptr<MusicJukeBox> m_jukeBox;
-    MusicChoice m_newMusic;
-    int m_newMusicCountdown;
+    std::unique_ptr<MusicController> m_musicController;
 };

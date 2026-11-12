@@ -190,24 +190,28 @@ void cSoundPlayer::playMusic(int sampleId)
     releaseMusicFile();
 }
 
-bool cSoundPlayer::playMusicFile(const std::string &path)
+bool cSoundPlayer::playMusicFile(const std::filesystem::path &file, std::string &error)
 {
     if (!m_isMusicEnabled || !m_musicTrack) {
-        return true; // nothing to play, so nothing failed
+        error = "music is disabled";
+        return false;
     }
-    SDL_IOStream *io = SDL_IOFromFile(path.c_str(), "rb");
+    const auto utf8Path = file.u8string();
+    const std::string filename(utf8Path.begin(), utf8Path.end());
+    SDL_IOStream *io = SDL_IOFromFile(filename.c_str(), "rb");
     if (!io) {
-        Logger::error(COMP_SOUND, "playMusicFile", "Could not open [{}]: {}", path, SDL_GetError());
+        error = SDL_GetError();
         return false;
     }
     MIX_Audio *audio = MIX_LoadAudio_IO(m_mixer, io, false, true);
     if (!audio) {
-        Logger::error(COMP_SOUND, "playMusicFile", "Could not load [{}]: {}", path, SDL_GetError());
+        error = SDL_GetError();
         return false;
     }
     startMusic(audio);
     releaseMusicFile();
     m_musicFileAudio = audio;
+    error.clear();
     return true;
 }
 

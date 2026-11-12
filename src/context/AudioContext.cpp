@@ -15,16 +15,19 @@
 
 #include "AudioContext.hpp"
 
-#include "context/MusicJukeBox.hpp"
+#include "audio/MusicController.h"
+#include "audio/MusicTransitionPolicy.hpp"
 #include "game/cGameSettings.h"
 #include "utils/cSoundPlayer.h"
-#include "utils/RNG.hpp"
 #include "utils/Log.h"
 #include "include/definitions.h"
 #include "data/gfxaudio.h"
 #include "include/cAssert.h"
 
 #include <format>
+#include <array>
+#include <filesystem>
+#include <vector>
 
 namespace {
 const char* musicTypeName(eMusicType type)
@@ -44,14 +47,40 @@ const char* musicTypeName(eMusicType type)
 
 AudioContext::AudioContext(std::unique_ptr<cSoundPlayer> soundPlayer, cGameSettings* settings) :
     m_soundPlayer(std::move(soundPlayer)),
-    m_settings(settings),
-    m_jukeBox(std::make_unique<MusicJukeBox>()),
-    m_newMusic{MIDI_MENU, std::nullopt},
-    m_newMusicCountdown(0)
+    m_settings(settings)
 {
     d2tm_assert(m_soundPlayer != nullptr);
     d2tm_assert(m_settings != nullptr);
-    m_jukeBox->createRepertoryDirectories();
+    const std::filesystem::path gameDirectory = std::filesystem::current_path();
+    struct MusicPool {
+        MusicCategory category;
+        const char *directory;
+        std::vector<int> fallbackIds;
+    };
+    const std::array<MusicPool, 8> pools{{
+        {MusicCategory::Gameplay, "music/gameplay",
+         {MIDI_BUILDING01, MIDI_BUILDING02, MIDI_BUILDING03, MIDI_BUILDING04, MIDI_BUILDING05,
+          MIDI_BUILDING06, MIDI_BUILDING07, MIDI_BUILDING08, MIDI_BUILDING09}},
+        {MusicCategory::Menu, "music/menu", {MIDI_MENU}},
+        {MusicCategory::Conquest, "music/conquest", {MIDI_SCENARIO}},
+        {MusicCategory::BriefingAtreides, "music/briefing/atreides", {MIDI_MENTAT_ATR}},
+        {MusicCategory::BriefingHarkonnen, "music/briefing/harkonnen", {MIDI_MENTAT_HAR}},
+        {MusicCategory::BriefingOrdos, "music/briefing/ordos", {MIDI_MENTAT_ORD}},
+        {MusicCategory::Victory, "music/victory", {MIDI_WIN01, MIDI_WIN02, MIDI_WIN03}},
+        {MusicCategory::Defeat, "music/defeat", {MIDI_LOSE01, MIDI_LOSE02, MIDI_LOSE03}},
+    }};
+    for (const MusicPool &pool : pools) {
+        std::error_code createError;
+        std::filesystem::create_directories(gameDirectory / pool.directory, createError);
+        if (createError) {
+            Logger::warn(COMP_SOUND, "Music directory", "Could not create {}: {}",
+                         (gameDirectory / pool.directory).string(), createError.message());
+        }
+    }
+    m_musicController = std::make_unique<MusicController>(m_soundPlayer.get(), gameDirectory);
+    for (const MusicPool &pool : pools) {
+        m_musicController->configure(pool.category, pool.directory, pool.fallbackIds);
+    }
 }
 
 AudioContext::~AudioContext() = default;
@@ -83,137 +112,35 @@ int AudioContext::getMaxVolume() const
 
 void AudioContext::playMusicByTypeForStateTransition(eMusicType iType, int humanHouse)
 {
-    if (m_settings->getMusicType() != iType) {
-        m_newMusicCountdown = 0;
-        playMusicByType(iType, false, false, humanHouse);
-    }
+    playMusicByType(iType, false, false, humanHouse);
 }
 
 bool AudioContext::playMusicByType(eMusicType iType, bool triggerWithVoice, bool isCurrentlyPlayingMission, int humanHouse)
 {
     Logger::info(COMP_SOUND, "AudioContext::playMusicByType", "iType = {}. triggerWithVoice = {}", musicTypeName(iType), triggerWithVoice);
 
-    if (triggerWithVoice) {
-        if (iType == m_settings->getMusicType()) {
-            Logger::info(COMP_SOUND, "AudioContext::playMusicByType", "m_musicType = {}, iType is {}, so bailing", musicTypeName(*m_settings->getMusicType()), musicTypeName(iType));
-            return false;
-        }
+    if (iType == eMusicType::ATTACK) {
+        iType = eMusicType::PEACE;
     }
-
+    const bool repeatedCategory = m_settings->getMusicType() == iType;
     m_settings->setMusicType(iType);
     Logger::info(COMP_SOUND, "AudioContext::playMusicByType", "m_musicType = {}", musicTypeName(iType));
 
+    const MusicCategory category = musicCategoryFor(iType, humanHouse);
     if (!m_settings->isPlayMusic()) {
-        return false; // todo: have a 'no-sound soundplayer' instead of doing this :/
-    }
-
-    if (m_newMusicCountdown > 0) {
-        // do not interfere with previous 'change to music' thing?
+        m_musicController->selectCategory(category);
         return false;
     }
-
-    int sampleId = MIDI_MENU;
-    if (iType == eMusicType::WIN) {
-        sampleId = MIDI_WIN01 + RNG::rnd(3);
-    }
-    else if (iType == eMusicType::LOSE) {
-        sampleId = MIDI_LOSE01 + RNG::rnd(6);
-    }
-    else if (iType == eMusicType::ATTACK) {
-        sampleId = MIDI_ATTACK01 + RNG::rnd(6);
-    }
-    else if (iType == eMusicType::PEACE) {
-        sampleId = MIDI_BUILDING01 + RNG::rnd(9);
-    }
-    else if (iType == eMusicType::MENU) {
-        sampleId = MIDI_MENU;
-    }
-    else if (iType == eMusicType::CONQUEST) {
-        sampleId = MIDI_SCENARIO;
-    }
-    else if (iType == eMusicType::BRIEFING) {
-        if (humanHouse == ATREIDES) {
-            sampleId = MIDI_MENTAT_ATR;
-        }
-        else if (humanHouse == HARKONNEN) {
-            sampleId = MIDI_MENTAT_HAR;
-        }
-        else if (humanHouse == ORDOS) {
-            sampleId = MIDI_MENTAT_ORD;
-        }
-        else if (humanHouse == SARDAUKAR) {
-            sampleId = MIDI_MENTAT_HAR; // no @SARDAUKAR srd music, so use harkonnen one
-        }
-        else {
-            d2tm_assert(false && "Undefined house.");
-        }
-    }
-    else {
-        d2tm_assert(false && "Undefined music type.");
-    }
-
-    if (triggerWithVoice) {
-        // voice triggered music (ie "Enemy unit approaching"), so have music stop a bit
-        if (isCurrentlyPlayingMission) {
-            m_newMusicCountdown = 400; // wait a bit longer
-        }
-        else {
-            m_newMusicCountdown = 0;
-        }
-        m_soundPlayer->stopMusic();
-    }
-    else {
-        // instant switch
-        m_newMusicCountdown = 0;
-    }
-
-    m_jukeBox->setCustomMusicEnabled(m_settings->isCustomMusic());
-    m_newMusic = m_jukeBox->choose(iType, sampleId, humanHouse);
+    m_musicController->activate(category, shouldAdvanceRepeatedMusicCategory(repeatedCategory, isCurrentlyPlayingMission));
     return true;
-}
-
-void AudioContext::startMusic(const MusicChoice &choice) const
-{
-    if (choice.file && m_soundPlayer->playMusicFile(choice.file->string())) {
-        return;
-    }
-    m_soundPlayer->playMusic(choice.archiveTrack);
 }
 
 void AudioContext::thinkFast()
 {
-    if (!m_settings->isPlayMusic()) // no music enabled, so no need to think
+    if (!m_settings->isPlayMusic()) {
         return;
-
-    // all this does is repeating music in the same theme.
-    if (!m_settings->getMusicType().has_value())
-        return;
-
-    if (m_newMusicCountdown > 0) {
-        m_newMusicCountdown--;
     }
-
-    if (m_newMusicCountdown == 0) {
-        startMusic(m_newMusic);
-        m_newMusicCountdown--; // so we don't keep re-starting music
-    }
-
-    if (m_newMusicCountdown < 0) {
-        if (!m_soundPlayer->getMusicEnabled()) return;
-        if (!m_soundPlayer->isMusicPlaying()) {
-            eMusicType desiredMusicType = *m_settings->getMusicType();
-            if (desiredMusicType == eMusicType::ATTACK) {
-                desiredMusicType = eMusicType::PEACE; // set back to peace
-            }
-
-            if (desiredMusicType == eMusicType::BRIEFING) {
-                // the briefing track depends on the human house, so replay the sample picked earlier
-                startMusic(m_newMusic);
-                return;
-            }
-            playMusicByType(desiredMusicType, false, false, GENERALHOUSE);
-        }
-    }
+    m_musicController->update();
 }
 
 void AudioContext::toggleMusic()
@@ -226,9 +153,30 @@ void AudioContext::setMusicEnabled(bool enabled)
     m_settings->setPlayMusic(enabled);
     m_soundPlayer->setMusicEnabled(enabled);
     if (enabled) {
-        // let thinkFast() start the music of the current music type; nothing may have been picked yet when booted with -nomusic
-        m_newMusicCountdown = -1;
+        m_musicController->replayCurrent();
     }
+    else {
+        m_musicController->stop();
+    }
+}
+
+void AudioContext::playPreviousTrack()
+{
+    if (m_settings->isPlayMusic()) {
+        m_musicController->previous();
+    }
+}
+
+void AudioContext::playNextTrack()
+{
+    if (m_settings->isPlayMusic()) {
+        m_musicController->next();
+    }
+}
+
+std::string AudioContext::getCurrentMusicTrackName() const
+{
+    return m_musicController->currentDisplayName();
 }
 
 void AudioContext::changeMusicVolume(int delta) const

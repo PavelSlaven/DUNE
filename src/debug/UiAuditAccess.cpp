@@ -28,6 +28,9 @@
 #include "gamestates/cOptionsState.h"
 #include "gamestates/cSelectYourNextConquestState.h"
 #include "gamestates/cSetupSkirmishState.h"
+#include "audio/MusicController.h"
+#include "context/AudioContext.hpp"
+#include <filesystem>
 #include "gamestates/cTellHouseState.h"
 #include "include/definitions.h"
 #include "include/eGameState.h"
@@ -791,6 +794,19 @@ bool UiAuditAccess::prepareGameScreen(cGame &currentGame, int house, int kind)
         case GameKind::RadarNone:
         case GameKind::RadarNoPower:
             return true;
+        case GameKind::Music: {
+            MusicController *music = currentGame.m_audioContext->m_musicController.get();
+            MusicTrack track;
+            track.externalPath = std::filesystem::path(
+                localization::text("Gameplay_theme_with_an_extremely_long_track_title_for_the_layout_audit.ogg",
+                                   "Игровая_тема_с_очень_длинным_названием_трека_для_проверки_раскладки.ogg"));
+            auto &state = music->m_categories[static_cast<std::size_t>(MusicCategory::Gameplay)];
+            state.playlist.setTracks({track});
+            state.playlist.next();
+            music->m_activeCategory = MusicCategory::Gameplay;
+            music->m_hasActiveCategory = true;
+            return !music->currentDisplayName().empty();
+        }
         case GameKind::Structure:
             player->selected_structure = base.factoryId;
             return true;

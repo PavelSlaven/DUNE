@@ -3,6 +3,9 @@ log.txt
 *.mid
 *.wav
 
+# The curated runtime music pool is part of the RU/HD source package.
+!resources/bin/music/**/*.wav
+
 # IDE related
 Dune 2.vcxproj
 .project

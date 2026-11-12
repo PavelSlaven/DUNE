@@ -16,6 +16,7 @@
 #pragma once
 
 #include <memory>
+#include <filesystem>
 #include <string>
 #include <vector>
 #include <SDL3_mixer/SDL_mixer.h>
@@ -37,7 +38,7 @@ public:
     void playVoice(int sampleId, int house);
     void playMusic(int sampleId);
     // Returns false when the file could not be loaded; the caller decides on a fallback.
-    bool playMusicFile(const std::string &path);
+    bool playMusicFile(const std::filesystem::path &file, std::string &error);
 
     void stopMusic();
     bool isMusicPlaying() const;
