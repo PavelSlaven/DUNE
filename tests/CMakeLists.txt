@@ -33,6 +33,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_OptionsMenu.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_HudLayout.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_UiAuditArguments.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/UiAuditRecordStub.cpp
 )
 
 # Production source files the tests depend on.
@@ -46,6 +47,8 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/gameobjects/map/cSeedMapGenerator.cpp
     ${CMAKE_SOURCE_DIR}/src/gameobjects/map/cPreviewMaps.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/SDLDrawer.cpp
+    ${CMAKE_SOURCE_DIR}/src/drawers/cTextDrawer.cpp
+    ${CMAKE_SOURCE_DIR}/src/drawers/cTextTextureCache.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/RNG.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/d2tm_math.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cPoint.cpp

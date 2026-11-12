@@ -27,6 +27,12 @@
 
 #include <filesystem>
 
+namespace {
+constexpr float kGameFontSize = 16.0F;
+constexpr float kBeneFontSize = 14.0F;
+constexpr float kSmallFontSize = 12.0F;
+}
+
 ContextCreator::ContextCreator(SDL_Renderer *renderer, cFileValidator *settingsValidator)
 {
     d2tm_assert(renderer!=nullptr);
@@ -79,9 +85,9 @@ ContextCreator::ContextCreator(SDL_Renderer *renderer, cFileValidator *settingsV
     //
     const auto fontDirectory = std::filesystem::path(
         settingsValidator->getFullName(eGameDirFileName::BENEGESS)).parent_path();
-    const auto openFont = [settingsValidator](eGameDirFileName configuredFont) {
+    const auto openFont = [settingsValidator](eGameDirFileName configuredFont, float size) {
         const auto fontPath = std::filesystem::path(settingsValidator->getFullName(configuredFont));
-        TTF_Font *font = TTF_OpenFont(fontPath.string().c_str(), 12);
+        TTF_Font *font = TTF_OpenFont(fontPath.string().c_str(), size);
         if (!font) {
             Logger::error(COMP_INIT, "Load data", "Could not hook/load font: {}", fontPath.filename().string());
         } else {
@@ -89,23 +95,26 @@ ContextCreator::ContextCreator(SDL_Renderer *renderer, cFileValidator *settingsV
         }
         return font;
     };
-    game_font = openFont(eGameDirFileName::ARRAKEEN);
-    bene_font = openFont(eGameDirFileName::BENEGESS);
-    small_font = openFont(eGameDirFileName::SMALL);
+    game_font = openFont(eGameDirFileName::ARRAKEEN, kGameFontSize);
+    bene_font = openFont(eGameDirFileName::BENEGESS, kBeneFontSize);
+    small_font = openFont(eGameDirFileName::SMALL, kSmallFontSize);
 
     const auto fallbackFontPath = fontDirectory / "PTMono-Regular.ttf";
-    symbol_fallback_font = TTF_OpenFont(fallbackFontPath.string().c_str(), 12);
-    if (!symbol_fallback_font) {
-        Logger::warn(COMP_INIT, "Load data", "Could not hook/load fallback font: PTMono-Regular.ttf");
-    } else {
-        TTF_Font *fonts[] = {game_font, bene_font, small_font};
-        for (TTF_Font *font : fonts) {
-            if (font && !TTF_AddFallbackFont(font, symbol_fallback_font)) {
+    const auto openFallbackFont = [&fallbackFontPath](TTF_Font *font, float size) {
+        TTF_Font *fallback = TTF_OpenFont(fallbackFontPath.string().c_str(), size);
+        if (!fallback) {
+            Logger::warn(COMP_INIT, "Load data", "Could not hook/load fallback font: PTMono-Regular.ttf");
+        } else {
+            if (font && !TTF_AddFallbackFont(font, fallback)) {
                 Logger::warn(COMP_INIT, "Load data", "Could not attach fallback font: PTMono-Regular.ttf: {}", SDL_GetError());
             }
+            Logger::info(COMP_INIT, "Load data", "Hooked fallback font: PTMono-Regular.ttf");
         }
-        Logger::info(COMP_INIT, "Load data", "Hooked fallback font: PTMono-Regular.ttf");
-    }
+        return fallback;
+    };
+    game_fallback_font = openFallbackFont(game_font, kGameFontSize);
+    bene_fallback_font = openFallbackFont(bene_font, kBeneFontSize);
+    small_fallback_font = openFallbackFont(small_font, kSmallFontSize);
 }
 
 ContextCreator::~ContextCreator()
@@ -113,7 +122,9 @@ ContextCreator::~ContextCreator()
     TTF_CloseFont(game_font);
     TTF_CloseFont(bene_font);
     TTF_CloseFont(small_font);
-    TTF_CloseFont(symbol_fallback_font);
+    if (game_fallback_font) TTF_CloseFont(game_fallback_font);
+    if (bene_fallback_font) TTF_CloseFont(bene_fallback_font);
+    if (small_fallback_font) TTF_CloseFont(small_fallback_font);
 }
 
 std::unique_ptr<GraphicsContext> ContextCreator::createGraphicsContext()
@@ -129,8 +140,8 @@ std::unique_ptr<GraphicsContext> ContextCreator::createGraphicsContext()
 
 std::unique_ptr<TextContext> ContextCreator::createTextContext(cGameSettings *settings, SDLDrawer *renderer) {
     return std::make_unique<TextContext>(
-        std::make_unique<cTextDrawer>(small_font, settings, renderer),
-        std::make_unique<cTextDrawer>(bene_font, settings, renderer),
-        std::make_unique<cTextDrawer>(game_font, settings, renderer)
+        std::make_unique<cTextDrawer>(small_font, small_fallback_font, kSmallFontSize, settings, renderer),
+        std::make_unique<cTextDrawer>(bene_font, bene_fallback_font, kBeneFontSize, settings, renderer),
+        std::make_unique<cTextDrawer>(game_font, game_fallback_font, kGameFontSize, settings, renderer)
     );
 }

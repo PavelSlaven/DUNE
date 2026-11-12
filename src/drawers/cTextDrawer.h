@@ -28,7 +28,7 @@ class SDLDrawer;
 class cTextDrawer {
 public:
     // Constructor, initializes the drawer with a TTF font and game settings
-    cTextDrawer(TTF_Font *theFont, cGameSettings *settings, SDLDrawer *renderer);
+    cTextDrawer(TTF_Font *theFont, TTF_Font *fallbackFont, float baseSize, cGameSettings *settings, SDLDrawer *renderer);
     ~cTextDrawer();
 
     // Draws text at (x, y) in white, with optional shadow
@@ -64,9 +64,9 @@ public:
     void drawTextBottomRight(Color color, const std::string &msg,int margin =0) const;
     // Draws text at the bottom left of the screen, with color and margin
     void drawTextBottomLeft(Color color, const std::string &msg,int margin =0) const;
-    // Returns the pixel length of the text
+    // Returns the length of the text in canvas points
     int getTextLength(const std::string &msg) const;
-    // Returns the font height in pixels
+    // Returns the font height in canvas points
     int getFontHeight() const;
     // Clears the text texture cache
     void resetCache() const;
@@ -79,7 +79,12 @@ protected:
 
 private:
     TTF_Font *m_font;
+    TTF_Font *m_fallbackFont = nullptr;
+    float m_baseSize = 0.0F;
+    mutable int m_density = 1;
     std::unique_ptr<cTextTextureCache> m_textCache;
     cGameSettings* m_settings = nullptr;
     SDLDrawer *m_renderer = nullptr;
+    void syncDensity() const;
+    int toLogical(int pixels) const;
 };

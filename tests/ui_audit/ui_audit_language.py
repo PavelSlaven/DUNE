@@ -77,6 +77,9 @@ def check_font_log(game, result, require_fallback):
     output = process_output + game_log
     if "Sangyo" in output:
         return "The game output or log unexpectedly mentions Sangyo"
+    for font in ("PTSansNarrow-Regular.ttf", "RussoOne-Regular.ttf"):
+        if f"Hooked font: {font}" not in output:
+            return f"The game output or log did not report Hooked font: {font}"
     if require_fallback and "Hooked fallback font: PTMono-Regular.ttf" not in output:
         return "The Russian run did not report Hooked fallback font: PTMono-Regular.ttf"
     return None

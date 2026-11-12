@@ -48,14 +48,19 @@ void SDLDrawer::renderSprite(Texture *src,int x, int y,Uint8 opacity)
 
 void SDLDrawer::renderTexture(SDL_Texture *tex, int x, int y, int w, int h, Uint8 opacity)
 {
+    const SDL_FRect dest = {static_cast<float>(x), static_cast<float>(y), static_cast<float>(w), static_cast<float>(h)};
+    renderTexture(tex, dest, opacity);
+}
+
+void SDLDrawer::renderTexture(SDL_Texture *tex, const SDL_FRect &dest, Uint8 opacity)
+{
     if (tex == nullptr) return;
-    SDL_FRect tmp = {static_cast<float>(x), static_cast<float>(y), static_cast<float>(w), static_cast<float>(h)};
     SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     if (!SDL_SetTextureAlphaMod(tex, opacity)) {
         std::cerr << "no alpha mod "<< SDL_GetError() << std::endl;
     }
-    SDL_RenderTexture(renderer, tex, nullptr, &tmp);
+    SDL_RenderTexture(renderer, tex, nullptr, &dest);
 }
 
 void SDLDrawer::renderFromSurface(SDL_Surface *src, int x, int y, Uint8 opacity, int density)

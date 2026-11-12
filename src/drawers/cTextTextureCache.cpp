@@ -89,31 +89,47 @@ cTextTextureCache::~cTextTextureCache()
     }
 }
 
+void cTextTextureCache::setDensity(int density) const
+{
+    const int normalizedDensity = std::max(1, density);
+    if (normalizedDensity == m_density) return;
+
+    for (auto &pair : m_textCache) {
+        auto &cacheEntry = pair.second;
+        if (cacheEntry->texture) {
+            SDL_DestroyTexture(cacheEntry->texture);
+        }
+        if (cacheEntry->shadowsTexture) {
+            SDL_DestroyTexture(cacheEntry->shadowsTexture);
+        }
+    }
+    m_textCache.clear();
+    m_density = normalizedDensity;
+}
+
 std::unique_ptr<textCacheEntry> cTextTextureCache::createCacheEntry(Color color, const std::string &msg) const
 {
     auto newCacheEntry = std::make_unique<textCacheEntry>();
-    // TTF_RenderText_Solid produces a crisp, non-anti-aliased 8-bit palette surface
-    // (fully transparent background, fully opaque foreground). This scales cleanly
-    // with nearest-neighbour upscaling, whereas Blended's partial-alpha edges produce
-    // a visible haze on light backgrounds and look inconsistent at non-integer scales.
-    SDL_Surface *textSurface = TTF_RenderText_Solid(m_font, msg.c_str(), 0, Color::Black.toSDL());
+    SDL_Surface *textSurface = TTF_RenderText_Blended(m_font, msg.c_str(), 0, Color::Black.toSDL());
     if (!textSurface) {
         Logger::error(COMP_TEXT, "cTextTextureCache", "Failed to create shadow surface for text '{}': {}", msg, SDL_GetError());
         return nullptr;
     }
     newCacheEntry->shadowsTexture = SDL_CreateTextureFromSurface(m_renderer->getRenderer(), textSurface);
-    SDL_SetTextureScaleMode(newCacheEntry->shadowsTexture, SDL_SCALEMODE_NEAREST);
+    SDL_SetTextureScaleMode(newCacheEntry->shadowsTexture, SDL_SCALEMODE_LINEAR);
     SDL_DestroySurface(textSurface);
 
-    textSurface = TTF_RenderText_Solid(m_font, msg.c_str(), 0, color.toSDL());
+    textSurface = TTF_RenderText_Blended(m_font, msg.c_str(), 0, color.toSDL());
     if (!textSurface) {
         Logger::error(COMP_TEXT, "cTextTextureCache", "Failed to create surface for text '{}': {}", msg, SDL_GetError());
         return nullptr;
     }
     newCacheEntry->texture = SDL_CreateTextureFromSurface(m_renderer->getRenderer(), textSurface);
-    SDL_SetTextureScaleMode(newCacheEntry->texture, SDL_SCALEMODE_NEAREST);
-    newCacheEntry->width = textSurface->w;
-    newCacheEntry->height = textSurface->h;
+    SDL_SetTextureScaleMode(newCacheEntry->texture, SDL_SCALEMODE_LINEAR);
+    newCacheEntry->pixelWidth = textSurface->w;
+    newCacheEntry->pixelHeight = textSurface->h;
+    newCacheEntry->width = (newCacheEntry->pixelWidth + m_density - 1) / m_density;
+    newCacheEntry->height = (newCacheEntry->pixelHeight + m_density - 1) / m_density;
     newCacheEntry->inkBounds = findInkBounds(textSurface);
     newCacheEntry->lifeCounter = 10;
     SDL_DestroySurface(textSurface);

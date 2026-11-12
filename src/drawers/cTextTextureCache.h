@@ -48,6 +48,8 @@ struct textCacheEntry {
     SDL_Texture *shadowsTexture;
     int width;
     int height;
+    int pixelWidth;
+    int pixelHeight;
     TextInkBounds inkBounds;
     int lifeCounter;
 };
@@ -59,6 +61,7 @@ public:
     ~cTextTextureCache();
     // Finds a cached entry for the given color and message, or creates it if not present
     textCacheEntry* findOrCreate(Color color, const std::string &msg) const;
+    void setDensity(int density) const;
     // Clears the cache, destroying all stored textures
     void resetCache() const;
 private:
@@ -66,4 +69,5 @@ private:
     TTF_Font *m_font;
     SDLDrawer *m_renderer;
     mutable std::unordered_map<textKey, std::unique_ptr<textCacheEntry>, textKeyHash, textKeyEqual> m_textCache;
+    mutable int m_density = 1;
 };
