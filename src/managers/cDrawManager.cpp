@@ -57,6 +57,11 @@
 #include "game/cGameSettings.h"
 #include "include/Texture.hpp"
 #include "utils/Localization.hpp"
+#include "context/AudioContext.hpp"
+#include "game/cTimeManager.h"
+#include "sidebar/HudLayout.hpp"
+#include "sidebar/MusicControlsLayout.hpp"
+#include <algorithm>
 
 cDrawManager::cDrawManager(GameContext *ctx, cPlayer *thePlayer, sGameServices *services) :
     m_sidebarColor(Color{214, 149, 20,255}),
@@ -168,6 +173,7 @@ void cDrawManager::drawCombatState()
 
     // THE MESSAGE
     drawMessage();
+    drawTopBarMusicControls();
 
     m_sdlDrawer->resetClippingFor();
 
@@ -349,6 +355,144 @@ void cDrawManager::drawTopBarBackground()
             optionsRect.getWidth(),
             optionsRect.getHeight())) {
         m_stateTransitions->setNextState(GAME_OPTIONS);
+    }
+}
+
+void cDrawManager::drawTopBarMusicControls()
+{
+    const HudLayout layout = HudLayout::create(m_gameSettings->getScreenW(), m_gameSettings->getScreenH());
+    const int left = 143;
+    const int right = layout.battlefield.getEndX() - 8;
+    drawMusicControls(left, right);
+}
+
+void cDrawManager::drawMusicControls(int left, int right)
+{
+    cTextDrawer *smallTextDrawer = m_ctx->getTextContext()->getSmallTextDrawer();
+    const std::string message = m_messageDrawer->getMessage();
+    const int reservedMessageWidth = message.empty()
+        ? 0
+        : m_textDrawer->getTextLength(message) + 16;
+    const MusicControlsLayout layout = MusicControlsLayout::create(
+        left,
+        right,
+        reservedMessageWidth
+    );
+    if (!layout.visible) {
+        return;
+    }
+    if (uiaudit::isEnabled()) {
+        uiaudit::recordClick("music-previous", layout.previous.getX(), layout.previous.getY(), layout.previous.getWidth(), layout.previous.getHeight());
+        uiaudit::recordClick("music-next", layout.next.getX(), layout.next.getY(), layout.next.getWidth(), layout.next.getHeight());
+        uiaudit::recordClick("music-speed-slider", layout.speedSlider.getX(), layout.speedSlider.getY(), layout.speedSlider.getWidth(), layout.speedSlider.getHeight());
+    }
+
+    const Color panel{35, 32, 25, 255};
+    const Color border{188, 139, 47, 255};
+    const Color borderDark{71, 50, 24, 255};
+    const Color text{232, 222, 188, 255};
+
+    for (const cRectangle *rect : {&layout.previous, &layout.next}) {
+        m_sdlDrawer->renderRectFillColor(rect->getX(), rect->getY(), rect->getWidth(), rect->getHeight(), panel);
+        m_sdlDrawer->renderRectColor(rect->getX(), rect->getY(), rect->getWidth(), rect->getHeight(), border);
+    }
+    m_textDrawer->drawTextCenteredInBox("<", layout.previous, text);
+    m_textDrawer->drawTextCenteredInBox(">", layout.next, text);
+
+    if (layout.showsLabel()) {
+        std::string name = m_ctx->getAudioContext()->getCurrentMusicTrackName();
+        bool truncated = false;
+        const std::string ellipsis = "...";
+        while (!name.empty() &&
+               smallTextDrawer->getTextLength(name + (truncated ? ellipsis : std::string{})) > layout.label.getWidth() - 10) {
+            std::size_t characterStart = name.size() - 1U;
+            while (characterStart > 0U &&
+                   (static_cast<unsigned char>(name[characterStart]) & 0xC0U) == 0x80U) {
+                --characterStart;
+            }
+            name.erase(characterStart);
+            truncated = true;
+        }
+        while (!name.empty() && truncated &&
+               smallTextDrawer->getTextLength(name + ellipsis) > layout.label.getWidth() - 10) {
+            std::size_t characterStart = name.size() - 1U;
+            while (characterStart > 0U &&
+                   (static_cast<unsigned char>(name[characterStart]) & 0xC0U) == 0x80U) {
+                --characterStart;
+            }
+            name.erase(characterStart);
+        }
+        if (!name.empty() && truncated) {
+            name += ellipsis;
+        }
+        m_sdlDrawer->renderRectFillColor(layout.label.getX(), layout.label.getY(), layout.label.getWidth(), layout.label.getHeight(), panel);
+        m_sdlDrawer->renderRectColor(layout.label.getX(), layout.label.getY(), layout.label.getWidth(), layout.label.getHeight(), border);
+        smallTextDrawer->drawTextCenteredInBox(name, layout.label, text);
+    }
+
+    m_sdlDrawer->renderRectFillColor(layout.speedLabel, panel);
+    m_sdlDrawer->gui_DrawRectBorder(layout.speedLabel, border, borderDark);
+    smallTextDrawer->drawTextCenteredInBox(
+        localization::text("SPEED", "СКОРОСТЬ"),
+        layout.speedLabel,
+        text
+    );
+
+    m_sdlDrawer->renderRectFillColor(layout.speedSlider, panel);
+    m_sdlDrawer->gui_DrawRectBorder(layout.speedSlider, border, borderDark);
+
+    cTimeManager *timeManager = m_ctx->getTimeManager();
+    constexpr int MinSliderValue = 2;
+    constexpr int MaxSliderValue = 10;
+    constexpr int SliderKnobWidth = 12;
+    const int globalSpeed = std::clamp<int>(timeManager->getGlobalSpeed(), 2, 10);
+    int sliderValue = 12 - globalSpeed;
+
+    cMouse *mouse = m_mouse;
+    const bool mouseOverSlider = mouse->isOverRectangle(
+        layout.speedSlider.getX(),
+        layout.speedSlider.getY(),
+        layout.speedSlider.getWidth(),
+        layout.speedSlider.getHeight()
+    );
+    if ((mouse->isLeftButtonPressed() || mouse->isLeftButtonClicked()) && mouseOverSlider) {
+        m_speedSliderDragging = true;
+    }
+    if (!mouse->isLeftButtonPressed() && !mouse->isLeftButtonClicked()) {
+        m_speedSliderDragging = false;
+    }
+    if (m_speedSliderDragging) {
+        const int position = std::clamp(
+            mouse->getX() - layout.speedSlider.getX(),
+            0,
+            layout.speedSlider.getWidth()
+        );
+        sliderValue = MinSliderValue +
+            position * (MaxSliderValue - MinSliderValue) /
+            std::max(1, layout.speedSlider.getWidth());
+        const int requestedGlobalSpeed = 12 - sliderValue;
+        if (requestedGlobalSpeed != globalSpeed) {
+            timeManager->setGlobalSpeed(requestedGlobalSpeed);
+        }
+    }
+
+    const int knobTravel = std::max(0, layout.speedSlider.getWidth() - SliderKnobWidth);
+    const int knobX = layout.speedSlider.getX() +
+        (sliderValue - MinSliderValue) * knobTravel /
+        (MaxSliderValue - MinSliderValue);
+    const cRectangle knob(knobX, layout.speedSlider.getY(), SliderKnobWidth, layout.speedSlider.getHeight());
+    m_sdlDrawer->renderRectFillColor(knob, borderDark);
+    m_sdlDrawer->gui_DrawRectBorder(knob, border, borderDark);
+
+    if (mouse->isLeftButtonClicked()) {
+        if (mouse->isOverRectangle(
+                layout.previous.getX(), layout.previous.getY(), layout.previous.getWidth(), layout.previous.getHeight())) {
+            m_ctx->getAudioContext()->playPreviousTrack();
+        }
+        else if (mouse->isOverRectangle(
+                     layout.next.getX(), layout.next.getY(), layout.next.getWidth(), layout.next.getHeight())) {
+            m_ctx->getAudioContext()->playNextTrack();
+        }
     }
 }
 
