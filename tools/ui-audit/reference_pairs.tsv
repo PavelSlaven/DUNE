@@ -1,0 +1,28 @@
+pair	fork_scene	port_scene	resolutions	note
+main-menu	main-menu	main-menu	1920x1080	-
+options-main	options-menu-main	options-menu-main	1920x1080	-
+options-applied	options-menu-applied	options-menu-applied	1920x1080	-
+options-page-game	options-menu-game	options-game-game	1920x1080	entry differs: menu / game
+options-page-controls	options-menu-controls	options-game-controls	1920x1080	entry differs: menu / game
+options-page-diagnostics	options-menu-diagnostics	options-game-diagnostics	1920x1080	entry differs: menu / game
+options-page-keybind	options-menu-keybind	options-game-keybind	1920x1080	entry differs: menu / game
+skirmish-hud	-	save-roundtrip	800x600,1920x1080,5120x1440	-
+mission-hud	game-hud	game-hud	800x600,1920x1080,5120x1440	-
+campaign-map-intro	region-atreides-intro-1	region-atreides-intro-1	1920x1080	-
+campaign-map-select	region-ordos-select-3	region-ordos-select-3	1920x1080	-
+mentat-briefing-atreides	mentat-briefing-atreides-await	mentat-briefing-atreides-await	1920x1080	-
+mentat-briefing-ordos	mentat-briefing-ordos-await	mentat-briefing-ordos-await	1920x1080	-
+mentat-briefing-harkonnen	mentat-briefing-harkonnen-await	mentat-briefing-harkonnen-await	1920x1080	-
+mentat-win-ordos	mentat-win-ordos-await	mentat-win-ordos-await	1920x1080	-
+tellhouse-ordos	tellhouse-ordos-await	tellhouse-ordos-await	1920x1080	-
+mentat-briefing-sardaukar	-	mentat-briefing-sardaukar-await	1920x1080	-
+credits-title	credits-title	credits-title	1920x1080	-
+credits-1	credits-1	credits-1	1920x1080	-
+credits-2	credits-2	credits-2	1920x1080	-
+credits-3	credits-3	credits-3	1920x1080	-
+credits-4	credits-4	credits-4	1920x1080	-
+credits-5	credits-5	credits-5	1920x1080	-
+choose-house	choose-house	choose-house	1920x1080	-
+select-mission-ordos	select-mission-ordos	select-mission-ordos	1920x1080	-
+outcome-win	outcome-win	outcome-win	1920x1080	-
+outcome-lose	outcome-lose	outcome-lose	1920x1080	-
