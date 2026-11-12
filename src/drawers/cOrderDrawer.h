@@ -24,6 +24,7 @@ struct SDL_Surface;
 class Texture;
 class GameContext;
 class SDLDrawer;
+class cTextDrawer;
 struct sGameServices;
 
 class cOrderDrawer {
@@ -49,6 +50,7 @@ private:
     bool m_isMouseOverOrderButton;
     GameContext *m_ctx;
     SDLDrawer *m_sdlDrawer;
+    cTextDrawer *m_textDrawer;
     cPlayer *m_player;
     cRectangle m_buttonRect;
     std::unique_ptr<Texture> m_buttonBitmap;

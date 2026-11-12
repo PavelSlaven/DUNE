@@ -49,7 +49,6 @@ cOrderProcesser::cOrderProcesser(cPlayer *thePlayer)
     m_frigateSent = false;
     m_secondsUntilArrival = -1;
     m_secondsUntilNewPricesWillBeCalculated = 1; // initially randomize prices immediately
-    std::fill(std::begin(m_pricePaidForItem), std::end(m_pricePaidForItem), -1);
     removeAllItems();
     m_unitIdOfFrigateSent = -1;
 }
@@ -71,37 +70,24 @@ void cOrderProcesser::serviceInit(sGameServices *services)
     updatePricesForStarport();
 }
 
-cBuildingListItem *cOrderProcesser::getItemToDeploy()
+std::optional<StarportOrder> cOrderProcesser::peekNextOrderToDeploy() const
 {
-    for (int i = 0; i < kMaxItemsToOrder; i++) {
-        if (m_orderedItems[i] != nullptr) {
-            return m_orderedItems[i];
-        }
-    }
-    return nullptr;
+    return m_orderedItems.peekNext();
+}
+
+std::optional<StarportOrder> cOrderProcesser::takeNextOrderToDeploy()
+{
+    return m_orderedItems.takeNext();
 }
 
 bool cOrderProcesser::hasOrderedAnything()
 {
-    // the id is either > 0 (meaning slot 0 is taken, or more)
-    // or the id is lower than 0, (meaning, all slots are taken)
-    return getFreeSlot() > 0 || getFreeSlot() < 0;
-}
-
-void cOrderProcesser::markOrderAsDeployed(cBuildingListItem *item)
-{
-    d2tm_assert(item);
-    int slot = getSlotForItem(item);
-    d2tm_assert(slot > -1);
-    // remove item from the ordered items
-    m_orderedItems[slot] = nullptr;
-    m_pricePaidForItem[slot] = -1;
+    return !m_orderedItems.empty();
 }
 
 bool cOrderProcesser::acceptsOrders()
 {
-    int freeSlot = getFreeSlot();
-    bool result = m_frigateSent == false && m_orderPlaced == false && freeSlot > -1;
+    bool result = m_frigateSent == false && m_orderPlaced == false && m_orderedItems.hasFreeSlot();
     result = result && m_player->hasAtleastOneStructure(STARPORT);
     return result;
 }
@@ -202,61 +188,27 @@ void cOrderProcesser::updatePricesForStarport()
 void cOrderProcesser::addOrder(cBuildingListItem *item)
 {
     d2tm_assert(item);
-    int freeSlot = getFreeSlot();
-    if (freeSlot > -1) {
-        m_orderedItems[freeSlot] = item;
-        // store the original paid price, so in case the player decides
-        // to undo an order, he gets the same amount of money back that he paid for
-        // (since the prices can still fluctuate during the order process)
-        m_pricePaidForItem[freeSlot] = item->getBuildCost();
-    }
+    // Catalog entries are UI-owned and may disappear while the frigate is in
+    // flight, so the order must retain only stable value data.
+    m_orderedItems.add(item->getBuildId(), item->getBuildCost());
 }
 
 void cOrderProcesser::removeOrder(cBuildingListItem *item)
 {
     d2tm_assert(item);
-    int slot = getSlotForItem(item);
-    removeItem(slot);
-}
-
-int cOrderProcesser::getFreeSlot()
-{
-    for (int i = 0; i < kMaxItemsToOrder; i++) {
-        if (m_orderedItems[i] == nullptr) {
-            return i;
-        }
+    const std::optional<StarportOrder> removedOrder = m_orderedItems.removeFirst(item->getBuildId());
+    if (removedOrder && removedOrder->paidPrice > 0) {
+        m_player->giveCredits(removedOrder->paidPrice);
     }
-    return -1;
-}
-
-int cOrderProcesser::getSlotForItem(cBuildingListItem *item)
-{
-    for (int i = 0; i < kMaxItemsToOrder; i++) {
-        if (m_orderedItems[i] == item) {
-            return i;
-        }
-    }
-    return -1;
 }
 
 void cOrderProcesser::removeAllItems()
 {
-    for (int i = 0; i < kMaxItemsToOrder; i++) {
-        removeItem(i);
+    while (const std::optional<StarportOrder> removedOrder = m_orderedItems.takeNext()) {
+        if (removedOrder->paidPrice > 0) {
+            m_player->giveCredits(removedOrder->paidPrice);
+        }
     }
-}
-
-void cOrderProcesser::removeItem(int slot)
-{
-    d2tm_assert(slot >= 0);
-    d2tm_assert(slot < kMaxItemsToOrder);
-    m_orderedItems[slot] = nullptr;
-    // give money back to player
-    if (m_pricePaidForItem[slot] > 0) {
-        m_player->giveCredits(m_pricePaidForItem[slot]);
-    }
-    // and reset the amount
-    m_pricePaidForItem[slot] = -1;
 }
 
 void cOrderProcesser::placeOrder()

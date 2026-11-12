@@ -28,6 +28,8 @@ void cKeyBindings::loadDefaults()
     bind(eKeyAction::TOGGLE_MUSIC,        {SDL_SCANCODE_M,   SDL_SCANCODE_MUTE});
     bind(eKeyAction::MUSIC_VOLUME_DOWN,   {SDL_SCANCODE_O,   SDL_SCANCODE_VOLUMEDOWN});
     bind(eKeyAction::MUSIC_VOLUME_UP,     {SDL_SCANCODE_P,   SDL_SCANCODE_VOLUMEUP});
+    bind(eKeyAction::MUSIC_PREVIOUS_TRACK, {SDL_SCANCODE_LEFTBRACKET});
+    bind(eKeyAction::MUSIC_NEXT_TRACK,    {SDL_SCANCODE_RIGHTBRACKET});
     bind(eKeyAction::GAME_SPEED_UP,       {SDL_SCANCODE_KP_PLUS});
     bind(eKeyAction::GAME_SPEED_DOWN,     {SDL_SCANCODE_KP_MINUS});
     // Alt-modified
@@ -144,6 +146,8 @@ const std::vector<std::pair<std::string, eKeyAction>>& cKeyBindings::getActionTa
         {"TOGGLE_MUSIC",              eKeyAction::TOGGLE_MUSIC},
         {"MUSIC_VOLUME_DOWN",         eKeyAction::MUSIC_VOLUME_DOWN},
         {"MUSIC_VOLUME_UP",           eKeyAction::MUSIC_VOLUME_UP},
+        {"MUSIC_PREVIOUS_TRACK",      eKeyAction::MUSIC_PREVIOUS_TRACK},
+        {"MUSIC_NEXT_TRACK",          eKeyAction::MUSIC_NEXT_TRACK},
         {"GAME_SPEED_UP",             eKeyAction::GAME_SPEED_UP},
         {"GAME_SPEED_DOWN",           eKeyAction::GAME_SPEED_DOWN},
         {"TOGGLE_FULLSCREEN",         eKeyAction::TOGGLE_FULLSCREEN},

@@ -251,6 +251,8 @@ void cPlayer::init(int id, std::unique_ptr<brains::cPlayerBrain> brain)
     powerProduce_ = 0;
 
     iTeam = -1;
+    m_lastEnemyWarningMs = 0;
+    m_hasPlayedEnemyWarning = false;
 }
 
 /**
@@ -2067,80 +2069,23 @@ bool cPlayer::startBuilding(cBuildingListItem *pItem)
 
 void cPlayer::onEntityDiscovered(const CommonEvent &event)
 {
-//    if (!event.player->isHuman()) { // todo == interacting player? (have a gameobjects/mentat/sound thing that listens to events??)
-//        // do nothing
-//        return;
-//    }
-
-    if (m_settings->getMusicType() != eMusicType::PEACE) {
-        // nothing to do here music-wise
+    if (!isHuman() || event.entityType != eBuildType::UNIT) {
         return;
     }
 
-    bool discoveringPlayerIsSameTeamAsThisPlayer = isSameTeamAs(event.player);
-
-    int voiceId = -1;
-
-    // when state of music is not attacking, do attacking stuff and say "Warning enemy unit approaching
-    bool triggerMusic = false;
-    if (event.entityType == eBuildType::UNIT) {
-        cUnit *pUnit = m_objects->getUnit(event.entityID);
-        bool detectedEntityIsHuman = pUnit->getPlayer()->isHuman();
-
-        // unit discovered is NOT the same team, so enemy detected / music trigger
-//        if (detectedEntityIsHuman || (isHuman() && !detectedEntityIsHuman)) {
-        if (detectedEntityIsHuman || isHuman()) {
-            if (discoveringPlayerIsSameTeamAsThisPlayer && !isSameTeamAs(pUnit->getPlayer())) {
-                triggerMusic = true;
-                if (pUnit->iType == SANDWORM) {
-                    voiceId = SOUND_VOICE_10_ATR; // wormsign
-                }
-                else {
-                    voiceId = SOUND_VOICE_09_ATR; // enemy unit approaching
-                }
-            }
-        }
-        else {
-            // this entity, nor I am human. So do not care about music stuff.
-            return;
-        }
-    }
-    else if (event.entityType == eBuildType::STRUCTURE) {
-        cAbstractStructure *pStructure = m_objects->getStructures()[event.entityID];
-        bool detectedEntityIsHuman = pStructure->getPlayer()->isHuman();
-
-        // structure discovered is NOT the same team, so enemy detected / music trigger
-//        if (detectedEntityIsHuman || (isHuman() && !detectedEntityIsHuman)) {
-        if (detectedEntityIsHuman || isHuman()) {
-            if (discoveringPlayerIsSameTeamAsThisPlayer && !isSameTeamAs(pStructure->getPlayer())) {
-                // only things that can harm us will trigger attack music?
-                if (event.entitySpecificType == RTURRET || event.entitySpecificType == TURRET) {
-                    triggerMusic = true;
-                }
-            }
-        }
-        else {
-            // this entity, nor I am human. So do not care about music stuff.
-            return;
-        }
+    cUnit *pUnit = m_objects->getUnit(event.entityID);
+    if (!isSameTeamAs(event.player) || isSameTeamAs(pUnit->getPlayer())) {
+        return;
     }
 
-    bool hasVoiceToPlay = isHuman() && voiceId > -1; // don't warn when already in "attack music mode"
-
-    bool mayPlayVoice = true;
-    if (triggerMusic) {
-        if (m_settings->getMusicType() != eMusicType::ATTACK) {
-            // music is only triggered for the human player
-            mayPlayVoice = isHuman() && m_audioContext->playMusicByType(eMusicType::ATTACK, hasVoiceToPlay, true, getHouse());
-        }
-        else {
-            mayPlayVoice = false;
-        }
+    constexpr Uint64 warningCooldownMs = 30'000;
+    const Uint64 now = SDL_GetTicks();
+    if (m_hasPlayedEnemyWarning && now - m_lastEnemyWarningMs < warningCooldownMs) {
+        return;
     }
-
-    if (mayPlayVoice && hasVoiceToPlay) {
-        m_audioContext->playVoice(voiceId, getHouse());
-    }
+    m_lastEnemyWarningMs = now;
+    m_hasPlayedEnemyWarning = true;
+    m_audioContext->playVoice(pUnit->iType == SANDWORM ? SOUND_VOICE_10_ATR : SOUND_VOICE_09_ATR, getHouse());
 }
 
 bool cPlayer::startBuilding(eBuildType buildType, int buildId)

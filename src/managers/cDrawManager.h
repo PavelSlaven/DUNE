@@ -124,6 +124,8 @@ protected:
     void drawRallyPoint();
 
     void drawTopBarBackground();
+    void drawTopBarMusicControls();
+    void drawMusicControls(int left, int right);
 
 private:
     void drawDebugInfoUsages() const;
@@ -158,6 +160,7 @@ private:
     cGameSettings* m_gameSettings = nullptr;
     cStructureUtils* m_structureUtils = nullptr;
     sGameServices* m_services = nullptr;
+    bool m_speedSliderDragging = false;
 
     void onKeyDown(const cKeyboardEvent &event);
 

@@ -13,6 +13,7 @@ namespace uiaudit {
 
 enum GameKind {
     Hud,
+    Music,
     Structure,
     ListBuild,
     ListInfantry,

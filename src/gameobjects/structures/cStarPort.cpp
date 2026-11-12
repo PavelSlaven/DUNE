@@ -25,6 +25,8 @@
 #include "gameobjects/units/cUnits.h"
 #include "context/cGameObjectContext.h"
 #include "context/AudioContext.hpp"
+#include "sidebar/cSideBar.h"
+#include "sidebar/cBuildingList.h"
 
 cStarPort::cStarPort()
 {
@@ -91,18 +93,22 @@ void cStarPort::think_deploy()
             TIMER_deploy = 1;
             // deploy unit
             cOrderProcesser *orderProcesser = m_objects->getPlayer(iPlayer)->getOrderProcesser();
-            cBuildingListItem *item = orderProcesser->getItemToDeploy();
-            if (item) {
+            const std::optional<StarportOrder> order = orderProcesser->peekNextOrderToDeploy();
+            if (order) {
+                const int buildId = order->getBuildId();
                 int cellToDeployTo = getNonOccupiedCellAroundStructure();
                 int id = -1;
                 if (cellToDeployTo >= 0) {
-                    id = cUnits::unitCreate(m_objects, m_info, m_eventEmitter, cellToDeployTo, item->getBuildId(), iPlayer, true);
+                    id = cUnits::unitCreate(m_objects, m_info, m_eventEmitter, cellToDeployTo, buildId, iPlayer, true);
                     // all unit slots taken, keep the order and try again next second
                     if (id < 0) return;
                 }
 
-                orderProcesser->markOrderAsDeployed(item);
-                item->decreaseTimesOrdered();
+                orderProcesser->takeNextOrderToDeploy();
+                cBuildingListItem *catalogItem = m_objects->getPlayer(iPlayer)->getSideBar()->getList(eListType::LIST_STARPORT)->getItemByBuildId(buildId);
+                if (catalogItem && catalogItem->getTimesOrdered() > 0) {
+                    catalogItem->decreaseTimesOrdered();
+                }
                 int rallyPoint = getRallyPoint();
 
                 if (cellToDeployTo >= 0) {
@@ -123,7 +129,7 @@ void cStarPort::think_deploy()
                         cellToDeployTo = getCell();
                     }
                     int cellAtBorderOfMap = m_objects->getMap()->findCloseMapBorderCellRelativelyToDestinationCel(cellToDeployTo);
-                    REINFORCE(m_objects, m_info, m_eventEmitter, iPlayer, item->getBuildId(), cellToDeployTo, cellAtBorderOfMap);
+                    REINFORCE(m_objects, m_info, m_eventEmitter, iPlayer, buildId, cellToDeployTo, cellAtBorderOfMap);
                 }
             }
             else {

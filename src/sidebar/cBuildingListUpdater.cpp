@@ -26,6 +26,7 @@
 #include <format>
 #include "include/cAssert.h"
 #include "gameobjects/structures/cStructureInfo.h"
+#include "gameobjects/structures/StarportOrderQueue.hpp"
 
 cBuildingListUpdater::cBuildingListUpdater(cPlayer *thePlayer)
 {
@@ -501,7 +502,7 @@ void cBuildingListUpdater::onStructureDestroyed(int structureType)
     cBuildingList *listConstYard = sideBar->getList(eListType::LIST_CONSTYARD);
 
     if (structureType == STARPORT) {
-        if (!m_player->hasAtleastOneStructure(STARPORT)) {
+        if (!isStarportCatalogAvailable(m_player->hasAtleastOneStructure(STARPORT))) {
             listConstYard->removeItemFromListByBuildId(IX);
             cOrderProcesser *pProcesser = m_player->getOrderProcesser();
             pProcesser->clear();

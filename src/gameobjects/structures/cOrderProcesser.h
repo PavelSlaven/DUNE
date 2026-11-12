@@ -16,6 +16,8 @@
 #pragma once
 
 #include "sidebar/cBuildingListItem.h"
+#include "gameobjects/structures/StarportOrderQueue.hpp"
+#include <optional>
 
 class cPlayer;
 class cGameObjectContext;
@@ -69,12 +71,12 @@ public:
     bool hasOrderedAnything();
 
     bool hasFreeSlot() {
-        return getFreeSlot() >= 0;
+        return m_orderedItems.hasFreeSlot();
     }
 
-    cBuildingListItem *getItemToDeploy();
+    std::optional<StarportOrder> peekNextOrderToDeploy() const;
 
-    void markOrderAsDeployed(cBuildingListItem *item);
+    std::optional<StarportOrder> takeNextOrderToDeploy();
 
     void setOrderHasBeenProcessed();
 
@@ -85,17 +87,10 @@ public:
 protected:
     void removeAllItems();
 
-    void removeItem(int slot);
-
-    int getFreeSlot();
-
-    int getSlotForItem(cBuildingListItem *item);
-
     int getRandomizedSecondsToWait();
 
 private:
-    cBuildingListItem *m_orderedItems[kMaxItemsToOrder];
-    int m_pricePaidForItem[kMaxItemsToOrder];
+    StarportOrderQueue<kMaxItemsToOrder> m_orderedItems;
 
     cPlayer *m_player;
     cGameObjectContext *m_objects = nullptr;

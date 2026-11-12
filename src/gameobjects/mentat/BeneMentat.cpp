@@ -38,6 +38,7 @@ BeneMentat::BeneMentat(GameContext* ctx, cGameSettings* settings, GameStateTrans
     d2tm_assert(ctx != nullptr);
     d2tm_assert(dataCampaign != nullptr);
     iBackgroundFrame = MENTATM;
+    m_hdLayout = &kBeneMentatHdLayout;
     buildLeftButton(gfxmentat->getTexture(BTN_NO), 293, 423);
     buildRightButton(gfxmentat->getTexture(BTN_YES), 466, 423);
 
@@ -106,12 +107,12 @@ void BeneMentat::draw_other()
 
 void BeneMentat::draw_eyes()
 {
-    m_sdlDrawer->renderSprite(gfxmentat->getTexture(BEN_EYES01+ iMentatEyes), offsetX + 128, offsetY + 240);
+    drawMentatTexture(gfxmentat->getTexture(BEN_EYES01 + iMentatEyes), kBeneMentatHdLayout.eyes);
 }
 
 void BeneMentat::draw_mouth()
 {
-    m_sdlDrawer->renderSprite(gfxmentat->getTexture(BEN_MOUTH01+ iMentatMouth), offsetX + 112, offsetY + 272);
+    drawMentatTexture(gfxmentat->getTexture(BEN_MOUTH01 + iMentatMouth), kBeneMentatHdLayout.mouth);
 }
 
 void BeneMentat::onNotifyKeyboardEvent(const cKeyboardEvent &event)
