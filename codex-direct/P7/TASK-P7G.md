@@ -6,7 +6,7 @@
 
 ## Цель
 
-Перевести весь текст игры на гладкие шрифты по плану `PLAN-P7G` ниже. Игровой и диалоговый текст рисует `PTSansNarrow-Regular.ttf`, мелкий — `RussoOne-Regular.ttf`, в обоих языках. Текст рисуется со сглаживанием (`TTF_RenderText_Blended`) при плотности кадра: шрифт открыт размером «размер роли × плотность кадра», а места на холсте текст занимает столько же, сколько при плотности 1. Готово, когда сборка со всеми тестами, включая новые случаи T5 и обновлённый T4, четырнадцать скриптов Python проверки 4 и набор `tools/ui-audit/tests` зелёные.
+Перевести весь текст игры на гладкие шрифты по плану `PLAN-P7G` ниже. Игровой и диалоговый текст рисует `PTSansNarrow-Regular.ttf`, мелкий — `RussoOne-Regular.ttf`, в обоих языках. Текст рисуется со сглаживанием (`TTF_RenderText_Blended`) при плотности кадра: шрифт открыт размером «размер роли × плотность кадра», а размеры текста на холсте — его размеры в пикселях, делённые на плотность кадра (в измерениях — с округлением вверх до целой точки). Готово, когда сборка со всеми тестами, включая новые случаи T5 и обновлённый T4, четырнадцать скриптов Python проверки 4 и набор `tools/ui-audit/tests` зелёные.
 
 ## Что уже решено
 
@@ -85,7 +85,7 @@
    - Каждый результат `TTF_GetStringSize` в `src/drawers/cTextDrawer.cpp` — ширина `w` и высота `h` — сразу после вызова переводится в точки холста: `w = toLogical(w); h = toLogical(h);`. `getFontHeight` возвращает `toLogical(TTF_GetFontHeight(m_font))`.
    - `drawText(int x, int y, Color color, const std::string &msg, bool applyShadow)`: вызов `uiaudit::recordText(msg, x, y, cacheEntry->width, cacheEntry->height)` не меняется. Тень и строка рисуются новой перегрузкой `renderTexture` с прямоугольником `{x + 1, y + 1, w, h}` для тени и `{x, y, w, h}` для строки, где `w = cacheEntry->pixelWidth / static_cast<float>(m_density)` и `h = cacheEntry->pixelHeight / static_cast<float>(m_density)`.
    - `drawTextScaledCenteredInBox` и `drawTextScaledOpticallyCenteredInBox`: `width = static_cast<int>(cacheEntry->pixelWidth * scale / m_density + 0.5F)`, `height = static_cast<int>(cacheEntry->pixelHeight * scale / m_density + 0.5F)`; остальное в этих функциях не меняется.
-   - В `src/drawers/cTextDrawer.h` комментарий над `getTextLength` — `// Returns the length of the text in canvas points`, над `getFontHeight` — `// Returns the font height in canvas points`.
+   - В `src/drawers/cTextDrawer.h` два имеющихся комментария заменяются (новых комментариев нет): над `getTextLength` — `// Returns the length of the text in canvas points` вместо `// Returns the pixel length of the text`, над `getFontHeight` — `// Returns the font height in canvas points` вместо `// Returns the font height in pixels`.
 5. **`ContextCreator`** (`src/context/ContextCreator.hpp`, `src/context/ContextCreator.cpp`).
    - Размеры ролей — три константы в безымянном пространстве имён `src/context/ContextCreator.cpp`: `constexpr float kGameFontSize = 16.0F;`, `constexpr float kBeneFontSize = 14.0F;`, `constexpr float kSmallFontSize = 12.0F;`.
    - Игровой, диалоговый и мелкий шрифты открываются по именам `ARRAKEEN`, `BENEGESS` и `SMALL` из `settings.ini` тем же кодом, что в `HEAD`, но размерами `kGameFontSize`, `kBeneFontSize` и `kSmallFontSize` вместо 12.
@@ -116,7 +116,7 @@
 | шаг | файлы | что сделать | кто |
 |---|---|---|---|
 | 1 | `tests/utils/test_HdRender.cpp`, `tests/ui_audit/ui_audit_language.py` | Написать T5 — помощник A; T4 — помощник B. | помощники A и B |
-| 2 | — | Красный прогон: сначала T4 на имеющейся сборке `.tmp/out/run/bin` командой проверки 4, у которой вместо `.tmp/p7g/run-<скрипт>.log` стоит `.tmp/p7g/red-t4.log`, — `exit=1`; затем сборка командой проверки 1, у которой вместо `.tmp/p7g/build.log` стоит `.tmp/p7g/build-red.log`, — код выхода не 0, в `.tmp/p7g/build-red.log` ошибки компиляции о `cTextDrawer`, `pixelWidth` или `setDensity`. Логи — `.tmp/p7g/red-t4.log` и `.tmp/p7g/build-red.log`. | помощник B, затем помощник A |
+| 2 | — | Красный прогон: сначала T4 на имеющейся сборке `.tmp/out/run/bin` командой проверки 4, у которой вместо `.tmp/p7g/run-<скрипт>.log` стоит `.tmp/p7g/red-t4.log`, — `exit=1`; затем сборка командой второго подпункта проверки 1 (только сама команда сборки), у которой вместо `.tmp/p7g/build.log` стоит `.tmp/p7g/build-red.log`, — код выхода не 0, в `.tmp/p7g/build-red.log` ошибки компиляции о `cTextDrawer`, `pixelWidth` или `setDensity`. Логи — `.tmp/p7g/red-t4.log` и `.tmp/p7g/build-red.log`. | помощник B, затем помощник A |
 | 3 | `src/drawers/SDLDrawer.hpp`, `src/drawers/SDLDrawer.cpp`, `src/drawers/cTextTextureCache.h`, `src/drawers/cTextTextureCache.cpp` | Пункты 2 и 3 контракта. | помощник A |
 | 4 | `src/drawers/cTextDrawer.h`, `src/drawers/cTextDrawer.cpp` | Пункт 4 контракта. | помощник B |
 | 5 | `resources/bin/settings.ini`, `src/context/ContextCreator.hpp`, `src/context/ContextCreator.cpp` | Пункты 1 и 5 контракта. | корневая нить |
