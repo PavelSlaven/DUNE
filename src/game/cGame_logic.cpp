@@ -26,6 +26,8 @@
 #include "game/MissionFlow.hpp"
 #include "game/ScenarioFlow.hpp"
 #include "game/VideoFlow.hpp"
+#include "game/SaveGameFlow.hpp"
+#include "save/SaveGameManager.hpp"
 #include "game/CampaignProgress.hpp"
 #include "game/PreferencesPath.hpp"
 #include "data/gfxdata.h"
@@ -290,6 +292,20 @@ cGame::cGame()
     m_services->missionFlow = m_missionFlow.get();
     m_services->scenarioFlow = m_scenarioFlow.get();
     m_services->videoFlow = m_videoFlow.get();
+    m_saveGameFlow = std::make_unique<SaveGameFlow>(
+        [this](int slot, const std::string &name, std::string &errorMessage) {
+            return SaveGameManager::saveGame(*this, slot, name, errorMessage);
+        },
+        [this](int slot, std::string &errorMessage) {
+            return SaveGameManager::loadGame(*this, slot, errorMessage);
+        },
+        [this](std::string &errorMessage) {
+            return SaveGameManager::saveQuickGame(*this, errorMessage);
+        },
+        [this](std::string &errorMessage) {
+            return SaveGameManager::loadQuickGame(*this, errorMessage);
+        });
+    m_services->saveGameFlow = m_saveGameFlow.get();
 
     m_buildingListFactory = std::make_unique<cBuildingListFactory>(m_gameSettings.get());
     m_sideBarFactory = std::make_unique<cSideBarFactory>(m_buildingListFactory.get(), m_services.get());

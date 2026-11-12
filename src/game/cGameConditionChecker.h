@@ -21,6 +21,7 @@ class cGameObjectContext;
 class cPlayer;
 
 class cGameConditionChecker {
+    friend class SaveGameManager;
 public:
     cGameConditionChecker(cGameObjectContext* objects);
     bool isMissionWon() const;

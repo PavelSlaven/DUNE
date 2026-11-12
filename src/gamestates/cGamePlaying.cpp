@@ -39,6 +39,7 @@
 #include "game/GameStateTransition.hpp"
 #include "game/ScenarioFlow.hpp"
 #include "game/MissionFlow.hpp"
+#include "game/SaveGameFlow.hpp"
 #include "game/cTimeManager.h"
 #include "game/cScreenFader.h"
 #include "game/cScreenShake.h"
@@ -92,6 +93,8 @@ cGamePlaying::cGamePlaying(sGameServices* services) :
     d2tm_assert(m_scenarioFlow != nullptr);
     m_missionFlow = services->missionFlow;
     d2tm_assert(m_missionFlow != nullptr);
+    m_saveGameFlow = services->saveGameFlow;
+    d2tm_assert(m_saveGameFlow != nullptr);
     m_stateTransitions = services->stateTransitions;
     d2tm_assert(m_stateTransitions != nullptr);
     m_audioContext = m_ctx->getAudioContext();
@@ -562,6 +565,33 @@ void cGamePlaying::onKeyPressedGamePlaying(const cKeyboardEvent &event)
             .data = NotificationEvent{
                 .message = std::format("Viewport bookmark {} set", bookmarkNumber),
                 .type = eNotificationType::PRIORITY,
+            }
+        });
+    }
+
+    if (event.isAction(eKeyAction::QUICK_SAVE)) {
+        std::string error;
+        const bool saved = m_saveGameFlow->quickSave(error);
+        m_eventEmitter->emit(s_GameEvent{
+            .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
+            .data = NotificationEvent{
+                .message = saved ? std::string(localization::text("Game saved.", "Игра сохранена.")) : error,
+                .type = saved ? eNotificationType::NEUTRAL : eNotificationType::BAD,
+            }
+        });
+    }
+
+    if (event.isAction(eKeyAction::QUICK_LOAD)) {
+        std::string error;
+        const bool loaded = m_saveGameFlow->quickLoad(error);
+        if (loaded) {
+            m_trackedUnitIds.clear();
+        }
+        m_eventEmitter->emit(s_GameEvent{
+            .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
+            .data = NotificationEvent{
+                .message = loaded ? std::string(localization::text("Game loaded.", "Игра загружена.")) : error,
+                .type = loaded ? eNotificationType::NEUTRAL : eNotificationType::BAD,
             }
         });
     }

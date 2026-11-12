@@ -29,11 +29,13 @@
 
 
 #include <algorithm>
+#include <filesystem>
 #include <string>
 #include <string_view>
 
 #include <iostream>
 #include <SDL3/SDL_main.h>
+#include <SDL3/SDL_filesystem.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
 #ifdef _WIN32
@@ -53,6 +55,24 @@ static void attachParentConsole()
 }
 #endif
 
+namespace {
+void useExecutableDirectoryAsWorkingDirectory()
+{
+    const char *basePath = SDL_GetBasePath();
+    if (basePath == nullptr) {
+        return;
+    }
+
+    try {
+        const auto *utf8BasePath = reinterpret_cast<const char8_t *>(basePath);
+        std::filesystem::current_path(std::filesystem::path(utf8BasePath));
+    }
+    catch (const std::filesystem::filesystem_error &error) {
+        std::cerr << "Unable to use the game directory: " << error.what() << '\n';
+    }
+}
+}
+
 int main(int argc, char **argv)
 {
 #ifdef _WIN32
@@ -62,6 +82,11 @@ int main(int argc, char **argv)
     int uiAuditExitCode = 0;
     if (uiaudit::isEnabled() && uiaudit::handleEarlyExit(uiAuditExitCode)) {
         return uiAuditExitCode;
+    }
+
+    // the UI audit harness separates its parallel runs by their working directory
+    if (!uiaudit::isEnabled()) {
+        useExecutableDirectoryAsWorkingDirectory();
     }
 
     std::unique_ptr<cLog> m_log = std::make_unique<cLog>("nlog.txt");

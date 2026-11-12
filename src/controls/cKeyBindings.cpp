@@ -48,12 +48,14 @@ void cKeyBindings::loadDefaults()
     bind(eKeyAction::SAVE_VIEWPORT_BOOKMARK_2, {SDL_SCANCODE_F2}, false, true, false);
     bind(eKeyAction::SAVE_VIEWPORT_BOOKMARK_3, {SDL_SCANCODE_F3}, false, true, false);
     bind(eKeyAction::SAVE_VIEWPORT_BOOKMARK_4, {SDL_SCANCODE_F4}, false, true, false);
-    bind(eKeyAction::SAVE_VIEWPORT_BOOKMARK_5, {SDL_SCANCODE_F5}, false, true, false);
+    bind(eKeyAction::SAVE_VIEWPORT_BOOKMARK_5, {SDL_SCANCODE_F6}, false, true, false);
     bind(eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_1, {SDL_SCANCODE_F1});
     bind(eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_2, {SDL_SCANCODE_F2});
     bind(eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_3, {SDL_SCANCODE_F3});
     bind(eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_4, {SDL_SCANCODE_F4});
-    bind(eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_5, {SDL_SCANCODE_F5});
+    bind(eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_5, {SDL_SCANCODE_F6});
+    bind(eKeyAction::QUICK_SAVE,          {SDL_SCANCODE_F5});
+    bind(eKeyAction::QUICK_LOAD,          {SDL_SCANCODE_F9});
     bind(eKeyAction::TOGGLE_FPS,          {SDL_SCANCODE_F});
     bind(eKeyAction::TOGGLE_TIME_DISPLAY, {SDL_SCANCODE_BACKSLASH});
     bind(eKeyAction::OPEN_MENU,           {SDL_SCANCODE_ESCAPE});
@@ -163,6 +165,8 @@ const std::vector<std::pair<std::string, eKeyAction>>& cKeyBindings::getActionTa
         {"JUMP_TO_VIEWPORT_BOOKMARK_3", eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_3},
         {"JUMP_TO_VIEWPORT_BOOKMARK_4", eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_4},
         {"JUMP_TO_VIEWPORT_BOOKMARK_5", eKeyAction::JUMP_TO_VIEWPORT_BOOKMARK_5},
+        {"QUICK_SAVE",                eKeyAction::QUICK_SAVE},
+        {"QUICK_LOAD",                eKeyAction::QUICK_LOAD},
         {"TOGGLE_FPS",                eKeyAction::TOGGLE_FPS},
         {"TOGGLE_TIME_DISPLAY",       eKeyAction::TOGGLE_TIME_DISPLAY},
         {"OPEN_MENU",                 eKeyAction::OPEN_MENU},

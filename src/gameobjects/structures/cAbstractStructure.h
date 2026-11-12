@@ -38,6 +38,7 @@ struct sGameServices;
 class SDLDrawer;
 
 class cAbstractStructure : public cScenarioObserver {
+    friend class SaveGameManager;
 
 private:
     int armor;			// armor

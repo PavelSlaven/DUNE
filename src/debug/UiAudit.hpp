@@ -43,6 +43,7 @@ void recordGui(const char *type, int x, int y, int w, int h);
 void recordArea(const char *name, int x, int y, int w, int h);
 void recordClick(const char *name, int x, int y, int w, int h);
 void recordCanvasClick(const char *name);
+void dropClicksUnderModal();
 void recordLabel(const char *kind, int obj, const char *type, int x, int y, int w, int h, const Rect &owner);
 void recordUnitLabel(const char *kind, int obj, int unitType, int x, int y, int w, int h, const Rect &owner);
 void beginLabelText();
@@ -100,4 +101,9 @@ public:
     static bool placeLabelUnits(cGame &game, int unitType);
     static bool placeStructure(cGame &game, int edge);
     static bool prepareGameScreen(cGame &game, int house, int kind);
+    static void writeSaves(cGame &game);
+    static bool openMenuSaveDialog(cGame &game);
+    static bool saveDialog(cGame &game, int action);
+    static bool startSkirmish(cGame &game);
+    static bool saveRoundTrip(cGame &game);
 };

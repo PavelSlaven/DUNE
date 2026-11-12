@@ -44,6 +44,8 @@
 #include "utils/WorldScale.hpp"
 #include "utils/ScaleChoices.hpp"
 #include "utils/Localization.hpp"
+#include "save/SaveGameManager.hpp"
+#include "save/SaveSlotsDialog.hpp"
 
 #include <algorithm>
 
@@ -75,6 +77,21 @@ cOptionsState::cOptionsState(sGameServices* services, int prevState)
     m_selectedRenderScaleIndex = scaleChoiceIndex(m_renderScaleChoices, m_settings->getSavedRenderScalePercent());
     m_selectedWorldScaleIndex = scaleChoiceIndex(m_worldScaleChoices, m_settings->getSavedWorldScalePercent());
     m_selectedLanguage = normalizeLanguage(m_settings->getSavedLanguage());
+    m_saveDialog = std::make_unique<SaveSlotsDialog>(
+        services->saveGameFlow,
+        m_sdlDrawer,
+        m_textDrawer,
+        m_settings,
+        [this]() {
+            m_stateTransitions->fadeOut();
+        },
+        [this]() {
+            if (m_loadGameButton == nullptr) {
+                return;
+            }
+            m_loadGameButton->setEnabled(true);
+            m_loadGameButton->setTheme(GuiTheme::Remaster());
+        });
     refresh();
     m_backgroundTexture = &services->screenTexture;
 }
@@ -172,15 +189,18 @@ void cOptionsState::constructWindow(int prevState)
     m_guiWindow->addGuiObject(std::move(gui_btn_Back));
 
     if (m_prevState == GAME_PLAYING) {
+        const bool hasSaves = SaveGameManager::hasAnySave();
         const cRectangle &saveRect = relativeRect(menuLayout.save);
         auto saveButton = GuiButtonBuilder()
                 .withRect(saveRect)
                 .withLabel(localization::text("Save game", "Сохранить игру"))
                 .withTextDrawer(m_textDrawer)
                 .withRenderer(m_sdlDrawer)
-                .withTheme(GuiTheme::RemasterInactive())
+                .withTheme(controlTheme)
                 .withKind(buttonKind)
-                .withEnabled(false)
+                .onClick([this]() {
+                    m_saveDialog->open(true, true);
+                })
                 .build();
         m_guiWindow->addGuiObject(std::move(saveButton));
 
@@ -190,10 +210,14 @@ void cOptionsState::constructWindow(int prevState)
                 .withLabel(localization::text("Load game", "Загрузить игру"))
                 .withTextDrawer(m_textDrawer)
                 .withRenderer(m_sdlDrawer)
-                .withTheme(GuiTheme::RemasterInactive())
+                .withTheme(hasSaves ? controlTheme : GuiTheme::RemasterInactive())
                 .withKind(buttonKind)
-                .withEnabled(false)
+                .withEnabled(hasSaves)
+                .onClick([this]() {
+                    m_saveDialog->open(true, false);
+                })
                 .build();
+        m_loadGameButton = loadButton.get();
         m_guiWindow->addGuiObject(std::move(loadButton));
     }
 
@@ -655,6 +679,9 @@ void cOptionsState::draw() const
         m_sdlDrawer->renderSprite(*m_backgroundTexture,0,0);
     }
     m_guiWindow->draw();
+    if (m_saveDialog->isOpen()) {
+        m_saveDialog->draw();
+    }
 
     // MOUSE
     m_mouse->draw();
@@ -662,6 +689,10 @@ void cOptionsState::draw() const
 
 void cOptionsState::onNotifyMouseEvent(const s_MouseEvent &event)
 {
+    if (m_saveDialog->isOpen()) {
+        m_saveDialog->onMouseEvent(event);
+        return;
+    }
     m_guiWindow->onNotifyMouseEvent(event);
 }
 
@@ -670,8 +701,11 @@ eGameStateType cOptionsState::getType()
     return GAMESTATE_OPTIONS;
 }
 
-void cOptionsState::onNotifyKeyboardEvent(const cKeyboardEvent &)
+void cOptionsState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 {
+    if (m_saveDialog->isOpen()) {
+        m_saveDialog->onKeyboardEvent(event);
+    }
 }
 
 /**
@@ -686,12 +720,21 @@ void cOptionsState::setPrevState(int prevState)
 
 void cOptionsState::refresh()
 {
+    if (m_saveDialog) {
+        m_saveDialog->close();
+    }
     m_guiWindow.reset();
     m_renderScaleValueLabel = nullptr;
     m_worldScaleValueLabel = nullptr;
     m_statusLabel = nullptr;
     m_applyButton = nullptr;
     m_languageButton = nullptr;
+    m_loadGameButton = nullptr;
     constructWindow(m_prevState);
     m_backgroundTexture = nullptr;
+}
+
+bool cOptionsState::isKeyboardCapturedByUi() const
+{
+    return m_saveDialog->isCapturingText();
 }

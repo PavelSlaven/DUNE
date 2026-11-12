@@ -23,6 +23,7 @@ class cEventEmitter;
 struct sGameServices;
 
 class cReinforcement {
+    friend class SaveGameManager;
 public:
     cReinforcement();
     explicit cReinforcement(int delayInSeconds, int unitType, int playerId, int targetCell, bool repeat);
@@ -46,6 +47,7 @@ private:
 };
 
 class cReinforcements {
+    friend class SaveGameManager;
 public:
     explicit cReinforcements();
 

@@ -53,6 +53,7 @@ class cRectangle;
  * visibility and general map state. This is the main world-state container used by the game logic.
  */
 class cMap : public cScenarioObserver {
+    friend class SaveGameManager;
 
 public:
 

@@ -4,6 +4,7 @@
 
 #include "game/cGame.h"
 #include "game/cGameSettings.h"
+#include "save/SaveGameManager.hpp"
 
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
@@ -338,6 +339,13 @@ void recordCanvasClick(const char *name)
     recordClick(name, 0, 0, g_canvasW, g_canvasH);
 }
 
+void dropClicksUnderModal()
+{
+    g_entries.erase(std::remove_if(g_entries.begin(), g_entries.end(),
+                                   [](const Entry &entry) { return entry.kind == Kind::Click; }),
+                    g_entries.end());
+}
+
 void recordLabel(const char *kind, int obj, const char *type, int x, int y, int w, int h, const Rect &owner)
 {
     g_entries.push_back({Kind::Label, kind, clipped({x, y, w, h}), true, owner, type, obj});
@@ -463,6 +471,10 @@ void onSetupDone(cGame &currentGame)
     g_clipText = false;
     currentGame.m_gameSettings->setPlayMusic(false);
     UiAuditAccess::stopCameraEdgeMove(currentGame);
+    const std::filesystem::path savesDirectory = std::filesystem::path(options().outDir) / "saves";
+    SaveGameManager::setSavesDirectory(savesDirectory);
+    std::error_code savesError;
+    std::filesystem::remove_all(savesDirectory, savesError);
     UiAuditAccess::freezeClock(currentGame);
     const bool prepared = g_scene != nullptr && g_scene->prepare(currentGame);
     UiAuditAccess::resumeClock(currentGame);

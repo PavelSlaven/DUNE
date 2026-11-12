@@ -31,6 +31,7 @@ class AudioContext;
 struct sGameServices;
 
 class cItemBuilder : cInputObserver {
+    friend class SaveGameManager;
 
 public:
     cItemBuilder(cPlayer *thePlayer, cBuildingListUpdater *buildingListUpdater);

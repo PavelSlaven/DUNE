@@ -48,9 +48,14 @@
 #include "sidebar/cBuildingListUpdater.h"
 #include "utils/cRectangle.h"
 #include "utils/Localization.hpp"
+#include "gamestates/cMainMenuState.h"
+#include "save/SaveGameManager.hpp"
+#include "save/SaveSlotsDialog.hpp"
 
 #include <algorithm>
 #include <cstdlib>
+#include <filesystem>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -871,4 +876,83 @@ bool UiAuditAccess::prepareGameScreen(cGame &currentGame, int house, int kind)
         default:
             return false;
     }
+}
+
+void UiAuditAccess::writeSaves(cGame &currentGame)
+{
+    std::string error;
+    std::filesystem::create_directories(SaveGameManager::savesDirectory());
+    SaveGameManager::saveGame(currentGame, 1, "", error);
+    SaveGameManager::saveGame(currentGame, 2, "A very long save name used to check how the slot row fits", error);
+    SaveGameManager::saveGame(currentGame, 5, "Before the final attack", error);
+    std::ofstream(SaveGameManager::slotPath(3), std::ios::binary) << "not a save file";
+    std::filesystem::create_directories(SaveGameManager::slotPath(6));
+}
+
+bool UiAuditAccess::openMenuSaveDialog(cGame &currentGame)
+{
+    auto *menu = dynamic_cast<cMainMenuState *>(currentGame.m_currentState);
+    if (menu == nullptr || menu->m_saveDialog == nullptr) {
+        return false;
+    }
+    menu->m_saveDialog->open(false, false);
+    return true;
+}
+
+bool UiAuditAccess::saveDialog(cGame &currentGame, int action)
+{
+    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_currentState);
+    if (options == nullptr || options->m_saveDialog == nullptr) {
+        return false;
+    }
+    SaveSlotsDialog &dialog = *options->m_saveDialog;
+    dialog.open(true, action == 1 || action == 2 || action == 4);
+    if (action == 2) {
+        dialog.selectSlot(2);
+    }
+    else if (action == 3) {
+        dialog.selectSlot(3);
+        dialog.loadSelected();
+    }
+    else if (action == 4) {
+        dialog.selectSlot(6);
+        dialog.saveSelected();
+    }
+    return true;
+}
+
+bool UiAuditAccess::startSkirmish(cGame &currentGame)
+{
+    if (!prepareSkirmish(currentGame, 1)) {
+        return false;
+    }
+    auto *setup = dynamic_cast<cSetupSkirmishState *>(currentGame.m_currentState);
+    currentGame.ensureFrameTargets();
+    setup->prepareSkirmishGameToPlayAndTransitionToCombatState(setup->iSkirmishMap);
+    currentGame.transitionStateIfRequired();
+    currentGame.m_gameObjectsContext->getMap()->setDesiredAmountOfWorms(0);
+    for (int i = 0; i < cUnits::size(); i++) {
+        cUnit *unit = currentGame.m_gameObjectsContext->getUnit(i);
+        if (unit != nullptr && unit->isValid() && unit->iPlayer == AI_WORM) {
+            unit->die(false, false);
+        }
+    }
+    return currentGame.m_state == GAME_PLAYING;
+}
+
+bool UiAuditAccess::saveRoundTrip(cGame &currentGame)
+{
+    std::string error;
+    if (!SaveGameManager::saveQuickGame(currentGame, error)) {
+        return false;
+    }
+    std::error_code copyError;
+    std::filesystem::copy_file(SaveGameManager::quickSavePath(),
+                               SaveGameManager::savesDirectory() / "roundtrip-first.d2s",
+                               std::filesystem::copy_options::overwrite_existing, copyError);
+    if (copyError) {
+        return false;
+    }
+    return SaveGameManager::loadQuickGame(currentGame, error) &&
+           SaveGameManager::saveQuickGame(currentGame, error);
 }

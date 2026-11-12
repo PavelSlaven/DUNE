@@ -5,8 +5,8 @@ from pathlib import Path
 
 HIT = re.compile(r"\b(isWithin\w*|isOver\w*|isMouseOver\w*|isPointWithin\w*|isInside\w*|containsPoint\w*|pointInRect\w*)\s*\(")
 FUNCTION = re.compile(r"^[A-Za-z_][\w:<>,\s\*&~]*?\b([A-Za-z_~]\w*::[~\w]+)\s*\(")
-DIRECTORIES = ("src/gui", "src/drawers", "src/gamestates", "src/managers", "src/sidebar", "src/gameobjects/mentat",
-               "src/controls", "src/debug")
+DIRECTORIES = ("src/gui", "src/drawers", "src/gamestates", "src/managers", "src/save", "src/sidebar",
+               "src/gameobjects/mentat", "src/controls", "src/debug")
 RECORDS = ("uiaudit::recordClick", "uiaudit::recordCanvasClick")
 
 
