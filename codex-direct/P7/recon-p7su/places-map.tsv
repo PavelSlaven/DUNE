@@ -1,0 +1,804 @@
+путь	строка в OLD	текст строки в OLD	строка в PORT	текст строки в PORT	статус
+resources/bin/settings.ini	84	GFXWORLD=sdl_world_hd4.dat	84	GFXWORLD=sdl_world_hd4.dat	на месте
+resources/bin/settings.ini	154	DEBUG_SPAWN_WORM=Shift,Tab,F9	154	DEBUG_SPAWN_WORM=Shift,Tab,F9	на месте
+src/CMakeLists.txt	76	gameobjects/players/brains/cPlayerBrainSandworm.cpp	76	gameobjects/players/brains/cPlayerBrainSandworm.cpp	на месте
+src/CMakeLists.txt	83	gameobjects/players/brains/missions/cPlayerBrainMissionKindFremen.cpp	83	gameobjects/players/brains/missions/cPlayerBrainMissionKindFremen.cpp	на месте
+src/CMakeLists.txt	84	gameobjects/players/brains/missions/cPlayerBrainMissionKindSaboteur.cpp	84	gameobjects/players/brains/missions/cPlayerBrainMissionKindSaboteur.cpp	на месте
+src/CMakeLists.txt	85	gameobjects/players/brains/superweapon/cPlayerBrainFremenSuperWeapon.cpp	85	gameobjects/players/brains/superweapon/cPlayerBrainFremenSuperWeapon.cpp	на месте
+src/CMakeLists.txt	95	gameobjects/structures/cBarracks.cpp	95	gameobjects/structures/cBarracks.cpp	на месте
+src/CMakeLists.txt	104	gameobjects/structures/cPalace.cpp	104	gameobjects/structures/cPalace.cpp	на месте
+src/building/cItemBuilder.cpp	206	"m_services->drawManager->setMessage(""Unable to create more."");"	206	"m_services->drawManager->setMessage(""Unable to create more."");"	на месте
+src/building/cItemBuilder.cpp	319	// Case: Saboteur, is deployed at structure	319	// Case: Saboteur, is deployed at structure	на месте
+src/building/cItemBuilder.cpp	327	// Case: Fremen is deployed at random cell on the map	327	// Case: Fremen is deployed at random cell on the map	на месте
+src/building/cItemBuilder.cpp	424	m_buildingListUpdater->onUpgradeCompleted(item);	424	m_buildingListUpdater->onUpgradeCompleted(item);	на месте
+src/building/cItemBuilder.cpp	426	//            list->removeItemFromList(item->getSlotId()); // no need to explicitly remove from list, will be done by onUpgradeCompleted	426	//            list->removeItemFromList(item->getSlotId()); // no need to explicitly remove from list, will be done by onUpgradeCompleted	на месте
+src/context/ContextCreator.cpp	43	gfxworld = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXWORLD), kHd4AssetDensity);	45	gfxworld = std::make_shared<Graphics>(renderer,settingsValidator->getFullName(eGameDirFileName::GFXWORLD), kHd4AssetDensity);	сдвиг
+src/context/ContextCreator.cpp	45	"Logger::error(COMP_INIT, ""Load data"", ""Could not hook/load datafile: {}"", settingsValidator->getName(eGameDirFileName::GFXWORLD));"	47	"Logger::error(COMP_INIT, ""Load data"", ""Could not hook/load datafile: {}"", settingsValidator->getName(eGameDirFileName::GFXWORLD));"	сдвиг
+src/context/ContextCreator.cpp	48	"Logger::info(COMP_INIT, ""Load data"", ""Hooked datafile: {}"", settingsValidator->getName(eGameDirFileName::GFXWORLD));"	50	"Logger::info(COMP_INIT, ""Load data"", ""Hooked datafile: {}"", settingsValidator->getName(eGameDirFileName::GFXWORLD));"	сдвиг
+src/context/cInfoContext.cpp	21	"#include ""gameobjects/cUpgradeInfo.h"""	21	"#include ""gameobjects/cUpgradeInfo.h"""	на месте
+src/context/cInfoContext.cpp	72	void cInfoContext::setUpgradeInfos(std::unique_ptr<cUpgradeInfos> upgradeInfos) {	72	void cInfoContext::setUpgradeInfos(std::unique_ptr<cUpgradeInfos> upgradeInfos) {	на месте
+src/context/cInfoContext.cpp	74	"throw std::runtime_error(""cUpgradeInfos is not initialized!"");"	74	"throw std::runtime_error(""cUpgradeInfos is not initialized!"");"	на месте
+src/context/cInfoContextCreator.cpp	197	"unitInfos[CARRYALL].name = ""Carry-All"";"	197	"unitInfos[CARRYALL].name = ""Carry-All"";"	на месте
+src/context/cInfoContextCreator.cpp	200	// Unit        : Ornithopter	200	// Unit        : Ornithopter	на месте
+src/context/cInfoContextCreator.cpp	217	"unitInfos[ORNITHOPTER].name = ""Ornithopter"";"	217	"unitInfos[ORNITHOPTER].name = ""Ornithopter"";"	на месте
+src/context/cInfoContextCreator.cpp	220	// Unit        : Devastator	220	// Unit        : Devastator	на месте
+src/context/cInfoContextCreator.cpp	221	// Description : Devastator	221	// Description : Devastator	на месте
+src/context/cInfoContextCreator.cpp	237	"unitInfos[DEVASTATOR].name = ""Devastator"";"	237	"unitInfos[DEVASTATOR].name = ""Devastator"";"	на месте
+src/context/cInfoContextCreator.cpp	240	// Unit        : Harvester	240	// Unit        : Harvester	на месте
+src/context/cInfoContextCreator.cpp	241	// Description : Harvester	241	// Description : Harvester	на месте
+src/context/cInfoContextCreator.cpp	255	"unitInfos[HARVESTER].name = ""Harvester"";"	255	"unitInfos[HARVESTER].name = ""Harvester"";"	на месте
+src/context/cInfoContextCreator.cpp	275	"unitInfos[TANK].name = ""Tank"";"	275	"unitInfos[TANK].name = ""Tank"";"	на месте
+src/context/cInfoContextCreator.cpp	279	// Unit        : Siege Tank	279	// Unit        : Siege Tank	на месте
+src/context/cInfoContextCreator.cpp	299	"unitInfos[SIEGETANK].name = ""Siege Tank"";"	299	"unitInfos[SIEGETANK].name = ""Siege Tank"";"	на месте
+src/context/cInfoContextCreator.cpp	302	// Unit        : MCV	302	// Unit        : MCV	на месте
+src/context/cInfoContextCreator.cpp	304	unitInfos[MCV].bmp = m_gfxdata->getSurface(UNIT_MCV);      // pointer to the original 8bit bitmap	304	unitInfos[MCV].bmp = m_gfxdata->getSurface(UNIT_MCV);      // pointer to the original 8bit bitmap	на месте
+src/context/cInfoContextCreator.cpp	305	unitInfos[MCV].shadow = m_gfxdata->getTexture(UNIT_MCV_SHADOW);      // pointer to the original 8bit bitmap	305	unitInfos[MCV].shadow = m_gfxdata->getTexture(UNIT_MCV_SHADOW);      // pointer to the original 8bit bitmap	на месте
+src/context/cInfoContextCreator.cpp	306	unitInfos[MCV].bmp_width = 24 * 2;	306	unitInfos[MCV].bmp_width = 24 * 2;	на месте
+src/context/cInfoContextCreator.cpp	307	unitInfos[MCV].bmp_startpixel = 0;	307	unitInfos[MCV].bmp_startpixel = 0;	на месте
+src/context/cInfoContextCreator.cpp	319	// Unit        : Deviator	319	// Unit        : Deviator	на месте
+src/context/cInfoContextCreator.cpp	320	// Description : Deviator	320	// Description : Deviator	на месте
+src/context/cInfoContextCreator.cpp	335	"unitInfos[DEVIATOR].name = ""Deviator"";"	335	"unitInfos[DEVIATOR].name = ""Deviator"";"	на месте
+src/context/cInfoContextCreator.cpp	338	// Unit        : Launcher	338	// Unit        : Launcher	на месте
+src/context/cInfoContextCreator.cpp	339	// Description : Rocket Launcher	339	// Description : Rocket Launcher	на месте
+src/context/cInfoContextCreator.cpp	357	"unitInfos[LAUNCHER].name = ""Launcher"";"	357	"unitInfos[LAUNCHER].name = ""Launcher"";"	на месте
+src/context/cInfoContextCreator.cpp	360	// Unit        : Quad	360	// Unit        : Quad	на месте
+src/context/cInfoContextCreator.cpp	361	// Description : Quad, 4 wheeled (double gunned)	361	// Description : Quad, 4 wheeled (double gunned)	на месте
+src/context/cInfoContextCreator.cpp	378	"unitInfos[QUAD].name = ""Quad"";"	378	"unitInfos[QUAD].name = ""Quad"";"	на месте
+src/context/cInfoContextCreator.cpp	382	// Unit        : Trike (normal trike)	382	// Unit        : Trike (normal trike)	на месте
+src/context/cInfoContextCreator.cpp	383	// Description : Trike, 3 wheeled (single gunned)	383	// Description : Trike, 3 wheeled (single gunned)	на месте
+src/context/cInfoContextCreator.cpp	399	"unitInfos[TRIKE].name = ""Trike"";"	399	"unitInfos[TRIKE].name = ""Trike"";"	на месте
+src/context/cInfoContextCreator.cpp	402	// Unit        : Raider Trike (Ordos trike)	402	// Unit        : Raider Trike (Ordos trike)	на месте
+src/context/cInfoContextCreator.cpp	403	// Description : Raider Trike, 3 wheeled (single gunned), weaker, but faster	403	// Description : Raider Trike, 3 wheeled (single gunned), weaker, but faster	на месте
+src/context/cInfoContextCreator.cpp	410	"unitInfos[RAIDER].name = ""Raider Trike"";"	410	"unitInfos[RAIDER].name = ""Raider Trike"";"	на месте
+src/context/cInfoContextCreator.cpp	422	// Unit        : Frigate	422	// Unit        : Frigate	на месте
+src/context/cInfoContextCreator.cpp	423	// Description : Frigate	423	// Description : Frigate	на месте
+src/context/cInfoContextCreator.cpp	434	unitInfos[FRIGATE].free_roam = true; // Frigate does not roam, yet needed?	434	unitInfos[FRIGATE].free_roam = true; // Frigate does not roam, yet needed?	на месте
+src/context/cInfoContextCreator.cpp	437	"unitInfos[FRIGATE].name = ""Frigate"";"	437	"unitInfos[FRIGATE].name = ""Frigate"";"	на месте
+src/context/cInfoContextCreator.cpp	450	// Unit        : Sonic Tank	450	// Unit        : Sonic Tank	на месте
+src/context/cInfoContextCreator.cpp	467	"unitInfos[SONICTANK].name = ""Sonic Tank"";"	467	"unitInfos[SONICTANK].name = ""Sonic Tank"";"	на месте
+src/context/cInfoContextCreator.cpp	471	// Unit        : Single Soldier	471	// Unit        : Single Soldier	на месте
+src/context/cInfoContextCreator.cpp	490	"unitInfos[SOLDIER].name = ""Soldier"";"	490	"unitInfos[SOLDIER].name = ""Soldier"";"	на месте
+src/context/cInfoContextCreator.cpp	515	"unitInfos[INFANTRY].name = ""Light Infantry"";"	515	"unitInfos[INFANTRY].name = ""Light Infantry"";"	на месте
+src/context/cInfoContextCreator.cpp	518	// Unit        : Single Trooper	518	// Unit        : Single Trooper	на месте
+src/context/cInfoContextCreator.cpp	525	"unitInfos[TROOPER].name = ""Trooper"";"	525	"unitInfos[TROOPER].name = ""Trooper"";"	на месте
+src/context/cInfoContextCreator.cpp	543	// Unit        : Group Trooper	543	// Unit        : Group Trooper	на месте
+src/context/cInfoContextCreator.cpp	550	"unitInfos[TROOPERS].name = ""Troopers"";"	550	"unitInfos[TROOPERS].name = ""Troopers"";"	на месте
+src/context/cInfoContextCreator.cpp	569	// Unit        : Fremen	569	// Unit        : Fremen	на месте
+src/context/cInfoContextCreator.cpp	576	"unitInfos[UNIT_FREMEN_ONE].name = ""Fremen (1)"";"	576	"unitInfos[UNIT_FREMEN_ONE].name = ""Fremen (1)"";"	на месте
+src/context/cInfoContextCreator.cpp	598	"unitInfos[UNIT_FREMEN_THREE].name = ""Fremen (3)"";"	598	"unitInfos[UNIT_FREMEN_THREE].name = ""Fremen (3)"";"	на месте
+src/context/cInfoContextCreator.cpp	612	// Unit        : Saboteur	612	// Unit        : Saboteur	на месте
+src/context/cInfoContextCreator.cpp	627	"unitInfos[SABOTEUR].name = ""Saboteur"";"	627	"unitInfos[SABOTEUR].name = ""Saboteur"";"	на месте
+src/context/cInfoContextCreator.cpp	639	// Unit        : Sandworm	639	// Unit        : Sandworm	на месте
+src/context/cInfoContextCreator.cpp	649	"unitInfos[SANDWORM].name = ""Sandworm"";"	649	"unitInfos[SANDWORM].name = ""Sandworm"";"	на месте
+src/context/cInfoContextCreator.cpp	850	specialInfos[i].house = eHouseBitFlag::Unknown;	850	specialInfos[i].house = eHouseBitFlag::Unknown;	на месте
+src/context/cInfoContextCreator.cpp	859	// Deploy Saboteur	859	// Deploy Saboteur	на месте
+src/context/cInfoContextCreator.cpp	887	// Launch Death Hand	887	// Launch Death Hand	на месте
+src/context/cInfoContextCreator.cpp	904	"specialInfos[SPECIAL_DEATHHAND].description = ""Death Hand"";"	904	"specialInfos[SPECIAL_DEATHHAND].description = ""Death Hand"";"	на месте
+src/context/cInfoContextCreator.cpp	932	"bulletInfos[i].description = ""Unknown"";"	932	"bulletInfos[i].description = ""Unknown"";"	на месте
+src/context/cInfoContextCreator.cpp	1172	"upgradeInfos[UPGRADE_TYPE_CONSTYARD_SLAB4].description = ""Build 4 concrete slabs at once"";"	1172	"upgradeInfos[UPGRADE_TYPE_CONSTYARD_SLAB4].description = ""Build 4 concrete slabs at once"";"	на месте
+src/context/cInfoContextCreator.cpp	1188	"upgradeInfos[UPGRADE_TYPE_CONSTYARD_RTURRET].description = ""Build Rocket Turret"";"	1188	"upgradeInfos[UPGRADE_TYPE_CONSTYARD_RTURRET].description = ""Build Rocket Turret"";"	на месте
+src/context/cInfoContextCreator.cpp	1204	"upgradeInfos[UPGRADE_TYPE_LIGHTFCTRY_QUAD].description = ""Build Quad at Light Factory"";"	1204	"upgradeInfos[UPGRADE_TYPE_LIGHTFCTRY_QUAD].description = ""Build Quad at Light Factory"";"	на месте
+src/context/cInfoContextCreator.cpp	1222	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_MVC].description = ""Build MCV at Heavy Factory"";"	1222	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_MVC].description = ""Build MCV at Heavy Factory"";"	на месте
+src/context/cInfoContextCreator.cpp	1238	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].description = ""Build Rocket Launcher at Heavy Factory"";"	1238	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].description = ""Build Rocket Launcher at Heavy Factory"";"	на месте
+src/context/cInfoContextCreator.cpp	1247	upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].atUpgradeLevel = 2; // After upgrade to Rocket Launcher	1247	upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].atUpgradeLevel = 2; // After upgrade to Rocket Launcher	на месте
+src/context/cInfoContextCreator.cpp	1253	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].description = ""Build Siege Tank at Heavy Factory"";"	1253	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].description = ""Build Siege Tank at Heavy Factory"";"	на месте
+src/context/cInfoContextCreator.cpp	1268	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].description = ""Build Siege Tank at Heavy Factory"";"	1268	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].description = ""Build Siege Tank at Heavy Factory"";"	на месте
+src/context/cInfoContextCreator.cpp	1283	"upgradeInfos[UPGRADE_TYPE_HITECH_ORNI].description = ""Build Ornithopter at Hi-Tech"";"	1283	"upgradeInfos[UPGRADE_TYPE_HITECH_ORNI].description = ""Build Ornithopter at Hi-Tech"";"	на месте
+src/context/cInfoContextCreator.cpp	1300	"upgradeInfos[UPGRADE_TYPE_WOR_TROOPERS].description = ""Build Troopers at WOR"";"	1300	"upgradeInfos[UPGRADE_TYPE_WOR_TROOPERS].description = ""Build Troopers at WOR"";"	на месте
+src/context/cInfoContextCreator.cpp	1317	"upgradeInfos[UPGRADE_TYPE_BARRACKS_INFANTRY].description = ""Build Infantry at Barracks"";"	1317	"upgradeInfos[UPGRADE_TYPE_BARRACKS_INFANTRY].description = ""Build Infantry at Barracks"";"	на месте
+src/context/cInfoContextCreator.cpp	1319	// HEAVY FACTORY: Sardaukar - Allow building Sonic Tank	1319	// HEAVY FACTORY: Sardaukar - Allow building Sonic Tank	на месте
+src/context/cInfoContextCreator.cpp	1336	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_SONICTANK].description = ""Build SonicTank at Heavy Factory"";"	1336	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_SONICTANK].description = ""Build SonicTank at Heavy Factory"";"	на месте
+src/context/cInfoContextCreator.cpp	1338	// HEAVY FACTORY: Sardaukar - Allow building Deviator	1338	// HEAVY FACTORY: Sardaukar - Allow building Deviator	на месте
+src/context/cInfoContextCreator.cpp	1355	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVIATOR].description = ""Build Deviator at Heavy Factory"";"	1355	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVIATOR].description = ""Build Deviator at Heavy Factory"";"	на месте
+src/context/cInfoContextCreator.cpp	1357	// HEAVY FACTORY: Sardaukar - Allow building Devastator	1357	// HEAVY FACTORY: Sardaukar - Allow building Devastator	на месте
+src/context/cInfoContextCreator.cpp	1374	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVASTATOR].description = ""Build Devastator at Heavy Factory"";"	1374	"upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVASTATOR].description = ""Build Devastator at Heavy Factory"";"	на месте
+src/context/cInfoContextCreator.cpp	1413	"structureInfo.name = ""Unknown"";"	1413	"structureInfo.name = ""Unknown"";"	на месте
+src/context/cInfoContextCreator.cpp	1424	"structureInfos[SLAB1].name = ""Concrete Slab"";"	1424	"structureInfos[SLAB1].name = ""Concrete Slab"";"	на месте
+src/context/cInfoContextCreator.cpp	1433	"structureInfos[SLAB4].name = ""4 Concrete Slabs"";"	1433	"structureInfos[SLAB4].name = ""4 Concrete Slabs"";"	на месте
+src/context/cInfoContextCreator.cpp	1436	// Concrete Wall	1436	// Concrete Wall	на месте
+src/context/cInfoContextCreator.cpp	1444	"structureInfos[WALL].name = ""Concrete Wall"";"	1444	"structureInfos[WALL].name = ""Concrete Wall"";"	на месте
+src/context/cInfoContextCreator.cpp	1446	// Structure    : Windtrap	1446	// Structure    : Windtrap	на месте
+src/context/cInfoContextCreator.cpp	1459	"structureInfos[WINDTRAP].name = ""Windtrap"";"	1459	"structureInfos[WINDTRAP].name = ""Windtrap"";"	на месте
+src/context/cInfoContextCreator.cpp	1492	"structureInfos[HIGHTECH].name = ""Hi-Tech"";"	1492	"structureInfos[HIGHTECH].name = ""Hi-Tech"";"	на месте
+src/context/cInfoContextCreator.cpp	1508	"structureInfos[REPAIR].name = ""Repair Facility"";"	1508	"structureInfos[REPAIR].name = ""Repair Facility"";"	на месте
+src/context/cInfoContextCreator.cpp	1510	// Structure    : Palace	1510	// Structure    : Palace	на месте
+src/context/cInfoContextCreator.cpp	1523	"structureInfos[PALACE].name = ""Palace"";"	1523	"structureInfos[PALACE].name = ""Palace"";"	на месте
+src/context/cInfoContextCreator.cpp	1525	// Structure    : Light Factory	1525	// Structure    : Light Factory	на месте
+src/context/cInfoContextCreator.cpp	1540	"structureInfos[LIGHTFACTORY].name = ""Light Factory"";"	1540	"structureInfos[LIGHTFACTORY].name = ""Light Factory"";"	на месте
+src/context/cInfoContextCreator.cpp	1563	"structureInfos[RADAR].name = ""Outpost"";"	1563	"structureInfos[RADAR].name = ""Outpost"";"	на месте
+src/context/cInfoContextCreator.cpp	1565	// Structure    : Barracks	1565	// Structure    : Barracks	на месте
+src/context/cInfoContextCreator.cpp	1584	"structureInfos[BARRACKS].name = ""Barracks"";"	1584	"structureInfos[BARRACKS].name = ""Barracks"";"	на месте
+src/context/cInfoContextCreator.cpp	1618	"structureInfos[SILO].name = ""Spice Storage Silo"";"	1618	"structureInfos[SILO].name = ""Spice Storage Silo"";"	на месте
+src/context/cInfoContextCreator.cpp	1634	"structureInfos[REFINERY].name = ""Spice Refinery"";"	1634	"structureInfos[REFINERY].name = ""Spice Refinery"";"	на месте
+src/context/cInfoContextCreator.cpp	1636	// Structure    : Construction Yard	1636	// Structure    : Construction Yard	на месте
+src/context/cInfoContextCreator.cpp	1652	"structureInfos[CONSTYARD].name = ""Construction Yard"";"	1652	"structureInfos[CONSTYARD].name = ""Construction Yard"";"	на месте
+src/context/cInfoContextCreator.cpp	1654	// Structure    : Starport	1654	// Structure    : Starport	на месте
+src/context/cInfoContextCreator.cpp	1668	"structureInfos[STARPORT].name = ""Starport"";"	1668	"structureInfos[STARPORT].name = ""Starport"";"	на месте
+src/context/cInfoContextCreator.cpp	1670	// Structure    : House of IX	1670	// Structure    : House of IX	на месте
+src/context/cInfoContextCreator.cpp	1684	"structureInfos[IX].name = ""House of IX"";"	1684	"structureInfos[IX].name = ""House of IX"";"	на месте
+src/context/cInfoContextCreator.cpp	1699	"structureInfos[TURRET].name = ""Gun Turret"";"	1699	"structureInfos[TURRET].name = ""Gun Turret"";"	на месте
+src/context/cInfoContextCreator.cpp	1701	// Structure    : Rocket Turret	1701	// Structure    : Rocket Turret	на месте
+src/context/cInfoContextCreator.cpp	1715	"structureInfos[RTURRET].name = ""Rocket Turret"";"	1715	"structureInfos[RTURRET].name = ""Rocket Turret"";"	на месте
+src/controls/cKeyBindings.cpp	354	"Logger::warn(COMP_INIT, ""[KEYS]"", ""Unknown SDL scancode name: '{}'"", token);"	354	"Logger::warn(COMP_INIT, ""[KEYS]"", ""Unknown SDL scancode name: '{}'"", token);"	на месте
+src/controls/mousestates/cMouseNormalState.cpp	16	"#include ""cMouseNormalState.h"""	16	"#include ""cMouseNormalState.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	18	"#include ""controls/cGameControlsContext.h"""	18	"#include ""controls/cGameControlsContext.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	19	"#include ""controls/eKeyAction.h"""	19	"#include ""controls/eKeyAction.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	21	"#include ""utils/cRectangle.h"""	21	"#include ""utils/cRectangle.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	22	"#include ""utils/cSoundPlayer.h"""	22	"#include ""utils/cSoundPlayer.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	23	"#include ""managers/cDrawManager.h"""	23	"#include ""managers/cDrawManager.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	24	"#include ""context/AudioContext.hpp"""	24	"#include ""context/AudioContext.hpp"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	25	"#include ""gameobjects/units/cUnit.h"""	25	"#include ""gameobjects/units/cUnit.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	26	"#include ""gameobjects/structures/cAbstractStructure.h"""	26	"#include ""gameobjects/structures/cAbstractStructure.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	27	"#include ""gameobjects/players/cPlayer.h"""	27	"#include ""gameobjects/players/cPlayer.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	31	"#include ""utils/Log.h"""	31	"#include ""utils/Log.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	32	"#include ""data/gfxdata.h"""	32	"#include ""data/gfxdata.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	33	"#include ""context/cInfoContext.h"""	33	"#include ""context/cInfoContext.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	34	"#include ""context/cGameObjectContext.h"""	34	"#include ""context/cGameObjectContext.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	38	"#include ""include/cAssert.h"""	38	"#include ""include/cAssert.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	40	"#include ""data/gfxaudio.h"""	40	"#include ""data/gfxaudio.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	41	"#include ""sidebar/cSideBar.h"""	41	"#include ""sidebar/cSideBar.h"""	на месте
+src/controls/mousestates/cMouseNormalState.cpp	97	"m_context->getDrawManager()->setMessage(std::format(""{} units selected"", ids.size()));"	97	"m_context->getDrawManager()->setMessage(std::format(""{} units selected"", ids.size()));"	на месте
+src/controls/mousestates/cMouseNormalState.cpp	101	m_context->getDrawManager()->setMessage(pUnit->getUnitStatusForMessageBar());	101	m_context->getDrawManager()->setMessage(pUnit->getUnitStatusForMessageBar());	на месте
+src/controls/mousestates/cMouseNormalState.cpp	124	m_context->getDrawManager()->setMessage(pUnit->getUnitStatusForMessageBar());	124	m_context->getDrawManager()->setMessage(pUnit->getUnitStatusForMessageBar());	на месте
+src/controls/mousestates/cMouseNormalState.cpp	143	m_context->getDrawManager()->setMessage(pStructure->getStatusForMessageBar());	143	m_context->getDrawManager()->setMessage(pStructure->getStatusForMessageBar());	на месте
+src/controls/mousestates/cMouseNormalState.cpp	206	"// non-selectable units (all from other players), don't give a ""pick"" mouse tile"	206	"// non-selectable units (all from other players), don't give a ""pick"" mouse tile"	на месте
+src/controls/mousestates/cMouseNormalState.cpp	317	const auto harvesterUnits = m_player->getHarvesterUnitsOnMap();	317	const auto harvesterUnits = m_player->getHarvesterUnitsOnMap();	на месте
+src/controls/mousestates/cMouseNormalState.cpp	326	const auto harvesterUnits = m_player->getHarvesterUnitsOnViewport(*m_context->getMapViewport());	326	const auto harvesterUnits = m_player->getHarvesterUnitsOnViewport(*m_context->getMapViewport());	на месте
+src/controls/mousestates/cMouseNormalState.cpp	372	"Logger::debug(COMP_GAMESTATE, ""cMouseNormalState::setState"", ""from {} to {}"", mouseNormalStateString(m_state), mouseNormalStateString(newState));"	372	"Logger::debug(COMP_GAMESTATE, ""cMouseNormalState::setState"", ""from {} to {}"", mouseNormalStateString(m_state), mouseNormalStateString(newState));"	на месте
+src/controls/mousestates/cMousePlaceState.cpp	16	"#include ""cMousePlaceState.h"""	16	"#include ""cMousePlaceState.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	18	"#include ""gameobjects/map/cMap.h"""	18	"#include ""gameobjects/map/cMap.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	19	"#include ""context/AudioContext.hpp"""	19	"#include ""context/AudioContext.hpp"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	20	"#include ""data/gfxdata.h"""	20	"#include ""data/gfxdata.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	21	"#include ""controls/cGameControlsContext.h"""	21	"#include ""controls/cGameControlsContext.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	22	"#include ""gameobjects/structures/cStructures.h"""	22	"#include ""gameobjects/structures/cStructures.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	23	"#include ""gameobjects/units/cUnits.h"""	23	"#include ""gameobjects/units/cUnits.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	24	"#include ""utils/cStructureUtils.h"""	24	"#include ""utils/cStructureUtils.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	25	"#include ""gameobjects/players/cPlayer.h"""	25	"#include ""gameobjects/players/cPlayer.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	26	"#include ""sidebar/cSideBar.h"""	26	"#include ""sidebar/cSideBar.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	27	"#include ""utils/cSoundPlayer.h"""	27	"#include ""utils/cSoundPlayer.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	28	"#include ""gameobjects/map/MapGeometry.hpp"""	28	"#include ""gameobjects/map/MapGeometry.hpp"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	29	"#include ""context/cInfoContext.h"""	29	"#include ""context/cInfoContext.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	30	"#include ""context/cGameObjectContext.h"""	30	"#include ""context/cGameObjectContext.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	31	"#include ""managers/cDrawManager.h"""	31	"#include ""managers/cDrawManager.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	33	"#include ""include/cAssert.h"""	33	"#include ""include/cAssert.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	35	"#include ""data/gfxaudio.h"""	35	"#include ""data/gfxaudio.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	36	"#include ""gameobjects/structures/cStructureFactory.h"""	36	"#include ""gameobjects/structures/cStructureFactory.h"""	на месте
+src/controls/mousestates/cMousePlaceState.cpp	88	"m_context->getDrawManager()->setMessage(""Unable to create more."");"	88	"m_context->getDrawManager()->setMessage(""Unable to create more."");"	на месте
+src/debug/UiAudit.hpp	20	ListStarport,	20	ListStarport,	на месте
+src/debug/UiAudit.hpp	21	ListPalace,	21	ListPalace,	на месте
+src/debug/UiAuditAccess.cpp	728	case uiaudit::GameKind::ListStarport: return eListType::LIST_STARPORT;	736	case uiaudit::GameKind::ListStarport: return eListType::LIST_STARPORT;	сдвиг
+src/debug/UiAuditAccess.cpp	729	case uiaudit::GameKind::ListPalace: return eListType::LIST_PALACE;	737	case uiaudit::GameKind::ListPalace: return eListType::LIST_PALACE;	сдвиг
+src/debug/UiAuditAccess.cpp	828	"currentGame.m_drawManager->setMessage(""Construction complete: the Windtrap is ready to be placed"", true);"	836	"currentGame.m_drawManager->setMessage(""Construction complete: the Windtrap is ready to be placed"", true);"	сдвиг
+src/debug/UiAuditScenes.cpp	457	"onGameScreen(scene(""game-list-starport"", ""game-playing"", ""atreides"", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ListStarport>), false),"	457	"onGameScreen(scene(""game-list-starport"", ""game-playing"", ""atreides"", kFixedGameFrames, prepareGame<ATREIDES, uiaudit::ListStarport>), false),"	на месте
+src/drawers/CreditsDrawer.cpp	255	m_gameTextDrawer->drawText(	255	m_gameTextDrawer->drawText(	на месте
+src/drawers/CreditsDrawer.cpp	268	m_gameTextDrawer->drawText(	268	m_gameTextDrawer->drawText(	на месте
+src/drawers/cBuildingListDrawer.cpp	79	"if (name == ""Hi-Tech"") return ""Hi-Tech"";"	79	"if (name == ""Hi-Tech"") return ""Hi-Tech"";"	на месте
+src/drawers/cBuildingListDrawer.cpp	80	"if (name == ""Spice Refinery"") return ""Refinery"";"	80	"if (name == ""Spice Refinery"") return ""Refinery"";"	на месте
+src/drawers/cBuildingListDrawer.cpp	82	"if (name == ""Light Infantry"") return ""Infantry"";"	82	"if (name == ""Light Infantry"") return ""Infantry"";"	на месте
+src/drawers/cBuildingListDrawer.cpp	83	"if (name == ""Troopers"") return ""Troopers"";"	83	"if (name == ""Troopers"") return ""Troopers"";"	на месте
+src/drawers/cBuildingListDrawer.cpp	315	m_smallTextDrawer->drawTextCenteredInBox(	315	m_smallTextDrawer->drawTextCenteredInBox(	на месте
+src/drawers/cBuildingListDrawer.cpp	330	m_smallTextDrawer->drawTextScaledCenteredInBox(	330	m_smallTextDrawer->drawTextScaledCenteredInBox(	на месте
+src/drawers/cBuildingListDrawer.cpp	341	m_smallTextDrawer->drawTextScaledCenteredInBox(	341	m_smallTextDrawer->drawTextScaledCenteredInBox(	на месте
+src/drawers/cBuildingListDrawer.cpp	411	m_smallTextDrawer->drawTextCenteredInBox(	411	m_smallTextDrawer->drawTextCenteredInBox(	на месте
+src/drawers/cBuildingListDrawer.cpp	443	m_smallTextDrawer->drawTextCenteredInBox(	443	m_smallTextDrawer->drawTextCenteredInBox(	на месте
+src/drawers/cBuildingListDrawer.cpp	465	const bool orderIsAwaitingFrigate =	465	const bool orderIsAwaitingFrigate =	на месте
+src/drawers/cBuildingListDrawer.cpp	545	"m_gameTextDrawer->drawText(textX, textY, std::format(""{}"", amountToShow));"	545	"m_gameTextDrawer->drawText(textX, textY, std::format(""{}"", amountToShow));"	на месте
+src/drawers/cBuildingListDrawer.cpp	551	"m_gameTextDrawer->drawText(textX, textY, std::format(""{}"", item->getSubList()));"	551	"m_gameTextDrawer->drawText(textX, textY, std::format(""{}"", item->getSubList()));"	на месте
+src/drawers/cBuildingListDrawer.cpp	607	"m_smallTextDrawer->drawTextCenteredInBox(""Max"", x, y, width, halfHeight, Color::Red);"	607	"m_smallTextDrawer->drawTextCenteredInBox(""Max"", x, y, width, halfHeight, Color::Red);"	на месте
+src/drawers/cBuildingListDrawer.cpp	608	"m_smallTextDrawer->drawTextCenteredInBox(""built"", x, y + halfHeight, width, halfHeight, Color::Red);"	608	"m_smallTextDrawer->drawTextCenteredInBox(""built"", x, y + halfHeight, width, halfHeight, Color::Red);"	на месте
+src/drawers/cBuildingListDrawer.cpp	736	m_smallTextDrawer->drawTextCenteredInBox(	736	m_smallTextDrawer->drawTextCenteredInBox(	на месте
+src/drawers/cBuildingListDrawer.cpp	777	m_smallTextDrawer->drawTextCenteredInBox(	777	m_smallTextDrawer->drawTextCenteredInBox(	на месте
+src/drawers/cBuildingListDrawer.cpp	788	m_smallTextDrawer->drawTextCentered(	788	m_smallTextDrawer->drawTextCentered(	на месте
+src/drawers/cBuildingListDrawer.cpp	795	m_smallTextDrawer->drawTextCentered(	795	m_smallTextDrawer->drawTextCentered(	на месте
+src/drawers/cBuildingListDrawer.cpp	826	m_smallTextDrawer->drawText(priceX, y + 4, priceColor, price, false);	826	m_smallTextDrawer->drawText(priceX, y + 4, priceColor, price, false);	на месте
+src/drawers/cMapDrawer.cpp	305	//        textDrawer.drawText(0, 100, msg);	305	//        textDrawer.drawText(0, 100, msg);	на месте
+src/drawers/cMessageDrawer.cpp	67	m_textDrawer->drawText(m_position.x+13, m_position.y+6, Color{0, 0, 0,Uint8(m_alpha)}, m_message, false);	67	m_textDrawer->drawText(m_position.x+13, m_position.y+6, Color{0, 0, 0,Uint8(m_alpha)}, m_message, false);	на месте
+src/drawers/cMessageDrawer.cpp	165	void cMessageDrawer::setMessage(const std::string &msg, bool keepMessage)	165	void cMessageDrawer::setMessage(const std::string &msg, bool keepMessage)	на месте
+src/drawers/cMessageDrawer.h	60	void setMessage(const std::string &msg, bool keepMessage = false);	60	void setMessage(const std::string &msg, bool keepMessage = false);	на месте
+src/drawers/cMouseDrawer.cpp	203	"m_textWriter->write(""Sight : Unknown"");"	203	"m_textWriter->write(""Sight : Unknown"");"	на месте
+src/drawers/cMouseDrawer.cpp	239	"m_textWriter->writef(""Windtrap outage : {}/{}"", theWindTrap->getPowerOut(), theWindTrap->getMaxPowerOut());"	239	"m_textWriter->writef(""Windtrap outage : {}/{}"", theWindTrap->getPowerOut(), theWindTrap->getMaxPowerOut());"	на месте
+src/drawers/cMouseDrawer.cpp	243	"m_textWriter->write(""Windtrap outage : Unknown"");"	243	"m_textWriter->write(""Windtrap outage : Unknown"");"	на месте
+src/drawers/cSideBarDrawer.cpp	237	m_smallTextDrawer->drawText(	237	m_smallTextDrawer->drawText(	на месте
+src/drawers/cSideBarDrawer.cpp	314	m_smallTextDrawer->drawText(	314	m_smallTextDrawer->drawText(	на месте
+src/drawers/cSideBarDrawer.cpp	323	m_smallTextDrawer->drawText(	323	m_smallTextDrawer->drawText(	на месте
+src/drawers/cStructureDrawer.cpp	263	"m_textDrawer->drawText(x1 + 32, y1, std::format(""degrees = {:.1f}, faceAngle = {}"", degrees, facingAngle));"	263	"m_textDrawer->drawText(x1 + 32, y1, std::format(""degrees = {:.1f}, faceAngle = {}"", degrees, facingAngle));"	на месте
+src/drawers/cTextDrawer.cpp	45	void cTextDrawer::drawText(int x, int y, Color color, const std::string &msg, bool applyShadow) const	45	void cTextDrawer::drawText(int x, int y, Color color, const std::string &msg, bool applyShadow) const	на месте
+src/drawers/cTextDrawer.cpp	60	void cTextDrawer::drawText(cPoint &coords, Color color, const std::string &msg, bool applyShadow) const	60	void cTextDrawer::drawText(cPoint &coords, Color color, const std::string &msg, bool applyShadow) const	на месте
+src/drawers/cTextDrawer.cpp	62	drawText(coords.x, coords.y, color, msg, applyShadow);	62	drawText(coords.x, coords.y, color, msg, applyShadow);	на месте
+src/drawers/cTextDrawer.cpp	65	void cTextDrawer::drawText(int x, int y, const std::string &msg, bool applyShadow) const	65	void cTextDrawer::drawText(int x, int y, const std::string &msg, bool applyShadow) const	на месте
+src/drawers/cTextDrawer.cpp	67	drawText(x, y, Color::White , msg, applyShadow);	67	drawText(x, y, Color::White , msg, applyShadow);	на месте
+src/drawers/cTextDrawer.cpp	70	void cTextDrawer::drawTextCentered(const std::string &msg, int y) const	70	void cTextDrawer::drawTextCentered(const std::string &msg, int y) const	на месте
+src/drawers/cTextDrawer.cpp	72	drawTextCentered(msg, y, Color::White);	72	drawTextCentered(msg, y, Color::White);	на месте
+src/drawers/cTextDrawer.cpp	75	void cTextDrawer::drawTextCentered(const std::string &msg, int y, Color color) const	75	void cTextDrawer::drawTextCentered(const std::string &msg, int y, Color color) const	на месте
+src/drawers/cTextDrawer.cpp	82	drawText(xPos, y, color, msg);	82	drawText(xPos, y, color, msg);	на месте
+src/drawers/cTextDrawer.cpp	85	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, int x, int y, int boxWidth, int boxHeight, Color color) const	85	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, int x, int y, int boxWidth, int boxHeight, Color color) const	на месте
+src/drawers/cTextDrawer.cpp	101	drawText(xPos, yPos, color, msg);	101	drawText(xPos, yPos, color, msg);	на месте
+src/drawers/cTextDrawer.cpp	104	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const	104	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const	на месте
+src/drawers/cTextDrawer.cpp	106	drawTextCenteredInBox(msg, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), color);	106	drawTextCenteredInBox(msg, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), color);	на месте
+src/drawers/cTextDrawer.cpp	109	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const	109	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const	на месте
+src/drawers/cTextDrawer.cpp	111	drawTextCenteredInBox(msg, rect.getX() + offsetX, rect.getY() + offsetY, rect.getWidth(), rect.getHeight(), color);	111	drawTextCenteredInBox(msg, rect.getX() + offsetX, rect.getY() + offsetY, rect.getWidth(), rect.getHeight(), color);	на месте
+src/drawers/cTextDrawer.cpp	114	void cTextDrawer::drawTextScaledCenteredInBox(	114	void cTextDrawer::drawTextScaledCenteredInBox(	на месте
+src/drawers/cTextDrawer.cpp	139	void cTextDrawer::drawTextScaledOpticallyCenteredInBox(	139	void cTextDrawer::drawTextScaledOpticallyCenteredInBox(	на месте
+src/drawers/cTextDrawer.cpp	174	void cTextDrawer::drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const	174	void cTextDrawer::drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const	на месте
+src/drawers/cTextDrawer.cpp	186	drawText(xPos, y, color, msg);	186	drawText(xPos, y, color, msg);	на месте
+src/drawers/cTextDrawer.cpp	189	void cTextDrawer::drawTextBottomRight(const std::string &msg, int margin) const	189	void cTextDrawer::drawTextBottomRight(const std::string &msg, int margin) const	на месте
+src/drawers/cTextDrawer.cpp	191	drawTextBottomRight(Color::White, msg, margin);	191	drawTextBottomRight(Color::White, msg, margin);	на месте
+src/drawers/cTextDrawer.cpp	194	void cTextDrawer::drawTextBottomLeft(const std::string &msg, int margin) const	194	void cTextDrawer::drawTextBottomLeft(const std::string &msg, int margin) const	на месте
+src/drawers/cTextDrawer.cpp	196	drawTextBottomLeft(Color::White, msg, margin);	196	drawTextBottomLeft(Color::White, msg, margin);	на месте
+src/drawers/cTextDrawer.cpp	199	void cTextDrawer::drawTextBottomRight(Color color, const std::string &msg, int margin) const	199	void cTextDrawer::drawTextBottomRight(Color color, const std::string &msg, int margin) const	на месте
+src/drawers/cTextDrawer.cpp	207	drawText(x, y, color, msg);	207	drawText(x, y, color, msg);	на месте
+src/drawers/cTextDrawer.cpp	215	void cTextDrawer::drawTextBottomLeft(Color color, const std::string &msg, int margin) const	215	void cTextDrawer::drawTextBottomLeft(Color color, const std::string &msg, int margin) const	на месте
+src/drawers/cTextDrawer.cpp	221	drawText(margin, y, color, msg);	221	drawText(margin, y, color, msg);	на месте
+src/drawers/cTextDrawer.h	35	void drawText(int x, int y, const std::string &msg, bool applyShadow = true) const;	35	void drawText(int x, int y, const std::string &msg, bool applyShadow = true) const;	на месте
+src/drawers/cTextDrawer.h	37	void drawText(cPoint &coords, Color color, const std::string &msg, bool applyShadow = true) const;	37	void drawText(cPoint &coords, Color color, const std::string &msg, bool applyShadow = true) const;	на месте
+src/drawers/cTextDrawer.h	39	void drawText(int x, int y, Color color, const std::string &msg, bool applyShadow = true) const;	39	void drawText(int x, int y, Color color, const std::string &msg, bool applyShadow = true) const;	на месте
+src/drawers/cTextDrawer.h	41	void drawTextCentered(const std::string &msg, int y) const;	41	void drawTextCentered(const std::string &msg, int y) const;	на месте
+src/drawers/cTextDrawer.h	43	void drawTextCentered(const std::string &msg, int y, Color color) const;	43	void drawTextCentered(const std::string &msg, int y, Color color) const;	на месте
+src/drawers/cTextDrawer.h	45	void drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const;	45	void drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const;	на месте
+src/drawers/cTextDrawer.h	52	void drawTextCenteredInBox(const std::string &msg, int x, int y, int boxWidth, int boxHeight, Color color) const;	52	void drawTextCenteredInBox(const std::string &msg, int x, int y, int boxWidth, int boxHeight, Color color) const;	на месте
+src/drawers/cTextDrawer.h	54	void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const;	54	void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const;	на месте
+src/drawers/cTextDrawer.h	56	void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const;	56	void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const;	на месте
+src/drawers/cTextDrawer.h	57	void drawTextScaledCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;	57	void drawTextScaledCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;	на месте
+src/drawers/cTextDrawer.h	58	void drawTextScaledOpticallyCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;	58	void drawTextScaledOpticallyCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;	на месте
+src/drawers/cTextDrawer.h	60	void drawTextBottomRight(const std::string &msg, int margin=0) const;	60	void drawTextBottomRight(const std::string &msg, int margin=0) const;	на месте
+src/drawers/cTextDrawer.h	62	void drawTextBottomLeft(const std::string &msg, int margin=0) const;	62	void drawTextBottomLeft(const std::string &msg, int margin=0) const;	на месте
+src/drawers/cTextDrawer.h	64	void drawTextBottomRight(Color color, const std::string &msg,int margin =0) const;	64	void drawTextBottomRight(Color color, const std::string &msg,int margin =0) const;	на месте
+src/drawers/cTextDrawer.h	66	void drawTextBottomLeft(Color color, const std::string &msg,int margin =0) const;	66	void drawTextBottomLeft(Color color, const std::string &msg,int margin =0) const;	на месте
+src/drawers/cUnitDrawer.cpp	143	textDrawer->drawText(drawx + 26, drawy - 11, Color::Black, groups);	143	textDrawer->drawText(drawx + 26, drawy - 11, Color::Black, groups);	на месте
+src/drawers/cUnitDrawer.cpp	144	textDrawer->drawText(drawx + 26, drawy - 12, Color::White, groups);	144	textDrawer->drawText(drawx + 26, drawy - 12, Color::White, groups);	на месте
+src/drawers/cUnitDrawer.cpp	253	if (m_unit.isSandworm()) {	253	if (m_unit.isSandworm()) {	на месте
+src/drawers/cUnitDrawer.cpp	363	"textDrawer->drawText(m_unit.draw_x(), m_unit.draw_y(), Color{255, 255, 255,ShadowTrans}, std::format(""{}"", m_unit.iID));"	363	"textDrawer->drawText(m_unit.draw_x(), m_unit.draw_y(), Color{255, 255, 255,ShadowTrans}, std::format(""{}"", m_unit.iID));"	на месте
+src/drawers/cUnitDrawer.cpp	364	if (m_unit.isSandworm()) {	364	if (m_unit.isSandworm()) {	на месте
+src/drawers/cUnitDrawer.cpp	365	"textDrawer->drawText(m_unit.draw_x(), m_unit.draw_y()-16, Color{255,255,255,255}, std::format(""{} / {} / {}"", m_unit.getUnitsEaten(), m_unit.guardTimer.get(), m_unit.movewaitTimer.get()));"	365	"textDrawer->drawText(m_unit.draw_x(), m_unit.draw_y()-16, Color{255,255,255,255}, std::format(""{} / {} / {}"", m_unit.getUnitsEaten(), m_unit.guardTimer.get(), m_unit.movewaitTimer.get()));"	на месте
+src/game/cGame_logic.cpp	1411	m_notificationArea->addNotification(notifEvent->message, notifEvent->type);	1413	m_notificationArea->addNotification(notifEvent->message, notifEvent->type);	сдвиг
+src/game/cGame_logic.cpp	1520	"m_notificationArea->addNotification(""Screenshot saved."", eNotificationType::NEUTRAL);"	1522	"m_notificationArea->addNotification(""Screenshot saved."", eNotificationType::NEUTRAL);"	сдвиг
+src/game/cGame_logic.cpp	1537	"m_notificationArea->addNotification(""Music toggle successfully"", eNotificationType::NEUTRAL);"	1539	"m_notificationArea->addNotification(""Music toggle successfully"", eNotificationType::NEUTRAL);"	сдвиг
+src/game/cGame_logic.cpp	1542	"m_notificationArea->addNotification(""Music volume down"", eNotificationType::NEUTRAL);"	1544	"m_notificationArea->addNotification(""Music volume down"", eNotificationType::NEUTRAL);"	сдвиг
+src/game/cGame_logic.cpp	1547	"m_notificationArea->addNotification(""Music volume up"", eNotificationType::NEUTRAL);"	1549	"m_notificationArea->addNotification(""Music volume up"", eNotificationType::NEUTRAL);"	сдвиг
+src/game/cGame_logic.cpp	1553	"m_notificationArea->addNotification(""Game speed up"", eNotificationType::NEUTRAL);"	1555	"m_notificationArea->addNotification(""Game speed up"", eNotificationType::NEUTRAL);"	сдвиг
+src/game/cGame_logic.cpp	1559	"m_notificationArea->addNotification(""Game speed down"", eNotificationType::NEUTRAL);"	1561	"m_notificationArea->addNotification(""Game speed down"", eNotificationType::NEUTRAL);"	сдвиг
+src/game/cGame_logic.cpp	1576	m_notificationArea->addNotification(message, eNotificationType::OTHER);	1578	m_notificationArea->addNotification(message, eNotificationType::OTHER);	сдвиг
+src/game/cNotificationArea.cpp	35	void cNotificationArea::addNotification(const std::string &msg, eNotificationType type)	35	void cNotificationArea::addNotification(const std::string &msg, eNotificationType type)	на месте
+src/game/cNotificationArea.cpp	67	textDrawer->drawText(x, y, notification.getColor(), notification.getMessage());	67	textDrawer->drawText(x, y, notification.getColor(), notification.getMessage());	на месте
+src/game/cNotificationArea.h	31	void addNotification(const std::string &msg, eNotificationType type);	31	void addNotification(const std::string &msg, eNotificationType type);	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	16	"#include ""AbstractMentat.h"""	16	"#include ""AbstractMentat.h"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	17	"#include ""definitions.h"""	17	"#include ""definitions.h"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	18	"#include ""include/eGameState.h"""	18	"#include ""include/eGameState.h"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	19	"#include ""drawers/SDLDrawer.hpp"""	19	"#include ""drawers/SDLDrawer.hpp"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	20	"#include ""utils/RNG.hpp"""	20	"#include ""utils/RNG.hpp"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	21	"#include ""context/GameContext.hpp"""	21	"#include ""context/GameContext.hpp"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	22	"#include ""game/GameStateTransition.hpp"""	22	"#include ""game/GameStateTransition.hpp"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	23	"#include ""game/MentatFlow.hpp"""	23	"#include ""game/MentatFlow.hpp"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	24	"#include ""game/cGameSettings.h"""	24	"#include ""game/cGameSettings.h"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	25	"#include ""gui/GuiButton.h"""	25	"#include ""gui/GuiButton.h"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	26	"#include ""utils/Graphics.hpp"""	26	"#include ""utils/Graphics.hpp"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	27	"// #include ""utils/common.h"""	27	"// #include ""utils/common.h"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	28	"#include ""utils/Log.h"""	28	"#include ""utils/Log.h"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	29	"#include ""drawers/cTextDrawer.h"""	29	"#include ""drawers/cTextDrawer.h"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	34	"#include ""include/cAssert.h"""	34	"#include ""include/cAssert.h"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	35	"#include ""context/GraphicsContext.hpp"""	35	"#include ""context/GraphicsContext.hpp"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	36	"#include ""context/TextContext.hpp"""	36	"#include ""context/TextContext.hpp"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	37	"#include ""include/Texture.hpp"""	37	"#include ""include/Texture.hpp"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	38	"#include ""utils/cRectangle.h"""	38	"#include ""utils/cRectangle.h"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	39	"#include ""debug/UiAudit.hpp"""	39	"#include ""debug/UiAudit.hpp"""	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	83	"int length = m_textDrawer->getTextLength(""Mission select"");"	83	"int length = m_textDrawer->getTextLength(""Mission select"");"	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	86	"""Mission select"");"	86	"""Mission select"");"	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	90	".withLabel(""Mission select"")"	90	".withLabel(""Mission select"")"	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	111	"Logger::info(COMP_GAME, ""AbstractMentat::AbstractMentat"", ""Initialized AbstractMentat with mission select button: {}"", canMissionSelect);"	111	"Logger::info(COMP_GAME, ""AbstractMentat::AbstractMentat"", ""Initialized AbstractMentat with mission select button: {}"", canMissionSelect);"	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	119	"Logger::info(COMP_GAME, ""AbstractMentat::~AbstractMentat"", ""Destroying AbstractMentat"");"	119	"Logger::info(COMP_GAME, ""AbstractMentat::~AbstractMentat"", ""Destroying AbstractMentat"");"	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	294	"uiaudit::recordCanvasClick(""mentat-skip"");"	294	"uiaudit::recordCanvasClick(""mentat-skip"");"	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	299	m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{0, 0, 0,255},sentence[iMentatSentence]);	299	m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{0, 0, 0,255},sentence[iMentatSentence]);	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	300	m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{255, 255, 255,255},sentence[iMentatSentence]);	300	m_textDrawer->drawText(offsetX + 17, offsetY + 17,Color{255, 255, 255,255},sentence[iMentatSentence]);	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	302	m_textDrawer->drawText(offsetX + 17, offsetY + 37,Color{0, 0, 0,255},sentence[iMentatSentence+1]);	302	m_textDrawer->drawText(offsetX + 17, offsetY + 37,Color{0, 0, 0,255},sentence[iMentatSentence+1]);	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	303	m_textDrawer->drawText(offsetX + 17, offsetY + 36,Color{255, 255, 255,255},sentence[iMentatSentence+1]);	303	m_textDrawer->drawText(offsetX + 17, offsetY + 36,Color{255, 255, 255,255},sentence[iMentatSentence+1]);	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	348	"Logger::info(COMP_GAME, ""AbstractMentat::setSentence"", ""Sentence[{}]={}"", i, text);"	348	"Logger::info(COMP_GAME, ""AbstractMentat::setSentence"", ""Sentence[{}]={}"", i, text);"	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	363	"Logger::info(COMP_GAME, ""AbstractMentat"", ""Successful loaded scene [{}]"", filename);"	363	"Logger::info(COMP_GAME, ""AbstractMentat"", ""Successful loaded scene [{}]"", filename);"	на месте
+src/gameobjects/mentat/AbstractMentat.cpp	368	"Logger::error(COMP_GAME, ""AbstractMentat"", ""Failed to load scene [{}]"", filename);"	368	"Logger::error(COMP_GAME, ""AbstractMentat"", ""Failed to load scene [{}]"", filename);"	на месте
+src/gameobjects/mentat/AtreidesMentat.cpp	38	".withLabel(""Repeat"")"	38	".withLabel(""Repeat"")"	на месте
+src/gameobjects/mentat/AtreidesMentat.cpp	47	".withLabel(""Yes"")"	47	".withLabel(""Yes"")"	на месте
+src/gameobjects/mentat/BeneMentat.cpp	45	".withLabel(""No"")"	45	".withLabel(""No"")"	на месте
+src/gameobjects/mentat/BeneMentat.cpp	54	".withLabel(""Yes"")"	54	".withLabel(""Yes"")"	на месте
+src/gameobjects/mentat/BeneMentat.cpp	97	m_textDrawer->drawText(offsetX + 17, offsetY + 17, Color{0, 0, 0,255}, msg);	97	m_textDrawer->drawText(offsetX + 17, offsetY + 17, Color{0, 0, 0,255}, msg);	на месте
+src/gameobjects/mentat/BeneMentat.cpp	98	m_textDrawer->drawText(offsetX + 16, offsetY + 16, Color{255, 214, 137,255}, msg);	98	m_textDrawer->drawText(offsetX + 16, offsetY + 16, Color{255, 214, 137,255}, msg);	на месте
+src/gameobjects/mentat/HarkonnenMentat.cpp	37	".withLabel(""Repeat"")"	37	".withLabel(""Repeat"")"	на месте
+src/gameobjects/mentat/HarkonnenMentat.cpp	46	".withLabel(""Yes"")"	46	".withLabel(""Yes"")"	на месте
+src/gameobjects/mentat/OrdosMentat.cpp	36	".withLabel(""Repeat"")"	36	".withLabel(""Repeat"")"	на месте
+src/gameobjects/mentat/OrdosMentat.cpp	45	".withLabel(""Yes"")"	45	".withLabel(""Yes"")"	на месте
+src/gameobjects/mentat/SardaukarMentat.cpp	37	".withLabel(""Repeat"")"	37	".withLabel(""Repeat"")"	на месте
+src/gameobjects/mentat/SardaukarMentat.cpp	46	".withLabel(""Yes"")"	46	".withLabel(""Yes"")"	на месте
+src/gameobjects/players/brains/missions/cPlayerBrainMissionKind.h	40	* Improve economy (ie, build Carry-All's, harvesters, etc)	40	* Improve economy (ie, build Carry-All's, harvesters, etc)	на месте
+src/gameobjects/players/cPlayer.cpp	16	"#include ""cPlayer.h"""	16	"#include ""cPlayer.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	18	"#include ""building/cItemBuilder.h"""	18	"#include ""building/cItemBuilder.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	19	"#include ""game/cEventEmitter.h"""	19	"#include ""game/cEventEmitter.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	20	"#include ""game/cScreenFader.h"""	20	"#include ""game/cScreenFader.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	21	"#include ""gameobjects/map/cMap.h"""	21	"#include ""gameobjects/map/cMap.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	22	"#include ""data/gfxdata.h"""	22	"#include ""data/gfxdata.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	23	"#include ""gameobjects/units/cReinforcements.h"""	23	"#include ""gameobjects/units/cReinforcements.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	24	"#include ""gameobjects/structures/cStructureFactory.h"""	24	"#include ""gameobjects/structures/cStructureFactory.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	25	"#include ""gameobjects/structures/cStructures.h"""	25	"#include ""gameobjects/structures/cStructures.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	26	"#include ""utils/common.h"""	26	"#include ""utils/common.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	27	"#include ""utils/cStructureUtils.h"""	27	"#include ""utils/cStructureUtils.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	28	"#include ""utils/Log.h"""	28	"#include ""utils/Log.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	29	"#include ""utils/texture_utils.h"""	29	"#include ""utils/texture_utils.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	30	"#include ""gameobjects/players/cHousesInfo.h"""	30	"#include ""gameobjects/players/cHousesInfo.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	31	"#include ""utils/Graphics.hpp"""	31	"#include ""utils/Graphics.hpp"""	на месте
+src/gameobjects/players/cPlayer.cpp	32	"#include ""utils/HouseMaskTint.hpp"""	32	"#include ""utils/HouseMaskTint.hpp"""	на месте
+src/gameobjects/players/cPlayer.cpp	33	"#include ""include/Texture.hpp"""	33	"#include ""include/Texture.hpp"""	на месте
+src/gameobjects/players/cPlayer.cpp	34	"#include ""utils/RNG.hpp"""	34	"#include ""utils/RNG.hpp"""	на месте
+src/gameobjects/players/cPlayer.cpp	35	"#include ""gameobjects/map/MapGeometry.hpp"""	35	"#include ""gameobjects/map/MapGeometry.hpp"""	на месте
+src/gameobjects/players/cPlayer.cpp	36	"#include ""gameobjects/structures/cOrderProcesser.h"""	36	"#include ""gameobjects/structures/cOrderProcesser.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	37	"#include ""controls/cGameControlsContext.h"""	37	"#include ""controls/cGameControlsContext.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	38	"#include ""gameobjects/players/cPlayerDifficultySettings.h"""	38	"#include ""gameobjects/players/cPlayerDifficultySettings.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	39	"#include ""sidebar/cSideBar.h"""	39	"#include ""sidebar/cSideBar.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	40	"#include ""gameobjects/units/cUnits.h"""	40	"#include ""gameobjects/units/cUnits.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	41	"#include ""context/cInfoContext.h"""	41	"#include ""context/cInfoContext.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	42	"#include ""context/cGameObjectContext.h"""	42	"#include ""context/cGameObjectContext.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	43	"#include ""game/cGameSettings.h"""	43	"#include ""game/cGameSettings.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	44	"#include ""include/sGameServices.h"""	44	"#include ""include/sGameServices.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	45	"#include ""context/GameContext.hpp"""	45	"#include ""context/GameContext.hpp"""	на месте
+src/gameobjects/players/cPlayer.cpp	46	"#include ""context/AudioContext.hpp"""	46	"#include ""context/AudioContext.hpp"""	на месте
+src/gameobjects/players/cPlayer.cpp	54	"#include ""data/gfxaudio.h"""	54	"#include ""data/gfxaudio.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	55	"#include ""context/GraphicsContext.hpp"""	55	"#include ""context/GraphicsContext.hpp"""	на месте
+src/gameobjects/players/cPlayer.cpp	56	"#include ""gameobjects/cSpecialInfos.h"""	56	"#include ""gameobjects/cSpecialInfos.h"""	на месте
+src/gameobjects/players/cPlayer.cpp	108	"Logger::info(COMP_PLAYER, ""cPlayer"", ""MAX_STRUCTURE_BMPS=[{}], sizeof bmp_structure={}, sizeof(SDL_Surface *)={}"","	108	"Logger::info(COMP_PLAYER, ""cPlayer"", ""MAX_STRUCTURE_BMPS=[{}], sizeof bmp_structure={}, sizeof(SDL_Surface *)={}"","	на месте
+src/gameobjects/players/cPlayer.cpp	206	"Logger::error(COMP_PLAYER, ""cPlayer"", ""Error initializing player, id {} is not valid."", id);"	206	"Logger::error(COMP_PLAYER, ""cPlayer"", ""Error initializing player, id {} is not valid."", id);"	на месте
+src/gameobjects/players/cPlayer.cpp	262	"Logger::info(COMP_PLAYER, ""cPlayer::setHouse"", ""Current house is [{}/{}], setting house to [{}/{}]"","	262	"Logger::info(COMP_PLAYER, ""cPlayer::setHouse"", ""Current house is [{}/{}], setting house to [{}/{}]"","	на месте
+src/gameobjects/players/cPlayer.cpp	271	"Logger::info(COMP_PLAYER, ""cPlayer::setHouse"", ""Current house differs from iHouse, preparing palette."");"	271	"Logger::info(COMP_PLAYER, ""cPlayer::setHouse"", ""Current house differs from iHouse, preparing palette."");"	на месте
+src/gameobjects/players/cPlayer.cpp	295	"std::cerr << ""Could not create bmp structure bitmap!? - Imminent crash.\n"";"	295	"std::cerr << ""Could not create bmp structure bitmap!? - Imminent crash.\n"";"	на месте
+src/gameobjects/players/cPlayer.cpp	303	"std::cerr << ""Could not create FLASH bmp structure bitmap!? - Imminent crash.\n"";"	303	"std::cerr << ""Could not create FLASH bmp structure bitmap!? - Imminent crash.\n"";"	на месте
+src/gameobjects/players/cPlayer.cpp	319	"std::cerr << ""Could not create bmp unit bitmap!? - Imminent crash.\n"";"	319	"std::cerr << ""Could not create bmp unit bitmap!? - Imminent crash.\n"";"	на месте
+src/gameobjects/players/cPlayer.cpp	382	"return std::format(""Player [id={}, human={}, sidebar={:#x}]"", this->id, this->m_Human, reinterpret_cast<std::uintptr_t>(this->sidebar));"	382	"return std::format(""Player [id={}, human={}, sidebar={:#x}]"", this->id, this->m_Human, reinterpret_cast<std::uintptr_t>(this->sidebar));"	на месте
+src/gameobjects/players/cPlayer.cpp	587	"* Returns the bitmap for structure type ""index"", this structure has been colorized beforehand for this player and is"	587	"* Returns the bitmap for structure type ""index"", this structure has been colorized beforehand for this player and is"	на месте
+src/gameobjects/players/cPlayer.cpp	595	"d2tm_assert(false && ""getStructureBitmap called with invalid index"");"	595	"d2tm_assert(false && ""getStructureBitmap called with invalid index"");"	на месте
+src/gameobjects/players/cPlayer.cpp	607	"* Returns the flash bitmap for structure type ""index"", this structure has been colorized beforehand for this player and is"	607	"* Returns the flash bitmap for structure type ""index"", this structure has been colorized beforehand for this player and is"	на месте
+src/gameobjects/players/cPlayer.cpp	615	"d2tm_assert(false && ""getStructureBitmapFlash called with invalid structure type index"");"	615	"d2tm_assert(false && ""getStructureBitmapFlash called with invalid structure type index"");"	на месте
+src/gameobjects/players/cPlayer.cpp	633	"* Returns the bitmap for unit type ""index"", this unit has been colorized beforehand for this player and is"	633	"* Returns the bitmap for unit type ""index"", this unit has been colorized beforehand for this player and is"	на месте
+src/gameobjects/players/cPlayer.cpp	641	"d2tm_assert(false && ""getUnitBitmap called with invalid index"");"	641	"d2tm_assert(false && ""getUnitBitmap called with invalid index"");"	на месте
+src/gameobjects/players/cPlayer.cpp	653	"* Returns the bitmap for unit top type ""index"", this top of unit has been colorized beforehand for this player and is"	653	"* Returns the bitmap for unit top type ""index"", this top of unit has been colorized beforehand for this player and is"	на месте
+src/gameobjects/players/cPlayer.cpp	661	"d2tm_assert(false && ""getUnitTopBitmap called with invalid index"");"	661	"d2tm_assert(false && ""getUnitTopBitmap called with invalid index"");"	на месте
+src/gameobjects/players/cPlayer.cpp	675	"d2tm_assert(false && ""getUnitShadowBitmap called with invalid index"");"	675	"d2tm_assert(false && ""getUnitShadowBitmap called with invalid index"");"	на месте
+src/gameobjects/players/cPlayer.cpp	691	bool cPlayer::hasBarracks() const	691	bool cPlayer::hasBarracks() const	на месте
+src/gameobjects/players/cPlayer.cpp	802	"log(std::format(""increaseStructureAmount result: iStructures[{}(={})]={}"","	802	"log(std::format(""increaseStructureAmount result: iStructures[{}(={})]={}"","	на месте
+src/gameobjects/players/cPlayer.cpp	813	"log(std::format(""decreaseStructureAmount result: iStructures[{}(={})]={}"","	813	"log(std::format(""decreaseStructureAmount result: iStructures[{}(={})]={}"","	на месте
+src/gameobjects/players/cPlayer.cpp	825	"return ""Atreides"";"	825	"return ""Atreides"";"	на месте
+src/gameobjects/players/cPlayer.cpp	828	"return ""Harkonnen"";"	828	"return ""Harkonnen"";"	на месте
+src/gameobjects/players/cPlayer.cpp	831	"return ""Ordos"";"	831	"return ""Ordos"";"	на месте
+src/gameobjects/players/cPlayer.cpp	834	"return ""Sardaukar"";"	834	"return ""Sardaukar"";"	на месте
+src/gameobjects/players/cPlayer.cpp	837	"return ""Fremen"";"	837	"return ""Fremen"";"	на месте
+src/gameobjects/players/cPlayer.cpp	840	"return ""Mercenary"";"	840	"return ""Mercenary"";"	на месте
+src/gameobjects/players/cPlayer.cpp	843	"return ""Generalhouse (none)"";"	843	"return ""Generalhouse (none)"";"	на месте
+src/gameobjects/players/cPlayer.cpp	846	"return ""Corrino / House for worms"";"	846	"return ""Corrino / House for worms"";"	на месте
+src/gameobjects/players/cPlayer.cpp	848	"return ""Unknown !?"";"	848	"return ""Unknown !?"";"	на месте
+src/gameobjects/players/cPlayer.cpp	989	"log(std::format(""canBuildUnitType(unitType={}) -> {}"", iUnitType, result ? ""TRUE"" : ""FALSE""));"	989	"log(std::format(""canBuildUnitType(unitType={}) -> {}"", iUnitType, result ? ""TRUE"" : ""FALSE""));"	на месте
+src/gameobjects/players/cPlayer.cpp	1000	"log(std::format(""canBuildSpecialType(iType={}) -> {}"", iType, result ? ""TRUE"" : ""FALSE""));"	1000	"log(std::format(""canBuildSpecialType(iType={}) -> {}"", iType, result ? ""TRUE"" : ""FALSE""));"	на месте
+src/gameobjects/players/cPlayer.cpp	1104	"log(std::format(""isUpgradingList for listType [{}] and sublistId [{}], could not find upgradesList!? - will return nullptr."","	1104	"log(std::format(""isUpgradingList for listType [{}] and sublistId [{}], could not find upgradesList!? - will return nullptr."","	на месте
+src/gameobjects/players/cPlayer.cpp	1145	"const std::string result = startedBuilding ? ""SUCCESS"" : ""FALSE"";"	1145	"const std::string result = startedBuilding ? ""SUCCESS"" : ""FALSE"";"	на месте
+src/gameobjects/players/cPlayer.cpp	1146	"log(std::format(""Wanting to build unit [{}] iUnitType = [{}], with listType[{}] - {}"","	1146	"log(std::format(""Wanting to build unit [{}] iUnitType = [{}], with listType[{}] - {}"","	на месте
+src/gameobjects/players/cPlayer.cpp	1159	"const std::string result = startedBuilding ? ""SUCCESS"" : ""FALSE"";"	1159	"const std::string result = startedBuilding ? ""SUCCESS"" : ""FALSE"";"	на месте
+src/gameobjects/players/cPlayer.cpp	1160	"log(std::format(""Wanting to build structure [{}] iStructureType = [{}], with listType[{}] - {}"","	1160	"log(std::format(""Wanting to build structure [{}] iStructureType = [{}], with listType[{}] - {}"","	на месте
+src/gameobjects/players/cPlayer.cpp	1173	"const std::string result = startedBuilding ? ""SUCCESS"" : ""FALSE"";"	1173	"const std::string result = startedBuilding ? ""SUCCESS"" : ""FALSE"";"	на месте
+src/gameobjects/players/cPlayer.cpp	1174	"log(std::format(""Wanting to build special [{}] iSpecialType = [{}], with listType[{}] - {}"","	1174	"log(std::format(""Wanting to build special [{}] iSpecialType = [{}], with listType[{}] - {}"","	на месте
+src/gameobjects/players/cPlayer.cpp	1186	"const std::string result = startedBuilding ? ""SUCCESS"" : ""FALSE"";"	1186	"const std::string result = startedBuilding ? ""SUCCESS"" : ""FALSE"";"	на месте
+src/gameobjects/players/cPlayer.cpp	1187	"log(std::format(""Wanting to start upgrade [{}] iUpgradeType = [{}], with listType[{}] - {}"","	1187	"log(std::format(""Wanting to start upgrade [{}] iUpgradeType = [{}], with listType[{}] - {}"","	на месте
+src/gameobjects/players/cPlayer.cpp	1361	"log(std::format(""canBuildUnit: Wanting to build iUnitType = [{}(={})] allowed?..."", iUnitType, m_infos->getUnitInfo(iUnitType).name));"	1361	"log(std::format(""canBuildUnit: Wanting to build iUnitType = [{}(={})] allowed?..."", iUnitType, m_infos->getUnitInfo(iUnitType).name));"	на месте
+src/gameobjects/players/cPlayer.cpp	1366	"log(std::format(""canBuildUnit: FALSE, because cost {} higher than credits {}"", m_infos->getUnitInfo(iUnitType).cost, getCredits()));"	1366	"log(std::format(""canBuildUnit: FALSE, because cost {} higher than credits {}"", m_infos->getUnitInfo(iUnitType).cost, getCredits()));"	на месте
+src/gameobjects/players/cPlayer.cpp	1373	"log(""canBuildUnit: FALSE, because already building unitType"");"	1373	"log(""canBuildUnit: FALSE, because already building unitType"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1381	"log(std::format(""canBuildUnit: FALSE, because we do not own the required structure type [{}] for this unit: [{}]"","	1381	"log(std::format(""canBuildUnit: FALSE, because we do not own the required structure type [{}] for this unit: [{}]"","	на месте
+src/gameobjects/players/cPlayer.cpp	1388	"log(std::format(""canBuildUnit: FALSE, because we do not own the required ADDITIONAL structure type [{}] for this unit: [{}]"","	1388	"log(std::format(""canBuildUnit: FALSE, because we do not own the required ADDITIONAL structure type [{}] for this unit: [{}]"","	на месте
+src/gameobjects/players/cPlayer.cpp	1397	"log(std::format(""canBuildUnit: REQUIRES_UPGRADE, because we can't find it in the expected list [{}] for this unit: [{}]"","	1397	"log(std::format(""canBuildUnit: REQUIRES_UPGRADE, because we can't find it in the expected list [{}] for this unit: [{}]"","	на месте
+src/gameobjects/players/cPlayer.cpp	1403	"log(""canBuildUnit: FALSE, reason UNIT_LIMIT_REACHED"");"	1403	"log(""canBuildUnit: FALSE, reason UNIT_LIMIT_REACHED"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1407	"log(""canBuildUnit: ALLOWED"");"	1407	"log(""canBuildUnit: ALLOWED"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1417	"log(std::format(""canBuildSpecial: Wanting to build iType = [{}(={})] allowed?..."", iType, special.description));"	1417	"log(std::format(""canBuildSpecial: Wanting to build iType = [{}(={})] allowed?..."", iType, special.description));"	на месте
+src/gameobjects/players/cPlayer.cpp	1420	"int iStrucType = PALACE; // TODO: get from ""special"" data structure?"	1420	"int iStrucType = PALACE; // TODO: get from ""special"" data structure?"	на месте
+src/gameobjects/players/cPlayer.cpp	1422	"log(std::format(""canBuildUnit: FALSE, because we do not own the required structure type [{}] for [{}]"","	1422	"log(std::format(""canBuildUnit: FALSE, because we do not own the required structure type [{}] for [{}]"","	на месте
+src/gameobjects/players/cPlayer.cpp	1429	"log(""canBuildSpecial: FALSE, because already building it"");"	1429	"log(""canBuildSpecial: FALSE, because already building it"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1436	"log(std::format(""canBuildUnit: REQUIRES_UPGRADE, because we can't find it in the expected list [{}] for this special: [{}]"","	1436	"log(std::format(""canBuildUnit: REQUIRES_UPGRADE, because we can't find it in the expected list [{}] for this special: [{}]"","	на месте
+src/gameobjects/players/cPlayer.cpp	1441	"log(""canBuildSpecial: ALLOWED"");"	1441	"log(""canBuildSpecial: ALLOWED"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1475	"log(std::format(""Visible = {}"", isVisibleForPlayer));"	1475	"log(std::format(""Visible = {}"", isVisibleForPlayer));"	на месте
+src/gameobjects/players/cPlayer.cpp	1489	"log(std::format(""Targets {}"", maxTargets));"	1489	"log(std::format(""Targets {}"", maxTargets));"	на месте
+src/gameobjects/players/cPlayer.cpp	1517	"log(std::format(""STR] Targets {}"", iT));"	1517	"log(std::format(""STR] Targets {}"", iT));"	на месте
+src/gameobjects/players/cPlayer.cpp	1525	"log(std::format(""canBuildStructure: Wanting to build iStructureType = [{}]"", iStructureType));"	1525	"log(std::format(""canBuildStructure: Wanting to build iStructureType = [{}]"", iStructureType));"	на месте
+src/gameobjects/players/cPlayer.cpp	1527	"d2tm_assert(iStructureType > -1 && ""Structure type must be > -1"");"	1527	"d2tm_assert(iStructureType > -1 && ""Structure type must be > -1"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1528	"d2tm_assert(iStructureType < MAX_STRUCTURETYPES && ""Structure type must be < MAX_STRUCTURETYPES"");"	1528	"d2tm_assert(iStructureType < MAX_STRUCTURETYPES && ""Structure type must be < MAX_STRUCTURETYPES"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1533	"log(std::format(""canBuildStructure: Wanting to build iStructureType = [{}(={})], allowed?..."","	1533	"log(std::format(""canBuildStructure: Wanting to build iStructureType = [{}(={})], allowed?..."","	на месте
+src/gameobjects/players/cPlayer.cpp	1538	"log(std::format(""canBuildStructure: FALSE, reason NOT_ENOUGH_MONEY: because cost {} > credits {}"","	1538	"log(std::format(""canBuildStructure: FALSE, reason NOT_ENOUGH_MONEY: because cost {} > credits {}"","	на месте
+src/gameobjects/players/cPlayer.cpp	1545	"log(std::format(""canBuildStructure: FALSE, reason REQUIRES_STRUCTURE: we do not own the required structure type [{}] for this structure: [{}]"","	1545	"log(std::format(""canBuildStructure: FALSE, reason REQUIRES_STRUCTURE: we do not own the required structure type [{}] for this structure: [{}]"","	на месте
+src/gameobjects/players/cPlayer.cpp	1552	"log(""canBuildStructure: FALSE, reason ALREADY_BUILDING"");"	1552	"log(""canBuildStructure: FALSE, reason ALREADY_BUILDING"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1559	"log(""canBuildStructure: FALSE, reason REQUIRES_UPGRADE: because we can't find structure in list"");"	1559	"log(""canBuildStructure: FALSE, reason REQUIRES_UPGRADE: because we can't find structure in list"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1564	"log(""canBuildStructure: FALSE, reason STRUCTURE_LIMIT_REACHED"");"	1564	"log(""canBuildStructure: FALSE, reason STRUCTURE_LIMIT_REACHED"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1568	"log(""canBuildStructure: ALLOWED"");"	1568	"log(""canBuildStructure: ALLOWED"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1649	"auto msg = std::format(""Player {} ({}) has been defeated."", commonEvent->player->getId(),"	1649	"auto msg = std::format(""Player {} ({}) has been defeated."", commonEvent->player->getId(),"	на месте
+src/gameobjects/players/cPlayer.cpp	1654	// addNotification(msg, eNotificationType::BAD);	1654	// addNotification(msg, eNotificationType::BAD);	на месте
+src/gameobjects/players/cPlayer.cpp	1664	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_PLAYER_DEFEATED did not carry a CommonEvent"");"	1664	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_PLAYER_DEFEATED did not carry a CommonEvent"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1670	"auto msg = std::format(""{} launched!"", buildEvent->buildingListItem->getNameString());"	1670	"auto msg = std::format(""{} launched!"", buildEvent->buildingListItem->getNameString());"	на месте
+src/gameobjects/players/cPlayer.cpp	1671	// addNotification(msg, eNotificationType::BAD);	1671	// addNotification(msg, eNotificationType::BAD);	на месте
+src/gameobjects/players/cPlayer.cpp	1681	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_SPECIAL_LAUNCHED did not carry a BuildingEvent"");"	1681	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_SPECIAL_LAUNCHED did not carry a BuildingEvent"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1688	"auto msg = std::format(""{} is ready for deployment."","	1688	"auto msg = std::format(""{} is ready for deployment."","	на месте
+src/gameobjects/players/cPlayer.cpp	1690	// addNotification(msg, eNotificationType::PRIORITY);	1690	// addNotification(msg, eNotificationType::PRIORITY);	на месте
+src/gameobjects/players/cPlayer.cpp	1701	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_SPECIAL_SELECT_TARGET did not carry a BuildingEvent"");"	1701	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_SPECIAL_SELECT_TARGET did not carry a BuildingEvent"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1711	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_DISCOVERED did not carry a CommonEvent"");"	1711	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_DISCOVERED did not carry a CommonEvent"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1724	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_DESTROYED did not carry a CommonEvent"");"	1724	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_DESTROYED did not carry a CommonEvent"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1738	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_CREATED did not carry a CommonEvent"");"	1738	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_CREATED did not carry a CommonEvent"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1745	"auto msg = std::format(""Upgrade: {} completed."", buildEvent->buildingListItem->getNameString());"	1745	"auto msg = std::format(""Upgrade: {} completed."", buildEvent->buildingListItem->getNameString());"	на месте
+src/gameobjects/players/cPlayer.cpp	1746	//addNotification(msg, eNotificationType::PRIORITY);	1746	//addNotification(msg, eNotificationType::PRIORITY);	на месте
+src/gameobjects/players/cPlayer.cpp	1761	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_LIST_ITEM_FINISHED did not carry a BuildingEvent"");"	1761	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_LIST_ITEM_FINISHED did not carry a BuildingEvent"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1772	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_LIST_ITEM_ADDED/CANCELLED did not carry a BuildingEvent"");"	1772	"Logger::warn(COMP_PLAYER, ""cPlayer::onNotifyGameEvent"", ""GAME_EVENT_LIST_ITEM_ADDED/CANCELLED did not carry a BuildingEvent"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1832	int cPlayer::getSoldierType()	1832	int cPlayer::getSoldierType()	на месте
+src/gameobjects/players/cPlayer.cpp	1904	"d2tm_assert(structureType > -1 && ""hasEnoughPowerFor called with structureType < 0!"");"	1904	"d2tm_assert(structureType > -1 && ""hasEnoughPowerFor called with structureType < 0!"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1905	"d2tm_assert(structureType < MAX_STRUCTURETYPES && ""hasEnoughPowerFor called with structureType >= MAX_STRUCTURETYPES!"");"	1905	"d2tm_assert(structureType < MAX_STRUCTURETYPES && ""hasEnoughPowerFor called with structureType >= MAX_STRUCTURETYPES!"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1912	"log(""cPlayer::logStructures() START"");"	1912	"log(""cPlayer::logStructures() START"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1914	"log(std::format(""[{}] amount [{}]"", m_infos->getStructureInfo(i).name, iStructures[i]));"	1914	"log(std::format(""[{}] amount [{}]"", m_infos->getStructureInfo(i).name, iStructures[i]));"	на месте
+src/gameobjects/players/cPlayer.cpp	1916	"log(""cPlayer::logStructures() END"");"	1916	"log(""cPlayer::logStructures() END"");"	на месте
+src/gameobjects/players/cPlayer.cpp	1935	"can be placed of type ""iStructureType"". This is calling  canPlaceStructureAt without any"	1935	"can be placed of type ""iStructureType"". This is calling  canPlaceStructureAt without any"	на месте
+src/gameobjects/players/cPlayer.cpp	1963	"can be placed of type ""iStructureType"". If iUnitIDTOIgnore is > -1, then if any unit is"	1963	"can be placed of type ""iStructureType"". If iUnitIDTOIgnore is > -1, then if any unit is"	на месте
+src/gameobjects/players/cPlayer.cpp	2012	"// another structure found on this location, ""blocked"""	2012	"// another structure found on this location, ""blocked"""	на месте
+src/gameobjects/players/cPlayer.cpp	2044	"Logger::info(COMP_PLAYER, ""cPlayer"", ""PLAYER [{}(={})] : {}"", getId(), getHouseName(), txt);"	2044	"Logger::info(COMP_PLAYER, ""cPlayer"", ""PLAYER [{}(={})] : {}"", getId(), getHouseName(), txt);"	на месте
+src/gameobjects/players/cPlayer.cpp	2060	"log(""startBuilding: Cannot start building null item!"");"	2060	"log(""startBuilding: Cannot start building null item!"");"	на месте
+src/gameobjects/players/cPlayer.cpp	2127	"bool hasVoiceToPlay = isHuman() && voiceId > -1; // don't warn when already in ""attack music mode"""	2127	"bool hasVoiceToPlay = isHuman() && voiceId > -1; // don't warn when already in ""attack music mode"""	на месте
+src/gameobjects/players/cPlayer.cpp	2157	"d2tm_assert(false && ""startBuilding: Unknown buildType !?"");"	2157	"d2tm_assert(false && ""startBuilding: Unknown buildType !?"");"	на месте
+src/gameobjects/players/cPlayer.cpp	2187	return getSoldierType();	2187	return getSoldierType();	на месте
+src/gameobjects/players/cPlayer.cpp	2227	"// addNotification(""You've lost a Harvester."", eNotificationType::PRIORITY);"	2227	"// addNotification(""You've lost a Harvester."", eNotificationType::PRIORITY);"	на месте
+src/gameobjects/players/cPlayer.cpp	2231	".message = ""You've lost a Harvester"","	2231	".message = ""You've lost a Harvester"","	на месте
+src/gameobjects/players/cPlayer.cpp	2243	"//addNotification(""You have one Harvester left."", eNotificationType::NEUTRAL);"	2243	"//addNotification(""You have one Harvester left."", eNotificationType::NEUTRAL);"	на месте
+src/gameobjects/players/cPlayer.cpp	2247	".message = ""You have one Harvester left"","	2247	".message = ""You have one Harvester left"","	на месте
+src/gameobjects/players/cPlayer.cpp	2265	"// addNotification(""No harvesters and refineries left!"", eNotificationType::BAD);"	2265	"// addNotification(""No harvesters and refineries left!"", eNotificationType::BAD);"	на месте
+src/gameobjects/players/cPlayer.cpp	2269	".message = ""No harvesters and refineries left!"","	2269	".message = ""No harvesters and refineries left!"","	на месте
+src/gameobjects/players/cPlayer.cpp	2295	"//addNotification(""No more Harvester left, reinforcing..."", BAD);"	2295	"//addNotification(""No more Harvester left, reinforcing..."", BAD);"	на месте
+src/gameobjects/players/cPlayer.cpp	2299	".message = ""No more Harvester left, reinforcing..."","	2299	".message = ""No more Harvester left, reinforcing..."","	на месте
+src/gameobjects/players/cPlayer.h	522	int getSoldierType();	522	int getSoldierType();	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	16	"#include ""cAbstractStructure.h"""	16	"#include ""cAbstractStructure.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	18	"#include ""utils/Log.h"""	18	"#include ""utils/Log.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	19	"#include ""game/cGameSettings.h"""	19	"#include ""game/cGameSettings.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	20	"#include ""game/cEventEmitter.h"""	20	"#include ""game/cEventEmitter.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	21	"#include ""game/cScreenShake.h"""	21	"#include ""game/cScreenShake.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	22	"#include ""include/sGameServices.h"""	22	"#include ""include/sGameServices.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	23	"#include ""context/GameContext.hpp"""	23	"#include ""context/GameContext.hpp"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	24	"#include ""context/cGameObjectContext.h"""	24	"#include ""context/cGameObjectContext.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	25	"#include ""context/cInfoContext.h"""	25	"#include ""context/cInfoContext.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	26	"#include ""gameobjects/map/cMapCamera.h"""	26	"#include ""gameobjects/map/cMapCamera.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	27	"#include ""data/gfxdata.h"""	27	"#include ""data/gfxdata.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	28	"#include ""drawers/SDLDrawer.hpp"""	28	"#include ""drawers/SDLDrawer.hpp"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	29	"#include ""gameobjects/particles/cParticle.h"""	29	"#include ""gameobjects/particles/cParticle.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	30	"#include ""gameobjects/particles/cParticles.h"""	30	"#include ""gameobjects/particles/cParticles.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	31	"#include ""gameobjects/structures/cStructures.h"""	31	"#include ""gameobjects/structures/cStructures.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	32	"#include ""gameobjects/units/cUnits.h"""	32	"#include ""gameobjects/units/cUnits.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	33	"#include ""gameobjects/map/cMapEditor.h"""	33	"#include ""gameobjects/map/cMapEditor.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	34	"#include ""gameobjects/map/MapGeometry.hpp"""	34	"#include ""gameobjects/map/MapGeometry.hpp"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	35	"#include ""gameobjects/players/cPlayer.h"""	35	"#include ""gameobjects/players/cPlayer.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	36	"#include ""gameobjects/players/cPlayers.h"""	36	"#include ""gameobjects/players/cPlayers.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	37	"#include ""utils/cSoundPlayer.h"""	37	"#include ""utils/cSoundPlayer.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	38	"#include ""include/Texture.hpp"""	38	"#include ""include/Texture.hpp"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	39	"#include ""utils/RNG.hpp"""	39	"#include ""utils/RNG.hpp"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	43	"#include ""data/gfxaudio.h"""	43	"#include ""data/gfxaudio.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	44	"#include ""gameobjects/cFlag.h"""	44	"#include ""gameobjects/cFlag.h"""	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	46	"// ""default"" Constructor"	46	"// ""default"" Constructor"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	94	"Logger::debug(COMP_STRUCTURES, ""cAbstractStructure"", ""(cAbstractStructure)(ID {}) Constructor"", this->id);"	94	"Logger::debug(COMP_STRUCTURES, ""cAbstractStructure"", ""(cAbstractStructure)(ID {}) Constructor"", this->id);"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	100	"Logger::debug(COMP_STRUCTURES, ""cAbstractStructure"", ""(cAbstractStructure)(ID {}) Destructor"", this->id);"	100	"Logger::debug(COMP_STRUCTURES, ""cAbstractStructure"", ""(cAbstractStructure)(ID {}) Destructor"", this->id);"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	208	"Logger::debug(COMP_STRUCTURES, ""cAbstractStructure::die"","	208	"Logger::debug(COMP_STRUCTURES, ""cAbstractStructure::die"","	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	209	"""Unit [{}] inside structure [{}] already marked for removal, skipping init."", iUnitIDWithinStructure, id);"	209	"""Unit [{}] inside structure [{}] already marked for removal, skipping init."", iUnitIDWithinStructure, id);"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	488	"Logger::warn(COMP_STRUCTURES, ""cAbstractStructure::decay"", ""got negative parameter, wrapped"");"	488	"Logger::warn(COMP_STRUCTURES, ""cAbstractStructure::decay"", ""got negative parameter, wrapped"");"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	522	"Logger::warn(COMP_STRUCTURES, ""cAbstractStructure::damage"", ""got negative parameter, wrapped"");"	522	"Logger::warn(COMP_STRUCTURES, ""cAbstractStructure::damage"", ""got negative parameter, wrapped"");"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	527	"Logger::info(COMP_STRUCTURES, ""cAbstractStructure::damage"", ""Structure [{}] received [{}] damage from originId [{}], HP is now [{}]"", id, damage, originId, iHitPoints);"	527	"Logger::info(COMP_STRUCTURES, ""cAbstractStructure::damage"", ""Structure [{}] received [{}] damage from originId [{}], HP is now [{}]"", id, damage, originId, iHitPoints);"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	571	"Logger::warn(COMP_STRUCTURES, ""cAbstractStructure::setHitpoints"", ""setHitpoints({}) while max is {}; capped at max."", hp, maxHp);"	571	"Logger::warn(COMP_STRUCTURES, ""cAbstractStructure::setHitpoints"", ""setHitpoints({}) while max is {}; capped at max."", hp, maxHp);"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	764	"""cAbstractStructure::setUnitIdWithin - Cannot set iUnitIDWithinStructure, because it has been set already!"");"	764	"""cAbstractStructure::setUnitIdWithin - Cannot set iUnitIDWithinStructure, because it has been set already!"");"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	775	"""cAbstractStructure::setUnitIdHeadingTowards - Cannot set iUnitIDHeadingForStructure, because it has been set already!"");"	775	"""cAbstractStructure::setUnitIdHeadingTowards - Cannot set iUnitIDHeadingForStructure, because it has been set already!"");"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	786	"""cAbstractStructure::setUnitIdHeadingTowards - Cannot set iUnitIDEnteringStructure, because it has been set already!"");"	786	"""cAbstractStructure::setUnitIdHeadingTowards - Cannot set iUnitIDEnteringStructure, because it has been set already!"");"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	818	"Logger::warn(COMP_STRUCTURES, ""cAbstractStructure"", ""Could not find space for this unit"");"	818	"Logger::warn(COMP_STRUCTURES, ""cAbstractStructure"", ""Could not find space for this unit"");"	на месте
+src/gameobjects/structures/cAbstractStructure.cpp	1013	"return std::format(""{} at {} percent health"", info.name, health);"	1013	"return std::format(""{} at {} percent health"", info.name, health);"	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	22	"#include ""cOrderProcesser.h"""	22	"#include ""cOrderProcesser.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	23	"#include ""utils/Log.h"""	23	"#include ""utils/Log.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	24	"#include ""utils/RNG.hpp"""	24	"#include ""utils/RNG.hpp"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	25	"#include ""managers/cDrawManager.h"""	25	"#include ""managers/cDrawManager.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	26	"#include ""gameobjects/players/cPlayer.h"""	26	"#include ""gameobjects/players/cPlayer.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	27	"#include ""utils/d2tm_math.h"""	27	"#include ""utils/d2tm_math.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	28	"#include ""gameobjects/structures/cStructures.h"""	28	"#include ""gameobjects/structures/cStructures.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	29	"#include ""gameobjects/units/cUnits.h"""	29	"#include ""gameobjects/units/cUnits.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	30	"#include ""gameobjects/map/cMap.h"""	30	"#include ""gameobjects/map/cMap.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	32	"#include ""context/cInfoContext.h"""	32	"#include ""context/cInfoContext.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	33	"#include ""context/cGameObjectContext.h"""	33	"#include ""context/cGameObjectContext.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	34	"#include ""context/GameContext.hpp"""	34	"#include ""context/GameContext.hpp"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	35	"#include ""include/sGameServices.h"""	35	"#include ""include/sGameServices.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	36	"#include ""context/AudioContext.hpp"""	36	"#include ""context/AudioContext.hpp"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	37	"#include ""utils/cStructureUtils.h"""	37	"#include ""utils/cStructureUtils.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	38	"#include ""data/gfxaudio.h"""	38	"#include ""data/gfxaudio.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	39	"#include ""sidebar/cBuildingList.h"""	39	"#include ""sidebar/cBuildingList.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	40	"#include ""sidebar/cSideBar.h"""	40	"#include ""sidebar/cSideBar.h"""	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	160	"m_drawManager->setMessage(""Frigate is arriving..."");"	160	"m_drawManager->setMessage(""Frigate is arriving..."");"	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	164	"std::string msg = std::format(""T-{} before Frigate arrival."", m_secondsUntilArrival);"	164	"std::string msg = std::format(""T-{} before Frigate arrival."", m_secondsUntilArrival);"	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	165	m_drawManager->setMessage(msg);	165	m_drawManager->setMessage(msg);	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	172	"m_drawManager->setMessage(""Frigate is arriving..."");"	172	"m_drawManager->setMessage(""Frigate is arriving..."");"	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	286	"Logger::warn(COMP_STRUCTURES, ""cOrderProcesser::sendFrigate"", ""unable to find start cell to spawn frigate"");"	286	"Logger::warn(COMP_STRUCTURES, ""cOrderProcesser::sendFrigate"", ""unable to find start cell to spawn frigate"");"	на месте
+src/gameobjects/structures/cOrderProcesser.cpp	293	"Logger::warn(COMP_STRUCTURES, ""cOrderProcesser::sendFrigate"", ""unable to spawn frigate, will retry"");"	293	"Logger::warn(COMP_STRUCTURES, ""cOrderProcesser::sendFrigate"", ""unable to spawn frigate, will retry"");"	на месте
+src/gameobjects/structures/cWindTrap.cpp	16	"#include ""cWindTrap.h"""	16	"#include ""cWindTrap.h"""	на месте
+src/gameobjects/structures/cWindTrap.cpp	18	"#include ""utils/Log.h"""	18	"#include ""utils/Log.h"""	на месте
+src/gameobjects/structures/cWindTrap.cpp	19	"#include ""definitions.h"""	19	"#include ""definitions.h"""	на месте
+src/gameobjects/structures/cWindTrap.cpp	20	"#include ""gameobjects/players/cPlayer.h"""	20	"#include ""gameobjects/players/cPlayer.h"""	на месте
+src/gameobjects/structures/cWindTrap.cpp	21	"#include ""context/cInfoContext.h"""	21	"#include ""context/cInfoContext.h"""	на месте
+src/gameobjects/structures/cWindTrap.cpp	27	"Logger::debug(COMP_STRUCTURES, ""cWindTrap"", ""(cWindTrap)(ID {}) Constructor"", this->id);"	27	"Logger::debug(COMP_STRUCTURES, ""cWindTrap"", ""(cWindTrap)(ID {}) Constructor"", this->id);"	на месте
+src/gameobjects/structures/cWindTrap.cpp	39	"Logger::debug(COMP_STRUCTURES, ""cWindTrap"", ""(cWindTrap)(ID {}) Destructor"", this->id);"	39	"Logger::debug(COMP_STRUCTURES, ""cWindTrap"", ""(cWindTrap)(ID {}) Destructor"", this->id);"	на месте
+src/gameobjects/structures/cWindTrap.cpp	73	"return std::format(""{} and producing at {} percent capacity"", cAbstractStructure::getDefaultStatusMessageBar(), powerProduction);"	73	"return std::format(""{} and producing at {} percent capacity"", cAbstractStructure::getDefaultStatusMessageBar(), powerProduction);"	на месте
+src/gameobjects/units/cUnit.cpp	16	"#include ""cUnit.h"""	16	"#include ""cUnit.h"""	на месте
+src/gameobjects/units/cUnit.cpp	17	"// #include ""cUnits.h"""	17	"// #include ""cUnits.h"""	на месте
+src/gameobjects/units/cUnit.cpp	20	"#include ""utils/Log.h"""	20	"#include ""utils/Log.h"""	на месте
+src/gameobjects/units/cUnit.cpp	21	"#include ""data/gfxdata.h"""	21	"#include ""data/gfxdata.h"""	на месте
+src/gameobjects/units/cUnit.cpp	22	"#include ""gameobjects/particles/cParticle.h"""	22	"#include ""gameobjects/particles/cParticle.h"""	на месте
+src/gameobjects/units/cUnit.cpp	23	"#include ""gameobjects/particles/cParticles.h"""	23	"#include ""gameobjects/particles/cParticles.h"""	на месте
+src/gameobjects/units/cUnit.cpp	24	"#include ""gameobjects/projectiles/bullet.h"""	24	"#include ""gameobjects/projectiles/bullet.h"""	на месте
+src/gameobjects/units/cUnit.cpp	25	"#include ""gameobjects/structures/cStarPort.h"""	25	"#include ""gameobjects/structures/cStarPort.h"""	на месте
+src/gameobjects/units/cUnit.cpp	26	"#include ""gameobjects/structures/cStructures.h"""	26	"#include ""gameobjects/structures/cStructures.h"""	на месте
+src/gameobjects/units/cUnit.cpp	27	"#include ""gameobjects/projectiles/cBullets.h"""	27	"#include ""gameobjects/projectiles/cBullets.h"""	на месте
+src/gameobjects/units/cUnit.cpp	28	"#include ""gameobjects/map/cMapCamera.h"""	28	"#include ""gameobjects/map/cMapCamera.h"""	на месте
+src/gameobjects/units/cUnit.cpp	29	"#include ""gameobjects/map/cMapEditor.h"""	29	"#include ""gameobjects/map/cMapEditor.h"""	на месте
+src/gameobjects/units/cUnit.cpp	30	"#include ""gameobjects/map/MapGeometry.hpp"""	30	"#include ""gameobjects/map/MapGeometry.hpp"""	на месте
+src/gameobjects/units/cUnit.cpp	31	"#include ""gameobjects/players/cPlayer.h"""	31	"#include ""gameobjects/players/cPlayer.h"""	на месте
+src/gameobjects/units/cUnit.cpp	32	"#include ""gameobjects/players/cPlayers.h"""	32	"#include ""gameobjects/players/cPlayers.h"""	на месте
+src/gameobjects/units/cUnit.cpp	33	"#include ""utils/cSoundPlayer.h"""	33	"#include ""utils/cSoundPlayer.h"""	на месте
+src/gameobjects/units/cUnit.cpp	34	"#include ""utils/RNG.hpp"""	34	"#include ""utils/RNG.hpp"""	на месте
+src/gameobjects/units/cUnit.cpp	36	"#include ""gameobjects/units/cPathFinder.h"""	36	"#include ""gameobjects/units/cPathFinder.h"""	на месте
+src/gameobjects/units/cUnit.cpp	37	"#include ""utils/d2tm_math.h"""	37	"#include ""utils/d2tm_math.h"""	на месте
+src/gameobjects/units/cUnit.cpp	38	"#include ""context/cInfoContext.h"""	38	"#include ""context/cInfoContext.h"""	на месте
+src/gameobjects/units/cUnit.cpp	39	"#include ""context/cGameObjectContext.h"""	39	"#include ""context/cGameObjectContext.h"""	на месте
+src/gameobjects/units/cUnit.cpp	40	"#include ""context/GameContext.hpp"""	40	"#include ""context/GameContext.hpp"""	на месте
+src/gameobjects/units/cUnit.cpp	41	"#include ""context/AudioContext.hpp"""	41	"#include ""context/AudioContext.hpp"""	на месте
+src/gameobjects/units/cUnit.cpp	42	"#include ""include/sGameServices.h"""	42	"#include ""include/sGameServices.h"""	на месте
+src/gameobjects/units/cUnit.cpp	43	"#include ""game/cScreenShake.h"""	43	"#include ""game/cScreenShake.h"""	на месте
+src/gameobjects/units/cUnit.cpp	44	"#include ""game/cEventEmitter.h"""	44	"#include ""game/cEventEmitter.h"""	на месте
+src/gameobjects/units/cUnit.cpp	45	"#include ""gameobjects/map/cMap.h"""	45	"#include ""gameobjects/map/cMap.h"""	на месте
+src/gameobjects/units/cUnit.cpp	48	"#include ""data/gfxaudio.h"""	48	"#include ""data/gfxaudio.h"""	на месте
+src/gameobjects/units/cUnit.cpp	49	"#include ""game/cGameSettings.h"""	49	"#include ""game/cGameSettings.h"""	на месте
+src/gameobjects/units/cUnit.cpp	50	"#include ""gameobjects/players/cPlayerDifficultySettings.h"""	50	"#include ""gameobjects/players/cPlayerDifficultySettings.h"""	на месте
+src/gameobjects/units/cUnit.cpp	60	"Logger::debug(eLogComponent::COMP_UNITS, ""Initialization"", ""Initializing unit {}"", i);"	60	"Logger::debug(eLogComponent::COMP_UNITS, ""Initialization"", ""Initializing unit {}"", i);"	на месте
+src/gameobjects/units/cUnit.cpp	121	// Carry-All specific	121	// Carry-All specific	на месте
+src/gameobjects/units/cUnit.cpp	197	"// hence we don't want to fiddle with that (for now), but instead we set a ""removeMe"" flag."	197	"// hence we don't want to fiddle with that (for now), but instead we set a ""removeMe"" flag."	на месте
+src/gameobjects/units/cUnit.cpp	268	"Logger::fatal(COMP_UNITS, ""die()"", ""iPlayer became < 0 while it was >= 0 just a moment ago!"");"	268	"Logger::fatal(COMP_UNITS, ""die()"", ""iPlayer became < 0 while it was >= 0 just a moment ago!"");"	на месте
+src/gameobjects/units/cUnit.cpp	508	"* Any unit this structure was ""interacting with"" (ie, wanted to enter), make sure"	508	"* Any unit this structure was ""interacting with"" (ie, wanted to enter), make sure"	на месте
+src/gameobjects/units/cUnit.cpp	519	// in case I am a Carry-All and Carry-ing a unit	519	// in case I am a Carry-All and Carry-ing a unit	на месте
+src/gameobjects/units/cUnit.cpp	664	"log(std::format(""attackUnit() : targetUnit is [{}]. Chase target? [{}]"", targetUnit, chaseWhenOutOfRange));"	664	"log(std::format(""attackUnit() : targetUnit is [{}]. Chase target? [{}]"", targetUnit, chaseWhenOutOfRange));"	на месте
+src/gameobjects/units/cUnit.cpp	666	"log(std::format(""attackUnit() : targetUnit is [{}] Cannot attack self."", targetUnit));"	666	"log(std::format(""attackUnit() : targetUnit is [{}] Cannot attack self."", targetUnit));"	на месте
+src/gameobjects/units/cUnit.cpp	672	"log(std::format(""attackUnit() : targetUnit is [{}] Invalid target."", targetUnit));"	672	"log(std::format(""attackUnit() : targetUnit is [{}] Invalid target."", targetUnit));"	на месте
+src/gameobjects/units/cUnit.cpp	676	"log(std::format(""attackUnit() : targetUnit is [{}] Cannot attack allied unit."", targetUnit));"	676	"log(std::format(""attackUnit() : targetUnit is [{}] Cannot attack allied unit."", targetUnit));"	на месте
+src/gameobjects/units/cUnit.cpp	685	"log(std::format(""attackStructure() : target is [{}]"", targetStructure));"	685	"log(std::format(""attackStructure() : target is [{}]"", targetStructure));"	на месте
+src/gameobjects/units/cUnit.cpp	688	"log(""attackStructure() : unit cannot damage structures, ignoring order."");"	688	"log(""attackStructure() : unit cannot damage structures, ignoring order."");"	на месте
+src/gameobjects/units/cUnit.cpp	694	"log(std::format(""attackStructure() : target is [{}] Invalid target."", targetStructure));"	694	"log(std::format(""attackStructure() : target is [{}] Invalid target."", targetStructure));"	на месте
+src/gameobjects/units/cUnit.cpp	698	"log(std::format(""attackStructure() : target is [{}] Cannot attack allied structure."", targetStructure));"	698	"log(std::format(""attackStructure() : target is [{}] Cannot attack allied structure."", targetStructure));"	на месте
+src/gameobjects/units/cUnit.cpp	707	"log(std::format(""attackCell() : cell target is [{}]"", cell));"	707	"log(std::format(""attackCell() : cell target is [{}]"", cell));"	на месте
+src/gameobjects/units/cUnit.cpp	717	"log(std::format(""Attacking UNIT ID [{}], STRUCTURE ID [{}], ATTACKCLL [{}], GoalCell [{}]"","	717	"log(std::format(""Attacking UNIT ID [{}], STRUCTURE ID [{}], ATTACKCLL [{}], GoalCell [{}]"","	на месте
+src/gameobjects/units/cUnit.cpp	721	"log(""What is this? Ordered to attack but no target?"");"	721	"log(""What is this? Ordered to attack but no target?"");"	на месте
+src/gameobjects/units/cUnit.cpp	726	"log(""Cannot attack self"");"	726	"log(""Cannot attack self"");"	на месте
+src/gameobjects/units/cUnit.cpp	733	"log(std::format(""attack() : unit target [{}] invalid"", unitId));"	733	"log(std::format(""attack() : unit target [{}] invalid"", unitId));"	на месте
+src/gameobjects/units/cUnit.cpp	737	"log(std::format(""attack() : unit target [{}] is allied"", unitId));"	737	"log(std::format(""attack() : unit target [{}] is allied"", unitId));"	на месте
+src/gameobjects/units/cUnit.cpp	745	"log(std::format(""attack() : structure target [{}] invalid"", structureId));"	745	"log(std::format(""attack() : structure target [{}] invalid"", structureId));"	на месте
+src/gameobjects/units/cUnit.cpp	749	"log(std::format(""attack() : structure target [{}] is allied"", structureId));"	749	"log(std::format(""attack() : structure target [{}] is allied"", structureId));"	на месте
+src/gameobjects/units/cUnit.cpp	754	"// TODO: We have somewhere else something with ""intents"", so this whole if statement should be removed / replaced?"	754	"// TODO: We have somewhere else something with ""intents"", so this whole if statement should be removed / replaced?"	на месте
+src/gameobjects/units/cUnit.cpp	774	"log(std::format(""attackAt() : cell target is [{}]"", cell));"	774	"log(std::format(""attackAt() : cell target is [{}]"", cell));"	на месте
+src/gameobjects/units/cUnit.cpp	777	"log(""attackAt() : Invalid cell, aborting"");"	777	"log(""attackAt() : Invalid cell, aborting"");"	на месте
+src/gameobjects/units/cUnit.cpp	784	"log(std::format(""attackAt() : cell target is [{}], structureId [{}], unitId [{}], wormId [{}]"", cell, structureId, unitId, wormId));"	784	"log(std::format(""attackAt() : cell target is [{}], structureId [{}], unitId [{}], wormId [{}]"", cell, structureId, unitId, wormId));"	на месте
+src/gameobjects/units/cUnit.cpp	822	"log(""(move_to - IGNORED) : already entering structure"");"	822	"log(""(move_to - IGNORED) : already entering structure"");"	на месте
+src/gameobjects/units/cUnit.cpp	827	"log(std::format(""(move_to - START) : to cell [{}], iStructureIdToEnter[{}], iUnitIdToPickup[{}] (to attack, if > -1), intent[{}]"","	827	"log(std::format(""(move_to - START) : to cell [{}], iStructureIdToEnter[{}], iUnitIdToPickup[{}] (to attack, if > -1), intent[{}]"","	на месте
+src/gameobjects/units/cUnit.cpp	864	"log(""(move_to - FINISHED)"");"	864	"log(""(move_to - FINISHED)"");"	на месте
+src/gameobjects/units/cUnit.cpp	1126	selectTargetForOrnithopter(pPlayer);	1126	selectTargetForOrnithopter(pPlayer);	на месте
+src/gameobjects/units/cUnit.cpp	1133	void cUnit::selectTargetForOrnithopter(cPlayer *pPlayer)	1133	void cUnit::selectTargetForOrnithopter(cPlayer *pPlayer)	на месте
+src/gameobjects/units/cUnit.cpp	1274	"Logger::debug(COMP_UNITS, ""cUnit::thinkFast_moveAirUnit"", ""Air unit [{}] got invalid cell [{}], and thus got killed."", iID, position.iCell);"	1274	"Logger::debug(COMP_UNITS, ""cUnit::thinkFast_moveAirUnit"", ""Air unit [{}] got invalid cell [{}], and thus got killed."", iID, position.iCell);"	на месте
+src/gameobjects/units/cUnit.cpp	1347	"log(""Pick up unit"");"	1347	"log(""Pick up unit"");"	на месте
+src/gameobjects/units/cUnit.cpp	1724	"d2tm_assert(iUnitID > -1 && ""cUnit::getUnitToPickupOrDrop() called for invalid iUnitIDWithinStructure!"");"	1724	"d2tm_assert(iUnitID > -1 && ""cUnit::getUnitToPickupOrDrop() called for invalid iUnitIDWithinStructure!"");"	на месте
+src/gameobjects/units/cUnit.cpp	1905	"log(""No valid movement.iPath[pathindex], nextCell is < 0"");"	1905	"log(""No valid movement.iPath[pathindex], nextCell is < 0"");"	на месте
+src/gameobjects/units/cUnit.cpp	2068	"m_objects->getPlayer(iPlayer)->log(std::format(""[UNIT[{}]: type = {}(={}), iCell = {}, movement.iGoalCell = {}] '{}'"","	2068	"m_objects->getPlayer(iPlayer)->log(std::format(""[UNIT[{}]: type = {}(={}), iCell = {}, movement.iGoalCell = {}] '{}'"","	на месте
+src/gameobjects/units/cUnit.cpp	2119	"log(""Destroyed structure target"");"	2119	"log(""Destroyed structure target"");"	на месте
+src/gameobjects/units/cUnit.cpp	2264	"Logger::debug(COMP_UNITS, ""cUnit::think_attack_sandworm"", ""eaten unit. Units eaten {}, TIMER_guard {}"", unitsEaten, guardTimer.get());"	2264	"Logger::debug(COMP_UNITS, ""cUnit::think_attack_sandworm"", ""eaten unit. Units eaten {}, TIMER_guard {}"", unitsEaten, guardTimer.get());"	на месте
+src/gameobjects/units/cUnit.cpp	2396	"d2tm_assert(false && ""Expected to have a valid unit calling thinkFast_move()"");"	2396	"d2tm_assert(false && ""Expected to have a valid unit calling thinkFast_move()"");"	на месте
+src/gameobjects/units/cUnit.cpp	2440	"log(std::format(""Create path ... result = {}"", iResult));"	2440	"log(std::format(""Create path ... result = {}"", iResult));"	на месте
+src/gameobjects/units/cUnit.cpp	2461	"log(""Could not find alternative goal"");"	2461	"log(""Could not find alternative goal"");"	на месте
+src/gameobjects/units/cUnit.cpp	2470	"log(""Found alternative goal"");"	2470	"log(""Found alternative goal"");"	на месте
+src/gameobjects/units/cUnit.cpp	2475	"log(""Want to enter structure, yet ID's do not match"");"	2475	"log(""Want to enter structure, yet ID's do not match"");"	на месте
+src/gameobjects/units/cUnit.cpp	2476	"log(""Resetting structure id and such to redo what i was doing?"");"	2476	"log(""Resetting structure id and such to redo what i was doing?"");"	на месте
+src/gameobjects/units/cUnit.cpp	2484	"log(""Path failed toward target structure; will retry."");"	2484	"log(""Path failed toward target structure; will retry."");"	на месте
+src/gameobjects/units/cUnit.cpp	2487	"log(""Something else blocks path, but goal itself is not occupied."");"	2487	"log(""Something else blocks path, but goal itself is not occupied."");"	на месте
+src/gameobjects/units/cUnit.cpp	2504	"log(""Units surround me, what to do?"");"	2504	"log(""Units surround me, what to do?"");"	на месте
+src/gameobjects/units/cUnit.cpp	2507	"log(""I just failed, ugh"");"	2507	"log(""I just failed, ugh"");"	на месте
+src/gameobjects/units/cUnit.cpp	2539	"//log(""SUCCES"");"	2539	"//log(""SUCCES"");"	на месте
+src/gameobjects/units/cUnit.cpp	2668	"// TODO: this ""thinkFast_move"" thing should be abstracted somewhere, so that ""occupied"" becomes an abstraction"	2668	"// TODO: this ""thinkFast_move"" thing should be abstracted somewhere, so that ""occupied"" becomes an abstraction"	на месте
+src/gameobjects/units/cUnit.cpp	2957	"log(""A carry all is after me..."");"	2957	"log(""A carry all is after me..."");"	на месте
+src/gameobjects/units/cUnit.cpp	3155	"log(std::format(""I'm being assigned to mission {} (prev mission was {})"", aMission, mission));"	3155	"log(std::format(""I'm being assigned to mission {} (prev mission was {})"", aMission, mission));"	на месте
+src/gameobjects/units/cUnit.cpp	3188	"return ""INTENT_CAPTURE"";"	3188	"return ""INTENT_CAPTURE"";"	на месте
+src/gameobjects/units/cUnit.cpp	3190	"return ""INTENT_MOVE"";"	3190	"return ""INTENT_MOVE"";"	на месте
+src/gameobjects/units/cUnit.cpp	3192	"return ""INTENT_ATTACK"";"	3192	"return ""INTENT_ATTACK"";"	на месте
+src/gameobjects/units/cUnit.cpp	3194	"return ""INTENT_NONE"";"	3194	"return ""INTENT_NONE"";"	на месте
+src/gameobjects/units/cUnit.cpp	3196	"return ""INTENT_REPAIR"";"	3196	"return ""INTENT_REPAIR"";"	на месте
+src/gameobjects/units/cUnit.cpp	3198	"return ""INTENT_UNLOAD_SPICE"";"	3198	"return ""INTENT_UNLOAD_SPICE"";"	на месте
+src/gameobjects/units/cUnit.cpp	3240	"// we let the other code that with ""entering a structure"" deal with any possibly already occupied"	3240	"// we let the other code that with ""entering a structure"" deal with any possibly already occupied"	на месте
+src/gameobjects/units/cUnit.cpp	3251	"// so to speak, ie ""AVAILABLE, NOT AVAILABLE, ALREADY_HEADING"", etc. That way we only need to scan once, and don't"	3251	"// so to speak, ie ""AVAILABLE, NOT AVAILABLE, ALREADY_HEADING"", etc. That way we only need to scan once, and don't"	на месте
+src/gameobjects/units/cUnit.cpp	3300	"log(std::format(""cUnit::findBestStructureCandidateAndHeadTowardsItOrWait - Going to look for a [{}]"","	3300	"log(std::format(""cUnit::findBestStructureCandidateAndHeadTowardsItOrWait - Going to look for a [{}]"","	на месте
+src/gameobjects/units/cUnit.cpp	3313	"d2tm_assert(pStructure && ""Expected to have a valid pStructure pointer here"");"	3313	"d2tm_assert(pStructure && ""Expected to have a valid pStructure pointer here"");"	на месте
+src/gameobjects/units/cUnit.cpp	3347	"// todo: ""getCellWhereToBringUnit""? where to enter structure so to speak?"	3347	"// todo: ""getCellWhereToBringUnit""? where to enter structure so to speak?"	на месте
+src/gameobjects/units/cUnit.cpp	3374	"// we let the other code that with ""entering a structure"" deal with any possibly already occupied"	3374	"// we let the other code that with ""entering a structure"" deal with any possibly already occupied"	на месте
+src/gameobjects/units/cUnit.cpp	3775	"log(std::format(""setGoalCell() from {} to {}"", movement.iGoalCell, goalCell));"	3775	"log(std::format(""setGoalCell() from {} to {}"", movement.iGoalCell, goalCell));"	на месте
+src/gameobjects/units/cUnit.cpp	3781	"log(std::format(""setAction() from {} to {}"", eActionTypeString(m_action), eActionTypeString(action)));"	3781	"log(std::format(""setAction() from {} to {}"", eActionTypeString(m_action), eActionTypeString(action)));"	на месте
+src/gameobjects/units/cUnit.cpp	3823	"return std::format(""{} at {} percent health and {} percent harvested"", info.name, getHealthNormalized()*100, harvested);"	3823	"return std::format(""{} at {} percent health and {} percent harvested"", info.name, getHealthNormalized()*100, harvested);"	на месте
+src/gameobjects/units/cUnit.cpp	3833	"return std::format(""{} at {} percent health"", info.name, getHealthNormalized()*100);"	3833	"return std::format(""{} at {} percent health"", info.name, getHealthNormalized()*100);"	на месте
+src/gameobjects/units/cUnit.cpp	4026	"Logger::warn(COMP_UNITS, ""cUnit::freeAroundMove"", ""Invalid unit"");"	4026	"Logger::warn(COMP_UNITS, ""cUnit::freeAroundMove"", ""Invalid unit"");"	на месте
+src/gameobjects/units/cUnit.h	180	// Carry-All specific	180	// Carry-All specific	на месте
+src/gameobjects/units/cUnitInfos.h	77	int structureTypeItLeavesFrom; // the type of structure this unit will 'leave' from when it is built. (ie Quad from Light Factory, etc)	77	int structureTypeItLeavesFrom; // the type of structure this unit will 'leave' from when it is built. (ie Quad from Light Factory, etc)	на месте
+src/gamestates/cChooseHouseState.cpp	126	m_textDrawer->drawText(	126	m_textDrawer->drawText(	на месте
+src/gamestates/cChooseHouseState.cpp	143	m_textDrawer->drawText(	143	m_textDrawer->drawText(	на месте
+src/gamestates/cChooseHouseState.cpp	228	m_textDrawer->drawText(	228	m_textDrawer->drawText(	на месте
+src/gamestates/cCreditsState.cpp	89	".withLabel(""Back"")"	89	".withLabel(""Back"")"	на месте
+src/gamestates/cCreditsState.cpp	457	m_textDrawer->drawTextCentered(line.txt.c_str(), textCrawlY, line.color);	457	m_textDrawer->drawTextCentered(line.txt.c_str(), textCrawlY, line.color);	на месте
+src/gamestates/cCreditsState.cpp	460	m_textDrawer->drawTextCentered(line.name.c_str(), textCrawlY, line.color);	460	m_textDrawer->drawTextCentered(line.name.c_str(), textCrawlY, line.color);	на месте
+src/gamestates/cCreditsState.cpp	465	m_textDrawer->drawText(halfScreen+spaceBetween, textCrawlY, line.txt.c_str());	465	m_textDrawer->drawText(halfScreen+spaceBetween, textCrawlY, line.txt.c_str());	на месте
+src/gamestates/cCreditsState.cpp	467	m_textDrawer->drawText(halfScreen - (widthOfName + spaceBetween), textCrawlY, line.name.c_str());	467	m_textDrawer->drawText(halfScreen - (widthOfName + spaceBetween), textCrawlY, line.name.c_str());	на месте
+src/gamestates/cEditorState.cpp	242	".withLabel(""size"")"	242	".withLabel(""size"")"	на месте
+src/gamestates/cGamePlaying.cpp	283	m_textDrawer->drawTextCentered(label, battlefield->getX(), battlefield->getWidth(), cSideBar::TopBarHeight + 10, fadingYellow);	283	m_textDrawer->drawTextCentered(label, battlefield->getX(), battlefield->getWidth(), cSideBar::TopBarHeight + 10, fadingYellow);	на месте
+src/gamestates/cGamePlaying.cpp	306	drawTextFps();	306	drawTextFps();	на месте
+src/gamestates/cGamePlaying.cpp	312	drawTextTime();	312	drawTextTime();	на месте
+src/gamestates/cGamePlaying.cpp	475	"m_textDrawer->drawText(0, cSideBar::TopBarHeight + 1, std::format(""MouseCell {}"", mouseCell));"	475	"m_textDrawer->drawText(0, cSideBar::TopBarHeight + 1, std::format(""MouseCell {}"", mouseCell));"	на месте
+src/gamestates/cGamePlaying.cpp	479	void cGamePlaying::drawTextFps() const	479	void cGamePlaying::drawTextFps() const	на месте
+src/gamestates/cGamePlaying.cpp	481	"m_textDrawer->drawText(180,8, Color::Black, std::format(""FPS/REST: {}/{}"", m_timeManager->getFps(), m_timeManager->getWaitingTime()), false);"	481	"m_textDrawer->drawText(180,8, Color::Black, std::format(""FPS/REST: {}/{}"", m_timeManager->getFps(), m_timeManager->getWaitingTime()), false);"	на месте
+src/gamestates/cGamePlaying.cpp	484	void cGamePlaying::drawTextTime() const	484	void cGamePlaying::drawTextTime() const	на месте
+src/gamestates/cGamePlaying.cpp	487	m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1, Color::White, time);	487	m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1, Color::White, time);	на месте
+src/gamestates/cGamePlaying.cpp	489	m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1 + 15, Color::White, time);	489	m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1 + 15, Color::White, time);	на месте
+src/gamestates/cGamePlaying.cpp	616	// at the structure cap the Construction Yard can't be created; keep the MCV (and any other selected ones)	616	// at the structure cap the Construction Yard can't be created; keep the MCV (and any other selected ones)	на месте
+src/gamestates/cGamePlaying.cpp	670	// m_controlledPlayer->addNotification(	670	// m_controlledPlayer->addNotification(	на месте
+src/gamestates/cGamePlaying.h	74	void drawTextFps() const;	74	void drawTextFps() const;	на месте
+src/gamestates/cGamePlaying.h	75	void drawTextTime() const;	75	void drawTextTime() const;	на месте
+src/gamestates/cMainMenuState.cpp	76	"m_textDrawer->drawText(x, y, Color{48, 48, 48,255}, ""DEBUG"");"	76	"m_textDrawer->drawText(x, y, Color{48, 48, 48,255}, ""DEBUG"");"	на месте
+src/gamestates/cMainMenuState.cpp	143	.withLabel(label)	143	.withLabel(label)	на месте
+src/gamestates/cMainMenuState.cpp	183	".withLabel(""CREDITS"")"	183	".withLabel(""CREDITS"")"	на месте
+src/gamestates/cMainMenuState.cpp	251	m_textDrawer->drawTextBottomRight(	251	m_textDrawer->drawTextBottomRight(	на месте
+src/gamestates/cMainMenuState.cpp	255	m_textDrawer->drawText(	255	m_textDrawer->drawText(	на месте
+src/gamestates/cMainMenuState.cpp	261	"m_textDrawer->drawText(0, 0, std::format(""{}, {}"", m_mouse->getX(), m_mouse->getY()).c_str());"	261	"m_textDrawer->drawText(0, 0, std::format(""{}, {}"", m_mouse->getX(), m_mouse->getY()).c_str());"	на месте
+src/gamestates/cNewmapEditorState.cpp	94	".withLabel(""Name your map:"")"	94	".withLabel(""Name your map:"")"	на месте
+src/gamestates/cNewmapEditorState.cpp	113	".withLabel(""Name of author:"")"	113	".withLabel(""Name of author:"")"	на месте
+src/gamestates/cNewmapEditorState.cpp	132	".withLabel(""Description:"")"	132	".withLabel(""Description:"")"	на месте
+src/gamestates/cNewmapEditorState.cpp	151	".withLabel(""Width size:"")"	151	".withLabel(""Width size:"")"	на месте
+src/gamestates/cNewmapEditorState.cpp	176	".withLabel(""Height size:"")"	176	".withLabel(""Height size:"")"	на месте
+src/gamestates/cNewmapEditorState.cpp	201	".withLabel(""Random:"")"	201	".withLabel(""Random:"")"	на месте
+src/gamestates/cNewmapEditorState.cpp	229	".withLabel(""Dune 2 seed: "")"	229	".withLabel(""Dune 2 seed: "")"	на месте
+src/gamestates/cNewmapEditorState.cpp	251	".withLabel(""Return to menu"")"	251	".withLabel(""Return to menu"")"	на месте
+src/gamestates/cNewmapEditorState.cpp	268	".withLabel(""Create map"")"	268	".withLabel(""Create map"")"	на месте
+src/gamestates/cOptionsState.cpp	123	".withLabel(""Main menu"")"	134	".withLabel(""Main menu"")"	сдвиг
+src/gamestates/cOptionsState.cpp	137	".withLabel(""Quit game"")"	148	".withLabel(""Quit game"")"	сдвиг
+src/gamestates/cOptionsState.cpp	152	".withLabel(""Back"")"	163	".withLabel(""Back"")"	сдвиг
+src/gamestates/cOptionsState.cpp	167	".withLabel(""Save game"")"	178	".withLabel(""Save game"")"	сдвиг
+src/gamestates/cOptionsState.cpp	179	".withLabel(""Load game"")"	190	".withLabel(""Load game"")"	сдвиг
+src/gamestates/cOptionsState.cpp	193	".withLabel(""Mission select"")"	204	".withLabel(""Mission select"")"	сдвиг
+src/gamestates/cOptionsState.cpp	208	".withLabel(""Cheat mode enabled"")"	219	".withLabel(""Cheat mode enabled"")"	сдвиг
+src/gamestates/cOptionsState.cpp	221	".withLabel(""Music"")"	232	".withLabel(""Music"")"	сдвиг
+src/gamestates/cOptionsState.cpp	247	".withLabel(""Volume"")"	258	".withLabel(""Volume"")"	сдвиг
+src/gamestates/cOptionsState.cpp	272	".withLabel(""Sound"")"	283	".withLabel(""Sound"")"	сдвиг
+src/gamestates/cOptionsState.cpp	298	".withLabel(""Volume"")"	309	".withLabel(""Volume"")"	сдвиг
+src/gamestates/cOptionsState.cpp	323	".withLabel(""Game speed"")"	334	".withLabel(""Game speed"")"	сдвиг
+src/gamestates/cOptionsState.cpp	352	".withLabel(""FOW"")"	363	".withLabel(""FOW"")"	сдвиг
+src/gamestates/cOptionsState.cpp	380	".withLabel(""Game scale"")"	391	".withLabel(""Game scale"")"	сдвиг
+src/gamestates/cOptionsState.cpp	392	".withLabel(""<"")"	403	".withLabel(""◄"")"	изменена
+src/gamestates/cOptionsState.cpp	404	".withLabel("""")"	415	".withLabel("""")"	сдвиг
+src/gamestates/cOptionsState.cpp	416	".withLabel("">"")"	427	".withLabel(""►"")"	изменена
+src/gamestates/cOptionsState.cpp	428	".withLabel(""Object size"")"	439	".withLabel(""Object size"")"	сдвиг
+src/gamestates/cOptionsState.cpp	440	".withLabel(""<"")"	451	".withLabel(""◄"")"	изменена
+src/gamestates/cOptionsState.cpp	452	".withLabel("""")"	463	".withLabel("""")"	сдвиг
+src/gamestates/cOptionsState.cpp	464	".withLabel("">"")"	475	".withLabel(""►"")"	изменена
+src/gamestates/cOptionsState.cpp	475	".withLabel(""Low power icon"")"	486	".withLabel(""Low power icon"")"	сдвиг
+src/gamestates/cOptionsState.cpp	503	".withLabel(""Apply"")"	540	".withLabel(""Apply"")"	сдвиг
+src/gamestates/cOptionsState.cpp	516	".withLabel("""")"	553	".withLabel("""")"	сдвиг
+src/gamestates/cOptionsState.cpp	529	".withLabel(""More settings"")"	566	".withLabel(""More settings"")"	сдвиг
+src/gamestates/cOptionsState.cpp	545	"m_statusLabel->setText("""");"	582	"m_statusLabel->setText("""");"	сдвиг
+src/gamestates/cOptionsState.cpp	553	"m_statusLabel->setText("""");"	590	"m_statusLabel->setText("""");"	сдвиг
+src/gamestates/cOptionsState.cpp	563	m_renderScaleValueLabel->setText(scaleChoiceText(renderScale, calculateAutomaticRenderScalePercent(outputW, outputH)));	607	m_renderScaleValueLabel->setText(scaleChoiceText(renderScale, calculateAutomaticRenderScalePercent(outputW, outputH)));	сдвиг
+src/gamestates/cOptionsState.cpp	564	m_worldScaleValueLabel->setText(scaleChoiceText(worldScale, calculateAutomaticWorldScalePercent(outputH)));	608	m_worldScaleValueLabel->setText(scaleChoiceText(worldScale, calculateAutomaticWorldScalePercent(outputH)));	сдвиг
+src/gamestates/cOptionsState.cpp	579	"m_statusLabel->setText(""Saved. Restart the game."");"	634	"m_statusLabel->setText(""Saved. Restart the game."");"	сдвиг
+src/gamestates/cOptionsState.cpp	582	"m_statusLabel->setText(""Could not save preferences.ini"");"	638	"m_statusLabel->setText(""Could not save preferences.ini"");"	сдвиг
+src/gamestates/cScoringState.cpp	64	"m_textDrawer->drawTextCentered(""MISSION REPORT"", y, Color::Yellow);"	64	"m_textDrawer->drawTextCentered(""MISSION REPORT"", y, Color::Yellow);"	на месте
+src/gamestates/cScoringState.cpp	69	"m_textDrawer->drawTextCentered(std::format(""Mission time: {:02}:{:02}"", minutes, seconds), y, Color::White);"	69	"m_textDrawer->drawTextCentered(std::format(""Mission time: {:02}:{:02}"", minutes, seconds), y, Color::White);"	на месте
+src/gamestates/cScoringState.cpp	87	m_textDrawer->drawTextCentered(playerName, y, nameColor);	87	m_textDrawer->drawTextCentered(playerName, y, nameColor);	на месте
+src/gamestates/cScoringState.cpp	89	m_smallTextDrawer->drawTextCentered(	89	m_smallTextDrawer->drawTextCentered(	на месте
+src/gamestates/cScoringState.cpp	94	m_smallTextDrawer->drawTextCentered(	94	m_smallTextDrawer->drawTextCentered(	на месте
+src/gamestates/cScoringState.cpp	99	m_smallTextDrawer->drawTextCentered(	99	m_smallTextDrawer->drawTextCentered(	на месте
+src/gamestates/cScoringState.cpp	103	m_smallTextDrawer->drawTextCentered(	103	m_smallTextDrawer->drawTextCentered(	на месте
+src/gamestates/cScoringState.cpp	109	"m_textDrawer->drawTextCentered(""Click to continue"", m_settings->getScreenH() - lineHeight - 8, Color::White);"	109	"m_textDrawer->drawTextCentered(""Click to continue"", m_settings->getScreenH() - lineHeight - 8, Color::White);"	на месте
+src/gamestates/cSelectMissionState.cpp	113	".withLabel(""CONTINUE"")"	113	".withLabel(""CONTINUE"")"	на месте
+src/gamestates/cSelectMissionState.cpp	136	".withLabel(std::format(""MISSION {}"", i))"	136	".withLabel(std::format(""MISSION {}"", i))"	на месте
+src/gamestates/cSelectMissionState.cpp	157	".withLabel(""Back"")"	157	".withLabel(""Back"")"	на месте
+src/gamestates/cSelectMissionState.cpp	215	m_textDrawer->drawTextCentered(	215	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSelectYourNextConquestState.cpp	167	".withLabel(""Mission select"")"	167	".withLabel(""Mission select"")"	на месте
+src/gamestates/cSelectYourNextConquestState.cpp	227	"m_drawManager->setMessage(""3 Houses have come to Dune."");"	227	"m_drawManager->setMessage(""3 Houses have come to Dune."");"	на месте
+src/gamestates/cSelectYourNextConquestState.cpp	232	"m_drawManager->setMessage(""To take control of the land."");"	232	"m_drawManager->setMessage(""To take control of the land."");"	на месте
+src/gamestates/cSelectYourNextConquestState.cpp	238	"m_drawManager->setMessage(""That has become divided."");"	238	"m_drawManager->setMessage(""That has become divided."");"	на месте
+src/gamestates/cSelectYourNextConquestState.cpp	289	m_drawManager->setMessage(regionTextString);	289	m_drawManager->setMessage(regionTextString);	на месте
+src/gamestates/cSelectYourNextConquestState.cpp	452	m_textDrawer->drawTextCenteredInBox(	452	m_textDrawer->drawTextCenteredInBox(	на месте
+src/gamestates/cSelectYourNextConquestState.cpp	672	m_textDrawer->drawTextScaledCenteredInBox(	672	m_textDrawer->drawTextScaledCenteredInBox(	на месте
+src/gamestates/cSelectYourNextConquestState.cpp	709	"m_drawManager->setMessage(""Select your next region."", true);"	709	"m_drawManager->setMessage(""Select your next region."", true);"	на месте
+src/gamestates/cSelectYourNextConquestState.cpp	731	"m_drawManager->setMessage(""Select your next region."", true);"	731	"m_drawManager->setMessage(""Select your next region."", true);"	на месте
+src/gamestates/cSelectYourNextConquestState.cpp	901	"m_drawManager->setMessage(std::format(""region {}"",c-1));"	901	"m_drawManager->setMessage(std::format(""region {}"",c-1));"	на месте
+src/gamestates/cSetupSkirmishState.cpp	261	".withLabel(""Next"")"	261	".withLabel(""Next"")"	на месте
+src/gamestates/cSetupSkirmishState.cpp	271	".withLabel(""Previous"")"	271	".withLabel(""Previous"")"	на месте
+src/gamestates/cSetupSkirmishState.cpp	324	".withLabel(""Back"")"	324	".withLabel(""Back"")"	на месте
+src/gamestates/cSetupSkirmishState.cpp	344	".withLabel(""Start"")"	344	".withLabel(""Start"")"	на месте
+src/gamestates/cSetupSkirmishState.cpp	361	".withLabel(""Surprise me"")"	361	".withLabel(""Surprise me"")"	на месте
+src/gamestates/cSetupSkirmishState.cpp	377	".withLabel(""New Map"")"	377	".withLabel(""New Map"")"	на месте
+src/gamestates/cSetupSkirmishState.cpp	391	".withLabel(""Modify"")"	391	".withLabel(""Modify"")"	на месте
+src/gamestates/cSetupSkirmishState.cpp	447	m_textDrawer->drawTextCentered(	447	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSetupSkirmishState.cpp	456	m_textDrawer->drawTextCentered(	456	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSetupSkirmishState.cpp	464	m_textDrawer->drawTextCentered(	464	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSetupSkirmishState.cpp	489	m_textDrawer->drawTextCentered(	489	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSetupSkirmishState.cpp	569	m_textDrawer->drawTextCentered(	569	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSetupSkirmishState.cpp	583	m_textDrawer->drawTextCentered(	583	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSetupSkirmishState.cpp	595	m_textDrawer->drawTextCentered(	595	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSetupSkirmishState.cpp	624	m_textDrawer->drawTextCentered(	624	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSetupSkirmishState.cpp	636	m_textDrawer->drawTextCentered(	636	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSetupSkirmishState.cpp	646	m_textDrawer->drawTextCentered(	646	m_textDrawer->drawTextCentered(	на месте
+src/gamestates/cSetupSkirmishState.cpp	668	"m_textDrawer->drawText(startPoints.getX(), startPoints.getY(), textColor,std::format(""Startpoints: {}"",iStartingPoints));"	668	"m_textDrawer->drawText(startPoints.getX(), startPoints.getY(), textColor,std::format(""Startpoints: {}"",iStartingPoints));"	на месте
+src/gamestates/cSetupSkirmishState.cpp	707	m_textDrawer->drawText(previewMapRect.getX() + 4, infoY, Color::Yellow, mapName);	707	m_textDrawer->drawText(previewMapRect.getX() + 4, infoY, Color::Yellow, mapName);	на месте
+src/gamestates/cSetupSkirmishState.cpp	708	m_textDrawer->drawText(	708	m_textDrawer->drawText(	на месте
+src/gamestates/cSetupSkirmishState.cpp	714	m_textDrawer->drawText(	714	m_textDrawer->drawText(	на месте
+src/gamestates/cSetupSkirmishState.cpp	720	m_textDrawer->drawText(	720	m_textDrawer->drawText(	на месте
+src/gamestates/cSetupSkirmishState.cpp	733	m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), textColor,	733	m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), textColor,	на месте
+src/gamestates/cSetupSkirmishState.cpp	737	"m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), colorDisabled, ""Auto-detonate : -"");"	737	"m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), colorDisabled, ""Auto-detonate : -"");"	на месте
+src/gamestates/cSetupSkirmishState.cpp	744	m_textDrawer->drawText(bloomsRect.getX(), bloomsRect.getY(), textColor,	744	m_textDrawer->drawText(bloomsRect.getX(), bloomsRect.getY(), textColor,	на месте
+src/gamestates/cSetupSkirmishState.cpp	751	m_textDrawer->drawText(wormsRect.getX(), wormsRect.getY(), textColor,	751	m_textDrawer->drawText(wormsRect.getX(), wormsRect.getY(), textColor,	на месте
+src/gamestates/cSetupSkirmishState.cpp	758	m_textDrawer->drawText(techLevelRect.getX(), techLevelRect.getY(), textColor,	758	m_textDrawer->drawText(techLevelRect.getX(), techLevelRect.getY(), textColor,	на месте
+src/gamestates/cSetupSkirmishState.cpp	1536	m_textDrawer->drawText(iDrawX + 4, iDrawY + 4, textColor, *nameToRender);	1536	m_textDrawer->drawText(iDrawX + 4, iDrawY + 4, textColor, *nameToRender);	на месте
+src/gamestates/cWinLoseState.cpp	96	m_textDrawer->drawTextScaledCenteredInBox(	96	m_textDrawer->drawTextScaledCenteredInBox(	на месте
+src/gui/GuiButton.cpp	62	drawText();	62	drawText();	на месте
+src/gui/GuiButton.cpp	65	drawText();	65	drawText();	на месте
+src/gui/GuiButton.cpp	79	drawText();	79	drawText();	на месте
+src/gui/GuiButton.cpp	92	drawText();	92	drawText();	на месте
+src/gui/GuiButton.cpp	148	drawText();	148	drawText();	на месте
+src/gui/GuiButton.cpp	159	void GuiButton::setText(const std::string& text)	159	void GuiButton::setText(const std::string& text)	на месте
+src/gui/GuiButton.cpp	189	void GuiButton::drawText() const	189	void GuiButton::drawText() const	на месте
+src/gui/GuiButton.cpp	217	m_textDrawer->drawTextScaledOpticallyCenteredInBox(	217	m_textDrawer->drawTextScaledOpticallyCenteredInBox(	на месте
+src/gui/GuiButton.cpp	227	m_textDrawer->drawText(m_rect.getX() + 1, m_rect.getY() + 1, textColor, m_buttonText.c_str());	227	m_textDrawer->drawText(m_rect.getX() + 1, m_rect.getY() + 1, textColor, m_buttonText.c_str());	на месте
+src/gui/GuiButton.cpp	230	m_textDrawer->drawText(m_rect.getX(), m_rect.getY(), textColor, m_buttonText.c_str());	230	m_textDrawer->drawText(m_rect.getX(), m_rect.getY(), textColor, m_buttonText.c_str());	на месте
+src/gui/GuiButton.h	44	void setText(const std::string& text) override;	44	void setText(const std::string& text) override;	на месте
+src/gui/GuiButton.h	84	void drawText() const;	84	void drawText() const;	на месте
+src/gui/GuiButton.h	112	GuiButtonBuilder& withLabel(const std::string& label) {	112	GuiButtonBuilder& withLabel(const std::string& label) {	на месте
+src/gui/GuiConsole.cpp	109	"m_input->setText("""");"	109	"m_input->setText("""");"	на месте
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp	72	"m_notificationArea->addNotification(std::format(""Malformed command: {}"", text), eNotificationType::BAD);"	72	"m_notificationArea->addNotification(std::format(""Malformed command: {}"", text), eNotificationType::BAD);"	на месте
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp	79	"//     m_notificationArea->addNotification(std::format(""Unknown command: {}"", text), eNotificationType::BAD);"	79	"//     m_notificationArea->addNotification(std::format(""Unknown command: {}"", text), eNotificationType::BAD);"	на месте
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp	84	"m_notificationArea->addNotification(""Help mode."", eNotificationType::NEUTRAL);"	84	"m_notificationArea->addNotification(""Help mode."", eNotificationType::NEUTRAL);"	на месте
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp	88	"m_notificationArea->addNotification(std::format(""> {}"", normalizedText), eNotificationType::NEUTRAL);"	88	"m_notificationArea->addNotification(std::format(""> {}"", normalizedText), eNotificationType::NEUTRAL);"	на месте
+src/gui/GuiCycleButton.cpp	82	m_textDrawer->drawText(m_rect.getX() + 5, m_rect.getY() + 3, m_theme.textColor, label);	82	m_textDrawer->drawText(m_rect.getX() + 5, m_rect.getY() + 3, m_theme.textColor, label);	на месте
+src/gui/GuiCycleButton.h	42	void setText(const std::string& text) override { m_displayText = text; }	42	void setText(const std::string& text) override { m_displayText = text; }	на месте
+src/gui/GuiLabel.cpp	48	drawText();	48	drawText();	на месте
+src/gui/GuiLabel.cpp	51	drawText();	51	drawText();	на месте
+src/gui/GuiLabel.cpp	57	drawText();	57	drawText();	на месте
+src/gui/GuiLabel.cpp	61	drawText();	61	drawText();	на месте
+src/gui/GuiLabel.cpp	77	void GuiLabel::setText(const std::string& text)	77	void GuiLabel::setText(const std::string& text)	на месте
+src/gui/GuiLabel.cpp	97	void GuiLabel::drawText() const	97	void GuiLabel::drawText() const	на месте
+src/gui/GuiLabel.cpp	103	m_textDrawer->drawTextCenteredInBox(m_buttonText.c_str(), m_rect, textColor);	103	m_textDrawer->drawTextCenteredInBox(m_buttonText.c_str(), m_rect, textColor);	на месте
+src/gui/GuiLabel.cpp	106	m_textDrawer->drawText(m_rect.getX(), m_rect.getY(), textColor, m_buttonText.c_str());	106	m_textDrawer->drawText(m_rect.getX(), m_rect.getY(), textColor, m_buttonText.c_str());	на месте
+src/gui/GuiLabel.hpp	55	void setText(const std::string& text) override;	55	void setText(const std::string& text) override;	на месте
+src/gui/GuiLabel.hpp	77	void drawText() const;	77	void drawText() const;	на месте
+src/gui/GuiLabel.hpp	99	GuiLabelBuilder& withLabel(const std::string& label) {	99	GuiLabelBuilder& withLabel(const std::string& label) {	на месте
+src/gui/GuiObject.h	49	virtual void setText(const std::string& text) = 0;	49	virtual void setText(const std::string& text) = 0;	на месте
+src/gui/GuiTextInput.cpp	65	m_writer->drawText(m_rect.getX() + kHorizontalPadding, m_rect.getY() + 4, m_theme.textColor, getFittedDisplayText());	65	m_writer->drawText(m_rect.getX() + kHorizontalPadding, m_rect.getY() + 4, m_theme.textColor, getFittedDisplayText());	на месте
+src/gui/GuiTextInput.cpp	85	void GuiTextInput::setText(const std::string& text)	85	void GuiTextInput::setText(const std::string& text)	на месте
+src/gui/GuiTextInput.h	36	void setText(const std::string& text) override;	36	void setText(const std::string& text) override;	на месте
+src/gui/GuiValueButton.cpp	123	m_textDrawer->drawTextCenteredInBox(m_label, topRect, textColor);	123	m_textDrawer->drawTextCenteredInBox(m_label, topRect, textColor);	на месте
+src/gui/GuiValueButton.cpp	125	m_textDrawer->drawTextCenteredInBox(std::to_string(m_value), bottomRect, textColor);	125	m_textDrawer->drawTextCenteredInBox(std::to_string(m_value), bottomRect, textColor);	на месте
+src/gui/GuiValueButton.cpp	129	m_textDrawer->drawTextCenteredInBox(std::to_string(m_value), m_rect, textColor);	129	m_textDrawer->drawTextCenteredInBox(std::to_string(m_value), m_rect, textColor);	на месте
+src/gui/GuiValueButton.h	37	void setText(const std::string& label) override { m_label = label; }	37	void setText(const std::string& label) override { m_label = label; }	на месте
+src/gui/GuiValueButton.h	120	GuiValueButtonBuilder& withLabel(const std::string& label) {	120	GuiValueButtonBuilder& withLabel(const std::string& label) {	на месте
+src/gui/GuiWindow.cpp	50	m_textDrawer->drawTextCentered(title.c_str(), m_rect.getX(), m_rect.getWidth(), m_rect.getY() + 2, Color::Yellow);	50	m_textDrawer->drawTextCentered(title.c_str(), m_rect.getX(), m_rect.getWidth(), m_rect.getY() + 2, Color::Yellow);	на месте
+src/gui/cTextWriter.cpp	41	m_textDrawer->drawText(drawX, drawY, msg);	41	m_textDrawer->drawText(drawX, drawY, msg);	на месте
+src/gui/cTextWriter.cpp	47	m_textDrawer->drawText(drawX, drawY, color, msg);	47	m_textDrawer->drawText(drawX, drawY, color, msg);	на месте
+src/include/definitions.h	143	inline constexpr int UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK = 5; // upgrade HeavyFctry to get Siege Tank	143	inline constexpr int UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK = 5; // upgrade HeavyFctry to get Siege Tank	на месте
+src/include/definitions.h	146	// Hi-Tech:	146	// Hi-Tech:	на месте
+src/include/definitions.h	149	inline constexpr int UPGRADE_TYPE_WOR_TROOPERS = 8; // upgrade WOR to get Troopers	149	inline constexpr int UPGRADE_TYPE_WOR_TROOPERS = 8; // upgrade WOR to get Troopers	на месте
+src/include/definitions.h	154	inline constexpr int UPGRADE_TYPE_HEAVYFCTRY_SAR_SONICTANK = 10; // upgrade for Sardaukar to get Sonic Tank	154	inline constexpr int UPGRADE_TYPE_HEAVYFCTRY_SAR_SONICTANK = 10; // upgrade for Sardaukar to get Sonic Tank	на месте
+src/managers/cDrawManager.cpp	211	"m_textDrawer->drawText(0, startY, std::format(""Units {}/{}"", unitsUsed, m_objects->getUnitsSize()));"	211	"m_textDrawer->drawText(0, startY, std::format(""Units {}/{}"", unitsUsed, m_objects->getUnitsSize()));"	на месте
+src/managers/cDrawManager.cpp	212	"m_textDrawer->drawText(0, startY + (1*height), std::format(""Structures {}/{}"", structuresUsed, MAX_STRUCTURES));"	212	"m_textDrawer->drawText(0, startY + (1*height), std::format(""Structures {}/{}"", structuresUsed, MAX_STRUCTURES));"	на месте
+src/managers/cDrawManager.cpp	213	"m_textDrawer->drawText(0, startY + (2*height), std::format(""Bullets {}/{}"", bulletsUsed, m_objects->getBullets().size()));"	213	"m_textDrawer->drawText(0, startY + (2*height), std::format(""Bullets {}/{}"", bulletsUsed, m_objects->getBullets().size()));"	на месте
+src/managers/cDrawManager.cpp	214	"m_textDrawer->drawText(0, startY + (3*height), std::format(""Particles {}/{}"", particlesUsed, cParticles::size()));"	214	"m_textDrawer->drawText(0, startY + (3*height), std::format(""Particles {}/{}"", particlesUsed, cParticles::size()));"	на месте
+src/managers/cDrawManager.cpp	215	"m_textDrawer->drawText(0, startY + (4*height), std::format(""Visible particles BOTTOM: {}/ TOP: {}"", m_particleDrawer->getParticlesLowerLayerAmount(), m_particleDrawer->getParticlesTopLayerAmount()));"	215	"m_textDrawer->drawText(0, startY + (4*height), std::format(""Visible particles BOTTOM: {}/ TOP: {}"", m_particleDrawer->getParticlesLowerLayerAmount(), m_particleDrawer->getParticlesTopLayerAmount()));"	на месте
+src/managers/cDrawManager.cpp	340	"m_textDrawer->drawTextCenteredInBox(""OPTIONS"", optionsRect, text);"	340	"m_textDrawer->drawTextCenteredInBox(""OPTIONS"", optionsRect, text);"	на месте
+src/managers/cDrawManager.cpp	450	void cDrawManager::setMessage(std::string msg, bool keepMessage)	450	void cDrawManager::setMessage(std::string msg, bool keepMessage)	на месте
+src/managers/cDrawManager.cpp	452	m_messageDrawer->setMessage(msg, keepMessage);	452	m_messageDrawer->setMessage(msg, keepMessage);	на месте
+src/managers/cDrawManager.h	104	void setMessage(std::string msg, bool keepMessage = false);	104	void setMessage(std::string msg, bool keepMessage = false);	на месте
+src/sidebar/cBuildingListUpdater.cpp	365	// House of IX is available if Starport is built	365	// House of IX is available if Starport is built	на месте
+src/sidebar/cSideBar.cpp	92	m_drawManager->setMessage(item->getInfo());	92	m_drawManager->setMessage(item->getInfo());	на месте
+src/sidebar/cSideBar.cpp	108	"m_drawManager->setMessage(""Unable to create more."");"	108	"m_drawManager->setMessage(""Unable to create more."");"	на месте
+src/sidebar/cSideBar.cpp	113	"m_drawManager->setMessage(""Unable to create more."");"	113	"m_drawManager->setMessage(""Unable to create more."");"	на месте
+src/utils/cIniUtils.cpp	105	"{""Hi-Tech"", HIGHTECH},"	105	"{""Hi-Tech"", HIGHTECH},"	на месте
+src/utils/cIniUtils.cpp	108	"{""Outpost"", RADAR},"	108	"{""Outpost"", RADAR},"	на месте
+src/utils/cIniUtils.cpp	125	"{""Troopers"", TROOPERS},"	125	"{""Troopers"", TROOPERS},"	на месте
+src/utils/cIniUtils.cpp	126	"{""Sonic Tank"", SONICTANK},"	126	"{""Sonic Tank"", SONICTANK},"	на месте
+src/utils/cIniUtils.cpp	130	"{""Raider Trike"", RAIDER},"	130	"{""Raider Trike"", RAIDER},"	на месте
