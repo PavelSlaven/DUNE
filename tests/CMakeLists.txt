@@ -27,6 +27,10 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_d2tm_math.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_SfxTrackAllocator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicJukeBox.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicPlaylist.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicTransitionPolicy.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MusicControlsLayout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_MusicKeyBindings.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Packs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Hd4Loading.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_HdRender.cpp
@@ -66,6 +70,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/utils/Log.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/SfxTrackAllocator.cpp
     ${CMAKE_SOURCE_DIR}/src/context/MusicJukeBox.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/MusicPlaylist.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cDataPack.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/cPack.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Graphics.cpp
