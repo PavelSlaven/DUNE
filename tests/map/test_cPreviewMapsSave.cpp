@@ -2,6 +2,7 @@
 #include "data/gfxdata.h"
 #include "drawers/SDLDrawer.hpp"
 #include "gameobjects/map/cPreviewMaps.h"
+#include "utils/Localization.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -110,6 +111,72 @@ TEST_CASE("cPreviewMaps - saveSkirmishMap writes the inner map cells", "[map][sa
     REQUIRE(content.find("Width = 2\nHeight = 2\n") != std::string::npos);
     // the border row/column is not saved, only the 2x2 inner cells
     REQUIRE(content.find("[MAP]\n^-\nRh\n") != std::string::npos);
+}
+
+TEST_CASE("cPreviewMaps - loadSkirmish reads the Russian title", "[map][save]")
+{
+    SaveFixture fixture;
+    cPreviewMaps &previewMaps = fixture.previewMaps;
+
+    REQUIRE(previewMaps.saveSkirmishMap(makeMap("Title Test")));
+    std::string content = readFile("skirmish/Title_Test.ini");
+    const std::string titleLine = "Title = Title Test\n";
+    const auto titlePosition = content.find(titleLine);
+    REQUIRE(titlePosition != std::string::npos);
+    content.insert(titlePosition + titleLine.size(), "TitleRu=\"Тестовое название\"\n");
+    {
+        std::ofstream output("skirmish/Title_Test.ini", std::ios::binary | std::ios::trunc);
+        REQUIRE(output.good());
+        output << content;
+    }
+
+    previewMaps.loadSkirmish("skirmish/Title_Test.ini");
+    bool found = false;
+    for (int i = 0; i <= previewMaps.getMapCount(); ++i) {
+        const s_PreviewMap *map = previewMaps.getMap(i);
+        if (map != nullptr && map->name == "Title Test" && map->nameRu == "Тестовое название") {
+            found = true;
+        }
+    }
+    CHECK(found);
+}
+
+TEST_CASE("cPreviewMaps - displayName follows the language and falls back to English", "[map][save]")
+{
+    s_PreviewMap map = makeMap("Ancient Delta");
+    map.nameRu = "Старая дельта";
+
+    localization::setLanguage("en");
+    CHECK(displayName(map) == "Ancient Delta");
+    localization::setLanguage("ru");
+    CHECK(displayName(map) == "Старая дельта");
+    map.nameRu.clear();
+    CHECK(displayName(map) == "Ancient Delta");
+    localization::setLanguage("ru");
+}
+
+TEST_CASE("skirmish maps have one Russian title each", "[map][save]")
+{
+    const fs::path directory = fs::path(D2TM_SOURCE_DIR) / "resources/bin/skirmish";
+    for (const auto &entry : fs::directory_iterator(directory)) {
+        if (!entry.is_regular_file() || entry.path().extension() != ".ini") {
+            continue;
+        }
+        std::ifstream input(entry.path(), std::ios::binary);
+        REQUIRE(input.good());
+        int titleRuCount = 0;
+        bool containsRussianText = false;
+        std::string line;
+        while (std::getline(input, line)) {
+            if (line.starts_with("TitleRu=")) {
+                ++titleRuCount;
+                containsRussianText = line.find(static_cast<char>(0xD0)) != std::string::npos ||
+                                      line.find(static_cast<char>(0xD1)) != std::string::npos;
+            }
+        }
+        CHECK(titleRuCount == 1);
+        CHECK(containsRussianText);
+    }
 }
 
 TEST_CASE("cPreviewMaps - saveSkirmishMap fails on incomplete data", "[map][save]")
