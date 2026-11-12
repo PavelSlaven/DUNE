@@ -1,0 +1,7 @@
+ src/CMakeLists.txt                        |  5 +++++
+ src/game/cGame.h                          |  1 +
+ src/game/cGame_logic.cpp                  | 22 ++++++++++++++++++----
+ src/gameobjects/mentat/AbstractMentat.cpp |  5 +++++
+ src/gamestates/cCreditsState.cpp          |  5 +++++
+ src/gamestates/cCreditsState.h            |  1 +
+ 6 files changed, 35 insertions(+), 4 deletions(-)

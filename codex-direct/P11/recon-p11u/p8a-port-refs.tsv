@@ -1,0 +1,84 @@
+старая ссылка	текст строки в OLD	новая ссылка	текст строки в PORT	статус	полный путь
+.cpp@832c953:70	—	—	—	пути нет в OLD	—
+SDLDrawer.cpp@832c953:44	—	src/drawers/SDLDrawer.cpp@b9f6b02:44	"std::cerr << ""no alpha mod ""<< SDL_GetError() << std::endl;"	на месте	src/drawers/SDLDrawer.cpp
+cAbstractStructure.cpp@832c953:809	—	src/gameobjects/structures/cAbstractStructure.cpp@b9f6b02:809	void cAbstractStructure::unitLeavesStructure()	на месте	src/gameobjects/structures/cAbstractStructure.cpp
+cInfoContextCreator.cpp@832c953:1546	—	src/context/cInfoContextCreator.cpp@b9f6b02:1546	structureInfos[RADAR].bmp = m_gfxdata->getSurface(BUILD_RADAR);	на месте	src/context/cInfoContextCreator.cpp
+cMousePlaceState.cpp@832c953:101	—	src/controls/mousestates/cMousePlaceState.cpp@b9f6b02:101	if (mouseCell < 0) {	на месте	src/controls/mousestates/cMousePlaceState.cpp
+cPlayer.cpp@832c953:2012	—	src/gameobjects/players/cPlayer.cpp@b9f6b02:2012	"// another structure found on this location, ""blocked"""	на месте	src/gameobjects/players/cPlayer.cpp
+cRefinery.h@832c953:20	—	src/gameobjects/structures/cRefinery.h@b9f6b02:20	class cRefinery : public cAbstractStructure {	на месте	src/gameobjects/structures/cRefinery.h
+cUnit.cpp@832c953:2730	—	src/gameobjects/units/cUnit.cpp@b9f6b02:2730	pStructure->enterStructure(iID);	на месте	src/gameobjects/units/cUnit.cpp
+drawStatusOfStructureAtCell@832c953:70	—	—	—	пути нет в OLD	—
+mayPlaceIt@832c953:98	—	—	—	пути нет в OLD	—
+src/building/cItemBuilder.h@832c953:1	/**	src/building/cItemBuilder.h@b9f6b02:1	/**	на месте	—
+src/building/cItemBuilder.h@832c953:33	class cItemBuilder : cInputObserver {	src/building/cItemBuilder.h@b9f6b02:33	class cItemBuilder : cInputObserver {	на месте	—
+src/context/cInfoContextCreator.cpp@832c953:1546	structureInfos[RADAR].bmp = m_gfxdata->getSurface(BUILD_RADAR);	src/context/cInfoContextCreator.cpp@b9f6b02:1546	structureInfos[RADAR].bmp = m_gfxdata->getSurface(BUILD_RADAR);	на месте	—
+src/context/cInfoContextCreator.cpp@832c953:1547	structureInfos[RADAR].shadow = m_gfxdata->getTexture(BUILD_RADAR_SHADOW); // shadow	src/context/cInfoContextCreator.cpp@b9f6b02:1547	structureInfos[RADAR].shadow = m_gfxdata->getTexture(BUILD_RADAR_SHADOW); // shadow	на месте	—
+src/context/cInfoContextCreator.cpp@832c953:1553	structureInfos[RADAR].flags.push_back(s_FlagInfo{	src/context/cInfoContextCreator.cpp@b9f6b02:1553	structureInfos[RADAR].flags.push_back(s_FlagInfo{	на месте	—
+src/context/cInfoContextCreator.cpp@832c953:1558	structureInfos[RADAR].flags.push_back(s_FlagInfo{	src/context/cInfoContextCreator.cpp@b9f6b02:1558	structureInfos[RADAR].flags.push_back(s_FlagInfo{	на месте	—
+src/controls/mousestates/cMousePlaceState.cpp@832c953:101	if (mouseCell < 0) {	src/controls/mousestates/cMousePlaceState.cpp@b9f6b02:101	if (mouseCell < 0) {	на месте	—
+src/controls/mousestates/cMousePlaceState.cpp@832c953:108	bool bWithinBuildDistance = false;	src/controls/mousestates/cMousePlaceState.cpp@b9f6b02:108	bool bWithinBuildDistance = false;	на месте	—
+src/controls/mousestates/cMousePlaceState.cpp@832c953:135	int idOfStructureAtCell = m_context->getObjects()->getMap()->getCellIdStructuresLayer(iCll);	src/controls/mousestates/cMousePlaceState.cpp@b9f6b02:135	int idOfStructureAtCell = m_context->getObjects()->getMap()->getCellIdStructuresLayer(iCll);	на месте	—
+src/controls/mousestates/cMousePlaceState.cpp@832c953:164	if (!bWithinBuildDistance) {	src/controls/mousestates/cMousePlaceState.cpp@b9f6b02:164	if (!bWithinBuildDistance) {	на месте	—
+src/controls/mousestates/cMousePlaceState.cpp@832c953:168	for (int iX = 0; iX < cellWidth; iX++) {	src/controls/mousestates/cMousePlaceState.cpp@b9f6b02:168	for (int iX = 0; iX < cellWidth; iX++) {	на месте	—
+src/controls/mousestates/cMousePlaceState.cpp@832c953:179	// occupied by units or structures	src/controls/mousestates/cMousePlaceState.cpp@b9f6b02:179	// occupied by units or structures	на месте	—
+src/controls/mousestates/cMousePlaceState.cpp@832c953:188	// non slab 'structures' can be blocked by units	src/controls/mousestates/cMousePlaceState.cpp@b9f6b02:188	// non slab 'structures' can be blocked by units	на месте	—
+src/controls/mousestates/cMousePlaceState.cpp@832c953:72	void cMousePlaceState::onMouseLeftButtonClicked()	src/controls/mousestates/cMousePlaceState.cpp@b9f6b02:72	void cMousePlaceState::onMouseLeftButtonClicked()	на месте	—
+src/controls/mousestates/cMousePlaceState.cpp@832c953:98	bool cMousePlaceState::mayPlaceIt(cBuildingListItem *itemToPlace, int mouseCell)	src/controls/mousestates/cMousePlaceState.cpp@b9f6b02:98	bool cMousePlaceState::mayPlaceIt(cBuildingListItem *itemToPlace, int mouseCell)	на месте	—
+src/controls/mousestates/cMousePlaceState.h@832c953:1	/**	src/controls/mousestates/cMousePlaceState.h@b9f6b02:1	/**	на месте	—
+src/controls/mousestates/cMousePlaceState.h@832c953:54	bool mayPlaceIt(cBuildingListItem *itemToPlace, int mouseCell);	src/controls/mousestates/cMousePlaceState.h@b9f6b02:54	bool mayPlaceIt(cBuildingListItem *itemToPlace, int mouseCell);	на месте	—
+src/data/gfxdata.h@832c953:1	/**	src/data/gfxdata.h@b9f6b02:1	/**	на месте	—
+src/data/gfxdata.h@832c953:143	constexpr int TERRAIN_MOUNTAIN = 119; /* BMP  */	src/data/gfxdata.h@b9f6b02:143	constexpr int TERRAIN_MOUNTAIN = 119; /* BMP  */	на месте	—
+src/data/gfxdata.h@832c953:50	constexpr int BUILD_RADAR = 26; /* BMP  */	src/data/gfxdata.h@b9f6b02:50	constexpr int BUILD_RADAR = 26; /* BMP  */	на месте	—
+src/drawers/SDLDrawer.cpp@832c953:19	#include <iostream>	src/drawers/SDLDrawer.cpp@b9f6b02:19	#include <iostream>	на месте	—
+src/drawers/SDLDrawer.cpp@832c953:44	"std::cerr << ""no alpha mod ""<< SDL_GetError() << std::endl;"	src/drawers/SDLDrawer.cpp@b9f6b02:44	"std::cerr << ""no alpha mod ""<< SDL_GetError() << std::endl;"	на месте	—
+src/drawers/cPlaceItDrawer.cpp@832c953:139	for (int iX=0; iX < cellWidth; iX++) {	src/drawers/cPlaceItDrawer.cpp@b9f6b02:140	for (int iX=0; iX < cellWidth; iX++) {	сдвиг	—
+src/drawers/cPlaceItDrawer.cpp@832c953:160	// occupied by units or structures	src/drawers/cPlaceItDrawer.cpp@b9f6b02:164	// occupied by units or structures	сдвиг	—
+src/drawers/cPlaceItDrawer.cpp@832c953:70	void cPlaceItDrawer::drawStatusOfStructureAtCell(cBuildingListItem *itemToPlace, int mouseCell)	src/drawers/cPlaceItDrawer.cpp@b9f6b02:71	void cPlaceItDrawer::drawStatusOfStructureAtCell(cBuildingListItem *itemToPlace, int mouseCell)	сдвиг	—
+src/drawers/cPlaceItDrawer.cpp@832c953:99	// Determine if structure to be placed is within build distance	src/drawers/cPlaceItDrawer.cpp@b9f6b02:100	// Determine if structure to be placed is within build distance	сдвиг	—
+src/drawers/cPlaceItDrawer.h@832c953:1	/**	src/drawers/cPlaceItDrawer.h@b9f6b02:1	/**	на месте	—
+src/drawers/cPlaceItDrawer.h@832c953:32	explicit cPlaceItDrawer(GameContext *ctx, cPlayer *thePlayer, cStructureUtils *structureUtils);	src/drawers/cPlaceItDrawer.h@b9f6b02:32	explicit cPlaceItDrawer(GameContext *ctx, cPlayer *thePlayer, cStructureUtils *structureUtils);	на месте	—
+src/drawers/cPlaceItDrawer.h@832c953:42	void drawStructureIdAtMousePos(cBuildingListItem *itemToPlace, int mouseCell);	src/drawers/cPlaceItDrawer.h@b9f6b02:42	void drawStructureIdAtMousePos(cBuildingListItem *itemToPlace, int mouseCell);	на месте	—
+src/drawers/cPlaceItDrawer.h@832c953:44	void drawStatusOfStructureAtCell(cBuildingListItem *itemToPlace, int mouseCell);	src/drawers/cPlaceItDrawer.h@b9f6b02:44	void drawStatusOfStructureAtCell(cBuildingListItem *itemToPlace, int mouseCell);	на месте	—
+src/drawers/cStructureDrawer.cpp@832c953:283	void cStructureDrawer::drawStructureAnimationRefinery(cAbstractStructure *structure)	src/drawers/cStructureDrawer.cpp@b9f6b02:284	void cStructureDrawer::drawStructureAnimationRefinery(cAbstractStructure *structure)	сдвиг	—
+src/gameobjects/players/cPlayer.cpp@832c953:1523	eCantBuildReason cPlayer::canBuildStructure(int iStructureType)	src/gameobjects/players/cPlayer.cpp@b9f6b02:1523	eCantBuildReason cPlayer::canBuildStructure(int iStructureType)	на месте	—
+src/gameobjects/players/cPlayer.cpp@832c953:1573	cAbstractStructure *cPlayer::placeStructure(int destinationCell, int iStructureTypeId, int healthPercentage)	src/gameobjects/players/cPlayer.cpp@b9f6b02:1573	cAbstractStructure *cPlayer::placeStructure(int destinationCell, int iStructureTypeId, int healthPercentage)	на месте	—
+src/gameobjects/players/cPlayer.cpp@832c953:1598	cAbstractStructure *cPlayer::placeItem(int destinationCell, cBuildingListItem *itemToPlace)	src/gameobjects/players/cPlayer.cpp@b9f6b02:1598	cAbstractStructure *cPlayer::placeItem(int destinationCell, cBuildingListItem *itemToPlace)	на месте	—
+src/gameobjects/players/cPlayer.cpp@832c953:1950	s_PlaceResult cPlayer::canPlaceStructureAt(int iCell, int iStructureType)	src/gameobjects/players/cPlayer.cpp@b9f6b02:1950	s_PlaceResult cPlayer::canPlaceStructureAt(int iCell, int iStructureType)	на месте	—
+src/gameobjects/players/cPlayer.cpp@832c953:1986	s_PlaceResult cPlayer::canPlaceStructureAt(int iCell, int iStructureType, int iUnitIDToIgnore)	src/gameobjects/players/cPlayer.cpp@b9f6b02:1986	s_PlaceResult cPlayer::canPlaceStructureAt(int iCell, int iStructureType, int iUnitIDToIgnore)	на месте	—
+src/gameobjects/players/cPlayer.cpp@832c953:1990	if (!m_objects->getMapGeometry()->isValidCell(iCell)) {	src/gameobjects/players/cPlayer.cpp@b9f6b02:1990	if (!m_objects->getMapGeometry()->isValidCell(iCell)) {	на месте	—
+src/gameobjects/players/cPlayer.cpp@832c953:1995	// checks if this structure can be placed on this cell	src/gameobjects/players/cPlayer.cpp@b9f6b02:1995	// checks if this structure can be placed on this cell	на месте	—
+src/gameobjects/players/cPlayer.cpp@832c953:2012	"// another structure found on this location, ""blocked"""	src/gameobjects/players/cPlayer.cpp@b9f6b02:2012	"// another structure found on this location, ""blocked"""	на месте	—
+src/gameobjects/players/cPlayer.cpp@832c953:2018	int idOfUnitAtCell = m_objects->getMap()->getCellIdUnitLayer(cll);	src/gameobjects/players/cPlayer.cpp@b9f6b02:2018	int idOfUnitAtCell = m_objects->getMap()->getCellIdUnitLayer(cll);	на месте	—
+src/gameobjects/players/cPlayer.cpp@832c953:2035	result.success = (result.badTerrain == false && result.unitIds.empty() && result.structureIds.empty());	src/gameobjects/players/cPlayer.cpp@b9f6b02:2035	result.success = (result.badTerrain == false && result.unitIds.empty() && result.structureIds.empty());	на месте	—
+src/gameobjects/players/cPlayer.cpp@832c953:2205	s_PlaceResult cPlayer::canPlaceConcreteAt(int iCell)	src/gameobjects/players/cPlayer.cpp@b9f6b02:2205	s_PlaceResult cPlayer::canPlaceConcreteAt(int iCell)	на месте	—
+src/gameobjects/players/cPlayer.h@832c953:1	/**	src/gameobjects/players/cPlayer.h@b9f6b02:1	/**	на месте	—
+src/gameobjects/players/cPlayer.h@832c953:487	cAbstractStructure *placeItem(int destinationCell, cBuildingListItem *itemToPlace);	src/gameobjects/players/cPlayer.h@b9f6b02:487	cAbstractStructure *placeItem(int destinationCell, cBuildingListItem *itemToPlace);	на месте	—
+src/gameobjects/players/cPlayer.h@832c953:514	s_PlaceResult canPlaceStructureAt(int iCell, int iStructureType, int iUnitIDToIgnore);	src/gameobjects/players/cPlayer.h@b9f6b02:514	s_PlaceResult canPlaceStructureAt(int iCell, int iStructureType, int iUnitIDToIgnore);	на месте	—
+src/gameobjects/players/cPlayer.h@832c953:60	struct s_PlaceResult {	src/gameobjects/players/cPlayer.h@b9f6b02:60	struct s_PlaceResult {	на месте	—
+src/gameobjects/structures/cAbstractStructure.cpp@832c953:792	void cAbstractStructure::enterStructure(int unitId)	src/gameobjects/structures/cAbstractStructure.cpp@b9f6b02:792	void cAbstractStructure::enterStructure(int unitId)	на месте	—
+src/gameobjects/structures/cAbstractStructure.cpp@832c953:809	void cAbstractStructure::unitLeavesStructure()	src/gameobjects/structures/cAbstractStructure.cpp@b9f6b02:809	void cAbstractStructure::unitLeavesStructure()	на месте	—
+src/gameobjects/structures/cAbstractStructure.h@832c953:268	void setHeight(int height);	src/gameobjects/structures/cAbstractStructure.h@b9f6b02:268	void setHeight(int height);	на месте	—
+src/gameobjects/structures/cAbstractStructure.h@832c953:269	void setWidth(int width);	src/gameobjects/structures/cAbstractStructure.h@b9f6b02:269	void setWidth(int width);	на месте	—
+src/gameobjects/structures/cOutPost.cpp@832c953:30	void cOutPost::thinkFast()	src/gameobjects/structures/cOutPost.cpp@b9f6b02:30	void cOutPost::thinkFast()	на месте	—
+src/gameobjects/structures/cOutPost.cpp@832c953:39	if (TIMER_flag > 54) {	src/gameobjects/structures/cOutPost.cpp@b9f6b02:39	if (TIMER_flag > 54) {	на месте	—
+src/gameobjects/structures/cOutPost.h@832c953:20	class cOutPost : public cAbstractStructure {	src/gameobjects/structures/cOutPost.h@b9f6b02:20	class cOutPost : public cAbstractStructure {	на месте	—
+src/gameobjects/structures/cOutPost.h@832c953:24	void thinkFast() override;	src/gameobjects/structures/cOutPost.h@b9f6b02:24	void thinkFast() override;	на месте	—
+src/gameobjects/structures/cRefinery.cpp@832c953:49	void cRefinery::think_unit_occupation()	src/gameobjects/structures/cRefinery.cpp@b9f6b02:49	void cRefinery::think_unit_occupation()	на месте	—
+src/gameobjects/structures/cRefinery.cpp@832c953:93	unitLeavesStructure();	src/gameobjects/structures/cRefinery.cpp@b9f6b02:93	unitLeavesStructure();	на месте	—
+src/gameobjects/structures/cRefinery.h@832c953:1	/**	src/gameobjects/structures/cRefinery.h@b9f6b02:1	/**	на месте	—
+src/gameobjects/structures/cRefinery.h@832c953:20	class cRefinery : public cAbstractStructure {	src/gameobjects/structures/cRefinery.h@b9f6b02:20	class cRefinery : public cAbstractStructure {	на месте	—
+src/gameobjects/structures/cStructureInfo.h@832c953:31	struct s_FlagInfo {	src/gameobjects/structures/cStructureInfo.h@b9f6b02:31	struct s_FlagInfo {	на месте	—
+src/gameobjects/structures/cWindTrap.h@832c953:1	/**	src/gameobjects/structures/cWindTrap.h@b9f6b02:1	/**	на месте	—
+src/gameobjects/structures/cWindTrap.h@832c953:20	class cWindTrap : public cAbstractStructure {	src/gameobjects/structures/cWindTrap.h@b9f6b02:20	class cWindTrap : public cAbstractStructure {	на месте	—
+src/gameobjects/units/cUnit.cpp@832c953:3146	void cUnit::setCell(int cll)	src/gameobjects/units/cUnit.cpp@b9f6b02:3146	void cUnit::setCell(int cll)	на месте	—
+src/include/definitions.h@832c953:121	inline constexpr int RADAR = 9; // = OUTPOST (cOutPost)	src/include/definitions.h@b9f6b02:121	inline constexpr int RADAR = 9; // = OUTPOST (cOutPost)	на месте	—
+src/include/definitions.h@832c953:71	"inline constexpr int HUMAN = 0; // 0 = HUMAN			== ALLIES WITH FREMEN WHEN ATREIDES"	src/include/definitions.h@b9f6b02:71	"inline constexpr int HUMAN = 0; // 0 = HUMAN			== ALLIES WITH FREMEN WHEN ATREIDES"	на месте	—
+src/sidebar/cBuildingList.h@832c953:1	/**	src/sidebar/cBuildingList.h@b9f6b02:1	/**	на месте	—
+src/sidebar/cBuildingList.h@832c953:44	class cBuildingList {	src/sidebar/cBuildingList.h@b9f6b02:44	class cBuildingList {	на месте	—
+src/sidebar/cBuildingListItem.h@832c953:1	/**	src/sidebar/cBuildingListItem.h@b9f6b02:1	/**	на месте	—
+src/sidebar/cBuildingListItem.h@832c953:38	class cBuildingListItem {	src/sidebar/cBuildingListItem.h@b9f6b02:38	class cBuildingListItem {	на месте	—
+src/sidebar/cBuildingListUpdater.h@832c953:1	/**	src/sidebar/cBuildingListUpdater.h@b9f6b02:1	/**	на месте	—
+src/sidebar/cBuildingListUpdater.h@832c953:25	class cBuildingListUpdater {	src/sidebar/cBuildingListUpdater.h@b9f6b02:25	class cBuildingListUpdater {	на месте	—
+src/sidebar/cSideBar.h@832c953:1	/**	src/sidebar/cSideBar.h@b9f6b02:1	/**	на месте	—
+src/sidebar/cSideBar.h@832c953:70	class cSideBar {	src/sidebar/cSideBar.h@b9f6b02:70	class cSideBar {	на месте	—
+src/utils/HdHouseFlag.hpp@832c953:17	"{RADAR, ""BUILD_RADAR_FLAG"", 64, 64},"	src/utils/HdHouseFlag.hpp@b9f6b02:17	"{RADAR, ""BUILD_RADAR_FLAG"", 64, 64},"	на месте	—
