@@ -321,6 +321,29 @@ bool cKeyBindings::containsActionKey(const std::bitset<SDL_SCANCODE_COUNT> &keys
     return false;
 }
 
+std::string cKeyBindings::getFirstKeyDisplayName(eKeyAction action) const
+{
+    auto it = m_bindings.find(action);
+    if (it == m_bindings.end() || it->second.keys.empty()) return "";
+
+    const SDL_Scancode first = it->second.keys.front();
+    switch (first) {
+        case SDL_SCANCODE_LCTRL:
+        case SDL_SCANCODE_RCTRL:
+            return "Ctrl";
+        case SDL_SCANCODE_LSHIFT:
+        case SDL_SCANCODE_RSHIFT:
+            return "Shift";
+        case SDL_SCANCODE_LALT:
+        case SDL_SCANCODE_RALT:
+            return "Alt";
+        default:
+            break;
+    }
+    const char *name = SDL_GetScancodeName(first);
+    return name != nullptr ? name : "";
+}
+
 void cKeyBindings::bind(eKeyAction action, std::initializer_list<SDL_Scancode> keys,
                         bool requireCtrl, bool requireAlt, bool requireShift, bool requireTab)
 {

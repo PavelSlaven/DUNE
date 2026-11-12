@@ -42,6 +42,8 @@ public:
      */
     void loadKeyBindings(const cSection *section = nullptr);
 
+    [[nodiscard]] const cKeyBindings *getKeyBindings() const { return m_keyBindings.get(); }
+
 private:
     cInputObserver *m_keyboardObserver;
     std::unique_ptr<cKeyBindings> m_keyBindings;

@@ -51,6 +51,12 @@ public:
      */
     bool containsActionKey(const std::bitset<SDL_SCANCODE_COUNT> &keys, eKeyAction action) const;
 
+    /**
+     * Name of the first key bound to the action, for showing it to the player: "Ctrl", "Shift" and "Alt" for
+     * the left and right modifier keys, the SDL scancode name otherwise, empty when the action has no key.
+     */
+    std::string getFirstKeyDisplayName(eKeyAction action) const;
+
 private:
     std::map<eKeyAction, s_KeyBinding> m_bindings;
 

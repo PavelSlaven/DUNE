@@ -37,6 +37,7 @@
 
 #include "data/gfxaudio.h"
 #include "gameobjects/structures/cAbstractStructure.h"
+#include "controls/CommandModePolicy.hpp"
 
 namespace {
 
@@ -257,6 +258,16 @@ void cMouseUnitsSelectedState::onMouseRightButtonPressed()
 
 void cMouseUnitsSelectedState::onMouseRightButtonClicked()
 {
+    if (rightClickCommandPolicy(
+            m_state == SELECTED_STATE_FORCE_ATTACK
+                ? ActiveCommandMode::ForceAttack
+                : ActiveCommandMode::Normal
+        ) == RightClickCommandPolicy::CancelCommand) {
+        setState(SELECTED_STATE_MOVE);
+        m_mouseTile = MOUSE_MOVE;
+        m_mouse->resetDragViewportInteraction();
+        return;
+    }
     // if we were dragging the viewport, keep the units and this state.
     if (!m_mouse->isMapScrolling()) {
         m_player->deselectAllUnits();
@@ -281,7 +292,11 @@ void cMouseUnitsSelectedState::onMouseMovedTo()
             m_mouseTile = MOUSE_PICK;
         }
     }
-    else {
+    else if (pointerMoveCommandPolicy(
+                 m_state == SELECTED_STATE_FORCE_ATTACK
+                     ? ActiveCommandMode::ForceAttack
+                     : ActiveCommandMode::Normal
+             ) == PointerMoveCommandPolicy::Reevaluate) {
         evaluateMouseMoveState();
     }
 }
@@ -696,4 +711,22 @@ void cMouseUnitsSelectedState::selectSameUnitsOnMap(int unitType)
     }
     m_player->selectUnits(sameUnits);
     m_selectedUnits = m_player->getSelectedUnits();
+}
+
+void cMouseUnitsSelectedState::setCommandState(eMouseUnitsSelectedState newState)
+{
+    setState(newState);
+    switch (newState) {
+        case SELECTED_STATE_ATTACK:
+        case SELECTED_STATE_FORCE_ATTACK:
+            m_mouseTile = MOUSE_ATTACK;
+            break;
+        case SELECTED_STATE_REPAIR:
+            m_mouseTile = MOUSE_REPAIR;
+            break;
+        default:
+            m_mouseTile = MOUSE_MOVE;
+            break;
+    }
+    m_mouse->setTile(m_mouseTile);
 }

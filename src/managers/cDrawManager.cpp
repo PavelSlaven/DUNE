@@ -57,6 +57,7 @@
 #include "game/cGameSettings.h"
 #include "include/Texture.hpp"
 #include "utils/Localization.hpp"
+#include "drawers/cCommandBarDrawer.h"
 
 cDrawManager::cDrawManager(GameContext *ctx, cPlayer *thePlayer, sGameServices *services) :
     m_sidebarColor(Color{214, 149, 20,255}),
@@ -94,6 +95,7 @@ void cDrawManager::reset()
     m_sidebarDrawer = std::make_unique<cSideBarDrawer>(m_ctx, m_player, m_services);
     m_creditsDrawer = std::make_unique<CreditsDrawer>(m_ctx, m_gameSettings, m_player);
     m_orderDrawer = std::make_unique<cOrderDrawer>(m_ctx, m_player, m_services);
+    m_commandBarDrawer = std::make_unique<cCommandBarDrawer>(m_ctx, m_player, m_services);
     m_mapDrawer = std::make_unique<cMapDrawer>(m_ctx, m_objects->getMap(), m_player, m_mapCamera, m_services);
     m_miniMapDrawer = std::make_unique<cMiniMapDrawer>(m_ctx, m_gameSettings, m_objects->getMap(), m_player, m_mapCamera);
     m_particleDrawer = std::make_unique<cParticleDrawer>();
@@ -168,6 +170,8 @@ void cDrawManager::drawCombatState()
 
     // THE MESSAGE
     drawMessage();
+
+    m_commandBarDrawer->draw();
 
     m_sdlDrawer->resetClippingFor();
 
@@ -357,6 +361,7 @@ void cDrawManager::setPlayerToDraw(cPlayer *playerToDraw)
     m_player = playerToDraw;
     m_creditsDrawer->setPlayer(playerToDraw);
     m_sidebarDrawer->setPlayer(playerToDraw);
+    m_commandBarDrawer->setPlayer(playerToDraw);
     m_orderDrawer->setPlayer(playerToDraw);
     m_miniMapDrawer->setPlayer(playerToDraw);
     m_mapDrawer->setPlayer(playerToDraw);

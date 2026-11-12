@@ -28,6 +28,7 @@
 #include <algorithm>
 #include "include/cAssert.h"
 #include "gameobjects/structures/cAbstractStructure.h"
+#include "controls/CommandModePolicy.hpp"
 
 cMouseRepairState::cMouseRepairState(cPlayer *player, cGameControlsContext *context, cMouse *mouse) :
     cMouseState(player, context, mouse)
@@ -88,7 +89,9 @@ void cMouseRepairState::onMouseRightButtonPressed()
 
 void cMouseRepairState::onMouseRightButtonClicked()
 {
-    if (!m_mouse->isMapScrolling()) {
+    if (!m_mouse->isMapScrolling() &&
+        rightClickCommandPolicy(ActiveCommandMode::Repair) ==
+            RightClickCommandPolicy::CancelCommand) {
         m_context->toPreviousState();
     }
 
