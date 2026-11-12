@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "utils/Localization.hpp"
+
 #include <array>
 #include <string>
 #include <vector>
@@ -31,6 +33,12 @@ struct s_PreviewMap {
     std::vector<int> fields;        // spice field cells, RANDOM_CELL for a random one (empty when the map has none)
     bool validMap = true;           // is this a valid map? (is false, when map can be loaded but has invalid data)
     std::string name;               // name of map
+    std::string nameRu;
     std::string author;             // author of map
     std::string description;        // description of map
 };
+
+inline const std::string &displayName(const s_PreviewMap &map)
+{
+    return !localization::isEnglish() && !map.nameRu.empty() ? map.nameRu : map.name;
+}

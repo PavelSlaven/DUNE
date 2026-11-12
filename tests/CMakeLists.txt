@@ -14,6 +14,9 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_cIniUtils.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_IniParsing.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_IniScenarioParsing.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Utf8.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_MentatTextLayout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_CampaignTextRu.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_CampaignProgress.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_FontCoverage.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/test_Localization.cpp
@@ -46,6 +49,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/gameobjects/map/cSeedMap.cpp
     ${CMAKE_SOURCE_DIR}/src/gameobjects/map/cSeedMapGenerator.cpp
     ${CMAKE_SOURCE_DIR}/src/gameobjects/map/cPreviewMaps.cpp
+    ${CMAKE_SOURCE_DIR}/src/gameobjects/mentat/MentatTextLayout.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/SDLDrawer.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/cTextDrawer.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/cTextTextureCache.cpp

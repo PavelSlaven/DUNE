@@ -80,7 +80,7 @@ cIni::cIni(sGameServices* services)
 
 void cIni::loadRegionfile(std::span<cRegion> world, int iHouse, int iMission, cSelectYourNextConquestState *selectYourNextConquestState)
 {
-    auto filename = std::format("campaign/{}/mission{}.ini", getHouseDirectoryName(iHouse), iMission);
+    auto filename = std::format("{}/{}/mission{}.ini", getCampaignTextDirectory(), getHouseDirectoryName(iHouse), iMission);
     Logger::info(COMP_REGIONINI, "cIni::loadRegionfile", "Opening mission file: {}", filename);
 
     std::ifstream file(filename);
@@ -355,7 +355,7 @@ void cIni::loadBriefing(int iHouse, int iScenarioFind, eScenarioIniSection iSect
     Logger::info(COMP_SCENARIOINI, "cIni::INI_Load_Briefing", "[BRIEFING] Opening file");
 
     pMentat->initSentences();
-    auto path = std::string("campaign/briefings/") + getBriefingFileName(iHouse);
+    auto path = getCampaignTextDirectory() + "/briefings/" + getBriefingFileName(iHouse);
 
     Logger::info(COMP_SCENARIOINI, "cIni::INI_Load_Briefing", "{}", path);
     Logger::info(COMP_SCENARIOINI, "cIni::INI_Load_Briefing", "Going to find SCEN ID #{} and SectionID {}", iScenarioFind, std::to_underlying(iSectionFind));

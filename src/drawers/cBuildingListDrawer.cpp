@@ -44,21 +44,9 @@
 #include "game/cGameSettings.h"
 #include "gameobjects/structures/cStructureInfo.h"
 #include "utils/Localization.hpp"
+#include "utils/Utf8.hpp"
 
 namespace {
-void removeLastUtf8CodePoint(std::string &text)
-{
-    if (text.empty()) {
-        return;
-    }
-    std::size_t position = text.size() - 1;
-    while (position > 0 &&
-           (static_cast<unsigned char>(text[position]) & 0xC0U) == 0x80U) {
-        --position;
-    }
-    text.erase(position);
-}
-
 std::string fitWithEllipsis(
     const cTextDrawer *drawer,
     std::string text,

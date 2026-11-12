@@ -61,6 +61,7 @@
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
 #include "utils/Localization.hpp"
+#include "utils/Utf8.hpp"
 
 namespace {
 struct SkirmishPlayerTableLayout {
@@ -703,7 +704,7 @@ void cSetupSkirmishState::drawPreviewMapAndMore(const cRectangle &previewMapRect
         }
         const int infoY = previewMapRect.getY() + previewMapRect.getHeight() + 8;
         const int infoRowHeight = m_textDrawer->getFontHeight() + 2;
-        const std::string mapName = localization::format("Name: {}", "Название: {}", selectedMap->name);
+        const std::string mapName = localization::format("Name: {}", "Название: {}", displayName(*selectedMap));
         const std::string mapSize = std::format("{}", m_previewMaps->getMapSize(iSkirmishMap));
         m_textDrawer->drawText(previewMapRect.getX() + 4, infoY, Color::Yellow, mapName);
         m_textDrawer->drawText(
@@ -1524,12 +1525,12 @@ void cSetupSkirmishState::drawMapList(const cRectangle &selectMapArea) const
         }
 
         const int availableTextWidth = mapItemButtonWidth - 8;
-        const std::string *nameToRender = &mapToRender->name;
+        const std::string *nameToRender = &displayName(*mapToRender);
         std::string truncatedName;
-        if (m_textDrawer->getTextLength(mapToRender->name) > availableTextWidth) {
-            truncatedName = mapToRender->name;
+        if (m_textDrawer->getTextLength(displayName(*mapToRender)) > availableTextWidth) {
+            truncatedName = displayName(*mapToRender);
             while (!truncatedName.empty() && m_textDrawer->getTextLength(truncatedName + "...") > availableTextWidth) {
-                truncatedName.pop_back();
+                removeLastUtf8CodePoint(truncatedName);
             }
             truncatedName += "...";
             nameToRender = &truncatedName;

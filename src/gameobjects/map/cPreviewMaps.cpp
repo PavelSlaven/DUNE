@@ -139,6 +139,9 @@ void cPreviewMaps::loadSkirmish(const std::string &filename)
     s_PreviewMap *previewMap = &view->map;
     const cSection &section = conf.getSection("SKIRMISH");
     previewMap->name = section.getStringValue("Title");
+    if (section.hasValue("TitleRu")) {
+        previewMap->nameRu = section.getStringValue("TitleRu");
+    }
     previewMap->author = section.getStringValue("Author");
     previewMap->description = section.getStringValue("Description");
 
