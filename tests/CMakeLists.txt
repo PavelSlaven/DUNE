@@ -87,10 +87,10 @@ target_link_libraries(d2tm_tests PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(d2tm_tests PRIVATE cpp_stacktrace)
 target_compile_definitions(d2tm_tests PRIVATE D2TM_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 
-# cKeyBindings calls SDL scancode functions. On Linux/Windows link_libraries() in the root
+# cKeyBindings calls SDL scancode functions and the font tests call SDL_ttf. On Linux/Windows link_libraries() in the root
 # CMakeLists.txt provides SDL3; on macOS (pkg-config) it must be linked explicitly.
 if(APPLE)
-    target_link_libraries(d2tm_tests PRIVATE ${SDL3_LIBRARIES} ${SDL3_IMAGE_LIBRARIES} ${SDL3_MIXER_LIBRARIES})
+    target_link_libraries(d2tm_tests PRIVATE ${SDL3_LIBRARIES} ${SDL3_IMAGE_LIBRARIES} ${SDL3_TTF_LIBRARIES} ${SDL3_MIXER_LIBRARIES})
     # Same as the game target: Apple libc++ has no float std::from_chars, IniParsing.cpp needs the fallback.
     target_compile_definitions(d2tm_tests PRIVATE D2TM_CLANG=1)
 endif()
