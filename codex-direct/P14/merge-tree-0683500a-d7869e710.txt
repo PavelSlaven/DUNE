@@ -1,0 +1,124 @@
+22d47aa4d10d94b50badf661c3fc08bb5335c946
+src/building/cItemBuilder.cpp
+src/context/AudioContext.cpp
+src/context/AudioContext.hpp
+src/controls/mousestates/cMousePlaceState.cpp
+src/controls/mousestates/cMouseRepairState.cpp
+src/controls/mousestates/cMouseUnitsSelectedState.cpp
+src/drawers/CreditsDrawer.cpp
+src/drawers/cBuildingListDrawer.cpp
+src/game/cGame.h
+src/game/cGame_logic.cpp
+src/gameobjects/mentat/AbstractMentat.cpp
+src/gameobjects/mentat/BeneMentat.cpp
+src/gameobjects/players/cPlayer.cpp
+src/gameobjects/players/cPlayer.h
+src/gamestates/cChooseHouseState.cpp
+src/gamestates/cCreditsState.cpp
+src/gamestates/cMainMenuState.cpp
+src/gamestates/cOptionsState.cpp
+src/gamestates/cOptionsState.h
+src/gamestates/cScoringState.cpp
+src/gamestates/cSelectYourNextConquestState.cpp
+src/managers/cDrawManager.cpp
+src/utils/Graphics.cpp
+src/utils/Graphics.hpp
+src/utils/cDataPack.hpp
+src/utils/cPack.h
+tests/CMakeLists.txt
+
+Auto-merging src/CMakeLists.txt
+Auto-merging src/building/cItemBuilder.cpp
+CONFLICT (content): Merge conflict in src/building/cItemBuilder.cpp
+Auto-merging src/context/AudioContext.cpp
+CONFLICT (content): Merge conflict in src/context/AudioContext.cpp
+Auto-merging src/context/AudioContext.hpp
+CONFLICT (content): Merge conflict in src/context/AudioContext.hpp
+Auto-merging src/context/cInfoContextCreator.cpp
+Auto-merging src/controls/cGameControlsContext.cpp
+Auto-merging src/controls/cGameControlsContext.h
+Auto-merging src/controls/mousestates/cMouseNormalState.cpp
+Auto-merging src/controls/mousestates/cMouseNormalState.h
+Auto-merging src/controls/mousestates/cMousePlaceState.cpp
+CONFLICT (content): Merge conflict in src/controls/mousestates/cMousePlaceState.cpp
+Auto-merging src/controls/mousestates/cMousePlaceState.h
+Auto-merging src/controls/mousestates/cMouseRepairState.cpp
+CONFLICT (content): Merge conflict in src/controls/mousestates/cMouseRepairState.cpp
+Auto-merging src/controls/mousestates/cMouseUnitsSelectedState.cpp
+CONFLICT (content): Merge conflict in src/controls/mousestates/cMouseUnitsSelectedState.cpp
+Auto-merging src/drawers/CreditsDrawer.cpp
+CONFLICT (content): Merge conflict in src/drawers/CreditsDrawer.cpp
+Auto-merging src/drawers/CreditsDrawer.h
+Auto-merging src/drawers/cBuildingListDrawer.cpp
+CONFLICT (content): Merge conflict in src/drawers/cBuildingListDrawer.cpp
+Auto-merging src/drawers/cMiniMapDrawer.cpp
+Auto-merging src/drawers/cMiniMapDrawer.h
+Auto-merging src/game/cGame.h
+CONFLICT (content): Merge conflict in src/game/cGame.h
+Auto-merging src/game/cGame_logic.cpp
+CONFLICT (content): Merge conflict in src/game/cGame_logic.cpp
+Auto-merging src/gameobjects/map/cMapCamera.cpp
+Auto-merging src/gameobjects/mentat/AbstractMentat.cpp
+CONFLICT (content): Merge conflict in src/gameobjects/mentat/AbstractMentat.cpp
+Auto-merging src/gameobjects/mentat/BeneMentat.cpp
+CONFLICT (content): Merge conflict in src/gameobjects/mentat/BeneMentat.cpp
+Auto-merging src/gameobjects/players/cPlayer.cpp
+CONFLICT (content): Merge conflict in src/gameobjects/players/cPlayer.cpp
+Auto-merging src/gameobjects/players/cPlayer.h
+CONFLICT (content): Merge conflict in src/gameobjects/players/cPlayer.h
+Auto-merging src/gameobjects/structures/cAbstractStructure.cpp
+Auto-merging src/gameobjects/structures/cOrderProcesser.cpp
+Auto-merging src/gameobjects/structures/cStarPort.cpp
+Auto-merging src/gameobjects/units/cUnit.cpp
+Auto-merging src/gameobjects/units/cUnitInfos.h
+Auto-merging src/gamestates/cChooseHouseState.cpp
+CONFLICT (content): Merge conflict in src/gamestates/cChooseHouseState.cpp
+Auto-merging src/gamestates/cCreditsState.cpp
+CONFLICT (content): Merge conflict in src/gamestates/cCreditsState.cpp
+Auto-merging src/gamestates/cEditorState.cpp
+Auto-merging src/gamestates/cGamePlaying.cpp
+Auto-merging src/gamestates/cGamePlaying.h
+Auto-merging src/gamestates/cMainMenuState.cpp
+CONFLICT (content): Merge conflict in src/gamestates/cMainMenuState.cpp
+Auto-merging src/gamestates/cNewmapEditorState.cpp
+Auto-merging src/gamestates/cOptionsState.cpp
+CONFLICT (content): Merge conflict in src/gamestates/cOptionsState.cpp
+Auto-merging src/gamestates/cOptionsState.h
+CONFLICT (content): Merge conflict in src/gamestates/cOptionsState.h
+Auto-merging src/gamestates/cScoringState.cpp
+CONFLICT (content): Merge conflict in src/gamestates/cScoringState.cpp
+Auto-merging src/gamestates/cSelectMissionState.cpp
+Auto-merging src/gamestates/cSelectMissionState.h
+Auto-merging src/gamestates/cSelectYourNextConquestState.cpp
+CONFLICT (content): Merge conflict in src/gamestates/cSelectYourNextConquestState.cpp
+Auto-merging src/gamestates/cSetupSkirmishState.cpp
+Auto-merging src/gamestates/cTellHouseState.h
+Auto-merging src/gamestates/cWinLoseState.cpp
+Auto-merging src/gui/GuiBar.cpp
+Auto-merging src/gui/GuiButton.cpp
+Auto-merging src/gui/GuiCheckBox.cpp
+Auto-merging src/gui/GuiCycleButton.cpp
+Auto-merging src/gui/GuiLabel.cpp
+Auto-merging src/gui/GuiSlider.cpp
+Auto-merging src/gui/GuiStateButton.cpp
+Auto-merging src/gui/GuiTextInput.cpp
+Auto-merging src/gui/GuiValueButton.cpp
+Auto-merging src/gui/GuiWindow.cpp
+Auto-merging src/managers/cDrawManager.cpp
+CONFLICT (content): Merge conflict in src/managers/cDrawManager.cpp
+Auto-merging src/sidebar/cSideBar.cpp
+Auto-merging src/sidebar/cSideBar.h
+Auto-merging src/utils/Graphics.cpp
+CONFLICT (content): Merge conflict in src/utils/Graphics.cpp
+Auto-merging src/utils/Graphics.hpp
+CONFLICT (content): Merge conflict in src/utils/Graphics.hpp
+Auto-merging src/utils/cDataPack.cpp
+Auto-merging src/utils/cDataPack.hpp
+CONFLICT (content): Merge conflict in src/utils/cDataPack.hpp
+Auto-merging src/utils/cPack.cpp
+Auto-merging src/utils/cPack.h
+CONFLICT (content): Merge conflict in src/utils/cPack.h
+Auto-merging src/utils/cSoundPlayer.cpp
+Auto-merging src/utils/cSoundPlayer.h
+Auto-merging tests/CMakeLists.txt
+CONFLICT (content): Merge conflict in tests/CMakeLists.txt
