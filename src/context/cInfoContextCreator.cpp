@@ -32,6 +32,7 @@
 #include "gameobjects/map/cMap.h"
 #include "gameobjects/sTerrainInfo.h"
 #include "include/enums/HouseFlags.h"
+#include "utils/Localization.hpp"
 
 #include <stdexcept>
 
@@ -194,7 +195,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[CARRYALL].free_roam = true; // may freely roam the air
     unitInfos[CARRYALL].listType = eListType::LIST_UNITS;
     unitInfos[CARRYALL].subListId = SUBLIST_HIGHTECH;
-    unitInfos[CARRYALL].name = "Carry-All";
+    unitInfos[CARRYALL].name = localization::text("Carry-All", "Транспортник");
     unitInfos[CARRYALL].configured = true;
 
     // Unit        : Ornithopter
@@ -214,7 +215,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[ORNITHOPTER].listType = eListType::LIST_UNITS;
     unitInfos[ORNITHOPTER].subListId = SUBLIST_HIGHTECH;
 //    unitInfos[ORNITHOPTER].canAttackAirUnits = true; // orni's can attack other air units
-    unitInfos[ORNITHOPTER].name = "Ornithopter";
+    unitInfos[ORNITHOPTER].name = localization::text("Ornithopter", "Орнитоптер");
     unitInfos[ORNITHOPTER].configured = true;
 
     // Unit        : Devastator
@@ -234,7 +235,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[DEVASTATOR].smokeHpFactor = 0.5f;
     unitInfos[DEVASTATOR].canGuard = true;
     unitInfos[DEVASTATOR].canAttackUnits = true;
-    unitInfos[DEVASTATOR].name = "Devastator";
+    unitInfos[DEVASTATOR].name = localization::text("Devastator", "Девастатор");
     unitInfos[DEVASTATOR].configured = true;
 
     // Unit        : Harvester
@@ -252,7 +253,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[HARVESTER].subListId = SUBLIST_HEAVYFCTRY;
     unitInfos[HARVESTER].renderSmokeOnUnitWhenThresholdMet = true;
     unitInfos[HARVESTER].smokeHpFactor = 0.5f;
-    unitInfos[HARVESTER].name = "Harvester";
+    unitInfos[HARVESTER].name = localization::text("Harvester", "Харвестер");
     unitInfos[HARVESTER].configured = true;
 
     // Unit        : Combattank
@@ -272,7 +273,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[TANK].smokeHpFactor = 0.5f;
     unitInfos[TANK].canGuard = true;
     unitInfos[TANK].canAttackUnits = true;
-    unitInfos[TANK].name = "Tank";
+    unitInfos[TANK].name = localization::text("Tank", "Танк");
     unitInfos[TANK].configured = true;
 
 
@@ -296,7 +297,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[SIEGETANK].smokeHpFactor = 0.5f;
     unitInfos[SIEGETANK].canGuard = true;
     unitInfos[SIEGETANK].canAttackUnits = true;
-    unitInfos[SIEGETANK].name = "Siege Tank";
+    unitInfos[SIEGETANK].name = localization::text("Siege Tank", "Осадный танк");
     unitInfos[SIEGETANK].configured = true;
 
     // Unit        : MCV
@@ -312,7 +313,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[MCV].subListId = SUBLIST_HEAVYFCTRY;
     unitInfos[MCV].renderSmokeOnUnitWhenThresholdMet = true;
     unitInfos[MCV].smokeHpFactor = 0.5f;
-    unitInfos[MCV].name = "MCV";
+    unitInfos[MCV].name = localization::text("MCV", "Мобильная база");
     unitInfos[MCV].configured = true;
 
 
@@ -332,7 +333,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[DEVIATOR].canGuard = true;
     unitInfos[DEVIATOR].canAttackUnits = true;
     unitInfos[DEVIATOR].canDamageStructures = false; // gas warhead only deviates units, does no structural damage
-    unitInfos[DEVIATOR].name = "Deviator";
+    unitInfos[DEVIATOR].name = localization::text("Deviator", "Девиатор");
     unitInfos[DEVIATOR].configured = true;
 
     // Unit        : Launcher
@@ -354,7 +355,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[LAUNCHER].smokeHpFactor = 0.5f;
     unitInfos[LAUNCHER].canGuard = true;
     unitInfos[LAUNCHER].canAttackUnits = true;
-    unitInfos[LAUNCHER].name = "Launcher";
+    unitInfos[LAUNCHER].name = localization::text("Launcher", "Ракетная установка");
     unitInfos[LAUNCHER].configured = true;
 
     // Unit        : Quad
@@ -375,7 +376,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[QUAD].smokeHpFactor = 0.5f;
     unitInfos[QUAD].canGuard = true;
     unitInfos[QUAD].canAttackUnits = true;
-    unitInfos[QUAD].name = "Quad";
+    unitInfos[QUAD].name = localization::text("Quad", "Квад");
     unitInfos[QUAD].configured = true;
 
 
@@ -396,7 +397,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[TRIKE].smokeHpFactor = 0.5f;
     unitInfos[TRIKE].canGuard = true;
     unitInfos[TRIKE].canAttackUnits = true;
-    unitInfos[TRIKE].name = "Trike";
+    unitInfos[TRIKE].name = localization::text("Trike", "Трайк");
     unitInfos[TRIKE].configured = true;
 
     // Unit        : Raider Trike (Ordos trike)
@@ -407,7 +408,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[RAIDER].bmp_height = 14 * 2;
     unitInfos[RAIDER].bmp_startpixel = 0;
     unitInfos[RAIDER].bmp_frames = 1;
-    unitInfos[RAIDER].name = "Raider Trike";
+    unitInfos[RAIDER].name = localization::text("Raider Trike", "Рейдерский трайк");
     unitInfos[RAIDER].icon = ICON_UNIT_RAIDER;
     unitInfos[RAIDER].bulletType = BULLET_TRIKE;
     unitInfos[RAIDER].squish = false;
@@ -434,7 +435,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[FRIGATE].free_roam = true; // Frigate does not roam, yet needed?
     unitInfos[FRIGATE].hp = 9999;
     // frigate has no list
-    unitInfos[FRIGATE].name = "Frigate";
+    unitInfos[FRIGATE].name = localization::text("Frigate", "Фрегат");
 
     /*
     units[FRIGATE].speed     = 0;
@@ -464,7 +465,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[SONICTANK].canGuard = true;
     unitInfos[SONICTANK].canAttackUnits = true;
 
-    unitInfos[SONICTANK].name = "Sonic Tank";
+    unitInfos[SONICTANK].name = localization::text("Sonic Tank", "Звуковой танк");
     unitInfos[SONICTANK].configured = true;
 
 
@@ -487,7 +488,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[SOLDIER].damageOnEnterStructure = 10.0f;
     unitInfos[SOLDIER].canGuard = true;
     unitInfos[SOLDIER].canAttackUnits = true;
-    unitInfos[SOLDIER].name = "Soldier";
+    unitInfos[SOLDIER].name = localization::text("Soldier", "Солдат");
     unitInfos[SOLDIER].configured = true;
 
 
@@ -512,7 +513,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[INFANTRY].damageOnEnterStructure = 25.0f;
     unitInfos[INFANTRY].canGuard = true;
     unitInfos[INFANTRY].canAttackUnits = true;
-    unitInfos[INFANTRY].name = "Light Infantry";
+    unitInfos[INFANTRY].name = localization::text("Light Infantry", "Отряд пехоты");
     unitInfos[INFANTRY].configured = true;
 
     // Unit        : Single Trooper
@@ -522,7 +523,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[TROOPER].bmp_height = 16 * 2;
     unitInfos[TROOPER].bmp_startpixel = 0;
     unitInfos[TROOPER].bmp_frames = 3; // 2 extra frames
-    unitInfos[TROOPER].name = "Trooper";
+    unitInfos[TROOPER].name = localization::text("Trooper", "Ракетчик");
     unitInfos[TROOPER].infantry = true;
     unitInfos[TROOPER].bulletType = ROCKET_SMALL;
     unitInfos[TROOPER].icon = ICON_UNIT_TROOPER;
@@ -547,7 +548,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[TROOPERS].bmp_height = 16 * 2;
     unitInfos[TROOPERS].bmp_startpixel = 0;
     unitInfos[TROOPERS].bmp_frames = 3; // 2 extra frames
-    unitInfos[TROOPERS].name = "Troopers";
+    unitInfos[TROOPERS].name = localization::text("Troopers", "Отряд ракетчиков");
     unitInfos[TROOPERS].icon = ICON_UNIT_TROOPERS;
     unitInfos[TROOPERS].bulletType = ROCKET_SMALL;
     unitInfos[TROOPERS].fireTwice = true;
@@ -573,7 +574,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[UNIT_FREMEN_ONE].bmp_height = 16 * 2;
     unitInfos[UNIT_FREMEN_ONE].bmp_startpixel = 0;
     unitInfos[UNIT_FREMEN_ONE].bmp_frames = 3; // 2 extra frames
-    unitInfos[UNIT_FREMEN_ONE].name = "Fremen (1)";
+    unitInfos[UNIT_FREMEN_ONE].name = localization::text("Fremen (1)", "Фримен");
     unitInfos[UNIT_FREMEN_ONE].icon = ICON_SPECIAL_FREMEN;
     unitInfos[UNIT_FREMEN_ONE].bulletType = ROCKET_SMALL_FREMEN;
     unitInfos[UNIT_FREMEN_ONE].fireTwice = false;
@@ -595,7 +596,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[UNIT_FREMEN_THREE].bmp_height = 16 * 2;
     unitInfos[UNIT_FREMEN_THREE].bmp_startpixel = 0;
     unitInfos[UNIT_FREMEN_THREE].bmp_frames = 3; // 2 extra frames
-    unitInfos[UNIT_FREMEN_THREE].name = "Fremen (3)";
+    unitInfos[UNIT_FREMEN_THREE].name = localization::text("Fremen (3)", "Отряд фрименов");
     unitInfos[UNIT_FREMEN_THREE].icon = ICON_SPECIAL_FREMEN;
     unitInfos[UNIT_FREMEN_THREE].bulletType = ROCKET_SMALL_FREMEN;
     unitInfos[UNIT_FREMEN_THREE].fireTwice = true;
@@ -624,7 +625,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[SABOTEUR].range = 2;
     unitInfos[SABOTEUR].attack_frequency = 0;
     unitInfos[SABOTEUR].turnspeed = 0; // very fast
-    unitInfos[SABOTEUR].name = "Saboteur";
+    unitInfos[SABOTEUR].name = localization::text("Saboteur", "Диверсант");
     unitInfos[SABOTEUR].icon = ICON_SPECIAL_SABOTEUR;
     unitInfos[SABOTEUR].squish = false;
     unitInfos[SABOTEUR].canBeSquished = true;
@@ -646,7 +647,7 @@ void cInfoContextCreator::initUnits(cUnitInfos& unitInfos)
     unitInfos[SANDWORM].bmp_height = 48;
     unitInfos[SANDWORM].turnspeed = 0; // very fast
     unitInfos[SANDWORM].sight = 16;
-    unitInfos[SANDWORM].name = "Sandworm";
+    unitInfos[SANDWORM].name = localization::text("Sandworm", "Песчаный червь");
     unitInfos[SANDWORM].icon = ICON_UNIT_SANDWORM;
     unitInfos[SANDWORM].squish = false;
     unitInfos[SANDWORM].canGuard = true;
@@ -868,7 +869,7 @@ void cInfoContextCreator::initSpecials(cSpecialInfos& specialInfos)
     specialInfos[SPECIAL_SABOTEUR].buildTime = 2468; // ~ 6 minutes (but times 1.2 to compensate for faster Ordos building = 2468 to get real 6 minutes)
     specialInfos[SPECIAL_SABOTEUR].listType=eListType::LIST_PALACE;
     specialInfos[SPECIAL_SABOTEUR].subListId=0;
-    specialInfos[SPECIAL_SABOTEUR].description = "Saboteur";
+    specialInfos[SPECIAL_SABOTEUR].description = localization::text("Saboteur", "Диверсант");
 
     // Deploy Fremen
     specialInfos[SPECIAL_FREMEN].icon = ICON_SPECIAL_FREMEN;
@@ -882,7 +883,7 @@ void cInfoContextCreator::initSpecials(cSpecialInfos& specialInfos)
     specialInfos[SPECIAL_FREMEN].buildTime = 1371; // ~ 4 minutes (atreides has baseline build times, ie = real time)
     specialInfos[SPECIAL_FREMEN].listType=eListType::LIST_PALACE;
     specialInfos[SPECIAL_FREMEN].subListId=0;
-    specialInfos[SPECIAL_FREMEN].description = "Fremen";
+    specialInfos[SPECIAL_FREMEN].description = localization::text("Fremen", "Фримены");
 
     // Launch Death Hand
     specialInfos[SPECIAL_DEATHHAND].icon = ICON_SPECIAL_MISSILE;
@@ -901,7 +902,7 @@ void cInfoContextCreator::initSpecials(cSpecialInfos& specialInfos)
     specialInfos[SPECIAL_DEATHHAND].deployTargetPrecision = 6;
     specialInfos[SPECIAL_DEATHHAND].listType=eListType::LIST_PALACE;
     specialInfos[SPECIAL_DEATHHAND].subListId=0;
-    specialInfos[SPECIAL_DEATHHAND].description = "Death Hand";
+    specialInfos[SPECIAL_DEATHHAND].description = localization::text("Death Hand", "Рука Смерти");
 
 }
 
@@ -1151,7 +1152,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
         upgradeInfos[i].providesTypeList = eListType::LIST_NONE;
         upgradeInfos[i].providesTypeSubList = -1;
         upgradeInfos[i].buildTime = 5;
-        upgradeInfos[i].description = "Upgrade";
+        upgradeInfos[i].description = localization::text("Upgrade", "Улучшение");
     }
 
     // CONSTYARD UPGRADES
@@ -1169,7 +1170,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     upgradeInfos[UPGRADE_TYPE_CONSTYARD_SLAB4].providesTypeList = eListType::LIST_CONSTYARD;
     upgradeInfos[UPGRADE_TYPE_CONSTYARD_SLAB4].providesTypeSubList = SUBLIST_CONSTYARD;
     upgradeInfos[UPGRADE_TYPE_CONSTYARD_SLAB4].buildTime = 50;
-    upgradeInfos[UPGRADE_TYPE_CONSTYARD_SLAB4].description = "Build 4 concrete slabs at once";
+    upgradeInfos[UPGRADE_TYPE_CONSTYARD_SLAB4].description = localization::text("Build 4 concrete slabs at once", "Укладка плит 2×2");
 
     // Second upgrade Constyard: Rturret
     upgradeInfos[UPGRADE_TYPE_CONSTYARD_RTURRET].enabled = true;
@@ -1185,7 +1186,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     upgradeInfos[UPGRADE_TYPE_CONSTYARD_RTURRET].providesTypeList = eListType::LIST_CONSTYARD;
     upgradeInfos[UPGRADE_TYPE_CONSTYARD_RTURRET].providesTypeSubList = SUBLIST_CONSTYARD;
     upgradeInfos[UPGRADE_TYPE_CONSTYARD_RTURRET].buildTime = 150;
-    upgradeInfos[UPGRADE_TYPE_CONSTYARD_RTURRET].description = "Build Rocket Turret";
+    upgradeInfos[UPGRADE_TYPE_CONSTYARD_RTURRET].description = localization::text("Build Rocket Turret", "Ракетные башни");
 
     // LIGHTFACTORY UPGRADES, only for ATREIDES and ORDOS
     upgradeInfos[UPGRADE_TYPE_LIGHTFCTRY_QUAD].enabled = true;
@@ -1201,7 +1202,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     upgradeInfos[UPGRADE_TYPE_LIGHTFCTRY_QUAD].providesTypeList = eListType::LIST_UNITS;
     upgradeInfos[UPGRADE_TYPE_LIGHTFCTRY_QUAD].providesTypeSubList =  SUBLIST_LIGHTFCTRY;
     upgradeInfos[UPGRADE_TYPE_LIGHTFCTRY_QUAD].buildTime = 150;
-    upgradeInfos[UPGRADE_TYPE_LIGHTFCTRY_QUAD].description = "Build Quad at Light Factory";
+    upgradeInfos[UPGRADE_TYPE_LIGHTFCTRY_QUAD].description = localization::text("Build Quad at Light Factory", "Квады на лёгком заводе");
 
     // HEAVYFACTORY UPGRADES:
 
@@ -1219,7 +1220,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_MVC].providesTypeList = eListType::LIST_UNITS;
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_MVC].providesTypeSubList = SUBLIST_HEAVYFCTRY;
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_MVC].buildTime = 150;
-    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_MVC].description = "Build MCV at Heavy Factory";
+    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_MVC].description = localization::text("Build MCV at Heavy Factory", "Мобильные базы на тяжёлом заводе");
 
     // Harkonnen/Atreides only
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].enabled = true;
@@ -1235,7 +1236,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].providesTypeList = eListType::LIST_UNITS;
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].providesTypeSubList = SUBLIST_HEAVYFCTRY;
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].buildTime = 150;
-    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].description = "Build Rocket Launcher at Heavy Factory";
+    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_LAUNCHER].description = localization::text("Build Rocket Launcher at Heavy Factory", "Ракетные установки на тяжёлом заводе");
 
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].enabled = true;
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].house = Atreides | Harkonnen | Sardaukar;
@@ -1250,7 +1251,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].providesTypeList = eListType::LIST_UNITS;
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].providesTypeSubList = SUBLIST_HEAVYFCTRY;
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].buildTime = 150;
-    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].description = "Build Siege Tank at Heavy Factory";
+    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK].description = localization::text("Build Siege Tank at Heavy Factory", "Осадные танки на тяжёлом заводе");
 
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].enabled = true;
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].house = Ordos;
@@ -1265,7 +1266,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].providesTypeList = eListType::LIST_UNITS;
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].providesTypeSubList = SUBLIST_HEAVYFCTRY;
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].buildTime = 150;
-    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].description = "Build Siege Tank at Heavy Factory";
+    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SIEGETANK_ORD].description = localization::text("Build Siege Tank at Heavy Factory", "Осадные танки на тяжёлом заводе");
 
     // HI-TECH UPGRADES (Ordos/Atreides only)
     upgradeInfos[UPGRADE_TYPE_HITECH_ORNI].enabled = true;
@@ -1280,7 +1281,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     upgradeInfos[UPGRADE_TYPE_HITECH_ORNI].providesTypeList = eListType::LIST_UNITS;
     upgradeInfos[UPGRADE_TYPE_HITECH_ORNI].providesTypeSubList = SUBLIST_HIGHTECH;
     upgradeInfos[UPGRADE_TYPE_HITECH_ORNI].buildTime = 150;
-    upgradeInfos[UPGRADE_TYPE_HITECH_ORNI].description = "Build Ornithopter at Hi-Tech";
+    upgradeInfos[UPGRADE_TYPE_HITECH_ORNI].description = localization::text("Build Ornithopter at Hi-Tech", "Орнитоптеры на авиазаводе");
 
     // WOR (Harkonnen & Ordos)
     upgradeInfos[UPGRADE_TYPE_WOR_TROOPERS].enabled = true;
@@ -1297,7 +1298,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     if (!settings->isCheatMode()) {
         upgradeInfos[UPGRADE_TYPE_WOR_TROOPERS].buildTime = 150;
     }
-    upgradeInfos[UPGRADE_TYPE_WOR_TROOPERS].description = "Build Troopers at WOR";
+    upgradeInfos[UPGRADE_TYPE_WOR_TROOPERS].description = localization::text("Build Troopers at WOR", "Ракетчики в военной академии");
 
     // BARRACKS (Atreides & Ordos)
     upgradeInfos[UPGRADE_TYPE_BARRACKS_INFANTRY].enabled = true;
@@ -1314,7 +1315,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     if (!settings->isCheatMode()) {
         upgradeInfos[UPGRADE_TYPE_BARRACKS_INFANTRY].buildTime = 150;
     }
-    upgradeInfos[UPGRADE_TYPE_BARRACKS_INFANTRY].description = "Build Infantry at Barracks";
+    upgradeInfos[UPGRADE_TYPE_BARRACKS_INFANTRY].description = localization::text("Build Infantry at Barracks", "Пехота в казармах");
 
     // HEAVY FACTORY: Sardaukar - Allow building Sonic Tank
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_SONICTANK].enabled = true;
@@ -1333,7 +1334,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     if (!settings->isCheatMode()) {
         upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_SONICTANK].buildTime = 150;
     }
-    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_SONICTANK].description = "Build SonicTank at Heavy Factory";
+    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_SONICTANK].description = localization::text("Build SonicTank at Heavy Factory", "Звуковые танки на тяжёлом заводе");
 
     // HEAVY FACTORY: Sardaukar - Allow building Deviator
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVIATOR].enabled = true;
@@ -1352,7 +1353,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     if (!settings->isCheatMode()) {
         upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVIATOR].buildTime = 150;
     }
-    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVIATOR].description = "Build Deviator at Heavy Factory";
+    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVIATOR].description = localization::text("Build Deviator at Heavy Factory", "Девиаторы на тяжёлом заводе");
 
     // HEAVY FACTORY: Sardaukar - Allow building Devastator
     upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVASTATOR].enabled = true;
@@ -1371,7 +1372,7 @@ void cInfoContextCreator::initUpgrades(cUpgradeInfos& upgradeInfos, const cInfoC
     if (!settings->isCheatMode()) {
         upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVASTATOR].buildTime = 150;
     }
-    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVASTATOR].description = "Build Devastator at Heavy Factory";
+    upgradeInfos[UPGRADE_TYPE_HEAVYFCTRY_SAR_DEVASTATOR].description = localization::text("Build Devastator at Heavy Factory", "Девастаторы на тяжёлом заводе");
 }
 
 /*****************************
@@ -1410,7 +1411,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         structureInfo.uponDestructionSpawnUnitAmountMin = 0;
         structureInfo.uponDestructionSpawnUnitAmountMax = 0;
         structureInfo.uponDestructionSpawnUnitType = -1;
-        structureInfo.name = "Unknown";
+        structureInfo.name = localization::text("Unknown", "Неизвестно");
     }
 
     // Single and 4 slabs
@@ -1421,7 +1422,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
     structureInfos[SLAB1].bmp_height = 16 * 2;
     structureInfos[SLAB1].configured = true;
     structureInfos[SLAB1].queuable = true;
-    structureInfos[SLAB1].name = "Concrete Slab";
+    structureInfos[SLAB1].name = localization::text("Concrete Slab", "Бетонная плита");
 
     structureInfos[SLAB4].bmp = m_gfxdata->getSurface(PLACE_SLAB4); // in case an invalid bitmap, we are a windtrap
     structureInfos[SLAB4].icon = ICON_STR_4SLAB;
@@ -1430,7 +1431,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
     structureInfos[SLAB4].bmp_height = 32 * 2;
     structureInfos[SLAB4].configured = true;
     structureInfos[SLAB4].queuable = true;
-    structureInfos[SLAB4].name = "4 Concrete Slabs";
+    structureInfos[SLAB4].name = localization::text("4 Concrete Slabs", "Бетонная площадка 2×2");
 
 
     // Concrete Wall
@@ -1441,7 +1442,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
     structureInfos[WALL].bmp_height = 16 * 2;
     structureInfos[WALL].queuable = true;
     structureInfos[WALL].configured = true;
-    structureInfos[WALL].name = "Concrete Wall";
+    structureInfos[WALL].name = localization::text("Concrete Wall", "Бетонная стена");
 
     // Structure    : Windtrap
     // Description  : <none>
@@ -1456,7 +1457,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 53,
         .relY = 37
     });
-    structureInfos[WINDTRAP].name = "Windtrap";
+    structureInfos[WINDTRAP].name = localization::text("Windtrap", "Ветроловушка");
 
     // Structure    : Heavy Factory
     // Description  : <none>
@@ -1473,7 +1474,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 25,
         .relY = 3
     });
-    structureInfos[HEAVYFACTORY].name = "Heavy Factory";
+    structureInfos[HEAVYFACTORY].name = localization::text("Heavy Factory", "Тяжёлый завод");
 
     // Structure    : Hight Tech Factory (for aircraft only)
     // Description  : <none>
@@ -1489,7 +1490,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 19,
         .relY = 36
     });
-    structureInfos[HIGHTECH].name = "Hi-Tech";
+    structureInfos[HIGHTECH].name = localization::text("Hi-Tech", "Авиазавод");
 
     // Structure    : Repair
     // Description  : <none>
@@ -1505,7 +1506,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 41,
         .relY = 3
     });
-    structureInfos[REPAIR].name = "Repair Facility";
+    structureInfos[REPAIR].name = localization::text("Repair Facility", "Ремонтный центр");
 
     // Structure    : Palace
     // Description  : <none>
@@ -1520,7 +1521,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 28,
         .relY = 14
     });
-    structureInfos[PALACE].name = "Palace";
+    structureInfos[PALACE].name = localization::text("Palace", "Дворец");
 
     // Structure    : Light Factory
     // Description  : <none>
@@ -1537,7 +1538,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 41,
         .relY = 2
     });
-    structureInfos[LIGHTFACTORY].name = "Light Factory";
+    structureInfos[LIGHTFACTORY].name = localization::text("Light Factory", "Лёгкий завод");
 
     // Structure    : Radar
     // Description  : <none>
@@ -1560,7 +1561,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 12,
         .relY = 46
     });
-    structureInfos[RADAR].name = "Outpost";
+    structureInfos[RADAR].name = localization::text("Outpost", "Командный пост");
 
     // Structure    : Barracks
     // Description  : <none>
@@ -1581,7 +1582,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 51,
         .relY = 50
     });
-    structureInfos[BARRACKS].name = "Barracks";
+    structureInfos[BARRACKS].name = localization::text("Barracks", "Казармы");
 
     // Structure    : WOR
     // Description  : <none>
@@ -1597,7 +1598,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 21,
         .relY = 31
     });
-    structureInfos[WOR].name = "WOR";
+    structureInfos[WOR].name = localization::text("WOR", "Военная академия");
 
 
     // Structure    : Silo
@@ -1615,7 +1616,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 43,
         .relY = 20
     });
-    structureInfos[SILO].name = "Spice Storage Silo";
+    structureInfos[SILO].name = localization::text("Spice Storage Silo", "Хранилище пряности");
 
     // Structure    : Refinery
     // Description  : <none>
@@ -1631,7 +1632,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 45,
         .relY = 12
     });
-    structureInfos[REFINERY].name = "Spice Refinery";
+    structureInfos[REFINERY].name = localization::text("Spice Refinery", "Переработчик пряности");
 
     // Structure    : Construction Yard
     // Description  : <none>
@@ -1649,7 +1650,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
     structureInfos[CONSTYARD].fadecol = -1;
     structureInfos[CONSTYARD].icon = ICON_STR_CONSTYARD;
     structureInfos[CONSTYARD].configured = true;
-    structureInfos[CONSTYARD].name = "Construction Yard";
+    structureInfos[CONSTYARD].name = localization::text("Construction Yard", "Стройбаза");
 
     // Structure    : Starport
     // Description  : You can order units from this structure
@@ -1665,7 +1666,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 16,
         .relY = 3
     });
-    structureInfos[STARPORT].name = "Starport";
+    structureInfos[STARPORT].name = localization::text("Starport", "Космопорт");
 
     // Structure    : House of IX
     // Description  : Makes it possible for the player to upgrade its Heavy Factory in order to build their special weapon
@@ -1681,7 +1682,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
         .relX = 60, // 60
         .relY = 40  // 40
     });
-    structureInfos[IX].name = "House of IX";
+    structureInfos[IX].name = localization::text("House of IX", "Техноцентр Икс");
 
     // Structure    : Normal Turret
     // Description  : defence
@@ -1696,7 +1697,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
     structureInfos[TURRET].configured = true;
     structureInfos[TURRET].canAttackGroundUnits = true;
     structureInfos[TURRET].fireRate = 275;
-    structureInfos[TURRET].name = "Gun Turret";
+    structureInfos[TURRET].name = localization::text("Gun Turret", "Пушечная башня");
 
     // Structure    : Rocket Turret
     // Description  : defence
@@ -1712,7 +1713,7 @@ void cInfoContextCreator::initStructures(cStructureInfos& structureInfos)
     structureInfos[RTURRET].canAttackAirUnits = true;
     structureInfos[RTURRET].canAttackGroundUnits = true;
     structureInfos[RTURRET].fireRate = 350;
-    structureInfos[RTURRET].name = "Rocket Turret";
+    structureInfos[RTURRET].name = localization::text("Rocket Turret", "Ракетная башня");
 }
 
 /*****************************

@@ -16,6 +16,7 @@
 #include "include/sGameServices.h"
 #include "context/TextContext.hpp"
 #include "include/eGameState.h"
+#include "utils/Localization.hpp"
 
 #include <format>
 
@@ -61,12 +62,12 @@ void cScoringState::draw() const
     int statLineHeight = m_smallTextDrawer->getFontHeight() + 2;
     int y = 40;
 
-    m_textDrawer->drawTextCentered("MISSION REPORT", y, Color::Yellow);
+    m_textDrawer->drawTextCentered(localization::text("MISSION REPORT", "ОТЧЁТ О МИССИИ"), y, Color::Yellow);
     y += lineHeight * 2;
 
     uint64_t minutes = m_stats.elapsedSeconds / 60;
     uint64_t seconds = m_stats.elapsedSeconds % 60;
-    m_textDrawer->drawTextCentered(std::format("Mission time: {:02}:{:02}", minutes, seconds), y, Color::White);
+    m_textDrawer->drawTextCentered(localization::format("Mission time: {:02}:{:02}", "Время миссии: {:02}:{:02}", minutes, seconds), y, Color::White);
     y += lineHeight * 2;
 
     // AI_CPU5 (Fremen superweapon trigger) and AI_WORM are not real opponents, never shown here.
@@ -80,33 +81,33 @@ void cScoringState::draw() const
             continue;
         }
 
-        std::string label = playerId == HUMAN ? "YOU" : "ENEMY";
+        std::string label = playerId == HUMAN ? localization::text("YOU", "ВЫ") : localization::text("ENEMY", "ВРАГ");
         std::string playerName = std::format("{} - {}", label, cPlayer::getHouseNameForId(playerStats.house));
         Color nameColor = m_screenFader->getColorFadeSelected(playerStats.minimapColor.r, playerStats.minimapColor.g, playerStats.minimapColor.b);
 
         m_textDrawer->drawTextCentered(playerName, y, nameColor);
         y += lineHeight;
         m_smallTextDrawer->drawTextCentered(
-            std::format("Units built: {}   lost: {}   destroyed: {}",
+            localization::format("Units built: {}   lost: {}   destroyed: {}", "Юниты: создано {}   потеряно {}   уничтожено {}",
                 playerStats.unitsBuilt, playerStats.unitsLost, playerStats.unitsDestroyed),
             y, Color::White);
         y += statLineHeight;
         m_smallTextDrawer->drawTextCentered(
-            std::format("Structures built: {}   lost: {}   destroyed: {}",
+            localization::format("Structures built: {}   lost: {}   destroyed: {}", "Здания: создано {}   потеряно {}   уничтожено {}",
                 playerStats.structuresBuilt, playerStats.structuresLost, playerStats.structuresDestroyed),
             y, Color::White);
         y += statLineHeight;
         m_smallTextDrawer->drawTextCentered(
-            std::format("Damage dealt: {}   received: {}", playerStats.damageDealt, playerStats.damageReceived),
+            localization::format("Damage dealt: {}   received: {}", "Урон: нанесён {}   получен {}", playerStats.damageDealt, playerStats.damageReceived),
             y, Color::White);
         y += statLineHeight;
         m_smallTextDrawer->drawTextCentered(
-            std::format("Spice harvested: {}", playerStats.spiceHarvested),
+            localization::format("Spice harvested: {}", "Собрано пряности: {}", playerStats.spiceHarvested),
             y, Color::White);
         y += lineHeight * 2;
     }
 
-    m_textDrawer->drawTextCentered("Click to continue", m_settings->getScreenH() - lineHeight - 8, Color::White);
+    m_textDrawer->drawTextCentered(localization::text("Click to continue", "Щёлкните, чтобы продолжить"), m_settings->getScreenH() - lineHeight - 8, Color::White);
     m_mouse->draw();
 }
 

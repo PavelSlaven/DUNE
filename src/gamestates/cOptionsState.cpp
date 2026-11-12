@@ -126,12 +126,12 @@ void cOptionsState::constructWindow(int prevState)
     AudioContext* audioContext = m_ctx->getAudioContext();
     cSoundPlayer* soundPlayer = audioContext->getSoundPlayer();
 
-    m_guiWindow->setTitle("Dune II - The Maker - version " + D2TM_VERSION);
+    m_guiWindow->setTitle(localization::text("Dune II - The Maker - version ", "Dune II - The Maker - версия ") + D2TM_VERSION);
 
     const cRectangle &toMainMenuRect = relativeRect(menuLayout.mainMenu);
     auto gui_btn_toMenu = GuiButtonBuilder()
             .withRect(toMainMenuRect)
-            .withLabel("Main menu")
+            .withLabel(localization::text("Main menu", "В главное меню"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
@@ -145,7 +145,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &quitRect = relativeRect(menuLayout.quit);
     auto gui_btn_Quit = GuiButtonBuilder()
             .withRect(quitRect)
-            .withLabel("Quit game")
+            .withLabel(localization::text("Quit game", "Выйти из игры"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
@@ -160,7 +160,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &backRect = relativeRect(menuLayout.back);
     auto gui_btn_Back = GuiButtonBuilder()
             .withRect(backRect)
-            .withLabel("Back")
+            .withLabel(localization::text("Back", "Назад"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
@@ -175,7 +175,7 @@ void cOptionsState::constructWindow(int prevState)
         const cRectangle &saveRect = relativeRect(menuLayout.save);
         auto saveButton = GuiButtonBuilder()
                 .withRect(saveRect)
-                .withLabel("Save game")
+                .withLabel(localization::text("Save game", "Сохранить игру"))
                 .withTextDrawer(m_textDrawer)
                 .withRenderer(m_sdlDrawer)
                 .withTheme(GuiTheme::RemasterInactive())
@@ -187,7 +187,7 @@ void cOptionsState::constructWindow(int prevState)
         const cRectangle &loadRect = relativeRect(menuLayout.load);
         auto loadButton = GuiButtonBuilder()
                 .withRect(loadRect)
-                .withLabel("Load game")
+                .withLabel(localization::text("Load game", "Загрузить игру"))
                 .withTextDrawer(m_textDrawer)
                 .withRenderer(m_sdlDrawer)
                 .withTheme(GuiTheme::RemasterInactive())
@@ -201,7 +201,7 @@ void cOptionsState::constructWindow(int prevState)
         const cRectangle &toMissionSelectRect = relativeRect(menuLayout.missionSelect);
         auto gui_btn_toMissionSelect = GuiButtonBuilder()
                 .withRect(toMissionSelectRect)
-                .withLabel("Mission select")
+                .withLabel(localization::text("Mission select", "Выбор миссии"))
                 .withTextDrawer(m_textDrawer)
                 .withRenderer(m_sdlDrawer)
                 .withTheme(controlTheme)
@@ -216,7 +216,7 @@ void cOptionsState::constructWindow(int prevState)
     if (m_settings->isCheatMode()) {
         const cRectangle &cheatRect = rect(contentX, contentRowY(9), checkLabelWidth, buttonHeight);
         auto gui_cheatLabel = GuiLabelBuilder()
-                .withLabel("Cheat mode enabled")
+                .withLabel(localization::text("Cheat mode enabled", "Режим читов включён"))
                 .withTextDrawer(m_textDrawer)
                 .withRenderer(m_sdlDrawer)
                 .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -229,7 +229,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &musicRect = rect(contentX, contentRowY(1), audioLabelWidth, buttonHeight);
     auto gui_MusicLabel = GuiLabelBuilder()
-            .withLabel("Music")
+            .withLabel(localization::text("Music", "Музыка"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -255,7 +255,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &musicVolumeRect = rect(volumeLabelX, contentRowY(1), volumeLabelWidth, buttonHeight);
     auto gui_MusicVolumeLabel = GuiLabelBuilder()
-            .withLabel("Volume")
+            .withLabel(localization::text("Volume", "Громкость"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -280,7 +280,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &soundRect = rect(contentX, contentRowY(2), audioLabelWidth, buttonHeight);
     auto gui_SoundLabel = GuiLabelBuilder()
-            .withLabel("Sound")
+            .withLabel(localization::text("Sound", "Звук"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -306,7 +306,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &soundVolumeRect = rect(volumeLabelX, contentRowY(2), volumeLabelWidth, buttonHeight);
     auto gui_SoundVolumeLabel = GuiLabelBuilder()
-            .withLabel("Volume")
+            .withLabel(localization::text("Volume", "Громкость"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -331,7 +331,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &speedRect = relativeRect(menuLayout.speedLabel);
     auto gui_DifficultyLabel = GuiLabelBuilder()
-            .withLabel("Game speed")
+            .withLabel(localization::text("Game speed", "Скорость игры"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -360,7 +360,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &fogOfWarRect = rect(contentX, contentRowY(4), checkLabelWidth, buttonHeight);
     auto gui_FogOfWarLabel = GuiLabelBuilder()
-            .withLabel("FOW")
+            .withLabel(localization::text("FOW", "Туман войны"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -388,7 +388,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &renderScaleRect = rect(contentX, contentRowY(5), displayLabelWidth, buttonHeight);
     auto renderScaleLabel = GuiLabelBuilder()
             .withRect(renderScaleRect)
-            .withLabel("Game scale")
+            .withLabel(localization::text("Game scale", "Масштаб игры"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
@@ -436,7 +436,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &worldScaleRect = rect(contentX, contentRowY(6), displayLabelWidth, buttonHeight);
     auto worldScaleLabel = GuiLabelBuilder()
             .withRect(worldScaleRect)
-            .withLabel("Object size")
+            .withLabel(localization::text("Object size", "Размер объектов"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
@@ -483,7 +483,7 @@ void cOptionsState::constructWindow(int prevState)
 
     const cRectangle &lowPowerIconRect = rect(contentX, contentRowY(7), checkLabelWidth, buttonHeight);
     auto gui_LowPowerIconLabel = GuiLabelBuilder()
-            .withLabel("Low power icon")
+            .withLabel(localization::text("Low power icon", "Значок энергии"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
@@ -537,7 +537,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &applyRect = relativeRect(menuLayout.apply);
     auto applyButton = GuiButtonBuilder()
             .withRect(applyRect)
-            .withLabel("Apply")
+            .withLabel(localization::text("Apply", "Применить"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
@@ -563,7 +563,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &advancedRect = relativeRect(menuLayout.advanced);
     auto advancedButton = GuiButtonBuilder()
             .withRect(advancedRect)
-            .withLabel("More settings")
+            .withLabel(localization::text("More settings", "Ещё настройки"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::RemasterInactive())
@@ -631,11 +631,11 @@ void cOptionsState::applyScaleSettings()
     if (scalesSaved && languageSaved) {
         m_settings->setSavedScalePercents(renderScale, worldScale);
         m_settings->setSavedLanguage(m_selectedLanguage);
-        m_statusLabel->setText("Saved. Restart the game.");
+        m_statusLabel->setText(localization::text("Saved. Restart the game.", "Сохранено. Перезапустите игру."));
     } else {
         const std::string &error = scalesSaved ? languageError : scaleError;
         Logger::warn(COMP_GAMERULES, "Preferences", "Could not save preferences: {}", error);
-        m_statusLabel->setText("Could not save preferences.ini");
+        m_statusLabel->setText(localization::text("Could not save preferences.ini", "Не удалось сохранить preferences.ini"));
     }
     updateScaleControls();
 }

@@ -37,6 +37,7 @@
 #include "include/Texture.hpp"
 #include "utils/cRectangle.h"
 #include "debug/UiAudit.hpp"
+#include "utils/Localization.hpp"
 
 // The mentat screen artwork was designed for 640x480. On higher resolutions it
 // is centered, so the offset is half the extra pixels on each axis.
@@ -80,14 +81,14 @@ AbstractMentat::AbstractMentat(GameContext* ctx, cGameSettings* settings, GameSt
 
     if (canMissionSelect) {
 
-        int length = m_textDrawer->getTextLength("Mission select");
+        int length = m_textDrawer->getTextLength(localization::text("Mission select", "Выбор миссии"));
         const cRectangle &toMissionSelectRect = m_textDrawer->getAsRectangle(settings->getScreenW() - length,
                                                 settings->getScreenH() - m_textDrawer->getFontHeight(),
-                                                "Mission select");
+                                                localization::text("Mission select", "Выбор миссии"));
 
         auto gui_btn_toMissionSelect = GuiButtonBuilder()
             .withRect(toMissionSelectRect)
-            .withLabel("Mission select")
+            .withLabel(localization::text("Mission select", "Выбор миссии"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(cGuiThemeBuilder().light().build())

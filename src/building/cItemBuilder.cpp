@@ -45,6 +45,7 @@
 
 #include "data/gfxaudio.h"
 #include "gameobjects/cSpecialInfos.h"
+#include "utils/Localization.hpp"
 #include <algorithm>
 
 cItemBuilder::cItemBuilder(cPlayer *thePlayer, cBuildingListUpdater *buildingListUpdater) :
@@ -203,7 +204,7 @@ void cItemBuilder::thinkFast()
             if (!item->isWaitingForUnitSlot()) {
                 item->setWaitingForUnitSlot(true);
                 if (m_player->isHuman()) {
-                    m_services->drawManager->setMessage("Unable to create more.");
+                    m_services->drawManager->setMessage(localization::text("Unable to create more.", "Больше построить нельзя."));
                 }
             }
             continue;

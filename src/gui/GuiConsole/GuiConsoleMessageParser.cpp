@@ -18,6 +18,7 @@
 #include "game/cNotificationArea.h"
 #include "include/eNotificationType.h"
 #include "include/cAssert.h"
+#include "utils/Localization.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -69,7 +70,7 @@ void GuiConsoleMessageParser::submit(const std::string& text)
     }
 
     if (!verifyOddWordCommand(normalizedText)) {
-        m_notificationArea->addNotification(std::format("Malformed command: {}", text), eNotificationType::BAD);
+        m_notificationArea->addNotification(localization::format("Malformed command: {}", "Неверная команда: {}", text), eNotificationType::BAD);
         return;
     }
 
@@ -81,7 +82,7 @@ void GuiConsoleMessageParser::submit(const std::string& text)
     // }
 
     if (m_command == "help") {
-        m_notificationArea->addNotification("Help mode.", eNotificationType::NEUTRAL);
+        m_notificationArea->addNotification(localization::text("Help mode.", "Режим справки."), eNotificationType::NEUTRAL);
         return;
     }
 

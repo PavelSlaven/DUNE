@@ -112,6 +112,7 @@
 #include "gamestates/cCreatorState.h"
 #include "context/TextContext.hpp"
 #include "drawers/cMouseDrawer.h"
+#include "utils/Localization.hpp"
 
 namespace {
 bool isConsoleToggleKey(const cKeyboardEvent &event) {
@@ -1519,7 +1520,7 @@ void cGame::saveBmpScreenToDisk()
     bool saved = cScreenShotSaver::saveScreen(renderer, m_gameSettings->m_screenW, m_gameSettings->m_screenH);
     SDL_SetRenderTarget(renderer, nullptr);
     if (saved) {
-        m_notificationArea->addNotification("Screenshot saved.", eNotificationType::NEUTRAL);
+        m_notificationArea->addNotification(localization::text("Screenshot saved.", "Снимок экрана сохранён."), eNotificationType::NEUTRAL);
     }
 }
 
@@ -1536,29 +1537,29 @@ void cGame::onKeyPressedGame(const cKeyboardEvent &event)
 
     if (event.isAction(eKeyAction::TOGGLE_MUSIC)) {
         m_audioContext->toggleMusic();
-        m_notificationArea->addNotification("Music toggle successfully", eNotificationType::NEUTRAL);
+        m_notificationArea->addNotification(localization::text("Music toggle successfully", "Музыка переключена"), eNotificationType::NEUTRAL);
     }
 
     if (event.isAction(eKeyAction::MUSIC_VOLUME_DOWN)) {
         m_audioContext->changeMusicVolume(-10);
-        m_notificationArea->addNotification("Music volume down", eNotificationType::NEUTRAL);
+        m_notificationArea->addNotification(localization::text("Music volume down", "Музыка тише"), eNotificationType::NEUTRAL);
     }
 
     if (event.isAction(eKeyAction::MUSIC_VOLUME_UP)) {
         m_audioContext->changeMusicVolume(10);
-        m_notificationArea->addNotification("Music volume up", eNotificationType::NEUTRAL);
+        m_notificationArea->addNotification(localization::text("Music volume up", "Музыка громче"), eNotificationType::NEUTRAL);
     }
 
     if (event.isAction(eKeyAction::GAME_SPEED_UP)) {
         auto timerManager = ctx->getTimeManager();
         timerManager->setGlobalSpeedVariation(-1);
-        m_notificationArea->addNotification("Game speed up", eNotificationType::NEUTRAL);
+        m_notificationArea->addNotification(localization::text("Game speed up", "Игра быстрее"), eNotificationType::NEUTRAL);
     }
 
     if (event.isAction(eKeyAction::GAME_SPEED_DOWN)) {
         auto timerManager = ctx->getTimeManager();
         timerManager->setGlobalSpeedVariation(1);
-        m_notificationArea->addNotification("Game speed down", eNotificationType::NEUTRAL);
+        m_notificationArea->addNotification(localization::text("Game speed down", "Игра медленнее"), eNotificationType::NEUTRAL);
     }
 
     if (event.isAction(eKeyAction::TOGGLE_FULLSCREEN)) {
@@ -1573,7 +1574,7 @@ void cGame::onKeyPressedGame(const cKeyboardEvent &event)
 
     if (event.isAction(eKeyAction::TOGGLE_CHEAT)) {
         m_gameSettings->m_cheatMode = !m_gameSettings->m_cheatMode;
-        auto message = std::format("Cheat mode {}", m_gameSettings->m_cheatMode ? "enabled" : "disabled");
+        auto message = (m_gameSettings->m_cheatMode ? std::string(localization::text("Cheat mode enabled", "Режим читов включён")) : std::string(localization::text("Cheat mode disabled", "Режим читов выключен")));
         Logger::info(COMP_CHEATS, "Cheat mode", "{}", message);
         m_notificationArea->addNotification(message, eNotificationType::OTHER);
     }

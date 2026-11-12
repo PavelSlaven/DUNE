@@ -42,6 +42,7 @@
 
 #include "data/gfxaudio.h"
 #include "gameobjects/cFlag.h"
+#include "utils/Localization.hpp"
 
 // "default" Constructor
 cAbstractStructure::cAbstractStructure() //:
@@ -1010,5 +1011,5 @@ std::string cAbstractStructure::getDefaultStatusMessageBar() const
 {
     s_StructureInfo info = getStructureInfo();
     int health = getHealthNormalized() * 100;
-    return std::format("{} at {} percent health", info.name, health);
+    return localization::format("{} at {} percent health", "{}: состояние {} %", info.name, health);
 }

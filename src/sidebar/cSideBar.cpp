@@ -36,6 +36,7 @@
 #include "context/cGameObjectContext.h"
 #include "drawers/cBuildingListDrawer.h"
 #include "drawers/cOrderDrawer.h"
+#include "utils/Localization.hpp"
 #include <algorithm>
 
 
@@ -105,12 +106,12 @@ bool cSideBar::startBuildingItemIfOk(cBuildingListItem *item) const
 
     if (item->isTypeStructure() &&
         m_player->getObjects()->getStructureFactory()->isStructureLimitReached() && !cStructureFactory::isModifyingTerrain(item->getBuildId())) {
-        m_drawManager->setMessage("Unable to create more.");
+        m_drawManager->setMessage(localization::text("Unable to create more.", "Больше построить нельзя."));
         return false;
     }
 
     if (item->isTypeUnit() && !item->getList()->isType(eListType::LIST_STARPORT) && m_player->getObjects()->getUnits()->isUnitLimitReached()) {
-        m_drawManager->setMessage("Unable to create more.");
+        m_drawManager->setMessage(localization::text("Unable to create more.", "Больше построить нельзя."));
         return false;
     }
 

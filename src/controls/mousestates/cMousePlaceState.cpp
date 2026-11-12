@@ -34,6 +34,7 @@
 
 #include "data/gfxaudio.h"
 #include "gameobjects/structures/cStructureFactory.h"
+#include "utils/Localization.hpp"
 
 cMousePlaceState::cMousePlaceState(cPlayer *player, cGameControlsContext *context, cMouse *mouse) :
     cMouseState(player, context, mouse)
@@ -85,7 +86,7 @@ void cMousePlaceState::onMouseLeftButtonClicked()
 
     if (mayPlaceIt(itemToPlace, m_context->getMouseCell())) {
         if (m_context->getObjects()->getStructureFactory()->isStructureLimitReached() && !cStructureFactory::isModifyingTerrain(itemToPlace->getBuildId())) {
-            m_context->getDrawManager()->setMessage("Unable to create more.");
+            m_context->getDrawManager()->setMessage(localization::text("Unable to create more.", "Больше построить нельзя."));
             return;
         }
 

@@ -47,6 +47,7 @@
 #include "sidebar/cBuildingListItem.h"
 #include "sidebar/cBuildingListUpdater.h"
 #include "utils/cRectangle.h"
+#include "utils/Localization.hpp"
 
 #include <algorithm>
 #include <cstdlib>
@@ -174,7 +175,7 @@ bool UiAuditAccess::optionsStatus(cGame &currentGame)
     if (options == nullptr || options->m_statusLabel == nullptr) {
         return false;
     }
-    options->m_statusLabel->setText("Saved. Restart the game.");
+    options->m_statusLabel->setText(localization::text("Saved. Restart the game.", "Сохранено. Перезапустите игру."));
     return true;
 }
 

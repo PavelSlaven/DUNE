@@ -48,6 +48,7 @@
 #include "data/gfxaudio.h"
 #include "game/cGameSettings.h"
 #include "gameobjects/players/cPlayerDifficultySettings.h"
+#include "utils/Localization.hpp"
 #include <algorithm>
 
 
@@ -3820,7 +3821,7 @@ std::string cUnit::getHarvesterStatusForMessageBar()
 {
     s_UnitInfo &info = getUnitInfo();
     int harvested = (static_cast<float>(iCredits)/info.credit_capacity)*100;
-    return std::format("{} at {} percent health and {} percent harvested", info.name, getHealthNormalized()*100, harvested);
+    return localization::format("{} at {} percent health and {} percent harvested", "{}: состояние {} %, груз {} %", info.name, getHealthNormalized()*100, harvested);
 }
 
 std::string cUnit::getUnitStatusForMessageBar()
@@ -3830,7 +3831,7 @@ std::string cUnit::getUnitStatusForMessageBar()
         case HARVESTER:
             return getHarvesterStatusForMessageBar();
         default:
-            return std::format("{} at {} percent health", info.name, getHealthNormalized()*100);
+            return localization::format("{} at {} percent health", "{}: состояние {} %", info.name, getHealthNormalized()*100);
     }
 
 }

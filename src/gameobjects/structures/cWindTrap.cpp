@@ -19,6 +19,7 @@
 #include "definitions.h"
 #include "gameobjects/players/cPlayer.h"
 #include "context/cInfoContext.h"
+#include "utils/Localization.hpp"
 #include <format>
 
 // Constructor
@@ -70,5 +71,5 @@ int cWindTrap::getMaxPowerOut() const
 std::string cWindTrap::getStatusForMessageBar() const
 {
     int powerProduction = (static_cast<float>(getPowerOut()) / static_cast<float>(getMaxPowerOut())) * static_cast<float>(100);
-    return std::format("{} and producing at {} percent capacity", cAbstractStructure::getDefaultStatusMessageBar(), powerProduction);
+    return localization::format("{} and producing at {} percent capacity", "{}, мощность {} %", cAbstractStructure::getDefaultStatusMessageBar(), powerProduction);
 }

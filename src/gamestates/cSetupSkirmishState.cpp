@@ -60,6 +60,7 @@
 #include "gamestates/cGameState.h"
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
+#include "utils/Localization.hpp"
 
 namespace {
 struct SkirmishPlayerTableLayout {
@@ -258,7 +259,7 @@ cSetupSkirmishState::cSetupSkirmishState(sGameServices* services, cPreviewMaps* 
 
     nextMapButton = GuiButtonBuilder()
         .withRect(nextMaps)
-        .withLabel("Next")
+        .withLabel(localization::text("Next", "Далее"))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withTheme(GuiTheme::Remaster())
@@ -268,7 +269,7 @@ cSetupSkirmishState::cSetupSkirmishState(sGameServices* services, cPreviewMaps* 
 
     previousMapButton = GuiButtonBuilder()
             .withRect(previousMaps)
-            .withLabel("Previous")
+            .withLabel(localization::text("Previous", "Предыдущие"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::Remaster())
@@ -321,7 +322,7 @@ cSetupSkirmishState::cSetupSkirmishState(sGameServices* services, cPreviewMaps* 
     cRectangle backButtonRect(backButtonX, backButtonY, backButtonWidth, topBarHeight);
     backButton = GuiButtonBuilder()
             .withRect(backButtonRect)
-            .withLabel("Back")
+            .withLabel(localization::text("Back", "Назад"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::Remaster())
@@ -341,7 +342,7 @@ cSetupSkirmishState::cSetupSkirmishState(sGameServices* services, cPreviewMaps* 
     cRectangle startButtonRect = cRectangle(startButtonX, startButtonY, startButtonWidth, topBarHeight);
     startButton = GuiButtonBuilder()
             .withRect(startButtonRect)
-            .withLabel("Start")
+            .withLabel(localization::text("Start", "Старт"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::Remaster())
@@ -358,7 +359,7 @@ cSetupSkirmishState::cSetupSkirmishState(sGameServices* services, cPreviewMaps* 
     cRectangle surpriseMeButtonRect = cRectangle(surpriseMeButtonX, bottomY, surpriseMeButtonWidth, btnHeight);
     surpriseMeButton = GuiButtonBuilder()
             .withRect(surpriseMeButtonRect)
-            .withLabel("Surprise me")
+            .withLabel(localization::text("Surprise me", "Удиви меня"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::Remaster())
@@ -374,7 +375,7 @@ cSetupSkirmishState::cSetupSkirmishState(sGameServices* services, cPreviewMaps* 
     cRectangle newMapButtonRect = cRectangle(centerGroupX, bottomY, newMapButtonWidth, btnHeight);
     newMapButton = GuiButtonBuilder()
             .withRect(newMapButtonRect)
-            .withLabel("New Map")
+            .withLabel(localization::text("New Map", "Новая карта"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::Remaster())
@@ -388,7 +389,7 @@ cSetupSkirmishState::cSetupSkirmishState(sGameServices* services, cPreviewMaps* 
     cRectangle modifyButtonRect = cRectangle(modifyButtonX, bottomY, modifyButtonWidth, btnHeight);
     modifyButton = GuiButtonBuilder()
             .withRect(modifyButtonRect)
-            .withLabel("Modify")
+            .withLabel(localization::text("Modify", "Изменить"))
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(GuiTheme::Remaster())
@@ -445,7 +446,7 @@ void cSetupSkirmishState::draw() const
 
     drawPanel(topBar, Color{25, 31, 35, 255}, colorDarkishBorder);
     m_textDrawer->drawTextCentered(
-        "Skirmish",
+        localization::text("Skirmish", "Схватка"),
         (topBarHeight - m_textDrawer->getFontHeight()) / 2,
         Color{231, 190, 91, 255}
     );
@@ -454,7 +455,7 @@ void cSetupSkirmishState::draw() const
     drawPanel(playerList, colorLightBackground, colorDarkishBorder);
     drawPanel(mapListTitle, colorLightBackground, colorDarkishBorder);
     m_textDrawer->drawTextCentered(
-        "Maps",
+        localization::text("Maps", "Карты"),
         mapListTitle.getX(),
         mapListTitle.getWidth(),
         mapListTitle.getY() + 4,
@@ -462,7 +463,7 @@ void cSetupSkirmishState::draw() const
     );
     drawPanel(previewMapTitle, colorLightBackground, colorDarkishBorder);
     m_textDrawer->drawTextCentered(
-        "Preview",
+        localization::text("Preview", "Предпросмотр"),
         previewMapTitle.getX(),
         previewMapTitle.getWidth(),
         previewMapTitle.getY() + 4,
@@ -481,7 +482,7 @@ void cSetupSkirmishState::draw() const
 
     const SkirmishPlayerTableLayout headerLayout(playerTitleBar.getY() + 3);
     const std::array<const char *, 5> headerLabels = {
-        "Player", "House", "Credits", "Units", "Team"
+        localization::text("Player", "Игрок"), localization::text("House", "Дом"), localization::text("Credits", "Кредиты"), localization::text("Units", "Войска"), localization::text("Team", "Команда")
     };
     const auto headerColumns = headerLayout.columns();
     for (std::size_t column = 0; column < headerColumns.size(); ++column) {
@@ -620,7 +621,7 @@ void cSetupSkirmishState::drawHouse(const s_SkirmishPlayer &sSkirmishPlayer, con
 {
     Color textColor = getTextColorForRect(sSkirmishPlayer, houseRec);
     const std::string &cPlayerHouseString = cPlayer::getHouseNameForId(sSkirmishPlayer.iHouse);
-    const char *cHouse = sSkirmishPlayer.iHouse > 0 ? cPlayerHouseString.c_str() : "Random";
+    const char *cHouse = sSkirmishPlayer.iHouse > 0 ? cPlayerHouseString.c_str() : localization::text("Random", "Случайно");
     m_textDrawer->drawTextCentered(
         cHouse,
         houseRec.getX(),
@@ -634,7 +635,7 @@ void cSetupSkirmishState::drawPlayerBrain(const s_SkirmishPlayer &sSkirmishPlaye
 {
     if (sSkirmishPlayer.bHuman) {
         m_textDrawer->drawTextCentered(
-            "Human",
+            localization::text("Human", "Человек"),
             brainRect.getX(),
             brainRect.getWidth(),
             brainRect.getY(),
@@ -644,7 +645,7 @@ void cSetupSkirmishState::drawPlayerBrain(const s_SkirmishPlayer &sSkirmishPlaye
     else {
         Color textColor = getTextColorForRect(sSkirmishPlayer, brainRect);
         m_textDrawer->drawTextCentered(
-            "CPU",
+            localization::text("CPU", "ИИ"),
             brainRect.getX(),
             brainRect.getWidth(),
             brainRect.getY(),
@@ -665,7 +666,7 @@ void cSetupSkirmishState::drawStartPoints(int iStartingPoints, const cRectangle 
         textColor = colorDisabled;
     }
 
-    m_textDrawer->drawText(startPoints.getX(), startPoints.getY(), textColor,std::format("Startpoints: {}",iStartingPoints));
+    m_textDrawer->drawText(startPoints.getX(), startPoints.getY(), textColor,localization::format("Startpoints: {}", "Стартовых позиций: {}",iStartingPoints));
 }
 
 void cSetupSkirmishState::drawPreviewMapAndMore(const cRectangle &previewMapRect) const
@@ -702,7 +703,7 @@ void cSetupSkirmishState::drawPreviewMapAndMore(const cRectangle &previewMapRect
         }
         const int infoY = previewMapRect.getY() + previewMapRect.getHeight() + 8;
         const int infoRowHeight = m_textDrawer->getFontHeight() + 2;
-        const std::string mapName = std::format("Name: {}", selectedMap->name);
+        const std::string mapName = localization::format("Name: {}", "Название: {}", selectedMap->name);
         const std::string mapSize = std::format("{}", m_previewMaps->getMapSize(iSkirmishMap));
         m_textDrawer->drawText(previewMapRect.getX() + 4, infoY, Color::Yellow, mapName);
         m_textDrawer->drawText(
@@ -715,7 +716,7 @@ void cSetupSkirmishState::drawPreviewMapAndMore(const cRectangle &previewMapRect
             previewMapRect.getX() + 4,
             infoY + infoRowHeight,
             Color::White,
-            std::format("Author: {}", selectedMap->author)
+            localization::format("Author: {}", "Автор: {}", selectedMap->author)
         );
         m_textDrawer->drawText(
             previewMapRect.getX() + 4,
@@ -731,10 +732,10 @@ void cSetupSkirmishState::drawDetonateBlooms(const cRectangle &detonateBloomsRec
     if (spawnBlooms) {
         Color textColor = detonateBloomsRect.isPointWithin(m_mouse->getX(), m_mouse->getY()) ? Color::Red : Color::White;
         m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), textColor,
-                            std::format("Auto-detonate : {}", detonateBlooms ? "YES" : "NO"));
+                            localization::format("Auto-detonate : {}", "Автоподрыв: {}", detonateBlooms ? localization::text("YES", "ДА") : localization::text("NO", "НЕТ")));
     }
     else {
-        m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), colorDisabled, "Auto-detonate : -");
+        m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), colorDisabled, localization::text("Auto-detonate : -", "Автоподрыв: -"));
     }
 }
 
@@ -742,21 +743,21 @@ void cSetupSkirmishState::drawBlooms(const cRectangle &bloomsRect) const
 {
     Color textColor = bloomsRect.isPointWithin(m_mouse->getX(), m_mouse->getY()) ? Color::Red : Color::White;
     m_textDrawer->drawText(bloomsRect.getX(), bloomsRect.getY(), textColor,
-                        std::format("Spice blooms : {}", spawnBlooms ? "YES" : "NO"));
+                        localization::format("Spice blooms : {}", "Цветки пряности: {}", spawnBlooms ? localization::text("YES", "ДА") : localization::text("NO", "НЕТ")));
 }
 
 void cSetupSkirmishState::drawWorms(const cRectangle &wormsRect) const
 {
     Color textColor = wormsRect.isPointWithin(m_mouse->getX(), m_mouse->getY()) ? Color::Red : Color::White;
     m_textDrawer->drawText(wormsRect.getX(), wormsRect.getY(), textColor,
-                        std::format("Worms? : {}", spawnWorms));
+                        localization::format("Worms? : {}", "Черви: {}", spawnWorms));
 }
 
 void cSetupSkirmishState::drawTechLevel(const cRectangle &techLevelRect) const
 {
     Color textColor = techLevelRect.isPointWithin(m_mouse->getX(), m_mouse->getY()) ? Color::Red : Color::White;
     m_textDrawer->drawText(techLevelRect.getX(), techLevelRect.getY(), textColor,
-                        std::format("TechLevel : {}", techLevel));
+                        localization::format("TechLevel : {}", "Техуровень: {}", techLevel));
 }
 
 std::vector<int> cSetupSkirmishState::getEligibleStartingUnitTypes(int forTechLevel) const

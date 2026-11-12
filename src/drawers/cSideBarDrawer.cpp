@@ -34,6 +34,7 @@
 #include "game/cGameSettings.h"
 #include "include/cAssert.h"
 #include "include/Texture.hpp"
+#include "utils/Localization.hpp"
 
 #include <SDL3/SDL.h>
 #include <algorithm>
@@ -166,18 +167,18 @@ Texture *cSideBarDrawer::getHouseCrest() const
 std::string cSideBarDrawer::getHouseDisplayName() const
 {
     if (m_player->isHouse(ATREIDES)) {
-        return "HOUSE ATREIDES";
+        return localization::text("HOUSE ATREIDES", "ДОМ АТРЕЙДЕС");
     }
     if (m_player->isHouse(HARKONNEN)) {
-        return "HOUSE HARKONNEN";
+        return localization::text("HOUSE HARKONNEN", "ДОМ ХАРКОННЕН");
     }
     if (m_player->isHouse(ORDOS)) {
-        return "HOUSE ORDOS";
+        return localization::text("HOUSE ORDOS", "ДОМ ОРДОС");
     }
     if (m_player->isHouse(SARDAUKAR)) {
-        return "SARDAUKAR";
+        return localization::text("SARDAUKAR", "САРДАУКАРЫ");
     }
-    return "UNKNOWN HOUSE";
+    return localization::text("UNKNOWN HOUSE", "НЕИЗВЕСТНЫЙ ДОМ");
 }
 
 void cSideBarDrawer::drawHdRadarPanel()
@@ -357,7 +358,7 @@ void cSideBarDrawer::drawHdCapacities()
     const int used = std::max(0, m_player->getPowerUsage());
     drawHdMeter(
         layout.powerMeter,
-        layout.powerMeter.getWidth() < 140 ? "PWR" : "POWER",
+        layout.powerMeter.getWidth() < 140 ? localization::text("PWR", "ЭНЕРГ.") : localization::text("POWER", "ЭНЕРГИЯ"),
         used,
         produced,
         Color{72, 202, 103, 255},
@@ -366,7 +367,7 @@ void cSideBarDrawer::drawHdCapacities()
 
     drawHdMeter(
         layout.spiceMeter,
-        layout.spiceMeter.getWidth() < 140 ? "SPC" : "SPICE",
+        layout.spiceMeter.getWidth() < 140 ? localization::text("SPC", "ПРЯН.") : localization::text("SPICE", "ПРЯНОСТЬ"),
         std::max(0, m_player->getCredits()),
         std::max(1, static_cast<int>(m_player->getMaxCredits())),
         Color{218, 139, 47, 255},

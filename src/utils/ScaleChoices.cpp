@@ -2,6 +2,7 @@
 
 #include "utils/RenderScale.hpp"
 #include "utils/WorldScale.hpp"
+#include "utils/Localization.hpp"
 
 #include <algorithm>
 #include <format>
@@ -36,6 +37,6 @@ std::size_t scaleChoiceIndex(const std::vector<int> &choices, int scalePercent)
 std::string scaleChoiceText(int scalePercent, int automaticScalePercent)
 {
     return scalePercent == AutomaticRenderScale
-        ? std::format("Auto ({}%)", automaticScalePercent)
+        ? localization::format("Auto ({}%)", "Авто ({}%)", automaticScalePercent)
         : std::format("{}%", scalePercent);
 }
