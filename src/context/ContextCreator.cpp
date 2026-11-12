@@ -25,6 +25,8 @@
 
 #include "include/cAssert.h"
 
+#include <filesystem>
+
 ContextCreator::ContextCreator(SDL_Renderer *renderer, cFileValidator *settingsValidator)
 {
     d2tm_assert(renderer!=nullptr);
@@ -75,28 +77,34 @@ ContextCreator::ContextCreator(SDL_Renderer *renderer, cFileValidator *settingsV
     //
     // loading all fonts
     //
-    game_font = TTF_OpenFont(settingsValidator->getFullName(eGameDirFileName::ARRAKEEN).c_str(),12);
-    if (game_font == nullptr) {
-        Logger::error(COMP_INIT, "Load data", "Could not hook/load font: {}", settingsValidator->getName(eGameDirFileName::ARRAKEEN));
-    }
-    else {
-        Logger::info(COMP_INIT, "Load data", "Hooked font: {}", settingsValidator->getName(eGameDirFileName::ARRAKEEN));
-    }
+    const auto fontDirectory = std::filesystem::path(
+        settingsValidator->getFullName(eGameDirFileName::BENEGESS)).parent_path();
+    const auto openFont = [settingsValidator](eGameDirFileName configuredFont) {
+        const auto fontPath = std::filesystem::path(settingsValidator->getFullName(configuredFont));
+        TTF_Font *font = TTF_OpenFont(fontPath.string().c_str(), 12);
+        if (!font) {
+            Logger::error(COMP_INIT, "Load data", "Could not hook/load font: {}", fontPath.filename().string());
+        } else {
+            Logger::info(COMP_INIT, "Load data", "Hooked font: {}", fontPath.filename().string());
+        }
+        return font;
+    };
+    game_font = openFont(eGameDirFileName::ARRAKEEN);
+    bene_font = openFont(eGameDirFileName::BENEGESS);
+    small_font = openFont(eGameDirFileName::SMALL);
 
-    bene_font = TTF_OpenFont(settingsValidator->getFullName(eGameDirFileName::BENEGESS).c_str(),12);
-    if (bene_font == nullptr) {
-        Logger::error(COMP_INIT, "Load data", "Could not hook/load font: {}", settingsValidator->getName(eGameDirFileName::BENEGESS));
-    }
-    else {
-        Logger::info(COMP_INIT, "Load data", "Hooked font: {}", settingsValidator->getName(eGameDirFileName::BENEGESS));
-    }
-
-    small_font = TTF_OpenFont(settingsValidator->getFullName(eGameDirFileName::SMALL).c_str(),12);
-    if (small_font == nullptr) {
-        Logger::error(COMP_INIT, "Load data", "Could not hook/load font: {}", settingsValidator->getName(eGameDirFileName::SMALL));
-    }
-    else {
-        Logger::info(COMP_INIT, "Load data", "Hooked font: {}", settingsValidator->getName(eGameDirFileName::SMALL));
+    const auto fallbackFontPath = fontDirectory / "PTMono-Regular.ttf";
+    symbol_fallback_font = TTF_OpenFont(fallbackFontPath.string().c_str(), 12);
+    if (!symbol_fallback_font) {
+        Logger::warn(COMP_INIT, "Load data", "Could not hook/load fallback font: PTMono-Regular.ttf");
+    } else {
+        TTF_Font *fonts[] = {game_font, bene_font, small_font};
+        for (TTF_Font *font : fonts) {
+            if (font && !TTF_AddFallbackFont(font, symbol_fallback_font)) {
+                Logger::warn(COMP_INIT, "Load data", "Could not attach fallback font: PTMono-Regular.ttf: {}", SDL_GetError());
+            }
+        }
+        Logger::info(COMP_INIT, "Load data", "Hooked fallback font: PTMono-Regular.ttf");
     }
 }
 
@@ -105,6 +113,7 @@ ContextCreator::~ContextCreator()
     TTF_CloseFont(game_font);
     TTF_CloseFont(bene_font);
     TTF_CloseFont(small_font);
+    TTF_CloseFont(symbol_fallback_font);
 }
 
 std::unique_ptr<GraphicsContext> ContextCreator::createGraphicsContext()

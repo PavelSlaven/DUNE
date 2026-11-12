@@ -107,6 +107,9 @@ void readSettings(const cSection &section, InitialGameSettings &settings)
     if (section.hasValue("WorldScale")) {
         settings.worldScalePercent = section.getInt("WorldScale");
     }
+    if (section.hasValue("Language")) {
+        settings.language = section.getStringValue("Language");
+    }
     if (section.hasValue("AllowRepeatingReinforcements")) {
         settings.allowRepeatingReinforcements = section.getBoolean("AllowRepeatingReinforcements");
     }
@@ -187,6 +190,7 @@ bool save(const std::filesystem::path &file, const InitialGameSettings &settings
     set(ini, "CameraEdgeMove", toText(settings.cameraEdgeMove));
     set(ini, "RenderScale", std::to_string(settings.renderScalePercent));
     set(ini, "WorldScale", std::to_string(settings.worldScalePercent));
+    set(ini, "Language", settings.language);
     set(ini, "AllowRepeatingReinforcements", toText(settings.allowRepeatingReinforcements));
     set(ini, "AllTurretsDownOnLowPower", toText(settings.turretsDownOnLowPower));
     set(ini, "RocketTurretsDownOnLowPower", toText(settings.rocketTurretsDownOnLowPower));
@@ -238,6 +242,30 @@ bool loadScales(const std::filesystem::path &file, InitialGameSettings &settings
     }
     if (section.hasValue("WorldScale")) {
         settings.worldScalePercent = section.getInt("WorldScale");
+    }
+    return true;
+}
+
+bool saveLanguage(const std::filesystem::path &file, const std::string &language, std::string &error)
+{
+    cIniFile loaded;
+    std::string loadError;
+    cIniFile fresh;
+    cIniFile &ini = loadIni(file, loaded, loadError) ? loaded : fresh;
+    set(ini, "Language", language);
+    return writeIni(ini, file, error);
+}
+
+bool loadLanguage(const std::filesystem::path &file, InitialGameSettings &settings, std::string &error)
+{
+    cIniFile ini;
+    if (!loadIni(file, ini, error)) {
+        return false;
+    }
+
+    const cSection section = ini.getSection(SECTION);
+    if (section.hasValue("Language")) {
+        settings.language = section.getStringValue("Language");
     }
     return true;
 }

@@ -429,6 +429,11 @@ bool handleEarlyExit(int &exitCode)
         exitCode = 2;
         return true;
     }
+    if (!options().language.empty() && options().language != "en" && options().language != "ru") {
+        std::cerr << "ui-audit: bad language " << options().language << '\n';
+        exitCode = 2;
+        return true;
+    }
     if (findScene(options().scene) == nullptr) {
         std::cerr << "ui-audit: unknown scene " << options().scene << '\n';
         exitCode = 2;

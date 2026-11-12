@@ -19,6 +19,7 @@
 #include "utils/WorldScale.hpp"
 
 #include <optional>
+#include <string>
 
 
 class cGameSettings {
@@ -48,6 +49,12 @@ public:
     void setSavedScalePercents(int renderScalePercent, int worldScalePercent) {
         m_savedRenderScalePercent = renderScalePercent;
         m_savedWorldScalePercent = worldScalePercent;
+    }
+    const std::string &getSavedLanguage() const {
+        return m_savedLanguage;
+    }
+    void setSavedLanguage(const std::string &language) {
+        m_savedLanguage = language;
     }
     float getWorldScaleFactor() const {
         return worldScaleZoom(m_worldScalePercent, m_outputH);
@@ -168,6 +175,7 @@ private:
     // written to preferences.ini; the running game keeps m_renderScalePercent and m_worldScalePercent until restart
     int m_savedRenderScalePercent = 0;
     int m_savedWorldScalePercent = 0;
+    std::string m_savedLanguage = "ru";
 
     bool m_disableAI;  
     bool m_oneAi;      

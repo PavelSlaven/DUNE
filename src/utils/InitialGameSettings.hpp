@@ -23,6 +23,7 @@ struct InitialGameSettings {
     float cameraBorderOrKeyMoveSpeed = 0.5f;
     bool cameraEdgeMove = true;
     bool windowed = false;
+    std::string language = "ru";
     int renderScalePercent = 0;
     int worldScalePercent = 0;
     bool allowRepeatingReinforcements = false;

@@ -43,8 +43,18 @@
 #include "utils/RenderScale.hpp"
 #include "utils/WorldScale.hpp"
 #include "utils/ScaleChoices.hpp"
+#include "utils/Localization.hpp"
 
 #include <algorithm>
+
+namespace {
+
+std::string normalizeLanguage(const std::string &language)
+{
+    return language == "en" || language == "EN" ? "en" : "ru";
+}
+
+}
 
 cOptionsState::cOptionsState(sGameServices* services, int prevState)
     : cGameState(services),
@@ -64,6 +74,7 @@ cOptionsState::cOptionsState(sGameServices* services, int prevState)
     m_worldScaleChoices = worldScaleChoices();
     m_selectedRenderScaleIndex = scaleChoiceIndex(m_renderScaleChoices, m_settings->getSavedRenderScalePercent());
     m_selectedWorldScaleIndex = scaleChoiceIndex(m_worldScaleChoices, m_settings->getSavedWorldScalePercent());
+    m_selectedLanguage = normalizeLanguage(m_settings->getSavedLanguage());
     refresh();
     m_backgroundTexture = &services->screenTexture;
 }
@@ -389,7 +400,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &previousRenderScaleRect = rect(selectorX, contentRowY(5), arrowWidth, buttonHeight);
     auto previousRenderScaleButton = GuiButtonBuilder()
             .withRect(previousRenderScaleRect)
-            .withLabel("<")
+            .withLabel("◄")
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
@@ -413,7 +424,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &nextRenderScaleRect = rect(selectorX + arrowWidth + margin + scaleValueWidth + margin, contentRowY(5), arrowWidth, buttonHeight);
     auto nextRenderScaleButton = GuiButtonBuilder()
             .withRect(nextRenderScaleRect)
-            .withLabel(">")
+            .withLabel("►")
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
@@ -437,7 +448,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &previousWorldScaleRect = rect(selectorX, contentRowY(6), arrowWidth, buttonHeight);
     auto previousWorldScaleButton = GuiButtonBuilder()
             .withRect(previousWorldScaleRect)
-            .withLabel("<")
+            .withLabel("◄")
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
@@ -461,7 +472,7 @@ void cOptionsState::constructWindow(int prevState)
     const cRectangle &nextWorldScaleRect = rect(selectorX + arrowWidth + margin + scaleValueWidth + margin, contentRowY(6), arrowWidth, buttonHeight);
     auto nextWorldScaleButton = GuiButtonBuilder()
             .withRect(nextWorldScaleRect)
-            .withLabel(">")
+            .withLabel("►")
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
@@ -496,6 +507,32 @@ void cOptionsState::constructWindow(int prevState)
             .build();
     gui_LowPowerIconCheck->setChecked(m_settings->isShowLowPowerIcon());
     m_guiWindow->addGuiObject(std::move(gui_LowPowerIconCheck));
+
+    const cRectangle &languageRect = rect(contentX, contentRowY(8), displayLabelWidth, buttonHeight);
+    auto languageLabel = GuiLabelBuilder()
+            .withRect(languageRect)
+            .withLabel(localization::text("Language", "Язык"))
+            .withTextDrawer(m_textDrawer)
+            .withRenderer(m_sdlDrawer)
+            .withTheme(controlTheme)
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTextAlign(GuiTextAlignHorizontal::LEFT)
+            .build();
+    m_guiWindow->addGuiObject(std::move(languageLabel));
+
+    const int languageButtonWidth = arrowWidth + margin + scaleValueWidth + margin + arrowWidth;
+    const cRectangle &languageButtonRect = rect(selectorX, contentRowY(8), languageButtonWidth, buttonHeight);
+    auto languageButton = GuiButtonBuilder()
+            .withRect(languageButtonRect)
+            .withLabel(m_selectedLanguage == "en" ? "English" : "Русский")
+            .withTextDrawer(m_textDrawer)
+            .withRenderer(m_sdlDrawer)
+            .withTheme(controlTheme)
+            .withKind(buttonKind)
+            .onClick([this]() { selectLanguage(); })
+            .build();
+    m_languageButton = languageButton.get();
+    m_guiWindow->addGuiObject(std::move(languageButton));
 
     const cRectangle &applyRect = relativeRect(menuLayout.apply);
     auto applyButton = GuiButtonBuilder()
@@ -554,6 +591,13 @@ void cOptionsState::selectWorldScale(int step)
     updateScaleControls();
 }
 
+void cOptionsState::selectLanguage()
+{
+    m_selectedLanguage = m_selectedLanguage == "en" ? "ru" : "en";
+    m_statusLabel->setText("");
+    updateScaleControls();
+}
+
 void cOptionsState::updateScaleControls()
 {
     const int outputW = m_settings->getOutputW();
@@ -562,9 +606,12 @@ void cOptionsState::updateScaleControls()
     const int worldScale = m_worldScaleChoices[m_selectedWorldScaleIndex];
     m_renderScaleValueLabel->setText(scaleChoiceText(renderScale, calculateAutomaticRenderScalePercent(outputW, outputH)));
     m_worldScaleValueLabel->setText(scaleChoiceText(worldScale, calculateAutomaticWorldScalePercent(outputH)));
+    m_languageButton->setText(m_selectedLanguage == "en" ? "English" : "Русский");
+    const std::string savedLanguage = normalizeLanguage(m_settings->getSavedLanguage());
     m_applyButton->setEnabled(
         renderScale != m_settings->getSavedRenderScalePercent() ||
-        worldScale != m_settings->getSavedWorldScalePercent()
+        worldScale != m_settings->getSavedWorldScalePercent() ||
+        m_selectedLanguage != savedLanguage
     );
 }
 
@@ -572,13 +619,22 @@ void cOptionsState::applyScaleSettings()
 {
     const int renderScale = m_renderScaleChoices[m_selectedRenderScaleIndex];
     const int worldScale = m_worldScaleChoices[m_selectedWorldScaleIndex];
-    std::string error = "Could not get the user data directory";
+    std::string scaleError = "Could not get the user data directory";
+    std::string languageError = "Could not get the user data directory";
     const auto prefsFile = PreferencesPath::file(Preferences::FILE_NAME);
-    if (prefsFile && Preferences::saveScales(*prefsFile, renderScale, worldScale, error)) {
+    bool scalesSaved = false;
+    bool languageSaved = false;
+    if (prefsFile) {
+        scalesSaved = Preferences::saveScales(*prefsFile, renderScale, worldScale, scaleError);
+        languageSaved = Preferences::saveLanguage(*prefsFile, m_selectedLanguage, languageError);
+    }
+    if (scalesSaved && languageSaved) {
         m_settings->setSavedScalePercents(renderScale, worldScale);
+        m_settings->setSavedLanguage(m_selectedLanguage);
         m_statusLabel->setText("Saved. Restart the game.");
     } else {
-        Logger::warn(COMP_GAMERULES, "Preferences", "Could not save the scales: {}", error);
+        const std::string &error = scalesSaved ? languageError : scaleError;
+        Logger::warn(COMP_GAMERULES, "Preferences", "Could not save preferences: {}", error);
         m_statusLabel->setText("Could not save preferences.ini");
     }
     updateScaleControls();
@@ -635,6 +691,7 @@ void cOptionsState::refresh()
     m_worldScaleValueLabel = nullptr;
     m_statusLabel = nullptr;
     m_applyButton = nullptr;
+    m_languageButton = nullptr;
     constructWindow(m_prevState);
     m_backgroundTexture = nullptr;
 }
