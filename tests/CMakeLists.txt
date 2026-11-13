@@ -89,6 +89,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/gameobjects/map/cPreviewMaps.cpp
     ${CMAKE_SOURCE_DIR}/src/gameobjects/mentat/MentatTextLayout.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/SDLDrawer.cpp
+    ${CMAKE_SOURCE_DIR}/src/drawers/CommandIcons.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/cTextDrawer.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/cTextTextureCache.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/RNG.cpp

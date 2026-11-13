@@ -33,6 +33,7 @@ enum GameKind {
     ScrollEnd,
     Rally,
     DamagedUnit,
+    RepairMode,
     Harvester,
     Mcv,
     RadarDish,

@@ -19,6 +19,7 @@
 #include "drawers/SDLDrawer.hpp"
 #include "drawers/cTextDrawer.h"
 #include "game/cGameSettings.h"
+#include "gui/RemasterButtonFrame.hpp"
 #include "include/cAssert.h"
 #include "controls/sMouseEvent.h"
 
@@ -99,53 +100,7 @@ void GuiButton::draw() const
             m_sdlDrawer->renderStrechFullSprite(m_tex, m_rect, 255);
             break;
         case REMASTER_BUTTON: {
-            Color fillColor = m_theme.fillColor;
-            Color outerBorder = m_theme.borderDark;
-            Color innerBorder = m_theme.borderLight;
-
-            if (m_enabled && m_focus) {
-                fillColor = Color{
-                    static_cast<Uint8>(std::min(255, fillColor.r + 18)),
-                    static_cast<Uint8>(std::min(255, fillColor.g + 18)),
-                    static_cast<Uint8>(std::min(255, fillColor.b + 18)),
-                    fillColor.a
-                };
-            }
-            if (m_pressed) {
-                fillColor = Color{
-                    static_cast<Uint8>(fillColor.r * 3 / 4),
-                    static_cast<Uint8>(fillColor.g * 3 / 4),
-                    static_cast<Uint8>(fillColor.b * 3 / 4),
-                    fillColor.a
-                };
-                std::swap(outerBorder, innerBorder);
-            }
-
-            m_sdlDrawer->renderRectFillColor(
-                m_rect.getX() + 3,
-                m_rect.getY() + 3,
-                m_rect.getWidth(),
-                m_rect.getHeight(),
-                m_theme.textColorShadow
-            );
-            m_sdlDrawer->renderRectFillColor(m_rect, fillColor);
-            m_sdlDrawer->renderRectColor(m_rect, outerBorder);
-            m_sdlDrawer->renderRectColor(
-                m_rect.getX() + 1,
-                m_rect.getY() + 1,
-                m_rect.getWidth() - 2,
-                m_rect.getHeight() - 2,
-                innerBorder
-            );
-            m_sdlDrawer->renderLine(
-                m_rect.getX() + 4,
-                m_rect.getY() + 3,
-                m_rect.getX() + m_rect.getWidth() - 5,
-                m_rect.getY() + 3,
-                m_enabled && m_focus
-                    ? m_theme.textColorHover
-                    : m_theme.borderLight
-            );
+            drawRemasterButtonFrame(*m_sdlDrawer, m_rect, m_theme, m_enabled && m_focus, m_pressed);
             drawText();
             break;
         }

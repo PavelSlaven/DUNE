@@ -65,6 +65,7 @@ public:
     void onBlur() override;
 
     void setRallyPointCommandMode();
+    [[nodiscard]] bool isRallyPointCommandMode() const { return m_state == SELECT_STATE_RALLY; }
 
 private:
     eMouseNormalState m_state;

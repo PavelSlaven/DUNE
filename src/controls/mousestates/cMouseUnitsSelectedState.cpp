@@ -118,6 +118,8 @@ void cMouseUnitsSelectedState::onNotifyMouseEvent(const s_MouseEvent &event)
 
 void cMouseUnitsSelectedState::onMouseLeftButtonClicked()
 {
+    m_moveCommandActive = false;
+
     if (m_mouse->isBoxSelecting()) {
         // clear only when we don't want to add to selection
         if (m_state != SELECTED_STATE_ADD_TO_SELECTION) {
@@ -372,6 +374,7 @@ void cMouseUnitsSelectedState::onStateSet()
     // so a mode like 'add to selection' could otherwise still be active (#1009)
     m_state = SELECTED_STATE_MOVE;
     m_prevState = SELECTED_STATE_MOVE;
+    m_moveCommandActive = false;
 
     evaluateSelectedUnits();
     updateSelectedUnitsState();
@@ -429,6 +432,7 @@ void cMouseUnitsSelectedState::setState(eMouseUnitsSelectedState newState)
                      mouseUnitsSelectedStateString(newState));
         this->m_prevState = this->m_state;
         this->m_state = newState;
+        m_moveCommandActive = false;
     }
 }
 
@@ -716,6 +720,7 @@ void cMouseUnitsSelectedState::selectSameUnitsOnMap(int unitType)
 void cMouseUnitsSelectedState::setCommandState(eMouseUnitsSelectedState newState)
 {
     setState(newState);
+    m_moveCommandActive = newState == SELECTED_STATE_MOVE;
     switch (newState) {
         case SELECTED_STATE_ATTACK:
         case SELECTED_STATE_FORCE_ATTACK:

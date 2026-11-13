@@ -80,7 +80,7 @@ def check_common(scene_id, body):
                       if record["name"].startswith(base.SIDEBAR_CLICK_PREFIXES) or record["name"] == "build-scrollbar"]
     outside = [record for record in sidebar_clicks if not base.inside(record, base.SIDEBAR)]
     allowed_label_kinds = LABEL_KINDS.copy()
-    if scene_id in {"game-command-damaged-unit", "game-command-harvester", "game-command-mcv"}:
+    if scene_id in {"game-command-damaged-unit", "game-command-repair-mode", "game-command-harvester", "game-command-mcv"}:
         allowed_label_kinds.add("health")
     if scene_id == "game-command-harvester":
         allowed_label_kinds.add("spice")
@@ -252,6 +252,7 @@ def check_for(scene_id):
         "game-structure-selected": check_structure_selected,
         "game-rally-point": check_rally_point,
         "game-command-damaged-unit": check_command_bar,
+        "game-command-repair-mode": check_command_bar,
         "game-command-harvester": check_command_bar,
         "game-command-mcv": check_command_bar,
         "game-place-allowed": check_place({"GOOD", "NEUTRAL"}, False),

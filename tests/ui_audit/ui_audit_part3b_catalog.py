@@ -10,13 +10,14 @@ import ui_audit_runtime_support as support  # noqa: E402
 LIST_KINDS = (("build", 1), ("infantry", 2), ("vehicles", 3), ("starport", 4), ("palace", 5), ("upgrades", 6))
 HOUSE_LIST_PREFIXES = (("atreides", "game-list-"), ("harkonnen", "game-harkonnen-list-"),
                        ("ordos", "game-ordos-list-"), ("sardaukar", "game-sardaukar-list-"))
-HOVER_SCENES = ("game-place-allowed", "game-place-forbidden", "game-group-select", "game-item-hover")
+HOVER_SCENES = ("game-place-allowed", "game-place-forbidden", "game-group-select", "game-item-hover",
+                "game-command-repair-mode")
 BASE_SCENES = ("game-hud", "game-music", "game-structure-selected", "game-radar-none", "game-radar-nopower", "game-place-allowed",
                "game-place-forbidden", "game-group-select", "game-messages", "game-item-hover",
                "game-radar-dish", "game-refinery-harvester", "game-factory-pad",
-               "game-list-scroll-end", "game-rally-point", "game-command-damaged-unit", "game-command-harvester",
-               "game-command-mcv")
-EXPECTED_COUNT = 42
+               "game-list-scroll-end", "game-rally-point", "game-command-damaged-unit", "game-command-repair-mode",
+               "game-command-harvester", "game-command-mcv")
+EXPECTED_COUNT = 43
 
 
 def game_scene(scene_id, house="atreides"):
