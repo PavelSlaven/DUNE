@@ -260,6 +260,8 @@ void cMouseUnitsSelectedState::onMouseRightButtonPressed()
 
 void cMouseUnitsSelectedState::onMouseRightButtonClicked()
 {
+    m_moveCommandActive = false;
+
     if (rightClickCommandPolicy(
             m_state == SELECTED_STATE_FORCE_ATTACK
                 ? ActiveCommandMode::ForceAttack
