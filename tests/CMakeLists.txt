@@ -8,6 +8,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_MouseClickInit.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/controls/test_cKeyboardEvent.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CommandBarLayout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CommandIcons.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CreditsMath.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/game/test_GameStateMachine.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/game/test_cTimeCounter.cpp
