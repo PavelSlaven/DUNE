@@ -54,8 +54,8 @@ TEST_CASE("cHandleArgument - no arguments leaves every setting at its default", 
 {
     InitialGameSettings settings;
     REQUIRE(run({}, settings) == 0);
-    REQUIRE(settings.screenW == 800);
-    REQUIRE(settings.screenH == 600);
+    REQUIRE(settings.screenW == 0);
+    REQUIRE(settings.screenH == 0);
     REQUIRE_FALSE(settings.windowed);
     REQUIRE(settings.renderScalePercent == 0);
     REQUIRE(settings.playMusic);

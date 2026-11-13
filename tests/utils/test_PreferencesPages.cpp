@@ -152,7 +152,7 @@ TEST_CASE("P10C valuesOf renders the requested keys in order", "[P10C]")
     REQUIRE(values.size() == 3);
     const std::pair<std::string, std::string> debug{"Debug", "true"};
     const std::pair<std::string, std::string> fullscreen{"FullScreen", "true"};
-    const std::pair<std::string, std::string> screenWidth{"ScreenWidth", "800"};
+    const std::pair<std::string, std::string> screenWidth{"ScreenWidth", "0"};
     CHECK(values[0] == debug);
     CHECK(values[1] == fullscreen);
     CHECK(values[2] == screenWidth);

@@ -71,26 +71,31 @@ TEST_CASE("P10C the list scroll helpers", "[P10C]")
     CHECK(optionsClampScrollRow(30, 86, 12) == 30);
 }
 
-TEST_CASE("P10C resolution choices follow the desktop", "[P10C]")
+TEST_CASE("P16 the resolution list is native plus up to five smaller sizes of the same shape", "[P16]")
 {
-    const std::vector<ResolutionOption> expected{
-        {800, 600}, {1024, 600}, {1024, 768}, {1280, 720}, {1280, 768}, {1152, 864},
-        {1280, 800}, {1360, 768}, {1366, 768}, {1280, 960}, {1440, 900}, {1280, 1024},
-        {1600, 900}, {1600, 1024}, {1680, 1050}, {1920, 1080},
-    };
-    const auto choices = resolutionChoices(1920, 1080, {1280, 720});
-
-    CHECK(choices == expected);
-    CHECK(resolutionChoices(1366, 700, {1000, 700}) ==
-          std::vector<ResolutionOption>{{800, 600}, {1024, 600}, {1000, 700}, {1366, 700}});
-}
-
-TEST_CASE("P10C the saved resolution is selected", "[P10C]")
-{
-    const auto choices = resolutionChoices(1920, 1080, {1280, 720});
-
-    CHECK(resolutionChoiceIndex(choices, {1280, 720}) == 3);
-    CHECK(resolutionChoiceIndex(choices, {123, 45}) == 0);
+    REQUIRE(resolutionChoices({1920, 1080}, {0, 0}) == std::vector<ResolutionOption>{
+        {1920, 1080}, {1600, 900}, {1366, 768}, {1280, 720},
+    });
+    REQUIRE(resolutionChoices({2560, 1440}, {1600, 1200}) == std::vector<ResolutionOption>{
+        {2560, 1440}, {1920, 1080}, {1600, 900}, {1366, 768}, {1280, 720}, {1600, 1200},
+    });
+    REQUIRE(resolutionChoices({3840, 2160}, {1920, 1080}) == std::vector<ResolutionOption>{
+        {3840, 2160}, {3200, 1800}, {2560, 1440}, {1920, 1080}, {1600, 900}, {1366, 768},
+    });
+    REQUIRE(resolutionChoices({2560, 1600}, {0, 0}) == std::vector<ResolutionOption>{
+        {2560, 1600}, {1920, 1200}, {1680, 1050}, {1440, 900}, {1280, 800},
+    });
+    REQUIRE(resolutionChoices({3440, 1440}, {0, 0}) == std::vector<ResolutionOption>{
+        {3440, 1440}, {2560, 1080},
+    });
+    REQUIRE(resolutionChoices({1600, 1200}, {0, 0}) == std::vector<ResolutionOption>{
+        {1600, 1200}, {1400, 1050}, {1280, 960}, {1024, 768}, {800, 600},
+    });
+    REQUIRE(resolutionChoices({1024, 600}, {0, 0}) == std::vector<ResolutionOption>{
+        {1024, 600},
+    });
+    REQUIRE(resolutionChoiceIndex(
+        resolutionChoices({2560, 1440}, {1600, 1200}), {1600, 1200}) == 5);
 }
 
 TEST_CASE("P10C every table action has a label", "[P10C]")

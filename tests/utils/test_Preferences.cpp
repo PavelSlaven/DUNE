@@ -156,7 +156,7 @@ TEST_CASE("P5B preferences saveScales creates a missing file", "[P5B]")
     REQUIRE(Preferences::load(file, loaded, error));
     CHECK(loaded.renderScalePercent == 150);
     CHECK(loaded.worldScalePercent == 125);
-    CHECK(loaded.screenW == 800);
+    CHECK(loaded.screenW == 0);
     CHECK(loaded.playMusic == true);
     CHECK(loaded.fogOfWarEnabled == false);
 }
@@ -177,7 +177,7 @@ TEST_CASE("P5B preferences loadScales reads only the scale keys", "[P5B]")
     REQUIRE(Preferences::loadScales(file, loaded, error));
     CHECK(loaded.renderScalePercent == 125);
     CHECK(loaded.worldScalePercent == 150);
-    CHECK(loaded.screenW == 800);
+    CHECK(loaded.screenW == 0);
     CHECK(loaded.playMusic == true);
     CHECK(loaded.fogOfWarEnabled == false);
 
