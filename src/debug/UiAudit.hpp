@@ -95,6 +95,7 @@ public:
     static bool prepareSkirmish(cGame &game, int variant);
     static bool optionsStatus(cGame &game);
     static bool optionsPage(cGame &game, int page);
+    static bool resolutionDialog(cGame &game);
     static bool optionsBinding(cGame &game);
     static bool creditsScroll(cGame &game, int frame);
     static void recordCreditLines(cGame &game);

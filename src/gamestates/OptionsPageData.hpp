@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <cstddef>
+#include <cstdlib>
 #include <iterator>
 #include <string_view>
 #include <vector>
@@ -15,39 +16,44 @@ struct ResolutionOption {
 };
 
 [[nodiscard]] inline std::vector<ResolutionOption> resolutionChoices(
-    int desktopWidth, int desktopHeight, ResolutionOption saved)
+    ResolutionOption native, ResolutionOption saved)
 {
-    static constexpr std::array<ResolutionOption, 35> standard{{
-        {800, 600}, {1024, 600}, {1024, 768}, {1152, 864}, {1280, 720}, {1280, 768}, {1280, 800}, {1280, 960},
-        {1280, 1024}, {1360, 768}, {1366, 768}, {1440, 900}, {1600, 900}, {1600, 1024}, {1600, 1200},
-        {1680, 1050}, {1920, 1080}, {1920, 1200}, {2048, 1080}, {2048, 1152}, {2048, 1536}, {2560, 1080},
-        {2560, 1440}, {2560, 1600}, {2880, 1620}, {2880, 1800}, {3200, 1800}, {3440, 1440}, {3840, 1600},
-        {3840, 2160}, {4096, 2160}, {5120, 1440}, {5120, 2160}, {5120, 2880}, {7680, 4320},
+    static constexpr std::array<ResolutionOption, 26> standard{{
+        {3840, 2160}, {3200, 1800}, {2560, 1440}, {1920, 1080}, {1600, 900}, {1366, 768}, {1280, 720},
+        {3840, 2400}, {2880, 1800}, {2560, 1600}, {1920, 1200}, {1680, 1050}, {1440, 900}, {1280, 800},
+        {5120, 2160}, {3440, 1440}, {2560, 1080},
+        {5120, 1440}, {3840, 1080},
+        {2048, 1536}, {1600, 1200}, {1400, 1050}, {1280, 960}, {1024, 768}, {800, 600},
+        {1280, 1024},
     }};
-    std::vector<ResolutionOption> result;
-    const auto add = [&result](ResolutionOption option) {
-        if (std::find(result.begin(), result.end(), option) == result.end()) {
-            result.push_back(option);
-        }
-    };
+    std::vector<ResolutionOption> candidates;
     for (const ResolutionOption &option : standard) {
-        if (option.width <= desktopWidth && option.height <= desktopHeight) {
-            add(option);
+        const long long aspectDifference = std::abs(
+            static_cast<long long>(option.width) * native.height -
+            static_cast<long long>(native.width) * option.height);
+        if (option.width <= native.width && option.height <= native.height &&
+            option != native && option.width >= 800 && option.height >= 600 &&
+            aspectDifference * 50 <= static_cast<long long>(native.width) * option.height) {
+            candidates.push_back(option);
         }
     }
-    add(saved);
-    add({desktopWidth, desktopHeight});
-    std::ranges::sort(result, [](const ResolutionOption &left, const ResolutionOption &right) {
+    std::ranges::sort(candidates, [](const ResolutionOption &left, const ResolutionOption &right) {
         const long long leftPixels = static_cast<long long>(left.width) * static_cast<long long>(left.height);
         const long long rightPixels = static_cast<long long>(right.width) * static_cast<long long>(right.height);
         if (leftPixels != rightPixels) {
-            return leftPixels < rightPixels;
+            return leftPixels > rightPixels;
         }
-        if (left.width != right.width) {
-            return left.width < right.width;
-        }
-        return left.height < right.height;
+        return left.width > right.width;
     });
+
+    std::vector<ResolutionOption> result{native};
+    for (std::size_t index = 0; index < candidates.size() && index < 5; ++index) {
+        result.push_back(candidates[index]);
+    }
+    if (saved.width > 0 && saved.height > 0 &&
+        std::find(result.begin(), result.end(), saved) == result.end()) {
+        result.push_back(saved);
+    }
     return result;
 }
 

@@ -199,6 +199,10 @@ void cSDLSystem::syncRenderResolutionToWindow()
 void cSDLSystem::adaptResolution(int desiredWidth, int desiredHeight, bool windowed)
 {
     Logger::info(COMP_SDL2, "Resolution", "Desired : {}x{}", desiredWidth, desiredHeight);
+    if (desiredWidth <= 0 || desiredHeight <= 0) {
+        desiredWidth = windowResolution.width;
+        desiredHeight = windowResolution.height;
+    }
     if (desiredWidth<MIN_RENDER_WIDTH)
         desiredWidth = MIN_RENDER_WIDTH;
     if (desiredHeight<MIN_RENDER_HEIGHT)

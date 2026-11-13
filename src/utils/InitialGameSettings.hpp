@@ -17,8 +17,8 @@
 #include <string>
 
 struct InitialGameSettings {
-    int screenW = 800;
-    int screenH = 600;
+    int screenW = 0;
+    int screenH = 0;
     float cameraDragMoveSpeed = 0.5f;
     float cameraBorderOrKeyMoveSpeed = 0.5f;
     bool cameraEdgeMove = true;
