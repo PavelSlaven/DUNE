@@ -24,6 +24,10 @@
 #include "gui/GuiTextInput.h"
 #include "gui/GuiCycleButton.h"
 #include "gui/GuiCheckBox.hpp"
+#include "gui/GuiTheme.hpp"
+#include "gamestates/EditorTexts.hpp"
+#include "gamestates/NewMapDialogLayout.hpp"
+#include "drawers/SDLDrawer.hpp"
 #include "context/GameContext.hpp"
 #include "context/cGameObjectContext.h"
 #include "drawers/cTextDrawer.h"
@@ -68,150 +72,72 @@ cNewMapEditorState::cNewMapEditorState(sGameServices* services, cIni* ini)
 
 void cNewMapEditorState::constructWindow()
 {
-    int margin = m_settings->getScreenH() * 0.3;
-    int mainMenuFrameX = margin;
-    int mainMenuFrameY = margin;
-    int mainMenuWidth = m_settings->getScreenW() - (margin * 2);
-    int mainMenuHeight = m_settings->getScreenH() - (margin * 2);
+    const NewMapDialogLayout layout = NewMapDialogLayout::create(m_settings->getScreenW(), m_settings->getScreenH());
+    m_titleRect = layout.title;
 
-    margin = 4;
-    int buttonHeight = (m_textDrawer->getFontHeight() + margin);
-    int buttonWidth = mainMenuWidth - 8;
+    const GuiTheme theme = GuiTheme::Remaster();
+    GuiTheme panelTheme = theme;
+    panelTheme.fillColor = Color{20, 25, 28, 255};
+    panelTheme.borderLight = Color{188, 137, 42, 255};
+    panelTheme.borderDark = Color{188, 137, 42, 255};
+    m_guiWindow = std::make_unique<GuiWindow>(m_sdlDrawer, layout.panel, m_textDrawer);
+    m_guiWindow->setTheme(panelTheme);
 
-    const cRectangle &window = cRectangle(mainMenuFrameX, mainMenuFrameY, mainMenuWidth, mainMenuHeight);
-    m_guiWindow = std::make_unique<GuiWindow>(m_sdlDrawer, window, m_textDrawer);
-    m_guiWindow->setTheme(cGuiThemeBuilder().light().build());
+    const auto addLabel = [&](int row, EditorText text) {
+        const cRectangle &cell = layout.labels[row];
+        const int fontHeight = m_textDrawer->getFontHeight();
+        auto label = GuiLabelBuilder()
+            .withLabel(editorText(text))
+            .withTextDrawer(m_textDrawer)
+            .withRenderer(m_sdlDrawer)
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
+            .withTextAlign(GuiTextAlignHorizontal::LEFT)
+            .withTheme(theme)
+            .withRect(cRectangle(cell.getX(), cell.getY() + (cell.getHeight() - fontHeight) / 2, cell.getWidth(), fontHeight))
+            .build();
+        m_guiWindow->addGuiObject(std::move(label));
+    };
+    const auto addInput = [&](int row) {
+        auto input = std::make_unique<GuiTextInput>(m_sdlDrawer, layout.fields[row], m_textDrawer);
+        input->setTheme(theme);
+        GuiTextInput *result = input.get();
+        m_guiWindow->addGuiObject(std::move(input));
+        return result;
+    };
+    const auto addCycle = [&](int row) {
+        const cRectangle &cell = layout.fields[row];
+        auto cycle = GuiCycleButtonBuilder()
+            .withRect(cRectangle(cell.getX(), cell.getY(), 80, cell.getHeight()))
+            .withValues(m_sizesMap)
+            .withTextDrawer(m_textDrawer)
+            .withRenderer(m_sdlDrawer)
+            .withTheme(theme)
+            .onChanged([this](int) {
+                updateRandomCheckBox();
+            })
+            .build();
+        GuiCycleButton *result = cycle.get();
+        m_guiWindow->addGuiObject(std::move(cycle));
+        return result;
+    };
 
-    // Title
-    m_guiWindow->setTitle(localization::text("Map editor configuration", "Новая карта"));
+    addLabel(0, EditorText::NewMapName);
+    m_inputName = addInput(0);
+    addLabel(1, EditorText::NewMapAuthor);
+    m_inputAuthor = addInput(1);
+    addLabel(2, EditorText::NewMapDescription);
+    m_inputDescription = addInput(2);
+    addLabel(3, EditorText::NewMapWidth);
+    m_cycleWidth = addCycle(3);
+    addLabel(4, EditorText::NewMapHeight);
+    m_cycleHeight = addCycle(4);
 
-    int labelX = 55;
-    int labelY = 45;
-    int betweenY =30;
-
-    // name
-    const cRectangle &nameRect = m_guiWindow->getRelativeRect(labelX, labelY, 75, buttonHeight);
-    auto gui_NameLabel = GuiLabelBuilder()
-        .withLabel(localization::text("Name your map:", "Название карты:"))
-        .withTextDrawer(m_textDrawer)
-        .withRenderer(m_sdlDrawer)
-        .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
-        .withTextAlign(GuiTextAlignHorizontal::LEFT)
-        .withRect(nameRect)
-        .build();
-    m_guiWindow->addGuiObject(std::move(gui_NameLabel));
-
-    auto inputName = std::make_unique<GuiTextInput>( m_sdlDrawer,
-        m_guiWindow->getRelativeRect(labelX+200, labelY-2, 200, m_textDrawer->getFontHeight() + 4),
-        m_textDrawer);
-    inputName->setTheme(cGuiThemeBuilder().light().build()); 
-    m_inputName = inputName.get();
-    m_guiWindow->addGuiObject(std::move(inputName));
-
-    // author
-    const cRectangle &authorRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY, 75, buttonHeight);
-    auto gui_authorLabel = GuiLabelBuilder()
-        .withLabel(localization::text("Name of author:", "Автор:"))
-        .withTextDrawer(m_textDrawer)
-        .withRenderer(m_sdlDrawer)
-        .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
-        .withTextAlign(GuiTextAlignHorizontal::LEFT)
-        .withRect(authorRect)
-        .build();
-    m_guiWindow->addGuiObject(std::move(gui_authorLabel));
-    
-    auto inputAuthor = std::make_unique<GuiTextInput>(m_sdlDrawer, 
-        m_guiWindow->getRelativeRect(labelX+200, labelY+betweenY-2, 200, m_textDrawer->getFontHeight() + 4),
-        m_textDrawer);
-    inputAuthor->setTheme(cGuiThemeBuilder().light().build());
-    m_inputAuthor = inputAuthor.get();
-    m_guiWindow->addGuiObject(std::move(inputAuthor));
-
-    // Description
-    const cRectangle &descriptionRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY*2, 75, buttonHeight);
-    auto gui_descriptionLabel = GuiLabelBuilder()
-        .withLabel(localization::text("Description:", "Описание:"))
-        .withTextDrawer(m_textDrawer)
-        .withRenderer(m_sdlDrawer)
-        .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
-        .withTextAlign(GuiTextAlignHorizontal::LEFT)
-        .withRect(descriptionRect)
-        .build();
-    m_guiWindow->addGuiObject(std::move(gui_descriptionLabel));
-
-    auto inputDescription = std::make_unique<GuiTextInput>( m_sdlDrawer,
-        m_guiWindow->getRelativeRect(labelX+200, labelY+betweenY*2-2, 200, m_textDrawer->getFontHeight() + 4),
-        m_textDrawer);
-    inputDescription->setTheme(cGuiThemeBuilder().light().build());
-    m_inputDescription = inputDescription.get();
-    m_guiWindow->addGuiObject(std::move(inputDescription));
-
-    // width
-    const cRectangle &widthRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY*3, 75, buttonHeight);
-    auto gui_widthLabel = GuiLabelBuilder()
-        .withLabel(localization::text("Width size:", "Ширина:"))
-        .withTextDrawer(m_textDrawer)
-        .withRenderer(m_sdlDrawer)
-        .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
-        .withTextAlign(GuiTextAlignHorizontal::LEFT)
-        .withRect(widthRect)
-        .build();
-    m_guiWindow->addGuiObject(std::move(gui_widthLabel));
-
-    auto cycleWidth = GuiCycleButtonBuilder()
-        .withRect( m_guiWindow->getRelativeRect(labelX+200, labelY+betweenY*3, 50, buttonHeight) )
-        .withValues( m_sizesMap )
-        .withTextDrawer( m_textDrawer )
-        .withRenderer(m_sdlDrawer)
-        .withTheme(cGuiThemeBuilder().light().build())
-        .onChanged([this](int) {
-            updateRandomCheckBox();
-        })
-        .build();
-    m_cycleWidth = cycleWidth.get();
-    m_guiWindow->addGuiObject(std::move(cycleWidth));
-
-    // height
-    const cRectangle &heightRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY*4, 75, buttonHeight);
-    auto gui_heightLabel = GuiLabelBuilder()
-        .withLabel(localization::text("Height size:", "Высота:"))
-        .withTextDrawer(m_textDrawer)
-        .withRenderer(m_sdlDrawer)
-        .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
-        .withTextAlign(GuiTextAlignHorizontal::LEFT)
-        .withRect(heightRect)
-        .build();
-    m_guiWindow->addGuiObject(std::move(gui_heightLabel));
-
-    auto cycleHeight = GuiCycleButtonBuilder()
-        .withRect( m_guiWindow->getRelativeRect(labelX+200, labelY+betweenY*4, 50, buttonHeight) )
-        .withValues( m_sizesMap )
-        .withTextDrawer( m_textDrawer )
-        .withRenderer(m_sdlDrawer)
-        .withTheme( cGuiThemeBuilder().light().build() )
-        .onChanged([this](int) {
-            updateRandomCheckBox();
-        })
-        .build();
-    m_cycleHeight = cycleHeight.get();
-    m_guiWindow->addGuiObject(std::move(cycleHeight));
-
-    // random map
-    const cRectangle &randomRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY*5, 75, buttonHeight);
-    auto gui_randomLabel = GuiLabelBuilder()
-        .withLabel(localization::text("Random:", "Случайно:"))
-        .withTextDrawer(m_textDrawer)
-        .withRenderer(m_sdlDrawer)
-        .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
-        .withTextAlign(GuiTextAlignHorizontal::LEFT)
-        .withRect(randomRect)
-        .build();
-    m_guiWindow->addGuiObject(std::move(gui_randomLabel));
-
+    addLabel(5, EditorText::NewMapRandom);
+    const cRectangle &randomCell = layout.fields[5];
     auto checkRandom = GuiCheckBoxBuilder()
-        .withRect(m_guiWindow->getRelativeRect(labelX+200, labelY+betweenY*5, buttonHeight, buttonHeight))
+        .withRect(cRectangle(randomCell.getX(), randomCell.getY(), randomCell.getHeight(), randomCell.getHeight()))
         .withRenderer(m_sdlDrawer)
-        .withTheme(cGuiThemeBuilder().light().build())
+        .withTheme(theme)
         .onCheck([this]() {
             m_randomChecked = true;
         })
@@ -224,59 +150,37 @@ void cNewMapEditorState::constructWindow()
     m_guiWindow->addGuiObject(std::move(checkRandom));
     updateRandomCheckBox();
 
-    // Dune 2 seed
-    const cRectangle &seedRect = m_guiWindow->getRelativeRect(labelX, labelY+betweenY*6, 75, buttonHeight);
-    auto gui_seedLabel = GuiLabelBuilder()
-        .withLabel(localization::text("Dune 2 seed: ", "Зерно Dune 2: "))
-        .withTextDrawer(m_textDrawer)
-        .withRenderer(m_sdlDrawer)
-        .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
-        .withTextAlign(GuiTextAlignHorizontal::LEFT)
-        .withRect(seedRect)
-        .build();
-    m_guiWindow->addGuiObject(std::move(gui_seedLabel));
+    addLabel(6, EditorText::NewMapSeed);
+    m_inputSeed = addInput(6);
 
-    auto inputSeed = std::make_unique<GuiTextInput>(m_sdlDrawer,
-        m_guiWindow->getRelativeRect(labelX+200, labelY+betweenY*6-2, 200, m_textDrawer->getFontHeight() + 4),
-        m_textDrawer);
-    inputSeed->setTheme(cGuiThemeBuilder().light().build());
-    m_inputSeed = inputSeed.get();
-    m_guiWindow->addGuiObject(std::move(inputSeed));
-
-    // QUIT game
-    int quit = mainMenuHeight - (buttonHeight + margin);// 464
-    int width = (buttonWidth / 2);
-    const cRectangle &quitRect = m_guiWindow->getRelativeRect(margin, quit, width, buttonHeight);
-    auto gui_btn_Quit = GuiButtonBuilder()
-        .withRect(quitRect)        
-        .withLabel(localization::text("Return to menu", "В меню"))
+    auto returnButton = GuiButtonBuilder()
+        .withRect(layout.returnButton)
+        .withLabel(editorText(EditorText::NewMapReturn))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
         .withTextAlign(GuiTextAlignHorizontal::CENTER)
-        .withTheme(cGuiThemeBuilder().light().build())
+        .withTheme(theme)
+        .withKind(GuiRenderKind::REMASTER_BUTTON)
         .onClick([this]() {
             m_stateTransitions->setNextStateWithFade(eGameState::MENU);
         })
         .build();
-    m_guiWindow->addGuiObject(std::move(gui_btn_Quit));
+    m_guiWindow->addGuiObject(std::move(returnButton));
 
-    // BACK to where we came from
-    int back = mainMenuHeight - (buttonHeight + margin);// 444
-    const cRectangle &backRect = m_guiWindow->getRelativeRect(margin + width + margin, back, (width - margin), buttonHeight);
-    
-    auto gui_btn_Back = GuiButtonBuilder()
-        .withRect(backRect)        
-        .withLabel(localization::text("Create map", "Создать карту"))
+    auto createButton = GuiButtonBuilder()
+        .withRect(layout.createButton)
+        .withLabel(editorText(EditorText::NewMapCreate))
         .withTextDrawer(m_textDrawer)
         .withRenderer(m_sdlDrawer)
-        .withTheme(cGuiThemeBuilder().light().build())
+        .withTheme(theme)
+        .withKind(GuiRenderKind::REMASTER_BUTTON)
         .onClick([this](){
             this->constructEmptyMap();
             m_scenarioFlow->loadMapFromEditor(-1); // -1 means load the map from the editor, instead of loading a skirmish map
             m_stateTransitions->setNextStateWithFade(eGameState::EDITOR);
         })
         .build();
-    m_guiWindow->addGuiObject(std::move(gui_btn_Back));
+    m_guiWindow->addGuiObject(std::move(createButton));
 }
 
 cNewMapEditorState::~cNewMapEditorState()
@@ -291,7 +195,15 @@ void cNewMapEditorState::thinkFast()
 
 void cNewMapEditorState::draw() const
 {
+    m_sdlDrawer->renderRectFillColor(0, 0, m_settings->getScreenW(), m_settings->getScreenH(), Color{0, 0, 0, 190});
     m_guiWindow->draw();
+    m_textDrawer->drawTextCentered(
+        editorText(EditorText::NewMapTitle),
+        m_titleRect.getX(),
+        m_titleRect.getWidth(),
+        m_titleRect.getY() + (m_titleRect.getHeight() - m_textDrawer->getFontHeight()) / 2,
+        GuiTheme::Remaster().textColor
+    );
     m_mouse->draw();
 }
 

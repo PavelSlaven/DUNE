@@ -33,7 +33,11 @@
 #include "game/GameStateTransition.hpp"
 #include "controls/cMouse.h"
 #include "gameobjects/map/cPreviewMaps.h"
-#include "include/gfxeditor.h"
+#include "controls/cKeyBindings.h"
+#include "include/Texture.hpp"
+#include "controls/cKeyboard.h"
+#include "drawers/CommandBarPolicy.hpp"
+#include "gui/RemasterButtonFrame.hpp"
 #include "include/sGameEvent.h"
 
 #include "include/cAssert.h"
@@ -44,6 +48,8 @@
 #include "include/sGameServices.h"
 #include "include/eGameState.h"
 #include "utils/Localization.hpp"
+#include <algorithm>
+#include <cctype>
 #include <memory>
 
 const int heightBarSize = 48;
@@ -57,21 +63,33 @@ const Color editorSelectionFillColor = Color{255, 255, 255, 40};
 const Color editorSelectionBorderColor = Color{255, 255, 255, 255};
 const Color editorPasteGhostFillColor = Color{64, 208, 255, 60};
 const Color editorPasteGhostBorderColor = Color{64, 208, 255, 220};
+const Color editorPanelColor = Color{20, 25, 28, 255};
+const Color editorPanelBorderColor = Color{188, 137, 42, 255};
+
+namespace {
+GuiTheme editorPanelTheme()
+{
+    GuiTheme theme = GuiTheme::Remaster();
+    theme.fillColor = editorPanelColor;
+    theme.borderLight = editorPanelBorderColor;
+    theme.borderDark = editorPanelBorderColor;
+    return theme;
+}
+}
 
 
 cEditorState::cEditorState(sGameServices* services) 
     : cGameState(services),
     m_gfxdata(m_ctx->getGraphicsContext()->gfxdata.get()),
-    m_gfxeditor(m_ctx->getGraphicsContext()->gfxeditor.get()),
     m_settings(services->settings),
     m_eventEmitter(services->eventEmitter),
+    m_keyboard(services->keyboard),
     m_stateTransitions(services->stateTransitions),
     m_mouse(services->mouse),
     m_textDrawer(m_ctx->getTextContext()->getBeneTextDrawer()),
     m_previewMaps(services->objects->getPreviewMaps())
 {
     d2tm_assert(m_gfxdata != nullptr);
-    d2tm_assert(m_gfxeditor != nullptr);
     d2tm_assert(m_settings != nullptr);
     d2tm_assert(m_eventEmitter != nullptr);
     d2tm_assert(m_stateTransitions != nullptr);
@@ -89,13 +107,13 @@ cEditorState::cEditorState(sGameServices* services)
     m_startCellBar = std::make_unique<GuiBar>(m_sdlDrawer, modifRect,GuiBarPlacement::VERTICAL, heightButtonSize);
     m_symmetricBar = std::make_unique<GuiBar>(m_sdlDrawer, modifRect,GuiBarPlacement::VERTICAL, heightButtonSize);
 
-    m_selectBar->setTheme(cGuiThemeBuilder().light().build());
+    m_selectBar->setTheme(editorPanelTheme());
     m_selectBar->beginPlacement(heightBarSize);
-    m_topologyBar->setTheme(cGuiThemeBuilder().light().build());
+    m_topologyBar->setTheme(editorPanelTheme());
     m_topologyBar->beginPlacement(heightBarSize);
-    m_startCellBar->setTheme(cGuiThemeBuilder().light().build());
+    m_startCellBar->setTheme(editorPanelTheme());
     m_startCellBar->beginPlacement(heightBarSize);
-    m_symmetricBar->setTheme(cGuiThemeBuilder().light().build());
+    m_symmetricBar->setTheme(editorPanelTheme());
     m_symmetricBar->beginPlacement(heightBarSize);
 
     populateSelectBar();
@@ -110,137 +128,162 @@ cEditorState::~cEditorState()
 {
 }
 
+std::string cEditorState::keyLabel(eKeyAction action) const
+{
+    const cKeyBindings *bindings = m_keyboard != nullptr ? m_keyboard->getKeyBindings() : nullptr;
+    std::string name = bindings != nullptr ? bindings->getFirstKeyDisplayName(action) : std::string();
+    std::ranges::transform(name, name.begin(), [](unsigned char character) {
+        return static_cast<char>(std::toupper(character));
+    });
+    return name;
+}
+
+std::string cEditorState::groupKeyLabel(int number) const
+{
+    constexpr std::array<eKeyAction, 6> groupKeys{eKeyAction::GROUP_1, eKeyAction::GROUP_2, eKeyAction::GROUP_3,
+                                                  eKeyAction::GROUP_4, eKeyAction::GROUP_5, eKeyAction::GROUP_6};
+    return number >= 1 && number <= static_cast<int>(groupKeys.size()) ? keyLabel(groupKeys[number - 1]) : std::string();
+}
+
+void cEditorState::drawToolButton(const cRectangle &rect, bool selected, bool enabled, EditorText name,
+                                  const std::string &key, const ToolContent &content) const
+{
+    const GuiTheme theme = enabled ? GuiTheme::Remaster() : GuiTheme::RemasterInactive();
+    const bool hovered = enabled && m_mouse->getMouseCoords().isWithinRectangle(&rect);
+    GuiTheme look = theme;
+    Color contentColor = theme.textColor;
+    if (selected) {
+        look.fillColor = Color{63, 52, 31, 255};
+        look.borderLight = Color{188, 137, 42, 255};
+        look.borderDark = Color{232, 184, 78, 255};
+    }
+    if (enabled && (selected || hovered)) {
+        contentColor = theme.textColorHover;
+    }
+
+    const cRectangle frame(rect.getX() + 2, rect.getY() + 2, rect.getWidth() - 4, rect.getHeight() - 4);
+    drawRemasterButtonFrame(*m_sdlDrawer, frame, look, hovered, false);
+    content(frame, contentColor);
+
+    if (hovered) {
+        m_tooltipText = commandTooltip(editorText(name), key);
+        m_tooltipAnchor = rect;
+    }
+}
+
+void cEditorState::drawIcon(const cRectangle &frame, EditorIcon icon, Color color) const
+{
+    const int side = std::min(frame.getWidth(), frame.getHeight()) * 85 / 100;
+    if (Texture *texture = m_icons.get(*m_sdlDrawer, icon, side)) {
+        SDL_SetTextureColorMod(texture->tex.get(), color.r, color.g, color.b);
+        m_sdlDrawer->renderTexture(texture->tex.get(), frame.getX() + (frame.getWidth() - side) / 2,
+                                   frame.getY() + (frame.getHeight() - side) / 2, side, side, color.a);
+    }
+}
+
+void cEditorState::drawTooltip() const
+{
+    if (m_tooltipText.empty()) {
+        return;
+    }
+    constexpr int padding = 6;
+    constexpr int gap = 6;
+    const GuiTheme theme = GuiTheme::Remaster();
+    const int width = m_textDrawer->getTextLength(m_tooltipText) + padding * 2;
+    const int height = m_textDrawer->getFontHeight() + padding * 2;
+    const int screenW = m_settings->getScreenW();
+    const int screenH = m_settings->getScreenH();
+    int x = 0;
+    int y = 0;
+    if (m_tooltipAnchor.getY() < heightBarSize) {
+        x = m_tooltipAnchor.getX() + m_tooltipAnchor.getWidth() / 2 - width / 2;
+        y = m_tooltipAnchor.getEndY() + gap;
+    } else {
+        x = m_tooltipAnchor.getX() - gap - width;
+        y = m_tooltipAnchor.getY() + m_tooltipAnchor.getHeight() / 2 - height / 2;
+    }
+    const cRectangle box(std::clamp(x, 0, std::max(0, screenW - width)), std::clamp(y, 0, std::max(0, screenH - height)), width, height);
+    m_sdlDrawer->renderRectFillColor(box, theme.fillColor);
+    m_sdlDrawer->renderRectColor(box, theme.borderLight);
+    m_textDrawer->drawText(box.getX() + padding, box.getY() + padding, theme.textColor, m_tooltipText);
+}
+
+void cEditorState::addToolButton(GuiBar &bar, GuiButtonGroup &group, bool initiallySelected, EditorText name,
+                                 const std::string &key, ToolContent content, std::function<void()> onClick)
+{
+    auto button = GuiStateButtonBuilder()
+            .withRect(cRectangle(0, 0, heightButtonSize, heightButtonSize))
+            .withRenderer(m_sdlDrawer)
+            .onClick(std::move(onClick))
+            .build();
+    button->setCustomDraw([this, name, key, content = std::move(content)](const cRectangle &rect, bool selected, bool enabled) {
+        drawToolButton(rect, selected, enabled, name, key, content);
+    });
+    button->setGroup(&group);
+    if (initiallySelected) {
+        group.updateStates(button.get());
+    }
+    bar.addAutoGuiObject(std::move(button));
+}
+
 void cEditorState::populateSelectBar()
 {
     m_selectGroup = std::make_unique<GuiButtonGroup>();
-    auto rectGui = cRectangle(0, 0, heightButtonSize, heightButtonSize);
-    auto guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(STONELAYER))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                setCurrentBar(m_topologyBar.get());
-            })
-            .build();
-    guiButton->setGroup(m_selectGroup.get());
-    m_selectGroup->updateStates(guiButton.get());
-    m_selectBar->addAutoGuiObject(std::move(guiButton));
+    const auto iconContent = [this](EditorIcon icon) {
+        return [this, icon](const cRectangle &frame, Color color) { drawIcon(frame, icon, color); };
+    };
+    addToolButton(*m_selectBar, *m_selectGroup, true, EditorText::ModeTerrain, "", iconContent(EditorIcon::Terrain),
+                  [this]() { setCurrentBar(m_topologyBar.get()); });
+    addToolButton(*m_selectBar, *m_selectGroup, false, EditorText::ModeStartPoints, "", iconContent(EditorIcon::StartFlag),
+                  [this]() { setCurrentBar(m_startCellBar.get()); });
+    addToolButton(*m_selectBar, *m_selectGroup, false, EditorText::ModeSymmetry, "", iconContent(EditorIcon::Symmetry),
+                  [this]() { setCurrentBar(m_symmetricBar.get()); });
 
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(STARTPOSITION))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                setCurrentBar(m_startCellBar.get());
-            })
-            .build();
-    guiButton->setGroup(m_selectGroup.get());
-    m_selectBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(FLIPHORZ))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                setCurrentBar(m_symmetricBar.get());
-            })
-            .build();
-    guiButton->setGroup(m_selectGroup.get());
-    m_selectBar->addAutoGuiObject(std::move(guiButton));
-
-    rectGui = cRectangle(m_settings->getScreenW()-heightButtonSize*3, (heightBarSize-heightButtonSize)/2, heightButtonSize, heightButtonSize);
-    // std::cout << "Save icon position: x=" << rectGui.getX() << " y=" << rectGui.getY() << " w= " << rectGui.getWidth() << " h= " << rectGui.getHeight() << std::endl;
+    const auto rectGui = cRectangle(m_settings->getScreenW()-heightButtonSize*3, (heightBarSize-heightButtonSize)/2, heightButtonSize, heightButtonSize);
     auto guiIcon = GuiButtonBuilder()
             .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(SAVEICON))
             .withRenderer(m_sdlDrawer)
-            .withKind(GuiRenderKind::WITH_STRETCHED_TEXTURE)
             .onClick([this]() {
                 if (saveMap()) {
                     m_hasChanged = false;
                 }
             })
             .build();
+    guiIcon->setCustomDraw([this](const cRectangle &rect, bool selected, bool enabled) {
+        drawToolButton(rect, selected, enabled, EditorText::Save, keyLabel(eKeyAction::EDITOR_SAVE),
+                       [this](const cRectangle &frame, Color color) { drawIcon(frame, EditorIcon::Save, color); });
+    });
     m_selectBar->addGuiObject(std::move(guiIcon));
 }
 
 void cEditorState::populateTopologyBar()
 {
     m_topologyGroup = std::make_unique<GuiButtonGroup>();
-    auto rectGui = cRectangle(0,0,heightButtonSize,heightButtonSize);
-    auto guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(TERRAN_HILL))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idTerrainToMapModif = TERRAIN_HILL;
-            })
-            .build();
-    guiButton->setGroup(m_topologyGroup.get());
-    m_topologyBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(TERRAN_MOUNTAIN))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idTerrainToMapModif = TERRAIN_MOUNTAIN;
-            })
-            .build();
-    guiButton->setGroup(m_topologyGroup.get());
-    m_topologyBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(TERRAN_ROCK))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idTerrainToMapModif = TERRAIN_ROCK;
-            })
-            .build();
-    guiButton->setGroup(m_topologyGroup.get());
-    m_topologyBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(TERRAN_SAND))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idTerrainToMapModif = TERRAIN_SAND;
-            })
-            .build();
-    guiButton->setGroup(m_topologyGroup.get());
-    m_topologyGroup->updateStates(guiButton.get());
-    m_topologyBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(TERRAN_SPICE))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idTerrainToMapModif = TERRAIN_SPICE;
-            })
-            .build();
-    guiButton->setGroup(m_topologyGroup.get());
-    m_topologyBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(TERRAN_SPICEHILL))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idTerrainToMapModif = TERRAIN_SPICEHILL;
-            })
-            .build();
-    guiButton->setGroup(m_topologyGroup.get());
-    m_topologyBar->addAutoGuiObject(std::move(guiButton));
+    struct Terrain {
+        int tile;
+        EditorText name;
+    };
+    const std::array<Terrain, 6> terrains{{
+        {TERRAIN_HILL, EditorText::TerrainHill},
+        {TERRAIN_MOUNTAIN, EditorText::TerrainMountain},
+        {TERRAIN_ROCK, EditorText::TerrainRock},
+        {TERRAIN_SAND, EditorText::TerrainSand},
+        {TERRAIN_SPICE, EditorText::TerrainSpice},
+        {TERRAIN_SPICEHILL, EditorText::TerrainSpiceHill},
+    }};
+    for (int index = 0; index < static_cast<int>(terrains.size()); ++index) {
+        const int tile = terrains[index].tile;
+        addToolButton(*m_topologyBar, *m_topologyGroup, tile == TERRAIN_SAND, terrains[index].name, groupKeyLabel(index + 1),
+                      [this, tile](const cRectangle &frame, Color) {
+                          const cRectangle inner(frame.getX() + 4, frame.getY() + 4, frame.getWidth() - 8, frame.getHeight() - 8);
+                          m_sdlDrawer->renderStrechSprite(m_gfxdata->getTexture(tile), cRectangle{0, 0, 32, 32}, inner);
+                      },
+                      [this, tile]() { idTerrainToMapModif = tile; });
+    }
 
     auto cursorSizeButton = GuiValueButtonBuilder()
             .withRect(cRectangle(0, 0, heightButtonSize, heightButtonSize))
             .withRenderer(m_sdlDrawer)
-            .withTextDrawer(m_textDrawer)
-            .withTheme(cGuiThemeBuilder().light().build())
-            .withLabel(localization::text("size", "размер"))
             .withInitialValue(m_topologyCursorSize)
             .withStepValue(2)
             .withMinValue(1)
@@ -249,165 +292,52 @@ void cEditorState::populateTopologyBar()
                 setCursorSize(value);
             })
             .build();
+    cursorSizeButton->setCustomDraw([this](const cRectangle &rect, bool selected, bool enabled) {
+        drawToolButton(rect, selected, enabled, EditorText::BrushSize, "",
+                       [this](const cRectangle &frame, Color color) {
+                           m_textDrawer->drawTextCenteredInBox(std::to_string(m_topologyCursorSize), frame, color);
+                       });
+    });
     m_topologyBar->addAutoGuiObject(std::move(cursorSizeButton));
 }
 
 void cEditorState::populateStartCellBar()
 {
     m_startCellGroup = std::make_unique<GuiButtonGroup>();
-    auto rectGui = cRectangle(0, 0, heightButtonSize, heightButtonSize);
-    auto guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(STARTPOSITION1))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idStartCellPlayer = 0;
-            })
-            .build();
-    guiButton->setGroup(m_startCellGroup.get());
-    m_startCellGroup->updateStates(guiButton.get());
-    m_startCellBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(STARTPOSITION2))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idStartCellPlayer = 1;
-            })
-            .build();
-    guiButton->setGroup(m_startCellGroup.get());
-    m_startCellBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(STARTPOSITION3))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idStartCellPlayer = 2;
-            })
-            .build();
-    guiButton->setGroup(m_startCellGroup.get());
-    m_startCellBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(STARTPOSITION4))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idStartCellPlayer = 3;
-            })
-            .build();
-    guiButton->setGroup(m_startCellGroup.get());
-    m_startCellBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(STARTPOSITION5))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                idStartCellPlayer = 4;
-            })
-            .build();
-    guiButton->setGroup(m_startCellGroup.get());
-    m_startCellBar->addAutoGuiObject(std::move(guiButton));
+    constexpr std::array<EditorText, 5> names{EditorText::StartPoint1, EditorText::StartPoint2, EditorText::StartPoint3,
+                                              EditorText::StartPoint4, EditorText::StartPoint5};
+    for (int index = 0; index < static_cast<int>(names.size()); ++index) {
+        const EditorIcon icon = static_cast<EditorIcon>(static_cast<int>(EditorIcon::Start1) + index);
+        addToolButton(*m_startCellBar, *m_startCellGroup, index == 0, names[index], groupKeyLabel(index + 1),
+                      [this, icon](const cRectangle &frame, Color color) { drawIcon(frame, icon, color); },
+                      [this, index]() { idStartCellPlayer = index; });
+    }
 }
 
 void cEditorState::populateSymmetricBar()
 {
     m_symmetricGroup = std::make_unique<GuiButtonGroup>();
-    auto rectGui = cRectangle(0, 0, heightButtonSize,heightButtonSize);
-    auto guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(FLIPHORZLR))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                // std::cout << "FLIPHORZLR" << std::endl;
-                modifySymmetricArea(Direction::right);
-            })
-            .build();
-    guiButton->setGroup(m_symmetricGroup.get());
-    m_symmetricBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(FLIPHORZRL))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                // std::cout << "FLIPHORZRL" << std::endl;
-                modifySymmetricArea(Direction::left);
-            })
-            .build();
-    guiButton->setGroup(m_symmetricGroup.get());
-    m_symmetricBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(FLIPVERTBT))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                // std::cout << "FLIPVERTBT" << std::endl;
-                modifySymmetricArea(Direction::top);
-            })
-            .build();
-    guiButton->setGroup(m_symmetricGroup.get());
-    m_symmetricBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(FLIPVERTTB))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                // std::cout << "FLIPVERTTB" << std::endl;
-                modifySymmetricArea(Direction::bottom);
-            })
-            .build();
-    guiButton->setGroup(m_symmetricGroup.get());
-    m_symmetricBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(FLIPDIAGBL))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                modifySymmetricArea(Direction::bottomLeft);
-            })
-            .build();
-    guiButton->setGroup(m_symmetricGroup.get());
-    m_symmetricBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(FLIPDIAGBR))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                modifySymmetricArea(Direction::bottomRight);
-            })
-            .build();
-    guiButton->setGroup(m_symmetricGroup.get());
-    m_symmetricBar->addAutoGuiObject(std::move(guiButton));
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(FLIPDIAGTL))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                modifySymmetricArea(Direction::topLeft);
-            })
-            .build();
-    guiButton->setGroup(m_symmetricGroup.get());
-    m_symmetricBar->addAutoGuiObject(std::move(guiButton)); 
-
-    guiButton = GuiStateButtonBuilder()
-            .withRect(rectGui)
-            .withTexture(m_gfxeditor->getTexture(FLIPDIAGTR))
-            .withRenderer(m_sdlDrawer)
-            .onClick([this]() {
-                modifySymmetricArea(Direction::topRight);
-            })
-            .build();
-    guiButton->setGroup(m_symmetricGroup.get());
-    m_symmetricBar->addAutoGuiObject(std::move(guiButton)); 
+    struct Mirror {
+        EditorIcon icon;
+        EditorText name;
+        Direction direction;
+    };
+    const std::array<Mirror, 8> mirrors{{
+        {EditorIcon::CopyRight, EditorText::MirrorRight, Direction::right},
+        {EditorIcon::CopyLeft, EditorText::MirrorLeft, Direction::left},
+        {EditorIcon::CopyUp, EditorText::MirrorUp, Direction::top},
+        {EditorIcon::CopyDown, EditorText::MirrorDown, Direction::bottom},
+        {EditorIcon::CopyBottomLeft, EditorText::MirrorBottomLeft, Direction::bottomLeft},
+        {EditorIcon::CopyBottomRight, EditorText::MirrorBottomRight, Direction::bottomRight},
+        {EditorIcon::CopyTopLeft, EditorText::MirrorTopLeft, Direction::topLeft},
+        {EditorIcon::CopyTopRight, EditorText::MirrorTopRight, Direction::topRight},
+    }};
+    for (int index = 0; index < static_cast<int>(mirrors.size()); ++index) {
+        const Mirror mirror = mirrors[index];
+        addToolButton(*m_symmetricBar, *m_symmetricGroup, false, mirror.name, groupKeyLabel(index + 1),
+                      [this, icon = mirror.icon](const cRectangle &frame, Color color) { drawIcon(frame, icon, color); },
+                      [this, direction = mirror.direction]() { modifySymmetricArea(direction); });
+    }
 }
 
 void cEditorState::thinkFast()
@@ -420,6 +350,7 @@ void cEditorState::draw() const
         uiaudit::recordArea("editor-map", mapSizeArea.getX(), mapSizeArea.getY(), mapSizeArea.getWidth(),
                             mapSizeArea.getHeight());
     }
+    m_tooltipText.clear();
     drawMap();
     drawHoveredCellHighlight();
     drawSelectionRectangle();
@@ -433,6 +364,7 @@ void cEditorState::draw() const
         drawStartCells();
     m_selectBar->draw();
     m_currentBar->draw();
+    drawTooltip();
     m_mouse->draw();
 }
 
@@ -1221,11 +1153,10 @@ void cEditorState::modifySymmetricArea(Direction dir)
             break;
         case Direction::topLeft:
             if (m_mapData->getCols() != m_mapData->getRows()) {
-                //std::cout << "topLeft symmetry requires a square map, skipping." << std::endl;
                 const s_GameEvent newEvent {
                     .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
                     .data = NotificationEvent {
-                        .message = "topLeft symmetry requires a square map, skipping.",
+                        .message = editorText(EditorText::SquareRequired),
                         .type = eNotificationType::PRIORITY,
                     }
                 };                
@@ -1253,11 +1184,10 @@ void cEditorState::modifySymmetricArea(Direction dir)
 
         case Direction::topRight:
             if (m_mapData->getCols() != m_mapData->getRows()) {
-                //std::cout << "topRight symmetry requires a square map, skipping." << std::endl;
                 const s_GameEvent newEvent {
                     .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
                     .data = NotificationEvent {
-                        .message = "topRight symmetry requires a square map, skipping.",
+                        .message = editorText(EditorText::SquareRequired),
                         .type = eNotificationType::PRIORITY,
                     }
                 };                
@@ -1283,11 +1213,10 @@ void cEditorState::modifySymmetricArea(Direction dir)
 
         case Direction::bottomLeft:
             if (m_mapData->getCols() != m_mapData->getRows()) {
-                //std::cout << "bottomLeft symmetry requires a square map, skipping." << std::endl;
                 const s_GameEvent newEvent {
                     .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
                     .data = NotificationEvent {
-                        .message = "bottomLeft symmetry requires a square map, skipping.",
+                        .message = editorText(EditorText::SquareRequired),
                         .type = eNotificationType::PRIORITY,
                     }
                 };                
@@ -1313,11 +1242,10 @@ void cEditorState::modifySymmetricArea(Direction dir)
 
         case Direction::bottomRight:
             if (m_mapData->getCols() != m_mapData->getRows()) {
-                //std::cout << "bottomRight symmetry requires a square map, skipping." << std::endl;
                 const s_GameEvent newEvent {
                     .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
                     .data = NotificationEvent {
-                        .message = "bottomRight symmetry requires a square map, skipping.",
+                        .message = editorText(EditorText::SquareRequired),
                         .type = eNotificationType::PRIORITY,
                     }
                 };                
@@ -1348,11 +1276,10 @@ void cEditorState::modifySymmetricArea(Direction dir)
 
 void cEditorState::drawStartCells() const
 {
-    cRectangle destRect;
-    cRectangle srcRect{0,0,32,32}; // we take the first full textured sprite
     const int cameraX = m_editorCam->getCameraX();
     const int cameraY = m_editorCam->getCameraY();
     const int tileLenSize = m_editorCam->getTileSize();
+    const GuiTheme theme = GuiTheme::Remaster();
     int x,y;
     for(size_t i=0; i<startCells.size(); i++) {
         if (startCells[i].x != -1 && startCells[i].y != -1) {
@@ -1360,8 +1287,15 @@ void cEditorState::drawStartCells() const
             y = heightBarSize + startCells[i].y * tileLenSize - cameraY;
             // Display if onscreen
             if (x + tileLenSize > 0 && x < m_settings->getScreenW() &&y + tileLenSize > heightBarSize && y < m_settings->getScreenH()) {
-                destRect = cRectangle(x, y, tileLenSize, tileLenSize);
-                m_sdlDrawer->renderStrechSprite(m_gfxeditor->getTexture(STARTPOSITION1+i), srcRect, destRect);
+                const EditorIcon digit = static_cast<EditorIcon>(static_cast<int>(EditorIcon::Start1) + static_cast<int>(i));
+                Texture *disc = m_icons.get(*m_sdlDrawer, EditorIcon::StartDisc, tileLenSize);
+                Texture *ring = m_icons.get(*m_sdlDrawer, digit, tileLenSize);
+                if (disc != nullptr && ring != nullptr) {
+                    SDL_SetTextureColorMod(disc->tex.get(), editorPanelColor.r, editorPanelColor.g, editorPanelColor.b);
+                    m_sdlDrawer->renderTexture(disc->tex.get(), x, y, tileLenSize, tileLenSize, 220);
+                    SDL_SetTextureColorMod(ring->tex.get(), theme.textColorHover.r, theme.textColorHover.g, theme.textColorHover.b);
+                    m_sdlDrawer->renderTexture(ring->tex.get(), x, y, tileLenSize, tileLenSize);
+                }
             }
         }
     }
@@ -1391,7 +1325,7 @@ bool cEditorState::saveMap(bool backup) const
         const s_GameEvent errorEvent {
             .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
             .data = NotificationEvent {
-                .message = "Unable to save map",
+                .message = editorText(EditorText::SaveFailed),
                 .type = eNotificationType::PRIORITY,
             }
         };
@@ -1402,7 +1336,7 @@ bool cEditorState::saveMap(bool backup) const
     const s_GameEvent newEvent {
         .eventType = eGameEventType::GAME_EVENT_NOTIFICATION,
         .data = NotificationEvent {
-            .message = "Map saved successfully",
+            .message = editorText(EditorText::SaveDone),
             .type = eNotificationType::NEUTRAL,
         }
     };                

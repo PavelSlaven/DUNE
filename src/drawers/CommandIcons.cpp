@@ -1,35 +1,21 @@
 #include "CommandIcons.hpp"
 
+#include "drawers/IconShapeBuilders.hpp"
+
 #include <algorithm>
 #include <array>
 #include <cmath>
 #include <utility>
 
 namespace {
-constexpr float gridSize = 64.0F;
-constexpr float lineThickness = 5.0F;
 constexpr int segmentsPerCircle = 32;
 constexpr float pi = 3.14159265358979F;
 
-IconShape stroke(std::vector<IconPoint> points, float thickness = lineThickness)
-{
-    return IconShape{IconShape::Kind::Stroke, std::move(points), 0.0F, 0.0F, 0.0F, thickness};
-}
-
-IconShape arc(IconPoint centre, float radius, float startAngle, float endAngle)
-{
-    return IconShape{IconShape::Kind::Arc, {centre}, radius, startAngle, endAngle, lineThickness};
-}
-
-IconShape fill(std::vector<IconPoint> points)
-{
-    return IconShape{IconShape::Kind::Fill, std::move(points)};
-}
-
-IconShape dot(IconPoint centre, float radius)
-{
-    return IconShape{IconShape::Kind::Dot, {centre}, radius};
-}
+using iconshape::arc;
+using iconshape::dot;
+using iconshape::fill;
+using iconshape::gridSize;
+using iconshape::stroke;
 
 std::vector<IconShape> buildShapes(CommandIcon icon)
 {
@@ -218,11 +204,16 @@ const std::vector<IconShape> &commandIconShapes(CommandIcon icon)
     return all[static_cast<std::size_t>(icon)];
 }
 
-std::vector<SDL_Vertex> tessellateCommandIcon(CommandIcon icon, float sizePixels, SDL_FColor color)
+std::vector<SDL_Vertex> tessellateIconShapes(const std::vector<IconShape> &shapes, float sizePixels, SDL_FColor color)
 {
     Tessellator tessellator(sizePixels / gridSize, color);
-    for (const IconShape &shape : commandIconShapes(icon)) {
+    for (const IconShape &shape : shapes) {
         tessellator.add(shape);
     }
     return tessellator.take();
+}
+
+std::vector<SDL_Vertex> tessellateCommandIcon(CommandIcon icon, float sizePixels, SDL_FColor color)
+{
+    return tessellateIconShapes(commandIconShapes(icon), sizePixels, color);
 }

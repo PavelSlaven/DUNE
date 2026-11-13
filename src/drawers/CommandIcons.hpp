@@ -39,4 +39,6 @@ struct IconShape {
 
 [[nodiscard]] const std::vector<IconShape> &commandIconShapes(CommandIcon icon);
 
+[[nodiscard]] std::vector<SDL_Vertex> tessellateIconShapes(const std::vector<IconShape> &shapes, float sizePixels, SDL_FColor color);
+
 [[nodiscard]] std::vector<SDL_Vertex> tessellateCommandIcon(CommandIcon icon, float sizePixels, SDL_FColor color);

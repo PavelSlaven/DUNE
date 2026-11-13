@@ -74,6 +74,8 @@ public:
 
 class SDLDrawer;
 
+using GuiCustomDraw = std::function<void(const cRectangle &rect, bool selected, bool enabled)>;
+
 class GuiObject : public cInputObserver {
 public:
     virtual ~GuiObject() = default;
@@ -85,12 +87,14 @@ public:
     void setTheme(const GuiTheme& theme);
     void setPosition(int x, int y);
     void setSize(int width, int height);
+    void setCustomDraw(GuiCustomDraw draw) { m_customDraw = std::move(draw); }
 protected:
     explicit GuiObject(SDLDrawer* drawer, const cRectangle &rect);
     // any gui object has a position and size. Hence its always a 'rect'.
     cRectangle m_rect;
     GuiTheme m_theme;
     SDLDrawer* m_sdlDrawer = nullptr;
+    GuiCustomDraw m_customDraw;
     void drawRectBorder(Color borderRect, Color borderBottomRight) const;
     void drawRectFillBorder(const GuiTheme& theme) const;
     void auditRecord(const char *type) const;

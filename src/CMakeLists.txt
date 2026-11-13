@@ -34,6 +34,7 @@ set(D2TM_SOURCES
     drawers/cOrderDrawer.cpp
     drawers/cCommandBarDrawer.cpp
     drawers/CommandIcons.cpp
+    drawers/EditorIcons.cpp
     drawers/cParticleDrawer.cpp
     drawers/cPlaceItDrawer.cpp
     drawers/CreditsDrawer.cpp

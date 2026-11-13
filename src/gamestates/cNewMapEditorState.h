@@ -18,6 +18,7 @@
 #include "cGameState.h"
 #include "controls/cKeyboardEvent.h"
 #include "controls/sMouseEvent.h"
+#include "utils/cRectangle.h"
 
 #include <memory>
 #include <vector>
@@ -58,6 +59,7 @@ private:
     GameStateTransition* m_stateTransitions = nullptr;
     cMouse* m_mouse = nullptr;
     std::unique_ptr<GuiWindow> m_guiWindow;
+    cRectangle m_titleRect;
     cGameObjectContext* m_objects = nullptr;
     cPreviewMaps* m_previewMap = nullptr;
     cIni* m_cIni = nullptr;
