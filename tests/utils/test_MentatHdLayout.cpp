@@ -230,3 +230,53 @@ TEST_CASE("mentat HD scene opening rows follow the fork", "[P11]")
     checkRow("Бене Гессерит", kBeneMentatHdLayout, 305, 216, 612);
     checkRow("Бене Гессерит", kBeneMentatHdLayout, 318, 229, 599);
 }
+
+TEST_CASE("Mentat HD buttons sit in the painted recesses of the fork pictures", "[P11B]")
+{
+    REQUIRE(kAtreidesMentatHdButtons.left.x == 342);
+    REQUIRE(kAtreidesMentatHdButtons.left.y == 393);
+    REQUIRE(kAtreidesMentatHdButtons.left.width == 124);
+    REQUIRE(kAtreidesMentatHdButtons.left.height == 52);
+    REQUIRE(kAtreidesMentatHdButtons.right.x == 482);
+    REQUIRE(kAtreidesMentatHdButtons.right.y == 393);
+    REQUIRE(kAtreidesMentatHdButtons.right.width == 110);
+    REQUIRE(kAtreidesMentatHdButtons.right.height == 52);
+
+    REQUIRE(kHarkonnenMentatHdButtons.left.x == 313);
+    REQUIRE(kHarkonnenMentatHdButtons.left.y == 397);
+    REQUIRE(kHarkonnenMentatHdButtons.left.width == 148);
+    REQUIRE(kHarkonnenMentatHdButtons.left.height == 59);
+    REQUIRE(kHarkonnenMentatHdButtons.right.x == 479);
+    REQUIRE(kHarkonnenMentatHdButtons.right.y == 397);
+    REQUIRE(kHarkonnenMentatHdButtons.right.width == 139);
+    REQUIRE(kHarkonnenMentatHdButtons.right.height == 59);
+
+    REQUIRE(kOrdosMentatHdButtons.left.x == 313);
+    REQUIRE(kOrdosMentatHdButtons.left.y == 397);
+    REQUIRE(kOrdosMentatHdButtons.left.width == 148);
+    REQUIRE(kOrdosMentatHdButtons.left.height == 59);
+    REQUIRE(kOrdosMentatHdButtons.right.x == 479);
+    REQUIRE(kOrdosMentatHdButtons.right.y == 397);
+    REQUIRE(kOrdosMentatHdButtons.right.width == 139);
+    REQUIRE(kOrdosMentatHdButtons.right.height == 59);
+
+    REQUIRE(kBeneMentatHdButtons.left.x == 336);
+    REQUIRE(kBeneMentatHdButtons.left.y == 405);
+    REQUIRE(kBeneMentatHdButtons.left.width == 112);
+    REQUIRE(kBeneMentatHdButtons.left.height == 49);
+    REQUIRE(kBeneMentatHdButtons.right.x == 492);
+    REQUIRE(kBeneMentatHdButtons.right.y == 405);
+    REQUIRE(kBeneMentatHdButtons.right.width == 112);
+    REQUIRE(kBeneMentatHdButtons.right.height == 49);
+
+    for (const MentatHdButtons *buttons : {&kAtreidesMentatHdButtons, &kHarkonnenMentatHdButtons,
+                                         &kOrdosMentatHdButtons, &kBeneMentatHdButtons}) {
+        for (const MentatHdRect *button : {&buttons->left, &buttons->right}) {
+            REQUIRE(button->x >= 0);
+            REQUIRE(button->y >= 0);
+            REQUIRE(button->x + button->width <= MENTAT_HD_FRAME_WIDTH);
+            REQUIRE(button->y + button->height <= MENTAT_HD_FRAME_HEIGHT);
+        }
+        REQUIRE(buttons->left.x + buttons->left.width <= buttons->right.x);
+    }
+}
