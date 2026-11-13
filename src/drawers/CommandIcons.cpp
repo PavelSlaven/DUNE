@@ -31,11 +31,6 @@ IconShape dot(IconPoint centre, float radius)
     return IconShape{IconShape::Kind::Dot, {centre}, radius};
 }
 
-IconShape chevronRight(float tipX, float tipY)
-{
-    return stroke({{tipX - 9.0F, tipY - 9.0F}, {tipX, tipY}, {tipX - 9.0F, tipY + 9.0F}});
-}
-
 std::vector<IconShape> buildShapes(CommandIcon icon)
 {
     switch (icon) {
@@ -86,11 +81,9 @@ std::vector<IconShape> buildShapes(CommandIcon icon)
             };
         case CommandIcon::Release:
             return {
-                stroke({{10, 26}, {10, 52}}),
-                stroke({{30, 26}, {30, 52}}),
-                arc({20, 26}, 10, 180, 360),
-                stroke({{20, 40}, {54, 40}}),
-                chevronRight(54, 40)
+                stroke({{30, 14}, {14, 14}, {14, 50}, {30, 50}}),
+                stroke({{24, 32}, {52, 32}}),
+                stroke({{42, 22}, {52, 32}, {42, 42}})
             };
     }
     return {};
