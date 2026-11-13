@@ -11,6 +11,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CommandIcons.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/drawers/test_CreditsMath.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/game/test_GameStateMachine.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gamestates/test_EditorUi.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/game/test_cTimeCounter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/gameobjects/test_cPlayerNotification.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/structures/test_StarportOrders.cpp
@@ -90,6 +91,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/gameobjects/mentat/MentatTextLayout.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/SDLDrawer.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/CommandIcons.cpp
+    ${CMAKE_SOURCE_DIR}/src/drawers/EditorIcons.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/cTextDrawer.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/cTextTextureCache.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/RNG.cpp
