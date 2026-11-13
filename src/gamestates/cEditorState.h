@@ -89,7 +89,6 @@ private:
     void drawIcon(const cRectangle &frame, EditorIcon icon, Color color) const;
     void drawTooltip() const;
     std::string keyLabel(eKeyAction action) const;
-    std::string groupKeyLabel(int number) const;
     void modifySymmetricArea(Direction dir);
 
     void drawMap() const;
