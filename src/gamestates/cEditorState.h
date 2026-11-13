@@ -19,10 +19,15 @@
 #include "utils/cMatrix.h"
 #include "controls/cKeyboardEvent.h"
 #include "controls/sMouseEvent.h"
+#include "controls/eKeyAction.h"
+#include "drawers/EditorIcons.hpp"
+#include "gamestates/EditorTexts.hpp"
+#include "utils/Color.hpp"
 #include "utils/cRectangle.h"
 
 #include <memory>
 #include <array>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -40,6 +45,7 @@ class cEditorCam;
 class cEventEmitter;
 class GameStateTransition;
 class cGameSettings;
+class cKeyboard;
 
 class cEditorState : public cGameState {
     friend class UiAuditAccess;
@@ -60,9 +66,9 @@ public:
     eGameStateType getType() override;
 private:
     Graphics *m_gfxdata = nullptr;
-    Graphics *m_gfxeditor = nullptr;
     cGameSettings *m_settings = nullptr;
     cEventEmitter* m_eventEmitter = nullptr;
+    cKeyboard* m_keyboard = nullptr;
     GameStateTransition* m_stateTransitions = nullptr;
     cMouse* m_mouse = nullptr;
     cTextDrawer *m_textDrawer = nullptr;
@@ -74,6 +80,16 @@ private:
     void populateSelectBar();
     void populateSymmetricBar();
     void setCurrentBar(GuiBar* bar);
+
+    using ToolContent = std::function<void(const cRectangle &frame, Color color)>;
+    void addToolButton(GuiBar &bar, GuiButtonGroup &group, bool initiallySelected, EditorText name,
+                       const std::string &key, ToolContent content, std::function<void()> onClick);
+    void drawToolButton(const cRectangle &rect, bool selected, bool enabled, EditorText name, const std::string &key,
+                        const ToolContent &content) const;
+    void drawIcon(const cRectangle &frame, EditorIcon icon, Color color) const;
+    void drawTooltip() const;
+    std::string keyLabel(eKeyAction action) const;
+    std::string groupKeyLabel(int number) const;
     void modifySymmetricArea(Direction dir);
 
     void drawMap() const;
@@ -113,6 +129,10 @@ private:
     std::unique_ptr<cEditorCam> m_editorCam;
 
     cRectangle mapSizeArea;
+
+    mutable EditorIconTextures m_icons;
+    mutable std::string m_tooltipText;
+    mutable cRectangle m_tooltipAnchor;
 
     // map modification 
     int idTerrainToMapModif = -1;

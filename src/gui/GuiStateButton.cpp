@@ -74,6 +74,10 @@ void GuiStateButton::draw() const
             auditClick("GuiStateButton");
         }
     }
+    if (m_customDraw) {
+        m_customDraw(m_rect, m_state == GuiState::CLICKED, m_enabled);
+        return;
+    }
     m_sdlDrawer->renderStrechSprite(m_tex, *m_currentRectState, m_rect);
 }
 

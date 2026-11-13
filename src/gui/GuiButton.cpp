@@ -54,6 +54,10 @@ void GuiButton::draw() const
             auditClick("GuiButton:" + m_buttonText);
         }
     }
+    if (m_customDraw) {
+        m_customDraw(m_rect, false, m_enabled);
+        return;
+    }
     const bool isDisabled = !m_enabled || m_visualState == VisualState::Disabled;
     const bool isPressed = m_pressed || m_visualState == VisualState::Pressed;
     //const bool isHovered = m_focus || m_visualState == VisualState::Hover;

@@ -13,12 +13,12 @@ import ui_audit_runtime_support as support  # noqa: E402
 SCORING_TEXTS = ("MISSION REPORT", "Click to continue", "YOU - Atreides")
 MISSION_TIME = re.compile(r"Mission time: [0-9]{2}:[0-9]{2}")
 UNITS_LINE = "Units built: "
-NEW_MAP_WINDOW = {"x": 180, "y": 180, "w": 440, "h": 240}
+NEW_MAP_WINDOW = {"x": 140, "y": 72, "w": 520, "h": 456}
 NEW_MAP_GUI = {"GuiWindow": 1, "GuiLabel": 7, "GuiTextInput": 4, "GuiCycleButton": 2, "GuiCheckBox": 1,
                "GuiButton": 2}
 NEW_MAP_CLICKS = {"GuiButton:Return to menu": 1, "GuiButton:Create map": 1, "GuiTextInput": 4, "GuiCycleButton": 2}
-NEW_MAP_TEXTS = ("Map editor configuration", "Name your map:", "Name of author:", "Description:", "Width size:",
-                 "Height size:", "Random:", "Return to menu", "Create map")
+NEW_MAP_TEXTS = ("New map", "Name", "Author", "Description", "Width", "Height", "Random map", "Return to menu",
+                 "Create map")
 SELECT_BAR = {"x": 0, "y": 0, "w": 800, "h": 48}
 SIDE_BAR = {"x": 752, "y": 48, "w": 48, "h": 552}
 EDITOR_MAP = {"x": 0, "y": 48, "w": 752, "h": 552}

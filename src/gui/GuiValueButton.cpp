@@ -100,6 +100,10 @@ void GuiValueButton::draw() const
             auditClick("GuiValueButton");
         }
     }
+    if (m_customDraw) {
+        m_customDraw(m_rect, false, m_enabled);
+        return;
+    }
     m_sdlDrawer->renderRectFillColor(m_rect, m_theme.fillColor);
     if (m_visualState == VisualState::Pressed) {
         m_sdlDrawer->gui_DrawRectBorder(m_rect, m_theme.borderDark, m_theme.borderLight);
