@@ -52,6 +52,7 @@ set(D2TM_SOURCES
     save/SaveFileCodec.cpp
     save/SaveGameManager.cpp
     save/SaveSlotsDialog.cpp
+    gamestates/ResolutionDialog.cpp
     game/cMissionStatsCollector.cpp
     game/cNotificationArea.cpp
     game/cSDLSystem.cpp

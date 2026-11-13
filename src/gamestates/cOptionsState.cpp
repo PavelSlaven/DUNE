@@ -46,6 +46,7 @@
 #include "utils/Localization.hpp"
 #include "save/SaveGameManager.hpp"
 #include "save/SaveSlotsDialog.hpp"
+#include "gamestates/ResolutionDialog.hpp"
 #include "controls/cKeyboard.h"
 #include "controls/cKeyboardEvent.h"
 #include "controls/sMouseEvent.h"
@@ -60,6 +61,17 @@ namespace {
 std::string normalizeLanguage(const std::string &language)
 {
     return language == "en" || language == "EN" ? "en" : "ru";
+}
+
+std::string resolutionChoiceText(
+    const ResolutionOption &resolution,
+    const ResolutionOption &native)
+{
+    const std::string label = std::format("{}×{}", resolution.width, resolution.height);
+    if (resolution == native) {
+        return std::format("{} ({})", label, localization::text("native", "родное"));
+    }
+    return label;
 }
 
 }
@@ -100,6 +112,15 @@ cOptionsState::cOptionsState(sGameServices* services, eGameState prevState)
             }
             m_loadGameButton->setEnabled(true);
             m_loadGameButton->setTheme(GuiTheme::Remaster());
+        });
+    m_resolutionDialog = std::make_unique<ResolutionDialog>(
+        m_sdlDrawer,
+        m_textDrawer,
+        m_settings,
+        [this](std::size_t index) {
+            m_selectedResolutionIndex = index;
+            m_statusLabel->setText("");
+            updateScaleControls();
         });
     loadSelectedOptions();
     refresh();
@@ -585,41 +606,19 @@ void cOptionsState::constructWindow(eGameState prevState)
             .build();
     m_guiWindow->addGuiObject(std::move(resolutionLabel));
 
-    const cRectangle &previousResolutionRect = rect(selectorX, contentRowY(9), arrowWidth, buttonHeight);
-    auto previousResolutionButton = GuiButtonBuilder()
-            .withRect(previousResolutionRect)
-            .withLabel("◄")
-            .withTextDrawer(m_textDrawer)
-            .withRenderer(m_sdlDrawer)
-            .withTheme(controlTheme)
-            .withKind(buttonKind)
-            .onClick([this]() { selectResolution(-1); })
-            .build();
-    m_guiWindow->addGuiObject(std::move(previousResolutionButton));
-
-    const cRectangle &resolutionValueRect = rect(selectorX + arrowWidth + margin, contentRowY(9), scaleValueWidth, buttonHeight);
-    auto resolutionValueLabel = GuiLabelBuilder()
-            .withRect(resolutionValueRect)
+    const int resolutionButtonWidth = arrowWidth * 2 + margin * 2 + scaleValueWidth;
+    const cRectangle &resolutionButtonRect = rect(selectorX, contentRowY(9), resolutionButtonWidth, buttonHeight);
+    auto resolutionButton = GuiButtonBuilder()
+            .withRect(resolutionButtonRect)
             .withLabel("")
             .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
             .withTheme(controlTheme)
-            .withKind(GuiRenderKind::OPAQUE_WITH_BORDER)
-            .build();
-    m_resolutionValueLabel = resolutionValueLabel.get();
-    m_guiWindow->addGuiObject(std::move(resolutionValueLabel));
-
-    const cRectangle &nextResolutionRect = rect(selectorX + arrowWidth + margin + scaleValueWidth + margin, contentRowY(9), arrowWidth, buttonHeight);
-    auto nextResolutionButton = GuiButtonBuilder()
-            .withRect(nextResolutionRect)
-            .withLabel("►")
-            .withTextDrawer(m_textDrawer)
-            .withRenderer(m_sdlDrawer)
-            .withTheme(controlTheme)
             .withKind(buttonKind)
-            .onClick([this]() { selectResolution(1); })
+            .onClick([this]() { openResolutionDialog(); })
             .build();
-    m_guiWindow->addGuiObject(std::move(nextResolutionButton));
+    m_resolutionButton = resolutionButton.get();
+    m_guiWindow->addGuiObject(std::move(resolutionButton));
 
     const cRectangle &fullscreenRect = rect(contentX, contentRowY(10), checkLabelWidth, buttonHeight);
     auto fullscreenLabel = GuiLabelBuilder()
@@ -716,12 +715,14 @@ void cOptionsState::selectLanguage()
     updateScaleControls();
 }
 
-void cOptionsState::selectResolution(int step)
+void cOptionsState::openResolutionDialog()
 {
-    const int count = static_cast<int>(m_resolutionChoices.size());
-    m_selectedResolutionIndex = static_cast<std::size_t>((static_cast<int>(m_selectedResolutionIndex) + step + count) % count);
-    m_statusLabel->setText("");
-    updateScaleControls();
+    std::vector<std::string> labels;
+    labels.reserve(m_resolutionChoices.size());
+    for (const ResolutionOption &resolution : m_resolutionChoices) {
+        labels.push_back(resolutionChoiceText(resolution, m_nativeResolution));
+    }
+    m_resolutionDialog->open(labels, m_selectedResolutionIndex);
 }
 
 void cOptionsState::updateScaleControls()
@@ -733,7 +734,7 @@ void cOptionsState::updateScaleControls()
     m_renderScaleValueLabel->setText(scaleChoiceText(renderScale, calculateAutomaticRenderScalePercent(outputW, outputH)));
     m_worldScaleValueLabel->setText(scaleChoiceText(worldScale, calculateAutomaticWorldScalePercent(outputH)));
     const ResolutionOption &resolution = m_resolutionChoices[m_selectedResolutionIndex];
-    m_resolutionValueLabel->setText(std::format("{}×{}", resolution.width, resolution.height));
+    m_resolutionButton->setText(resolutionChoiceText(resolution, m_nativeResolution));
     m_languageButton->setText(m_selectedLanguage == "en" ? "English" : "Русский");
     const std::string savedLanguage = normalizeLanguage(m_settings->getSavedLanguage());
     m_applyButton->setEnabled(
@@ -813,8 +814,11 @@ void cOptionsState::loadSelectedOptions()
         desktopWidth = bounds.w;
         desktopHeight = bounds.h;
     }
-    m_savedResolution = {selected.screenW, selected.screenH};
-    m_resolutionChoices = resolutionChoices(desktopWidth, desktopHeight, m_savedResolution);
+    m_nativeResolution = {desktopWidth, desktopHeight};
+    m_savedResolution = selected.screenW <= 0 || selected.screenH <= 0
+        ? m_nativeResolution
+        : ResolutionOption{selected.screenW, selected.screenH};
+    m_resolutionChoices = resolutionChoices(m_nativeResolution, m_savedResolution);
     m_selectedResolutionIndex = resolutionChoiceIndex(m_resolutionChoices, m_savedResolution);
     m_savedFullscreen = !selected.windowed;
     m_selectedFullscreen = m_savedFullscreen;
@@ -870,6 +874,9 @@ void cOptionsState::draw() const
     if (m_saveDialog->isOpen()) {
         m_saveDialog->draw();
     }
+    if (m_resolutionDialog->isOpen()) {
+        m_resolutionDialog->draw();
+    }
 
     // MOUSE
     m_mouse->draw();
@@ -877,6 +884,10 @@ void cOptionsState::draw() const
 
 void cOptionsState::onNotifyMouseEvent(const s_MouseEvent &event)
 {
+    if (m_resolutionDialog->isOpen()) {
+        m_resolutionDialog->onMouseEvent(event);
+        return;
+    }
     if (m_saveDialog->isOpen()) {
         m_saveDialog->onMouseEvent(event);
         return;
@@ -898,6 +909,10 @@ eGameStateType cOptionsState::getType()
 
 void cOptionsState::onNotifyKeyboardEvent(const cKeyboardEvent &event)
 {
+    if (m_resolutionDialog->isOpen()) {
+        m_resolutionDialog->onKeyboardEvent(event);
+        return;
+    }
     if (m_saveDialog->isOpen()) {
         m_saveDialog->onKeyboardEvent(event);
         return;
@@ -949,6 +964,9 @@ void cOptionsState::refresh()
     if (m_saveDialog) {
         m_saveDialog->close();
     }
+    if (m_resolutionDialog) {
+        m_resolutionDialog->close();
+    }
     m_guiWindow.reset();
     m_renderScaleValueLabel = nullptr;
     m_worldScaleValueLabel = nullptr;
@@ -956,12 +974,12 @@ void cOptionsState::refresh()
     m_applyButton = nullptr;
     m_languageButton = nullptr;
     m_loadGameButton = nullptr;
-    m_resolutionValueLabel = nullptr;
+    m_resolutionButton = nullptr;
     constructWindow(m_prevState);
     m_backgroundTexture = nullptr;
 }
 
 bool cOptionsState::isKeyboardCapturedByUi() const
 {
-    return m_bindingCapture.has_value() || m_saveDialog->isCapturingText();
+    return m_bindingCapture.has_value() || m_saveDialog->isCapturingText() || m_resolutionDialog->isOpen();
 }

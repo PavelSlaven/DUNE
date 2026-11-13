@@ -56,6 +56,7 @@ const GroupScreen kGroupScreens[] = {
     {"options-game", "GAME_OPTIONS", "cOptionsState"},
     {"save-dialog-menu", "GAME_MENU", "SaveSlotsDialog"},
     {"save-dialog", "GAME_OPTIONS", "SaveSlotsDialog"},
+    {"resolution-dialog", "GAME_OPTIONS", "ResolutionDialog"},
     {"scoring", "GAME_SCORING", "cScoringState"},
     {"new-map-editor", "GAME_NEW_MAP_EDITOR", "cNewMapEditorState"},
     {"editor", "GAME_EDITOR", "cEditorState"},
@@ -371,6 +372,28 @@ bool readySaveDialog(cGame &game)
     }
 }
 
+bool readyResolutionDialog(cGame &game)
+{
+    switch (g_step) {
+        case 0:
+            UiAuditAccess::setState(game, eGameState::OPTIONS);
+            g_step = 1;
+            g_wait = 0;
+            return false;
+        case 1:
+            if (!pause(4)) {
+                return false;
+            }
+            if (!UiAuditAccess::resolutionDialog(game)) {
+                return false;
+            }
+            g_step = 2;
+            return false;
+        default:
+            return pause(4);
+    }
+}
+
 bool prepareSaveRoundTrip(cGame &game)
 {
     resetSteps();
@@ -538,6 +561,7 @@ const std::vector<Scene> g_catalog = {
           prepareGameOptionsWithSaves, readySaveDialog<4>),
     onGameScreen(scene("save-roundtrip", "game-playing", "", kFixedGameFrames, prepareSaveRoundTrip), false),
     scene("options-game-applied", "options-game", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyOptionsMenu<1>),
+    scene("resolution-dialog", "resolution-dialog", "", "FixedFrames(14, no readiness flag)", prepareGameOptions, readyResolutionDialog),
     onGameScreen(scene("structure-label-top", "game-playing", "atreides", kFixedGameFrames, prepareStructureLabel<0>,
                        nullptr, 5), true),
     onGameScreen(scene("structure-label-right", "game-playing", "atreides", kFixedGameFrames, prepareStructureLabel<1>,

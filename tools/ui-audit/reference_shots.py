@@ -29,6 +29,7 @@ GALLERY_HEADER = ("file", "scene", "resolution", "exit", "png_size", "canvas", "
 SAVE_WRITING_FORK_SCENES = frozenset(
     {
         "main-menu-saves", "save-dialog-menu", "options-game-main-saves", "options-game-applied",
+        "resolution-dialog",
         "options-game-game", "options-game-controls", "options-game-diagnostics", "options-game-keybind",
         "save-dialog-load", "save-dialog-save-new", "save-dialog-overwrite", "save-dialog-load-error",
         "save-dialog-save-error",

@@ -201,6 +201,17 @@ bool UiAuditAccess::optionsPage(cGame &currentGame, int page)
     return true;
 }
 
+bool UiAuditAccess::resolutionDialog(cGame &currentGame)
+{
+    auto *options = dynamic_cast<cOptionsState *>(currentGame.m_stateMachine->getCurrentState());
+    if (options == nullptr || options->m_optionsPage != cOptionsState::OptionsPage::Main ||
+        options->m_resolutionButton == nullptr || options->m_resolutionDialog == nullptr) {
+        return false;
+    }
+    options->openResolutionDialog();
+    return true;
+}
+
 bool UiAuditAccess::optionsBinding(cGame &currentGame)
 {
     auto *options = dynamic_cast<cOptionsState *>(currentGame.m_stateMachine->getCurrentState());

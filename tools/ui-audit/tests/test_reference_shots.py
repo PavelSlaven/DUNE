@@ -133,6 +133,7 @@ class PairsFile(unittest.TestCase):
                     "save-dialog-menu",
                     "options-game-main-saves",
                     "options-game-applied",
+                    "resolution-dialog",
                     "options-game-game",
                     "options-game-controls",
                     "options-game-diagnostics",

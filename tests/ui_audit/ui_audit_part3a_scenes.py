@@ -200,6 +200,7 @@ def check_for(scene_id):
         "options-game-main-nosaves": check_options_game_main,
         "options-game-main-saves": check_options_game_main,
         "options-game-applied": check_options_game_applied,
+        "resolution-dialog": check_options_game_main,
         "options-game-game": check_options_page("Edge scrolling — move camera at screen edge",
                                                 "Rules file: game.ini (change manually)"),
         "options-game-controls": check_options_controls,

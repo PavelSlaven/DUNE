@@ -42,6 +42,7 @@ class cMouse;
 class cGameSettings;
 class cKeyboard;
 class SaveSlotsDialog;
+class ResolutionDialog;
 
 class cOptionsState : public cGameState {
     friend class UiAuditAccess;
@@ -84,7 +85,7 @@ private:
     GuiButton *m_applyButton = nullptr;
     GuiButton *m_languageButton = nullptr;
     GuiButton *m_loadGameButton = nullptr;
-    GuiLabel *m_resolutionValueLabel = nullptr;
+    GuiButton *m_resolutionButton = nullptr;
     OptionsPage m_optionsPage = OptionsPage::Main;
     std::optional<OptionsPage> m_pendingOptionsPage;
     bool m_refreshRequested = false;
@@ -96,20 +97,22 @@ private:
     int m_controlsScrollRow = 0;
     std::vector<ResolutionOption> m_resolutionChoices;
     std::size_t m_selectedResolutionIndex = 0;
+    ResolutionOption m_nativeResolution;
     ResolutionOption m_savedResolution;
     bool m_selectedFullscreen = false;
     bool m_savedFullscreen = false;
 
     std::unique_ptr<GuiWindow> m_guiWindow;
     std::unique_ptr<SaveSlotsDialog> m_saveDialog;
+    std::unique_ptr<ResolutionDialog> m_resolutionDialog;
 
     void constructWindow(eGameState prevState);
     void selectRenderScale(int step);
     void selectWorldScale(int step);
     void selectLanguage();
+    void openResolutionDialog();
     void updateScaleControls();
     void applyScaleSettings();
-    void selectResolution(int step);
     void loadSelectedOptions();
     void switchOptionsPage(OptionsPage page);
     void requestOptionsPage(OptionsPage page);
