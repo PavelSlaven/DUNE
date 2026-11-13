@@ -3,6 +3,18 @@
 This release contains the Dune II — The Maker RU/HD remaster for Windows,
 Linux and macOS, built on SDL3.
 
+## What's new in v0.8.0-ru-hd.11
+
+- The remaster now runs on the current upstream engine (SDL3), with builds for
+  Windows, Linux and macOS.
+- The first start uses the monitor's native resolution in fullscreen. The
+  Resolution setting opens a short list of sizes that fit the screen.
+- The command bar matches the rest of the interface: icons drawn by the game
+  (move, attack, repair wrench, unload, deploy, rally flag, release), hotkey
+  letters and a tooltip with the name and key.
+- Vehicles keep the same apparent size in all eight directions.
+- New art for the Light Factory, the Radar and the mentat briefings.
+
 ## Installation
 
 1. Download `DUNE-<version>-common-assets.zip`.
