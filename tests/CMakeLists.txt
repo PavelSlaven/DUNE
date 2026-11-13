@@ -92,6 +92,9 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/drawers/SDLDrawer.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/CommandIcons.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/EditorIcons.cpp
+    ${CMAKE_SOURCE_DIR}/src/gui/GuiButtonGroup.cpp
+    ${CMAKE_SOURCE_DIR}/src/gui/GuiObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/gui/GuiStateButton.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/cTextDrawer.cpp
     ${CMAKE_SOURCE_DIR}/src/drawers/cTextTextureCache.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/RNG.cpp

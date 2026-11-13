@@ -1,9 +1,19 @@
 #include <catch2/catch_test_macros.hpp>
 
+#include "controls/cKeyBindings.h"
+#include "controls/cKeyboardEvent.h"
 #include "drawers/EditorIcons.hpp"
+#include "drawers/SDLDrawer.hpp"
 #include "gamestates/EditorTexts.hpp"
 #include "gamestates/NewMapDialogLayout.hpp"
+#include "gui/GuiButtonGroup.h"
+#include "gui/GuiStateButton.h"
 #include "utils/Localization.hpp"
+
+#include <SDL3/SDL.h>
+
+#include <bitset>
+#include <memory>
 
 #include <array>
 #include <cstring>
@@ -140,4 +150,41 @@ TEST_CASE("P18 editor texts differ between English and Russian", "[P18]")
         const std::string russian = editorText(static_cast<EditorText>(index));
         REQUIRE(english != russian);
     }
+}
+
+TEST_CASE("Editor tool groups - a number key selects the tool and runs its action once", "[P18]")
+{
+    SDL_Surface *surface = SDL_CreateSurface(64, 64, SDL_PIXELFORMAT_RGBA32);
+    REQUIRE(surface != nullptr);
+    SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
+    REQUIRE(renderer != nullptr);
+    {
+        SDLDrawer drawer(renderer);
+        GuiButtonGroup group;
+        std::array<int, 3> runs{};
+        std::vector<std::unique_ptr<GuiStateButton>> buttons;
+        for (int index = 0; index < 3; ++index) {
+            auto button = std::make_unique<GuiStateButton>(&drawer, cRectangle(index * 20, 0, 20, 20));
+            button->setOnLeftMouseButtonClickedAction([&runs, index]() { ++runs[index]; });
+            button->setGroup(&group);
+            buttons.push_back(std::move(button));
+        }
+        group.updateStates(buttons[0].get());
+        runs = {};
+
+        cKeyBindings bindings;
+        bindings.loadDefaults();
+        std::bitset<SDL_SCANCODE_COUNT> keys;
+        keys.set(SDL_SCANCODE_2);
+        const s_KeysCombo combo{};
+        const cKeyboardEvent event(eKeyEventType::PRESSED, keys, combo, &bindings);
+        for (const auto &button : buttons) {
+            button->onNotifyKeyboardEvent(event);
+        }
+
+        REQUIRE(runs == std::array<int, 3>{0, 1, 0});
+        REQUIRE(group.isCurrentlySelected(buttons[1].get()));
+    }
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroySurface(surface);
 }
