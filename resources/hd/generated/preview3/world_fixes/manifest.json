@@ -1,0 +1,35 @@
+{
+  "release": "v0.8.0-ru4-preview3",
+  "terrain": {
+    "tile_size": 128,
+    "edge_guard": 10,
+    "materials": {
+      "sand": {
+        "source": "resources\\hd\\generated\\preview3\\world_fixes\\sand_source.png",
+        "source_sha256": "35572699f160b52d96c362d61c9f310a6ffea3bf573d36f69f4d7fbb87c43934"
+      },
+      "rock": {
+        "source": "resources\\hd\\generated\\preview3\\world_fixes\\rock_source.png",
+        "source_sha256": "714a4920dc556ff1fd3d258ae7eafe3fda45c2ea2c11d8c4d8d1e86d53d071d4"
+      },
+      "spice": {
+        "source": "resources\\hd\\generated\\preview3\\world_fixes\\spice_source.png",
+        "source_sha256": "9d960ed5de934a7ab123dea2eb01bbaf20bf9027036908c0afb9ffb793d92689"
+      }
+    }
+  },
+  "beacons": {
+    "logical_frame": 18,
+    "hd4_frame": 72,
+    "frames": 8,
+    "source": "resources\\hd\\generated\\preview3\\world_fixes\\beacon_cutout.png",
+    "source_sha256": "4555b2185be4b6fd19c20443e915f2d608f751b2454f0aac63761a427c12d623"
+  },
+  "shroud": {
+    "resources": [
+      113,
+      114
+    ],
+    "policy": "frame-local bicubic alpha reconstruction"
+  }
+}

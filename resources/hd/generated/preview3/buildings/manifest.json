@@ -1,0 +1,211 @@
+{
+  "release": "v0.8.0-ru4-preview3",
+  "source": "battle_for_arrakis_buildings_239094.png",
+  "source_page": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/239094/",
+  "source_sha256": "3f73042e24d2211011e44da22aa6da1c024b8ba29203208fbf03a70184dad7ba",
+  "prompt_profile": {
+    "use_case": "precise-object-edit",
+    "style": "semi-realistic 2D RTS remaster",
+    "source_role": "Battle for Arrakis sheet provides modular panels, graphite, aged brass, vents, grilles and industrial mechanisms",
+    "invariants": [
+      "D2TM logical frame size and frame count",
+      "bottom anchor",
+      "neutral body colour",
+      "no text, flag, logo or watermark"
+    ]
+  },
+  "buildings": [
+    {
+      "generated_name": "barracks",
+      "resource_id": 1,
+      "shadow_id": 2,
+      "resource_name": "BUILD_BARRACKS",
+      "frame_size": [
+        64,
+        64
+      ],
+      "frame_count": 1,
+      "directional": false
+    },
+    {
+      "generated_name": "construction_yard",
+      "resource_id": 3,
+      "shadow_id": 4,
+      "resource_name": "BUILD_CONSTYARD",
+      "frame_size": [
+        64,
+        64
+      ],
+      "frame_count": 1,
+      "directional": false
+    },
+    {
+      "generated_name": "heavy_factory",
+      "resource_id": 5,
+      "shadow_id": 7,
+      "resource_name": "BUILD_HEAVYFACTORY",
+      "frame_size": [
+        96,
+        64
+      ],
+      "frame_count": 11,
+      "directional": false
+    },
+    {
+      "generated_name": "high_tech_factory",
+      "resource_id": 8,
+      "shadow_id": 9,
+      "resource_name": "BUILD_HIGHTECH",
+      "frame_size": [
+        96,
+        64
+      ],
+      "frame_count": 7,
+      "directional": false
+    },
+    {
+      "generated_name": "ix",
+      "resource_id": 10,
+      "shadow_id": 11,
+      "resource_name": "BUILD_IX",
+      "frame_size": [
+        64,
+        64
+      ],
+      "frame_count": 1,
+      "directional": false
+    },
+    {
+      "generated_name": "light_factory",
+      "resource_id": 12,
+      "shadow_id": 14,
+      "resource_name": "BUILD_LIGHTFACTORY",
+      "frame_size": [
+        64,
+        64
+      ],
+      "frame_count": 1,
+      "directional": false
+    },
+    {
+      "generated_name": "palace",
+      "resource_id": 15,
+      "shadow_id": 16,
+      "resource_name": "BUILD_PALACE",
+      "frame_size": [
+        96,
+        96
+      ],
+      "frame_count": 1,
+      "directional": false
+    },
+    {
+      "generated_name": "outpost",
+      "resource_id": 26,
+      "shadow_id": 27,
+      "resource_name": "BUILD_RADAR",
+      "frame_size": [
+        64,
+        64
+      ],
+      "frame_count": 8,
+      "directional": false
+    },
+    {
+      "generated_name": "refinery-v2",
+      "resource_id": 28,
+      "shadow_id": 29,
+      "resource_name": "BUILD_REFINERY",
+      "frame_size": [
+        96,
+        64
+      ],
+      "frame_count": 8,
+      "directional": false
+    },
+    {
+      "generated_name": "repair_facility",
+      "resource_id": 30,
+      "shadow_id": 31,
+      "resource_name": "BUILD_REPAIR",
+      "frame_size": [
+        96,
+        64
+      ],
+      "frame_count": 8,
+      "directional": false
+    },
+    {
+      "generated_name": "rocket_turret",
+      "resource_id": 32,
+      "shadow_id": 33,
+      "resource_name": "BUILD_RTURRET",
+      "frame_size": [
+        32,
+        32
+      ],
+      "frame_count": 8,
+      "directional": true
+    },
+    {
+      "generated_name": "spice_silo",
+      "resource_id": 34,
+      "shadow_id": 35,
+      "resource_name": "BUILD_SILO",
+      "frame_size": [
+        64,
+        64
+      ],
+      "frame_count": 1,
+      "directional": false
+    },
+    {
+      "generated_name": "starport",
+      "resource_id": 36,
+      "shadow_id": 37,
+      "resource_name": "BUILD_STARPORT",
+      "frame_size": [
+        96,
+        96
+      ],
+      "frame_count": 8,
+      "directional": false
+    },
+    {
+      "generated_name": "gun_turret",
+      "resource_id": 38,
+      "shadow_id": 39,
+      "resource_name": "BUILD_TURRET",
+      "frame_size": [
+        32,
+        32
+      ],
+      "frame_count": 8,
+      "directional": true
+    },
+    {
+      "generated_name": "windtrap",
+      "resource_id": 40,
+      "shadow_id": 41,
+      "resource_name": "BUILD_WINDTRAP",
+      "frame_size": [
+        64,
+        64
+      ],
+      "frame_count": 1,
+      "directional": false
+    },
+    {
+      "generated_name": "wor",
+      "resource_id": 42,
+      "shadow_id": 43,
+      "resource_name": "BUILD_WOR",
+      "frame_size": [
+        64,
+        64
+      ],
+      "frame_count": 1,
+      "directional": false
+    }
+  ]
+}

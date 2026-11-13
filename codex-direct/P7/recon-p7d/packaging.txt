@@ -1,0 +1,42 @@
+git grep -n -E 'README_RU|OFL_|licenses|Sangyo|PTMono|RussoOne|PTSansNarrow|RunttiSP' 9208dcf5a358f40afd95c99480e4e09f781ed566 -- CMakeLists.txt src tools .github resources/bin/settings.ini
+9208dcf5a358f40afd95c99480e4e09f781ed566:resources/bin/settings.ini:80:ARRAKEEN=PTMono-Regular.ttf
+9208dcf5a358f40afd95c99480e4e09f781ed566:resources/bin/settings.ini:81:BENEGESS=PTSansNarrow-Regular.ttf
+9208dcf5a358f40afd95c99480e4e09f781ed566:resources/bin/settings.ini:82:SMALL=PTMono-Regular.ttf
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:83:    const auto russianFontPath = fontDirectory / "Sangyo-Regular.otf";
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:84:    const auto russoFontPath = fontDirectory / "RussoOne-Regular.ttf";
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:106:                std::string("Could not load Sangyo for ") + role +
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:140:        cLogger::getInstance()->log(LOG_INFO, COMP_INIT, "Load data", useRussianFont ? "Hooked game font: Sangyo-Regular.otf" : "Hooked font: " + settingsValidator->getName(eGameDirFileName::ARRAKEEN), OUTC_SUCCESS);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:150:        cLogger::getInstance()->log(LOG_INFO, COMP_INIT, "Load data", useRussianFont ? "Hooked dialog font: Sangyo-Regular.otf" : "Hooked font: " + settingsValidator->getName(eGameDirFileName::BENEGESS), OUTC_SUCCESS);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:160:        cLogger::getInstance()->log(LOG_INFO, COMP_INIT, "Load data", useRussianFont ? "Hooked small UI font: Sangyo-Regular.otf" : "Hooked font: " + settingsValidator->getName(eGameDirFileName::SMALL), OUTC_SUCCESS);
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:181:                ? "Hooked HD menu font: Sangyo-Regular.otf"
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:209:                ? "Hooked remastered Mentat font: Sangyo-Regular.otf"
+9208dcf5a358f40afd95c99480e4e09f781ed566:src/context/ContextCreator.cpp:210:                : "Hooked remastered Mentat font: RussoOne-Regular.ttf",
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/audit_campaign_hd_briefings.py:107:    path = ROOT / "resources" / "bin" / "data" / "RussoOne-Regular.ttf"
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/audit_mentat_hd_screen.py:132:    font_path = ROOT / "resources" / "bin" / "data" / "RussoOne-Regular.ttf"
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/audit_mentat_hd_screen.py:135:    if "RussoOne-Regular.ttf" not in context_source:
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_battle_for_arrakis_world.py:701:        ROOT / "resources" / "bin" / "data" / "PTSansNarrow-Regular.ttf",
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_commando_infantry.py:371:        ROOT / "resources" / "bin" / "data" / "PTSansNarrow-Regular.ttf",
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_hd_completion_comparison.py:137:    title_font = load_font(ROOT / "resources" / "bin" / "data" / "RussoOne-Regular.ttf", 25)
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_hd_completion_comparison.py:138:    label_font = load_font(ROOT / "resources" / "bin" / "data" / "PTSansNarrow-Regular.ttf", 18)
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_hd_completion_comparison.py:139:    small_font = load_font(ROOT / "resources" / "bin" / "data" / "PTSansNarrow-Regular.ttf", 15)
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_hd_completion_comparison.py:194:@font-face{{font-family:PTN;src:url('../../resources/bin/data/PTSansNarrow-Regular.ttf')}}
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_hd_completion_comparison.py:195:@font-face{{font-family:Russo;src:url('../../resources/bin/data/RussoOne-Regular.ttf')}}
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_mentat_hd_screen.py:222:    font_path = ROOT / "resources" / "bin" / "data" / "RussoOne-Regular.ttf"
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_pixvoxel_infantry.py:356:        ROOT / "resources" / "bin" / "data" / "PTSansNarrow-Regular.ttf",
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_pixvoxel_infantry.py:391:        ROOT / "resources" / "bin" / "data" / "PTSansNarrow-Regular.ttf",
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_review_asset_pack.py:495:    (PACK / "README_RU.txt").write_text(
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/build_ru4_comparisons.py:18:FONT = ROOT / "resources" / "bin" / "data" / "PTSansNarrow-Regular.ttf"
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/check_mentat_display.py:133:    font_path = ROOT / "resources" / "bin" / "data" / "RussoOne-Regular.ttf"
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/export_music.py:69:    (args.output / "README_RU.md").write_text("\n".join(lines), encoding="utf-8")
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/export_wall_textures.py:45:    return ImageFont.truetype(str(DATA / "PTMono-Regular.ttf"), size)
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/install_hd_completion.py:100:    for name in ("README_RU.txt", "THIRD_PARTY_ASSETS_RU.txt"):
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/units3d/redraw_sheets.py:23:FONT_PATH = ROOT / 'resources/bin/data/PTSansNarrow-Regular.ttf'
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/upstream/port_features.json:626:        "resources/bin/data/PTMono-Regular.ttf",
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/upstream/port_features.json:629:        "resources/bin/README_RU.txt",
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/upstream/port_features.json:630:        "resources/bin/OFL_PT_FONTS.txt",
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/upstream/port_features.json:919:        "resources/bin/README_RU.txt",
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/upstream/port_features.json:921:        "resources/bin/OFL_PT_FONTS.txt",
+9208dcf5a358f40afd95c99480e4e09f781ed566:tools/verify_hd_card_catalog.py:67:        str(root / "resources/bin/data/PTSansNarrow-Regular.ttf"),
+git grep -n -E 'resources/bin|README|LICENSE' 405355e96f07a83da96b76cc2832a09c9c43e825 -- CMakeLists.txt .github
+405355e96f07a83da96b76cc2832a09c9c43e825:.github/workflows/build_master.yml:27:              - 'resources/bin/**'
+405355e96f07a83da96b76cc2832a09c9c43e825:.github/workflows/build_pr.yml:21:              - 'resources/bin/**'

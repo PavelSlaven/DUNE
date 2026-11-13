@@ -1,0 +1,88 @@
+место	английский	русский	замена
+src/drawers/cBuildingListDrawer.cpp:80	Spice Refinery | Refinery	Переработчик пряности | Переработчик
+src/drawers/cBuildingListDrawer.cpp:82	Light Infantry | Infantry	Отряд пехоты | Пехота
+src/drawers/cBuildingListDrawer.cpp:83	Troopers | Troopers	Отряд ракетчиков | Ракетчики
+src/drawers/cBuildingListDrawer.cpp:95	READY	ГОТОВО
+src/drawers/cSideBarDrawer.cpp:169	HOUSE ATREIDES	ДОМ АТРЕЙДЕС
+src/drawers/cSideBarDrawer.cpp:172	HOUSE HARKONNEN	ДОМ ХАРКОННЕН
+src/drawers/cSideBarDrawer.cpp:175	HOUSE ORDOS	ДОМ ОРДОС
+src/drawers/cSideBarDrawer.cpp:178	SARDAUKAR	САРДАУКАРЫ
+src/drawers/cSideBarDrawer.cpp:180	UNKNOWN HOUSE	НЕИЗВЕСТНЫЙ ДОМ
+src/drawers/cSideBarDrawer.cpp:360	PWR | POWER	ЭНЕРГ. | ЭНЕРГИЯ
+src/drawers/cSideBarDrawer.cpp:369	SPC | SPICE	ПРЯН. | ПРЯНОСТЬ
+src/drawers/CreditsDrawer.cpp:259	CREDITS	КРЕДИТЫ
+src/managers/cDrawManager.cpp:340	OPTIONS	НАСТРОЙКИ
+src/gameobjects/map/cPreviewMaps.cpp:419	Random map	Случайная карта
+src/gameobjects/map/cPreviewMaps.cpp:445	Invalid	ОШИБКА
+src/gameobjects/map/cPreviewMaps.cpp:449	SMALL	МАЛАЯ
+src/gameobjects/map/cPreviewMaps.cpp:452	MEDIUM	СРЕДНЯЯ
+src/gameobjects/map/cPreviewMaps.cpp:455	LARGE	БОЛЬШАЯ
+src/gameobjects/map/cPreviewMaps.cpp:457	HUGE	ОГРОМНАЯ
+src/utils/ScaleChoices.cpp:39	Auto ({}%)	Авто ({}%)
+src/game/cSDLSystem.cpp:78	Auto ({}%)	Авто ({}%)
+src/gamestates/cOptionsState.cpp:129	Dune II - The Maker - version 	Dune II - The Maker - версия 	"Dune II - The Maker - version " + D2TM_VERSION → localization::text("Dune II - The Maker - version ", "Dune II - The Maker - версия ") + D2TM_VERSION
+src/gamestates/cMainMenuState.cpp:155	Campaign	Кампания
+src/gamestates/cMainMenuState.cpp:158	Skirmish	Схватка
+src/gamestates/cMainMenuState.cpp:162	Load	Загрузить
+src/gamestates/cMainMenuState.cpp:163	Map Editor	Редактор карт
+src/gamestates/cMainMenuState.cpp:166	Options	Настройки
+src/gamestates/cMainMenuState.cpp:169	Hall of Fame	Зал славы
+src/gamestates/cMainMenuState.cpp:173	Introduction	Вступление
+src/gamestates/cMainMenuState.cpp:176	Exit	Выход
+src/gamestates/cNewmapEditorState.cpp:85	Map editor configuration	Новая карта
+src/gamestates/cCreditsState.cpp:82	Back	Назад
+src/gamestates/cCreditsState.cpp:118	Version {}	Версия {}
+src/gamestates/cCreditsState.cpp:124	by Stefan Hendriks	автор — Stefan Hendriks
+src/gamestates/cCreditsState.cpp:131	a remake of	ремейк игры
+src/gamestates/cCreditsState.cpp:146	--- CONTRIBUTORS ---	--- УЧАСТНИКИ ---
+src/gamestates/cCreditsState.cpp:152	Developer	Разработчик
+src/gamestates/cCreditsState.cpp:158	Developer & Sparring partner	Разработчик и спарринг-партнёр
+src/gamestates/cCreditsState.cpp:164	Developer	Разработчик
+src/gamestates/cCreditsState.cpp:170	Bugfixes	Исправление ошибок
+src/gamestates/cCreditsState.cpp:176	Graphics	Графика
+src/gamestates/cCreditsState.cpp:182	Graphics	Графика
+src/gamestates/cCreditsState.cpp:188	Graphics	Графика
+src/gamestates/cCreditsState.cpp:194	Graphics	Графика
+src/gamestates/cCreditsState.cpp:200	Graphics	Графика
+src/gamestates/cCreditsState.cpp:206	Internal Editor UI graphics and miscellaneous assets	Графика редактора и другие ресурсы
+src/gamestates/cCreditsState.cpp:212	Support at Discord, testing & Skirmish Maps	Поддержка в Discord, тестирование и карты схваток
+src/gamestates/cCreditsState.cpp:218	For your lifelong support & valuable feedback	За многолетнюю поддержку и ценные отзывы
+src/gamestates/cCreditsState.cpp:227	--- ACKNOWLEDGEMENTS ---	--- БЛАГОДАРНОСТИ ---
+src/gamestates/cCreditsState.cpp:233	for producing Dune 2	за создание Dune 2
+src/gamestates/cCreditsState.cpp:239	by Sam Lantinga and contributors	Sam Lantinga и соавторы
+src/gamestates/cCreditsState.cpp:245	with SDL_image, SDL_ttf and SDL_mixer	с SDL_image, SDL_ttf и SDL_mixer
+src/gamestates/cCreditsState.cpp:251	Dune Legacy, Dune Dynasty and Dune The Golden Path	Dune Legacy, Dune Dynasty и Dune The Golden Path
+src/gamestates/cCreditsState.cpp:260	--- KO-FI SUPPORTERS ---	--- ПОДДЕРЖКА НА KO-FI ---
+src/gamestates/cCreditsState.cpp:328	--- SPECIAL THANKS TO ---	--- ОСОБАЯ БЛАГОДАРНОСТЬ ---
+src/gamestates/cCreditsState.cpp:334	for Dune2K, and hosting arrakis.dune2k.com	за Dune2K и сайт arrakis.dune2k.com
+src/gamestates/cCreditsState.cpp:340	for help with the Dune 2 Seed Generator	за помощь с генератором карт Dune 2
+src/gamestates/cCreditsState.cpp:346	for the D2TM Java Map Editor	за редактор карт D2TM на Java
+src/gamestates/cCreditsState.cpp:352	for porting D2TM to SDL2	за перенос D2TM на SDL2
+src/gamestates/cCreditsState.cpp:388	for nudging me to work on D2TM again in C++	за то, что вернул меня к D2TM на C++
+src/gamestates/cCreditsState.cpp:394	For all the good times at the arrakis forums	За хорошие времена на форумах arrakis
+src/gamestates/cCreditsState.cpp:405	Thank you for playing	Спасибо за игру
+src/drawers/cMouseDrawer.cpp:199	Sight : {}	Обзор: {}
+src/drawers/cMouseDrawer.cpp:200	Range : {}	Дальность: {}
+src/drawers/cMouseDrawer.cpp:203	Sight : Unknown	Обзор: неизвестно
+src/drawers/cMouseDrawer.cpp:204	Range : Unknown	Дальность: неизвестно
+src/drawers/cMouseDrawer.cpp:215	{} (PRIMARY)	{} (основное)
+src/drawers/cMouseDrawer.cpp:221	Hitpoints : {}/{}	Прочность: {}/{}
+src/drawers/cMouseDrawer.cpp:222	Armor : {}	Броня: {}
+src/drawers/cMouseDrawer.cpp:223	Protected : {}%%	Защита: {}%%
+src/drawers/cMouseDrawer.cpp:234	Total usage : {}/{} (OK)	Расход: {}/{} (норма)
+src/drawers/cMouseDrawer.cpp:237	Total usage : {}/{} (LOW)	Расход: {}/{} (мало)
+src/drawers/cMouseDrawer.cpp:239	Windtrap outage : {}/{}	Выработка: {}/{}
+src/drawers/cMouseDrawer.cpp:242	Total usage : Unknown	Расход: неизвестно
+src/drawers/cMouseDrawer.cpp:243	Windtrap outage : Unknown	Выработка: неизвестно
+src/drawers/cMouseDrawer.cpp:270	Total usage : {}/{} (OK)	Запас: {}/{} (норма)
+src/drawers/cMouseDrawer.cpp:273	Total usage : {}/{} (NOK)	Запас: {}/{} (не норма)
+src/drawers/cMouseDrawer.cpp:275	Silo capacity : {}/{}	Ёмкость хранилища: {}/{}
+src/drawers/cMouseDrawer.cpp:278	Spice usage : Unknown	Пряность: неизвестно
+src/sidebar/cBuildingListItem.cpp:408	${} | {} | {} Power | {} Secs	${} | {} | {} энергии | {} с
+src/sidebar/cBuildingListItem.cpp:421	UPGRADE: ${} | {} | {} Secs	УЛУЧШЕНИЕ: ${} | {} | {} с
+src/sidebar/cBuildingListItem.cpp:425	${} | {} | {} Secs	${} | {} | {} с
+src/sidebar/cBuildingListItem.cpp:428	ERROR: UNKNOWN BUILD TYPE	ОШИБКА: НЕИЗВЕСТНЫЙ ТИП
+src/sidebar/cBuildingListItem.cpp:467	Unknown type.	Неизвестный тип.
+src/gameobjects/players/cPlayer.cpp:843	Generalhouse (none)	Generalhouse (none)	не менять: служебное значение, игроку не показывается
+src/gameobjects/players/cPlayer.cpp:846	Corrino / House for worms	Corrino / House for worms	не менять: служебное значение, игроку не показывается
+src/gameobjects/players/cPlayer.cpp:848	Unknown !?	Unknown !?	не менять: служебное значение, игроку не показывается

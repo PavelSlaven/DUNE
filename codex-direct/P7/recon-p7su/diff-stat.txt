@@ -1,0 +1,5 @@
+ src/context/ContextCreator.cpp   | 51 ++++++++++++++++------------
+ src/debug/UiAuditAccess.cpp      |  8 +++++
+ src/game/cGame_logic.cpp         |  2 ++
+ src/gamestates/cOptionsState.cpp | 73 +++++++++++++++++++++++++++++++++++-----
+ 4 files changed, 105 insertions(+), 29 deletions(-)

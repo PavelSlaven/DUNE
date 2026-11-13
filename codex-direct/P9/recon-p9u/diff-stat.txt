@@ -1,0 +1,7 @@
+ src/game/cGame.h                       |  1 +
+ src/game/cGame_logic.cpp               | 20 ++++++++++++++++----
+ src/game/cSDLSystem.cpp                |  8 ++++++++
+ src/gameobjects/players/cPlayer.cpp    | 19 +++++++++++++------
+ src/gamestates/cSetupSkirmishState.cpp | 33 +++++++++++++++++++++++++++++++++
+ src/utils/cDataPack.cpp                | 19 +++++++++++++++++++
+ 6 files changed, 90 insertions(+), 10 deletions(-)

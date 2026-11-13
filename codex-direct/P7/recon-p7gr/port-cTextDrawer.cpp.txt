@@ -1,0 +1,244 @@
+     1	/**
+     2	 * @file cTextDrawer.cpp
+     3	 *
+     4	 * Dune 2 - The Maker
+     5	 *
+     6	 * @author Stefan Hendriks & the D2TM Team
+     7	 * @www http://www.dune2themaker.com
+     8	 * @copyright Copyright (c) 2002 - 2026 Stefan Hendriks and contributors
+     9	 * @license This software is released under the MIT License. See LICENSE.md.
+    10	 *
+    11	 * Note: Dune 2 is a trademark of Westwood Studios/Electronic Arts.
+    12	 *
+    13	 * This is a non-commercial educational project.
+    14	 */
+    15	
+    16	#include "cTextDrawer.h"
+    17	#include "debug/UiAudit.hpp"
+    18	#include "drawers/cTextTextureCache.h"
+    19	#include "game/cGameSettings.h"
+    20	#include "drawers/SDLDrawer.hpp"
+    21	#include "utils/Color.hpp"
+    22	#include "utils/TextAlignment.hpp"
+    23	#include <iostream>
+    24	#include "include/cAssert.h"
+    25	
+    26	#include <algorithm>
+    27	#include <optional>
+    28	
+    29	cTextDrawer::cTextDrawer(TTF_Font *theFont, cGameSettings *settings, SDLDrawer *renderer) :
+    30	    m_font(theFont),
+    31	    m_textCache(std::make_unique<cTextTextureCache>(theFont, renderer)),
+    32	    m_settings(settings),
+    33	    m_renderer(renderer)
+    34	{
+    35	    d2tm_assert(theFont != nullptr);
+    36	    d2tm_assert(settings != nullptr);
+    37	    d2tm_assert(renderer != nullptr);
+    38	}
+    39	
+    40	cTextDrawer::~cTextDrawer()
+    41	{
+    42	    m_font = nullptr;
+    43	}
+    44	
+    45	void cTextDrawer::drawText(int x, int y, Color color, const std::string &msg, bool applyShadow) const
+    46	{
+    47	    if (msg.empty()) return;
+    48	    auto cacheEntry = m_textCache->findOrCreate(color, msg);
+    49	    if (!cacheEntry) return;
+    50	    cacheEntry->lifeCounter += 1;
+    51	    if (uiaudit::isEnabled()) {
+    52	        uiaudit::recordText(msg, x, y, cacheEntry->width, cacheEntry->height);
+    53	    }
+    54	    if (applyShadow) {
+    55	        m_renderer->renderTexture(cacheEntry->shadowsTexture, x + 1, y + 1,cacheEntry->width, cacheEntry->height);
+    56	    }
+    57	    m_renderer->renderTexture(cacheEntry->texture, x, y,cacheEntry->width, cacheEntry->height);
+    58	}
+    59	
+    60	void cTextDrawer::drawText(cPoint &coords, Color color, const std::string &msg, bool applyShadow) const
+    61	{
+    62	    drawText(coords.x, coords.y, color, msg, applyShadow);
+    63	}
+    64	
+    65	void cTextDrawer::drawText(int x, int y, const std::string &msg, bool applyShadow) const
+    66	{
+    67	    drawText(x, y, Color::White , msg, applyShadow);
+    68	}
+    69	
+    70	void cTextDrawer::drawTextCentered(const std::string &msg, int y) const
+    71	{
+    72	    drawTextCentered(msg, y, Color::White);
+    73	}
+    74	
+    75	void cTextDrawer::drawTextCentered(const std::string &msg, int y, Color color) const
+    76	{
+    77	    if (msg.empty()) return;
+    78	    int w,h;
+    79	    TTF_GetStringSize(m_font, msg.c_str(), 0, &w, &h);
+    80	    int half = w / 2;
+    81	    int xPos = (m_settings->getScreenW() / 2) - half;
+    82	    drawText(xPos, y, color, msg);
+    83	}
+    84	
+    85	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, int x, int y, int boxWidth, int boxHeight, Color color) const
+    86	{
+    87	    if (msg.empty()) return;
+    88	    int w,h;
+    89	    TTF_GetStringSize(m_font, msg.c_str(), 0, &w, &h);
+    90	    int lenghtInPixels = w;
+    91	    int heightInPixels = h;
+    92	
+    93	    int halfLengthInPixels = lenghtInPixels / 2;
+    94	    int xPos = x + ((boxWidth / 2) - halfLengthInPixels);
+    95	    int halfHeightInPixels = heightInPixels / 2;
+    96	    int yPos = y + ((boxHeight / 2) - halfHeightInPixels);
+    97	    std::optional<uiaudit::BoxScope> auditBox;
+    98	    if (uiaudit::isEnabled()) {
+    99	        auditBox.emplace(x, y, boxWidth, boxHeight);
+   100	    }
+   101	    drawText(xPos, yPos, color, msg);
+   102	}
+   103	
+   104	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const
+   105	{
+   106	    drawTextCenteredInBox(msg, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), color);
+   107	}
+   108	
+   109	void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const
+   110	{
+   111	    drawTextCenteredInBox(msg, rect.getX() + offsetX, rect.getY() + offsetY, rect.getWidth(), rect.getHeight(), color);
+   112	}
+   113	
+   114	void cTextDrawer::drawTextScaledCenteredInBox(
+   115	    const std::string &msg,
+   116	    const cRectangle &rect,
+   117	    float scale,
+   118	    Color color,
+   119	    bool applyShadow) const
+   120	{
+   121	    if (msg.empty()) return;
+   122	    scale = std::max(0.5F, scale);
+   123	    auto cacheEntry = m_textCache->findOrCreate(color, msg);
+   124	    cacheEntry->lifeCounter += 1;
+   125	    const int width = static_cast<int>(cacheEntry->width * scale + 0.5F);
+   126	    const int height = static_cast<int>(cacheEntry->height * scale + 0.5F);
+   127	    const int x = rect.getX() + (rect.getWidth() - width) / 2;
+   128	    const int y = rect.getY() + (rect.getHeight() - height) / 2;
+   129	    if (uiaudit::isEnabled()) {
+   130	        const uiaudit::Rect box{rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()};
+   131	        uiaudit::recordText(msg, x, y, width, height, &box);
+   132	    }
+   133	    if (applyShadow) {
+   134	        m_renderer->renderTexture(cacheEntry->shadowsTexture, x + 2, y + 2, width, height);
+   135	    }
+   136	    m_renderer->renderTexture(cacheEntry->texture, x, y, width, height);
+   137	}
+   138	
+   139	void cTextDrawer::drawTextScaledOpticallyCenteredInBox(
+   140	    const std::string &msg,
+   141	    const cRectangle &rect,
+   142	    float scale,
+   143	    Color color,
+   144	    bool applyShadow) const
+   145	{
+   146	    if (msg.empty()) return;
+   147	    scale = std::max(0.5F, scale);
+   148	    auto cacheEntry = m_textCache->findOrCreate(color, msg);
+   149	    cacheEntry->lifeCounter += 1;
+   150	    const int width = static_cast<int>(cacheEntry->width * scale + 0.5F);
+   151	    const int height = static_cast<int>(cacheEntry->height * scale + 0.5F);
+   152	    const cPoint origin = calculateOpticallyCenteredTextOrigin(
+   153	        rect,
+   154	        width,
+   155	        height,
+   156	        cacheEntry->inkBounds
+   157	    );
+   158	    if (uiaudit::isEnabled()) {
+   159	        const uiaudit::Rect box{rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()};
+   160	        uiaudit::recordText(msg, origin.x, origin.y, width, height, &box);
+   161	    }
+   162	    if (applyShadow) {
+   163	        m_renderer->renderTexture(
+   164	            cacheEntry->shadowsTexture,
+   165	            origin.x + 2,
+   166	            origin.y + 2,
+   167	            width,
+   168	            height
+   169	        );
+   170	    }
+   171	    m_renderer->renderTexture(cacheEntry->texture, origin.x, origin.y, width, height);
+   172	}
+   173	
+   174	void cTextDrawer::drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const
+   175	{
+   176	    if (msg.empty()) return;
+   177	    int w,h;
+   178	    TTF_GetStringSize(m_font, msg.c_str(), 0, &w, &h);
+   179	    int lenghtInPixels = w;
+   180	    int half = lenghtInPixels / 2;
+   181	    int xPos = x + ((width / 2) - half);
+   182	    std::optional<uiaudit::BoxScope> auditBox;
+   183	    if (uiaudit::isEnabled()) {
+   184	        auditBox.emplace(x, y, width, getFontHeight());
+   185	    }
+   186	    drawText(xPos, y, color, msg);
+   187	}
+   188	
+   189	void cTextDrawer::drawTextBottomRight(const std::string &msg, int margin) const
+   190	{
+   191	    drawTextBottomRight(Color::White, msg, margin);
+   192	}
+   193	
+   194	void cTextDrawer::drawTextBottomLeft(const std::string &msg, int margin) const
+   195	{
+   196	    drawTextBottomLeft(Color::White, msg, margin);
+   197	}
+   198	
+   199	void cTextDrawer::drawTextBottomRight(Color color, const std::string &msg, int margin) const
+   200	{
+   201	    if (msg.empty()) return;
+   202	    int w,h;
+   203	    TTF_GetStringSize(m_font, msg.c_str(), 0, &w, &h);
+   204	    int lenghtInPixels = w;
+   205	    int x = m_settings->getScreenW() - lenghtInPixels-margin;
+   206	    int y = m_settings->getScreenH() - getFontHeight()-20-margin;
+   207	    drawText(x, y, color, msg);
+   208	}
+   209	
+   210	int cTextDrawer::getFontHeight() const
+   211	{
+   212	    return TTF_GetFontHeight(m_font);
+   213	}
+   214	
+   215	void cTextDrawer::drawTextBottomLeft(Color color, const std::string &msg, int margin) const
+   216	{
+   217	    if (msg.empty()) return;
+   218	    int w,h;
+   219	    TTF_GetStringSize(m_font, msg.c_str(), 0, &w, &h);
+   220	    int y = m_settings->getScreenH() - h-20-margin;
+   221	    drawText(margin, y, color, msg);
+   222	}
+   223	
+   224	int cTextDrawer::getTextLength(const std::string &msg) const
+   225	{
+   226	    int w,h;
+   227	    TTF_GetStringSize(m_font, msg.c_str(), 0, &w, &h);
+   228	    return w;
+   229	}
+   230	
+   231	cRectangle cTextDrawer::getRect(int x, int y, const std::string &msg) const
+   232	{
+   233	    return cRectangle(x, y, getTextLength(msg), getFontHeight());
+   234	}
+   235	
+   236	cRectangle cTextDrawer::getAsRectangle(int x, int y, const std::string &msg) const
+   237	{
+   238	    return cRectangle(x, y, getTextLength(msg), getFontHeight());
+   239	}
+   240	
+   241	void cTextDrawer::resetCache() const
+   242	{
+   243	    m_textCache->resetCache();
+   244	}

@@ -1,0 +1,62 @@
+   405	{
+   406	    using namespace std::string_view_literals;
+   407	    switch (iHouse) {
+   408	        case ATREIDES:   return "atreides";
+   409	        case HARKONNEN:  return "harkonnen";
+   410	        case SARDAUKAR:  return "sardaukar";
+   411	        case ORDOS:      return "ordos";
+   412	        case FREMEN:     return "fremen";
+   413	        case MERCENARY:  return "mercenary";
+   414	        default:         return "unknown";
+   415	    }
+   416	}
+   417	
+   418	void cIni::loadRegionfile(int iHouse, int iMission, cSelectYourNextConquestState *selectYourNextConquestState)
+   419	{
+   420	    auto filename = std::format("{}/{}/mission{}.ini", localization::campaignRoot(),
+   421	                                INI_GetHouseDirectoryName(iHouse), iMission);
+   422	    if (!fs::exists(filename) && localization::isEnglish()) {
+   423	        filename = std::format("campaign/{}/mission{}.ini", INI_GetHouseDirectoryName(iHouse), iMission);
+   424	        logbook("[CAMPAIGN] English region text is missing; using Russian fallback");
+   425	    }
+   426	    cLogger::getInstance()->log(LOG_INFO, COMP_REGIONINI, "Opening mission file", filename);
+   427	
+   428	    std::ifstream file(filename);
+   429	    if (!file.is_open()) {
+   430	        logbook("[CAMPAIGN] Error, could not open file");
+   431	        return;
+   432	    }
+   433	
+   434	    int wordtype = WORD_NONE;
+   435	    int iRegionIndex = -1;
+  1265	        players[AI_CPU5].setTeam(teamIndexAI);
+  1266	    }
+  1267	
+  1268	    players[AI_WORM].setTeam(2); // the WORM player is nobody's ally, ever
+  1269	}
+  1270	
+  1271	void cIni::loadBriefing(int iHouse, int iScenarioFind, int iSectionFind, AbstractMentat *pMentat)
+  1272	{
+  1273	    logbook("[BRIEFING] Opening file");
+  1274	
+  1275	    std::string filename;
+  1276	    if (iHouse == ATREIDES) filename = "mentata.ini";
+  1277	    if (iHouse == ORDOS) filename = "mentato.ini";
+  1278	    if (iHouse == HARKONNEN) filename = "mentath.ini";
+  1279	
+  1280	    // clear mentat
+  1281	    pMentat->initSentences();
+  1282	    auto path = std::string(localization::campaignRoot()) + "/briefings/" + filename;
+  1283	    if (!fs::exists(path) && localization::isEnglish()) {
+  1284	        path = std::string("campaign/briefings/") + filename;
+  1285	        logbook("[BRIEFING] English briefing is missing; using Russian fallback");
+  1286	    }
+  1287	
+  1288	    logbook(path);
+  1289	    logbook(std::format("Going to find SCEN ID #{} and SectionID {}", iScenarioFind, iSectionFind));
+  1290	
+  1291	    int iScenario = 0;
+  1292	    int iSection = 0;
+  1293	    int iLine = 0; // max 8 lines
+  1294	
+  1295	    std::ifstream file(path);

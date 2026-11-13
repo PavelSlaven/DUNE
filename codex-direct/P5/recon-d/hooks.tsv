@@ -1,0 +1,123 @@
+путь@9208dcf:строка	функция	имя режима	аргументы	шаг	место в PORT
+src/audio/MusicController.h@9208dcf:25	вне функций (объявление)	UiAuditAccess	—	П5г	файл отсутствует в PORT; вне функции
+src/cGame.h@9208dcf:313	вне функций (объявление)	UiAuditAccess	—	П5г	файл отсутствует в PORT; вне функции
+src/cGame_logic.cpp@9208dcf:12	вне функций (подключение)	UiAudit.hpp	—	П5г	файл отсутствует в PORT; вне функции
+src/cGame_logic.cpp@9208dcf:771	cGame::run	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/game/cGame_logic.cpp@7eb119b:570-636
+src/cGame_logic.cpp@9208dcf:772	cGame::run	uiaudit::beginFrame	uiaudit::beginFrame: (*this)	П5г	src/game/cGame_logic.cpp@7eb119b:570-636
+src/cGame_logic.cpp@9208dcf:780	cGame::run	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/game/cGame_logic.cpp@7eb119b:570-636
+src/cGame_logic.cpp@9208dcf:781	cGame::run	uiaudit::onFramePresented	uiaudit::onFramePresented: (*this)	П5г	src/game/cGame_logic.cpp@7eb119b:570-636
+src/controls/cMouse.h@9208dcf:99	вне функций (объявление)	UiAuditAccess	—	П5г	src/controls/cMouse.h@7eb119b: строка вне функции
+src/drawers/cBuildingListDrawer.h@9208dcf:16	вне функций (объявление)	UiAuditAccess	—	П5г	src/drawers/cBuildingListDrawer.h@7eb119b: строка вне функции
+src/drawers/cCommandBarDrawer.cpp@9208dcf:9	вне функций (подключение)	UiAudit.hpp	—	П5г	файл отсутствует в PORT; вне функции
+src/drawers/cCommandBarDrawer.cpp@9208dcf:100	cCommandBarDrawer::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П10	нет
+src/drawers/cCommandBarDrawer.cpp@9208dcf:101	cCommandBarDrawer::draw	uiaudit::recordArea	"uiaudit::recordArea: (""command-bar"", m_panelRect.getX(), m_panelRect.getY(), m_panelRect.getWidth(), m_panelRect.getHeight())"	П10	нет
+src/drawers/cCommandBarDrawer.cpp@9208dcf:102	cCommandBarDrawer::draw	UiAuditAccess::recordCommandBarClicks	UiAuditAccess::recordCommandBarClicks: (*this)	П10	нет
+src/drawers/cCommandBarDrawer.h@9208dcf:16	вне функций (объявление)	UiAuditAccess	—	П5г	файл отсутствует в PORT; вне функции
+src/drawers/cMiniMapDrawer.cpp@9208dcf:5	вне функций (подключение)	UiAudit.hpp	—	П5г	src/drawers/cMiniMapDrawer.cpp@7eb119b: строка вне функции
+src/drawers/cMiniMapDrawer.cpp@9208dcf:73	cMiniMapDrawer::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5в	src/drawers/cMiniMapDrawer.cpp@7eb119b:108-133
+src/drawers/cMiniMapDrawer.cpp@9208dcf:74	cMiniMapDrawer::draw	uiaudit::recordClick	"uiaudit::recordClick: (""minimap"", m_RectFullMinimap.getX(), m_RectFullMinimap.getY(), m_RectFullMinimap.getWidth(), m_RectFullMinimap.getHeight())"	П5в	src/drawers/cMiniMapDrawer.cpp@7eb119b:108-133
+src/drawers/cMiniMapDrawer.cpp@9208dcf:84	cMiniMapDrawer::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5в	src/drawers/cMiniMapDrawer.cpp@7eb119b:108-133
+src/drawers/cMiniMapDrawer.cpp@9208dcf:85	cMiniMapDrawer::draw	uiaudit::recordArea	"uiaudit::recordArea: (""minimap"", m_RectFullMinimap.getX(), m_RectFullMinimap.getY(), m_RectFullMinimap.getWidth(), m_RectFullMinimap.getHeight())"	П5в	src/drawers/cMiniMapDrawer.cpp@7eb119b:108-133
+src/drawers/cOrderDrawer.h@9208dcf:13	вне функций (объявление)	UiAuditAccess	—	П5г	src/drawers/cOrderDrawer.h@7eb119b: строка вне функции
+src/drawers/cSideBarDrawer.cpp@9208dcf:4	вне функций (подключение)	UiAudit.hpp	—	П5г	src/drawers/cSideBarDrawer.cpp@7eb119b: строка вне функции
+src/drawers/cSideBarDrawer.cpp@9208dcf:69	cSideBarDrawer::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5в	src/drawers/cSideBarDrawer.cpp@7eb119b:80-91
+src/drawers/cSideBarDrawer.cpp@9208dcf:70	cSideBarDrawer::draw	UiAuditAccess::recordSidebarClicks	UiAuditAccess::recordSidebarClicks: (*this)	П5в	src/drawers/cSideBarDrawer.cpp@7eb119b:80-91
+src/drawers/cSideBarDrawer.cpp@9208dcf:81	cSideBarDrawer::drawHdSidebar	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5в	нет функции
+src/drawers/cSideBarDrawer.cpp@9208dcf:82	cSideBarDrawer::drawHdSidebar	uiaudit::recordArea	"uiaudit::recordArea: (""sidebar"", layout.sidebar.getX(), cSideBar::TopBarHeight, layout.sidebar.getWidth(), layout.sidebar.getHeight() - cSideBar::TopBarHeight)"	П5в	нет функции
+src/drawers/cSideBarDrawer.cpp@9208dcf:366	cSideBarDrawer::drawHdBuildingLists	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5в, П10	нет функции
+src/drawers/cSideBarDrawer.cpp@9208dcf:367	cSideBarDrawer::drawHdBuildingLists	uiaudit::recordArea	"uiaudit::recordArea: (""build-list"", layout.catalog.getX(), layout.catalog.getY(), layout.catalog.getWidth(), layout.catalog.getHeight())"	П5в, П10	нет функции
+src/drawers/cSideBarDrawer.h@9208dcf:17	вне функций (объявление)	UiAuditAccess	—	П5г	src/drawers/cSideBarDrawer.h@7eb119b: строка вне функции
+src/drawers/cStructureDrawer.cpp@9208dcf:7	вне функций (подключение)	UiAudit.hpp	—	П5г	src/drawers/cStructureDrawer.cpp@7eb119b: строка вне функции
+src/drawers/cStructureDrawer.cpp@9208dcf:1031	cStructureDrawer::drawStructureHealthBar	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/drawers/cStructureDrawer.cpp@7eb119b:477-510
+src/drawers/cStructureDrawer.cpp@9208dcf:1032	cStructureDrawer::drawStructureHealthBar	uiaudit::recordLabel	"uiaudit::recordLabel: (""structure-health"", iStructure, ""STRUCTURE"", draw_x, draw_y, width_x + 1, height_y + 1,"	П5г	src/drawers/cStructureDrawer.cpp@7eb119b:477-510
+src/drawers/cStructureDrawer.cpp@9208dcf:1033	cStructureDrawer::drawStructureHealthBar	uiaudit::Rect	{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()}	П5г	src/drawers/cStructureDrawer.cpp@7eb119b:477-510
+src/drawers/cTextDrawer.cpp@9208dcf:3	вне функций (подключение)	UiAudit.hpp	—	П5г	src/drawers/cTextDrawer.cpp@7eb119b: строка вне функции
+src/drawers/cTextDrawer.cpp@9208dcf:59	cTextDrawer::drawText	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/drawers/cTextDrawer.cpp@7eb119b:43-53, src/drawers/cTextDrawer.cpp@7eb119b:55-58, src/drawers/cTextDrawer.cpp@7eb119b:60-63
+src/drawers/cTextDrawer.cpp@9208dcf:60	cTextDrawer::drawText	uiaudit::recordText	uiaudit::recordText: (msg, x, y, cacheEntry->width, cacheEntry->height)	П5г	src/drawers/cTextDrawer.cpp@7eb119b:43-53, src/drawers/cTextDrawer.cpp@7eb119b:55-58, src/drawers/cTextDrawer.cpp@7eb119b:60-63
+src/drawers/cTextDrawer.cpp@9208dcf:108	cTextDrawer::drawTextCenteredInBox	uiaudit::BoxScope	—	П5г	src/drawers/cTextDrawer.cpp@7eb119b:80-93, src/drawers/cTextDrawer.cpp@7eb119b:95-98, src/drawers/cTextDrawer.cpp@7eb119b:100-103
+src/drawers/cTextDrawer.cpp@9208dcf:109	cTextDrawer::drawTextCenteredInBox	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/drawers/cTextDrawer.cpp@7eb119b:80-93, src/drawers/cTextDrawer.cpp@7eb119b:95-98, src/drawers/cTextDrawer.cpp@7eb119b:100-103
+src/drawers/cTextDrawer.cpp@9208dcf:140	cTextDrawer::drawTextScaledCenteredInBox	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/drawers/cTextDrawer.cpp@7eb119b:105-124
+src/drawers/cTextDrawer.cpp@9208dcf:141	cTextDrawer::drawTextScaledCenteredInBox	uiaudit::Rect	{rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()}	П5г	src/drawers/cTextDrawer.cpp@7eb119b:105-124
+src/drawers/cTextDrawer.cpp@9208dcf:142	cTextDrawer::drawTextScaledCenteredInBox	uiaudit::recordText	uiaudit::recordText: (msg, x, y, width, height, &box)	П5г	src/drawers/cTextDrawer.cpp@7eb119b:105-124
+src/drawers/cTextDrawer.cpp@9208dcf:169	cTextDrawer::drawTextScaledOpticallyCenteredInBox	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/drawers/cTextDrawer.cpp@7eb119b:126-155
+src/drawers/cTextDrawer.cpp@9208dcf:170	cTextDrawer::drawTextScaledOpticallyCenteredInBox	uiaudit::Rect	{rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()}	П5г	src/drawers/cTextDrawer.cpp@7eb119b:126-155
+src/drawers/cTextDrawer.cpp@9208dcf:171	cTextDrawer::drawTextScaledOpticallyCenteredInBox	uiaudit::recordText	uiaudit::recordText: (msg, origin.x, origin.y, width, height, &box)	П5г	src/drawers/cTextDrawer.cpp@7eb119b:126-155
+src/drawers/cTextDrawer.cpp@9208dcf:194	cTextDrawer::drawTextCentered	uiaudit::BoxScope	—	П5г	src/drawers/cTextDrawer.cpp@7eb119b:65-68, src/drawers/cTextDrawer.cpp@7eb119b:70-78, src/drawers/cTextDrawer.cpp@7eb119b:157-166
+src/drawers/cTextDrawer.cpp@9208dcf:195	cTextDrawer::drawTextCentered	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/drawers/cTextDrawer.cpp@7eb119b:65-68, src/drawers/cTextDrawer.cpp@7eb119b:70-78, src/drawers/cTextDrawer.cpp@7eb119b:157-166
+src/gameobjects/units/cUnit.cpp@9208dcf:17	вне функций (подключение)	UiAudit.hpp	—	П5г	src/gameobjects/units/cUnit.cpp@7eb119b: строка вне функции
+src/gameobjects/units/cUnit.cpp@9208dcf:581	cUnit::draw_spice	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	нет функции
+src/gameobjects/units/cUnit.cpp@9208dcf:582	cUnit::draw_spice	uiaudit::recordUnitLabel	"uiaudit::recordUnitLabel: (""spice"", iID, iType, drawx, drawy, static_cast<int>(width_x), height_y, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()})"	П5г	нет функции
+src/gameobjects/units/cUnit.cpp@9208dcf:633	cUnit::draw_health	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	нет функции
+src/gameobjects/units/cUnit.cpp@9208dcf:634	cUnit::draw_health	uiaudit::recordUnitLabel	"uiaudit::recordUnitLabel: (""health"", iID, iType, drawx, drawy, static_cast<int>(width_x), height_y, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()})"	П5г	нет функции
+src/gameobjects/units/cUnit.cpp@9208dcf:660	cUnit::draw_group	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	нет функции
+src/gameobjects/units/cUnit.cpp@9208dcf:661	cUnit::draw_group	uiaudit::beginLabelText	uiaudit::beginLabelText: ()	П5г	нет функции
+src/gameobjects/units/cUnit.cpp@9208dcf:665	cUnit::draw_group	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	нет функции
+src/gameobjects/units/cUnit.cpp@9208dcf:666	cUnit::draw_group	uiaudit::endLabelText	"uiaudit::endLabelText: (""group"", iID, iType, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()})"	П5г	нет функции
+src/gameobjects/units/cUnit.cpp@9208dcf:720	cUnit::draw_experience	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	нет функции
+src/gameobjects/units/cUnit.cpp@9208dcf:723	cUnit::draw_experience	uiaudit::recordUnitLabel	"uiaudit::recordUnitLabel: (""experience"", iID, iType, drawx, drawy, (iStars - 1) * 9 + star->w, star->h, uiaudit::Rect{visual.getX(), visual.getY(), visual.getWidth(), visual.getHeight()})"	П5г	нет функции
+src/gamestates/cChooseHouseState.cpp@9208dcf:4	вне функций (подключение)	UiAudit.hpp	—	П5г	src/gamestates/cChooseHouseState.cpp@7eb119b: строка вне функции
+src/gamestates/cChooseHouseState.cpp@9208dcf:111	cChooseHouseState::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/gamestates/cChooseHouseState.cpp@7eb119b:111-142
+src/gamestates/cChooseHouseState.cpp@9208dcf:112	cChooseHouseState::draw	uiaudit::recordClick	"uiaudit::recordClick: (""house-atreides"", houseAtreides.getX(), houseAtreides.getY(), houseAtreides.getWidth(), houseAtreides.getHeight())"	П5г	src/gamestates/cChooseHouseState.cpp@7eb119b:111-142
+src/gamestates/cChooseHouseState.cpp@9208dcf:113	cChooseHouseState::draw	uiaudit::recordClick	"uiaudit::recordClick: (""house-ordos"", houseOrdos.getX(), houseOrdos.getY(), houseOrdos.getWidth(), houseOrdos.getHeight())"	П5г	src/gamestates/cChooseHouseState.cpp@7eb119b:111-142
+src/gamestates/cChooseHouseState.cpp@9208dcf:114	cChooseHouseState::draw	uiaudit::recordClick	"uiaudit::recordClick: (""house-harkonnen"", houseHarkonnen.getX(), houseHarkonnen.getY(), houseHarkonnen.getWidth(), houseHarkonnen.getHeight())"	П5г	src/gamestates/cChooseHouseState.cpp@7eb119b:111-142
+src/gamestates/cChooseHouseState.cpp@9208dcf:115	cChooseHouseState::draw	uiaudit::recordClick	"uiaudit::recordClick: (""house-back"", backButtonRect->getX(), backButtonRect->getY(), backButtonRect->getWidth(), backButtonRect->getHeight())"	П5г	src/gamestates/cChooseHouseState.cpp@7eb119b:111-142
+src/gamestates/cCreditsState.cpp@9208dcf:4	вне функций (подключение)	UiAudit.hpp	—	П5г	src/gamestates/cCreditsState.cpp@7eb119b: строка вне функции
+src/gamestates/cCreditsState.cpp@9208dcf:405	cCreditsState::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/gamestates/cCreditsState.cpp@7eb119b:441-469
+src/gamestates/cCreditsState.cpp@9208dcf:406	cCreditsState::draw	uiaudit::recordCanvasClick	"uiaudit::recordCanvasClick: (""credits-speed-up"")"	П5г	src/gamestates/cCreditsState.cpp@7eb119b:441-469
+src/gamestates/cCreditsState.h@9208dcf:26	вне функций (объявление)	UiAuditAccess	—	П5г	src/gamestates/cCreditsState.h@7eb119b: строка вне функции
+src/gamestates/cMainMenuState.h@9208dcf:32	вне функций (объявление)	UiAuditAccess	—	П5г	src/gamestates/cMainMenuState.h@7eb119b: строка вне функции
+src/gamestates/cOptionsState.h@9208dcf:26	вне функций (объявление)	UiAuditAccess	—	П5г	src/gamestates/cOptionsState.h@7eb119b: строка вне функции
+src/gamestates/cSelectYourNextConquestState.cpp@9208dcf:4	вне функций (подключение)	UiAudit.hpp	—	П5г	src/gamestates/cSelectYourNextConquestState.cpp@7eb119b: строка вне функции
+src/gamestates/cSelectYourNextConquestState.cpp@9208dcf:316	cSelectYourNextConquestState::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/gamestates/cSelectYourNextConquestState.cpp@7eb119b:341-376
+src/gamestates/cSelectYourNextConquestState.cpp@9208dcf:318	cSelectYourNextConquestState::draw	uiaudit::recordClick	"uiaudit::recordClick: (""campaign-region-map"", mapRect.getX(), mapRect.getY(), mapRect.getWidth(), mapRect.getHeight())"	П5г	src/gamestates/cSelectYourNextConquestState.cpp@7eb119b:341-376
+src/gamestates/cSelectYourNextConquestState.h@9208dcf:85	вне функций (объявление)	UiAuditAccess	—	П5г	src/gamestates/cSelectYourNextConquestState.h@7eb119b: строка вне функции
+src/gamestates/cSetupSkirmishState.cpp@9208dcf:4	вне функций (подключение)	UiAudit.hpp	—	П5г	src/gamestates/cSetupSkirmishState.cpp@7eb119b: строка вне функции
+src/gamestates/cSetupSkirmishState.cpp@9208dcf:452	cSetupSkirmishState::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/gamestates/cSetupSkirmishState.cpp@7eb119b:436-534
+src/gamestates/cSetupSkirmishState.cpp@9208dcf:454	cSetupSkirmishState::draw	uiaudit::recordClick	uiaudit::recordClick: (name, r.getX(), r.getY(), r.getWidth(), r.getHeight())	П5г	src/gamestates/cSetupSkirmishState.cpp@7eb119b:436-534
+src/gamestates/cSetupSkirmishState.h@9208dcf:46	вне функций (объявление)	UiAuditAccess	—	П5г	src/gamestates/cSetupSkirmishState.h@7eb119b: строка вне функции
+src/gui/GuiButton.cpp@9208dcf:1	вне функций (подключение)	UiAudit.hpp	—	П5г	src/gui/GuiButton.cpp@7eb119b: строка вне функции
+src/gui/GuiButton.cpp@9208dcf:31	GuiButton::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/gui/GuiButton.cpp@7eb119b:46-145
+src/gui/GuiCheckBox.cpp@9208dcf:1	вне функций (подключение)	UiAudit.hpp	—	П5г	src/gui/GuiCheckBox.cpp@7eb119b: строка вне функции
+src/gui/GuiCheckBox.cpp@9208dcf:26	GuiCheckBox::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/gui/GuiCheckBox.cpp@7eb119b:39-63
+src/gui/GuiLabel.cpp@9208dcf:1	вне функций (подключение)	UiAudit.hpp	—	П5г	src/gui/GuiLabel.cpp@7eb119b: строка вне функции
+src/gui/GuiLabel.cpp@9208dcf:25	GuiLabel::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/gui/GuiLabel.cpp@7eb119b:35-66
+src/gui/GuiObject.cpp@9208dcf:4	GuiObject::setTheme	UiAudit.hpp	—	П5г	src/gui/GuiObject.cpp@7eb119b:29-32
+src/gui/GuiObject.cpp@9208dcf:14	GuiObject::auditRecord	uiaudit::recordGui	uiaudit::recordGui: (type, m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight())	П5г	нет функции
+src/gui/GuiObject.cpp@9208dcf:19	GuiObject::auditClick	uiaudit::recordClick	uiaudit::recordClick: (name.c_str(), m_rect.getX(), m_rect.getY(), m_rect.getWidth(), m_rect.getHeight())	П5г	нет функции
+src/gui/GuiSlider.cpp@9208dcf:1	вне функций (подключение)	UiAudit.hpp	—	П5г	src/gui/GuiSlider.cpp@7eb119b: строка вне функции
+src/gui/GuiSlider.cpp@9208dcf:20	GuiSlider::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/gui/GuiSlider.cpp@7eb119b:74-77
+src/gui/GuiWindow.cpp@9208dcf:1	вне функций (подключение)	UiAudit.hpp	—	П5г	src/gui/GuiWindow.cpp@7eb119b: строка вне функции
+src/gui/GuiWindow.cpp@9208dcf:25	GuiWindow::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/gui/GuiWindow.cpp@7eb119b:36-47
+src/main.cpp@9208dcf:25	вне функций (подключение)	UiAudit.hpp	—	П5г	src/main.cpp@7eb119b: строка вне функции
+src/main.cpp@9208dcf:86	main	uiaudit::consumeArguments	uiaudit::consumeArguments: (argc, argv)	П5г	src/main.cpp@7eb119b:53-134
+src/main.cpp@9208dcf:88	main	uiaudit::isEnabled, uiaudit::handleEarlyExit	uiaudit::isEnabled: (); uiaudit::handleEarlyExit: (uiAuditExitCode)	П5г	src/main.cpp@7eb119b:53-134
+src/main.cpp@9208dcf:114	main	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	src/main.cpp@7eb119b:53-134
+src/main.cpp@9208dcf:115	main	uiaudit::onSetupDone	uiaudit::onSetupDone: (game)	П5г	src/main.cpp@7eb119b:53-134
+src/main.cpp@9208dcf:132	main	uiaudit::isEnabled, uiaudit::failed	uiaudit::isEnabled: (); uiaudit::failed: ()	П5г	src/main.cpp@7eb119b:53-134
+src/managers/cDrawManager.cpp@9208dcf:5	вне функций (подключение)	UiAudit.hpp	—	П5г	src/managers/cDrawManager.cpp@7eb119b: строка вне функции
+src/managers/cDrawManager.cpp@9208dcf:234	cDrawManager::drawTopBarBackground	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5в	src/managers/cDrawManager.cpp@7eb119b:301-315
+src/managers/cDrawManager.cpp@9208dcf:235	cDrawManager::drawTopBarBackground	uiaudit::recordArea	"uiaudit::recordArea: (""top-panel"", 0, 0, game.m_screenW, cSideBar::TopBarHeight)"	П5в	src/managers/cDrawManager.cpp@7eb119b:301-315
+src/managers/cDrawManager.cpp@9208dcf:275	cDrawManager::drawTopBarBackground	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5в	src/managers/cDrawManager.cpp@7eb119b:301-315
+src/managers/cDrawManager.cpp@9208dcf:276	cDrawManager::drawTopBarBackground	uiaudit::recordClick	"uiaudit::recordClick: (""top-options"", optionsRect.getX(), optionsRect.getY(), optionsRect.getWidth(), optionsRect.getHeight())"	П5в	src/managers/cDrawManager.cpp@7eb119b:301-315
+src/managers/cDrawManager.cpp@9208dcf:310	cDrawManager::drawMusicControls	uiaudit::isEnabled	uiaudit::isEnabled: ()	П9	нет функции
+src/managers/cDrawManager.cpp@9208dcf:311	cDrawManager::drawMusicControls	uiaudit::recordClick	"uiaudit::recordClick: (""music-previous"", layout.previous.getX(), layout.previous.getY(), layout.previous.getWidth(), layout.previous.getHeight())"	П9	нет функции
+src/managers/cDrawManager.cpp@9208dcf:312	cDrawManager::drawMusicControls	uiaudit::recordClick	"uiaudit::recordClick: (""music-next"", layout.next.getX(), layout.next.getY(), layout.next.getWidth(), layout.next.getHeight())"	П9	нет функции
+src/managers/cDrawManager.cpp@9208dcf:313	cDrawManager::drawMusicControls	uiaudit::recordClick	"uiaudit::recordClick: (""music-speed-slider"", layout.speedSlider.getX(), layout.speedSlider.getY(), layout.speedSlider.getWidth(), layout.speedSlider.getHeight())"	П9	нет функции
+src/map/cMapCamera.h@9208dcf:242	вне функций (объявление)	UiAuditAccess	—	П5г	файл отсутствует в PORT; вне функции
+src/mentat/AbstractMentat.cpp@9208dcf:15	вне функций (подключение)	UiAudit.hpp	—	П5г	файл отсутствует в PORT; вне функции
+src/mentat/AbstractMentat.cpp@9208dcf:406	AbstractMentat::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/AbstractMentat.cpp:273:void AbstractMentat::draw(); 7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/AtreidesMentat.cpp:65:    AbstractMentat::draw();; 7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/BeneMentat.cpp:91:    AbstractMentat::draw();; 7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/HarkonnenMentat.cpp:64:    AbstractMentat::draw();; 7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/OrdosMentat.cpp:63:    AbstractMentat::draw();; 7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/SardaukarMentat.cpp:64:    AbstractMentat::draw();
+src/mentat/AbstractMentat.cpp@9208dcf:407	AbstractMentat::draw	uiaudit::recordCanvasClick	"uiaudit::recordCanvasClick: (""mentat-skip"")"	П5г	7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/AbstractMentat.cpp:273:void AbstractMentat::draw(); 7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/AtreidesMentat.cpp:65:    AbstractMentat::draw();; 7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/BeneMentat.cpp:91:    AbstractMentat::draw();; 7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/HarkonnenMentat.cpp:64:    AbstractMentat::draw();; 7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/OrdosMentat.cpp:63:    AbstractMentat::draw();; 7eb119b007c05f063fe6dacf2e93ae31ac135b33:src/gameobjects/mentat/SardaukarMentat.cpp:64:    AbstractMentat::draw();
+src/mentat/AbstractMentat.h@9208dcf:46	вне функций (объявление)	UiAuditAccess	—	П5г	файл отсутствует в PORT; вне функции
+src/save/SaveSlotsDialog.cpp@9208dcf:5	вне функций (подключение)	UiAudit.hpp	—	П5г	файл отсутствует в PORT; вне функции
+src/save/SaveSlotsDialog.cpp@9208dcf:268	SaveSlotsDialog::draw	uiaudit::isEnabled	uiaudit::isEnabled: ()	П8	нет
+src/save/SaveSlotsDialog.cpp@9208dcf:269	SaveSlotsDialog::draw	uiaudit::dropClicksUnderModal	uiaudit::dropClicksUnderModal: ()	П8	нет
+src/save/SaveSlotsDialog.cpp@9208dcf:272	SaveSlotsDialog::draw	uiaudit::recordClick	"uiaudit::recordClick: ((""save-slot:"" + std::to_string(index + 1)).c_str(), slot.getX(), slot.getY(), slot.getWidth(), slot.getHeight())"	П8	нет
+src/save/SaveSlotsDialog.cpp@9208dcf:274	SaveSlotsDialog::draw	uiaudit::recordClick	"uiaudit::recordClick: (""save-name"", m_nameRect.getX(), m_nameRect.getY(), m_nameRect.getWidth(), m_nameRect.getHeight())"	П8	нет
+src/save/SaveSlotsDialog.cpp@9208dcf:275	SaveSlotsDialog::draw	uiaudit::recordClick	"uiaudit::recordClick: (""save-save"", m_saveRect.getX(), m_saveRect.getY(), m_saveRect.getWidth(), m_saveRect.getHeight())"	П8	нет
+src/save/SaveSlotsDialog.cpp@9208dcf:276	SaveSlotsDialog::draw	uiaudit::recordClick	"uiaudit::recordClick: (""save-load"", m_loadRect.getX(), m_loadRect.getY(), m_loadRect.getWidth(), m_loadRect.getHeight())"	П8	нет
+src/save/SaveSlotsDialog.cpp@9208dcf:277	SaveSlotsDialog::draw	uiaudit::recordClick	"uiaudit::recordClick: (""save-close"", m_closeRect.getX(), m_closeRect.getY(), m_closeRect.getWidth(), m_closeRect.getHeight())"	П8	нет
+src/save/SaveSlotsDialog.hpp@9208dcf:36	вне функций (объявление)	UiAuditAccess	—	П5г	файл отсутствует в PORT; вне функции
+src/utils/cPlatformLayerInit.cpp@9208dcf:1	вне функций (подключение)	UiAuditArguments.hpp	—	П5г	файл отсутствует в PORT; вне функции
+src/utils/cPlatformLayerInit.cpp@9208dcf:18	cPlatformLayerInit::cPlatformLayerInit	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	нет
+src/utils/cScreenInit.cpp@9208dcf:1	вне функций (подключение)	UiAuditArguments.hpp	—	П5г	файл отсутствует в PORT; вне функции
+src/utils/cScreenInit.cpp@9208dcf:127	cScreenInit::getWindowedSize	uiaudit::isEnabled	uiaudit::isEnabled: ()	П5г	нет

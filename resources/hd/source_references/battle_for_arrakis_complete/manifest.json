@@ -1,0 +1,172 @@
+{
+  "release": "v0.8.0-ru4-preview4",
+  "source_game": "Dune II: The Battle for Arrakis (Sega Genesis)",
+  "direction_order": [
+    "E",
+    "NE",
+    "N",
+    "NW",
+    "W",
+    "SW",
+    "S",
+    "SE"
+  ],
+  "files": [
+    {
+      "file": "141660_carryall.png",
+      "asset_id": 141660,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/141660/",
+      "sha256": "3890056fa45d5bd6afc3709fbfaf3aab8007493283c7a20af422b3fe8b39296b",
+      "size": [
+        201,
+        106
+      ]
+    },
+    {
+      "file": "550029_combat_tank.png",
+      "asset_id": 550029,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/550029/",
+      "sha256": "fb0712396a3525bcd29a6c3c606993e7a0e8f0c31848776fbeafc8ac2e588b60",
+      "size": [
+        2312,
+        1480
+      ]
+    },
+    {
+      "file": "550032_devastator.png",
+      "asset_id": 550032,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/550032/",
+      "sha256": "b49f4e0c26b139cf7d00611f61b347b4c64066b9b90291deeece834616497424",
+      "size": [
+        1032,
+        264
+      ]
+    },
+    {
+      "file": "141659_harvester.png",
+      "asset_id": 141659,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/141659/",
+      "sha256": "ad08266a1f3c7dda0b6f263a5b5cf6a3cf20a8469f1f82f9372358a0f58a68d9",
+      "size": [
+        95,
+        122
+      ]
+    },
+    {
+      "file": "550068_mcv.png",
+      "asset_id": 550068,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/550068/",
+      "sha256": "8a64f81979065b830da086e05af11c507fa887419091adfceeee7b16e3e93b5b",
+      "size": [
+        1032,
+        264
+      ]
+    },
+    {
+      "file": "550380_missile_tank_deviator.png",
+      "asset_id": 550380,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/550380/",
+      "sha256": "b988a2e4bf3c3f88fa870587d41c407003bdfe41e1ad0e7cefc691f60a7d3082",
+      "size": [
+        1032,
+        312
+      ]
+    },
+    {
+      "file": "550028_ornithopter.png",
+      "asset_id": 550028,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/550028/",
+      "sha256": "672c82a8902dce40d02f57b947f070c20697de89918a6b446ce567f220a93bf9",
+      "size": [
+        1032,
+        160
+      ]
+    },
+    {
+      "file": "169130_quad.png",
+      "asset_id": 169130,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/169130/",
+      "sha256": "f3e14b39cc78cad624fe7edf426cc320aba4b906ed94062744f0c16dee7f55fc",
+      "size": [
+        252,
+        228
+      ]
+    },
+    {
+      "file": "550031_sandworm.png",
+      "asset_id": 550031,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/550031/",
+      "sha256": "02218d177889fd692be57ee2bec9f56feb08f645ea5db8e4fa3030eb6a7862e5",
+      "size": [
+        408,
+        64
+      ]
+    },
+    {
+      "file": "550030_siege_tank.png",
+      "asset_id": 550030,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/550030/",
+      "sha256": "10d025139e2f14d8c7014963982261a3d31880a330d53567a6beca8e134f4d5e",
+      "size": [
+        2312,
+        1480
+      ]
+    },
+    {
+      "file": "169099_soldier_infantry.png",
+      "asset_id": 169099,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/169099/",
+      "sha256": "0d3a31788f5d320ecd13f9dd6f41bb38510f2f289b857a8abc7db3e2a9b81e7a",
+      "size": [
+        232,
+        264
+      ]
+    },
+    {
+      "file": "550136_starport_ship.png",
+      "asset_id": 550136,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/550136/",
+      "sha256": "dba4317e2f3865a4df1d5368448a819a96f04c26c61a182140a6a49dda1db54e",
+      "size": [
+        368,
+        224
+      ]
+    },
+    {
+      "file": "169129_trike_raider.png",
+      "asset_id": 169129,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/169129/",
+      "sha256": "97ef93ec7d511fa3ebba76863243a20f76003051c45fa2940a4d12ac37445067",
+      "size": [
+        264,
+        256
+      ]
+    },
+    {
+      "file": "169128_trooper_troopers.png",
+      "asset_id": 169128,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/169128/",
+      "sha256": "ccb8780e43bad9fa379351d6524fca133265ebd3a327614685c6a58ffa7f065c",
+      "size": [
+        232,
+        264
+      ]
+    },
+    {
+      "file": "239094_buildings.png",
+      "asset_id": 239094,
+      "page_url": "https://www.spriters-resource.com/sega_genesis/duneiithebattleforarrakis/asset/239094/",
+      "sha256": "3f73042e24d2211011e44da22aa6da1c024b8ba29203208fbf03a70184dad7ba",
+      "size": [
+        512,
+        352
+      ]
+    }
+  ],
+  "notes": [
+    "All D2TM HD world objects now use Battle for Arrakis silhouettes.",
+    "Sonic Tank reuses the Sega Siege Tank because the catalog has no separate Sonic Tank sheet.",
+    "Buildings are assembled directly from the 32x32 modular Sega building sheet.",
+    "HD2 is derived later from these HD4 masters."
+  ]
+}

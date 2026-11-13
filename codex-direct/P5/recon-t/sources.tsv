@@ -1,0 +1,44 @@
+что	путь@9208dcf:строка или значение	FORK1	PORT
+src/gamestates	tools/ui-audit/check_screens.py@9208dcf:9	tree	tree
+src/mentat	tools/ui-audit/check_screens.py@9208dcf:9	tree	нет
+src/save/SaveSlotsDialog.hpp	tools/ui-audit/check_screens.py@9208dcf:10	blob	нет
+src/include/definitions.h	tools/ui-audit/check_screens.py@9208dcf:59	blob	blob
+src/gui	tools/ui-audit/find_hit_tests.py@9208dcf:8	tree	tree
+src/drawers	tools/ui-audit/find_hit_tests.py@9208dcf:8	tree	tree
+src/gamestates	tools/ui-audit/find_hit_tests.py@9208dcf:8	tree	tree
+src/managers	tools/ui-audit/find_hit_tests.py@9208dcf:8	tree	tree
+src/save	tools/ui-audit/find_hit_tests.py@9208dcf:8	tree	нет
+src/sidebar	tools/ui-audit/find_hit_tests.py@9208dcf:8	tree	tree
+src/mentat	tools/ui-audit/find_hit_tests.py@9208dcf:8	tree	нет
+src/controls	tools/ui-audit/find_hit_tests.py@9208dcf:9	tree	tree
+src/debug	tools/ui-audit/find_hit_tests.py@9208dcf:9	tree	нет
+keys.tsv:file	src/building/cItemBuilder.cpp	4	blob
+keys.tsv:file	src/cGame_logic.cpp	47	нет
+keys.tsv:file	src/controls/CommandBindings.hpp	19	нет
+keys.tsv:file	src/controls/cKeyboardEvent.cpp	5	blob
+keys.tsv:file	src/controls/cKeyboardEvent.h	13	blob
+keys.tsv:file	src/controls/mousestates/cMouseNormalState.cpp	5	blob
+keys.tsv:file	src/controls/mousestates/cMouseRepairState.cpp	1	blob
+keys.tsv:file	src/controls/mousestates/cMouseUnitsSelectedState.cpp	10	blob
+keys.tsv:file	src/drawers/cBuildingListDrawer.cpp	4	blob
+keys.tsv:file	src/drawers/cCommandBarDrawer.cpp	6	нет
+keys.tsv:file	src/gamestates/cChooseHouseState.cpp	1	blob
+keys.tsv:file	src/gamestates/cCreditsState.cpp	1	blob
+keys.tsv:file	src/gamestates/cMainMenuState.cpp	3	blob
+keys.tsv:file	src/gamestates/cOptionsState.cpp	6	blob
+keys.tsv:file	src/gamestates/cSelectYourNextConquestState.cpp	1	blob
+keys.tsv:file	src/gamestates/cSetupSkirmishState.cpp	3	blob
+keys.tsv:file	src/managers/cDrawManager.cpp	6	blob
+keys.tsv:file	src/map/cMapCamera.cpp	8	нет
+keys.tsv:file	src/save/SaveSlotsDialog.cpp	6	нет
+keys.tsv:file	src/utils/GameSettings.hpp	1	нет
+keys.tsv:file	src/utils/common.cpp	18	blob
+exclusions.tsv:name	GAME_EDITING	—	нет
+exclusions.tsv:name	GAME_INTRO	—	"5e9059778bd59e486a58a899c9cf56f6758ed178:src/gamestates/cGameState.h:55:// #define GAME_INTRO	     9 | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/include/eGameState.h:56:inline constexpr int GAME_INTRO = 9;"
+exclusions.tsv:name	GAME_OVER	—	"5e9059778bd59e486a58a899c9cf56f6758ed178:src/gamestates/cGameState.h:51:// #define GAME_OVER         0      // game over | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/include/eGameState.cpp:26:        case GAME_OVER: | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/include/eGameState.cpp:27:            return ""GAME_OVER"";"
+exclusions.tsv:name	GAME_INITIALIZE	—	5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/cGame_logic.cpp:392:    setState(GAME_INITIALIZE); | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/cGame_logic.cpp:840:    m_state = GAME_INITIALIZE; | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/cGame_logic.cpp:950:            case GAME_INITIALIZE: mapped = eGameState::INITIALIZE; return true;
+exclusions.tsv:name	GAME_MAX_STATES	—	5e9059778bd59e486a58a899c9cf56f6758ed178:src/include/eGameState.h:69:inline constexpr int GAME_MAX_STATES = 22;
+exclusions.tsv:name	cGameState	—	5e9059778bd59e486a58a899c9cf56f6758ed178:src/CMakeLists.txt:120:    gamestates/cGameState.cpp | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/cGame.h:32:class cGameState; | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/game/cGame.h:228:    cGameState *m_currentState;
+exclusions.tsv:name	AbstractMentat	—	"5e9059778bd59e486a58a899c9cf56f6758ed178:src/CMakeLists.txt:61:    gameobjects/mentat/AbstractMentat.cpp | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/gameobjects/mentat/AbstractMentat.cpp:2: * @file AbstractMentat.cpp | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/gameobjects/mentat/AbstractMentat.cpp:16:#include ""AbstractMentat.h"""
+exclusions.tsv:name	GAME_SKIRMISH	—	5e9059778bd59e486a58a899c9cf56f6758ed178:src/gamestates/cGameState.h:57:// #define GAME_SKIRMISH    15      // playing a skirmish mission! | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/include/eGameState.h:62:inline constexpr int GAME_SKIRMISH = 15;      // playing a skirmish mission!
+exclusions.tsv:name	cRegion	—	5e9059778bd59e486a58a899c9cf56f6758ed178:src/gamestates/cSelectYourNextConquestState.cpp:251:            cRegion &regionPiece = world[i]; | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/gamestates/cSelectYourNextConquestState.cpp:274:            cRegion &region = world[iRegNr]; | 5e9059778bd59e486a58a899c9cf56f6758ed178:src/gamestates/cSelectYourNextConquestState.cpp:331:            cRegion &regionPiece = world[i];

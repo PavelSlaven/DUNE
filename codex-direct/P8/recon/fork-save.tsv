@@ -1,0 +1,96 @@
+путь	символ	путь@9208dcf:строка	входы	выходы	что делает
+src/save/SaveFileCodec.hpp	DecodeResult	src/save/SaveFileCodec.hpp@9208dcf:9-16	body,error	body,error,succeeded()	Результат декодирования тела и ошибки; succeeded() истинно при пустой ошибке.
+src/save/SaveFileCodec.hpp	DecodeResult::succeeded()	src/save/SaveFileCodec.hpp@9208dcf:13-15	this.error	bool	Проверяет, что ошибка пуста.
+src/save/SaveFileCodec.hpp	encode()	src/save/SaveFileCodec.hpp@9208dcf:18	body,version	строка файла	Добавляет текстовый заголовок сигнатуры, версии и контрольной суммы к телу.
+src/save/SaveFileCodec.hpp	decode()	src/save/SaveFileCodec.hpp@9208dcf:20-24	contents,expectedVersion,maximumBytes	DecodeResult	Проверяет размер, заголовок, версию и контрольную сумму, затем возвращает тело.
+src/save/SaveFileCodec.cpp	SaveMagic	src/save/SaveFileCodec.cpp@9208dcf:9	константа компиляции	"D2TM_SAVE"	Сигнатура заголовка сохранения.
+src/save/SaveFileCodec.cpp	checksum()	src/save/SaveFileCodec.cpp@9208dcf:11-19	строка тела	uint64_t	Считает 64-битную контрольную сумму тела.
+src/save/SaveFileCodec.cpp	encode()	src/save/SaveFileCodec.cpp@9208dcf:24-32	body,version	строка файла	Формирует `D2TM_SAVE <version> <checksum>\n<body>`.
+src/save/SaveFileCodec.cpp	decode()	src/save/SaveFileCodec.cpp@9208dcf:34-68	contents,expectedVersion,maximumBytes	DecodeResult	Отклоняет чрезмерный размер, повреждённую сигнатуру/заголовок, другую версию и неверную сумму; иначе возвращает тело.
+src/save/SaveGameManager.hpp	cGame (forward declaration)	src/save/SaveGameManager.hpp@9208dcf:7	—	тип ссылки на объект игры	Предварительное объявление типа игры, передаваемого менеджеру.
+src/save/SaveSlotsDialog.hpp	cGame (forward declaration)	src/save/SaveSlotsDialog.hpp@9208dcf:13	—	тип ссылки на объект игры	Предварительное объявление типа игры, хранимого диалогом.
+src/save/SaveSlotsDialog.hpp	cTextDrawer (forward declaration)	src/save/SaveSlotsDialog.hpp@9208dcf:14	—	тип указателя отрисовщика текста	Предварительное объявление отрисовщика, используемого диалогом.
+src/save/SaveSlotsDialog.hpp	UiAuditAccess (friend declaration)	src/save/SaveSlotsDialog.hpp@9208dcf:36	—	friend-доступ к private	Объявление дружественного класса для доступа к приватным полям диалога.
+src/save/SaveGameManager.hpp	save_game_detail::SaveSnapshot (forward declaration)	src/save/SaveGameManager.hpp@9208dcf:9-11	—	тип для внутреннего снимка	Предварительное объявление внутренней структуры снимка.
+src/save/SaveGameManager.hpp	SaveSlotInfo	src/save/SaveGameManager.hpp@9208dcf:13-18	slot	структура с exists, valid, name	Сводка состояния и имени одного слота.
+src/save/SaveGameManager.hpp	SaveGameManager	src/save/SaveGameManager.hpp@9208dcf:20-53	cGame и файловая система	статический API сохранений	Класс управления быстрым сохранением и десятью слотами.
+src/save/SaveGameManager.hpp	FormatVersion	src/save/SaveGameManager.hpp@9208dcf:22	константа компиляции	2	Ожидаемая и записываемая версия формата.
+src/save/SaveGameManager.hpp	MaximumSlots	src/save/SaveGameManager.hpp@9208dcf:23	константа компиляции	10	Число слотов менеджера.
+src/save/SaveGameManager.hpp	quickSavePath()	src/save/SaveGameManager.hpp@9208dcf:25	—	filesystem::path	Возвращает путь слота 1.
+src/save/SaveGameManager.hpp	hasQuickSave()	src/save/SaveGameManager.hpp@9208dcf:26	—	bool	Проверяет наличие файла быстрого сохранения.
+src/save/SaveGameManager.hpp	slotPath()	src/save/SaveGameManager.hpp@9208dcf:27	number slot	filesystem::path	Строит относительный путь файла слота.
+src/save/SaveGameManager.hpp	slotInfo()	src/save/SaveGameManager.hpp@9208dcf:28	number slot	SaveSlotInfo	Проверяет и разбирает один файл сохранения.
+src/save/SaveGameManager.hpp	listSlots()	src/save/SaveGameManager.hpp@9208dcf:29	—	vector<SaveSlotInfo>	Возвращает информацию для слотов 1–10.
+src/save/SaveGameManager.hpp	hasAnySave()	src/save/SaveGameManager.hpp@9208dcf:30	—	bool	Проверяет наличие хотя бы одного корректного слота.
+src/save/SaveGameManager.hpp	saveQuickGame()	src/save/SaveGameManager.hpp@9208dcf:32	game,errorMessage	bool; errorMessage при отказе	Сохраняет игру в слот 1 с прежним именем слота либо локализованным именем быстрого сохранения.
+src/save/SaveGameManager.hpp	loadQuickGame()	src/save/SaveGameManager.hpp@9208dcf:33	game,errorMessage	bool; errorMessage при отказе	Загружает слот 1.
+src/save/SaveGameManager.hpp	saveGame()	src/save/SaveGameManager.hpp@9208dcf:34-39	game,slot,name,errorMessage	bool; errorMessage при отказе	Создаёт снимок, сериализует его и атомарно записывает выбранный слот.
+src/save/SaveGameManager.hpp	loadGame()	src/save/SaveGameManager.hpp@9208dcf:40-45	game,slot,errorMessage	bool; errorMessage при отказе	Читает, проверяет и восстанавливает выбранный слот.
+src/save/SaveGameManager.hpp	captureSnapshot()	src/save/SaveGameManager.hpp@9208dcf:47	game	SaveSnapshot	Копирует состояние игры во внутренний снимок.
+src/save/SaveGameManager.hpp	restoreSnapshot()	src/save/SaveGameManager.hpp@9208dcf:48-52	game,snapshot,errorMessage	bool; errorMessage при отказе	Восстанавливает состояние игры из снимка.
+src/save/SaveGameManager.cpp	MaximumSaveBytes	src/save/SaveGameManager.cpp@9208dcf:43	константа компиляции	16 MiB	Предельный размер загружаемого файла.
+src/save/SaveGameManager.cpp	PlayerState	src/save/SaveGameManager.cpp@9208dcf:45-61	поля одного игрока	снимок полей игрока	Внутренняя структура записываемых данных игрока.
+src/save/SaveGameManager.cpp	CellState	src/save/SaveGameManager.cpp@9208dcf:63-73	поля одной ячейки	снимок полей ячейки	Внутренняя структура записываемых данных ячейки карты.
+src/save/SaveGameManager.cpp	StructureState	src/save/SaveGameManager.cpp@9208dcf:75-97	поля одного здания	снимок полей здания	Внутренняя структура записываемых данных здания.
+src/save/SaveGameManager.cpp	UnitState	src/save/SaveGameManager.cpp@9208dcf:99-144	поля одного юнита	снимок полей юнита	Внутренняя структура записываемых данных юнита.
+src/save/SaveGameManager.cpp	ReinforcementState	src/save/SaveGameManager.cpp@9208dcf:146-154	поля одного подкрепления	снимок полей подкрепления	Внутренняя структура записываемых данных подкрепления.
+src/save/SaveGameManager.cpp	BuildQueueState	src/save/SaveGameManager.cpp@9208dcf:156-175	поля одной позиции очереди	снимок полей очереди	Внутренняя структура записываемых данных очереди строительства.
+src/save/SaveGameManager.cpp	FactoryPadSave	src/save/SaveGameManager.cpp@9208dcf:177-180	id здания и PadState	снимок площадки завода	Внутренняя структура записываемых данных площадки завода.
+src/save/SaveGameManager.cpp	SaveSnapshot	src/save/SaveGameManager.cpp@9208dcf:182-204	состояние игры и коллекции объектов	все данные одного сохранения	Снимок из INFO, META, MAP и коллекций игровых объектов.
+src/save/SaveGameManager.cpp	writeArray()	src/save/SaveGameManager.cpp@9208dcf:206-212	поток и массив/коллекция	поток	Записывает элементы массива через пробел.
+src/save/SaveGameManager.cpp	readValue()	src/save/SaveGameManager.cpp@9208dcf:214-219	поток и значение по ссылке	bool	Считывает одно значение из потока.
+src/save/SaveGameManager.cpp	readBool()	src/save/SaveGameManager.cpp@9208dcf:221-229	поток и bool по ссылке	bool	Считывает bool только из числового 0 или 1.
+src/save/SaveGameManager.cpp	readArray()	src/save/SaveGameManager.cpp@9208dcf:231-240	поток и массив по ссылке	bool	Считывает все элементы массива; останавливается при ошибке.
+src/save/SaveGameManager.cpp	expectTag()	src/save/SaveGameManager.cpp@9208dcf:242-246	поток, ожидаемый тег	bool	Считывает тег раздела и сравнивает его с ожидаемым.
+src/save/SaveGameManager.cpp	serializeBody()	src/save/SaveGameManager.cpp@9208dcf:248-365	SaveSnapshot	текстовое тело файла	Записывает разделы INFO, META, MAP, PLAYERS, CELLS, STRUCTURES, UNITS, REINFORCEMENTS, BUILD_QUEUE, FACTORYPADS, END в указанном порядке.
+src/save/SaveGameManager.cpp	deserializeBody()	src/save/SaveGameManager.cpp@9208dcf:367-692	текстовое тело, SaveSnapshot&, error&	bool и error	Считывает и валидирует разделы в порядке формата; принимает META в начале вместо INFO для старого тела.
+src/save/SaveGameManager.cpp	captureSnapshot()	src/save/SaveGameManager.cpp@9208dcf:698-917	cGame и игровые объекты	SaveSnapshot	Снимает состояние игры, карты, игроков, зданий, юнитов, подкреплений, очередей и площадок заводов.
+src/save/SaveGameManager.cpp	restoreCellState()	src/save/SaveGameManager.cpp@9208dcf:919-940	SaveSnapshot	глобальная карта	Переносит сохранённые поля ячеек в ячейки карты.
+src/save/SaveGameManager.cpp	restoreSnapshot()	src/save/SaveGameManager.cpp@9208dcf:975-1276	game,SaveSnapshot,error&	bool и error	Восстанавливает карту, игроков и игровые объекты, затем устанавливает камеру и переход в игру.
+src/save/SaveGameManager.cpp	writeAtomically()	src/save/SaveGameManager.cpp@9208dcf:1278-1337	путь, содержимое, error&	bool и error	Пишет временный файл и заменяет целевой файл через rename/MoveFileEx.
+src/save/SaveGameManager.cpp	quickSavePath()	src/save/SaveGameManager.cpp@9208dcf:1338-1341	—	filesystem::path	Возвращает slotPath(1).
+src/save/SaveGameManager.cpp	slotPath()	src/save/SaveGameManager.cpp@9208dcf:1349-1359	slot	filesystem::path	Для слота 1 строит `saves/quicksave.d2s`, для остальных — `saves/saveNN.d2s`.
+src/save/SaveGameManager.cpp	slotInfo()	src/save/SaveGameManager.cpp@9208dcf:1361-1406	slot	SaveSlotInfo	Проверяет наличие, формат и тело файла; корректное имя берёт из INFO.
+src/save/SaveGameManager.cpp	listSlots()	src/save/SaveGameManager.cpp@9208dcf:1408-1416	—	vector<SaveSlotInfo>	Перебирает слоты 1–10.
+src/save/SaveGameManager.cpp	hasAnySave()	src/save/SaveGameManager.cpp@9208dcf:1418-1427	—	bool	Возвращает true при первом существующем и корректном слоте.
+src/save/SaveGameManager.cpp	saveQuickGame()	src/save/SaveGameManager.cpp@9208dcf:1429-1438	game,errorMessage	bool; errorMessage при отказе	Выбирает прежнее имя слота 1 или Quick Save и делегирует saveGame(1).
+src/save/SaveGameManager.cpp	saveGame()	src/save/SaveGameManager.cpp@9208dcf:1440-1475	game,slot,name,errorMessage	bool; errorMessage при отказе	Ограничивает режим миссией/переходом в игру, вызывает captureSnapshot, serializeBody, encode и writeAtomically.
+src/save/SaveGameManager.cpp	loadQuickGame()	src/save/SaveGameManager.cpp@9208dcf:1477-1482	game,errorMessage	bool; errorMessage при отказе	Делегирует loadGame(1).
+src/save/SaveGameManager.cpp	loadGame()	src/save/SaveGameManager.cpp@9208dcf:1484-1528	game,slot,errorMessage	bool; errorMessage при отказе	Читает файл, проверяет заголовок/версию/сумму и тело, затем вызывает restoreSnapshot.
+src/save/SaveSlotName.hpp	MaximumSlots	src/save/SaveSlotName.hpp@9208dcf:12	константа компиляции	10	Число допустимых слотов; диапазон слотов 1–10.
+src/save/SaveSlotName.hpp	MaximumNameBytes	src/save/SaveSlotName.hpp@9208dcf:13	константа компиляции	96 байт	Максимальная длина отображаемого имени в байтах.
+src/save/SaveSlotName.hpp	isValidSlot()	src/save/SaveSlotName.hpp@9208dcf:15-18	number slot	bool	Проверяет диапазон от 1 до 10.
+src/save/SaveSlotName.hpp	removeLastUtf8Character()	src/save/SaveSlotName.hpp@9208dcf:20-31	строка по ссылке	строка, укороченная на один UTF-8 символ по ведущему байту	Удаляет последний многобайтный символ целиком.
+src/save/SaveSlotName.hpp	sanitizeName()	src/save/SaveSlotName.hpp@9208dcf:33-92	ввод string_view	строка до 96 байт	Удаляет управляющие байты, сжимает пробелы и не добавляет неполный UTF-8 byte-sequence; имя не используется в пути файла.
+src/save/SaveSlotName.hpp	defaultName()	src/save/SaveSlotName.hpp@9208dcf:94-98	number slot	строка	Возвращает локализованное `Save n`/`Сохранение n`.
+src/save/SaveSlotsDialog.hpp	SaveSlotsDialog	src/save/SaveSlotsDialog.hpp@9208dcf:16-69	game,textDrawer,onLoaded,onSlotsChanged	объект диалога	Класс модального списка сохранений с редактируемым именем и действиями save/load.
+src/save/SaveSlotsDialog.hpp	SaveSlotsDialog()	src/save/SaveSlotsDialog.hpp@9208dcf:18-23	game,textDrawer,callbacks	экземпляр	Сохраняет ссылку на игру, указатель отрисовщика и callbacks.
+src/save/SaveSlotsDialog.hpp	~SaveSlotsDialog()	src/save/SaveSlotsDialog.hpp@9208dcf:24	this	—	Закрывает диалог при уничтожении.
+src/save/SaveSlotsDialog.hpp	open()	src/save/SaveSlotsDialog.hpp@9208dcf:26	allowSaving,preferSaving	открытый диалог	Обновляет слоты, выбирает начальный слот и режим.
+src/save/SaveSlotsDialog.hpp	close()	src/save/SaveSlotsDialog.hpp@9208dcf:27	this	закрытый диалог	Останавливает ввод текста, если он активен, и закрывает диалог.
+src/save/SaveSlotsDialog.hpp	isOpen()	src/save/SaveSlotsDialog.hpp@9208dcf:28	this	bool	Возвращает состояние открытого диалога.
+src/save/SaveSlotsDialog.hpp	draw()	src/save/SaveSlotsDialog.hpp@9208dcf:30	this	экран	Рисует список слотов и кнопки диалога.
+src/save/SaveSlotsDialog.hpp	onMouseEvent()	src/save/SaveSlotsDialog.hpp@9208dcf:31	s_MouseEvent	состояние диалога	Обрабатывает выбор слота, редактирование имени и кнопки Save/Load/Close.
+src/save/SaveSlotsDialog.hpp	onKeyboardEvent()	src/save/SaveSlotsDialog.hpp@9208dcf:32	cKeyboardEvent	состояние диалога	Обрабатывает Escape, стрелки, Backspace и Enter.
+src/save/SaveSlotsDialog.hpp	onTextInput()	src/save/SaveSlotsDialog.hpp@9208dcf:33	string_view	имя выбранного слота	Добавляет печатные байты и ограничивает длину имени.
+src/save/SaveSlotsDialog.hpp	rebuildLayout()	src/save/SaveSlotsDialog.hpp@9208dcf:38	размер экрана и MaximumSlots	прямоугольники элементов	Пересчитывает геометрию диалога.
+src/save/SaveSlotsDialog.hpp	refreshSlots()	src/save/SaveSlotsDialog.hpp@9208dcf:39	—	список слотов	Перечитывает SaveGameManager::listSlots().
+src/save/SaveSlotsDialog.hpp	selectSlot()	src/save/SaveSlotsDialog.hpp@9208dcf:40	number slot	выбранный слот и имя	Проверяет номер и выбирает существующее или стандартное имя.
+src/save/SaveSlotsDialog.hpp	saveSelected()	src/save/SaveSlotsDialog.hpp@9208dcf:41	текущий слот и имя	файл слота либо статус ошибки	Санитизирует имя и вызывает SaveGameManager::saveGame().
+src/save/SaveSlotsDialog.hpp	loadSelected()	src/save/SaveSlotsDialog.hpp@9208dcf:42	текущий слот	восстановленная игра либо статус ошибки	Проверяет слот и вызывает SaveGameManager::loadGame().
+src/save/SaveSlotsDialog.hpp	setEditingName()	src/save/SaveSlotsDialog.hpp@9208dcf:43	bool editing	состояние ввода текста	Включает или выключает SDL text input.
+src/save/SaveSlotsDialog.hpp	selectedInfo()	src/save/SaveSlotsDialog.hpp@9208dcf:44	текущий слот	указатель на SaveSlotInfo либо nullptr	Ищет информацию о выбранном слоте.
+src/save/SaveSlotsDialog.hpp	fittedText()	src/save/SaveSlotsDialog.hpp@9208dcf:45-48	текст, ширина	укороченная строка	Укорачивает строку по ширине, используя границы UTF-8 символов.
+src/gameobjects/structures/FactoryPad.hpp	factory_pad::write()	src/gameobjects/structures/FactoryPad.hpp@9208dcf:213-221	ostream&,const PadState&	сериализованные поля PadState в поток	Записывает состояние площадки: phase, unitType, rollUnitId, rollStep, rollTick, blockedTicks, carryallId, carryallRetry, длину и waiting.
+src/gameobjects/structures/FactoryPad.hpp	factory_pad::read()	src/gameobjects/structures/FactoryPad.hpp@9208dcf:223-258	istream&,PadState&,maxWaiting	bool; изменённая PadState при успехе	Считывает и проверяет поля площадки, затем присваивает разобранное состояние.
+src/save/SaveGameManager.cpp	INFO	src/save/SaveGameManager.cpp@9208dcf:251; src/save/SaveGameManager.cpp@9208dcf:378-384	SaveSnapshot::saveName	полученное имя слота	Первая строка тела с quoted-именем; десериализатор допускает отсутствие INFO и начало с META.
+src/save/SaveGameManager.cpp	META	src/save/SaveGameManager.cpp@9208dcf:252-258; src/save/SaveGameManager.cpp@9208dcf:389-406	skirmish,region,mission,winFlags,loseFlags,cameraCell	поля метаданных игры	Вторая строка тела, состояние миссии, флаги и центр камеры.
+src/save/SaveGameManager.cpp	MAP	src/save/SaveGameManager.cpp@9208dcf:259-266; src/save/SaveGameManager.cpp@9208dcf:396-410	mapWidth,mapHeight,autoSpawnBlooms,autoDetonateBlooms,bloomTimer,desiredWorms,wormRespawnTimer	состояние карты	Размер и динамические таймеры карты; размеры при чтении ограничены 4–256.
+src/save/SaveGameManager.cpp	PLAYERS / PLAYER	src/save/SaveGameManager.cpp@9208dcf:267-286; src/save/SaveGameManager.cpp@9208dcf:414-450	количество и записи игроков	MAX_PLAYERS записей с полями игрока	Записывает количество, индекс и поля каждого игрока; читает ровно MAX_PLAYERS записей с последовательными индексами.
+src/save/SaveGameManager.cpp	CELLS / CELL	src/save/SaveGameManager.cpp@9208dcf:288-300; src/save/SaveGameManager.cpp@9208dcf:455-482	количество и записи ячеек	размер карты ячеек	Записывает ячейки карты; при чтении количество должно равняться width*height.
+src/save/SaveGameManager.cpp	STRUCTURES / STRUCTURE	src/save/SaveGameManager.cpp@9208dcf:301-314; src/save/SaveGameManager.cpp@9208dcf:484-518	количество и записи зданий	список зданий и ссылки	Записывает состояние зданий; при чтении проверяются лимит, уникальность id и ссылки.
+src/save/SaveGameManager.cpp	UNITS / UNIT	src/save/SaveGameManager.cpp@9208dcf:315-338; src/save/SaveGameManager.cpp@9208dcf:520-569	количество и записи юнитов	список юнитов и ссылки	Записывает состояние юнитов; при чтении проверяются лимит, уникальность id, ссылки и конечность чисел.
+src/save/SaveGameManager.cpp	REINFORCEMENTS / REINFORCEMENT	src/save/SaveGameManager.cpp@9208dcf:339-345; src/save/SaveGameManager.cpp@9208dcf:571-593	количество и записи подкреплений	список подкреплений	Записывает очередь подкреплений; количество при чтении не больше 1024.
+src/save/SaveGameManager.cpp	BUILD_QUEUE / BUILD	src/save/SaveGameManager.cpp@9208dcf:346-356; src/save/SaveGameManager.cpp@9208dcf:595-625	количество и записи очереди	очередь строительства	Записывает незавершённые позиции очереди; при чтении проверяются пределы игроков, слотов и типов.
+src/save/SaveGameManager.cpp	FACTORYPADS / FACTORYPAD	src/save/SaveGameManager.cpp@9208dcf:357-362; src/save/SaveGameManager.cpp@9208dcf:626-686	количество, id здания и PadState	состояния занятых площадок фабрик	Вложенный factory_pad::write/read сериализует площадку; при чтении проверяются связь с заводом, юнитами и очередями.
+src/save/SaveGameManager.cpp	END	src/save/SaveGameManager.cpp@9208dcf:363; src/save/SaveGameManager.cpp@9208dcf:687-691	маркер конца тела	успех/ошибка	Завершает тело; отсутствие END даёт ошибку неполных данных.

@@ -1,0 +1,102 @@
+файл	вид	путь@9208dcf:строка	строка дословно
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:14	PER_SHEET = 6
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:15	COLUMNS = 3
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:16	CELL_WIDTH = 640
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:17	CELL_IMAGE_MAX_HEIGHT = 480
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:18	CAPTION_LINES = 3
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:19	LINE_HEIGHT = 18
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:20	GAP = 8
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:21	"FONT_PATHS = (""/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"", ""C:/Windows/Fonts/arial.ttf"")"
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:22	COLOR_A = (230, 30, 30)
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:23	COLOR_B = (30, 90, 240)
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:24	BACKGROUND = (24, 24, 24)
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:25	TEXT = (235, 235, 235)
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:186	"INDEX_STYLE = """"""body{font:14px sans-serif;margin:16px;background:#181818;color:#eee}"
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:191	"INDEX_SCRIPT = """"""const rows=[...document.querySelectorAll('tbody tr')];"
+tools/ui-audit/build_sheets.py	константа	tools/ui-audit/build_sheets.py@9208dcf:200	"COLUMN_NAMES = (""scene"", ""screen"", ""state"", ""house"", ""resolution"", ""language"", ""graphics"", ""render"", ""world"", ""flags"")"
+tools/ui-audit/build_sheets.py	аргумент	tools/ui-audit/build_sheets.py@9208dcf:236	"    parser.add_argument(""--png-root"", required=True)"
+tools/ui-audit/build_sheets.py	аргумент	tools/ui-audit/build_sheets.py@9208dcf:237	"    parser.add_argument(""--logs-root"", required=True)"
+tools/ui-audit/build_sheets.py	аргумент	tools/ui-audit/build_sheets.py@9208dcf:238	"    parser.add_argument(""--catalog"", required=True)"
+tools/ui-audit/build_sheets.py	аргумент	tools/ui-audit/build_sheets.py@9208dcf:239	"    parser.add_argument(""--flags"", help=""flags JSON from check_geometry.py"")"
+tools/ui-audit/build_sheets.py	аргумент	tools/ui-audit/build_sheets.py@9208dcf:240	"    parser.add_argument(""--full"", action=""append"", default=[], help=""combination id with a full catalog sheet set"")"
+tools/ui-audit/build_sheets.py	аргумент	tools/ui-audit/build_sheets.py@9208dcf:241	"    parser.add_argument(""--order"", help=""order.json written by run_all.py"")"
+tools/ui-audit/build_sheets.py	аргумент	tools/ui-audit/build_sheets.py@9208dcf:242	"    parser.add_argument(""--out"", required=True)"
+tools/ui-audit/check_completeness.py	константа	tools/ui-audit/check_completeness.py@9208dcf:9	"RESOLUTIONS = (""1024x768"", ""1280x720"", ""1366x768"", ""1600x900"", ""1920x1080"", ""2560x1440"")"
+tools/ui-audit/check_completeness.py	константа	tools/ui-audit/check_completeness.py@9208dcf:10	"LANGUAGES = (""ru"", ""en"")"
+tools/ui-audit/check_completeness.py	константа	tools/ui-audit/check_completeness.py@9208dcf:11	"GRAPHICS = (""hd"",)"
+tools/ui-audit/check_completeness.py	аргумент	tools/ui-audit/check_completeness.py@9208dcf:52	"    parser.add_argument(""root"")"
+tools/ui-audit/check_completeness.py	аргумент	tools/ui-audit/check_completeness.py@9208dcf:53	"    parser.add_argument(""--catalog"", required=True, help=""JSON printed by the game with --ui-audit-list"")"
+tools/ui-audit/check_completeness.py	аргумент	tools/ui-audit/check_completeness.py@9208dcf:54	"    parser.add_argument(""--flags"", help=""JSON of flags written by check_geometry.py"")"
+tools/ui-audit/check_completeness.py	аргумент	tools/ui-audit/check_completeness.py@9208dcf:55	"    parser.add_argument(""--order"", help=""order.json written by run_all.py: every combination in capture order"")"
+tools/ui-audit/check_credits.py	аргумент	tools/ui-audit/check_credits.py@9208dcf:43	"    parser.add_argument(""logs_root"")"
+tools/ui-audit/check_geometry.py	константа	tools/ui-audit/check_geometry.py@9208dcf:7	RULE_NAMES = {
+tools/ui-audit/check_geometry.py	аргумент	tools/ui-audit/check_geometry.py@9208dcf:226	"    parser.add_argument(""logs_root"")"
+tools/ui-audit/check_geometry.py	аргумент	tools/ui-audit/check_geometry.py@9208dcf:227	"    parser.add_argument(""--json"", dest=""json_out"")"
+tools/ui-audit/check_geometry.py	аргумент	tools/ui-audit/check_geometry.py@9208dcf:228	"    parser.add_argument(""--txt"", dest=""txt_out"")"
+tools/ui-audit/check_geometry.py	аргумент	tools/ui-audit/check_geometry.py@9208dcf:229	"    parser.add_argument(""--summary8"", dest=""summary8_out"")"
+tools/ui-audit/check_keys.py	константа	tools/ui-audit/check_keys.py@9208dcf:7	"STATE_SEPARATOR = "" | """
+tools/ui-audit/check_keys.py	константа	tools/ui-audit/check_keys.py@9208dcf:8	"BINDING_PREFIX = ""m_commandBindings."""
+tools/ui-audit/check_keys.py	константа	tools/ui-audit/check_keys.py@9208dcf:9	"REBINDING_WORDS = ""переназначение без проверки занятости"""
+tools/ui-audit/check_keys.py	аргумент	tools/ui-audit/check_keys.py@9208dcf:106	"    parser.add_argument(""--keys"", required=True)"
+tools/ui-audit/check_keys.py	аргумент	tools/ui-audit/check_keys.py@9208dcf:107	"    parser.add_argument(""--raw"", required=True)"
+tools/ui-audit/check_keys.py	аргумент	tools/ui-audit/check_keys.py@9208dcf:108	"    parser.add_argument(""--binding-check"")"
+tools/ui-audit/check_keys.py	аргумент	tools/ui-audit/check_keys.py@9208dcf:109	"    parser.add_argument(""--out"")"
+tools/ui-audit/check_options_geometry.py	константа	tools/ui-audit/check_options_geometry.py@9208dcf:11	OPTIONS_SCENES = (
+tools/ui-audit/check_options_geometry.py	аргумент	tools/ui-audit/check_options_geometry.py@9208dcf:99	"    parser.add_argument(""logs_root"")"
+tools/ui-audit/check_options_geometry.py	аргумент	tools/ui-audit/check_options_geometry.py@9208dcf:101	"    plan.add_argument(""--plan"", help=""audit-plan.json emitted by run_all.py"")"
+tools/ui-audit/check_options_geometry.py	аргумент	tools/ui-audit/check_options_geometry.py@9208dcf:102	"    plan.add_argument(""--combos"", help=""one planned audit combo id per line"")"
+tools/ui-audit/check_scenes.py	константа	tools/ui-audit/check_scenes.py@9208dcf:9	"UNIT_PREFIX = ""units-label-"""
+tools/ui-audit/check_scenes.py	константа	tools/ui-audit/check_scenes.py@9208dcf:10	"HARVESTER_SCENE = UNIT_PREFIX + ""harvester"""
+tools/ui-audit/check_scenes.py	константа	tools/ui-audit/check_scenes.py@9208dcf:11	"UNIT_KINDS = (""health"", ""group"", ""experience"")"
+tools/ui-audit/check_scenes.py	константа	tools/ui-audit/check_scenes.py@9208dcf:26	"STRUCTURE_EDGES = {""structure-label-top"": (""top"", at_top), ""structure-label-right"": (""right"", at_right)}"
+tools/ui-audit/check_scenes.py	аргумент	tools/ui-audit/check_scenes.py@9208dcf:113	"    parser.add_argument(""logs"", nargs=""+"")"
+tools/ui-audit/check_scenes.py	аргумент	tools/ui-audit/check_scenes.py@9208dcf:114	"    parser.add_argument(""--out"")"
+tools/ui-audit/check_screens.py	константа	tools/ui-audit/check_screens.py@9208dcf:7	"STATE_DEFINE = re.compile(r""(?m)^#define\s+(GAME_\w+)\s+-?\d+"")"
+tools/ui-audit/check_screens.py	константа	tools/ui-audit/check_screens.py@9208dcf:8	"CLASS_DEFINITION = re.compile(r""(?m)^[ \t]*class\s+(\w+)[^;{]*\{"")"
+tools/ui-audit/check_screens.py	константа	tools/ui-audit/check_screens.py@9208dcf:9	"CLASS_DIRECTORIES = (""src/gamestates"", ""src/mentat"")"
+tools/ui-audit/check_screens.py	константа	tools/ui-audit/check_screens.py@9208dcf:10	"CLASS_FILES = (""src/save/SaveSlotsDialog.hpp"",)"
+tools/ui-audit/check_screens.py	аргумент	tools/ui-audit/check_screens.py@9208dcf:72	"    parser.add_argument(""--catalog"", required=True)"
+tools/ui-audit/check_screens.py	аргумент	tools/ui-audit/check_screens.py@9208dcf:73	"    parser.add_argument(""--root"", required=True)"
+tools/ui-audit/check_screens.py	аргумент	tools/ui-audit/check_screens.py@9208dcf:74	"    parser.add_argument(""--exclusions"", required=True)"
+tools/ui-audit/combos.py	константа	tools/ui-audit/combos.py@9208dcf:4	"FULL_RESOLUTIONS = (""1024x768"", ""1920x1080"")"
+tools/ui-audit/combos.py	константа	tools/ui-audit/combos.py@9208dcf:5	"LANGUAGES = (""ru"", ""en"")"
+tools/ui-audit/combos.py	константа	tools/ui-audit/combos.py@9208dcf:6	"GRAPHICS = (""hd"",)"
+tools/ui-audit/extract_keys.py	константа	tools/ui-audit/extract_keys.py@9208dcf:6	"KEY_TOKEN = re.compile(r""SDLK_\w+|SDL_SCANCODE_\w+|m_commandBindings\.\w+|\bcommandBindings?\b"")"
+tools/ui-audit/extract_keys.py	константа	tools/ui-audit/extract_keys.py@9208dcf:7	"SOURCE_SUFFIXES = ("".cpp"", "".h"", "".hpp"", "".c"", "".cc"")"
+tools/ui-audit/extract_keys.py	аргумент	tools/ui-audit/extract_keys.py@9208dcf:80	"    parser.add_argument(""--root"", required=True)"
+tools/ui-audit/extract_keys.py	аргумент	tools/ui-audit/extract_keys.py@9208dcf:81	"    parser.add_argument(""--out"", required=True)"
+tools/ui-audit/finalize_png.py	аргумент	tools/ui-audit/finalize_png.py@9208dcf:30	"    parser.add_argument(""--exe"", required=True)"
+tools/ui-audit/finalize_png.py	аргумент	tools/ui-audit/finalize_png.py@9208dcf:31	"    parser.add_argument(""--resources"", required=True)"
+tools/ui-audit/finalize_png.py	аргумент	tools/ui-audit/finalize_png.py@9208dcf:32	"    parser.add_argument(""--out"", required=True)"
+tools/ui-audit/finalize_png.py	аргумент	tools/ui-audit/finalize_png.py@9208dcf:33	"    parser.add_argument(""--flags"", required=True, help=""flags JSON from check_geometry.py"")"
+tools/ui-audit/finalize_png.py	аргумент	tools/ui-audit/finalize_png.py@9208dcf:34	"    parser.add_argument(""--dry-run"", action=""store_true"")"
+tools/ui-audit/find_hit_tests.py	константа	tools/ui-audit/find_hit_tests.py@9208dcf:6	"HIT = re.compile(r""\b(isWithin\w*|isOver\w*|isMouseOver\w*|isPointWithin\w*|isInside\w*|containsPoint\w*|pointInRect\w*)\s*\("")"
+tools/ui-audit/find_hit_tests.py	константа	tools/ui-audit/find_hit_tests.py@9208dcf:7	"FUNCTION = re.compile(r""^[A-Za-z_][\w:<>,\s\*&~]*?\b([A-Za-z_~]\w*::[~\w]+)\s*\("")"
+tools/ui-audit/find_hit_tests.py	константа	tools/ui-audit/find_hit_tests.py@9208dcf:8	"DIRECTORIES = (""src/gui"", ""src/drawers"", ""src/gamestates"", ""src/managers"", ""src/save"", ""src/sidebar"", ""src/mentat"","
+tools/ui-audit/find_hit_tests.py	константа	tools/ui-audit/find_hit_tests.py@9208dcf:10	"RECORDS = (""uiaudit::recordClick"", ""uiaudit::recordCanvasClick"")"
+tools/ui-audit/find_hit_tests.py	аргумент	tools/ui-audit/find_hit_tests.py@9208dcf:49	"    parser.add_argument(""--root"", required=True)"
+tools/ui-audit/run_all.py	константа	tools/ui-audit/run_all.py@9208dcf:15	WORKERS = 16
+tools/ui-audit/run_all.py	константа	tools/ui-audit/run_all.py@9208dcf:16	MIN_FREE_GB = 5
+tools/ui-audit/run_all.py	аргумент	tools/ui-audit/run_all.py@9208dcf:96	"    parser.add_argument(""--exe"", required=True)"
+tools/ui-audit/run_all.py	аргумент	tools/ui-audit/run_all.py@9208dcf:97	"    parser.add_argument(""--resources"", required=True)"
+tools/ui-audit/run_all.py	аргумент	tools/ui-audit/run_all.py@9208dcf:98	"    parser.add_argument(""--out"", required=True)"
+tools/ui-audit/run_all.py	аргумент	tools/ui-audit/run_all.py@9208dcf:99	"    parser.add_argument(""--catalog"", required=True)"
+tools/ui-audit/run_all.py	аргумент	tools/ui-audit/run_all.py@9208dcf:100	"    parser.add_argument(""--resolutions"", default=""1024x768,1280x720,1366x768,1600x900,1920x1080,2560x1440"")"
+tools/ui-audit/run_all.py	аргумент	tools/ui-audit/run_all.py@9208dcf:101	"    parser.add_argument(""--limit"", type=int, help=""run only this many unfinished combinations of the plan"")"
+tools/ui-audit/run_all.py	аргумент	tools/ui-audit/run_all.py@9208dcf:102	"    parser.add_argument(""--workers"", type=int, default=WORKERS)"
+tools/ui-audit/run_all.py	аргумент	tools/ui-audit/run_all.py@9208dcf:103	"    parser.add_argument(""--min-free-gb"", type=float, default=MIN_FREE_GB)"
+tools/ui-audit/run_all.py	аргумент	tools/ui-audit/run_all.py@9208dcf:104	"    parser.add_argument(""--only"", action=""append"", help=""run only this combination id (repeatable)"")"
+tools/ui-audit/run_all.py	аргумент	tools/ui-audit/run_all.py@9208dcf:105	"    parser.add_argument(""--list"", action=""store_true"", help=""print the plan and exit"")"
+tools/ui-audit/run_combo.py	константа	tools/ui-audit/run_combo.py@9208dcf:16	"RUNTIME_LINKS = (""campaign"", ""campaign_en"", ""data"", ""skirmish"", ""skirmish_en"")"
+tools/ui-audit/run_combo.py	константа	tools/ui-audit/run_combo.py@9208dcf:17	"FULL_RESOLUTIONS = (""1024x768"", ""1920x1080"")"
+tools/ui-audit/run_combo.py	константа	tools/ui-audit/run_combo.py@9208dcf:18	SCENE_TIMEOUT_SECONDS = 90
+tools/ui-audit/run_combo.py	константа	tools/ui-audit/run_combo.py@9208dcf:19	SCENE_ATTEMPTS = 2
+tools/ui-audit/run_combo.py	константа	tools/ui-audit/run_combo.py@9208dcf:20	MIN_FREE_GB = 5
+tools/ui-audit/run_combo.py	константа	tools/ui-audit/run_combo.py@9208dcf:21	EXIT_LOW_DISK = 3
+tools/ui-audit/run_combo.py	аргумент	tools/ui-audit/run_combo.py@9208dcf:154	"    parser.add_argument(""--exe"", required=True)"
+tools/ui-audit/run_combo.py	аргумент	tools/ui-audit/run_combo.py@9208dcf:155	"    parser.add_argument(""--resources"", required=True)"
+tools/ui-audit/run_combo.py	аргумент	tools/ui-audit/run_combo.py@9208dcf:156	"    parser.add_argument(""--out"", required=True)"
+tools/ui-audit/run_combo.py	аргумент	tools/ui-audit/run_combo.py@9208dcf:157	"    parser.add_argument(""--combo"", required=True, help=""WxH/lang/gfx or WxH/lang/gfx/r<R>w<W>, for example 1024x768/ru/hd"")"
+tools/ui-audit/run_combo.py	аргумент	tools/ui-audit/run_combo.py@9208dcf:158	"    parser.add_argument(""--scene"", action=""append"", help=""limit to these scene ids"")"
+tools/ui-audit/run_combo.py	аргумент	tools/ui-audit/run_combo.py@9208dcf:159	"    parser.add_argument(""--flags"", help=""flags JSON: capture only the flagged scenes of this combination, with PNG"")"
+tools/ui-audit/run_combo.py	аргумент	tools/ui-audit/run_combo.py@9208dcf:160	"    parser.add_argument(""--min-free-gb"", type=float, default=MIN_FREE_GB)"

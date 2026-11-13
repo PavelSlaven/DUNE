@@ -1,0 +1,82 @@
+{
+  "release": "v0.8.0-ru4-preview3",
+  "source_pack": "C:\\Users\\Slaven\\Desktop\\D2TM-v0.8.0.windows.ru3-preview1-ready\\data\\sdl_data_hd4.dat",
+  "source_pack_sha256": "5bc8feb0ddc73bede19732ae3a64fc6548bc82f84df3b185b14834392481b70c",
+  "tile_size_hd4": 128,
+  "edge_guard_hd4": 8,
+  "variant_policy": "Only the tile interior changes; the outer eight HD4 pixels remain byte-identical to the restored preview1 master.",
+  "entries": [
+    {
+      "resource_id": 117,
+      "name": "TERRAIN_BLOOM",
+      "width": 128,
+      "height": 128,
+      "pack_entry_sha256": "de96bbf0c97f257ba9bf0c83c9dd101867b02a04afa3aa59b388635b2b527412",
+      "restored_png_sha256": "de96bbf0c97f257ba9bf0c83c9dd101867b02a04afa3aa59b388635b2b527412"
+    },
+    {
+      "resource_id": 118,
+      "name": "TERRAIN_HILL",
+      "width": 2048,
+      "height": 128,
+      "pack_entry_sha256": "998c02f93ef70ea05329f3a03b79f9b1d06e3642664dc0b2331e1d7141f55601",
+      "restored_png_sha256": "998c02f93ef70ea05329f3a03b79f9b1d06e3642664dc0b2331e1d7141f55601"
+    },
+    {
+      "resource_id": 119,
+      "name": "TERRAIN_MOUNTAIN",
+      "width": 2176,
+      "height": 128,
+      "pack_entry_sha256": "cec38d7deea1c4eac373a70238e3e82e29ebeafc416848e6e5f96384237224e3",
+      "restored_png_sha256": "cec38d7deea1c4eac373a70238e3e82e29ebeafc416848e6e5f96384237224e3"
+    },
+    {
+      "resource_id": 120,
+      "name": "TERRAIN_ROCK",
+      "width": 2048,
+      "height": 128,
+      "pack_entry_sha256": "0d609b663d2b922f0cd461ce35bba601c156d4ab61dff02ab9cc0a847500b0a7",
+      "restored_png_sha256": "0d609b663d2b922f0cd461ce35bba601c156d4ab61dff02ab9cc0a847500b0a7"
+    },
+    {
+      "resource_id": 121,
+      "name": "TERRAIN_SAND",
+      "width": 128,
+      "height": 128,
+      "pack_entry_sha256": "f3027a9583b2c055700436720a0c51ca2d566eee3fb2acce584ef70c481b7c3f",
+      "restored_png_sha256": "f3027a9583b2c055700436720a0c51ca2d566eee3fb2acce584ef70c481b7c3f"
+    },
+    {
+      "resource_id": 122,
+      "name": "TERRAIN_SLAB",
+      "width": 640,
+      "height": 128,
+      "pack_entry_sha256": "b28a965ab69d4d81e193c9a50d75f7906e40c10c1776ea940f1ae9f5f5547019",
+      "restored_png_sha256": "b28a965ab69d4d81e193c9a50d75f7906e40c10c1776ea940f1ae9f5f5547019"
+    },
+    {
+      "resource_id": 123,
+      "name": "TERRAIN_SPICE",
+      "width": 2048,
+      "height": 128,
+      "pack_entry_sha256": "e6daf3ec411a2b1e8ed3f53d024b3c7233770ba2e7e60db8d8c4827a21b5d23f",
+      "restored_png_sha256": "e6daf3ec411a2b1e8ed3f53d024b3c7233770ba2e7e60db8d8c4827a21b5d23f"
+    },
+    {
+      "resource_id": 124,
+      "name": "TERRAIN_SPICEHILL",
+      "width": 2048,
+      "height": 128,
+      "pack_entry_sha256": "94c7a792b6d0e567a0759d93eee23b3d02d41feabe42c98795444fdea88bb171",
+      "restored_png_sha256": "94c7a792b6d0e567a0759d93eee23b3d02d41feabe42c98795444fdea88bb171"
+    },
+    {
+      "resource_id": 125,
+      "name": "TERRAIN_WALL",
+      "width": 2048,
+      "height": 128,
+      "pack_entry_sha256": "a9140d01b7b1a93b973ffd946ee496f086bddb10705eeb99abb67162217401a2",
+      "restored_png_sha256": "a9140d01b7b1a93b973ffd946ee496f086bddb10705eeb99abb67162217401a2"
+    }
+  ]
+}

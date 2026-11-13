@@ -1,0 +1,54 @@
+ревизия	секция	ключ	тип	по умолчанию	чтение	запись	что задаёт
+0a33444	SETTINGS	ScreenWidth	int	800 (src/utils/InitialGameSettings.hpp@0a33444:20)	src/game/Preferences.cpp@0a33444:48	src/game/Preferences.cpp@0a33444:157	ширина экрана
+0a33444	SETTINGS	ScreenHeight	int	600 (src/utils/InitialGameSettings.hpp@0a33444:21)	src/game/Preferences.cpp@0a33444:51	src/game/Preferences.cpp@0a33444:158	высота экрана
+0a33444	SETTINGS	CameraDragMoveSpeed	float	0.5 (src/utils/InitialGameSettings.hpp@0a33444:22)	src/game/Preferences.cpp@0a33444:54	src/game/Preferences.cpp@0a33444:159	скорость перемещения карты перетаскиванием
+0a33444	SETTINGS	CameraBorderOrKeyMoveSpeed	float	0.5 (src/utils/InitialGameSettings.hpp@0a33444:23)	src/game/Preferences.cpp@0a33444:57	src/game/Preferences.cpp@0a33444:160	скорость перемещения карты от края экрана или клавишами
+0a33444	SETTINGS	FullScreen	bool	true (windowed=false; src/utils/InitialGameSettings.hpp@0a33444:25)	src/game/Preferences.cpp@0a33444:60	src/game/Preferences.cpp@0a33444:161	полноэкранный режим
+0a33444	SETTINGS	CameraEdgeMove	bool	true (src/utils/InitialGameSettings.hpp@0a33444:24)	src/game/Preferences.cpp@0a33444:63	src/game/Preferences.cpp@0a33444:162	перемещение карты при подводе мыши к краю экрана
+0a33444	SETTINGS	RenderScale	int	0 (src/utils/InitialGameSettings.hpp@0a33444:26)	src/game/Preferences.cpp@0a33444:66	src/game/Preferences.cpp@0a33444:163	масштаб рендеринга
+0a33444	SETTINGS	AllowRepeatingReinforcements	bool	false (src/utils/InitialGameSettings.hpp@0a33444:28)	src/game/Preferences.cpp@0a33444:72	src/game/Preferences.cpp@0a33444:164	повтор подкреплений
+0a33444	SETTINGS	AllTurretsDownOnLowPower	bool	false (src/utils/InitialGameSettings.hpp@0a33444:29)	src/game/Preferences.cpp@0a33444:75	src/game/Preferences.cpp@0a33444:165	отключение всех турелей при недостатке энергии
+0a33444	SETTINGS	ShowLowPowerIcon	bool	false (src/utils/InitialGameSettings.hpp@0a33444:31)	src/game/Preferences.cpp@0a33444:78	src/game/Preferences.cpp@0a33444:167	значок недостатка энергии у требующих питания построек
+0a33444	SETTINGS	RocketTurretsDownOnLowPower	bool	false (src/utils/InitialGameSettings.hpp@0a33444:30)	src/game/Preferences.cpp@0a33444:81	src/game/Preferences.cpp@0a33444:166	отключение ракетных турелей при недостатке энергии
+0a33444	SETTINGS	GameRules	string	"game.ini" (src/utils/InitialGameSettings.hpp@0a33444:46)	src/game/Preferences.cpp@0a33444:84	src/game/Preferences.cpp@0a33444:168	имя файла правил игры
+0a33444	SETTINGS	NoAI	bool	false (src/utils/InitialGameSettings.hpp@0a33444:38)	src/game/Preferences.cpp@0a33444:87	src/game/Preferences.cpp@0a33444:169	отключение ИИ
+0a33444	SETTINGS	Debug	bool	false (src/utils/InitialGameSettings.hpp@0a33444:36)	src/game/Preferences.cpp@0a33444:90	src/game/Preferences.cpp@0a33444:170	режим отладки
+0a33444	SETTINGS	playMusic	bool	true (src/utils/InitialGameSettings.hpp@0a33444:32)	src/game/Preferences.cpp@0a33444:93	src/game/Preferences.cpp@0a33444:171	воспроизведение музыки
+0a33444	SETTINGS	customMusic	bool	false (src/utils/InitialGameSettings.hpp@0a33444:33)	src/game/Preferences.cpp@0a33444:96	src/game/Preferences.cpp@0a33444:172	воспроизведение музыки из каталогов audio
+0a33444	SETTINGS	playSound	bool	true (src/utils/InitialGameSettings.hpp@0a33444:34)	src/game/Preferences.cpp@0a33444:99	src/game/Preferences.cpp@0a33444:173	воспроизведение звуков
+0a33444	SETTINGS	playCreditsSound	bool	true (src/utils/InitialGameSettings.hpp@0a33444:35)	src/game/Preferences.cpp@0a33444:102	src/game/Preferences.cpp@0a33444:174	звук подсчёта получаемых и расходуемых ресурсов
+0a33444	SETTINGS	drawUnitDebug	bool	false (src/utils/InitialGameSettings.hpp@0a33444:37)	src/game/Preferences.cpp@0a33444:105	src/game/Preferences.cpp@0a33444:175	отладочная информация о юнитах
+0a33444	SETTINGS	oneAi	bool	false (src/utils/InitialGameSettings.hpp@0a33444:39)	src/game/Preferences.cpp@0a33444:108	src/game/Preferences.cpp@0a33444:176	использование одного ИИ-игрока
+0a33444	SETTINGS	disableWormAi	bool	false (src/utils/InitialGameSettings.hpp@0a33444:40)	src/game/Preferences.cpp@0a33444:111	src/game/Preferences.cpp@0a33444:177	отключение ИИ червя
+0a33444	SETTINGS	disableReinforcements	bool	false (src/utils/InitialGameSettings.hpp@0a33444:41)	src/game/Preferences.cpp@0a33444:114	src/game/Preferences.cpp@0a33444:178	отключение подкреплений
+0a33444	SETTINGS	noAiRest	bool	false (src/utils/InitialGameSettings.hpp@0a33444:42)	src/game/Preferences.cpp@0a33444:117	src/game/Preferences.cpp@0a33444:179	отключение оставшихся ИИ-игроков
+0a33444	SETTINGS	drawUsages	bool	false (src/utils/InitialGameSettings.hpp@0a33444:43)	src/game/Preferences.cpp@0a33444:120	src/game/Preferences.cpp@0a33444:180	отображение расхода ресурсов
+0a33444	SETTINGS	pauseWhenLosingFocus	bool	false (src/utils/InitialGameSettings.hpp@0a33444:45)	src/game/Preferences.cpp@0a33444:123	src/game/Preferences.cpp@0a33444:181	пауза при потере фокуса окна
+0a33444	SETTINGS	fogOfWarEnabled	bool	false (src/utils/InitialGameSettings.hpp@0a33444:44)	src/game/Preferences.cpp@0a33444:126	src/game/Preferences.cpp@0a33444:182	туман войны
+d06f2fc	SETTINGS	ScreenWidth	int	800 (src/utils/InitialGameSettings.hpp@d06f2fc:22)	src/game/Preferences.cpp@d06f2fc:48	src/game/Preferences.cpp@d06f2fc:156	ширина экрана
+d06f2fc	SETTINGS	ScreenHeight	int	600 (src/utils/InitialGameSettings.hpp@d06f2fc:23)	src/game/Preferences.cpp@d06f2fc:51	src/game/Preferences.cpp@d06f2fc:157	высота экрана
+d06f2fc	SETTINGS	CameraDragMoveSpeed	float	0.5 (src/utils/InitialGameSettings.hpp@d06f2fc:24)	src/game/Preferences.cpp@d06f2fc:54	src/game/Preferences.cpp@d06f2fc:158	скорость перемещения карты перетаскиванием
+d06f2fc	SETTINGS	CameraBorderOrKeyMoveSpeed	float	0.5 (src/utils/InitialGameSettings.hpp@d06f2fc:25)	src/game/Preferences.cpp@d06f2fc:57	src/game/Preferences.cpp@d06f2fc:159	скорость перемещения карты от края экрана или клавишами
+d06f2fc	SETTINGS	FullScreen	bool	true (windowed=false; src/utils/InitialGameSettings.hpp@d06f2fc:27)	src/game/Preferences.cpp@d06f2fc:60	src/game/Preferences.cpp@d06f2fc:160	полноэкранный режим
+d06f2fc	SETTINGS	CameraEdgeMove	bool	true (src/utils/InitialGameSettings.hpp@d06f2fc:26)	src/game/Preferences.cpp@d06f2fc:63	src/game/Preferences.cpp@d06f2fc:161	перемещение карты при подводе мыши к краю экрана
+d06f2fc	SETTINGS	ScalingMode	eScalingMode; текст INI	"IntegerScale" (src/utils/InitialGameSettings.hpp@d06f2fc:28)	src/game/Preferences.cpp@d06f2fc:66	src/game/Preferences.cpp@d06f2fc:162	режим масштабирования экрана: Letterbox или IntegerScale
+d06f2fc	SETTINGS	AllowRepeatingReinforcements	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:29)	src/game/Preferences.cpp@d06f2fc:71	src/game/Preferences.cpp@d06f2fc:163	повтор подкреплений
+d06f2fc	SETTINGS	AllTurretsDownOnLowPower	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:30)	src/game/Preferences.cpp@d06f2fc:74	src/game/Preferences.cpp@d06f2fc:164	отключение всех турелей при недостатке энергии
+d06f2fc	SETTINGS	ShowLowPowerIcon	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:32)	src/game/Preferences.cpp@d06f2fc:77	src/game/Preferences.cpp@d06f2fc:166	значок недостатка энергии у требующих питания построек
+d06f2fc	SETTINGS	RocketTurretsDownOnLowPower	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:31)	src/game/Preferences.cpp@d06f2fc:80	src/game/Preferences.cpp@d06f2fc:165	отключение ракетных турелей при недостатке энергии
+d06f2fc	SETTINGS	GameRules	string	"game.ini" (src/utils/InitialGameSettings.hpp@d06f2fc:47)	src/game/Preferences.cpp@d06f2fc:83	src/game/Preferences.cpp@d06f2fc:167	имя файла правил игры
+d06f2fc	SETTINGS	NoAI	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:39)	src/game/Preferences.cpp@d06f2fc:86	src/game/Preferences.cpp@d06f2fc:168	отключение ИИ
+d06f2fc	SETTINGS	Debug	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:37)	src/game/Preferences.cpp@d06f2fc:89	src/game/Preferences.cpp@d06f2fc:169	режим отладки
+d06f2fc	SETTINGS	playMusic	bool	true (src/utils/InitialGameSettings.hpp@d06f2fc:33)	src/game/Preferences.cpp@d06f2fc:92	src/game/Preferences.cpp@d06f2fc:170	воспроизведение музыки
+d06f2fc	SETTINGS	customMusic	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:34)	src/game/Preferences.cpp@d06f2fc:95	src/game/Preferences.cpp@d06f2fc:171	воспроизведение музыки из каталогов audio
+d06f2fc	SETTINGS	playSound	bool	true (src/utils/InitialGameSettings.hpp@d06f2fc:35)	src/game/Preferences.cpp@d06f2fc:98	src/game/Preferences.cpp@d06f2fc:172	воспроизведение звуков
+d06f2fc	SETTINGS	playCreditsSound	bool	true (src/utils/InitialGameSettings.hpp@d06f2fc:36)	src/game/Preferences.cpp@d06f2fc:101	src/game/Preferences.cpp@d06f2fc:173	звук подсчёта получаемых и расходуемых ресурсов
+d06f2fc	SETTINGS	drawUnitDebug	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:38)	src/game/Preferences.cpp@d06f2fc:104	src/game/Preferences.cpp@d06f2fc:174	отладочная информация о юнитах
+d06f2fc	SETTINGS	oneAi	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:40)	src/game/Preferences.cpp@d06f2fc:107	src/game/Preferences.cpp@d06f2fc:175	использование одного ИИ-игрока
+d06f2fc	SETTINGS	disableWormAi	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:41)	src/game/Preferences.cpp@d06f2fc:110	src/game/Preferences.cpp@d06f2fc:176	отключение ИИ червя
+d06f2fc	SETTINGS	disableReinforcements	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:42)	src/game/Preferences.cpp@d06f2fc:113	src/game/Preferences.cpp@d06f2fc:177	отключение подкреплений
+d06f2fc	SETTINGS	noAiRest	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:43)	src/game/Preferences.cpp@d06f2fc:116	src/game/Preferences.cpp@d06f2fc:178	отключение оставшихся ИИ-игроков
+d06f2fc	SETTINGS	drawUsages	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:44)	src/game/Preferences.cpp@d06f2fc:119	src/game/Preferences.cpp@d06f2fc:179	отображение расхода ресурсов
+d06f2fc	SETTINGS	pauseWhenLosingFocus	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:46)	src/game/Preferences.cpp@d06f2fc:122	src/game/Preferences.cpp@d06f2fc:180	пауза при потере фокуса окна
+d06f2fc	SETTINGS	fogOfWarEnabled	bool	false (src/utils/InitialGameSettings.hpp@d06f2fc:45)	src/game/Preferences.cpp@d06f2fc:125	src/game/Preferences.cpp@d06f2fc:181	туман войны
+0a33444	SETTINGS	WorldScale	int	0 (src/utils/InitialGameSettings.hpp@0a33444:27)	src/game/Preferences.cpp@0a33444:68	нет (ключ читается, но не записывается)	масштаб мира

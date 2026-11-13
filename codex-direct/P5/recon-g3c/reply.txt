@@ -1,0 +1,156 @@
+## RECON-P5G3C | 2026-11-11 18:04:19 UTC
+
+Отчёт: [`.tmp/p5g3c/RECON.md`](/srv/dune/worktrees/u34/.tmp/p5g3c/RECON.md). Восемь отчётов содержат 5 522 строки. В [сверке помощника 5](/srv/dune/worktrees/u34/.tmp/p5g3c/spotcheck.md) совпали все двенадцать фактов; все четыре проверки границ функций прошли.
+
+### 1. Списки построек
+
+В [1.md](/srv/dune/worktrees/u34/.tmp/p5g3c/1.md) записаны:
+
+- Перечисление `eListType`: `src/include/enums/ListEnums.h@af6a2e1:3-11`.
+- Функция `eListTypeAsInt`: `src/include/enums/ListEnums.h@af6a2e1:44-63`.
+
+Число строк вывода `git grep`: `enum class eListType|eListTypeAsInt|LIST_MAX` — **42**; квалифицированные поиски `cSideBar::getSelectedListID`, `cSideBar::getList`, `cBuildingList::isAvailable` — **по 0**, код выхода каждого — **1**. Диапазонов тел по заданному критерию для этих трёх методов нет.
+
+### 2. Здания: здоровье и выделение
+
+В [2.md](/srv/dune/worktrees/u34/.tmp/p5g3c/2.md) записаны:
+
+- `cStructureDrawer::drawStructuresHealthBars`: `src/drawers/cStructureDrawer.cpp@af6a2e1:128-137`.
+- `cMouseNormalState::onMouseLeftButtonClicked`: `src/controls/mousestates/cMouseNormalState.cpp@af6a2e1:82-171`.
+- `cMouseUnitsSelectedState::onMouseLeftButtonClicked`: `src/controls/mousestates/cMouseUnitsSelectedState.cpp@af6a2e1:118-251`.
+- `cStructureDrawer::drawStructuresForLayer`: `src/drawers/cStructureDrawer.cpp@af6a2e1:449-476`.
+- `cGamePlaying::tryDebugSwitchToPlayer`: `src/gamestates/cGamePlaying.cpp@af6a2e1:664-694`.
+- `cDrawManager::drawRallyPoint`: `src/managers/cDrawManager.cpp@af6a2e1:223-252`.
+
+Число строк вывода `git grep`: заголовок `drawStructuresHealthBars` — **1**; `selected_structure` — **8**.
+
+### 3. Установка здания
+
+В [3.md](/srv/dune/worktrees/u34/.tmp/p5g3c/3.md) записаны:
+
+- Полный файл `src/drawers/cPlaceItDrawer.h@af6a2e1:1-55`.
+- Полный файл `src/managers/cDrawManager.h@af6a2e1:1-165`.
+- Полный файл `src/drawers/cPlaceItDrawer.cpp@af6a2e1:1-221`.
+- `cDrawManager::drawStructurePlacing`: `src/managers/cDrawManager.cpp@af6a2e1:265-275`.
+
+Число строк вывода `git grep`: `class cPlaceItDrawer` — **2**; заголовок `drawStructurePlacing` — **1**; заголовок `cGameControlsContext::getMouseCell` — **0**, код выхода — **1**. Диапазона тела последнего метода по заданному критерию нет.
+
+### 4. Рамка выделения
+
+В [4.md](/srv/dune/worktrees/u34/.tmp/p5g3c/4.md) записаны:
+
+- `cMouse::boxSelectLogic`: `src/controls/cMouse.cpp@af6a2e1:279-306`.
+- `cMouse::getBoxSelectRectangle`: `src/controls/cMouse.cpp@af6a2e1:308-333`.
+- `cMouse::resetBoxSelect`: `src/controls/cMouse.cpp@af6a2e1:335-341`.
+- `cMouseDeployState::onBlur`: `src/controls/mousestates/cMouseDeployState.cpp@af6a2e1:128-132`.
+- `cMouseNormalState::onNotifyMouseEvent`: `src/controls/mousestates/cMouseNormalState.cpp@af6a2e1:52-80`.
+- `cMouseNormalState::onMouseLeftButtonClicked`: `src/controls/mousestates/cMouseNormalState.cpp@af6a2e1:82-171`.
+- `cMouseNormalState::onKeyPressed`: `src/controls/mousestates/cMouseNormalState.cpp@af6a2e1:343-368`.
+- `cMouseNormalState::onBlur`: `src/controls/mousestates/cMouseNormalState.cpp@af6a2e1:381-385`.
+- `cMousePlaceState::onBlur`: `src/controls/mousestates/cMousePlaceState.cpp@af6a2e1:242-246`.
+- `cMouseRepairState::onBlur`: `src/controls/mousestates/cMouseRepairState.cpp@af6a2e1:142-146`.
+- `cMouseUnitsSelectedState::onNotifyMouseEvent`: `src/controls/mousestates/cMouseUnitsSelectedState.cpp@af6a2e1:85-116`.
+- `cMouseUnitsSelectedState::onMouseLeftButtonClicked`: `src/controls/mousestates/cMouseUnitsSelectedState.cpp@af6a2e1:118-251`.
+- `cMouseUnitsSelectedState::onMouseMovedTo`: `src/controls/mousestates/cMouseUnitsSelectedState.cpp@af6a2e1:271-287`.
+- `cMouseUnitsSelectedState::onKeyDown`: `src/controls/mousestates/cMouseUnitsSelectedState.cpp@af6a2e1:443-574`.
+- `cMouseUnitsSelectedState::onBlur`: `src/controls/mousestates/cMouseUnitsSelectedState.cpp@af6a2e1:650-654`.
+- `cMiniMapDrawer::onMouseClickedLeft`: `src/drawers/cMiniMapDrawer.cpp@af6a2e1:435-458`.
+- `cMiniMapDrawer::onMousePressedLeft`: `src/drawers/cMiniMapDrawer.cpp@af6a2e1:460-472`.
+- `cMiniMapDrawer::onMousePressedRight`: `src/drawers/cMiniMapDrawer.cpp@af6a2e1:474-484`.
+- `cGamePlaying::drawCombatMouse`: `src/gamestates/cGamePlaying.cpp@af6a2e1:458-475`.
+
+Число строк вывода `git grep`: заголовки `boxSelectLogic`, `getBoxSelectRectangle`, `resetBoxSelect` — **по 1**; поиск `isBoxSelecting|getBoxSelectRectangle|boxSelectLogic|resetBoxSelect|m_mouseCoX1` — **21**; `friend` — **0**, код выхода — **1**.
+
+### 5. Сообщения и уведомления
+
+В [5.md](/srv/dune/worktrees/u34/.tmp/p5g3c/5.md) записаны полные файлы:
+
+- `src/drawers/cMessageDrawer.h@af6a2e1:1-89`.
+- `src/game/cGame.h@af6a2e1:1-270`.
+- `src/game/cNotificationArea.h@af6a2e1:1-43`.
+- `src/gui/GuiConsole.h@af6a2e1:1-54`.
+- `src/gui/GuiConsole/GuiConsoleMessageParser.h@af6a2e1:1-40`.
+- `src/managers/cDrawManager.h@af6a2e1:1-165`.
+- `src/drawers/cMessageDrawer.cpp@af6a2e1:1-195`.
+- `src/game/cNotificationArea.cpp@af6a2e1:1-80`.
+
+Также записаны функции:
+
+- `cGame::cGame`: `src/game/cGame_logic.cpp@af6a2e1:149-299`.
+- `cGame::init`: `src/game/cGame_logic.cpp@af6a2e1:378-427`.
+- `cGame::drawState`: `src/game/cGame_logic.cpp@af6a2e1:546-566`.
+- `cGame::setupGame`: `src/game/cGame_logic.cpp@af6a2e1:709-898`.
+- `cGame::thinkFast`: `src/game/cGame_logic.cpp@af6a2e1:1378-1389`.
+- `cGame::dispatchGameEvent`: `src/game/cGame_logic.cpp@af6a2e1:1396-1421`.
+- `cGame::saveBmpScreenToDisk`: `src/game/cGame_logic.cpp@af6a2e1:1510-1522`.
+- `cGame::onKeyPressedGame`: `src/game/cGame_logic.cpp@af6a2e1:1529-1578`.
+- `cDrawManager::reset`: `src/managers/cDrawManager.cpp@af6a2e1:90-114`.
+- `cDrawManager::drawMessage`: `src/managers/cDrawManager.cpp@af6a2e1:277-282`.
+- `cDrawManager::missionInit`: `src/managers/cDrawManager.cpp@af6a2e1:426-430`.
+- `cDrawManager::thinkFast`: `src/managers/cDrawManager.cpp@af6a2e1:437-440`.
+- `cDrawManager::drawMessageBar`: `src/managers/cDrawManager.cpp@af6a2e1:442-445`.
+- `cDrawManager::setMessage`: `src/managers/cDrawManager.cpp@af6a2e1:447-450`.
+- `cDrawManager::getMessage`: `src/managers/cDrawManager.cpp@af6a2e1:452-455`.
+- `cDrawManager::setKeepMessage`: `src/managers/cDrawManager.cpp@af6a2e1:457-460`.
+- `cDrawManager::regionInit`: `src/managers/cDrawManager.cpp@af6a2e1:462-465`.
+- `cDrawManager::hasMessage`: `src/managers/cDrawManager.cpp@af6a2e1:467-470`.
+
+Число строк вывода `git grep`: `class (cNotificationArea|cMessageDrawer)\b` — **6**; `m_notificationArea|m_messageDrawer` — **34**; заголовки `setMessage`, `thinkFast`, `hasMessage` — **по 1**.
+
+### 6. Карточки списка и наведение
+
+В [6.md](/srv/dune/worktrees/u34/.tmp/p5g3c/6.md) записаны:
+
+- `cBuildingListItem::getInfo`: `src/sidebar/cBuildingListItem.cpp@af6a2e1:397-431`.
+- Функция, содержащая совпадение поиска в рисовании списка: `src/drawers/cBuildingListDrawer.cpp@af6a2e1:238-592`.
+
+Число строк вывода `git grep`: заголовок `getInfo` — **1**; `isMouseOver|getInfo\(|setMessage\(|m_mouse->` — **1**.
+
+### 7. Точка сбора и порядок рисования боя
+
+В [7.md](/srv/dune/worktrees/u34/.tmp/p5g3c/7.md) записаны:
+
+- `cDrawManager::drawRallyPoint`: `src/managers/cDrawManager.cpp@af6a2e1:223-252`.
+- `cDrawManager::drawCombatState`: `src/managers/cDrawManager.cpp@af6a2e1:120-176`.
+- `cDrawManager::drawSidebar`: `src/managers/cDrawManager.cpp@af6a2e1:254-260`.
+- `cGamePlaying::draw`: `src/gamestates/cGamePlaying.cpp@af6a2e1:300-315`.
+
+Число строк вывода каждого из четырёх `git grep` заголовков — **1**.
+
+### 8. Дома и миссия области 22
+
+В [8.md](/srv/dune/worktrees/u34/.tmp/p5g3c/8.md) записаны:
+
+- `cGame::cGame`: `src/game/cGame_logic.cpp@af6a2e1:149-299`.
+- `cGame::missionInit`: `src/game/cGame_logic.cpp@af6a2e1:431-461`.
+- `cGame::setState`: `src/game/cGame_logic.cpp@af6a2e1:944-1230`.
+- `cGame::loadScenario`: `src/game/cGame_logic.cpp@af6a2e1:1289-1300`.
+- `cMissionStatsCollector::onNotifyGameEvent`: `src/game/cMissionStatsCollector.cpp@af6a2e1:48-155`.
+- `UiAuditAccess::setHouse`: `src/debug/UiAuditAccess.cpp@af6a2e1:89-93`.
+
+Число строк вывода `git grep`: поиск названий домов — **10**; `scen[a-z_]*\.ini|"scen|scenario` — **255**; заголовок `UiAuditAccess::setHouse` — **1**.
+
+### Чтение
+
+Целиком прочитан `/srv/dune/worktrees/u35/.tmp/p5g3b/RECON.md`. Дополнительных норм или контрактов, необходимых для этой разведки и отсутствующих в списке чтения, не выявлено.
+
+### Не проверено
+
+Сборки, CTest, запуск игры и визуальная проверка сцен не выполнялись согласно запрету задания. Для четырёх методов с пустым квалифицированным поиском тела по заданному критерию не получены; команды и коды выхода сохранены в отчётах.
+
+### Рабочие места
+
+Команда:
+
+```sh
+python3 /srv/dune/tools/task-places.py inventory .tmp/p5g3c --size
+```
+
+Вывод:
+
+```text
+path	kind	branch	head_date	size	dirty	untracked	unpushed	worktrees	procs	refs
+/srv/dune/worktrees/u34/.tmp/p5g3c	dir	-	-	276733	-	-	-	-	0	0
+```
+
+`.tmp/p5g3c` — **оставить — разведка для ведущего**.

@@ -1,0 +1,80 @@
+## RECON-P5G3W | Wed Nov 11 16:24:15 UTC 2026
+
+Путь отчёта: `.tmp/p5g3w/RECON.md`.
+
+### Пункт 1
+
+Последний номер `nl` для каждого файла:
+
+- `src/game/MissionFlow.hpp@dc6e5ff` — 71.
+- `src/game/GameStateTransition.hpp@dc6e5ff` — 55.
+- `src/game/ScenarioFlow.hpp@dc6e5ff` — 61.
+- `src/gameobjects/structures/cAbstractStructure.h@dc6e5ff` — 337.
+- `src/gameobjects/units/cUnit.h@dc6e5ff` — 632.
+- `src/gameobjects/units/cUnits.h@dc6e5ff` — 172.
+- `src/controls/cGameControlsContext.h@dc6e5ff` — 180.
+- `src/drawers/cTextDrawer.h@dc6e5ff` — 85.
+- `src/include/sGameServices.h@dc6e5ff` — 66.
+
+Имена без файла: нет.
+
+### Пункт 2
+
+Все 20 функций имеют определения:
+
+- `cUnits::unitCreate` — `src/gameobjects/units/cUnits.cpp@dc6e5ff:145-252`
+- `cGame::missionInit` — `src/game/cGame_logic.cpp@dc6e5ff:431-461`
+- `cGame::setState` — `src/game/cGame_logic.cpp@dc6e5ff:944-1230`
+- `cGame::transitionStateIfRequired` — `src/game/cGame_logic.cpp@dc6e5ff:1491-1503`
+- `cGamePlaying::missionInit` — `src/gamestates/cGamePlaying.cpp@dc6e5ff:490-495`
+- `cGame::takeBackGroundScreen` — `src/game/cGame_logic.cpp@dc6e5ff:1710-1715`
+- `cMapCamera::setViewportPosition` — `src/gameobjects/map/cMapCamera.cpp@dc6e5ff:216-220`
+- `cMapCamera::centerAndJumpViewPortToCell` — `src/gameobjects/map/cMapCamera.cpp@dc6e5ff:171-197`
+- `cMapCamera::onNotifyMouseEvent` — `src/gameobjects/map/cMapCamera.cpp@dc6e5ff:261-283`
+- `cMap::setVisibleFor` — `src/gameobjects/map/cMap.cpp@dc6e5ff:1130-1134`
+- `cMap::canDeployUnitTypeAtCell` — `src/gameobjects/map/cMap.cpp@dc6e5ff:228-254`
+- `cMap::cellChangeType` — `src/gameobjects/map/cMap.cpp@dc6e5ff:1363-1377`
+- `cAbstractStructure::setRallyPoint` — `src/gameobjects/structures/cAbstractStructure.cpp@dc6e5ff:459-464`
+- `cMouse::isBoxSelecting` — `src/controls/cMouse.cpp@dc6e5ff:243-248`
+- `cPlayer::setContextMouseState` — `src/gameobjects/players/cPlayer.cpp@dc6e5ff:2638-2641`
+- `cPlayer::bEnoughPower` — `src/gameobjects/players/cPlayer.cpp@dc6e5ff:360-373`
+- `cPlayer::update` — `src/gameobjects/players/cPlayer.cpp@dc6e5ff:898-904`
+- `cPlayer::setHouse` — `src/gameobjects/players/cPlayer.cpp@dc6e5ff:259-327`
+- `cUnit::isSelected` — `src/gameobjects/units/cUnit.cpp@dc6e5ff:3814-3816`
+- `cTimeManager::onWindowFocusLost` — `src/game/cTimeManager.cpp@dc6e5ff:94-97`
+
+### Пункт 3
+
+- `cSideBarDrawer::draw` — `src/drawers/cSideBarDrawer.cpp@dc6e5ff:98-101`
+- `cSideBarDrawer::drawHdSidebar` — `src/drawers/cSideBarDrawer.cpp@dc6e5ff:109-140`
+- `cBuildingListDrawer::getLayout` — `src/drawers/cBuildingListDrawer.cpp@dc6e5ff:833-842`
+- `cBuildingListDrawer::getScrollRow` — `src/drawers/cBuildingListDrawer.cpp@dc6e5ff:844-858`
+- `cBuildingListDrawer::setScrollRow` — `src/drawers/cBuildingListDrawer.cpp@dc6e5ff:860-874`
+- `cDrawManager::setMessage` — `src/managers/cDrawManager.cpp@dc6e5ff:440-443`
+- `cDrawManager::thinkFast` — `src/managers/cDrawManager.cpp@dc6e5ff:430-433`
+- `cDrawManager::drawTopBarBackground` — `src/managers/cDrawManager.cpp@dc6e5ff:298-342`
+- `cMiniMapDrawer::think` — `src/drawers/cMiniMapDrawer.cpp@dc6e5ff:144-201`
+- `cMiniMapDrawer::draw` — `src/drawers/cMiniMapDrawer.cpp@dc6e5ff:110-134`
+- `cOrderDrawer::drawOrderButton` — `src/drawers/cOrderDrawer.cpp@dc6e5ff:55-72`
+- `cStructureDrawer::drawStructureHealthBar` — `src/drawers/cStructureDrawer.cpp@dc6e5ff:477-510`
+
+Вывод заключительного `git grep` — 67 строк.
+
+### Чтение
+
+Полностью прочитан `.tmp/p5g3r/RECON.md` отдельным вызовом. В задании и прочитанной разведке не обнаружено ссылок на дополнительные правила, нормы или контракты, требующие чтения для выполнения этой разведки.
+
+### Не проверено
+
+Сборки, CTest и запуск игры не выполнялись, поскольку это запрещено заданием. Помощник 4 выборочно проверил 12 фактов из отчётов пунктов 1–3; все 12 совпали.
+
+### Рабочие места
+
+Вывод `python3 /srv/dune/tools/task-places.py inventory .tmp/p5g3w --size`:
+
+```text
+path	kind	branch	head_date	size	dirty	untracked	unpushed	worktrees	procs	refs
+/srv/dune/worktrees/u35/.tmp/p5g3w	dir	-	-	138484	-	-	-	-	0	0
+```
+
+`.tmp/p5g3w` — оставить, разведка для ведущего.

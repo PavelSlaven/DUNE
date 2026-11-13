@@ -1,0 +1,80 @@
+    16	RUNTIME_LINKS = ("campaign", "campaign_en", "data", "skirmish", "skirmish_en")
+    17	FULL_RESOLUTIONS = ("1024x768", "1920x1080")
+    18	SCENE_TIMEOUT_SECONDS = 90
+    19	SCENE_ATTEMPTS = 2
+    20	MIN_FREE_GB = 5
+    21	EXIT_LOW_DISK = 3
+    22	
+    23	
+    24	def free_gb(path):
+    25	    return shutil.disk_usage(path).free / (1024 ** 3)
+    26	
+    27	
+    28	def apply_settings(text, values):
+    29	    for key, value in values.items():
+    30	        pattern = re.compile(rf"^{key}\s*=.*$", re.MULTILINE)
+    31	        line = f"{key}={value}"
+    32	        if pattern.search(text):
+    33	            text = pattern.sub(line, text, count=1)
+    34	        else:
+    35	            text = text.replace("[SETTINGS]", f"[SETTINGS]\n{line}", 1)
+    36	    return text
+    37	
+    38	
+    39	def split_resolution(combo):
+    40	    width, height = combo["resolution"].split("x")
+    41	    return int(width), int(height)
+    42	
+    43	
+    44	def make_runtime(executable, resources, directory, combo):
+    45	    width, height = split_resolution(combo)
+    46	    runtime = Path(directory)
+    47	    if runtime.exists():
+    48	        shutil.rmtree(runtime)
+    49	    runtime.mkdir(parents=True)
+    50	    shutil.copy2(executable, runtime / "d2tm")
+    51	    bin_dir = Path(resources) / "bin"
+    52	    for name in RUNTIME_LINKS:
+    53	        os.symlink(bin_dir / name, runtime / name)
+    54	    shutil.copy2(Path(resources) / "game.ini", runtime / "game.ini")
+    55	    settings = apply_settings((bin_dir / "settings.ini").read_text(encoding="utf-8"), {
+    56	        "ScreenWidth": width,
+    57	        "ScreenHeight": height,
+    58	        "FullScreen": "false",
+    59	        "RenderScale": combo["render"],
+    60	        "WorldScale": combo["world"],
+    61	        "Language": combo["language"],
+    62	    })
+    63	    (runtime / "settings.ini").write_text(settings, encoding="utf-8")
+    64	    return runtime
+    65	
+    66	
+    67	def game_environment():
+    68	    environment = dict(os.environ)
+    69	    environment.update(SDL_VIDEODRIVER="dummy", SDL_RENDER_DRIVER="software", SDL_AUDIODRIVER="dummy")
+    70	    return environment
+    71	
+    72	
+    73	def run_scene(runtime, combo, scene_id, out_dir):
+    74	    width, height = split_resolution(combo)
+    75	    command = [
+    76	        str(runtime / "d2tm"), "-windowed", "-screenWidth", str(width), "-screenHeight", str(height),
+    77	        "--ui-audit-scene", scene_id, "--ui-audit-out", str(out_dir),
+    78	    ]
+    79	    return subprocess.run(command, cwd=runtime, env=game_environment(), check=False,
+    80	                          capture_output=True, text=True, timeout=SCENE_TIMEOUT_SECONDS)
+    81	
+    82	
+    83	def list_scenes(executable):
+    84	    result = subprocess.run([str(executable), "--ui-audit-list"], env=game_environment(), check=True,
+    85	                            capture_output=True, text=True, timeout=60)
+    86	    return json.loads(result.stdout)["scenes"]
+    87	
+    88	
+    89	def load_order(out_root):
+    90	    path = Path(out_root) / "order.json"
+    91	    return json.loads(path.read_text(encoding="utf-8")) if path.is_file() else []
+    92	
+    93	
+    94	def has_new_flag(out_root, order, combo, scene_id, log_path):
+    95	    flags = check_geometry.check_log(log_path)

@@ -1,0 +1,53 @@
+bb60a275be8074ed71da861cb83fe813066698fa:src/debug/UiAuditAccess.cpp:192:    const int fontHeight = credits->m_textDrawer->getFontHeight();
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/CreditsDrawer.cpp:267:    const int amountWidth = m_gameTextDrawer->getTextLength(credits);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:66:    if (drawer->getTextLength(text) <= maximumWidth) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:71:           drawer->getTextLength(text + ellipsis) > maximumWidth) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:735:    if (m_smallTextDrawer->getTextLength(name) <= textWidth) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:760:                m_smallTextDrawer->getTextLength(candidate) <= textWidth) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:799:                firstLineY + m_smallTextDrawer->getFontHeight(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:807:        const int priceWidth = m_smallTextDrawer->getTextLength(price);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cSideBarDrawer.cpp:322:    const int amountWidth = m_smallTextDrawer->getTextLength(amount);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cTextDrawer.h:68:    int getTextLength(const std::string &msg) const;
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cTextDrawer.h:70:    int getFontHeight() const;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/mentat/AbstractMentat.cpp:83:        int length = m_textDrawer->getTextLength("Mission select");
+bb60a275be8074ed71da861cb83fe813066698fa:src/gameobjects/mentat/AbstractMentat.cpp:85:                                                settings->getScreenH() - m_textDrawer->getFontHeight(),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:125:    const int titleWidth = m_textDrawer->getTextLength(title);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:142:    const int backLabelWidth = m_textDrawer->getTextLength(backLabel);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:146:            (backButtonRect.getHeight() - m_textDrawer->getFontHeight()) / 2,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:227:    const int nameWidth = m_textDrawer->getTextLength(name);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cChooseHouseState.cpp:230:        card.getY() + card.getHeight() - m_textDrawer->getFontHeight() - 22,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:82:    const int backButtonWidth = std::max(140, m_textDrawer->getTextLength("Back") + 24);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:83:    const int backButtonHeight = std::max(36, m_textDrawer->getFontHeight() + 10);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:107:    int fontHeightWithALittlePadding = m_textDrawer->getFontHeight() + 4;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:108:    int spacerAfterHeadline = fontHeightWithALittlePadding + m_textDrawer->getFontHeight();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cCreditsState.cpp:466:            int widthOfName = m_textDrawer->getTextLength(line.name.c_str());
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cMainMenuState.cpp:257:        m_settings->getScreenH() - m_textDrawer->getFontHeight() - 22,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cNewmapEditorState.cpp:77:    int buttonHeight = (m_textDrawer->getFontHeight() + margin);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cNewmapEditorState.cpp:104:        m_guiWindow->getRelativeRect(labelX+200, labelY-2, 200, m_textDrawer->getFontHeight() + 4),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cNewmapEditorState.cpp:123:        m_guiWindow->getRelativeRect(labelX+200, labelY+betweenY-2, 200, m_textDrawer->getFontHeight() + 4),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cNewmapEditorState.cpp:142:        m_guiWindow->getRelativeRect(labelX+200, labelY+betweenY*2-2, 200, m_textDrawer->getFontHeight() + 4),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cNewmapEditorState.cpp:239:        m_guiWindow->getRelativeRect(labelX+200, labelY+betweenY*6-2, 200, m_textDrawer->getFontHeight() + 4),
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cOptionsState.cpp:74:    const int buttonHeight = std::max(32, m_textDrawer->getFontHeight() + 10);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cOptionsState.cpp:80:        m_textDrawer->getFontHeight()
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cScoringState.cpp:60:    int lineHeight = m_textDrawer->getFontHeight() + 4;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cScoringState.cpp:61:    int statLineHeight = m_smallTextDrawer->getFontHeight() + 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:100:    const int buttonHeight = std::max(30, m_textDrawer->getFontHeight() + 12);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSelectMissionState.cpp:149:    const int backButtonHeight = std::max(36, m_textDrawer->getFontHeight() + 10);
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:285:    int startPointHitBoxHeight = m_textDrawer->getFontHeight() + 4;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:356:    int surpriseMeButtonWidth = m_textDrawer->getTextLength("Surprise me") + btnHPad;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:370:    int newMapButtonWidth = m_textDrawer->getTextLength("New Map") + btnHPad;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:371:    int modifyButtonWidth = m_textDrawer->getTextLength("Modify") + btnHPad;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:449:        (topBarHeight - m_textDrawer->getFontHeight()) / 2,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:704:        const int infoRowHeight = m_textDrawer->getFontHeight() + 2;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:709:            screen_x - m_textDrawer->getTextLength(mapSize) - 4,
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:1528:        if (m_textDrawer->getTextLength(mapToRender->name) > availableTextWidth) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:1530:            while (!truncatedName.empty() && m_textDrawer->getTextLength(truncatedName + "...") > availableTextWidth) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:1547:        const int imageTop = iDrawY + m_textDrawer->getFontHeight() + 7;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cSetupSkirmishState.cpp:1552:            mapItemButtonHeight - m_textDrawer->getFontHeight() - 11
+bb60a275be8074ed71da861cb83fe813066698fa:src/gamestates/cWinLoseState.cpp:93:            m_textDrawer->getTextLength(prompt)
+bb60a275be8074ed71da861cb83fe813066698fa:src/gui/GuiButton.cpp:202:                    std::max(1, m_textDrawer->getTextLength(m_buttonText));
+bb60a275be8074ed71da861cb83fe813066698fa:src/gui/GuiButton.cpp:204:                    std::max(1, m_textDrawer->getFontHeight());
+bb60a275be8074ed71da861cb83fe813066698fa:src/gui/GuiConsole.cpp:33:    const int inputHeight = textDrawer->getFontHeight() + 4;
+bb60a275be8074ed71da861cb83fe813066698fa:src/gui/GuiTextInput.cpp:93:    while (!m_text.empty() && m_writer->getTextLength(m_text) > getMaxTextPixelWidth()) {
+bb60a275be8074ed71da861cb83fe813066698fa:src/gui/GuiTextInput.cpp:115:    return m_writer->getTextLength(candidate) <= getMaxTextPixelWidth();
+bb60a275be8074ed71da861cb83fe813066698fa:src/gui/GuiTextInput.cpp:129:    while (!display.empty() && m_writer->getTextLength(display) > getMaxTextPixelWidth()) {

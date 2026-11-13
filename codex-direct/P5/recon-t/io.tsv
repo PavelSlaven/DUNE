@@ -1,0 +1,82 @@
+файл	функция	путь@9208dcf:строка	строка дословно
+tools/ui-audit/build_sheets.py	find_pngs	tools/ui-audit/build_sheets.py@9208dcf:59	    return sorted(Path(png_root).rglob("*.png"))
+tools/ui-audit/build_sheets.py	render_cell	tools/ui-audit/build_sheets.py@9208dcf:68	    image = Image.open(png_path).convert("RGB")
+tools/ui-audit/build_sheets.py	make_sheet	tools/ui-audit/build_sheets.py@9208dcf:89	    Path(path).parent.mkdir(parents=True, exist_ok=True)
+tools/ui-audit/build_sheets.py	build_catalog_sheets	tools/ui-audit/build_sheets.py@9208dcf:96	    by_scene = {path.stem: path for path in directory.glob("*.png")}
+tools/ui-audit/build_sheets.py	canvas_factor	tools/ui-audit/build_sheets.py@9208dcf:112	    header = json.loads(log.read_text(encoding="utf-8").splitlines()[0])
+tools/ui-audit/build_sheets.py	canvas_factor	tools/ui-audit/build_sheets.py@9208dcf:113	    return Image.open(png_path).width / header["canvas"]["w"]
+tools/ui-audit/build_sheets.py	build_index	tools/ui-audit/build_sheets.py@9208dcf:230	    Path(index_path).write_text(page, encoding="utf-8")
+tools/ui-audit/build_sheets.py	main	tools/ui-audit/build_sheets.py@9208dcf:244	    meta = {scene["id"]: scene for scene in json.loads(Path(args.catalog).read_text(encoding="utf-8"))["scenes"]}
+tools/ui-audit/build_sheets.py	main	tools/ui-audit/build_sheets.py@9208dcf:245	    flags = json.loads(Path(args.flags).read_text(encoding="utf-8")) if args.flags else []
+tools/ui-audit/build_sheets.py	main	tools/ui-audit/build_sheets.py@9208dcf:250	    order = json.loads(Path(args.order).read_text(encoding="utf-8")) if args.order else None
+tools/ui-audit/check_completeness.py	check_combinations	tools/ui-audit/check_completeness.py@9208dcf:39	            for path in sorted(png_dir.glob("*.png")):
+tools/ui-audit/check_completeness.py	main	tools/ui-audit/check_completeness.py@9208dcf:57	    scenes = json.loads(Path(args.catalog).read_text(encoding="utf-8"))["scenes"]
+tools/ui-audit/check_completeness.py	main	tools/ui-audit/check_completeness.py@9208dcf:58	    flags = json.loads(Path(args.flags).read_text(encoding="utf-8")) if args.flags else []
+tools/ui-audit/check_completeness.py	main	tools/ui-audit/check_completeness.py@9208dcf:61	        order = json.loads(Path(args.order).read_text(encoding="utf-8"))
+tools/ui-audit/check_credits.py	load	tools/ui-audit/check_credits.py@9208dcf:9	    records = [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
+tools/ui-audit/check_credits.py	check_credits	tools/ui-audit/check_credits.py@9208dcf:24	    for path in sorted(Path(logs_root).rglob("credits-*.geometry.jsonl")):
+tools/ui-audit/check_geometry.py	load_log	tools/ui-audit/check_geometry.py@9208dcf:162	    lines = [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
+tools/ui-audit/check_geometry.py	check_tree	tools/ui-audit/check_geometry.py@9208dcf:214	    for path in sorted(Path(logs_root).rglob("*.geometry.jsonl")):
+tools/ui-audit/check_geometry.py	main	tools/ui-audit/check_geometry.py@9208dcf:234	        Path(args.txt_out).write_text("".join(line + "\n" for line in lines), encoding="utf-8")
+tools/ui-audit/check_geometry.py	main	tools/ui-audit/check_geometry.py@9208dcf:239	        Path(args.json_out).write_text(json.dumps(flags, ensure_ascii=False, indent=1), encoding="utf-8")
+tools/ui-audit/check_geometry.py	main	tools/ui-audit/check_geometry.py@9208dcf:241	        summary_logs = [load_log(path) for path in sorted(Path(args.logs_root).rglob("*.geometry.jsonl"))]
+tools/ui-audit/check_geometry.py	main	tools/ui-audit/check_geometry.py@9208dcf:242	        Path(args.summary8_out).write_text(
+tools/ui-audit/check_keys.py	load_tsv	tools/ui-audit/check_keys.py@9208dcf:13	    with open(path, encoding="utf-8", newline="") as handle:
+tools/ui-audit/check_keys.py	main	tools/ui-audit/check_keys.py@9208dcf:120	        Path(args.out).write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+tools/ui-audit/check_options_geometry.py	planned_pairs	tools/ui-audit/check_options_geometry.py@9208dcf:65	        combos = [line.strip() for line in Path(combos_path).read_text(encoding="utf-8").splitlines()
+tools/ui-audit/check_options_geometry.py	planned_pairs	tools/ui-audit/check_options_geometry.py@9208dcf:68	    entries = json.loads(Path(plan_path).read_text(encoding="utf-8"))
+tools/ui-audit/check_options_geometry.py	check_tree	tools/ui-audit/check_options_geometry.py@9208dcf:83	    for path in sorted(Path(logs_root).rglob("*.geometry.jsonl")):
+tools/ui-audit/check_scenes.py	main	tools/ui-audit/check_scenes.py@9208dcf:118	        for path in sorted(Path(root).rglob("*.geometry.jsonl")):
+tools/ui-audit/check_scenes.py	main	tools/ui-audit/check_scenes.py@9208dcf:125	        Path(args.out).write_text("\n".join(lines) + "\n", encoding="utf-8")
+tools/ui-audit/check_screens.py	collect_code_names	tools/ui-audit/check_screens.py@9208dcf:59	    states = code_states((root / "src/include/definitions.h").read_text(encoding="utf-8", errors="replace"))
+tools/ui-audit/check_screens.py	collect_code_names	tools/ui-audit/check_screens.py@9208dcf:62	        for path in sorted((root / directory).glob("*.h")) + sorted((root / directory).glob("*.hpp")):
+tools/ui-audit/check_screens.py	collect_code_names	tools/ui-audit/check_screens.py@9208dcf:63	            sources.append(path.read_text(encoding="utf-8", errors="replace"))
+tools/ui-audit/check_screens.py	collect_code_names	tools/ui-audit/check_screens.py@9208dcf:65	    dialog_classes = [name for name in code_classes([dialog.read_text(encoding="utf-8", errors="replace")])
+tools/ui-audit/check_screens.py	main	tools/ui-audit/check_screens.py@9208dcf:76	    scenes = json.loads(Path(args.catalog).read_text(encoding="utf-8"))["scenes"]
+tools/ui-audit/check_screens.py	main	tools/ui-audit/check_screens.py@9208dcf:77	    exclusions, problems = load_exclusions(Path(args.exclusions).read_text(encoding="utf-8"))
+tools/ui-audit/combos.py	parse_scales	tools/ui-audit/combos.py@9208dcf:10	    data = json.loads(text)
+tools/ui-audit/extract_keys.py	extract_tree	tools/ui-audit/extract_keys.py@9208dcf:71	    for path in sorted((root / "src").rglob("*")):
+tools/ui-audit/extract_keys.py	extract_tree	tools/ui-audit/extract_keys.py@9208dcf:74	            rows += extract(path.read_text(encoding="utf-8", errors="replace"), relative)
+tools/ui-audit/extract_keys.py	main	tools/ui-audit/extract_keys.py@9208dcf:84	    Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+tools/ui-audit/extract_keys.py	main	tools/ui-audit/extract_keys.py@9208dcf:85	    with open(args.out, "w", encoding="utf-8", newline="") as handle:
+tools/ui-audit/finalize_png.py	plan_actions	tools/ui-audit/finalize_png.py@9208dcf:20	        have = {path.stem for path in png_dir.glob("*.png")} if png_dir.is_dir() else set()
+tools/ui-audit/finalize_png.py	main	tools/ui-audit/finalize_png.py@9208dcf:37	    order = json.loads((out / "order.json").read_text(encoding="utf-8"))
+tools/ui-audit/finalize_png.py	main	tools/ui-audit/finalize_png.py@9208dcf:38	    flags = json.loads(Path(args.flags).read_text(encoding="utf-8"))
+tools/ui-audit/finalize_png.py	main	tools/ui-audit/finalize_png.py@9208dcf:44	        (out / "png" / identifier / f"{scene}.png").unlink()
+tools/ui-audit/finalize_png.py	main	tools/ui-audit/finalize_png.py@9208dcf:54	        code = max(code, subprocess.run(command, check=False).returncode)
+tools/ui-audit/find_hit_tests.py	scan	tools/ui-audit/find_hit_tests.py@9208dcf:39	        for path in sorted((root / directory).rglob("*.cpp")):
+tools/ui-audit/find_hit_tests.py	scan	tools/ui-audit/find_hit_tests.py@9208dcf:40	            rows, records = scan_text(path.read_text(encoding="utf-8", errors="replace"))
+tools/ui-audit/run_all.py	scales_for	tools/ui-audit/run_all.py@9208dcf:22	        result = subprocess.run([str(executable), "--ui-audit-scales", resolution], env=run_combo.game_environment(),
+tools/ui-audit/run_all.py	run_one	tools/ui-audit/run_all.py@9208dcf:81	    log_path.parent.mkdir(parents=True, exist_ok=True)
+tools/ui-audit/run_all.py	run_one	tools/ui-audit/run_all.py@9208dcf:85	    with open(log_path, "w", encoding="utf-8") as log:
+tools/ui-audit/run_all.py	run_one	tools/ui-audit/run_all.py@9208dcf:86	        code = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=False).returncode
+tools/ui-audit/run_all.py	run_one	tools/ui-audit/run_all.py@9208dcf:89	        marker.parent.mkdir(parents=True, exist_ok=True)
+tools/ui-audit/run_all.py	run_one	tools/ui-audit/run_all.py@9208dcf:90	        marker.write_text("ok\n", encoding="utf-8")
+tools/ui-audit/run_all.py	main	tools/ui-audit/run_all.py@9208dcf:110	    Path(args.out).mkdir(parents=True, exist_ok=True)
+tools/ui-audit/run_all.py	main	tools/ui-audit/run_all.py@9208dcf:119	    (Path(args.out) / "order.json").write_text(json.dumps([combos.combo_id(c) for c in generated]), encoding="utf-8")
+tools/ui-audit/run_all.py	main	tools/ui-audit/run_all.py@9208dcf:120	    scenes = json.loads(Path(args.catalog).read_text(encoding="utf-8"))["scenes"]
+tools/ui-audit/run_all.py	main	tools/ui-audit/run_all.py@9208dcf:122	    (Path(args.out) / "audit-plan.json").write_text(
+tools/ui-audit/run_all.py	main	tools/ui-audit/run_all.py@9208dcf:130	    with open(Path(args.out) / "free-space.txt", "a", encoding="utf-8") as journal:
+tools/ui-audit/run_combo.py	free_gb	tools/ui-audit/run_combo.py@9208dcf:25	    return shutil.disk_usage(path).free / (1024 ** 3)
+tools/ui-audit/run_combo.py	make_runtime	tools/ui-audit/run_combo.py@9208dcf:48	        shutil.rmtree(runtime)
+tools/ui-audit/run_combo.py	make_runtime	tools/ui-audit/run_combo.py@9208dcf:49	    runtime.mkdir(parents=True)
+tools/ui-audit/run_combo.py	make_runtime	tools/ui-audit/run_combo.py@9208dcf:50	    shutil.copy2(executable, runtime / "d2tm")
+tools/ui-audit/run_combo.py	make_runtime	tools/ui-audit/run_combo.py@9208dcf:53	        os.symlink(bin_dir / name, runtime / name)
+tools/ui-audit/run_combo.py	make_runtime	tools/ui-audit/run_combo.py@9208dcf:54	    shutil.copy2(Path(resources) / "game.ini", runtime / "game.ini")
+tools/ui-audit/run_combo.py	make_runtime	tools/ui-audit/run_combo.py@9208dcf:55	    settings = apply_settings((bin_dir / "settings.ini").read_text(encoding="utf-8"), {
+tools/ui-audit/run_combo.py	make_runtime	tools/ui-audit/run_combo.py@9208dcf:63	    (runtime / "settings.ini").write_text(settings, encoding="utf-8")
+tools/ui-audit/run_combo.py	run_scene	tools/ui-audit/run_combo.py@9208dcf:79	    return subprocess.run(command, cwd=runtime, env=game_environment(), check=False,
+tools/ui-audit/run_combo.py	list_scenes	tools/ui-audit/run_combo.py@9208dcf:84	    result = subprocess.run([str(executable), "--ui-audit-list"], env=game_environment(), check=True,
+tools/ui-audit/run_combo.py	list_scenes	tools/ui-audit/run_combo.py@9208dcf:86	    return json.loads(result.stdout)["scenes"]
+tools/ui-audit/run_combo.py	load_order	tools/ui-audit/run_combo.py@9208dcf:91	    return json.loads(path.read_text(encoding="utf-8")) if path.is_file() else []
+tools/ui-audit/run_combo.py	run_combo	tools/ui-audit/run_combo.py@9208dcf:113	    png_dir.mkdir(parents=True, exist_ok=True)
+tools/ui-audit/run_combo.py	run_combo	tools/ui-audit/run_combo.py@9208dcf:114	    log_dir.mkdir(parents=True, exist_ok=True)
+tools/ui-audit/run_combo.py	run_combo	tools/ui-audit/run_combo.py@9208dcf:123	            shutil.rmtree(scene_out)
+tools/ui-audit/run_combo.py	run_combo	tools/ui-audit/run_combo.py@9208dcf:124	        scene_out.mkdir(parents=True)
+tools/ui-audit/run_combo.py	run_combo	tools/ui-audit/run_combo.py@9208dcf:134	            except subprocess.TimeoutExpired:
+tools/ui-audit/run_combo.py	run_combo	tools/ui-audit/run_combo.py@9208dcf:141	        shutil.move(log, log_dir / log.name)
+tools/ui-audit/run_combo.py	run_combo	tools/ui-audit/run_combo.py@9208dcf:144	            shutil.move(png, png_dir / png.name)
+tools/ui-audit/run_combo.py	run_combo	tools/ui-audit/run_combo.py@9208dcf:146	            (png_dir / png.name).unlink()
+tools/ui-audit/run_combo.py	run_combo	tools/ui-audit/run_combo.py@9208dcf:148	    shutil.rmtree(work, ignore_errors=True)
+tools/ui-audit/run_combo.py	main	tools/ui-audit/run_combo.py@9208dcf:165	    Path(args.out).mkdir(parents=True, exist_ok=True)
+tools/ui-audit/run_combo.py	main	tools/ui-audit/run_combo.py@9208dcf:174	        flagged = {f["scene"] for f in json.loads(Path(args.flags).read_text(encoding="utf-8"))

@@ -1,0 +1,5 @@
+ src/drawers/cPlaceItDrawer.cpp   |  7 +++++++
+ src/drawers/cStructureDrawer.cpp |  6 ++++++
+ src/sidebar/cBuildingList.h      | 12 ++++++++++++
+ src/sidebar/cSideBar.h           |  5 +++--
+ 4 files changed, 28 insertions(+), 2 deletions(-)

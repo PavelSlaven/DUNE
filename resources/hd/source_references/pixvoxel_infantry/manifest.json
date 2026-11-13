@@ -1,0 +1,85 @@
+{
+  "source": "PixVoxel Colorful Isometric Wargame Sprites",
+  "author": "Tommy Ettinger (TEttinger)",
+  "url": "https://opengameart.org/content/pixvoxel-colorful-isometric-wargame-sprites",
+  "license": "CC0 1.0 / public domain dedication",
+  "used_units": {
+    "Infantry_Large": "rifle soldier",
+    "Infantry_P_Large": "bazooka / grenade launcher soldier"
+  },
+  "d2tm_direction_order": [
+    "E",
+    "NE",
+    "N",
+    "NW",
+    "W",
+    "SW",
+    "S",
+    "SE"
+  ],
+  "direction_sources": [
+    {
+      "projection": "orthogonal",
+      "face": 3
+    },
+    {
+      "projection": "isometric",
+      "face": 3
+    },
+    {
+      "projection": "orthogonal",
+      "face": 2
+    },
+    {
+      "projection": "isometric",
+      "face": 2
+    },
+    {
+      "projection": "orthogonal",
+      "face": 1
+    },
+    {
+      "projection": "isometric",
+      "face": 1
+    },
+    {
+      "projection": "orthogonal",
+      "face": 0
+    },
+    {
+      "projection": "isometric",
+      "face": 0
+    }
+  ],
+  "roles": [
+    {
+      "resource_id": 155,
+      "resource_name": "UNIT_SOLDIER",
+      "label": "Солдат",
+      "group": false
+    },
+    {
+      "resource_id": 156,
+      "resource_name": "UNIT_SOLDIERS",
+      "label": "Отряд автоматчиков",
+      "group": true
+    },
+    {
+      "resource_id": 165,
+      "resource_name": "UNIT_TROOPER",
+      "label": "Гранатомётчик",
+      "group": false
+    },
+    {
+      "resource_id": 166,
+      "resource_name": "UNIT_TROOPERS",
+      "label": "Отряд гранатомётчиков",
+      "group": true
+    }
+  ],
+  "notes": [
+    "Only the selected 64 source frames are retained.",
+    "Colors, scale, formation, house mask and animation bob are D2TM edits.",
+    "The original four movement files are identical, so D2TM's four rows use a deterministic bob."
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "source_of_truth": "Источник истины — записи этого юнита в паке resources/bin/data/sdl_data_hd4.dat, принятые в игре (Р39, #60); пересборка из этого описания их не воспроизводит.",
+  "atlases": {
+    "body": "UNIT_SIEGEBASE",
+    "house_mask": "HM_UNIT_SIEGEBASE",
+    "shadow": "UNIT_SIEGEBASE_SHADOW"
+  },
+  "reference_frame": [
+    144,
+    152
+  ],
+  "reference_anchor": [
+    72,
+    72
+  ],
+  "frame": [
+    176,
+    176
+  ],
+  "atlas_size": [
+    1408,
+    176
+  ],
+  "rows": 1,
+  "block": [
+    97.0,
+    85.0,
+    30.0
+  ],
+  "arrow": [
+    5.8,
+    44.5,
+    25.1
+  ],
+  "height_estimate": 30.0,
+  "sheet_building": {
+    "name": "BUILD_HEAVYFACTORY",
+    "size": [
+      384,
+      256
+    ]
+  },
+  "frames": [
+    {
+      "row": 0,
+      "k": 0,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGEBASE/siegebase_k0_a.png",
+        "b": "units-gen/UNIT_SIEGEBASE/siegebase_k0_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k0.png"
+    },
+    {
+      "row": 0,
+      "k": 1,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGEBASE/siegebase_k1_a.png",
+        "b": "units-gen/UNIT_SIEGEBASE/siegebase_k1_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k1.png"
+    },
+    {
+      "row": 0,
+      "k": 2,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGEBASE/siegebase_k2_a.png",
+        "b": "units-gen/UNIT_SIEGEBASE/siegebase_k2_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k2.png",
+      "scale_factor": 0.84
+    },
+    {
+      "row": 0,
+      "k": 3,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGEBASE/siegebase_k3_a.png",
+        "b": "units-gen/UNIT_SIEGEBASE/siegebase_k3_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k3.png",
+      "scale_factor": 0.949
+    },
+    {
+      "row": 0,
+      "k": 4,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGEBASE/siegebase_k4_a.png",
+        "b": "units-gen/UNIT_SIEGEBASE/siegebase_k4_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k4.png"
+    },
+    {
+      "row": 0,
+      "k": 5,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGEBASE/siegebase_k5_a.png",
+        "b": "units-gen/UNIT_SIEGEBASE/siegebase_k5_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k5.png"
+    },
+    {
+      "row": 0,
+      "k": 6,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGEBASE/siegebase_k6_a.png",
+        "b": "units-gen/UNIT_SIEGEBASE/siegebase_k6_b.png"
+      },
+      "pick": "b",
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k6.png",
+      "scale_factor": 0.89
+    },
+    {
+      "row": 0,
+      "k": 7,
+      "attempts": {
+        "a": "units-gen/UNIT_SIEGEBASE/siegebase_k7_a.png",
+        "b": "units-gen/UNIT_SIEGEBASE/siegebase_k7_b.png"
+      },
+      "pick": "a",
+      "recolour": "units-gen/UNIT_SIEGEBASE/siegebase_recolour9_k7.png"
+    }
+  ],
+  "shadow_rule": {
+    "shift": 4,
+    "alpha": 51,
+    "rgb": [
+      7,
+      5,
+      3
+    ]
+  },
+  "scale": 1.179349500917,
+  "share_corridor": [
+    0.1,
+    0.45
+  ],
+  "offset_shift": [
+    0,
+    -19
+  ]
+}

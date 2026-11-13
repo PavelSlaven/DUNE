@@ -1,0 +1,365 @@
+путь	строка	литералы	вызов
+src/controls/mousestates/cMousePlaceState.cpp	16	cMousePlaceState.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	18	gameobjects/map/cMap.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	19	context/AudioContext.hpp	нет
+src/controls/mousestates/cMousePlaceState.cpp	20	data/gfxdata.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	21	controls/cGameControlsContext.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	22	gameobjects/structures/cStructures.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	23	gameobjects/units/cUnits.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	24	utils/cStructureUtils.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	25	gameobjects/players/cPlayer.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	26	sidebar/cSideBar.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	27	utils/cSoundPlayer.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	28	gameobjects/map/MapGeometry.hpp	нет
+src/controls/mousestates/cMousePlaceState.cpp	29	context/cInfoContext.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	30	context/cGameObjectContext.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	31	managers/cDrawManager.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	33	include/cAssert.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	35	data/gfxaudio.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	36	gameobjects/structures/cStructureFactory.h	нет
+src/controls/mousestates/cMousePlaceState.cpp	88	Unable to create more.	setMessage
+src/controls/mousestates/cMouseNormalState.cpp	16	cMouseNormalState.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	18	controls/cGameControlsContext.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	19	controls/eKeyAction.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	21	utils/cRectangle.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	22	utils/cSoundPlayer.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	23	managers/cDrawManager.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	24	context/AudioContext.hpp	нет
+src/controls/mousestates/cMouseNormalState.cpp	25	gameobjects/units/cUnit.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	26	gameobjects/structures/cAbstractStructure.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	27	gameobjects/players/cPlayer.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	31	utils/Log.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	32	data/gfxdata.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	33	context/cInfoContext.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	34	context/cGameObjectContext.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	38	include/cAssert.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	40	data/gfxaudio.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	41	sidebar/cSideBar.h	нет
+src/controls/mousestates/cMouseNormalState.cpp	97	{} units selected	std::format
+src/controls/mousestates/cMouseNormalState.cpp	206		нет
+src/controls/mousestates/cMouseNormalState.cpp	372	cMouseNormalState::setState | from {} to {}	Logger::debug
+src/gameobjects/structures/cAbstractStructure.cpp	16	cAbstractStructure.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	18	utils/Log.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	19	game/cGameSettings.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	20	game/cEventEmitter.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	21	game/cScreenShake.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	22	include/sGameServices.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	23	context/GameContext.hpp	нет
+src/gameobjects/structures/cAbstractStructure.cpp	24	context/cGameObjectContext.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	25	context/cInfoContext.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	26	gameobjects/map/cMapCamera.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	27	data/gfxdata.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	28	drawers/SDLDrawer.hpp	нет
+src/gameobjects/structures/cAbstractStructure.cpp	29	gameobjects/particles/cParticle.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	30	gameobjects/particles/cParticles.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	31	gameobjects/structures/cStructures.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	32	gameobjects/units/cUnits.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	33	gameobjects/map/cMapEditor.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	34	gameobjects/map/MapGeometry.hpp	нет
+src/gameobjects/structures/cAbstractStructure.cpp	35	gameobjects/players/cPlayer.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	36	gameobjects/players/cPlayers.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	37	utils/cSoundPlayer.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	38	include/Texture.hpp	нет
+src/gameobjects/structures/cAbstractStructure.cpp	39	utils/RNG.hpp	нет
+src/gameobjects/structures/cAbstractStructure.cpp	43	data/gfxaudio.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	44	gameobjects/cFlag.h	нет
+src/gameobjects/structures/cAbstractStructure.cpp	46		нет
+src/gameobjects/structures/cAbstractStructure.cpp	94	cAbstractStructure | (cAbstractStructure)(ID {}) Constructor	Logger::debug
+src/gameobjects/structures/cAbstractStructure.cpp	100	cAbstractStructure | (cAbstractStructure)(ID {}) Destructor	Logger::debug
+src/gameobjects/structures/cAbstractStructure.cpp	208	cAbstractStructure::die	Logger::debug
+src/gameobjects/structures/cAbstractStructure.cpp	209	Unit [{}] inside structure [{}] already marked for removal, skipping init.	Logger::debug
+src/gameobjects/structures/cAbstractStructure.cpp	488	cAbstractStructure::decay | got negative parameter, wrapped	Logger::warn
+src/gameobjects/structures/cAbstractStructure.cpp	522	cAbstractStructure::damage | got negative parameter, wrapped	Logger::warn
+src/gameobjects/structures/cAbstractStructure.cpp	527	cAbstractStructure::damage | Structure [{}] received [{}] damage from originId [{}], HP is now [{}]	Logger::info
+src/gameobjects/structures/cAbstractStructure.cpp	571	cAbstractStructure::setHitpoints | setHitpoints({}) while max is {}; capped at max.	Logger::warn
+src/gameobjects/structures/cAbstractStructure.cpp	764	cAbstractStructure::setUnitIdWithin - Cannot set iUnitIDWithinStructure, because it has been set already!	d2tm_assert
+src/gameobjects/structures/cAbstractStructure.cpp	775	cAbstractStructure::setUnitIdHeadingTowards - Cannot set iUnitIDHeadingForStructure, because it has been set already!	d2tm_assert
+src/gameobjects/structures/cAbstractStructure.cpp	786	cAbstractStructure::setUnitIdHeadingTowards - Cannot set iUnitIDEnteringStructure, because it has been set already!	d2tm_assert
+src/gameobjects/structures/cAbstractStructure.cpp	818	cAbstractStructure | Could not find space for this unit	Logger::warn
+src/gameobjects/structures/cAbstractStructure.cpp	1013	{} at {} percent health	std::format
+src/gameobjects/structures/cOrderProcesser.cpp	22	cOrderProcesser.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	23	utils/Log.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	24	utils/RNG.hpp	нет
+src/gameobjects/structures/cOrderProcesser.cpp	25	managers/cDrawManager.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	26	gameobjects/players/cPlayer.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	27	utils/d2tm_math.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	28	gameobjects/structures/cStructures.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	29	gameobjects/units/cUnits.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	30	gameobjects/map/cMap.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	32	context/cInfoContext.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	33	context/cGameObjectContext.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	34	context/GameContext.hpp	нет
+src/gameobjects/structures/cOrderProcesser.cpp	35	include/sGameServices.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	36	context/AudioContext.hpp	нет
+src/gameobjects/structures/cOrderProcesser.cpp	37	utils/cStructureUtils.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	38	data/gfxaudio.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	39	sidebar/cBuildingList.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	40	sidebar/cSideBar.h	нет
+src/gameobjects/structures/cOrderProcesser.cpp	160	Frigate is arriving...	setMessage
+src/gameobjects/structures/cOrderProcesser.cpp	164	T-{} before Frigate arrival.	std::format
+src/gameobjects/structures/cOrderProcesser.cpp	172	Frigate is arriving...	setMessage
+src/gameobjects/structures/cOrderProcesser.cpp	286	cOrderProcesser::sendFrigate | unable to find start cell to spawn frigate	Logger::warn
+src/gameobjects/structures/cOrderProcesser.cpp	293	cOrderProcesser::sendFrigate | unable to spawn frigate, will retry	Logger::warn
+src/gameobjects/structures/cWindTrap.cpp	16	cWindTrap.h	нет
+src/gameobjects/structures/cWindTrap.cpp	18	utils/Log.h	нет
+src/gameobjects/structures/cWindTrap.cpp	19	definitions.h	нет
+src/gameobjects/structures/cWindTrap.cpp	20	gameobjects/players/cPlayer.h	нет
+src/gameobjects/structures/cWindTrap.cpp	21	context/cInfoContext.h	нет
+src/gameobjects/structures/cWindTrap.cpp	27	cWindTrap | (cWindTrap)(ID {}) Constructor	Logger::debug
+src/gameobjects/structures/cWindTrap.cpp	39	cWindTrap | (cWindTrap)(ID {}) Destructor	Logger::debug
+src/gameobjects/structures/cWindTrap.cpp	73	{} and producing at {} percent capacity	std::format
+src/gameobjects/units/cUnit.cpp	16	cUnit.h	нет
+src/gameobjects/units/cUnit.cpp	17		нет
+src/gameobjects/units/cUnit.cpp	20	utils/Log.h	нет
+src/gameobjects/units/cUnit.cpp	21	data/gfxdata.h	нет
+src/gameobjects/units/cUnit.cpp	22	gameobjects/particles/cParticle.h	нет
+src/gameobjects/units/cUnit.cpp	23	gameobjects/particles/cParticles.h	нет
+src/gameobjects/units/cUnit.cpp	24	gameobjects/projectiles/bullet.h	нет
+src/gameobjects/units/cUnit.cpp	25	gameobjects/structures/cStarPort.h	нет
+src/gameobjects/units/cUnit.cpp	26	gameobjects/structures/cStructures.h	нет
+src/gameobjects/units/cUnit.cpp	27	gameobjects/projectiles/cBullets.h	нет
+src/gameobjects/units/cUnit.cpp	28	gameobjects/map/cMapCamera.h	нет
+src/gameobjects/units/cUnit.cpp	29	gameobjects/map/cMapEditor.h	нет
+src/gameobjects/units/cUnit.cpp	30	gameobjects/map/MapGeometry.hpp	нет
+src/gameobjects/units/cUnit.cpp	31	gameobjects/players/cPlayer.h	нет
+src/gameobjects/units/cUnit.cpp	32	gameobjects/players/cPlayers.h	нет
+src/gameobjects/units/cUnit.cpp	33	utils/cSoundPlayer.h	нет
+src/gameobjects/units/cUnit.cpp	34	utils/RNG.hpp	нет
+src/gameobjects/units/cUnit.cpp	36	gameobjects/units/cPathFinder.h	нет
+src/gameobjects/units/cUnit.cpp	37	utils/d2tm_math.h	нет
+src/gameobjects/units/cUnit.cpp	38	context/cInfoContext.h	нет
+src/gameobjects/units/cUnit.cpp	39	context/cGameObjectContext.h	нет
+src/gameobjects/units/cUnit.cpp	40	context/GameContext.hpp	нет
+src/gameobjects/units/cUnit.cpp	41	context/AudioContext.hpp	нет
+src/gameobjects/units/cUnit.cpp	42	include/sGameServices.h	нет
+src/gameobjects/units/cUnit.cpp	43	game/cScreenShake.h	нет
+src/gameobjects/units/cUnit.cpp	44	game/cEventEmitter.h	нет
+src/gameobjects/units/cUnit.cpp	45	gameobjects/map/cMap.h	нет
+src/gameobjects/units/cUnit.cpp	48	data/gfxaudio.h	нет
+src/gameobjects/units/cUnit.cpp	49	game/cGameSettings.h	нет
+src/gameobjects/units/cUnit.cpp	50	gameobjects/players/cPlayerDifficultySettings.h	нет
+src/gameobjects/units/cUnit.cpp	60	Initialization | Initializing unit {}	Logger::debug
+src/gameobjects/units/cUnit.cpp	197		нет
+src/gameobjects/units/cUnit.cpp	268	die() | iPlayer became < 0 while it was >= 0 just a moment ago!	Logger::fatal
+src/gameobjects/units/cUnit.cpp	508	interacting with	нет
+src/gameobjects/units/cUnit.cpp	664	attackUnit() : targetUnit is [{}]. Chase target? [{}]	std::format
+src/gameobjects/units/cUnit.cpp	666	attackUnit() : targetUnit is [{}] Cannot attack self.	std::format
+src/gameobjects/units/cUnit.cpp	672	attackUnit() : targetUnit is [{}] Invalid target.	std::format
+src/gameobjects/units/cUnit.cpp	676	attackUnit() : targetUnit is [{}] Cannot attack allied unit.	std::format
+src/gameobjects/units/cUnit.cpp	685	attackStructure() : target is [{}]	std::format
+src/gameobjects/units/cUnit.cpp	688	attackStructure() : unit cannot damage structures, ignoring order.	log
+src/gameobjects/units/cUnit.cpp	694	attackStructure() : target is [{}] Invalid target.	std::format
+src/gameobjects/units/cUnit.cpp	698	attackStructure() : target is [{}] Cannot attack allied structure.	std::format
+src/gameobjects/units/cUnit.cpp	707	attackCell() : cell target is [{}]	std::format
+src/gameobjects/units/cUnit.cpp	717	Attacking UNIT ID [{}], STRUCTURE ID [{}], ATTACKCLL [{}], GoalCell [{}]	std::format
+src/gameobjects/units/cUnit.cpp	721	What is this? Ordered to attack but no target?	log
+src/gameobjects/units/cUnit.cpp	726	Cannot attack self	log
+src/gameobjects/units/cUnit.cpp	733	attack() : unit target [{}] invalid	std::format
+src/gameobjects/units/cUnit.cpp	737	attack() : unit target [{}] is allied	std::format
+src/gameobjects/units/cUnit.cpp	745	attack() : structure target [{}] invalid	std::format
+src/gameobjects/units/cUnit.cpp	749	attack() : structure target [{}] is allied	std::format
+src/gameobjects/units/cUnit.cpp	754		нет
+src/gameobjects/units/cUnit.cpp	774	attackAt() : cell target is [{}]	std::format
+src/gameobjects/units/cUnit.cpp	777	attackAt() : Invalid cell, aborting	log
+src/gameobjects/units/cUnit.cpp	784	attackAt() : cell target is [{}], structureId [{}], unitId [{}], wormId [{}]	std::format
+src/gameobjects/units/cUnit.cpp	822	(move_to - IGNORED) : already entering structure	log
+src/gameobjects/units/cUnit.cpp	827	(move_to - START) : to cell [{}], iStructureIdToEnter[{}], iUnitIdToPickup[{}] (to attack, if > -1), intent[{}]	std::format
+src/gameobjects/units/cUnit.cpp	864	(move_to - FINISHED)	log
+src/gameobjects/units/cUnit.cpp	1274	cUnit::thinkFast_moveAirUnit | Air unit [{}] got invalid cell [{}], and thus got killed.	Logger::debug
+src/gameobjects/units/cUnit.cpp	1347	Pick up unit	log
+src/gameobjects/units/cUnit.cpp	1724	cUnit::getUnitToPickupOrDrop() called for invalid iUnitIDWithinStructure!	d2tm_assert
+src/gameobjects/units/cUnit.cpp	1905	No valid movement.iPath[pathindex], nextCell is < 0	log
+src/gameobjects/units/cUnit.cpp	2068	[UNIT[{}]: type = {}(={}), iCell = {}, movement.iGoalCell = {}] '{}'	std::format
+src/gameobjects/units/cUnit.cpp	2119	Destroyed structure target	log
+src/gameobjects/units/cUnit.cpp	2264	cUnit::think_attack_sandworm | eaten unit. Units eaten {}, TIMER_guard {}	Logger::debug
+src/gameobjects/units/cUnit.cpp	2396	Expected to have a valid unit calling thinkFast_move()	d2tm_assert
+src/gameobjects/units/cUnit.cpp	2440	Create path ... result = {}	std::format
+src/gameobjects/units/cUnit.cpp	2461	Could not find alternative goal	log
+src/gameobjects/units/cUnit.cpp	2470	Found alternative goal	log
+src/gameobjects/units/cUnit.cpp	2475	Want to enter structure, yet ID's do not match	log
+src/gameobjects/units/cUnit.cpp	2476	Resetting structure id and such to redo what i was doing?	log
+src/gameobjects/units/cUnit.cpp	2484	Path failed toward target structure; will retry.	log
+src/gameobjects/units/cUnit.cpp	2487	Something else blocks path, but goal itself is not occupied.	log
+src/gameobjects/units/cUnit.cpp	2504	Units surround me, what to do?	log
+src/gameobjects/units/cUnit.cpp	2507	I just failed, ugh	log
+src/gameobjects/units/cUnit.cpp	2539		нет
+src/gameobjects/units/cUnit.cpp	2668		нет
+src/gameobjects/units/cUnit.cpp	2957	A carry all is after me...	log
+src/gameobjects/units/cUnit.cpp	3155	I'm being assigned to mission {} (prev mission was {})	std::format
+src/gameobjects/units/cUnit.cpp	3188	INTENT_CAPTURE	нет
+src/gameobjects/units/cUnit.cpp	3190	INTENT_MOVE	нет
+src/gameobjects/units/cUnit.cpp	3192	INTENT_ATTACK	нет
+src/gameobjects/units/cUnit.cpp	3194	INTENT_NONE	нет
+src/gameobjects/units/cUnit.cpp	3196	INTENT_REPAIR	нет
+src/gameobjects/units/cUnit.cpp	3198	INTENT_UNLOAD_SPICE	нет
+src/gameobjects/units/cUnit.cpp	3240		нет
+src/gameobjects/units/cUnit.cpp	3251		нет
+src/gameobjects/units/cUnit.cpp	3300	cUnit::findBestStructureCandidateAndHeadTowardsItOrWait - Going to look for a [{}]	std::format
+src/gameobjects/units/cUnit.cpp	3313	Expected to have a valid pStructure pointer here	d2tm_assert
+src/gameobjects/units/cUnit.cpp	3347		нет
+src/gameobjects/units/cUnit.cpp	3374		нет
+src/gameobjects/units/cUnit.cpp	3775	setGoalCell() from {} to {}	std::format
+src/gameobjects/units/cUnit.cpp	3781	setAction() from {} to {}	std::format
+src/gameobjects/units/cUnit.cpp	3823	{} at {} percent health and {} percent harvested	std::format
+src/gameobjects/units/cUnit.cpp	3833	{} at {} percent health	std::format
+src/gameobjects/units/cUnit.cpp	4026	cUnit::freeAroundMove | Invalid unit	Logger::warn
+src/gameobjects/players/cPlayer.cpp	16	cPlayer.h	нет
+src/gameobjects/players/cPlayer.cpp	18	building/cItemBuilder.h	нет
+src/gameobjects/players/cPlayer.cpp	19	game/cEventEmitter.h	нет
+src/gameobjects/players/cPlayer.cpp	20	game/cScreenFader.h	нет
+src/gameobjects/players/cPlayer.cpp	21	gameobjects/map/cMap.h	нет
+src/gameobjects/players/cPlayer.cpp	22	data/gfxdata.h	нет
+src/gameobjects/players/cPlayer.cpp	23	gameobjects/units/cReinforcements.h	нет
+src/gameobjects/players/cPlayer.cpp	24	gameobjects/structures/cStructureFactory.h	нет
+src/gameobjects/players/cPlayer.cpp	25	gameobjects/structures/cStructures.h	нет
+src/gameobjects/players/cPlayer.cpp	26	utils/common.h	нет
+src/gameobjects/players/cPlayer.cpp	27	utils/cStructureUtils.h	нет
+src/gameobjects/players/cPlayer.cpp	28	utils/Log.h	нет
+src/gameobjects/players/cPlayer.cpp	29	utils/texture_utils.h	нет
+src/gameobjects/players/cPlayer.cpp	30	gameobjects/players/cHousesInfo.h	нет
+src/gameobjects/players/cPlayer.cpp	31	utils/Graphics.hpp	нет
+src/gameobjects/players/cPlayer.cpp	32	utils/HouseMaskTint.hpp	нет
+src/gameobjects/players/cPlayer.cpp	33	include/Texture.hpp	нет
+src/gameobjects/players/cPlayer.cpp	34	utils/RNG.hpp	нет
+src/gameobjects/players/cPlayer.cpp	35	gameobjects/map/MapGeometry.hpp	нет
+src/gameobjects/players/cPlayer.cpp	36	gameobjects/structures/cOrderProcesser.h	нет
+src/gameobjects/players/cPlayer.cpp	37	controls/cGameControlsContext.h	нет
+src/gameobjects/players/cPlayer.cpp	38	gameobjects/players/cPlayerDifficultySettings.h	нет
+src/gameobjects/players/cPlayer.cpp	39	sidebar/cSideBar.h	нет
+src/gameobjects/players/cPlayer.cpp	40	gameobjects/units/cUnits.h	нет
+src/gameobjects/players/cPlayer.cpp	41	context/cInfoContext.h	нет
+src/gameobjects/players/cPlayer.cpp	42	context/cGameObjectContext.h	нет
+src/gameobjects/players/cPlayer.cpp	43	game/cGameSettings.h	нет
+src/gameobjects/players/cPlayer.cpp	44	include/sGameServices.h	нет
+src/gameobjects/players/cPlayer.cpp	45	context/GameContext.hpp	нет
+src/gameobjects/players/cPlayer.cpp	46	context/AudioContext.hpp	нет
+src/gameobjects/players/cPlayer.cpp	54	data/gfxaudio.h	нет
+src/gameobjects/players/cPlayer.cpp	55	context/GraphicsContext.hpp	нет
+src/gameobjects/players/cPlayer.cpp	56	gameobjects/cSpecialInfos.h	нет
+src/gameobjects/players/cPlayer.cpp	108	cPlayer | MAX_STRUCTURE_BMPS=[{}], sizeof bmp_structure={}, sizeof(SDL_Surface *)={}	Logger::info
+src/gameobjects/players/cPlayer.cpp	206	cPlayer | Error initializing player, id {} is not valid.	Logger::error
+src/gameobjects/players/cPlayer.cpp	262	cPlayer::setHouse | Current house is [{}/{}], setting house to [{}/{}]	Logger::info
+src/gameobjects/players/cPlayer.cpp	271	cPlayer::setHouse | Current house differs from iHouse, preparing palette.	Logger::info
+src/gameobjects/players/cPlayer.cpp	295	Could not create bmp structure bitmap!? - Imminent crash.\n	нет
+src/gameobjects/players/cPlayer.cpp	303	Could not create FLASH bmp structure bitmap!? - Imminent crash.\n	нет
+src/gameobjects/players/cPlayer.cpp	319	Could not create bmp unit bitmap!? - Imminent crash.\n	нет
+src/gameobjects/players/cPlayer.cpp	382	Player [id={}, human={}, sidebar={:#x}]	std::format
+src/gameobjects/players/cPlayer.cpp	587	index	нет
+src/gameobjects/players/cPlayer.cpp	595	getStructureBitmap called with invalid index	d2tm_assert
+src/gameobjects/players/cPlayer.cpp	607	index	нет
+src/gameobjects/players/cPlayer.cpp	615	getStructureBitmapFlash called with invalid structure type index	d2tm_assert
+src/gameobjects/players/cPlayer.cpp	633	index	нет
+src/gameobjects/players/cPlayer.cpp	641	getUnitBitmap called with invalid index	d2tm_assert
+src/gameobjects/players/cPlayer.cpp	653	index	нет
+src/gameobjects/players/cPlayer.cpp	661	getUnitTopBitmap called with invalid index	d2tm_assert
+src/gameobjects/players/cPlayer.cpp	675	getUnitShadowBitmap called with invalid index	d2tm_assert
+src/gameobjects/players/cPlayer.cpp	802	increaseStructureAmount result: iStructures[{}(={})]={}	std::format
+src/gameobjects/players/cPlayer.cpp	813	decreaseStructureAmount result: iStructures[{}(={})]={}	std::format
+src/gameobjects/players/cPlayer.cpp	825	Atreides	нет
+src/gameobjects/players/cPlayer.cpp	828	Harkonnen	нет
+src/gameobjects/players/cPlayer.cpp	831	Ordos	нет
+src/gameobjects/players/cPlayer.cpp	834	Sardaukar	нет
+src/gameobjects/players/cPlayer.cpp	837	Fremen	нет
+src/gameobjects/players/cPlayer.cpp	840	Mercenary	нет
+src/gameobjects/players/cPlayer.cpp	843	Generalhouse (none)	нет
+src/gameobjects/players/cPlayer.cpp	846	Corrino / House for worms	нет
+src/gameobjects/players/cPlayer.cpp	848	Unknown !?	нет
+src/gameobjects/players/cPlayer.cpp	989	canBuildUnitType(unitType={}) -> {} | TRUE | FALSE	std::format
+src/gameobjects/players/cPlayer.cpp	1000	canBuildSpecialType(iType={}) -> {} | TRUE | FALSE	std::format
+src/gameobjects/players/cPlayer.cpp	1104	isUpgradingList for listType [{}] and sublistId [{}], could not find upgradesList!? - will return nullptr.	std::format
+src/gameobjects/players/cPlayer.cpp	1145	SUCCESS | FALSE	нет
+src/gameobjects/players/cPlayer.cpp	1146	Wanting to build unit [{}] iUnitType = [{}], with listType[{}] - {}	std::format
+src/gameobjects/players/cPlayer.cpp	1159	SUCCESS | FALSE	нет
+src/gameobjects/players/cPlayer.cpp	1160	Wanting to build structure [{}] iStructureType = [{}], with listType[{}] - {}	std::format
+src/gameobjects/players/cPlayer.cpp	1173	SUCCESS | FALSE	нет
+src/gameobjects/players/cPlayer.cpp	1174	Wanting to build special [{}] iSpecialType = [{}], with listType[{}] - {}	std::format
+src/gameobjects/players/cPlayer.cpp	1186	SUCCESS | FALSE	нет
+src/gameobjects/players/cPlayer.cpp	1187	Wanting to start upgrade [{}] iUpgradeType = [{}], with listType[{}] - {}	std::format
+src/gameobjects/players/cPlayer.cpp	1361	canBuildUnit: Wanting to build iUnitType = [{}(={})] allowed?...	std::format
+src/gameobjects/players/cPlayer.cpp	1366	canBuildUnit: FALSE, because cost {} higher than credits {}	std::format
+src/gameobjects/players/cPlayer.cpp	1373	canBuildUnit: FALSE, because already building unitType	log
+src/gameobjects/players/cPlayer.cpp	1381	canBuildUnit: FALSE, because we do not own the required structure type [{}] for this unit: [{}]	std::format
+src/gameobjects/players/cPlayer.cpp	1388	canBuildUnit: FALSE, because we do not own the required ADDITIONAL structure type [{}] for this unit: [{}]	std::format
+src/gameobjects/players/cPlayer.cpp	1397	canBuildUnit: REQUIRES_UPGRADE, because we can't find it in the expected list [{}] for this unit: [{}]	std::format
+src/gameobjects/players/cPlayer.cpp	1403	canBuildUnit: FALSE, reason UNIT_LIMIT_REACHED	log
+src/gameobjects/players/cPlayer.cpp	1407	canBuildUnit: ALLOWED	log
+src/gameobjects/players/cPlayer.cpp	1417	canBuildSpecial: Wanting to build iType = [{}(={})] allowed?...	std::format
+src/gameobjects/players/cPlayer.cpp	1420		нет
+src/gameobjects/players/cPlayer.cpp	1422	canBuildUnit: FALSE, because we do not own the required structure type [{}] for [{}]	std::format
+src/gameobjects/players/cPlayer.cpp	1429	canBuildSpecial: FALSE, because already building it	log
+src/gameobjects/players/cPlayer.cpp	1436	canBuildUnit: REQUIRES_UPGRADE, because we can't find it in the expected list [{}] for this special: [{}]	std::format
+src/gameobjects/players/cPlayer.cpp	1441	canBuildSpecial: ALLOWED	log
+src/gameobjects/players/cPlayer.cpp	1475	Visible = {}	std::format
+src/gameobjects/players/cPlayer.cpp	1489	Targets {}	std::format
+src/gameobjects/players/cPlayer.cpp	1517	STR] Targets {}	std::format
+src/gameobjects/players/cPlayer.cpp	1525	canBuildStructure: Wanting to build iStructureType = [{}]	std::format
+src/gameobjects/players/cPlayer.cpp	1527	Structure type must be > -1	d2tm_assert
+src/gameobjects/players/cPlayer.cpp	1528	Structure type must be < MAX_STRUCTURETYPES	d2tm_assert
+src/gameobjects/players/cPlayer.cpp	1533	canBuildStructure: Wanting to build iStructureType = [{}(={})], allowed?...	std::format
+src/gameobjects/players/cPlayer.cpp	1538	canBuildStructure: FALSE, reason NOT_ENOUGH_MONEY: because cost {} > credits {}	std::format
+src/gameobjects/players/cPlayer.cpp	1545	canBuildStructure: FALSE, reason REQUIRES_STRUCTURE: we do not own the required structure type [{}] for this structure: [{}]	std::format
+src/gameobjects/players/cPlayer.cpp	1552	canBuildStructure: FALSE, reason ALREADY_BUILDING	log
+src/gameobjects/players/cPlayer.cpp	1559	canBuildStructure: FALSE, reason REQUIRES_UPGRADE: because we can't find structure in list	log
+src/gameobjects/players/cPlayer.cpp	1564	canBuildStructure: FALSE, reason STRUCTURE_LIMIT_REACHED	log
+src/gameobjects/players/cPlayer.cpp	1568	canBuildStructure: ALLOWED	log
+src/gameobjects/players/cPlayer.cpp	1649	Player {} ({}) has been defeated.	std::format
+src/gameobjects/players/cPlayer.cpp	1664	cPlayer::onNotifyGameEvent | GAME_EVENT_PLAYER_DEFEATED did not carry a CommonEvent	Logger::warn
+src/gameobjects/players/cPlayer.cpp	1670	{} launched!	std::format
+src/gameobjects/players/cPlayer.cpp	1681	cPlayer::onNotifyGameEvent | GAME_EVENT_SPECIAL_LAUNCHED did not carry a BuildingEvent	Logger::warn
+src/gameobjects/players/cPlayer.cpp	1688	{} is ready for deployment.	std::format
+src/gameobjects/players/cPlayer.cpp	1701	cPlayer::onNotifyGameEvent | GAME_EVENT_SPECIAL_SELECT_TARGET did not carry a BuildingEvent	Logger::warn
+src/gameobjects/players/cPlayer.cpp	1711	cPlayer::onNotifyGameEvent | GAME_EVENT_DISCOVERED did not carry a CommonEvent	Logger::warn
+src/gameobjects/players/cPlayer.cpp	1724	cPlayer::onNotifyGameEvent | GAME_EVENT_DESTROYED did not carry a CommonEvent	Logger::warn
+src/gameobjects/players/cPlayer.cpp	1738	cPlayer::onNotifyGameEvent | GAME_EVENT_CREATED did not carry a CommonEvent	Logger::warn
+src/gameobjects/players/cPlayer.cpp	1745	Upgrade: {} completed.	std::format
+src/gameobjects/players/cPlayer.cpp	1761	cPlayer::onNotifyGameEvent | GAME_EVENT_LIST_ITEM_FINISHED did not carry a BuildingEvent	Logger::warn
+src/gameobjects/players/cPlayer.cpp	1772	cPlayer::onNotifyGameEvent | GAME_EVENT_LIST_ITEM_ADDED/CANCELLED did not carry a BuildingEvent	Logger::warn
+src/gameobjects/players/cPlayer.cpp	1904	hasEnoughPowerFor called with structureType < 0!	d2tm_assert
+src/gameobjects/players/cPlayer.cpp	1905	hasEnoughPowerFor called with structureType >= MAX_STRUCTURETYPES!	d2tm_assert
+src/gameobjects/players/cPlayer.cpp	1912	cPlayer::logStructures() START	log
+src/gameobjects/players/cPlayer.cpp	1914	[{}] amount [{}]	std::format
+src/gameobjects/players/cPlayer.cpp	1916	cPlayer::logStructures() END	log
+src/gameobjects/players/cPlayer.cpp	1935	iStructureType	нет
+src/gameobjects/players/cPlayer.cpp	1963	iStructureType	нет
+src/gameobjects/players/cPlayer.cpp	2012		нет
+src/gameobjects/players/cPlayer.cpp	2044	cPlayer | PLAYER [{}(={})] : {}	Logger::info
+src/gameobjects/players/cPlayer.cpp	2060	startBuilding: Cannot start building null item!	log
+src/gameobjects/players/cPlayer.cpp	2127		нет
+src/gameobjects/players/cPlayer.cpp	2157	startBuilding: Unknown buildType !?	d2tm_assert
+src/gameobjects/players/cPlayer.cpp	2227		нет
+src/gameobjects/players/cPlayer.cpp	2231	You've lost a Harvester	нет
+src/gameobjects/players/cPlayer.cpp	2243		нет
+src/gameobjects/players/cPlayer.cpp	2247	You have one Harvester left	нет
+src/gameobjects/players/cPlayer.cpp	2265		нет
+src/gameobjects/players/cPlayer.cpp	2269	No harvesters and refineries left!	нет
+src/gameobjects/players/cPlayer.cpp	2295		нет
+src/gameobjects/players/cPlayer.cpp	2299	No more Harvester left, reinforcing...	нет
+src/gameobjects/mentat/AbstractMentat.cpp	16	AbstractMentat.h	нет
+src/gameobjects/mentat/AbstractMentat.cpp	17	definitions.h	нет
+src/gameobjects/mentat/AbstractMentat.cpp	18	include/eGameState.h	нет
+src/gameobjects/mentat/AbstractMentat.cpp	19	drawers/SDLDrawer.hpp	нет
+src/gameobjects/mentat/AbstractMentat.cpp	20	utils/RNG.hpp	нет
+src/gameobjects/mentat/AbstractMentat.cpp	21	context/GameContext.hpp	нет
+src/gameobjects/mentat/AbstractMentat.cpp	22	game/GameStateTransition.hpp	нет
+src/gameobjects/mentat/AbstractMentat.cpp	23	game/MentatFlow.hpp	нет
+src/gameobjects/mentat/AbstractMentat.cpp	24	game/cGameSettings.h	нет
+src/gameobjects/mentat/AbstractMentat.cpp	25	gui/GuiButton.h	нет
+src/gameobjects/mentat/AbstractMentat.cpp	26	utils/Graphics.hpp	нет
+src/gameobjects/mentat/AbstractMentat.cpp	27		нет
+src/gameobjects/mentat/AbstractMentat.cpp	28	utils/Log.h	нет
+src/gameobjects/mentat/AbstractMentat.cpp	29	drawers/cTextDrawer.h	нет
+src/gameobjects/mentat/AbstractMentat.cpp	34	include/cAssert.h	нет
+src/gameobjects/mentat/AbstractMentat.cpp	35	context/GraphicsContext.hpp	нет
+src/gameobjects/mentat/AbstractMentat.cpp	36	context/TextContext.hpp	нет
+src/gameobjects/mentat/AbstractMentat.cpp	37	include/Texture.hpp	нет
+src/gameobjects/mentat/AbstractMentat.cpp	38	utils/cRectangle.h	нет
+src/gameobjects/mentat/AbstractMentat.cpp	39	debug/UiAudit.hpp	нет
+src/gameobjects/mentat/AbstractMentat.cpp	83	Mission select	getTextLength
+src/gameobjects/mentat/AbstractMentat.cpp	86	Mission select	getAsRectangle
+src/gameobjects/mentat/AbstractMentat.cpp	90	Mission select	withLabel
+src/gameobjects/mentat/AbstractMentat.cpp	111	AbstractMentat::AbstractMentat | Initialized AbstractMentat with mission select button: {}	Logger::info
+src/gameobjects/mentat/AbstractMentat.cpp	119	AbstractMentat::~AbstractMentat | Destroying AbstractMentat	Logger::info
+src/gameobjects/mentat/AbstractMentat.cpp	294	mentat-skip	uiaudit::recordCanvasClick
+src/gameobjects/mentat/AbstractMentat.cpp	348	AbstractMentat::setSentence | Sentence[{}]={}	Logger::info
+src/gameobjects/mentat/AbstractMentat.cpp	363	AbstractMentat | Successful loaded scene [{}]	Logger::info
+src/gameobjects/mentat/AbstractMentat.cpp	368	AbstractMentat | Failed to load scene [{}]	Logger::error

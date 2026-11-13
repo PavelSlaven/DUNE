@@ -1,0 +1,69 @@
+     1	/**
+     2	 * @file cTextTextureCache.h
+     3	 *
+     4	 * Dune 2 - The Maker
+     5	 *
+     6	 * @author Stefan Hendriks & the D2TM Team
+     7	 * @www http://www.dune2themaker.com
+     8	 * @copyright Copyright (c) 2002 - 2026 Stefan Hendriks and contributors
+     9	 * @license This software is released under the MIT License. See LICENSE.md.
+    10	 *
+    11	 * Note: Dune 2 is a trademark of Westwood Studios/Electronic Arts.
+    12	 *
+    13	 * This is a non-commercial educational project.
+    14	 */
+    15	
+    16	#pragma once
+    17	
+    18	#include "utils/Color.hpp"
+    19	#include "utils/TextAlignment.hpp"
+    20	#include <SDL3/SDL.h>
+    21	#include <SDL3_ttf/SDL_ttf.h>
+    22	#include <string>
+    23	#include <unordered_map>
+    24	#include <memory>
+    25	
+    26	class SDLDrawer;
+    27	
+    28	struct textKey {
+    29	    std::string msg;
+    30	    Color color;
+    31	};
+    32	
+    33	struct textKeyHash {
+    34	    std::size_t operator()(const textKey &k) const {
+    35	        return std::hash<std::string>()(k.msg) ^ std::hash<uint32_t>()( (k.color.r << 24) | (k.color.g <<16) | (k.color.b <<8) | (k.color.a) );
+    36	    }
+    37	};
+    38	
+    39	struct textKeyEqual {
+    40	    bool operator()(const textKey &lhs, const textKey &rhs) const {
+    41	        return lhs.msg == rhs.msg && lhs.color.r == rhs.color.r && lhs.color.g == rhs.color.g &&
+    42	               lhs.color.b == rhs.color.b && lhs.color.a == rhs.color.a;
+    43	    }
+    44	};
+    45	
+    46	struct textCacheEntry {
+    47	    SDL_Texture *texture;
+    48	    SDL_Texture *shadowsTexture;
+    49	    int width;
+    50	    int height;
+    51	    TextInkBounds inkBounds;
+    52	    int lifeCounter;
+    53	};
+    54	
+    55	class cTextTextureCache {
+    56	public:
+    57	    // Constructor, initializes the cache with a TTF font
+    58	    cTextTextureCache(TTF_Font *font, SDLDrawer *renderer);
+    59	    ~cTextTextureCache();
+    60	    // Finds a cached entry for the given color and message, or creates it if not present
+    61	    textCacheEntry* findOrCreate(Color color, const std::string &msg) const;
+    62	    // Clears the cache, destroying all stored textures
+    63	    void resetCache() const;
+    64	private:
+    65	    std::unique_ptr<textCacheEntry> createCacheEntry(Color color, const std::string &msg) const;
+    66	    TTF_Font *m_font;
+    67	    SDLDrawer *m_renderer;
+    68	    mutable std::unordered_map<textKey, std::unique_ptr<textCacheEntry>, textKeyHash, textKeyEqual> m_textCache;
+    69	};

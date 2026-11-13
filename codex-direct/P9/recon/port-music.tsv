@@ -1,0 +1,92 @@
+ревизия	путь	символ или папка	путь@ревизия:строка	что делает одной строкой
+PORT	src/include/definitions.h	enum class eMusicType	src/include/definitions.h@616280c:158	Объявляет WIN, LOSE, ATTACK, PEACE, MENU, CONQUEST и BRIEFING.
+PORT	src/context/AudioContext.cpp	musicTypeName	src/context/AudioContext.cpp@616280c:30	Возвращает строковое имя музыкального типа для журнала.
+PORT	src/context/AudioContext.cpp	AudioContext::AudioContext	src/context/AudioContext.cpp@616280c:45	Создаёт MusicJukeBox и заполняет десять пользовательских музыкальных каталогов.
+PORT	src/context/AudioContext.cpp	AudioContext::playMusicByTypeForStateTransition	src/context/AudioContext.cpp@616280c:84	Запускает тип музыки при переходе, только когда тип отличается от текущего.
+PORT	src/context/AudioContext.cpp	AudioContext::playMusicByType	src/context/AudioContext.cpp@616280c:92	Выбирает встроенный архивный трек по типу и дому, затем просит MusicJukeBox выбрать пользовательский файл.
+PORT	src/context/AudioContext.cpp	AudioContext::startMusic	src/context/AudioContext.cpp@616280c:175	Проигрывает выбранный файл, а при его отсутствии или ошибке — встроенный архивный трек.
+PORT	src/context/AudioContext.cpp	AudioContext::thinkFast	src/context/AudioContext.cpp@616280c:183	Начинает отложенный трек и повторяет завершившуюся музыку; ATTACK возвращает к PEACE, BRIEFING повторяет сохранённый выбор.
+PORT	src/context/AudioContext.cpp	AudioContext::toggleMusic	src/context/AudioContext.cpp@616280c:219	Инвертирует настройку музыки и передаёт новое состояние проигрывателю.
+PORT	src/context/AudioContext.cpp	AudioContext::setMusicEnabled	src/context/AudioContext.cpp@616280c:224	Сохраняет состояние музыки и разрешает thinkFast начать текущую категорию после включения.
+PORT	src/context/AudioContext.cpp	AudioContext::changeMusicVolume	src/context/AudioContext.cpp@616280c:234	Передаёт изменение громкости музыки проигрывателю.
+PORT	src/context/AudioContext.cpp	eMusicType::WIN	src/context/AudioContext.cpp@616280c:116	Для победы выбирает MIDI_WIN01 плюс случайное смещение 0–2.
+PORT	src/context/AudioContext.cpp	eMusicType::LOSE	src/context/AudioContext.cpp@616280c:119	Для поражения выбирает MIDI_LOSE01 плюс случайное смещение 0–5.
+PORT	src/context/AudioContext.cpp	eMusicType::ATTACK	src/context/AudioContext.cpp@616280c:122	Для атаки выбирает MIDI_ATTACK01 плюс случайное смещение 0–5.
+PORT	src/context/AudioContext.cpp	eMusicType::PEACE	src/context/AudioContext.cpp@616280c:125	Для мирного состояния выбирает MIDI_BUILDING01 плюс случайное смещение 0–8.
+PORT	src/context/AudioContext.cpp	eMusicType::MENU	src/context/AudioContext.cpp@616280c:128	Для меню выбирает MIDI_MENU.
+PORT	src/context/AudioContext.cpp	eMusicType::CONQUEST	src/context/AudioContext.cpp@616280c:131	Для завоевания выбирает MIDI_SCENARIO.
+PORT	src/context/AudioContext.cpp	eMusicType::BRIEFING	src/context/AudioContext.cpp@616280c:134	Для брифинга выбирает MIDI_MENTAT по дому; для Sardaukar использует MIDI_MENTAT_HAR.
+PORT	src/context/AudioContext.cpp	MusicChoice selection	src/context/AudioContext.cpp@616280c:171	Передаёт настройку пользовательской музыки и получает выбранный файл/архивный fallback.
+PORT	src/context/AudioContext.cpp	MusicChoice repeat	src/context/AudioContext.cpp@616280c:209	Для BRIEFING повторяет сохранённый выбор; для ATTACK тип переключается на PEACE в строках 205–207.
+PORT	src/context/MusicChoice.hpp	struct MusicChoice	src/context/MusicChoice.hpp@616280c:23	Хранит обязательный архивный fallback и необязательный путь выбранного файла.
+PORT	src/context/MusicJukeBox.cpp	isAudioFile	src/context/MusicJukeBox.cpp@616280c:27	Принимает расширения .ogg, .mp3, .wav и .flac без учёта регистра.
+PORT	src/context/MusicJukeBox.cpp	repertoryDir	src/context/MusicJukeBox.cpp@616280c:37	Сопоставляет тип музыки пользовательскому каталогу, а BRIEFING — подкаталогу дома.
+PORT	src/context/MusicJukeBox.cpp	listAudioFiles	src/context/MusicJukeBox.cpp@616280c:58	Перебирает непосредственные файлы каталога и оставляет поддерживаемые аудиофайлы.
+PORT	src/context/MusicJukeBox.cpp	MusicJukeBox::MusicJukeBox	src/context/MusicJukeBox.cpp@616280c:71	Сохраняет корневой путь пользовательских каталогов, по умолчанию audio.
+PORT	src/context/MusicJukeBox.cpp	MusicJukeBox::createRepertoryDirectories	src/context/MusicJukeBox.cpp@616280c:76	Создаёт каталоги win, lose, attack, peace, menu, conquest и четыре каталога briefing.
+PORT	src/context/MusicJukeBox.cpp	MusicJukeBox::setCustomMusicEnabled	src/context/MusicJukeBox.cpp@616280c:85	Включает или выключает выбор пользовательского файла.
+PORT	src/context/MusicJukeBox.cpp	MusicJukeBox::choose	src/context/MusicJukeBox.cpp@616280c:90	При включённой функции сортирует найденные файлы и выбирает один через RNG; иначе оставляет архивный fallback.
+PORT	src/context/MusicJukeBox.cpp	audio/win	src/context/MusicJukeBox.cpp@616280c:40	Пользовательская папка для WIN; в дереве репозитория файлов нет.
+PORT	src/context/MusicJukeBox.cpp	audio/lose	src/context/MusicJukeBox.cpp@616280c:41	Пользовательская папка для LOSE; в дереве репозитория файлов нет.
+PORT	src/context/MusicJukeBox.cpp	audio/attack	src/context/MusicJukeBox.cpp@616280c:42	Пользовательская папка для ATTACK; в дереве репозитория файлов нет.
+PORT	src/context/MusicJukeBox.cpp	audio/peace	src/context/MusicJukeBox.cpp@616280c:43	Пользовательская папка для PEACE; в дереве репозитория файлов нет.
+PORT	src/context/MusicJukeBox.cpp	audio/menu	src/context/MusicJukeBox.cpp@616280c:44	Пользовательская папка для MENU; в дереве репозитория файлов нет.
+PORT	src/context/MusicJukeBox.cpp	audio/conquest	src/context/MusicJukeBox.cpp@616280c:45	Пользовательская папка для CONQUEST; в дереве репозитория файлов нет.
+PORT	src/context/MusicJukeBox.cpp	audio/briefing/atreides	src/context/MusicJukeBox.cpp@616280c:48	Пользовательская папка для BRIEFING дома Atreides; в дереве репозитория файлов нет.
+PORT	src/context/MusicJukeBox.cpp	audio/briefing/harkonnen	src/context/MusicJukeBox.cpp@616280c:49	Пользовательская папка для BRIEFING дома Harkonnen; в дереве репозитория файлов нет.
+PORT	src/context/MusicJukeBox.cpp	audio/briefing/ordos	src/context/MusicJukeBox.cpp@616280c:50	Пользовательская папка для BRIEFING дома Ordos; в дереве репозитория файлов нет.
+PORT	src/context/MusicJukeBox.cpp	audio/briefing/sardaukar	src/context/MusicJukeBox.cpp@616280c:51	Пользовательская папка для BRIEFING дома Sardaukar; в дереве репозитория файлов нет.
+PORT	src/game/cGame_logic.cpp	WIN activation	src/game/cGame_logic.cpp@616280c:485	Включает WIN при успешном завершении миссии.
+PORT	src/game/cGame_logic.cpp	LOSE activation	src/game/cGame_logic.cpp@616280c:508	Включает LOSE при поражении в миссии.
+PORT	src/game/cGame_logic.cpp	MENU activation	src/game/cGame_logic.cpp@616280c:871	Включает MENU при начальной настройке игры.
+PORT	src/game/cGame_logic.cpp	CONQUEST activation	src/game/cGame_logic.cpp@616280c:1049	Включает CONQUEST при повторном входе в существующее состояние карты региона.
+PORT	src/game/cGame_logic.cpp	CONQUEST activation	src/game/cGame_logic.cpp@616280c:1122	Включает CONQUEST при первичной настройке кампании.
+PORT	src/game/cGame_logic.cpp	MENU activation	src/game/cGame_logic.cpp@616280c:1129	Включает MENU при переходе к настройке Skirmish.
+PORT	src/game/cGame_logic.cpp	MENU activation	src/game/cGame_logic.cpp@616280c:1143	Включает MENU при переходе в главное меню.
+PORT	src/game/cGame_logic.cpp	BRIEFING activation	src/game/cGame_logic.cpp@616280c:1200	Включает BRIEFING при переходе к сообщению о доме.
+PORT	src/game/cGame_logic.cpp	BRIEFING activation	src/game/cGame_logic.cpp@616280c:1205	Включает BRIEFING при переходе к брифингу.
+PORT	src/game/cGame_logic.cpp	BRIEFING activation	src/game/cGame_logic.cpp@616280c:1208	Включает BRIEFING при переходе к экрану победного брифинга.
+PORT	src/game/cGame_logic.cpp	BRIEFING activation	src/game/cGame_logic.cpp@616280c:1212	Включает BRIEFING с сохранённым домом кампании на экране поражения.
+PORT	src/game/cGame_logic.cpp	BRIEFING activation	src/game/cGame_logic.cpp@616280c:1270	Включает BRIEFING при подготовке нового состояния сообщения о доме.
+PORT	src/game/cGame_logic.cpp	PEACE activation	src/game/cGame_logic.cpp@616280c:1309	Включает PEACE при запуске мирного игрового состояния.
+PORT	src/game/cGame_logic.cpp	BRIEFING activation	src/game/cGame_logic.cpp@616280c:1358	Включает BRIEFING после провала первой миссии.
+PORT	src/game/cGame_logic.cpp	BRIEFING activation	src/game/cGame_logic.cpp@616280c:1485	Включает BRIEFING при переходе к состоянию брифинга.
+PORT	src/game/cGame_logic.cpp	cGame::playMusicByTypeForStateTransition	src/game/cGame_logic.cpp@616280c:1578	Передаёт тип перехода и дом игрока в AudioContext.
+PORT	src/game/cGame_logic.cpp	cGame::playMusicByType	src/game/cGame_logic.cpp@616280c:1583	Передаёт тип, флаг голосового события, признак игровой миссии и дом игрока в AudioContext.
+PORT	src/gameobjects/players/cPlayer.cpp	PEACE-to-ATTACK decision	src/gameobjects/players/cPlayer.cpp@616280c:2067	Обрабатывает обнаружение противника только если текущая музыкальная категория PEACE.
+PORT	src/gameobjects/players/cPlayer.cpp	ATTACK activation	src/gameobjects/players/cPlayer.cpp@616280c:2126	При атаке включает ATTACK; для человеческого игрока может задержать голосовое сообщение.
+UP1	src/gamestates/cSelectYourNextConquestState.cpp	BRIEFING activation	src/gamestates/cSelectYourNextConquestState.cpp@d06f2fc:464	Включает BRIEFING при выборе следующего завоевания.
+UP1	src/gamestates/cSetupSkirmishState.cpp	PEACE activation	src/gamestates/cSetupSkirmishState.cpp@d06f2fc:975	Включает PEACE после настройки Skirmish.
+PORT	src/game/cSDLSystem.cpp	MIX_Quit	src/game/cSDLSystem.cpp@616280c:236	Завершает SDL3_mixer.
+PORT	src/game/cSDLSystem.cpp	MIX_Init	src/game/cSDLSystem.cpp@616280c:269	Инициализирует SDL3_mixer.
+PORT	src/game/cSDLSystem.cpp	MIX_GetNumAudioDecoders	src/game/cSDLSystem.cpp@616280c:275	Возвращает число доступных аудиодекодеров для журнала.
+PORT	src/game/cSDLSystem.cpp	MIX_GetAudioDecoder	src/game/cSDLSystem.cpp@616280c:276	Возвращает имя очередного декодера для журнала.
+PORT	src/utils/cDataPack.cpp	MIX_DestroyAudio	src/utils/cDataPack.cpp@616280c:37	Освобождает загруженный архивный аудиообъект.
+PORT	src/utils/cDataPack.cpp	MIX_LoadAudioWithProperties	src/utils/cDataPack.cpp@616280c:101	Загружает аудио из архива в SDL3_mixer.
+PORT	src/utils/cSoundPlayer.cpp	MIX_CreateMixerDevice	src/utils/cSoundPlayer.cpp@616280c:67	Создаёт микшер для устройства воспроизведения по умолчанию.
+PORT	src/utils/cSoundPlayer.cpp	MIX_CreateTrack (music)	src/utils/cSoundPlayer.cpp@616280c:77	Создаёт отдельную дорожку музыки.
+PORT	src/utils/cSoundPlayer.cpp	MIX_CreateTrack (SFX)	src/utils/cSoundPlayer.cpp@616280c:79	Создаёт пул дорожек для звуковых эффектов.
+PORT	src/utils/cSoundPlayer.cpp	MIX_SetMixerGain	src/utils/cSoundPlayer.cpp@616280c:95	Устанавливает общий уровень микшера.
+PORT	src/utils/cSoundPlayer.cpp	MIX_SetTrackGain (SFX)	src/utils/cSoundPlayer.cpp@616280c:98	Устанавливает усиление дорожек звуковых эффектов.
+PORT	src/utils/cSoundPlayer.cpp	MIX_SetTrackGain (music)	src/utils/cSoundPlayer.cpp@616280c:101	Устанавливает усиление дорожки музыки.
+PORT	src/utils/cSoundPlayer.cpp	MIX_StopTrack (music destructor)	src/utils/cSoundPlayer.cpp@616280c:111	Останавливает музыкальную дорожку при уничтожении проигрывателя.
+PORT	src/utils/cSoundPlayer.cpp	MIX_DestroyTrack (music)	src/utils/cSoundPlayer.cpp@616280c:112	Уничтожает музыкальную дорожку.
+PORT	src/utils/cSoundPlayer.cpp	MIX_StopTrack (SFX destructor)	src/utils/cSoundPlayer.cpp@616280c:116	Останавливает каждую дорожку звуковых эффектов при уничтожении проигрывателя.
+PORT	src/utils/cSoundPlayer.cpp	MIX_DestroyTrack (SFX)	src/utils/cSoundPlayer.cpp@616280c:117	Уничтожает каждую дорожку звуковых эффектов.
+PORT	src/utils/cSoundPlayer.cpp	MIX_DestroyMixer	src/utils/cSoundPlayer.cpp@616280c:120	Уничтожает микшер после дорожек.
+PORT	src/utils/cSoundPlayer.cpp	MIX_TrackPlaying (SFX)	src/utils/cSoundPlayer.cpp@616280c:150	Собирает занятость дорожек звуковых эффектов перед повторным использованием.
+PORT	src/utils/cSoundPlayer.cpp	MIX_StopTrack (SFX fade)	src/utils/cSoundPlayer.cpp@616280c:156	Останавливает вытесняемую дорожку с коротким затуханием.
+PORT	src/utils/cSoundPlayer.cpp	MIX_SetTrackAudio (SFX)	src/utils/cSoundPlayer.cpp@616280c:157	Привязывает звуковой объект к выбранной дорожке эффектов.
+PORT	src/utils/cSoundPlayer.cpp	MIX_PlayTrack (SFX)	src/utils/cSoundPlayer.cpp@616280c:158	Запускает выбранный звук на дорожке эффектов.
+PORT	src/utils/cSoundPlayer.cpp	MIX_LoadAudio_IO	src/utils/cSoundPlayer.cpp@616280c:203	Загружает пользовательский музыкальный файл из SDL_IOStream.
+PORT	src/utils/cSoundPlayer.cpp	MIX_StopTrack (music start)	src/utils/cSoundPlayer.cpp@616280c:216	Останавливает прежний музыкальный трек перед заменой.
+PORT	src/utils/cSoundPlayer.cpp	MIX_SetTrackAudio (music)	src/utils/cSoundPlayer.cpp@616280c:217	Назначает аудиообъект музыкальной дорожке.
+PORT	src/utils/cSoundPlayer.cpp	MIX_SetTrackLoops	src/utils/cSoundPlayer.cpp@616280c:218	Выключает повторы на дорожке; повтором управляет AudioContext.
+PORT	src/utils/cSoundPlayer.cpp	MIX_PlayTrack (music)	src/utils/cSoundPlayer.cpp@616280c:219	Запускает музыку на дорожке.
+PORT	src/utils/cSoundPlayer.cpp	MIX_DestroyAudio (custom file)	src/utils/cSoundPlayer.cpp@616280c:225	Освобождает ранее загруженный пользовательский файл.
+PORT	src/utils/cSoundPlayer.cpp	MIX_TrackPlaying (music)	src/utils/cSoundPlayer.cpp@616280c:235	Проверяет, проигрывается ли музыка.
+PORT	src/utils/cSoundPlayer.cpp	MIX_StopTrack (music stop)	src/utils/cSoundPlayer.cpp@616280c:241	Останавливает музыку.
+PORT	src/utils/cSoundPlayer.cpp	MIX_SetTrackGain (music volume)	src/utils/cSoundPlayer.cpp@616280c:250	Задаёт усиление музыкальной дорожки при изменении громкости.
+PORT	src/utils/cSoundPlayer.cpp	MIX_SetTrackGain (SFX volume)	src/utils/cSoundPlayer.cpp@616280c:265	Задаёт усиление дорожек эффектов при изменении громкости эффектов.
+PORT	src/utils/cSoundPlayer.cpp	MIX_StopAllTracks	src/utils/cSoundPlayer.cpp@616280c:273	Останавливает все дорожки при отключении звуковых эффектов.
+PORT	src/utils/cSoundPlayer.cpp	MIX_StopTrack (music disable)	src/utils/cSoundPlayer.cpp@616280c:281	Останавливает музыку при её отключении.

@@ -1,0 +1,60 @@
+ревизия	файл	путь@ревизия:строка	строка кода
+FORK1	Разбирается аргумент --ui-audit-out	src/debug/UiAuditArguments.cpp@9208dcf:32	else if (std::strcmp(argv[i], "--ui-audit-out") == 0 && i + 1 < argc) {
+FORK1	значение аргумента --ui-audit-out сохраняется в s_options.outDir	src/debug/UiAuditArguments.cpp@9208dcf:33	            s_options.outDir = argv[++i];
+FORK1	Папка --ui-audit-out создаётся	src/debug/UiAuditCapture.cpp@9208dcf:240	    fs::create_directories(outDir, error);
+FORK1	<scene-id>.png — построение имени	src/debug/UiAuditCapture.cpp@9208dcf:247	    const fs::path png = outDir / (std::string(g_scene->id) + ".png");
+FORK1	writePng — функция сохранения кадра в PNG	src/debug/UiAuditCapture.cpp@9208dcf:213	bool writePng(SDL_Renderer *renderer, const std::filesystem::path &path, int &outputW, int &outputH)
+FORK1	writePng — фактическое сохранение через IMG_SavePNG	src/debug/UiAuditCapture.cpp@9208dcf:227	            ok = IMG_SavePNG(surface, path.string().c_str()) == 0;
+FORK1	writePng вызывается с renderer и путём PNG	src/debug/UiAuditCapture.cpp@9208dcf:248	    if (!writePng(UiAuditAccess::renderer(game), png, outputW, outputH)) {
+FORK1	<scene-id>.geometry.jsonl — построение имени	src/debug/UiAuditCapture.cpp@9208dcf:255	    const fs::path log = outDir / (std::string(g_scene->id) + ".geometry.jsonl");
+FORK1	JSONL-заголовок, первая часть	src/debug/UiAuditCapture.cpp@9208dcf:161	    file << "{\"k\":\"header\",\"scene\":\"" << escapeJson(g_scene->id) << "\",\"resolution\":\"" << outputW << 'x'
+FORK1	JSONL-заголовок, продолжение	src/debug/UiAuditCapture.cpp@9208dcf:162	         << outputH << "\",\"language\":\"" << (localization::isEnglish() ? "en" : "ru") << "\",\"graphics\":\"hd\",\"canvas\":{\"w\":" << game.m_screenW
+FORK1	JSONL-заголовок, продолжение	src/debug/UiAuditCapture.cpp@9208dcf:163	         << ",\"h\":" << game.m_screenH << "},\"game_screen\":" << (g_scene->gameScreen ? "true" : "false")
+FORK1	JSONL-заголовок, продолжение	src/debug/UiAuditCapture.cpp@9208dcf:164	         << ",\"render_scale\":" << UiAuditAccess::renderScale(game)
+FORK1	JSONL-заголовок, продолжение	src/debug/UiAuditCapture.cpp@9208dcf:165	         << ",\"world_scale\":" << UiAuditAccess::worldScale(game);
+FORK1	Вызов записи geometry JSONL	src/debug/UiAuditCapture.cpp@9208dcf:256	    if (!writeGeometry(game, log, outputW, outputH)) {
+FORK1	JSONL-запись текстовой геометрии (ключи k,s,x,y,w,h,box)	src/debug/UiAuditCapture.cpp@9208dcf:177	                file << "{\"k\":\"text\",\"s\":\"" << escapeJson(entry.label) << "\"," << rectJson(entry.rect)
+FORK1	Путь output директории берётся из options().outDir	src/debug/UiAuditCapture.cpp@9208dcf:238	    const fs::path outDir(options().outDir);
+FORK1	Создаётся saves/ относительно CWD, отдельно от --ui-audit-out	src/debug/UiAuditAccess.cpp@9208dcf:141	    std::filesystem::create_directories("saves");
+FORK1	При подготовке сцены вызывается запись файла слота 1	src/debug/UiAuditAccess.cpp@9208dcf:142	    SaveGameManager::saveGame(game, 1, "", error);
+FORK1	Слот 2	src/debug/UiAuditAccess.cpp@9208dcf:143	    SaveGameManager::saveGame(game, 2, "A very long save name used to check how the slot row fits", error);
+FORK1	Слот 5	src/debug/UiAuditAccess.cpp@9208dcf:144	    SaveGameManager::saveGame(game, 5, "Before the final attack", error);
+FORK1	Файл-заглушка save03.d2s	src/debug/UiAuditAccess.cpp@9208dcf:145	    std::ofstream(SaveGameManager::slotPath(3), std::ios::binary) << "not a save file";
+FORK1	Папка слота 6 создаётся	src/debug/UiAuditAccess.cpp@9208dcf:146	    std::filesystem::create_directories(SaveGameManager::slotPath(6));
+FORK1	Папка слота 6	src/debug/UiAuditAccess.cpp@9208dcf:146	    std::filesystem::create_directories(SaveGameManager::slotPath(6));
+FORK1	Имя слота 1 — quicksave.d2s	src/save/SaveGameManager.cpp@9208dcf:1355	        return std::filesystem::path("saves") / "quicksave.d2s";
+FORK1	Имена слотов от остальных номеров	src/save/SaveGameManager.cpp@9208dcf:1357	    return std::filesystem::path("saves") /
+FORK1	Шаблон имени слота	src/save/SaveGameManager.cpp@9208dcf:1358	           std::format("save{:02}.d2s", slot);
+PORT	Разбирается аргумент --ui-audit-out	src/debug/UiAuditArguments.cpp@010a6eb:32	else if (std::strcmp(argv[i], "--ui-audit-out") == 0 && i + 1 < argc) {
+PORT	значение аргумента --ui-audit-out сохраняется в s_options.outDir	src/debug/UiAuditArguments.cpp@010a6eb:33	            s_options.outDir = argv[++i];
+PORT	Папка --ui-audit-out создаётся	src/debug/UiAuditCapture.cpp@010a6eb:261	    fs::create_directories(outDir, error);
+PORT	<scene-id>.png — построение имени	src/debug/UiAuditCapture.cpp@010a6eb:268	    const fs::path png = outDir / (std::string(g_scene->id) + ".png");
+PORT	writePng — функция сохранения кадра в PNG	src/debug/UiAuditCapture.cpp@010a6eb:232	bool writePng(SDL_Renderer *renderer, const std::filesystem::path &path, int &outputW, int &outputH)
+PORT	writePng — фактическое сохранение через IMG_SavePNG	src/debug/UiAuditCapture.cpp@010a6eb:249	        saved = IMG_SavePNG(surface, path.string().c_str());
+PORT	writePng вызывается с renderer и путём PNG	src/debug/UiAuditCapture.cpp@010a6eb:269	    if (!writePng(UiAuditAccess::renderer(currentGame), png, outputW, outputH)) {
+PORT	<scene-id>.geometry.jsonl — построение имени	src/debug/UiAuditCapture.cpp@010a6eb:276	    const fs::path log = outDir / (std::string(g_scene->id) + ".geometry.jsonl");
+PORT	JSONL-заголовок, первая часть	src/debug/UiAuditCapture.cpp@010a6eb:175	    file << "{\"k\":\"header\",\"scene\":\"" << escapeJson(g_scene->id) << "\",\"resolution\":\"" << outputW << 'x'
+PORT	JSONL-заголовок, продолжение	src/debug/UiAuditCapture.cpp@010a6eb:176	         << outputH << "\",\"language\":\"en\",\"graphics\":\"hd\",\"canvas\":{\"w\":"
+PORT	JSONL-заголовок, продолжение	src/debug/UiAuditCapture.cpp@010a6eb:177	         << currentGame.m_gameSettings->getScreenW() << ",\"h\":" << currentGame.m_gameSettings->getScreenH()
+PORT	JSONL-заголовок, продолжение	src/debug/UiAuditCapture.cpp@010a6eb:178	         << "},\"game_screen\":" << (g_scene->gameScreen ? "true" : "false")
+PORT	JSONL-заголовок, продолжение	src/debug/UiAuditCapture.cpp@010a6eb:179	         << ",\"render_scale\":" << UiAuditAccess::renderScale(currentGame)
+PORT	JSONL-заголовок, продолжение	src/debug/UiAuditCapture.cpp@010a6eb:180	         << ",\"world_scale\":" << UiAuditAccess::worldScale(currentGame);
+PORT	Вызов записи geometry JSONL	src/debug/UiAuditCapture.cpp@010a6eb:277	    if (!writeGeometry(currentGame, log, outputW, outputH)) {
+PORT	JSONL-запись текстовой геометрии (ключи k,s,x,y,w,h,box)	src/debug/UiAuditCapture.cpp@010a6eb:196	                file << "{\"k\":\"text\",\"s\":\"" << escapeJson(entry.label) << "\"," << rectJson(entry.rect)
+PORT	Директория outDir создаётся при захвате	src/debug/UiAuditCapture.cpp@010a6eb:261	    fs::create_directories(outDir, error);
+PORT	Файлы фикстур записи располагаются в подкаталоге outDir/saves	src/debug/UiAuditCapture.cpp@010a6eb:474	    const std::filesystem::path savesDirectory = std::filesystem::path(options().outDir) / "saves";
+PORT	SaveGameManager настраивается на outDir/saves	src/debug/UiAuditCapture.cpp@010a6eb:475	    SaveGameManager::setSavesDirectory(savesDirectory);
+PORT	При подготовке сцены вызывается запись файла слота 1	src/debug/UiAuditAccess.cpp@010a6eb:929	    SaveGameManager::saveGame(currentGame, 1, "", error);
+PORT	При подготовке сцены вызывается запись файла слота 2	src/debug/UiAuditAccess.cpp@010a6eb:930	    SaveGameManager::saveGame(currentGame, 2, "A very long save name used to check how the slot row fits", error);
+PORT	При подготовке сцены вызывается запись файла слота 5	src/debug/UiAuditAccess.cpp@010a6eb:931	    SaveGameManager::saveGame(currentGame, 5, "Before the final attack", error);
+PORT	Запись слота 2	src/debug/UiAuditAccess.cpp@010a6eb:930	    SaveGameManager::saveGame(currentGame, 2, "A very long save name used to check how the slot row fits", error);
+PORT	Запись слота 5	src/debug/UiAuditAccess.cpp@010a6eb:931	    SaveGameManager::saveGame(currentGame, 5, "Before the final attack", error);
+PORT	Файл-заглушка слота 3	src/debug/UiAuditAccess.cpp@010a6eb:932	    std::ofstream(SaveGameManager::slotPath(3), std::ios::binary) << "not a save file";
+PORT	Каталог слота 6	src/debug/UiAuditAccess.cpp@010a6eb:933	    std::filesystem::create_directories(SaveGameManager::slotPath(6));
+PORT	Имя слота 1 — quicksave.d2s	src/save/SaveGameManager.cpp@010a6eb:792	        return savesDirectory() / "quicksave.d2s";
+PORT	Имена слотов от остальных номеров	src/save/SaveGameManager.cpp@010a6eb:794	    return savesDirectory() / std::format("save{:02}.d2s", slot);
+PORT	--ui-audit-frames дописывает длительность измерения в header geometry	src/debug/UiAuditCapture.cpp@010a6eb:188	    if (g_measureFrames > 0) {
+PORT	Поле frames в geometry header	src/debug/UiAuditCapture.cpp@010a6eb:189	        file << ",\"frames\":" << g_measureFrames << ",\"frame_ms\":"
+PORT	Значение frame_ms округляется до трёх знаков	src/debug/UiAuditCapture.cpp@010a6eb:190	             << std::format("{:.3f}", static_cast<double>(g_frameTotalNs) / 1e6 / g_measureFrames);
+PORT	roundtrip сцена копирует первый файл	src/debug/UiAuditAccess.cpp@010a6eb:994	    std::filesystem::copy_file(SaveGameManager::quickSavePath(),
+PORT	roundtrip файл в output/saves	src/debug/UiAuditAccess.cpp@010a6eb:995	                               SaveGameManager::savesDirectory() / "roundtrip-first.d2s",

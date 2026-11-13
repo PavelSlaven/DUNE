@@ -1,0 +1,10 @@
+значение	путь@9208dcf:строка	совпадение	число сцен
+Check options-window logs with audit rules 3 and 9.	tools/ui-audit/check_options_geometry.py@9208dcf:98	префикс options-	13
+credits-*.geometry.jsonl	tools/ui-audit/check_credits.py@9208dcf:24	префикс credits-	6
+options-game-main-nosaves	tools/ui-audit/check_options_geometry.py@9208dcf:14	сцена	1
+options-game-main-saves	tools/ui-audit/check_options_geometry.py@9208dcf:13	сцена	1
+options-menu-main	tools/ui-audit/check_options_geometry.py@9208dcf:12	сцена	1
+structure-health	tools/ui-audit/check_scenes.py@9208dcf:77	префикс structure-	2
+structure-label-right	tools/ui-audit/check_scenes.py@9208dcf:26	сцена	1
+structure-label-top	tools/ui-audit/check_scenes.py@9208dcf:26	сцена	1
+units-label-	tools/ui-audit/check_scenes.py@9208dcf:9	префикс units-	18

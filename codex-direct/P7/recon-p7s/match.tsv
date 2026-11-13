@@ -1,0 +1,189 @@
+английский	русский	строк в PORT	места в PORT
+Game saved.	Игра сохранена.	0	нет
+Game loaded.	Игра загружена.	0	нет
+Music off	Музыка выключена	0	нет
+Music on	Музыка включена	0	нет
+Saved. Restart the game.	Сохранено. Перезапустите игру.	2	src/debug/UiAuditAccess.cpp:146 | src/gamestates/cOptionsState.cpp:579
+Neutral notification	Обычное уведомление	0	нет
+CREDITS	КРЕДИТЫ	3	src/drawers/CreditsDrawer.cpp:259 | src/gamestates/cMainMenuState.cpp:183 | src/include/eGameState.cpp:94
+Hi-Tech	Авиазавод	3	src/context/cInfoContextCreator.cpp:1492 | src/drawers/cBuildingListDrawer.cpp:78 | src/utils/cIniUtils.cpp:105
+Spice Refinery	Переработчик пряности	2	src/context/cInfoContextCreator.cpp:1634 | src/drawers/cBuildingListDrawer.cpp:79
+Refinery	Переработчик	2	src/drawers/cBuildingListDrawer.cpp:79 | src/utils/cIniUtils.cpp:109
+MCV	Мобильная база	3	src/context/cInfoContextCreator.cpp:315 | src/drawers/cBuildingListDrawer.cpp:80 | src/utils/cIniUtils.cpp:136
+Light Infantry	Отряд пехоты	2	src/context/cInfoContextCreator.cpp:515 | src/drawers/cBuildingListDrawer.cpp:81
+Infantry	Пехота	2	src/drawers/cBuildingListDrawer.cpp:81 | src/utils/cIniUtils.cpp:133
+Troopers	Отряд ракетчиков	3	src/context/cInfoContextCreator.cpp:550 | src/drawers/cBuildingListDrawer.cpp:82 | src/utils/cIniUtils.cpp:125
+READY	ГОТОВО	1	src/drawers/cBuildingListDrawer.cpp:94
+Upgrade	Улучшение	2	src/context/cInfoContextCreator.cpp:1154 | src/drawers/cBuildingListDrawer.cpp:411
+OCCUPIED	ЗАНЯТО	1	src/drawers/cBuildingListDrawer.cpp:443
+Move	Переместить	0	нет
+LMB	ЛКМ	0	нет
+Attack	Атаковать	0	нет
+Repair	Ремонт	1	src/utils/cIniUtils.cpp:107
+Unload	Разгрузить	0	нет
+Deploy	Развернуть	0	нет
+Rally	Точка сбора	0	нет
+Release	Выпустить	0	нет
+Sight: unknown	Обзор: неизвестно	0	нет
+Range: unknown	Дальность: неизвестно	0	нет
+Usage: unknown	Расход: неизвестно	0	нет
+Power output: unknown	Выработка энергии: неизвестно	0	нет
+Spice storage: unknown	Запас пряности: неизвестно	0	нет
+ORDER	ЗАКАЗ	0	нет
+HOUSE ATREIDES	ДОМ АТРЕЙДЕС	1	src/drawers/cSideBarDrawer.cpp:162
+HOUSE HARKONNEN	ДОМ ХАРКОННЕН	1	src/drawers/cSideBarDrawer.cpp:165
+HOUSE ORDOS	ДОМ ОРДОС	1	src/drawers/cSideBarDrawer.cpp:168
+UNKNOWN HOUSE	НЕИЗВЕСТНЫЙ ДОМ	2	src/drawers/cSideBarDrawer.cpp:173 | src/utils/Log.cpp:99
+PWR	ЭНЕРГ.	1	src/drawers/cSideBarDrawer.cpp:353
+POWER	ЭНЕРГИЯ	1	src/drawers/cSideBarDrawer.cpp:353
+SPC	ПРЯН.	1	src/drawers/cSideBarDrawer.cpp:362
+SPICE	ПРЯНОСТЬ	1	src/drawers/cSideBarDrawer.cpp:362
+Frigate arriving...	Фрегат прибывает…	0	нет
+ATREIDES	АТРЕЙДЕС	2	src/gamestates/cChooseHouseState.cpp:132 | src/utils/Log.cpp:90
+ORDOS	ОРДОС	2	src/gamestates/cChooseHouseState.cpp:133 | src/utils/Log.cpp:92
+HARKONNEN	ХАРКОННЕН	2	src/gamestates/cChooseHouseState.cpp:134 | src/utils/Log.cpp:91
+BACK	НАЗАД	0	нет
+Campaign	Кампания	1	src/gamestates/cMainMenuState.cpp:155
+Skirmish	Схватка	2	src/gamestates/cMainMenuState.cpp:158 | src/gamestates/cSetupSkirmishState.cpp:448
+Multiplayer	Сетевая игра	0	нет
+Saved games	Сохранения	0	нет
+Settings	Настройки	0	нет
+Hall of Fame	Зал славы	1	src/gamestates/cMainMenuState.cpp:169
+Exit	Выход	1	src/gamestates/cMainMenuState.cpp:176
+Powered by SDL2	На базе SDL2	0	нет
+Back	Назад	6	src/gamestates/cChooseHouseState.cpp:141 | src/gamestates/cCreditsState.cpp:82 | src/gamestates/cCreditsState.cpp:89 | src/gamestates/cOptionsState.cpp:152 | src/gamestates/cSelectMissionState.cpp:157
+MISSION SELECT	ВЫБОР МИССИИ	0	нет
+Three Houses came to Dune.	Три Дома прибыли на Дюну.	0	нет
+To take control of the land.	Чтобы покорить её земли.	1	src/gamestates/cSelectYourNextConquestState.cpp:232
+It has now become divided.	Теперь Дюна разделена.	0	нет
+SELECT YOUR NEXT REGION	ВЫБЕРИТЕ СЛЕДУЮЩИЙ РЕГИОН	1	src/gamestates/cSelectYourNextConquestState.cpp:453
+Select your next region.	Выберите следующий регион.	2	src/gamestates/cSelectYourNextConquestState.cpp:709 | src/gamestates/cSelectYourNextConquestState.cpp:731
+Next	Далее	1	src/gamestates/cSetupSkirmishState.cpp:261
+START	НАЧАТЬ	0	нет
+Maps	Карты	1	src/gamestates/cSetupSkirmishState.cpp:457
+Preview	Предпросмотр	1	src/gamestates/cSetupSkirmishState.cpp:465
+Player	Игрок	1	src/gamestates/cSetupSkirmishState.cpp:484
+House	Дом	3	src/gamestates/cSetupSkirmishState.cpp:484 | src/utils/IniParsing.cpp:166 | src/utils/IniParsing.cpp:199
+Credits	Кредиты	2	src/gamestates/cSetupSkirmishState.cpp:484 | src/utils/IniParsing.cpp:196
+Units	Войска	1	src/gamestates/cSetupSkirmishState.cpp:484
+Team	Команда	2	src/gamestates/cSetupSkirmishState.cpp:484 | src/utils/IniParsing.cpp:195
+Random	Случайно	1	src/gamestates/cSetupSkirmishState.cpp:623
+AI	ИИ	1	src/utils/Log.cpp:63
+YES	ДА	2	src/gamestates/cSetupSkirmishState.cpp:734 | src/gamestates/cSetupSkirmishState.cpp:745
+NO	НЕТ	2	src/gamestates/cSetupSkirmishState.cpp:734 | src/gamestates/cSetupSkirmishState.cpp:745
+Auto-detonate: -	Автоподрыв: -	0	нет
+OPTIONS	НАСТРОЙКИ	2	src/include/eGameState.cpp:82 | src/managers/cDrawManager.cpp:333
+SPEED	СКОРОСТЬ	0	нет
+Random map	Случайная карта	1	src/gameobjects/map/cPreviewMaps.cpp:419
+ERROR	ОШИБКА	1	src/utils/Log.cpp:45
+SMALL	МАЛАЯ	3	src/game/cGame_logic.cpp:729 | src/gameobjects/map/cPreviewMaps.cpp:449 | src/utils/cFileValidator.h:42
+MEDIUM	СРЕДНЯЯ	1	src/gameobjects/map/cPreviewMaps.cpp:452
+LARGE	БОЛЬШАЯ	1	src/gameobjects/map/cPreviewMaps.cpp:455
+HUGE	ОГРОМНАЯ	1	src/gameobjects/map/cPreviewMaps.cpp:457
+Missions	Миссии	0	нет
+Repeat	Повторить	4	src/gameobjects/mentat/AtreidesMentat.cpp:38 | src/gameobjects/mentat/HarkonnenMentat.cpp:37 | src/gameobjects/mentat/OrdosMentat.cpp:36 | src/gameobjects/mentat/SardaukarMentat.cpp:37
+No	Нет	1	src/gameobjects/mentat/BeneMentat.cpp:45
+Yes	Да	5	src/gameobjects/mentat/AtreidesMentat.cpp:47 | src/gameobjects/mentat/BeneMentat.cpp:54 | src/gameobjects/mentat/HarkonnenMentat.cpp:46 | src/gameobjects/mentat/OrdosMentat.cpp:45 | src/gameobjects/mentat/SardaukarMentat.cpp:46
+Atreides	Атрейдес	5	src/game/CampaignProgress.cpp:29 | src/gameobjects/players/cPlayer.cpp:825 | src/utils/IniParsing.cpp:325 | src/utils/cIniUtils.cpp:32 | src/utils/cIniUtils.cpp:41
+Harkonnen	Харконнен	5	src/game/CampaignProgress.cpp:29 | src/gameobjects/players/cPlayer.cpp:828 | src/utils/IniParsing.cpp:327 | src/utils/cIniUtils.cpp:34 | src/utils/cIniUtils.cpp:42
+Ordos	Ордос	5	src/game/CampaignProgress.cpp:29 | src/gameobjects/players/cPlayer.cpp:831 | src/utils/IniParsing.cpp:326 | src/utils/cIniUtils.cpp:33 | src/utils/cIniUtils.cpp:43
+Sardaukar	Сардаукары	5	src/game/CampaignProgress.cpp:29 | src/gameobjects/players/cPlayer.cpp:834 | src/utils/IniParsing.cpp:328 | src/utils/cIniUtils.cpp:35 | src/utils/cIniUtils.cpp:44
+Fremen	Фримены	6	src/context/cInfoContextCreator.cpp:885 | src/gameobjects/players/cPlayer.cpp:837 | src/gameobjects/units/cUnits.cpp:214 | src/utils/IniParsing.cpp:329 | src/utils/cIniUtils.cpp:36
+Mercenary	Наёмники	4	src/gameobjects/players/cPlayer.cpp:840 | src/utils/IniParsing.cpp:330 | src/utils/cIniUtils.cpp:37 | src/utils/cIniUtils.cpp:45
+No House	Без Дома	0	нет
+Corrino	Коррино	1	src/utils/cIniUtils.cpp:47
+Unknown	Неизвестно	5	src/context/cInfoContextCreator.cpp:932 | src/context/cInfoContextCreator.cpp:1413 | src/main.cpp:144 | src/utils/common.cpp:262 | src/utils/common.cpp:276
+You lost a harvester.	Вы потеряли харвестер.	0	нет
+You have one harvester left.	У вас остался один харвестер.	0	нет
+No harvesters or refineries left!	Не осталось харвестеров и переработчиков!	0	нет
+No harvesters left. Reinforcements incoming...	Харвестеров не осталось. Прибывает подкрепление…	0	нет
+Save file is too large	Файл сохранения слишком большой	0	нет
+Save header is corrupted	Повреждён заголовок сохранения	0	нет
+Unsupported save version	Неподдерживаемая версия сохранения	0	нет
+Save checksum does not match	Контрольная сумма сохранения не совпадает	0	нет
+Save name is corrupted	Имя сохранения повреждено	0	нет
+Invalid map size in save	Некорректный размер карты в сохранении	0	нет
+Invalid player list	Некорректный список игроков	0	нет
+Player data is corrupted	Повреждены данные игроков	0	нет
+Invalid player settings	Некорректные параметры игрока	0	нет
+Invalid map data	Некорректные данные карты	0	нет
+Map cells are corrupted	Ячейки карты повреждены	0	нет
+Invalid terrain type	Некорректный тип местности	0	нет
+Invalid structure list	Некорректный список зданий	0	нет
+Structure data is corrupted	Повреждены данные зданий	0	нет
+Invalid reference in structure data	Некорректная ссылка в данных здания	0	нет
+Invalid unit list	Некорректный список юнитов	0	нет
+Unit data is corrupted	Повреждены данные юнитов	0	нет
+Invalid reference in unit data	Некорректная ссылка в данных юнита	0	нет
+Invalid reinforcement list	Некорректный список подкреплений	0	нет
+Reinforcement data is corrupted	Повреждены данные подкреплений	0	нет
+Invalid reinforcement data	Некорректные данные подкрепления	0	нет
+Invalid construction queue	Некорректная очередь строительства	0	нет
+Construction queue is corrupted	Повреждена очередь строительства	0	нет
+Invalid construction queue entry	Некорректная запись очереди строительства	0	нет
+Invalid factory pad list	Некорректный список площадок заводов	0	нет
+Factory pad data is corrupted	Повреждены данные площадок заводов	0	нет
+Invalid factory pad data	Некорректные данные площадки завода	0	нет
+Save data is incomplete	Данные сохранения неполны	0	нет
+Invalid structure in save	Некорректное здание в сохранении	0	нет
+Could not create the saves folder	Не удалось создать папку saves	0	нет
+Could not create temporary save file	Не удалось создать временный файл сохранения	0	нет
+Error writing save file	Ошибка записи сохранения	0	нет
+Quick Save	Быстрое сохранение	0	нет
+Invalid save slot number	Некорректный номер слота	0	нет
+Saving is only available during a mission	Сохранять можно только во время миссии	0	нет
+Save file was not found	Сохранение не найдено	0	нет
+Save 	Сохранение 	0	нет
+SAVED GAMES	СОХРАНЕНИЯ	0	нет
+Save	Сохранить	1	src/gamestates/cEditorState.cpp:516
+Load	Загрузить	1	src/gamestates/cMainMenuState.cpp:162
+Close	Закрыть	0	нет
+saved	сохранён	0	нет
+ERROR: UNKNOWN TYPE	ОШИБКА: НЕИЗВЕСТНЫЙ ТИП	0	нет
+Unknown type.	Неизвестный тип.	1	src/sidebar/cBuildingListItem.cpp:467
+Carry-All	Транспортник	1	src/context/cInfoContextCreator.cpp:197
+Ornithopter	Орнитоптер	2	src/context/cInfoContextCreator.cpp:217 | src/utils/cIniUtils.cpp:140
+Devastator	Девастатор	2	src/context/cInfoContextCreator.cpp:237 | src/utils/cIniUtils.cpp:134
+Harvester	Харвестер	2	src/context/cInfoContextCreator.cpp:255 | src/utils/cIniUtils.cpp:118
+Tank	Танк	2	src/context/cInfoContextCreator.cpp:275 | src/utils/cIniUtils.cpp:119
+Siege Tank	Осадный танк	2	src/context/cInfoContextCreator.cpp:299 | src/utils/cIniUtils.cpp:121
+Deviator	Девиатор	2	src/context/cInfoContextCreator.cpp:335 | src/utils/cIniUtils.cpp:135
+Launcher	Ракетная установка	2	src/context/cInfoContextCreator.cpp:357 | src/utils/cIniUtils.cpp:123
+Quad	Квад	2	src/context/cInfoContextCreator.cpp:378 | src/utils/cIniUtils.cpp:128
+Trike	Трайк	3	src/context/cInfoContextCreator.cpp:399 | src/utils/cIniUtils.cpp:129 | src/utils/cIniUtils.cpp:137
+Raider Trike	Рейдерский трайк	2	src/context/cInfoContextCreator.cpp:410 | src/utils/cIniUtils.cpp:130
+Frigate	Фрегат	1	src/context/cInfoContextCreator.cpp:437
+Sonic Tank	Звуковой танк	2	src/context/cInfoContextCreator.cpp:467 | src/utils/cIniUtils.cpp:126
+Soldier	Солдат	3	src/context/cInfoContextCreator.cpp:490 | src/utils/cIniUtils.cpp:132 | src/utils/cIniUtils.cpp:138
+Trooper	Ракетчик	2	src/context/cInfoContextCreator.cpp:525 | src/utils/cIniUtils.cpp:124
+Fremen (1)	Фримен	1	src/context/cInfoContextCreator.cpp:576
+Fremen (3)	Отряд фрименов	1	src/context/cInfoContextCreator.cpp:598
+Saboteur	Диверсант	3	src/context/cInfoContextCreator.cpp:627 | src/context/cInfoContextCreator.cpp:871 | src/utils/cIniUtils.cpp:142
+Sandworm	Песчаный червь	2	src/context/cInfoContextCreator.cpp:649 | src/utils/cIniUtils.cpp:141
+Death Hand	Рука Смерти	1	src/context/cInfoContextCreator.cpp:904
+Build 4 concrete slabs at once	Укладка плит 2×2	1	src/context/cInfoContextCreator.cpp:1172
+Build Rocket Turret	Ракетные башни	1	src/context/cInfoContextCreator.cpp:1188
+Build Quad at Light Factory	Квады на лёгком заводе	1	src/context/cInfoContextCreator.cpp:1204
+Build MCV at Heavy Factory	Мобильные базы на тяжёлом заводе	1	src/context/cInfoContextCreator.cpp:1222
+Build Rocket Launcher at Heavy Factory	Ракетные установки на тяжёлом заводе	1	src/context/cInfoContextCreator.cpp:1238
+Build Siege Tank at Heavy Factory	Осадные танки на тяжёлом заводе	2	src/context/cInfoContextCreator.cpp:1253 | src/context/cInfoContextCreator.cpp:1268
+Build Ornithopter at Hi-Tech	Орнитоптеры на авиазаводе	1	src/context/cInfoContextCreator.cpp:1283
+Build Troopers at WOR	Ракетчики в военной академии	1	src/context/cInfoContextCreator.cpp:1300
+Build Infantry at Barracks	Пехота в казармах	1	src/context/cInfoContextCreator.cpp:1317
+Concrete Slab	Бетонная плита	1	src/context/cInfoContextCreator.cpp:1424
+4 Concrete Slabs	Бетонная площадка 2×2	1	src/context/cInfoContextCreator.cpp:1433
+Concrete Wall	Бетонная стена	1	src/context/cInfoContextCreator.cpp:1444
+Windtrap	Ветроловушка	2	src/context/cInfoContextCreator.cpp:1459 | src/utils/cIniUtils.cpp:103
+Heavy Factory	Тяжёлый завод	1	src/context/cInfoContextCreator.cpp:1476
+Repair Facility	Ремонтный центр	1	src/context/cInfoContextCreator.cpp:1508
+Palace	Дворец	2	src/context/cInfoContextCreator.cpp:1523 | src/utils/cIniUtils.cpp:100
+Light Factory	Лёгкий завод	1	src/context/cInfoContextCreator.cpp:1540
+Outpost	Командный пост	2	src/context/cInfoContextCreator.cpp:1563 | src/utils/cIniUtils.cpp:108
+Barracks	Казармы	2	src/context/cInfoContextCreator.cpp:1584 | src/utils/cIniUtils.cpp:111
+WOR	Военная академия	3	src/context/cInfoContextCreator.cpp:1600 | src/utils/cIniUtils.cpp:88 | src/utils/cIniUtils.cpp:110
+Spice Storage Silo	Хранилище пряности	1	src/context/cInfoContextCreator.cpp:1618
+Construction Yard	Стройбаза	1	src/context/cInfoContextCreator.cpp:1652
+Starport	Космопорт	2	src/context/cInfoContextCreator.cpp:1668 | src/utils/cIniUtils.cpp:112
+House of IX	Техноцентр Икс	1	src/context/cInfoContextCreator.cpp:1684
+Gun Turret	Пушечная башня	1	src/context/cInfoContextCreator.cpp:1699
+Rocket Turret	Ракетная башня	1	src/context/cInfoContextCreator.cpp:1715

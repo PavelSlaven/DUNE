@@ -1,0 +1,93 @@
+путь	строка	литералы
+src/building/cItemBuilder.cpp	206	Unable to create more.
+src/controls/mousestates/cMouseNormalState.cpp	97	{} units selected
+src/controls/mousestates/cMousePlaceState.cpp	88	Unable to create more.
+src/drawers/cBuildingListDrawer.cpp	607	Max
+src/drawers/cBuildingListDrawer.cpp	608	built
+src/drawers/cStructureDrawer.cpp	263	degrees = {:.1f}, faceAngle = {}
+src/game/cGame_logic.cpp	1520	Screenshot saved.
+src/game/cGame_logic.cpp	1537	Music toggle successfully
+src/game/cGame_logic.cpp	1542	Music volume down
+src/game/cGame_logic.cpp	1547	Music volume up
+src/game/cGame_logic.cpp	1553	Game speed up
+src/game/cGame_logic.cpp	1559	Game speed down
+src/gameobjects/mentat/AbstractMentat.cpp	90	Mission select
+src/gameobjects/mentat/AtreidesMentat.cpp	38	Repeat
+src/gameobjects/mentat/AtreidesMentat.cpp	47	Yes
+src/gameobjects/mentat/BeneMentat.cpp	45	No
+src/gameobjects/mentat/BeneMentat.cpp	54	Yes
+src/gameobjects/mentat/HarkonnenMentat.cpp	37	Repeat
+src/gameobjects/mentat/HarkonnenMentat.cpp	46	Yes
+src/gameobjects/mentat/OrdosMentat.cpp	36	Repeat
+src/gameobjects/mentat/OrdosMentat.cpp	45	Yes
+src/gameobjects/mentat/SardaukarMentat.cpp	37	Repeat
+src/gameobjects/mentat/SardaukarMentat.cpp	46	Yes
+src/gameobjects/structures/cOrderProcesser.cpp	160	Frigate is arriving...
+src/gameobjects/structures/cOrderProcesser.cpp	172	Frigate is arriving...
+src/gamestates/cCreditsState.cpp	89	Back
+src/gamestates/cEditorState.cpp	242	size
+src/gamestates/cGamePlaying.cpp	475	MouseCell {}
+src/gamestates/cGamePlaying.cpp	481	FPS/REST: {}/{}
+src/gamestates/cMainMenuState.cpp	76	DEBUG
+src/gamestates/cMainMenuState.cpp	183	CREDITS
+src/gamestates/cNewmapEditorState.cpp	94	Name your map:
+src/gamestates/cNewmapEditorState.cpp	113	Name of author:
+src/gamestates/cNewmapEditorState.cpp	132	Description:
+src/gamestates/cNewmapEditorState.cpp	151	Width size:
+src/gamestates/cNewmapEditorState.cpp	176	Height size:
+src/gamestates/cNewmapEditorState.cpp	201	Random:
+src/gamestates/cNewmapEditorState.cpp	229	Dune 2 seed: 
+src/gamestates/cNewmapEditorState.cpp	251	Return to menu
+src/gamestates/cNewmapEditorState.cpp	268	Create map
+src/gamestates/cOptionsState.cpp	123	Main menu
+src/gamestates/cOptionsState.cpp	137	Quit game
+src/gamestates/cOptionsState.cpp	152	Back
+src/gamestates/cOptionsState.cpp	167	Save game
+src/gamestates/cOptionsState.cpp	179	Load game
+src/gamestates/cOptionsState.cpp	193	Mission select
+src/gamestates/cOptionsState.cpp	208	Cheat mode enabled
+src/gamestates/cOptionsState.cpp	221	Music
+src/gamestates/cOptionsState.cpp	247	Volume
+src/gamestates/cOptionsState.cpp	272	Sound
+src/gamestates/cOptionsState.cpp	298	Volume
+src/gamestates/cOptionsState.cpp	323	Game speed
+src/gamestates/cOptionsState.cpp	352	FOW
+src/gamestates/cOptionsState.cpp	380	Game scale
+src/gamestates/cOptionsState.cpp	428	Object size
+src/gamestates/cOptionsState.cpp	475	Low power icon
+src/gamestates/cOptionsState.cpp	503	Apply
+src/gamestates/cOptionsState.cpp	529	More settings
+src/gamestates/cOptionsState.cpp	579	Saved. Restart the game.
+src/gamestates/cOptionsState.cpp	582	Could not save preferences.ini
+src/gamestates/cScoringState.cpp	64	MISSION REPORT
+src/gamestates/cScoringState.cpp	69	Mission time: {:02}:{:02}
+src/gamestates/cScoringState.cpp	109	Click to continue
+src/gamestates/cSelectMissionState.cpp	113	CONTINUE
+src/gamestates/cSelectMissionState.cpp	136	MISSION {}
+src/gamestates/cSelectMissionState.cpp	157	Back
+src/gamestates/cSelectYourNextConquestState.cpp	167	Mission select
+src/gamestates/cSelectYourNextConquestState.cpp	227	3 Houses have come to Dune.
+src/gamestates/cSelectYourNextConquestState.cpp	232	To take control of the land.
+src/gamestates/cSelectYourNextConquestState.cpp	238	That has become divided.
+src/gamestates/cSelectYourNextConquestState.cpp	709	Select your next region.
+src/gamestates/cSelectYourNextConquestState.cpp	731	Select your next region.
+src/gamestates/cSelectYourNextConquestState.cpp	901	region {}
+src/gamestates/cSetupSkirmishState.cpp	261	Next
+src/gamestates/cSetupSkirmishState.cpp	271	Previous
+src/gamestates/cSetupSkirmishState.cpp	324	Back
+src/gamestates/cSetupSkirmishState.cpp	344	Start
+src/gamestates/cSetupSkirmishState.cpp	361	Surprise me
+src/gamestates/cSetupSkirmishState.cpp	377	New Map
+src/gamestates/cSetupSkirmishState.cpp	391	Modify
+src/gamestates/cSetupSkirmishState.cpp	668	Startpoints: {}
+src/gamestates/cSetupSkirmishState.cpp	737	Auto-detonate : -
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp	72	Malformed command: {}
+src/gui/GuiConsole/GuiConsoleMessageParser.cpp	84	Help mode.
+src/managers/cDrawManager.cpp	211	Units {}/{}
+src/managers/cDrawManager.cpp	212	Structures {}/{}
+src/managers/cDrawManager.cpp	213	Bullets {}/{}
+src/managers/cDrawManager.cpp	214	Particles {}/{}
+src/managers/cDrawManager.cpp	215	Visible particles BOTTOM: {}/ TOP: {}
+src/managers/cDrawManager.cpp	340	OPTIONS
+src/sidebar/cSideBar.cpp	108	Unable to create more.
+src/sidebar/cSideBar.cpp	113	Unable to create more.

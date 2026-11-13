@@ -1,0 +1,254 @@
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/CreditsDrawer.cpp:255:    m_gameTextDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/CreditsDrawer.cpp:268:    m_gameTextDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:314:                    m_smallTextDrawer->drawTextCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:329:                    m_smallTextDrawer->drawTextScaledCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:340:                    m_smallTextDrawer->drawTextScaledCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:410:                        m_smallTextDrawer->drawTextCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:442:                        m_smallTextDrawer->drawTextCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:544:            m_gameTextDrawer->drawText(textX, textY, std::format("{}", amountToShow));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:550:            m_gameTextDrawer->drawText(textX, textY, std::format("{}", item->getSubList()));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:605:    m_smallTextDrawer->drawTextCenteredInBox("Max", x, y, width, halfHeight, Color::Red);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:606:    m_smallTextDrawer->drawTextCenteredInBox("built", x, y + halfHeight, width, halfHeight, Color::Red);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:734:        m_smallTextDrawer->drawTextCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:775:            m_smallTextDrawer->drawTextCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:786:            m_smallTextDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:793:            m_smallTextDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cBuildingListDrawer.cpp:824:        m_smallTextDrawer->drawText(priceX, y + 4, priceColor, price, false);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cMapDrawer.cpp:305://        textDrawer.drawText(0, 100, msg);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cMessageDrawer.cpp:67:        m_textDrawer->drawText(m_position.x+13, m_position.y+6, Color{0, 0, 0,Uint8(m_alpha)}, m_message, false);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cMessageDrawer.cpp:165:void cMessageDrawer::setMessage(const std::string &msg, bool keepMessage)
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cMessageDrawer.h:60:    void setMessage(const std::string &msg, bool keepMessage = false);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cSideBarDrawer.cpp:230:    m_smallTextDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cSideBarDrawer.cpp:307:    m_smallTextDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cSideBarDrawer.cpp:316:    m_smallTextDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cStructureDrawer.cpp:262:            m_textDrawer->drawText(x1 + 32, y1, std::format("degrees = {:.1f}, faceAngle = {}", degrees, facingAngle));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:45:void cTextDrawer::drawText(int x, int y, Color color, const std::string &msg, bool applyShadow) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:60:void cTextDrawer::drawText(cPoint &coords, Color color, const std::string &msg, bool applyShadow) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:62:    drawText(coords.x, coords.y, color, msg, applyShadow);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:65:void cTextDrawer::drawText(int x, int y, const std::string &msg, bool applyShadow) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:67:    drawText(x, y, Color::White , msg, applyShadow);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:70:void cTextDrawer::drawTextCentered(const std::string &msg, int y) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:72:    drawTextCentered(msg, y, Color::White);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:75:void cTextDrawer::drawTextCentered(const std::string &msg, int y, Color color) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:82:    drawText(xPos, y, color, msg);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:85:void cTextDrawer::drawTextCenteredInBox(const std::string &msg, int x, int y, int boxWidth, int boxHeight, Color color) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:101:    drawText(xPos, yPos, color, msg);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:104:void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:106:    drawTextCenteredInBox(msg, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), color);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:109:void cTextDrawer::drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:111:    drawTextCenteredInBox(msg, rect.getX() + offsetX, rect.getY() + offsetY, rect.getWidth(), rect.getHeight(), color);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:114:void cTextDrawer::drawTextScaledCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:139:void cTextDrawer::drawTextScaledOpticallyCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:174:void cTextDrawer::drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:186:    drawText(xPos, y, color, msg);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:189:void cTextDrawer::drawTextBottomRight(const std::string &msg, int margin) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:191:    drawTextBottomRight(Color::White, msg, margin);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:194:void cTextDrawer::drawTextBottomLeft(const std::string &msg, int margin) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:196:    drawTextBottomLeft(Color::White, msg, margin);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:199:void cTextDrawer::drawTextBottomRight(Color color, const std::string &msg, int margin) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:207:    drawText(x, y, color, msg);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:215:void cTextDrawer::drawTextBottomLeft(Color color, const std::string &msg, int margin) const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.cpp:221:    drawText(margin, y, color, msg);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:35:    void drawText(int x, int y, const std::string &msg, bool applyShadow = true) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:37:    void drawText(cPoint &coords, Color color, const std::string &msg, bool applyShadow = true) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:39:    void drawText(int x, int y, Color color, const std::string &msg, bool applyShadow = true) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:41:    void drawTextCentered(const std::string &msg, int y) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:43:    void drawTextCentered(const std::string &msg, int y, Color color) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:45:    void drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:52:    void drawTextCenteredInBox(const std::string &msg, int x, int y, int boxWidth, int boxHeight, Color color) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:54:    void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:56:    void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:57:    void drawTextScaledCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:58:    void drawTextScaledOpticallyCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:60:    void drawTextBottomRight(const std::string &msg, int margin=0) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:62:    void drawTextBottomLeft(const std::string &msg, int margin=0) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:64:    void drawTextBottomRight(Color color, const std::string &msg,int margin =0) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cTextDrawer.h:66:    void drawTextBottomLeft(Color color, const std::string &msg,int margin =0) const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cUnitDrawer.cpp:117:            textDrawer->drawText(drawx + 26, drawy - 11, Color::Black, groups);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cUnitDrawer.cpp:118:            textDrawer->drawText(drawx + 26, drawy - 12, Color::White, groups);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cUnitDrawer.cpp:328:    textDrawer->drawText(m_unit.draw_x(), m_unit.draw_y(), Color{255, 255, 255,ShadowTrans}, std::format("{}", m_unit.iID));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/drawers/cUnitDrawer.cpp:330:        textDrawer->drawText(m_unit.draw_x(), m_unit.draw_y()-16, Color{255,255,255,255}, std::format("{} / {} / {}", m_unit.getUnitsEaten(), m_unit.guardTimer.get(), m_unit.movewaitTimer.get()));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cGame_logic.cpp:1411:                m_notificationArea->addNotification(notifEvent->message, notifEvent->type);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cGame_logic.cpp:1520:        m_notificationArea->addNotification("Screenshot saved.", eNotificationType::NEUTRAL);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cGame_logic.cpp:1537:        m_notificationArea->addNotification("Music toggle successfully", eNotificationType::NEUTRAL);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cGame_logic.cpp:1542:        m_notificationArea->addNotification("Music volume down", eNotificationType::NEUTRAL);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cGame_logic.cpp:1547:        m_notificationArea->addNotification("Music volume up", eNotificationType::NEUTRAL);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cGame_logic.cpp:1553:        m_notificationArea->addNotification("Game speed up", eNotificationType::NEUTRAL);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cGame_logic.cpp:1559:        m_notificationArea->addNotification("Game speed down", eNotificationType::NEUTRAL);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cGame_logic.cpp:1576:        m_notificationArea->addNotification(message, eNotificationType::OTHER);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cNotificationArea.cpp:35:void cNotificationArea::addNotification(const std::string &msg, eNotificationType type)
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cNotificationArea.cpp:67:        textDrawer->drawText(x, y, notification.getColor(), notification.getMessage());
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/game/cNotificationArea.h:31:    void addNotification(const std::string &msg, eNotificationType type);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cChooseHouseState.cpp:126:    m_textDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cChooseHouseState.cpp:143:    m_textDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cChooseHouseState.cpp:228:    m_textDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cCreditsState.cpp:89:            .withLabel("Back")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cCreditsState.cpp:457:            m_textDrawer->drawTextCentered(line.txt.c_str(), textCrawlY, line.color);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cCreditsState.cpp:460:            m_textDrawer->drawTextCentered(line.name.c_str(), textCrawlY, line.color);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cCreditsState.cpp:465:            m_textDrawer->drawText(halfScreen+spaceBetween, textCrawlY, line.txt.c_str());
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cCreditsState.cpp:467:            m_textDrawer->drawText(halfScreen - (widthOfName + spaceBetween), textCrawlY, line.name.c_str());
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cEditorState.cpp:241:            .withLabel("size")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.cpp:282:    m_textDrawer->drawTextCentered(label, battlefield->getX(), battlefield->getWidth(), cSideBar::TopBarHeight + 10, fadingYellow);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.cpp:305:        drawTextFps();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.cpp:311:        drawTextTime();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.cpp:473:        m_textDrawer->drawText(0, cSideBar::TopBarHeight + 1, std::format("MouseCell {}", mouseCell));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.cpp:477:void cGamePlaying::drawTextFps() const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.cpp:479:    m_textDrawer->drawText(180,8, Color::Black, std::format("FPS/REST: {}/{}", m_timeManager->getFps(), m_timeManager->getWaitingTime()), false);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.cpp:482:void cGamePlaying::drawTextTime() const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.cpp:485:    m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1, Color::White, time);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.cpp:487:    m_textDrawer->drawText(m_settings->getScreenW() - cSideBar::SidebarWidth - 75, cSideBar::TopBarHeight + 1 + 15, Color::White, time);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.cpp:668:        // m_controlledPlayer->addNotification(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.h:74:    void drawTextFps() const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cGamePlaying.h:75:    void drawTextTime() const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cMainMenuState.cpp:76:                m_textDrawer->drawText(x, y, Color{48, 48, 48,255}, "DEBUG");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cMainMenuState.cpp:143:            .withLabel(label)
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cMainMenuState.cpp:183:        .withLabel("CREDITS")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cMainMenuState.cpp:251:    m_textDrawer->drawTextBottomRight(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cMainMenuState.cpp:255:    m_textDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cMainMenuState.cpp:261:        m_textDrawer->drawText(0, 0, std::format("{}, {}", m_mouse->getX(), m_mouse->getY()).c_str());
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cNewmapEditorState.cpp:94:        .withLabel("Name your map:")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cNewmapEditorState.cpp:113:        .withLabel("Name of author:")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cNewmapEditorState.cpp:132:        .withLabel("Description:")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cNewmapEditorState.cpp:151:        .withLabel("Width size:")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cNewmapEditorState.cpp:176:        .withLabel("Height size:")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cNewmapEditorState.cpp:201:        .withLabel("Random:")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cNewmapEditorState.cpp:229:        .withLabel("Dune 2 seed: ")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cNewmapEditorState.cpp:251:        .withLabel("Return to menu")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cNewmapEditorState.cpp:268:        .withLabel("Create map")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:123:            .withLabel("Main menu")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:137:            .withLabel("Quit game")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:152:            .withLabel("Back")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:167:                .withLabel("Save game")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:179:                .withLabel("Load game")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:193:                .withLabel("Mission select")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:208:                .withLabel("Cheat mode enabled")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:221:            .withLabel("Music")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:247:            .withLabel("Volume")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:272:            .withLabel("Sound")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:298:            .withLabel("Volume")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:323:            .withLabel("Game speed")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:352:            .withLabel("FOW")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:380:            .withLabel("Game scale")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:392:            .withLabel("<")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:404:            .withLabel("")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:416:            .withLabel(">")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:428:            .withLabel("Object size")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:440:            .withLabel("<")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:452:            .withLabel("")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:464:            .withLabel(">")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:475:            .withLabel("Low power icon")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:503:            .withLabel("Apply")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:516:            .withLabel("")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:529:            .withLabel("More settings")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:545:    m_statusLabel->setText("");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:553:    m_statusLabel->setText("");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:563:    m_renderScaleValueLabel->setText(scaleChoiceText(renderScale, calculateAutomaticRenderScalePercent(outputW, outputH)));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:564:    m_worldScaleValueLabel->setText(scaleChoiceText(worldScale, calculateAutomaticWorldScalePercent(outputH)));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:579:        m_statusLabel->setText("Saved. Restart the game.");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cOptionsState.cpp:582:        m_statusLabel->setText("Could not save preferences.ini");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cScoringState.cpp:64:    m_textDrawer->drawTextCentered("MISSION REPORT", y, Color::Yellow);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cScoringState.cpp:69:    m_textDrawer->drawTextCentered(std::format("Mission time: {:02}:{:02}", minutes, seconds), y, Color::White);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cScoringState.cpp:87:        m_textDrawer->drawTextCentered(playerName, y, nameColor);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cScoringState.cpp:89:        m_smallTextDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cScoringState.cpp:94:        m_smallTextDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cScoringState.cpp:99:        m_smallTextDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cScoringState.cpp:103:        m_smallTextDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cScoringState.cpp:109:    m_textDrawer->drawTextCentered("Click to continue", m_settings->getScreenH() - lineHeight - 8, Color::White);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectMissionState.cpp:113:        .withLabel("CONTINUE")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectMissionState.cpp:136:            .withLabel(std::format("MISSION {}", i))
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectMissionState.cpp:157:            .withLabel("Back")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectMissionState.cpp:215:    m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectYourNextConquestState.cpp:167:            .withLabel("Mission select")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectYourNextConquestState.cpp:227:            m_drawManager->setMessage("3 Houses have come to Dune.");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectYourNextConquestState.cpp:232:                m_drawManager->setMessage("To take control of the land.");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectYourNextConquestState.cpp:238:                m_drawManager->setMessage("That has become divided.");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectYourNextConquestState.cpp:289:                        m_drawManager->setMessage(regionTextString);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectYourNextConquestState.cpp:452:    m_textDrawer->drawTextCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectYourNextConquestState.cpp:672:        m_textDrawer->drawTextScaledCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectYourNextConquestState.cpp:709:        m_drawManager->setMessage("Select your next region.", true);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectYourNextConquestState.cpp:731:        m_drawManager->setMessage("Select your next region.", true);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSelectYourNextConquestState.cpp:901:    m_drawManager->setMessage(std::format("region {}",c-1));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:261:        .withLabel("Next")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:271:            .withLabel("Previous")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:324:            .withLabel("Back")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:344:            .withLabel("Start")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:361:            .withLabel("Surprise me")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:377:            .withLabel("New Map")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:391:            .withLabel("Modify")
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:447:    m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:456:    m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:464:    m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:489:        m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:569:    m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:583:    m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:595:    m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:624:    m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:636:        m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:646:        m_textDrawer->drawTextCentered(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:668:    m_textDrawer->drawText(startPoints.getX(), startPoints.getY(), textColor,std::format("Startpoints: {}",iStartingPoints));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:707:        m_textDrawer->drawText(previewMapRect.getX() + 4, infoY, Color::Yellow, mapName);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:708:        m_textDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:714:        m_textDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:720:        m_textDrawer->drawText(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:733:        m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), textColor,
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:737:        m_textDrawer->drawText(detonateBloomsRect.getX(), detonateBloomsRect.getY(), colorDisabled, "Auto-detonate : -");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:744:    m_textDrawer->drawText(bloomsRect.getX(), bloomsRect.getY(), textColor,
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:751:    m_textDrawer->drawText(wormsRect.getX(), wormsRect.getY(), textColor,
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:758:    m_textDrawer->drawText(techLevelRect.getX(), techLevelRect.getY(), textColor,
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cSetupSkirmishState.cpp:1536:        m_textDrawer->drawText(iDrawX + 4, iDrawY + 4, textColor, *nameToRender);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gamestates/cWinLoseState.cpp:96:        m_textDrawer->drawTextScaledCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.cpp:62:            drawText();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.cpp:65:            drawText();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.cpp:79:            drawText();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.cpp:92:            drawText();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.cpp:148:            drawText();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.cpp:159:void GuiButton::setText(const std::string& text)
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.cpp:189:void GuiButton::drawText() const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.cpp:217:                m_textDrawer->drawTextScaledOpticallyCenteredInBox(
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.cpp:227:                m_textDrawer->drawText(m_rect.getX() + 1, m_rect.getY() + 1, textColor, m_buttonText.c_str());
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.cpp:230:                m_textDrawer->drawText(m_rect.getX(), m_rect.getY(), textColor, m_buttonText.c_str());
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.h:44:    void setText(const std::string& text) override;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.h:84:    void drawText() const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiButton.h:112:    GuiButtonBuilder& withLabel(const std::string& label) {
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiConsole.cpp:109:        m_input->setText("");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiConsole/GuiConsoleMessageParser.cpp:72:        m_notificationArea->addNotification(std::format("Malformed command: {}", text), eNotificationType::BAD);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiConsole/GuiConsoleMessageParser.cpp:79:    //     m_notificationArea->addNotification(std::format("Unknown command: {}", text), eNotificationType::BAD);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiConsole/GuiConsoleMessageParser.cpp:84:        m_notificationArea->addNotification("Help mode.", eNotificationType::NEUTRAL);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiConsole/GuiConsoleMessageParser.cpp:88:    m_notificationArea->addNotification(std::format("> {}", normalizedText), eNotificationType::NEUTRAL);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiCycleButton.cpp:75:        m_textDrawer->drawText(m_rect.getX() + 5, m_rect.getY() + 3, m_theme.textColor, label);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiCycleButton.h:42:    void setText(const std::string& text) override { m_displayText = text; }
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.cpp:48:            drawText();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.cpp:51:            drawText();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.cpp:57:            drawText();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.cpp:61:            drawText();
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.cpp:77:void GuiLabel::setText(const std::string& text)
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.cpp:97:void GuiLabel::drawText() const
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.cpp:103:            m_textDrawer->drawTextCenteredInBox(m_buttonText.c_str(), m_rect, textColor);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.cpp:106:            m_textDrawer->drawText(m_rect.getX(), m_rect.getY(), textColor, m_buttonText.c_str());
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.hpp:55:    void setText(const std::string& text) override;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.hpp:77:    void drawText() const;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiLabel.hpp:99:    GuiLabelBuilder& withLabel(const std::string& label) {
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiObject.h:49:    virtual void setText(const std::string& text) = 0;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiTextInput.cpp:60:    m_writer->drawText(m_rect.getX() + kHorizontalPadding, m_rect.getY() + 4, m_theme.textColor, getFittedDisplayText());
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiTextInput.cpp:80:void GuiTextInput::setText(const std::string& text)
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiTextInput.h:36:    void setText(const std::string& text) override;
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiValueButton.cpp:116:                m_textDrawer->drawTextCenteredInBox(m_label, topRect, textColor);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiValueButton.cpp:118:            m_textDrawer->drawTextCenteredInBox(std::to_string(m_value), bottomRect, textColor);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiValueButton.cpp:122:        m_textDrawer->drawTextCenteredInBox(std::to_string(m_value), m_rect, textColor);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiValueButton.h:37:    void setText(const std::string& label) override { m_label = label; }
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiValueButton.h:120:    GuiValueButtonBuilder& withLabel(const std::string& label) {
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/GuiWindow.cpp:50:    m_textDrawer->drawTextCentered(title.c_str(), m_rect.getX(), m_rect.getWidth(), m_rect.getY() + 2, Color::Yellow);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/cTextWriter.cpp:41:    m_textDrawer->drawText(drawX, drawY, msg);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/gui/cTextWriter.cpp:47:    m_textDrawer->drawText(drawX, drawY, color, msg);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/managers/cDrawManager.cpp:210:    m_textDrawer->drawText(0, startY, std::format("Units {}/{}", unitsUsed, m_objects->getUnitsSize()));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/managers/cDrawManager.cpp:211:    m_textDrawer->drawText(0, startY + (1*height), std::format("Structures {}/{}", structuresUsed, MAX_STRUCTURES));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/managers/cDrawManager.cpp:212:    m_textDrawer->drawText(0, startY + (2*height), std::format("Bullets {}/{}", bulletsUsed, m_objects->getBullets().size()));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/managers/cDrawManager.cpp:213:    m_textDrawer->drawText(0, startY + (3*height), std::format("Particles {}/{}", particlesUsed, cParticles::size()));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/managers/cDrawManager.cpp:214:    m_textDrawer->drawText(0, startY + (4*height), std::format("Visible particles BOTTOM: {}/ TOP: {}", m_particleDrawer->getParticlesLowerLayerAmount(), m_particleDrawer->getParticlesTopLayerAmount()));
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/managers/cDrawManager.cpp:333:    m_textDrawer->drawTextCenteredInBox("OPTIONS", optionsRect, text);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/managers/cDrawManager.cpp:440:void cDrawManager::setMessage(std::string msg, bool keepMessage)
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/managers/cDrawManager.cpp:442:    m_messageDrawer->setMessage(msg, keepMessage);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/managers/cDrawManager.h:104:    void setMessage(std::string msg, bool keepMessage = false);
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/sidebar/cSideBar.cpp:92:    m_drawManager->setMessage(item->getInfo());
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/sidebar/cSideBar.cpp:108:        m_drawManager->setMessage("Unable to create more.");
+dc6e5ffd74f6275390a9c4a676aafdca058df7dd:src/sidebar/cSideBar.cpp:113:        m_drawManager->setMessage("Unable to create more.");

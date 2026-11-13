@@ -1,0 +1,64 @@
+литерал	места
+Max	src/drawers/cBuildingListDrawer.cpp:605
+built	src/drawers/cBuildingListDrawer.cpp:606
+degrees = {:.1f}, faceAngle = {}	src/drawers/cStructureDrawer.cpp:262
+Screenshot saved.	src/game/cGame_logic.cpp:1520
+Music toggle successfully	src/game/cGame_logic.cpp:1537
+Music volume down	src/game/cGame_logic.cpp:1542
+Music volume up	src/game/cGame_logic.cpp:1547
+Game speed up	src/game/cGame_logic.cpp:1553
+Game speed down	src/game/cGame_logic.cpp:1559
+size	src/gamestates/cEditorState.cpp:241
+MouseCell {}	src/gamestates/cGamePlaying.cpp:473
+FPS/REST: {}/{}	src/gamestates/cGamePlaying.cpp:479
+DEBUG	src/gamestates/cMainMenuState.cpp:76
+Name your map:	src/gamestates/cNewmapEditorState.cpp:94
+Name of author:	src/gamestates/cNewmapEditorState.cpp:113
+Description:	src/gamestates/cNewmapEditorState.cpp:132
+Width size:	src/gamestates/cNewmapEditorState.cpp:151
+Height size:	src/gamestates/cNewmapEditorState.cpp:176
+Random:	src/gamestates/cNewmapEditorState.cpp:201
+Dune 2 seed: 	src/gamestates/cNewmapEditorState.cpp:229
+Return to menu	src/gamestates/cNewmapEditorState.cpp:251
+Create map	src/gamestates/cNewmapEditorState.cpp:268
+Main menu	src/gamestates/cOptionsState.cpp:123
+Quit game	src/gamestates/cOptionsState.cpp:137
+Save game	src/gamestates/cOptionsState.cpp:167
+Load game	src/gamestates/cOptionsState.cpp:179
+Mission select	src/gamestates/cOptionsState.cpp:193 | src/gamestates/cSelectYourNextConquestState.cpp:167
+Cheat mode enabled	src/gamestates/cOptionsState.cpp:208
+Music	src/gamestates/cOptionsState.cpp:221
+Volume	src/gamestates/cOptionsState.cpp:247 | src/gamestates/cOptionsState.cpp:298
+Sound	src/gamestates/cOptionsState.cpp:272
+Game speed	src/gamestates/cOptionsState.cpp:323
+FOW	src/gamestates/cOptionsState.cpp:352
+Game scale	src/gamestates/cOptionsState.cpp:380
+Object size	src/gamestates/cOptionsState.cpp:428
+Low power icon	src/gamestates/cOptionsState.cpp:475
+Apply	src/gamestates/cOptionsState.cpp:503
+More settings	src/gamestates/cOptionsState.cpp:529
+Could not save preferences.ini	src/gamestates/cOptionsState.cpp:582
+MISSION REPORT	src/gamestates/cScoringState.cpp:64
+Mission time: {:02}:{:02}	src/gamestates/cScoringState.cpp:69
+Click to continue	src/gamestates/cScoringState.cpp:109
+CONTINUE	src/gamestates/cSelectMissionState.cpp:113
+MISSION {}	src/gamestates/cSelectMissionState.cpp:136
+3 Houses have come to Dune.	src/gamestates/cSelectYourNextConquestState.cpp:227
+That has become divided.	src/gamestates/cSelectYourNextConquestState.cpp:238
+region {}	src/gamestates/cSelectYourNextConquestState.cpp:901
+Previous	src/gamestates/cSetupSkirmishState.cpp:271
+Start	src/gamestates/cSetupSkirmishState.cpp:344
+Surprise me	src/gamestates/cSetupSkirmishState.cpp:361
+New Map	src/gamestates/cSetupSkirmishState.cpp:377
+Modify	src/gamestates/cSetupSkirmishState.cpp:391
+Startpoints: {}	src/gamestates/cSetupSkirmishState.cpp:668
+Auto-detonate : -	src/gamestates/cSetupSkirmishState.cpp:737
+Malformed command: {}	src/gui/GuiConsole/GuiConsoleMessageParser.cpp:72
+Unknown command: {}	src/gui/GuiConsole/GuiConsoleMessageParser.cpp:79
+Help mode.	src/gui/GuiConsole/GuiConsoleMessageParser.cpp:84
+Units {}/{}	src/managers/cDrawManager.cpp:210
+Structures {}/{}	src/managers/cDrawManager.cpp:211
+Bullets {}/{}	src/managers/cDrawManager.cpp:212
+Particles {}/{}	src/managers/cDrawManager.cpp:213
+Visible particles BOTTOM: {}/ TOP: {}	src/managers/cDrawManager.cpp:214
+Unable to create more.	src/sidebar/cSideBar.cpp:108 | src/sidebar/cSideBar.cpp:113

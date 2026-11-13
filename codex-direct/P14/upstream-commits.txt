@@ -1,0 +1,48 @@
+d7869e710 Text entries (extension txt) in a pack can be read as a string by name
+c5e2b3c4c Pack magic stays D2TM, the layout with header is recognised by exact size check
+06049c5e9 Pack header author or version that does not fit is rejected instead of truncated
+409e13562 Pack header with author and version is read and logged, packs without header still load
+f937551c6 The exact configured datapack name wins over other base name matches
+d32cbfb0a Datapacks are found by base name, first match by name wins
+85fbaf7a4 Mouse states look up their sounds once the audio context is available
+4d233b5ab Sounds.h and its central name list removed
+295e82f7e Fixed UI sounds are looked up by name by the classes that play them
+4fc37408f Bullet and unit infos hold the pack index of their own sounds
+1a8c335dd Music tracks are looked up by name by AudioContext, which exposes indexOf(name)
+cc7d6c305 Braces and wording in the sound name resolve code
+27d5dfdfb A music sample that is not in the pack is skipped without disabling music
+b2745a7b2 Each sound name missing from the audio pack is logged
+66d1564b9 gfxaudio.h removed, all audio is looked up by name
+f7eb85450 Voice lines and order countdown sounds taken from named per-house pools
+faf5c9a7b UI and player notification sounds taken from named sounds
+751f8a806 Unit death sounds taken from named sounds, tank deaths use SOUND_TANKDIE1/2
+89f4ae767 Bullet sounds taken from named sounds instead of gfxaudio.h indices
+e5c58d045 Single sounds resolved by name in Sounds.h, music tracks in AudioContext use them
+9f28f7821 SoundPools use the renamed pack entries MIDI_LOSE01..03 and SOUND_TANKDIE1/2
+59b9dd846 SoundPool tests no longer depend on gfxaudio.h constants
+4ba66a16b Update sdl_audio.dat without the unused SOUND_TANK
+8a3468304 Update sdl_audio.dat with MIDI_LOSE01-03 and SOUND_TANKDIE1 entry names
+60bace813 ReaderPack warns on stderr and in the game log about duplicate entry names
+b29fa9f32 SoundPools ids documented as written only once at startup
+47f19db51 SoundPools resolve their ids from audio pack names at startup
+c72b8f111 resolveSoundIds fills sound ids from pack names, with unit tests
+c40688519 cSoundPlayer resolves a sample name to its audio pack index
+3d7b58437 Variant sounds picked from named constexpr SoundPools instead of SOUND_X + rnd(n)
+e1e33de85 SoundPool documents that its ids must have static storage duration
+63dcfed47 SoundPool holds named variant sound ids and picks a random one, with unit tests
+b1e4c78e5 getNames exposed through DataPack and Graphics
+7d4db36e8 ReaderPack::getNames lists every file name in the pack
+aa4fb2ac0 ReaderPack looks up index by name through a map instead of a linear scan
+62fe57b3b cTimeCounter, cPlayerNotification and cKeyboardEvent covered by unit tests
+f5274fc32 RNG test name without Catch2 filter characters
+53facbd7f TempDir test helper shared and given unique directory names
+8624c6271 src/utils pure-logic helpers (Color, EnumArray, Matrix, RNG, cPack, cFileValidator) covered by unit tests
+846a0750a Game state transitions extracted into GameStateMachine with IStateCallbacks and unit tests
+94b54034c Game state is a scoped enum class, int GAME_* constants removed
+4bd9f9434 Blank lines collapsed in cGameState.h
+eb43655ac Unused game state constants and stale comments removed
+0062ec059 cInputObserver.h forward declares cKeyboardEvent and s_MouseEvent instead of including them
+27af17c7f cScenarioObserver.h forward declares s_GameEvent instead of including sGameEvent.h
+4f4ae1190 cPlayerBrain.h forward declares s_buildOrder instead of including cPlayerBrainData.h
+d2cb4a67d GameContext.hpp forward declares GraphicsContext and TextContext
+af9410978 cInfoContext.h forward declares the info classes instead of including them

@@ -1,0 +1,75 @@
+английский	русский	источник	места@b9f6b02
+Unable to create more.	Больше построить нельзя.	ведущий	src/building/cItemBuilder.cpp:206 | src/controls/mousestates/cMousePlaceState.cpp:88 | src/sidebar/cSideBar.cpp:108 | src/sidebar/cSideBar.cpp:113
+{} units selected	Выбрано юнитов: {}	ведущий	src/controls/mousestates/cMouseNormalState.cpp:97
+Max	Больше	ведущий	src/drawers/cBuildingListDrawer.cpp:607
+built	нельзя	ведущий	src/drawers/cBuildingListDrawer.cpp:608
+degrees = {:.1f}, faceAngle = {}	—	отладка: не переводить	src/drawers/cStructureDrawer.cpp:263
+Screenshot saved.	Снимок экрана сохранён.	ведущий	src/game/cGame_logic.cpp:1522
+Music toggle successfully	Музыка переключена	ведущий	src/game/cGame_logic.cpp:1539
+Music volume down	Музыка тише	ведущий	src/game/cGame_logic.cpp:1544
+Music volume up	Музыка громче	ведущий	src/game/cGame_logic.cpp:1549
+Game speed up	Игра быстрее	ведущий	src/game/cGame_logic.cpp:1555
+Game speed down	Игра медленнее	ведущий	src/game/cGame_logic.cpp:1561
+Mission select	Выбор миссии	ведущий	src/gameobjects/mentat/AbstractMentat.cpp:90 | src/gamestates/cOptionsState.cpp:204 | src/gamestates/cSelectYourNextConquestState.cpp:167
+Repeat	Повторить	форк	src/gameobjects/mentat/AtreidesMentat.cpp:38 | src/gameobjects/mentat/HarkonnenMentat.cpp:37 | src/gameobjects/mentat/OrdosMentat.cpp:36 | src/gameobjects/mentat/SardaukarMentat.cpp:37
+Yes	Да	форк	src/gameobjects/mentat/AtreidesMentat.cpp:47 | src/gameobjects/mentat/BeneMentat.cpp:54 | src/gameobjects/mentat/HarkonnenMentat.cpp:46 | src/gameobjects/mentat/OrdosMentat.cpp:45 | src/gameobjects/mentat/SardaukarMentat.cpp:46
+No	Нет	форк	src/gameobjects/mentat/BeneMentat.cpp:45
+Frigate is arriving...	Фрегат прибывает...	ведущий	src/gameobjects/structures/cOrderProcesser.cpp:160 | src/gameobjects/structures/cOrderProcesser.cpp:172
+Back	Назад	форк	src/gamestates/cCreditsState.cpp:89 | src/gamestates/cOptionsState.cpp:163 | src/gamestates/cSelectMissionState.cpp:157 | src/gamestates/cSetupSkirmishState.cpp:324
+size	размер	ведущий	src/gamestates/cEditorState.cpp:242
+MouseCell {}	—	отладка: не переводить	src/gamestates/cGamePlaying.cpp:475
+FPS/REST: {}/{}	—	отладка: не переводить	src/gamestates/cGamePlaying.cpp:481
+DEBUG	—	отладка: не переводить	src/gamestates/cMainMenuState.cpp:76
+CREDITS	АВТОРЫ	форк, выбран вариант	src/gamestates/cMainMenuState.cpp:183
+Name your map:	Название карты:	ведущий	src/gamestates/cNewmapEditorState.cpp:94
+Name of author:	Автор:	ведущий	src/gamestates/cNewmapEditorState.cpp:113
+Description:	Описание:	ведущий	src/gamestates/cNewmapEditorState.cpp:132
+Width size:	Ширина:	ведущий	src/gamestates/cNewmapEditorState.cpp:151
+Height size:	Высота:	ведущий	src/gamestates/cNewmapEditorState.cpp:176
+Random:	Случайно:	ведущий	src/gamestates/cNewmapEditorState.cpp:201
+Dune 2 seed: 	Зерно Dune 2: 	ведущий	src/gamestates/cNewmapEditorState.cpp:229
+Return to menu	В меню	ведущий	src/gamestates/cNewmapEditorState.cpp:251
+Create map	Создать карту	ведущий	src/gamestates/cNewmapEditorState.cpp:268
+Main menu	В главное меню	ведущий	src/gamestates/cOptionsState.cpp:134
+Quit game	Выйти из игры	ведущий	src/gamestates/cOptionsState.cpp:148
+Save game	Сохранить игру	ведущий	src/gamestates/cOptionsState.cpp:178
+Load game	Загрузить игру	ведущий	src/gamestates/cOptionsState.cpp:190
+Cheat mode enabled	Режим читов включён	ведущий	src/gamestates/cOptionsState.cpp:219
+Music	Музыка	ведущий	src/gamestates/cOptionsState.cpp:232
+Volume	Громкость	ведущий	src/gamestates/cOptionsState.cpp:258 | src/gamestates/cOptionsState.cpp:309
+Sound	Звук	ведущий	src/gamestates/cOptionsState.cpp:283
+Game speed	Скорость игры	ведущий	src/gamestates/cOptionsState.cpp:334
+FOW	Туман войны	ведущий	src/gamestates/cOptionsState.cpp:363
+Game scale	Масштаб игры	ведущий	src/gamestates/cOptionsState.cpp:391
+Object size	Размер объектов	ведущий	src/gamestates/cOptionsState.cpp:439
+Low power icon	Значок энергии	ведущий	src/gamestates/cOptionsState.cpp:486
+Apply	Применить	ведущий	src/gamestates/cOptionsState.cpp:540
+More settings	Ещё настройки	ведущий	src/gamestates/cOptionsState.cpp:566
+Saved. Restart the game.	Сохранено. Перезапустите игру.	форк	src/gamestates/cOptionsState.cpp:634
+Could not save preferences.ini	Не удалось сохранить preferences.ini	ведущий	src/gamestates/cOptionsState.cpp:638
+MISSION REPORT	ОТЧЁТ О МИССИИ	ведущий	src/gamestates/cScoringState.cpp:64
+Mission time: {:02}:{:02}	Время миссии: {:02}:{:02}	ведущий	src/gamestates/cScoringState.cpp:69
+Click to continue	Щёлкните, чтобы продолжить	ведущий	src/gamestates/cScoringState.cpp:109
+CONTINUE	ПРОДОЛЖИТЬ	ведущий	src/gamestates/cSelectMissionState.cpp:113
+MISSION {}	МИССИЯ {}	ведущий	src/gamestates/cSelectMissionState.cpp:136
+3 Houses have come to Dune.	Три Дома прибыли на Дюну.	ведущий	src/gamestates/cSelectYourNextConquestState.cpp:227
+To take control of the land.	Чтобы покорить её земли.	форк	src/gamestates/cSelectYourNextConquestState.cpp:232
+That has become divided.	Ныне они разделены.	ведущий	src/gamestates/cSelectYourNextConquestState.cpp:238
+Select your next region.	Выберите следующий регион.	форк	src/gamestates/cSelectYourNextConquestState.cpp:709 | src/gamestates/cSelectYourNextConquestState.cpp:731
+region {}	регион {}	ведущий	src/gamestates/cSelectYourNextConquestState.cpp:901
+Next	Далее	форк	src/gamestates/cSetupSkirmishState.cpp:261
+Previous	Предыдущие	ведущий	src/gamestates/cSetupSkirmishState.cpp:271
+Start	Старт	ведущий	src/gamestates/cSetupSkirmishState.cpp:344
+Surprise me	Удиви меня	ведущий	src/gamestates/cSetupSkirmishState.cpp:361
+New Map	Новая карта	ведущий	src/gamestates/cSetupSkirmishState.cpp:377
+Modify	Изменить	ведущий	src/gamestates/cSetupSkirmishState.cpp:391
+Startpoints: {}	Стартовых позиций: {}	ведущий	src/gamestates/cSetupSkirmishState.cpp:668
+Auto-detonate : -	Автоподрыв: -	ведущий	src/gamestates/cSetupSkirmishState.cpp:737
+Malformed command: {}	Неверная команда: {}	ведущий	src/gui/GuiConsole/GuiConsoleMessageParser.cpp:72
+Help mode.	Режим справки.	ведущий	src/gui/GuiConsole/GuiConsoleMessageParser.cpp:84
+Units {}/{}	—	отладка: не переводить	src/managers/cDrawManager.cpp:211
+Structures {}/{}	—	отладка: не переводить	src/managers/cDrawManager.cpp:212
+Bullets {}/{}	—	отладка: не переводить	src/managers/cDrawManager.cpp:213
+Particles {}/{}	—	отладка: не переводить	src/managers/cDrawManager.cpp:214
+Visible particles BOTTOM: {}/ TOP: {}	—	отладка: не переводить	src/managers/cDrawManager.cpp:215
+OPTIONS	НАСТРОЙКИ	форк	src/managers/cDrawManager.cpp:340

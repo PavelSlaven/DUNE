@@ -1,0 +1,12 @@
+путь	есть в OLD	есть в PORT
+CMakeLists.txt	да	да
+src/context/AudioContext.cpp	да	да
+src/context/MusicJukeBox.cpp	да	да
+src/drawers/cMessageDrawer.cpp	да	да
+src/game/cGame.h	да	да
+src/game/cGame_logic.cpp	да	да
+src/gameobjects/players/cPlayer.cpp	да	да
+src/managers/cDrawManager.cpp	да	да
+src/managers/cDrawManager.h	да	да
+src/utils/cSoundPlayer.cpp	да	да
+src/utils/cSoundPlayer.h	да	да

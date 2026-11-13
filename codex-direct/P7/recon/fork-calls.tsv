@@ -1,0 +1,35 @@
+файл	число вызовов	есть ли файл в PORT
+src/cGame_logic.cpp	8	нет
+src/controls/mousestates/cMouseNormalState.cpp	1	да (src/controls/mousestates/cMouseNormalState.cpp)
+src/controls/mousestates/cMousePlaceState.cpp	7	да (src/controls/mousestates/cMousePlaceState.cpp)
+src/debug/UiAuditAccess.cpp	6	нет
+src/drawers/CreditsDrawer.cpp	1	да (src/drawers/CreditsDrawer.cpp)
+src/drawers/cBuildingListDrawer.cpp	13	да (src/drawers/cBuildingListDrawer.cpp)
+src/drawers/cCommandBarDrawer.cpp	8	нет
+src/drawers/cMouseDrawer.cpp	16	да (src/drawers/cMouseDrawer.cpp)
+src/drawers/cOrderDrawer.cpp	1	да (src/drawers/cOrderDrawer.cpp)
+src/drawers/cSideBarDrawer.cpp	8	да (src/drawers/cSideBarDrawer.cpp)
+src/gameobjects/structures/cAbstractStructure.cpp	1	да (src/gameobjects/structures/cAbstractStructure.cpp)
+src/gameobjects/structures/cOrderProcesser.cpp	2	да (src/gameobjects/structures/cOrderProcesser.cpp)
+src/gameobjects/structures/cWindTrap.cpp	1	да (src/gameobjects/structures/cWindTrap.cpp)
+src/gameobjects/units/cUnit.cpp	2	да (src/gameobjects/units/cUnit.cpp)
+src/gamestates/cChooseHouseState.cpp	5	да (src/gamestates/cChooseHouseState.cpp)
+src/gamestates/cCreditsState.cpp	2	да (src/gamestates/cCreditsState.cpp)
+src/gamestates/cMainMenuState.cpp	9	да (src/gamestates/cMainMenuState.cpp)
+src/gamestates/cSelectMissionState.cpp	2	да (src/gamestates/cSelectMissionState.cpp)
+src/gamestates/cSelectYourNextConquestState.cpp	8	да (src/gamestates/cSelectYourNextConquestState.cpp)
+src/gamestates/cSetupSkirmishState.cpp	27	да (src/gamestates/cSetupSkirmishState.cpp)
+src/managers/cDrawManager.cpp	6	да (src/managers/cDrawManager.cpp)
+src/map/cPreviewMaps.cpp	6	нет
+src/mentat/AbstractMentat.cpp	4	да (src/gameobjects/mentat/AbstractMentat.cpp)
+src/mentat/AtreidesMentat.cpp	2	нет
+src/mentat/BeneMentat.cpp	6	нет
+src/mentat/HarkonnenMentat.cpp	2	нет
+src/mentat/OrdosMentat.cpp	2	нет
+src/player/cPlayer.cpp	17	да (src/gameobjects/players/cPlayer.cpp)
+src/save/SaveFileCodec.cpp	6	нет
+src/save/SaveGameManager.cpp	39	нет
+src/save/SaveSlotName.hpp	1	нет
+src/save/SaveSlotsDialog.cpp	9	нет
+src/sidebar/cBuildingListItem.cpp	7	да (src/sidebar/cBuildingListItem.cpp)
+src/utils/cIniGameRessouces.cpp	56	нет

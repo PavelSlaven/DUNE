@@ -1,0 +1,346 @@
+     1	/**
+     2	 * @file cSDLSystem.cpp
+     3	 *
+     4	 * Dune 2 - The Maker
+     5	 *
+     6	 * @author Stefan Hendriks & the D2TM Team
+     7	 * @www http://www.dune2themaker.com
+     8	 * @copyright Copyright (c) 2002 - 2026 Stefan Hendriks and contributors
+     9	 * @license This software is released under the MIT License. See LICENSE.md.
+    10	 *
+    11	 * Note: Dune 2 is a trademark of Westwood Studios/Electronic Arts.
+    12	 *
+    13	 * This is a non-commercial educational project.
+    14	 */
+    15	
+    16	#include "game/cSDLSystem.h"
+    17	#include "debug/UiAuditArguments.hpp"
+    18	
+    19	#include "utils/Graphics.hpp"
+    20	#include "utils/Log.h"
+    21	#include "utils/RenderScale.hpp"
+    22	
+    23	#include <SDL3/SDL.h>
+    24	#include <SDL3_mixer/SDL_mixer.h>
+    25	#include <SDL3_ttf/SDL_ttf.h>
+    26	#include <format>
+    27	#include <stdexcept>
+    28	
+    29	#include <algorithm>
+    30	#include <array>
+    31	#include "include/cAssert.h"
+    32	#include <optional>
+    33	#include <span>
+    34	#include <vector>
+    35	
+    36	// smallest coordinate space the game UI is laid out for
+    37	static constexpr int MIN_RENDER_WIDTH = 800;
+    38	static constexpr int MIN_RENDER_HEIGHT = 600;
+    39	
+    40	void cSDLSystem::applyFullscreenPresentation()
+    41	{
+    42	    int renderW, renderH;
+    43	    // GetRenderOutputSize gives the true screen size; GetCurrentRenderOutputSize would be adjusted
+    44	    // by the logical presentation already in effect, and always report a scale of 1.
+    45	    SDL_GetRenderOutputSize(renderer, &renderW, &renderH);
+    46	
+    47	    float scaleToFillScreen = std::min(static_cast<float>(renderW) / static_cast<float>(canvasResolution.width),
+    48	                                       static_cast<float>(renderH) / static_cast<float>(canvasResolution.height));
+    49	
+    50	    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    51	    SDL_RenderClear(renderer);
+    52	    SDL_RenderPresent(renderer);
+    53	
+    54	    Logger::info(COMP_SDL2, "desktop", "Renderer output size : {}x{}", renderW, renderH);
+    55	    Logger::info(COMP_SDL2, "desktop", "Presentation mode : LETTERBOX (scale = {})", scaleToFillScreen);
+    56	    float scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
+    57	    Logger::info(COMP_SDL2, "DPI", "Display content scale : {}", scale);
+    58	}
+    59	
+    60	void cSDLSystem::applyRenderScale(int renderScalePercent)
+    61	{
+    62	    int outputWidth = 0;
+    63	    int outputHeight = 0;
+    64	    SDL_GetRenderOutputSize(renderer, &outputWidth, &outputHeight);
+    65	    outputResolution = {outputWidth, outputHeight};
+    66	
+    67	    int selectedScale = renderScalePercent;
+    68	    if (selectedScale != AutomaticRenderScale && !isManualRenderScaleAvailable(outputWidth, outputHeight, selectedScale)) {
+    69	        Logger::warn(COMP_SDL2, "Render scale", "{}% is unavailable for {}x{}; using Auto", selectedScale, outputWidth, outputHeight);
+    70	        selectedScale = AutomaticRenderScale;
+    71	    }
+    72	
+    73	    const RenderCanvasSize canvas = calculateRenderCanvasSize(outputWidth, outputHeight, selectedScale);
+    74	    canvasResolution = {canvas.width, canvas.height};
+    75	    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    76	
+    77	    const std::string scaleText = selectedScale == AutomaticRenderScale
+    78	        ? std::format("Auto ({}%)", calculateAutomaticRenderScalePercent(outputWidth, outputHeight))
+    79	        : std::format("{}%", selectedScale);
+    80	    Logger::info(COMP_SDL2, "Resolution", "Output {}x{}, render scale {}, logical canvas {}x{}",
+    81	                 outputWidth, outputHeight, scaleText, canvasResolution.width, canvasResolution.height);
+    82	}
+    83	
+    84	void cSDLSystem::setFullScreenMode()
+    85	{
+    86	    SDL_SetWindowFullscreen(window, true);
+    87	    // On macOS, SDL_SetWindowFullscreen is asynchronous — the Spaces animation
+    88	    // plays out after the call returns. SDL_SyncWindow blocks until the window
+    89	    // state (and renderer output size) is final, so applyFullscreenPresentation
+    90	    // measures the correct output size.
+    91	    SDL_SyncWindow(window);
+    92	    Logger::info(COMP_SDL2, "desktop", "Fullscreen desktop");
+    93	    applyFullscreenPresentation();
+    94	}
+    95	
+    96	void cSDLSystem::onPixelSizeChanged()
+    97	{
+    98	    if (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN) {
+    99	        applyFullscreenPresentation();
+   100	    }
+   101	}
+   102	
+   103	void cSDLSystem::setWindowMode()
+   104	{
+   105	    SDL_SetWindowFullscreen(window, false);
+   106	    SDL_SetWindowSize(window, renderResolution.width, renderResolution.height);
+   107	    SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+   108	    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+   109	    Logger::info(COMP_SDL2, "desktop", "Windowed desktop");
+   110	}
+   111	
+   112	void cSDLSystem::getWindowResolution()
+   113	{
+   114	    // SDL_GetCurrentDisplayMode returns PHYSICAL pixels, but SDL_CreateWindow
+   115	    // expects LOGICAL pixels (points). On Retina/HiDPI displays these differ
+   116	    // (e.g. 2560x1600 physical vs 1280x800 logical on a 2x Retina Mac).
+   117	    // Use SDL_GetDisplayBounds which returns screen coordinates (logical pixels).
+   118	    SDL_Rect bounds = {};
+   119	    if (SDL_GetDisplayBounds(SDL_GetPrimaryDisplay(), &bounds)) {
+   120	        Logger::info(COMP_SDL2, "desktop", "Display bounds : {}x{}", bounds.w, bounds.h);
+   121	        windowResolution.width = bounds.w;
+   122	        windowResolution.height = bounds.h;
+   123	    }
+   124	
+   125	    // The area the desktop actually leaves free: the full bounds minus the taskbar, dock or menu
+   126	    // bar. A window asking for more than this gets shrunk by the desktop, and then no longer
+   127	    // matches the render resolution. Fall back to the full bounds when the platform has no notion
+   128	    // of a usable area.
+   129	    usableResolution = windowResolution;
+   130	    SDL_Rect usableBounds = {};
+   131	    if (SDL_GetDisplayUsableBounds(SDL_GetPrimaryDisplay(), &usableBounds)) {
+   132	        Logger::info(COMP_SDL2, "desktop", "Usable bounds : {}x{}", usableBounds.w, usableBounds.h);
+   133	        usableResolution.width = usableBounds.w;
+   134	        usableResolution.height = usableBounds.h;
+   135	    }
+   136	}
+   137	
+   138	/**
+   139	 * Shrink the render resolution until the window fits in the usable desktop area, keeping the
+   140	 * aspect ratio intact. Without this the desktop resizes the window for us, which changes the
+   141	 * aspect ratio and makes SDL letterbox the game with black bars.
+   142	 */
+   143	void cSDLSystem::fitToUsableBounds()
+   144	{
+   145	    if (usableResolution.width < MIN_RENDER_WIDTH || usableResolution.height < MIN_RENDER_HEIGHT) {
+   146	        return; // desktop too small to honour, keep what we have
+   147	    }
+   148	
+   149	    if (renderResolution.width <= usableResolution.width &&
+   150	            renderResolution.height <= usableResolution.height) {
+   151	        return; // already fits
+   152	    }
+   153	
+   154	    int fittedWidth = std::min(renderResolution.width, usableResolution.width);
+   155	    int fittedHeight = renderResolution.height * fittedWidth / renderResolution.width;
+   156	
+   157	    if (fittedHeight > usableResolution.height) {
+   158	        fittedHeight = usableResolution.height;
+   159	        fittedWidth = renderResolution.width * fittedHeight / renderResolution.height;
+   160	    }
+   161	
+   162	    renderResolution.width = std::max(fittedWidth, MIN_RENDER_WIDTH);
+   163	    renderResolution.height = std::max(fittedHeight, MIN_RENDER_HEIGHT);
+   164	}
+   165	
+   166	/**
+   167	 * The desktop can hand us a smaller client area than we asked for (a title bar that has to fit on
+   168	 * screen, a tiled or maximised window). SDL then letterboxes the render resolution inside it,
+   169	 * which shows up as black bars and a wrong aspect ratio. Adopt the size we really got instead:
+   170	 * the game reads Width()/Height() right after this constructor, so the whole UI follows along.
+   171	 */
+   172	void cSDLSystem::syncRenderResolutionToWindow()
+   173	{
+   174	    SDL_SyncWindow(window);
+   175	
+   176	    int outputWidth = 0;
+   177	    int outputHeight = 0;
+   178	    // GetRenderOutputSize, not GetCurrentRenderOutputSize: the latter is adjusted by the logical
+   179	    // presentation, which would just hand back the render resolution we are trying to check.
+   180	    if (!SDL_GetRenderOutputSize(renderer, &outputWidth, &outputHeight)) return;
+   181	
+   182	    if (outputWidth == renderResolution.width && outputHeight == renderResolution.height) return;
+   183	
+   184	    if (outputWidth < MIN_RENDER_WIDTH || outputHeight < MIN_RENDER_HEIGHT) {
+   185	        // below what the UI is laid out for: keep the render resolution and let SDL letterbox
+   186	        Logger::info(COMP_SDL2, "Resolution", "Window is {}x{}, too small to adopt, letterboxing",
+   187	                     outputWidth, outputHeight);
+   188	        return;
+   189	    }
+   190	
+   191	    Logger::info(COMP_SDL2, "Resolution", "Desktop gave us {}x{} instead of {}x{}, adopting it",
+   192	                 outputWidth, outputHeight, renderResolution.width, renderResolution.height);
+   193	
+   194	    renderResolution.width = outputWidth;
+   195	    renderResolution.height = outputHeight;
+   196	}
+   197	
+   198	void cSDLSystem::adaptResolution(int desiredWidth, int desiredHeight, bool windowed)
+   199	{
+   200	    Logger::info(COMP_SDL2, "Resolution", "Desired : {}x{}", desiredWidth, desiredHeight);
+   201	    if (desiredWidth<MIN_RENDER_WIDTH)
+   202	        desiredWidth = MIN_RENDER_WIDTH;
+   203	    if (desiredHeight<MIN_RENDER_HEIGHT)
+   204	        desiredHeight = MIN_RENDER_HEIGHT;
+   205	
+   206	    if (uiaudit::isEnabled()) {
+   207	        renderResolution.width = desiredWidth;
+   208	        renderResolution.height = desiredHeight;
+   209	        Logger::info(COMP_SDL2, "Resolution", "Adopted : {}x{}", renderResolution.width, renderResolution.height);
+   210	        return;
+   211	    }
+   212	
+   213	    int tmpWidth =  windowResolution.width * desiredHeight / windowResolution.height;
+   214	    if (tmpWidth > desiredWidth) {
+   215	        renderResolution.height = desiredHeight;
+   216	        renderResolution.width = tmpWidth;
+   217	    } else {
+   218	        renderResolution.width = desiredWidth;
+   219	        renderResolution.height = windowResolution.height * desiredWidth / windowResolution.width;
+   220	    }
+   221	
+   222	    // Cap to the logical screen size so the game never requests a larger
+   223	    // coordinate space than the display provides. Without this, fullscreen
+   224	    // would have to scale DOWN (e.g. fit 1792x1120 into a 1536x960 logical
+   225	    // screen), causing squishing. The cap ensures fullscreen can always show
+   226	    // the game at 1:1 or larger integer multiples.
+   227	    renderResolution.width = std::min(renderResolution.width, windowResolution.width);
+   228	    renderResolution.height = std::min(renderResolution.height, windowResolution.height);
+   229	
+   230	    // Only a real window has to share the desktop with a taskbar and a title bar. In fullscreen the
+   231	    // resolution must stay untouched, otherwise a player asking for the exact size of their screen
+   232	    // would lose the perfect 1:1 scale.
+   233	    if (windowed) {
+   234	        fitToUsableBounds();
+   235	    }
+   236	
+   237	    Logger::info(COMP_SDL2, "Resolution", "Adopted : {}x{}", renderResolution.width, renderResolution.height);
+   238	}
+   239	
+   240	cSDLSystem::~cSDLSystem()
+   241	{
+   242	    Logger::info(COMP_SDL2, "SDL shutdown", "Shutting down...");
+   243	    TTF_Quit();
+   244	    MIX_Quit();
+   245	    Logger::info(COMP_SDL2, "SDL_mixer shutdown", "Thanks for playing!");
+   246	    // On Linux, SDL3 registers its own atexit() handler that calls SDL_Quit() before
+   247	    // C++ global destructors run. Calling it again here causes a double-free crash.
+   248	    // Guard so we only call SDL_Quit() if SDL is still initialised.
+   249	    if (SDL_WasInit(0)==0) {
+   250	        SDL_Quit();
+   251	    }
+   252	    Logger::info(COMP_SDL2, "SDL shutdown", "Thanks for playing!");
+   253	}
+   254	
+   255	int cSDLSystem::frameDensity() const
+   256	{
+   257	    SDL_FRect rect{};
+   258	    if (!SDL_GetRenderLogicalPresentationRect(renderer, &rect)) {
+   259	        return 1;
+   260	    }
+   261	
+   262	    return calculateFrameDensity(rect.w, rect.h, canvasResolution.width, canvasResolution.height);
+   263	}
+   264	
+   265	cSDLSystem::cSDLSystem(int desiredWidth, int desiredHeight, const std::string &title, bool windowed)
+   266	{
+   267	    Logger::info(COMP_SDL2, "cSDLSystem", "=== SDL ===");
+   268	
+   269	    if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS)) {
+   270	        Logger::fatal(COMP_SDL2, "SDL init", "{}", SDL_GetError());
+   271	        throw std::runtime_error(SDL_GetError());
+   272	    }
+   273	    else {
+   274	        Logger::info(COMP_SDL2, "SDL init", "Initialized successfully");
+   275	    }
+   276	
+   277	    if (!MIX_Init()) {
+   278	        Logger::fatal(COMP_SDL2, "SDL mixer", "{}", SDL_GetError());
+   279	        throw std::runtime_error(SDL_GetError());
+   280	    }
+   281	    else {
+   282	        Logger::info(COMP_SDL2, "SDL_mixer", "Initialized successfully");
+   283	        for (auto i =0; i < MIX_GetNumAudioDecoders();i++) {
+   284	            Logger::info(COMP_SDL2, "SDL_mixer", "Audio decoder {} : {}", i, MIX_GetAudioDecoder(i));
+   285	        }
+   286	    }
+   287	
+   288	    if (!TTF_Init()) {
+   289	        Logger::fatal(COMP_SDL2, "SDL ttf", "{}", SDL_GetError());
+   290	    }
+   291	    else {
+   292	        Logger::info(COMP_SDL2, "SDL_ttf", "Initialized successfully");
+   293	    }
+   294	
+   295	    this->getWindowResolution();
+   296	    this->adaptResolution(desiredWidth, desiredHeight, windowed);
+   297	
+   298	    // Disable macOS Spaces fullscreen: SDL3 defaults to Spaces (animated
+   299	    // Space transition), which changes the renderer output to logical pixels
+   300	    // (1536x960 on a 1792x1120 physical display) and fires async size events.
+   301	    // Non-Spaces fullscreen matches SDL2 behaviour: immediate, uses physical
+   302	    // pixel dimensions, no transition surprises.
+   303	    SDL_SetHint(SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES, "0");
+   304	
+   305	    window = SDL_CreateWindow(title.c_str(), renderResolution.width, renderResolution.height, 0);
+   306	    if (window == nullptr) {
+   307	        Logger::error(COMP_SDL2, "Screen init", "Failed initialized screen with resolution {}x{}", renderResolution.width, renderResolution.height);
+   308	        SDL_Quit();
+   309	        return;
+   310	    }
+   311	    else {
+   312	        Logger::info(COMP_SDL2, "Screen init", "Successfully initialized screen with resolution {}x{}.", renderResolution.width, renderResolution.height);
+   313	    }
+   314	
+   315	    renderer = SDL_CreateRenderer(window, nullptr);
+   316	    if (renderer == nullptr) {
+   317	        Logger::error(COMP_SDL2, "Renderer init", "Failed initialized renderer with resolution {}x{}", renderResolution.width, renderResolution.height);
+   318	        SDL_DestroyWindow(window);
+   319	        SDL_Quit();
+   320	        return;
+   321	    }
+   322	    else {
+   323	        Logger::info(COMP_SDL2, "Renderer init", "Successfully initialized renderer");
+   324	    }
+   325	
+   326	    SDL_SetRenderVSync(renderer, 1);
+   327	
+   328	    // SDL_RENDER_SCALE_QUALITY was removed in SDL3. The correct way to control
+   329	    // the logical presentation's internal texture scale is via the renderer's
+   330	    // default texture scale mode. Setting it to NEAREST once here ensures
+   331	    // every SDL_SetRenderLogicalPresentation call (now and later) creates its
+   332	    // internal texture with nearest-neighbour filtering — critical for crisp
+   333	    // pixel art at any scale factor.
+   334	    SDL_SetDefaultTextureScaleMode(renderer, SDL_SCALEMODE_NEAREST);
+   335	
+   336	    SDL_SetWindowFullscreen(window, false);
+   337	    SDL_SetWindowSize(window, renderResolution.width, renderResolution.height);
+   338	    SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+   339	    if (windowed) {
+   340	        // Only when we stay windowed: the caller switches to fullscreen right after this, and the
+   341	        // render resolution must not be pinned to the size of this temporary window.
+   342	        syncRenderResolutionToWindow();
+   343	    }
+   344	    canvasResolution = renderResolution;
+   345	    SDL_SetRenderLogicalPresentation(renderer, canvasResolution.width, canvasResolution.height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+   346	}

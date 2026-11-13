@@ -1,0 +1,102 @@
+путь	путь@d06f2fc:строка	что меняет участок	место в PORT
+src/drawers/CreditsDrawer.cpp	src/drawers/CreditsDrawer.cpp@d06f2fc:1	Добавляет заголовок проекта, подключения контекстов SDL3 и CreditsMath, строковый помощник для цифр кредитов и новый конструктор с расчётом координаты по settings->getScreenW().	src/drawers/CreditsDrawer.cpp@832c953:1,50
+src/drawers/CreditsDrawer.cpp	src/drawers/CreditsDrawer.cpp@d06f2fc:94	Переносит setCredits на поля m_initial/m_previousCredits/m_currentCredits и std::fill для массивов прокрутки.	src/drawers/CreditsDrawer.cpp@832c953:95
+src/drawers/CreditsDrawer.cpp	src/drawers/CreditsDrawer.cpp@d06f2fc:155	Переносит thinkFast на поля класса и вычисление следующего отображаемого значения через CreditsMath::nextDisplayedCredits.	src/drawers/CreditsDrawer.cpp@832c953:105
+src/drawers/CreditsDrawer.cpp	src/drawers/CreditsDrawer.cpp@d06f2fc:209	Переносит анимацию цифр на creditsToDigits/CreditsMath и воспроизведение звука через аудио-контекст с флагом настройки.	src/drawers/CreditsDrawer.cpp@832c953:156
+src/drawers/CreditsDrawer.cpp	src/drawers/CreditsDrawer.cpp@d06f2fc:234	Рисует текущие цифры через SDLDrawer и gfxdata контекста, переводит текст цифр и состояние анимации на поля класса.	src/drawers/CreditsDrawer.cpp@832c953:222
+src/drawers/CreditsDrawer.cpp	src/drawers/CreditsDrawer.cpp@d06f2fc:254	Заменяет локальные C-буферы и расчёт смещения цифр на creditsToDigits и CreditsMath.	src/drawers/CreditsDrawer.cpp@832c953:222
+src/drawers/CreditsDrawer.cpp	src/drawers/CreditsDrawer.cpp@d06f2fc:267	Переносит отрисовку предыдущих цифр на поля класса, CreditsMath и SDLDrawer; координаты прокрутки сохраняются.	src/drawers/CreditsDrawer.cpp@832c953:255
+src/drawers/CreditsDrawer.cpp	src/drawers/CreditsDrawer.cpp@d06f2fc:298	Переименовывает состояние кредитов и массивов в поля класса; код setPlayer остаётся.	src/drawers/CreditsDrawer.cpp@832c953:291
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:1	Добавляет заголовок проекта, сервисы/контексты SDL3 и вспомогательные include для лимитов и структуры.	src/drawers/cBuildingListDrawer.cpp@832c953:1
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:81	Заменяет assert на d2tm_assert в подготовке списков построек/способностей.	src/drawers/cBuildingListDrawer.cpp@832c953:78
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:92	Переводит рамку наведённой кнопки с глобального renderDrawer на m_sdlDrawer; координаты и размеры рамки прежние.	src/drawers/cBuildingListDrawer.cpp@832c953:83
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:110	Меняет сообщение об ошибочном id кнопки на Logger с именем компонента и значением id.	src/drawers/cBuildingListDrawer.cpp@832c953:100
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:119	Переводит базовую отрисовку кнопки и прямоугольник недоступности на m_sdlDrawer.	src/drawers/cBuildingListDrawer.cpp@832c953:100
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:133	Переводит контур выбранной кнопки и контур при мигании на m_sdlDrawer; координатные отступы прежние.	src/drawers/cBuildingListDrawer.cpp@832c953:100
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:150	Заменяет game.m_screenW на settings->getScreenW в формуле стартового X списка.	src/drawers/cBuildingListDrawer.cpp@832c953:152
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:160	Меняет параметр drawList на const bool и уточняет локальные const-переменные.	src/drawers/cBuildingListDrawer.cpp@832c953:165
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:178	Добавляет определение достигнутых лимитов структур и юнитов перед проходом по сетке значков.	src/drawers/cBuildingListDrawer.cpp@832c953:165
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:193	Меняет проверку значка на d2tm_assert и переводит отрисовку значка на m_sdlDrawer.	src/drawers/cBuildingListDrawer.cpp@832c953:165
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:210	Переводит прогресс-спрайты на m_sdlDrawer и добавляет подпись Paused внутри значка.	src/drawers/cBuildingListDrawer.cpp@832c953:165
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:224	Переводит значок готового размещения на m_sdlDrawer.	src/drawers/cBuildingListDrawer.cpp@832c953:165
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:233	Переводит значок готового развёртывания на m_sdlDrawer и рисует Max built при достигнутом лимите юнитов.	src/drawers/cBuildingListDrawer.cpp@832c953:165
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:260	Добавляет блокирование строительства при лимите, рисует статусные накладки по старой геометрии значка и учитывает размещённый/отправленный заказ Starport.	src/drawers/cBuildingListDrawer.cpp@832c953:165
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:340	Заменяет проверку game.isDebugMode() на m_settings->isDebugMode().	src/drawers/cBuildingListDrawer.cpp@832c953:165
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:350	Берёт мышь из сервисов вместо глобального game и рисует hover-контуры через m_sdlDrawer.	src/drawers/cBuildingListDrawer.cpp@832c953:165
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:375	Добавляет drawMaxBuilt: крест и текст Max/built занимают входной прямоугольник значка.	src/drawers/cBuildingListDrawer.cpp@832c953:382
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:402	Берёт размеры структуры из InfoContext вместо глобального массива.	src/drawers/cBuildingListDrawer.cpp@832c953:403
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:418	Переводит затемняющую плашку и значки сетки размера структуры на m_sdlDrawer.	src/drawers/cBuildingListDrawer.cpp@832c953:403
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:433	Заменяет assert списка на d2tm_assert при поиске элемента под указателем.	src/drawers/cBuildingListDrawer.cpp@832c953:435
+src/drawers/cBuildingListDrawer.cpp	src/drawers/cBuildingListDrawer.cpp@d06f2fc:475	Переводит чтение типа события клавиатуры на event.getType().	src/drawers/cBuildingListDrawer.cpp@832c953:477
+src/drawers/cMessageDrawer.cpp	src/drawers/cMessageDrawer.cpp@d06f2fc:1	Добавляет заголовок проекта и подключения к контекстам, сервисам и SDL3; конструктор принимает sGameServices.	src/drawers/cMessageDrawer.cpp@832c953:1,34
+src/drawers/cMessageDrawer.cpp	src/drawers/cMessageDrawer.cpp@d06f2fc:58	Переводит отрисовку поверхности строки сообщений на SDLDrawer и поля m_position.	src/drawers/cMessageDrawer.cpp@832c953:58
+src/drawers/cMessageDrawer.cpp	src/drawers/cMessageDrawer.cpp@d06f2fc:116	Использует SDL_DestroySurface для освобождения SDL3-поверхности.	src/drawers/cMessageDrawer.cpp@832c953:114
+src/drawers/cMessageDrawer.cpp	src/drawers/cMessageDrawer.cpp@d06f2fc:148	Меняет ширину боевой строки на screenW−(SidebarWidth+164) и использует services->settings для screenW.	src/drawers/cMessageDrawer.cpp@832c953:143
+src/drawers/cMessageDrawer.cpp	src/drawers/cMessageDrawer.cpp@d06f2fc:173	Создаёт SDL3 surface и собирает левую, повторяемую среднюю и правую секции строки сообщений.	src/drawers/cMessageDrawer.cpp@832c953:173
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:1	Добавляет заголовок, SDL3, контексты геометрии карты/объектов и зависимости для клиппинга и округления.	src/drawers/cMiniMapDrawer.cpp@832c953:1
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:97	Добавляет serviceInit для получения объектов, InfoContext, мыши и аудиоконтекста.	src/drawers/cMiniMapDrawer.cpp@832c953:100
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:115	Переводит заливку прямоугольника мини-карты на SDLDrawer и Color::Black.	src/drawers/cMiniMapDrawer.cpp@832c953:108
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:126	Переводит вывод текстуры мини-карты на SDLDrawer и m_mipMapTex.	src/drawers/cMiniMapDrawer.cpp@832c953:108
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:139	Переводит кадр выключения радара на SDLDrawer.	src/drawers/cMiniMapDrawer.cpp@832c953:135
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:153	Переводит статический кадр радара и прозрачность на SDLDrawer.	src/drawers/cMiniMapDrawer.cpp@832c953:135
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:170	После появления радара сначала переводит статус в POWERDOWN, чтобы пройти проверку питания и дать звуку включения сработать.	src/drawers/cMiniMapDrawer.cpp@832c953:169
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:190	Заменяет глобальное воспроизведение голоса на аудиоконтекст и домен игрока.	src/drawers/cMiniMapDrawer.cpp@832c953:169
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:199	Переносит звук радара/голос активации на аудиоконтекст.	src/drawers/cMiniMapDrawer.cpp@832c953:169
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:243	Разделяет событие клика и нажатия, добавляет обработку правой кнопки и обновляет курсор.	src/drawers/cMiniMapDrawer.cpp@832c953:239
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:275	Рисует поверхность карты через m_sdlDrawer и m_mapGeometry вместо глобального drawer и методов cMap.	src/drawers/cMiniMapDrawer.cpp@832c953:261
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:293	Пересчитывает viewport-рамку мини-карты через float scale, floor/ceil и минимальный размер 1 px.	src/drawers/cMiniMapDrawer.cpp@832c953:288
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:319	Переводит отрисовку viewport-рамки на SDLDrawer.	src/drawers/cMiniMapDrawer.cpp@832c953:288
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:328	Переводит слой объектов мини-карты на m_mapGeometry и контекст объектов.	src/drawers/cMiniMapDrawer.cpp@832c953:330
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:347	Берёт структуры из ObjectsContext и цвет владельца из объекта игрока.	src/drawers/cMiniMapDrawer.cpp@832c953:330
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:381	Добавляет исключение скрытых туманом песчаных червей.	src/drawers/cMiniMapDrawer.cpp@832c953:330
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:389	Переводит точки объектов на SDLDrawer и цветовую константу Color::Black.	src/drawers/cMiniMapDrawer.cpp@832c953:330
+src/drawers/cMiniMapDrawer.cpp	src/drawers/cMiniMapDrawer.cpp@d06f2fc:425	Читает ширину и высоту мини-карты через m_mapGeometry.	src/drawers/cMiniMapDrawer.cpp@832c953:427,431
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:1	Добавляет заголовок проекта и include для сервисов, SDL3, InfoContext, мыши и текстур.	src/drawers/cSideBarDrawer.cpp@832c953:1
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:81	Заменяет глобальный размер экрана на settings->getScreenW/H при заливке боковой панели.	src/drawers/cSideBarDrawer.cpp@832c953:81
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:92	Добавляет обновление текстур candybar при смене дома игрока.	src/drawers/cSideBarDrawer.cpp@832c953:93,104
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:136	Берёт ширину экрана из settings при раскладке фона списка построек.	src/drawers/cSideBarDrawer.cpp@832c953:122
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:154	Переводит отрисовку линий и границ списка на SDLDrawer, а высоту — на settings->getScreenH.	src/drawers/cSideBarDrawer.cpp@832c953:122
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:206	Исправляет проверку кнопки списка: передаёт мыши координату Y вместо повторной координаты X.	src/drawers/cSideBarDrawer.cpp@832c953:122
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:227	Переводит позицию candybar на settings->getScreenW и переносит минимэп-рисование на поля текстур/SDLDrawer.	src/drawers/cSideBarDrawer.cpp@832c953:232,241
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:251	Берёт ширину для фона герба из settings->getScreenW и использует SDLDrawer.	src/drawers/cSideBarDrawer.cpp@832c953:241
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:274	Добавляет ветку выбора герба Sardaukar.	src/drawers/cSideBarDrawer.cpp@832c953:241
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:288	Переводит создание candybar и координат его частей на SDLDrawer и поля текстур; внутренние смещения сохраняются.	src/drawers/cSideBarDrawer.cpp@832c953:303
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:360	Переводит геометрию силовой полосы на settings->getScreenW/H и обновлённый SDL API.	src/drawers/cSideBarDrawer.cpp@832c953:337
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:405	Переводит расчёты полосы кредитной ёмкости на новые типы и m_sdlDrawer.	src/drawers/cSideBarDrawer.cpp@832c953:393
+src/drawers/cSideBarDrawer.cpp	src/drawers/cSideBarDrawer.cpp@d06f2fc:420	Переводит рамку и иконку полосы кредитной ёмкости на m_sdlDrawer.	src/drawers/cSideBarDrawer.cpp@832c953:393
+src/managers/cDrawManager.cpp	src/managers/cDrawManager.cpp@d06f2fc:1	Добавляет заголовок проекта, сервисы, SDL3 и контексты; конструктор и reset получают зависимости drawer-объектов.	src/managers/cDrawManager.cpp@832c953:1,59,89
+src/managers/cDrawManager.cpp	src/managers/cDrawManager.cpp@d06f2fc:170	Добавляет рендер запомненных туманом ландшафта/структур/юнитов и видимых в тумане атакующих, меняет clip/reset и удаляет прежний вызов drawNotifications.	src/managers/cDrawManager.cpp@832c953:120
+src/managers/cDrawManager.cpp	src/managers/cDrawManager.cpp@d06f2fc:273	Заменяет обращение к глобальному списку на sidebar игрока при взятии элемента для размещения.	src/managers/cDrawManager.cpp@832c953:267
+src/managers/cDrawManager.cpp	src/managers/cDrawManager.cpp@d06f2fc:288	Переводит получение контекста мыши и отрисовку tooltip на объекты менеджера.	src/managers/cDrawManager.cpp@832c953:286
+src/managers/cDrawManager.cpp	src/managers/cDrawManager.cpp@d06f2fc:301	Переводит фон верхней панели и options на SDLDrawer/поля менеджера; удаляет прежнюю функцию drawNotifications.	src/managers/cDrawManager.cpp@832c953:301
+src/managers/cDrawManager.cpp	src/managers/cDrawManager.cpp@d06f2fc:374	Переводит обработку клавиатуры на accessor-методы и включает/выключает подсказку по клавише T.	src/managers/cDrawManager.cpp@832c953:359
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:1	Добавляет заголовок проекта и подключения контекстов/новых gameobjects; конструктор использует данные и события сервиса.	src/sidebar/cBuildingList.cpp@832c953:1,34
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:54	Переводит доступ к элементам списка на поля класса с m_-префиксом.	src/sidebar/cBuildingList.cpp@832c953:53
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:65	Переводит поиск свободного места в массиве списка на поля класса.	src/sidebar/cBuildingList.cpp@832c953:65
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:76	Переводит очистку списка на поля класса.	src/sidebar/cBuildingList.cpp@832c953:76
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:103	Переводит поиск элемента по build id на поля класса.	src/sidebar/cBuildingList.cpp@832c953:90
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:116	Создаёт upgrade-элемент из InfoContext вместо глобального массива сведений.	src/sidebar/cBuildingList.cpp@832c953:104
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:124	Создаёт structure-элемент из InfoContext вместо глобального массива сведений.	src/sidebar/cBuildingList.cpp@832c953:117
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:132	Создаёт unit-элемент из InfoContext вместо глобального массива сведений.	src/sidebar/cBuildingList.cpp@832c953:125
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:142	Переводит создание специальных элементов, заполнение списка и статусы подсписка на поля класса и события.	src/sidebar/cBuildingList.cpp@832c953:133
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:230	Переводит удаление элемента по позиции на поля класса и обновлённые методы списка.	src/sidebar/cBuildingList.cpp@832c953:214
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:319	Переводит поиск готового к размещению элемента на поля класса.	src/sidebar/cBuildingList.cpp@832c953:310
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:337	Переводит поиск готового к развёртыванию элемента на поля класса.	src/sidebar/cBuildingList.cpp@832c953:328
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:419	Добавляет clearList, которая удаляет элементы списка с конца до пустого состояния.	src/sidebar/cBuildingList.cpp@832c953:406
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:448	Переводит поиск первого элемента подсписка на поля класса и методы объекта списка.	src/sidebar/cBuildingList.cpp@832c953:438
+src/sidebar/cBuildingList.cpp	src/sidebar/cBuildingList.cpp@d06f2fc:496	Меняет поведение таймера мигания и доступ к цвету на поля/методы класса.	src/sidebar/cBuildingList.cpp@832c953:468
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:1	Добавляет заголовок проекта, подключения сервисов и событий; переводит sidebar на поля класса и сервисы.	src/sidebar/cSideBar.cpp@832c953:1,42
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:62	Переводит удаление списков и доступ к игроку на поля класса.	src/sidebar/cSideBar.cpp@832c953:50
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:78	Переводит think на поля класса и обработку прогресса через объектные списки.	src/sidebar/cSideBar.cpp@832c953:76
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:98	Переводит запуск строительства на сервисы/объекты и добавляет проверку состояния Place it.	src/sidebar/cSideBar.cpp@832c953:94
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:149	Переводит поиск элемента и запуск строительства на поля класса.	src/sidebar/cSideBar.cpp@832c953:145
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:159	Переводит получение элемента по типу/ID на поля класса.	src/sidebar/cSideBar.cpp@832c953:158
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:179	Переводит анимацию прогресса и обработку мыши на поля sidebar; проверка края экрана остаётся W−SidebarWidth.	src/sidebar/cSideBar.cpp@832c953:168,180
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:201	Переводит обработку левого клика на сервисы и cBuildingListDrawer.	src/sidebar/cSideBar.cpp@832c953:198
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:210	Переносит выбор списка и элемента на методы объектов игрока/sidebar.	src/sidebar/cSideBar.cpp@832c953:198
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:245	Переводит состояние мыши на поля класса, возобновляет item->startBuilding() при клике по приостановленному элементу и использует player order processor.	src/sidebar/cSideBar.cpp@832c953:198
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:273	Правый клик ставит на паузу строящийся элемент либо отменяет его; для Starport остаётся снятие заказа через order processor.	src/sidebar/cSideBar.cpp@832c953:274
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:312	Переводит отмену строительства на поля класса и обновлённый интерфейс событий.	src/sidebar/cSideBar.cpp@832c953:307
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:342	Переводит отправку событий после отмены на event emitter.	src/sidebar/cSideBar.cpp@832c953:307
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:357	Меняет обработку событий мыши на accessor-метод типа события.	src/sidebar/cSideBar.cpp@832c953:343
+src/sidebar/cSideBar.cpp	src/sidebar/cSideBar.cpp@d06f2fc:370	Переносит реакцию на игровые события на новую структуру event и поля класса.	src/sidebar/cSideBar.cpp@832c953:371

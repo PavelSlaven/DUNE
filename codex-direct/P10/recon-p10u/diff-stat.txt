@@ -1,0 +1,5 @@
+ src/controls/cMouse.h               |   1 +
+ src/drawers/cBuildingListDrawer.cpp | 877 ++++++++++++++++++++++++++++--------
+ src/game/cGame_logic.cpp            |  22 +-
+ src/sidebar/cSideBar.cpp            |  10 +
+ 4 files changed, 717 insertions(+), 193 deletions(-)

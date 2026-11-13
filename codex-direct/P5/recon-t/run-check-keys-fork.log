@@ -1,0 +1,31 @@
+no annotation in keys.tsv: src/controls/CommandBindings.hpp commandBindingKeysMatch SDL_SCANCODE_LALT (x2)
+no annotation in keys.tsv: src/controls/CommandBindings.hpp commandBindingKeysMatch SDL_SCANCODE_LSHIFT (x2)
+no annotation in keys.tsv: src/controls/CommandBindings.hpp commandBindingKeysMatch SDL_SCANCODE_RALT (x2)
+no annotation in keys.tsv: src/controls/CommandBindings.hpp commandBindingKeysMatch SDL_SCANCODE_RSHIFT (x2)
+no annotation in keys.tsv: src/controls/CommandBindings.hpp trySetCommandBinding commandBinding (x1)
+no annotation in keys.tsv: src/gamestates/cOptionsState.cpp bindingKeyName SDL_SCANCODE_LCTRL (x1)
+no annotation in keys.tsv: src/gamestates/cOptionsState.cpp bindingKeyName SDL_SCANCODE_RCTRL (x1)
+no such key use in the code: src/controls/cKeyboardEvent.h - SDL_SCANCODE_LCTRL (x2)
+no such key use in the code: src/controls/cKeyboardEvent.h - SDL_SCANCODE_RCTRL (x2)
+rule 10: state=game: debug mode; key=1; actions: debug-control-player-1 / select-group; places: src/cGame_logic.cpp:2417, src/controls/cKeyboardEvent.cpp:12
+rule 10: state=game: debug mode; key=2; actions: debug-control-player-2 / select-group; places: src/cGame_logic.cpp:2421, src/controls/cKeyboardEvent.cpp:15
+rule 10: state=game: debug mode; key=3; actions: debug-control-player-3 / select-group; places: src/cGame_logic.cpp:2425, src/controls/cKeyboardEvent.cpp:18
+rule 10: state=game: debug mode; key=D+TAB; actions: draw-without-shroud / show-list-ids; places: src/drawers/cBuildingListDrawer.cpp:1040, src/drawers/cBuildingListDrawer.cpp:1047, src/managers/cDrawManager.cpp:519, src/managers/cDrawManager.cpp:533
+rule 10: state=game: debug mode; key=F4; actions: debug-clear-shroud / debug-give-credits; places: src/cGame_logic.cpp:2066, src/cGame_logic.cpp:2441
+rule 10: state=game: debug mode; key=TAB+D; actions: draw-without-shroud / show-list-ids; places: src/drawers/cBuildingListDrawer.cpp:1040, src/drawers/cBuildingListDrawer.cpp:1047, src/managers/cDrawManager.cpp:519, src/managers/cDrawManager.cpp:533
+rule 10: state=game: structure selected; key=LCTRL; actions: create-group / rally; places: src/cGame_logic.cpp:2052, src/controls/CommandBindings.hpp:23
+rule 10: state=game: units selected; key=D; actions: deploy / unload; places: src/controls/CommandBindings.hpp:21, src/controls/CommandBindings.hpp:22
+rule 10: state=game: units selected; key=LCTRL; actions: attack / create-group; places: src/cGame_logic.cpp:2052, src/controls/CommandBindings.hpp:19, src/controls/mousestates/cMouseUnitsSelectedState.cpp:452
+rule 10: state=game: units selected; key=LSHIFT; actions: add-to-selection / build-multiplier; places: src/building/cItemBuilder.cpp:826, src/building/cItemBuilder.cpp:833, src/controls/mousestates/cMouseUnitsSelectedState.cpp:427, src/controls/mousestates/cMouseUnitsSelectedState.cpp:483
+rule 10: state=game: units selected; key=RSHIFT; actions: add-to-selection / build-multiplier; places: src/building/cItemBuilder.cpp:826, src/building/cItemBuilder.cpp:833, src/controls/mousestates/cMouseUnitsSelectedState.cpp:427, src/controls/mousestates/cMouseUnitsSelectedState.cpp:483
+rule 10: state=game: units selected; command=attack; переназначение без проверки занятости; keys already used in this state: 1, 2, 3, 4, 5, BACKSLASH, C, D, DOWN, ESCAPE, F, F5, F9, H, KP_MINUS, KP_PLUS, LALT, LCTRL, LEFT, LEFTBRACKET, LSHIFT, M, MUTE, O, P, R, RCTRL, RETURN, RIGHT, RIGHTBRACKET, RSHIFT, TAB, UP, VOLUMEDOWN, VOLUMEUP, Z
+rule 10: state=game: units selected; command=deploy; переназначение без проверки занятости; keys already used in this state: 1, 2, 3, 4, 5, BACKSLASH, C, D, DOWN, ESCAPE, F, F5, F9, H, KP_MINUS, KP_PLUS, LALT, LCTRL, LEFT, LEFTBRACKET, LSHIFT, M, MUTE, O, P, R, RCTRL, RETURN, RIGHT, RIGHTBRACKET, RSHIFT, TAB, UP, VOLUMEDOWN, VOLUMEUP, Z
+rule 10: state=game: structure selected; command=rally; переназначение без проверки занятости; keys already used in this state: 1, 2, 3, 4, 5, BACKSLASH, C, D, DOWN, ESCAPE, F, F5, F9, H, KP_MINUS, KP_PLUS, LALT, LCTRL, LEFT, LEFTBRACKET, LSHIFT, M, MUTE, O, P, R, RCTRL, RETURN, RIGHT, RIGHTBRACKET, RSHIFT, TAB, UP, VOLUMEDOWN, VOLUMEUP, Z
+rule 10: state=game: structure selected; command=release; переназначение без проверки занятости; keys already used in this state: 1, 2, 3, 4, 5, BACKSLASH, C, D, DOWN, ESCAPE, F, F5, F9, H, KP_MINUS, KP_PLUS, LALT, LCTRL, LEFT, LEFTBRACKET, LSHIFT, M, MUTE, O, P, R, RCTRL, RETURN, RIGHT, RIGHTBRACKET, RSHIFT, TAB, UP, VOLUMEDOWN, VOLUMEUP, Z
+rule 10: state=game: nothing selected; command=repair; переназначение без проверки занятости; keys already used in this state: 1, 2, 3, 4, 5, BACKSLASH, C, D, DOWN, ESCAPE, F, F5, F9, H, KP_MINUS, KP_PLUS, LALT, LCTRL, LEFT, LEFTBRACKET, LSHIFT, M, MUTE, O, P, RCTRL, RETURN, RIGHT, RIGHTBRACKET, RSHIFT, TAB, UP, VOLUMEDOWN, VOLUMEUP, Z
+rule 10: state=game: structure selected; command=repair; переназначение без проверки занятости; keys already used in this state: 1, 2, 3, 4, 5, BACKSLASH, C, D, DOWN, ESCAPE, F, F5, F9, H, KP_MINUS, KP_PLUS, LALT, LCTRL, LEFT, LEFTBRACKET, LSHIFT, M, MUTE, O, P, RCTRL, RETURN, RIGHT, RIGHTBRACKET, RSHIFT, TAB, UP, VOLUMEDOWN, VOLUMEUP, Z
+rule 10: state=game: repair mode; command=repair; переназначение без проверки занятости; keys already used in this state: BACKSLASH, C, D, DOWN, ESCAPE, F, F5, F9, H, KP_MINUS, KP_PLUS, LALT, LCTRL, LEFT, LEFTBRACKET, LSHIFT, M, MUTE, O, P, RCTRL, RETURN, RIGHT, RIGHTBRACKET, RSHIFT, TAB, UP, VOLUMEDOWN, VOLUMEUP, Z
+rule 10: state=game: units selected; command=repair; переназначение без проверки занятости; keys already used in this state: 1, 2, 3, 4, 5, BACKSLASH, C, D, DOWN, ESCAPE, F, F5, F9, H, KP_MINUS, KP_PLUS, LALT, LCTRL, LEFT, LEFTBRACKET, LSHIFT, M, MUTE, O, P, RCTRL, RETURN, RIGHT, RIGHTBRACKET, RSHIFT, TAB, UP, VOLUMEDOWN, VOLUMEUP, Z
+rule 10: state=game: units selected; command=unload; переназначение без проверки занятости; keys already used in this state: 1, 2, 3, 4, 5, BACKSLASH, C, D, DOWN, ESCAPE, F, F5, F9, H, KP_MINUS, KP_PLUS, LALT, LCTRL, LEFT, LEFTBRACKET, LSHIFT, M, MUTE, O, P, R, RCTRL, RETURN, RIGHT, RIGHTBRACKET, RSHIFT, TAB, UP, VOLUMEDOWN, VOLUMEUP, Z
+keys: freshness FAIL; rule 10 flags: 20
+exit=1

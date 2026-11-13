@@ -1,0 +1,85 @@
+     1	/**
+     2	 * @file cTextDrawer.h
+     3	 *
+     4	 * Dune 2 - The Maker
+     5	 *
+     6	 * @author Stefan Hendriks & the D2TM Team
+     7	 * @www http://www.dune2themaker.com
+     8	 * @copyright Copyright (c) 2002 - 2026 Stefan Hendriks and contributors
+     9	 * @license This software is released under the MIT License. See LICENSE.md.
+    10	 *
+    11	 * Note: Dune 2 is a trademark of Westwood Studios/Electronic Arts.
+    12	 *
+    13	 * This is a non-commercial educational project.
+    14	 */
+    15	
+    16	#pragma once
+    17	
+    18	#include "utils/cRectangle.h"
+    19	class Color;
+    20	#include <SDL3_ttf/SDL_ttf.h>
+    21	#include <string>
+    22	#include <memory>
+    23	
+    24	class cTextTextureCache;
+    25	class cGameSettings;
+    26	class SDLDrawer;
+    27	
+    28	class cTextDrawer {
+    29	public:
+    30	    // Constructor, initializes the drawer with a TTF font and game settings
+    31	    cTextDrawer(TTF_Font *theFont, cGameSettings *settings, SDLDrawer *renderer);
+    32	    ~cTextDrawer();
+    33	
+    34	    // Draws text at (x, y) in white, with optional shadow
+    35	    void drawText(int x, int y, const std::string &msg, bool applyShadow = true) const;
+    36	    // Draws text at given coordinates, with color and optional shadow
+    37	    void drawText(cPoint &coords, Color color, const std::string &msg, bool applyShadow = true) const;
+    38	    // Draws text at (x, y) with color and optional shadow
+    39	    void drawText(int x, int y, Color color, const std::string &msg, bool applyShadow = true) const;
+    40	    // Draws centered text horizontally at line y, in white
+    41	    void drawTextCentered(const std::string &msg, int y) const;
+    42	    // Draws centered text horizontally at line y, with color
+    43	    void drawTextCentered(const std::string &msg, int y, Color color) const;
+    44	    // Draws centered text within a region (x, width) at line y, with color
+    45	    void drawTextCentered(const std::string &msg, int x, int width, int y, Color color) const;
+    46	
+    47	    /**
+    48	     * Draws the text within a 'box' (rectangle), positioned at X,Y. The width/height of the box determine
+    49	     * how to center the text. When centering text, the height/width of the font is taken into account.
+    50	    */
+    51	    // Draws centered text inside a box (x, y, boxWidth, boxHeight), with color
+    52	    void drawTextCenteredInBox(const std::string &msg, int x, int y, int boxWidth, int boxHeight, Color color) const;
+    53	    // Draws centered text inside a rectangle, with color
+    54	    void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color) const;
+    55	    // Draws centered text inside a rectangle, with color and offset
+    56	    void drawTextCenteredInBox(const std::string &msg, const cRectangle &rect, Color color, int offsetX, int offsetY) const;
+    57	    void drawTextScaledCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;
+    58	    void drawTextScaledOpticallyCenteredInBox(const std::string &msg, const cRectangle &rect, float scale, Color color, bool applyShadow = true) const;
+    59	    // Draws text at the bottom right of the screen, in white, with margin
+    60	    void drawTextBottomRight(const std::string &msg, int margin=0) const;
+    61	    // Draws text at the bottom left of the screen, in white, with margin
+    62	    void drawTextBottomLeft(const std::string &msg, int margin=0) const;
+    63	    // Draws text at the bottom right of the screen, with color and margin
+    64	    void drawTextBottomRight(Color color, const std::string &msg,int margin =0) const;
+    65	    // Draws text at the bottom left of the screen, with color and margin
+    66	    void drawTextBottomLeft(Color color, const std::string &msg,int margin =0) const;
+    67	    // Returns the pixel length of the text
+    68	    int getTextLength(const std::string &msg) const;
+    69	    // Returns the font height in pixels
+    70	    int getFontHeight() const;
+    71	    // Clears the text texture cache
+    72	    void resetCache() const;
+    73	    // Returns a rectangle bounding the text at (x, y)
+    74	    [[nodiscard]] cRectangle getRect(int x, int y, const std::string &msg) const;
+    75	    // Returns a rectangle bounding the text at (x, y)
+    76	    [[nodiscard]] cRectangle getAsRectangle(int x, int y, const std::string &msg) const;
+    77	
+    78	protected:
+    79	
+    80	private:
+    81	    TTF_Font *m_font;
+    82	    std::unique_ptr<cTextTextureCache> m_textCache;
+    83	    cGameSettings* m_settings = nullptr;
+    84	    SDLDrawer *m_renderer = nullptr;
+    85	};

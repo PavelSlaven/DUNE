@@ -1,0 +1,41 @@
+     1	/**
+     2	 * @file TextContext.hpp
+     3	 *
+     4	 * Dune 2 - The Maker
+     5	 *
+     6	 * @author Stefan Hendriks & the D2TM Team
+     7	 * @www http://www.dune2themaker.com
+     8	 * @copyright Copyright (c) 2002 - 2026 Stefan Hendriks and contributors
+     9	 * @license This software is released under the MIT License. See LICENSE.md.
+    10	 *
+    11	 * Note: Dune 2 is a trademark of Westwood Studios/Electronic Arts.
+    12	 *
+    13	 * This is a non-commercial educational project.
+    14	 */
+    15	
+    16	#pragma once
+    17	
+    18	#include <memory>
+    19	class cTextDrawer;
+    20	
+    21	class TextContext {
+    22	
+    23	public:
+    24	    TextContext(
+    25	        std::unique_ptr<cTextDrawer> smallTextDrawer,
+    26	        std::unique_ptr<cTextDrawer> beneTextDrawer,
+    27	        std::unique_ptr<cTextDrawer> gameTextDrawer
+    28	    );
+    29	    ~TextContext();
+    30	
+    31	    void resetCache() const;
+    32	
+    33	    [[nodiscard]] cTextDrawer* getSmallTextDrawer() const;
+    34	    [[nodiscard]] cTextDrawer* getBeneTextDrawer() const;
+    35	    [[nodiscard]] cTextDrawer* getGameTextDrawer() const;
+    36	
+    37	private:
+    38	    std::unique_ptr<cTextDrawer> m_smallTextDrawer;
+    39	    std::unique_ptr<cTextDrawer> m_beneTextDrawer;
+    40	    std::unique_ptr<cTextDrawer> m_gameTextDrawer;
+    41	};

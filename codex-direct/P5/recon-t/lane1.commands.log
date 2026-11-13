@@ -1,0 +1,15 @@
+Command: python3 .tmp/p5tr/lane1.py
+Output:
+Инструментов: 14
+Тестов инструментов: 15
+Строк imports.tsv без заголовка: 174
+Строк interface.tsv без заголовка: 101
+Уникальных значений fields.tsv без заголовка: 107
+Строк scene-refs.tsv без заголовка: 9
+Сторонние модули: PIL
+Строк сцен в scenes.tsv без заголовка: 157
+Всего уникальных строковых значений по шаблону fields: 107
+Всего строковых литералов в инструментах: 864
+
+Detailed wc and third-party import command outputs: lane1.imports.log
+Detailed git grep commands and outputs: lane1.gitgrep.log

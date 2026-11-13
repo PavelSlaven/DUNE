@@ -1,0 +1,30 @@
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:37:void SDLDrawer::renderSprite(Texture *src,int x, int y,Uint8 opacity)
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:46:    SDL_RenderTexture(renderer, src->tex.get(), nullptr, &tmp);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:58:    SDL_RenderTexture(renderer, tex, nullptr, &tmp);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:75:    SDL_RenderTexture(renderer, texture, nullptr, &tmp);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:79:void SDLDrawer::renderStrechSprite(Texture *src, cRectangle src_pos, cRectangle dest_pos, Uint8 opacity)
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:90:    SDL_RenderTexture(renderer, src->tex.get(), &srcRect, &destRect);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.cpp:99:    SDL_RenderTexture(renderer, src->tex.get(), nullptr, &destRect);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.hpp:33:    void renderSprite(Texture *src,int x, int y,Uint8 opacity = 255);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/SDLDrawer.hpp:34:    void renderStrechSprite(Texture *src, cRectangle src_pos, cRectangle dest_pos, Uint8 opacity = 255);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:600:    m_sdlDrawer->renderSprite(m_gfxinter->getTexture(PROGRESSNA), x, y, 64);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:640:    m_sdlDrawer->renderSprite(m_gfxinter->getTexture(GRID_0X0), gridX, gridY);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:641:    m_sdlDrawer->renderSprite(m_gfxinter->getTexture(iTile), gridX, gridY);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cBuildingListDrawer.cpp:705:    m_sdlDrawer->renderStrechSprite(
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMapDrawer.cpp:64: * to renderStrechSprite in drawShroud) so a discovered-but-not-currently-visible tile still reads
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMapDrawer.cpp:148:                        m_sdlDrawer->renderStrechSprite(m_gfxdata->getTexture(SHROUD), src_pos, dest_pos);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMapDrawer.cpp:157:                    m_sdlDrawer->renderStrechSprite(m_gfxdata->getTexture(SHROUD), src_pos, dest_pos);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMapDrawer.cpp:260:                m_sdlDrawer->renderStrechSprite(terrainTexture, src_pos, dest_pos);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMapDrawer.cpp:268:                    m_sdlDrawer->renderStrechSprite(m_gfxdata->getTexture(SMUDGE), src_pos, dest_pos);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cMapDrawer.cpp:438:    m_sdlDrawer->renderStrechSprite(m_fogTexture.get(), src_pos, dest_pos, 110);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cOrderDrawer.cpp:62:    m_sdlDrawer->renderSprite(m_buttonBitmap.get(), m_buttonRect.getX(), m_buttonRect.getY());
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cPlaceItDrawer.cpp:227:    m_sdlDrawer->renderStrechSprite(bmp, src, dest,96);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cStructureDrawer.cpp:116:                m_sdlDrawer->renderStrechSprite(info.shadow, src, dest, ShadowTrans);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cStructureDrawer.cpp:118:            m_sdlDrawer->renderStrechSprite(bitmap, src, dest);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cStructureDrawer.cpp:305:    m_sdlDrawer->renderStrechSprite(
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cStructureDrawer.cpp:385:    m_sdlDrawer->renderStrechSprite(icon, src, dest, static_cast<Uint8>(LowPowerBlink::opacityAt(SDL_GetTicks())));
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cUnitDrawer.cpp:189:        m_renderer->renderSprite(m_gfxdata->getTexture(OBJECT_STAR_01 + iStarType), drawx + i * 9, drawy, ShadowTrans);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cUnitDrawer.cpp:291:        m_renderer->renderStrechSprite(shadow,src, dest, ShadowTrans);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cUnitDrawer.cpp:308:        m_renderer->renderStrechSprite(bitmap,src, dest);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cUnitDrawer.cpp:329:        m_renderer->renderStrechSprite(top,src, dest);
+bb60a275be8074ed71da861cb83fe813066698fa:src/drawers/cUnitDrawer.cpp:334:        m_renderer->renderSprite(m_gfxdata->getTexture(SYMB_PICKMEUP), ux, uy - 7);

@@ -1,0 +1,87 @@
+file	line	function	recorded_in_function	records_in_file	code
+src/gui/GuiButton.cpp	244	GuiButton::onMouseMovedTo	no	0	m_focus = m_rect.isPointWithin(event.coords);
+src/gui/GuiCheckBox.cpp	138	GuiCheckBox::onMouseMovedTo	no	0	m_focus = m_rect.isPointWithin(event.coords);
+src/gui/GuiLabel.cpp	130	GuiLabel::onMouseMovedTo	no	0	m_focus = m_rect.isPointWithin(event.coords);
+src/gui/GuiSlider.cpp	65	GuiSlider::onNotifyMouseEvent	no	0	if (m_rect.isPointWithin(event.coords)) {
+src/drawers/cBuildingListDrawer.cpp	453	cBuildingListDrawer::drawList	no	0	if (isOverItemCoordinates_Boolean(m_mouse->getX(), m_mouse->getY(), iDrawX, iDrawY)) {
+src/drawers/cBuildingListDrawer.cpp	504	cBuildingListDrawer::isOverItemCoordinates_Boolean	no	0	bool cBuildingListDrawer::isOverItemCoordinates_Boolean(int x, int y, int drawX, int drawY)
+src/drawers/cBuildingListDrawer.cpp	515	cBuildingListDrawer::isOverItemCoordinates	no	0	cBuildingListItem *cBuildingListDrawer::isOverItemCoordinates(cBuildingList *list, int x, int y)
+src/drawers/cBuildingListDrawer.cpp	520	cBuildingListDrawer::isOverItemCoordinates	no	0	if (!layout.cards.isPointWithin(x, y)) {
+src/drawers/cBuildingListDrawer.cpp	534	cBuildingListDrawer::isOverItemCoordinates	no	0	if (card.isPointWithin(x, y)) {
+src/drawers/cBuildingListDrawer.cpp	837	cBuildingListDrawer::onNotifyMouseEvent	no	0	if (!layout.catalog.isPointWithin(event.coords.x, event.coords.y)) {
+src/drawers/cBuildingListDrawer.cpp	850	cBuildingListDrawer::onNotifyMouseEvent	no	0	!layout.scrollbar.isPointWithin(event.coords.x, event.coords.y)) {
+src/drawers/cCommandBarDrawer.cpp	69	cCommandBarDrawer::isMouseOver	no	0	bool cCommandBarDrawer::isMouseOver(const cPoint &point) const
+src/drawers/cCommandBarDrawer.cpp	71	cCommandBarDrawer::isMouseOver	no	0	return m_panelRect.isPointWithin(point.x, point.y);
+src/drawers/cCommandBarDrawer.cpp	259	cCommandBarDrawer::onNotifyMouseEvent	no	0	if (m_buttons[i].rect.isPointWithin(event.coords.x, event.coords.y)) {
+src/drawers/cCommandBarDrawer.cpp	267	cCommandBarDrawer::onNotifyMouseEvent	no	0	if (button.enabled && button.rect.isPointWithin(event.coords.x, event.coords.y)) {
+src/drawers/cMapDrawer.cpp	119	cMapDrawer::drawTerrain	no	0	if (!m_map->isWithinBoundaries(iCell)) {
+src/drawers/cMiniMapDrawer.cpp	167	cMiniMapDrawer::isMouseOver	no	1	bool cMiniMapDrawer::isMouseOver()
+src/drawers/cMiniMapDrawer.cpp	213	cMiniMapDrawer::drawTerrain	no	1	if (!m_map->isWithinBoundaries(x, y)) {
+src/drawers/cMiniMapDrawer.cpp	268	cMiniMapDrawer::drawUnitsAndStructures	no	1	if (!m_map->isWithinBoundaries(x, y)) continue;
+src/drawers/cMiniMapDrawer.cpp	364	cMiniMapDrawer::onMouseAt	no	1	m_isMouseOver = m_RectMinimap.isPointWithin(event.coords.x, event.coords.y);
+src/drawers/cMiniMapDrawer.cpp	369	cMiniMapDrawer::onMousePressedLeft	no	1	if (m_RectFullMinimap.isPointWithin(event.coords.x, event.coords.y) && // on minimap space
+src/drawers/cMouseDrawer.cpp	57	cMouseDrawer::getWidthToolTip	no	0	if (context->isMouseOverStructure()) {
+src/drawers/cMouseDrawer.cpp	68	cMouseDrawer::getHeightToolTip	no	0	if (context->isMouseOverStructure()) {
+src/drawers/cMouseDrawer.cpp	112	cMouseDrawer::drawToolTip	no	0	if (context->isMouseOverStructure()) {
+src/drawers/cMouseDrawer.cpp	147	cMouseDrawer::drawToolTipBackground	no	0	if (context->isMouseOverStructure()) {
+src/drawers/cOrderDrawer.cpp	86	cOrderDrawer::onMouseAt	no	0	m_isMouseOverOrderButton = m_buttonRect.isPointWithin(event.coords);
+src/drawers/cParticleDrawer.cpp	14	cParticleDrawer::determineParticlesToDraw	no	0	if (!pParticle.isWithinViewport(viewport)) continue;
+src/drawers/cPlaceItDrawer.cpp	59	cPlaceItDrawer::drawStatusOfStructureAtCell	no	0	if (!global_map.isWithinBoundaries(cellX, cellY)) {
+src/drawers/cSideBarDrawer.cpp	395	cSideBarDrawer::drawHdBuildingLists	no	0	list->isOverButton(mouse->getX(), mouse->getY())) {
+src/drawers/cStructureDrawer.cpp	48	cStructureDrawer::drawStructuresHealthBars	no	0	if (context->isMouseOverStructure()) {
+src/gamestates/cChooseHouseState.cpp	319	cChooseHouseState::onMouseLeftButtonClicked	no	4	if (event.coords.isWithinRectangle(&houseAtreides)) {
+src/gamestates/cChooseHouseState.cpp	325	cChooseHouseState::onMouseLeftButtonClicked	no	4	else if (event.coords.isWithinRectangle(&houseOrdos)) {
+src/gamestates/cChooseHouseState.cpp	331	cChooseHouseState::onMouseLeftButtonClicked	no	4	else if (event.coords.isWithinRectangle(&houseHarkonnen)) {
+src/gamestates/cChooseHouseState.cpp	337	cChooseHouseState::onMouseLeftButtonClicked	no	4	else if (event.coords.isWithinRectangle(backButtonRect)) {
+src/gamestates/cChooseHouseState.cpp	345	cChooseHouseState::onMouseMoved	no	4	hoversOverBackButton = event.coords.isWithinRectangle(backButtonRect);
+src/gamestates/cChooseHouseState.cpp	347	cChooseHouseState::onMouseMoved	no	4	if (event.coords.isWithinRectangle(&houseAtreides)) {
+src/gamestates/cChooseHouseState.cpp	350	cChooseHouseState::onMouseMoved	no	4	else if (event.coords.isWithinRectangle(&houseOrdos)) {
+src/gamestates/cChooseHouseState.cpp	353	cChooseHouseState::onMouseMoved	no	4	else if (event.coords.isWithinRectangle(&houseHarkonnen)) {
+src/gamestates/cSelectYourNextConquestState.cpp	831	cSelectYourNextConquestState::regionOver	no	1	if (!mapRect.isPointWithin(mouseX, mouseY)) return -1;
+src/gamestates/cSetupSkirmishState.cpp	582	cSetupSkirmishState::getTextColorForRect	no	1	if (rect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	625	cSetupSkirmishState::drawStartPoints	no	1	if (startPoints.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	662	cSetupSkirmishState::drawPreviewMapAndMore	no	1	if (previewMapRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	698	cSetupSkirmishState::drawDetonateBlooms	no	1	Color textColor = detonateBloomsRect.isPointWithin(mouse->getX(), mouse->getY()) ? Color::red() : Color::white
+src/gamestates/cSetupSkirmishState.cpp	711	cSetupSkirmishState::drawBlooms	no	1	Color textColor = bloomsRect.isPointWithin(mouse->getX(), mouse->getY()) ? Color::red() : Color::white();
+src/gamestates/cSetupSkirmishState.cpp	719	cSetupSkirmishState::drawWorms	no	1	Color textColor = wormsRect.isPointWithin(mouse->getX(), mouse->getY()) ? Color::red() : Color::white();
+src/gamestates/cSetupSkirmishState.cpp	726	cSetupSkirmishState::drawTechLevel	no	1	Color textColor = techLevelRect.isPointWithin(mouse->getX(), mouse->getY()) ? Color::red() : Color::white();
+src/gamestates/cSetupSkirmishState.cpp	1071	cSetupSkirmishState::onMouseRightButtonClickedAtPlayerList	no	1	if (houseRec.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1091	cSetupSkirmishState::onMouseRightButtonClickedAtPlayerList	no	1	if (creditsRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1103	cSetupSkirmishState::onMouseRightButtonClickedAtPlayerList	no	1	if (startingUnitsRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1115	cSetupSkirmishState::onMouseRightButtonClickedAtPlayerList	no	1	if (teamsRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1151	cSetupSkirmishState::onMouseLeftButtonClickedAtPlayerList	no	1	if (brainRect.isPointWithin(mouse->getX(),mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1171	cSetupSkirmishState::onMouseLeftButtonClickedAtPlayerList	no	1	if (houseRec.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1192	cSetupSkirmishState::onMouseLeftButtonClickedAtPlayerList	no	1	if (creditsRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1204	cSetupSkirmishState::onMouseLeftButtonClickedAtPlayerList	no	1	if (startingUnitsRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1216	cSetupSkirmishState::onMouseLeftButtonClickedAtPlayerList	no	1	if (teamsRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1229	cSetupSkirmishState::onMouseLeftButtonClickedAtDetonateBlooms	no	1	if (detonateBloomsRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1237	cSetupSkirmishState::onMouseLeftButtonClickedAtSpawnBlooms	no	1	if (bloomsRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1244	cSetupSkirmishState::onMouseLeftButtonClickedAtWorms	no	1	if (wormsRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1255	cSetupSkirmishState::onMouseLeftButtonClickedAtStartPoints	no	1	if (startPointsRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/gamestates/cSetupSkirmishState.cpp	1290	cSetupSkirmishState::onMouseLeftButtonClickedAtMapList	no	1	const bool mouseHoversOverMapTile = rect.isPointWithin(m_game.getMouse()->getMouseCoords());
+src/gamestates/cSetupSkirmishState.cpp	1462	cSetupSkirmishState::onMouseRightButtonClickedAtStartPoints	no	1	if (startPointsRect.isPointWithin(mouse->getMouseCoords())) {
+src/gamestates/cSetupSkirmishState.cpp	1476	cSetupSkirmishState::onMouseRightButtonClickedAtWorms	no	1	if (wormsRect.isPointWithin(mouse->getMouseCoords())) {
+src/gamestates/cSetupSkirmishState.cpp	1487	cSetupSkirmishState::onMouseRightButtonClickedAtTechLevel	no	1	if (techLevelRect.isPointWithin(mouse->getMouseCoords())) {
+src/gamestates/cSetupSkirmishState.cpp	1498	cSetupSkirmishState::onMouseLeftButtonClickedAtTechLevel	no	1	if (techLevelRect.isPointWithin(mouse->getX(), mouse->getY())) {
+src/managers/cDrawManager.cpp	279	cDrawManager::drawTopBarBackground	yes	4	game.getMouse()->isOverRectangle(
+src/managers/cDrawManager.cpp	377	cDrawManager::drawMusicControls	yes	4	const bool mouseOverSlider = mouse->isOverRectangle(
+src/managers/cDrawManager.cpp	413	cDrawManager::drawMusicControls	yes	4	if (mouse->isOverRectangle(
+src/managers/cDrawManager.cpp	417	cDrawManager::drawMusicControls	yes	4	else if (mouse->isOverRectangle(
+src/save/SaveSlotsDialog.cpp	418	SaveSlotsDialog::onMouseEvent	no	5	if (m_slotRects[index].isPointWithin(
+src/save/SaveSlotsDialog.cpp	425	SaveSlotsDialog::onMouseEvent	no	5	if (m_nameRect.isPointWithin(event.coords.x, event.coords.y)) {
+src/save/SaveSlotsDialog.cpp	429	SaveSlotsDialog::onMouseEvent	no	5	if (m_saveRect.isPointWithin(event.coords.x, event.coords.y)) {
+src/save/SaveSlotsDialog.cpp	433	SaveSlotsDialog::onMouseEvent	no	5	if (m_loadRect.isPointWithin(event.coords.x, event.coords.y)) {
+src/save/SaveSlotsDialog.cpp	437	SaveSlotsDialog::onMouseEvent	no	5	if (m_closeRect.isPointWithin(event.coords.x, event.coords.y)) {
+src/sidebar/cBuildingList.cpp	254	cBuildingList::isOverButton	no	0	bool cBuildingList::isOverButton(int x, int y)
+src/sidebar/cBuildingList.cpp	256	cBuildingList::isOverButton	no	0	return cRectangle::isWithin(
+src/sidebar/cSideBar.cpp	145	cSideBar::onMouseAt	no	0	cBuildingListItem *item = buildingListDrawer->isOverItemCoordinates(list, event.coords.x, event.coords.y);
+src/sidebar/cSideBar.cpp	165	cSideBar::onMouseClickedLeft	no	0	if (list->isOverButton(event.coords.x, event.coords.y)) {
+src/sidebar/cSideBar.cpp	194	cSideBar::onMouseClickedLeft	no	0	cBuildingListItem *item = buildingListDrawer->isOverItemCoordinates(list, event.coords.x, event.coords.y);
+src/sidebar/cSideBar.cpp	234	cSideBar::onMouseClickedRight	no	0	cBuildingListItem *item = buildingListDrawer->isOverItemCoordinates(list, event.coords.x, event.coords.y);
+src/controls/cGameControlsContext.cpp	54	cGameControlsContext::updateMouseCell	no	0	if (drawManager->getCommandBarDrawer()->isMouseOver(coords)) {
+src/controls/cGameControlsContext.cpp	60	cGameControlsContext::updateMouseCell	no	0	if (drawManager->getMiniMapDrawer()->isMouseOver()) {
+src/controls/cMouse.cpp	185	cMouse::isOverRectangle	no	0	bool cMouse::isOverRectangle(int x, int y, int width, int height)
+src/controls/cMouse.cpp	187	cMouse::isOverRectangle	no	0	return cRectangle::isWithin(getX(), getY(), x, y, width, height);
+src/controls/cMouse.cpp	190	cMouse::isOverRectangle	no	0	bool cMouse::isOverRectangle(cRectangle *rectangle)
+src/controls/cMouse.cpp	193	cMouse::isOverRectangle	no	0	return rectangle->isPointWithin(getX(), getY());
+exit=0

@@ -1,0 +1,16 @@
+файл тестов	ok	FAIL	ERROR	skipped
+tests/test_build_sheets.py	9	0	0	0
+tests/test_check_completeness.py	11	0	0	0
+tests/test_check_credits.py	4	0	0	0
+tests/test_check_geometry.py	44	0	0	0
+tests/test_check_keys.py	23	0	0	0
+tests/test_check_options_geometry.py	10	0	0	0
+tests/test_check_scenes.py	22	0	0	0
+tests/test_check_screens.py	9	0	0	0
+tests/test_combos.py	18	0	0	0
+tests/test_extra_rules.py	21	0	0	0
+tests/test_extract_keys.py	8	0	0	0
+tests/test_find_hit_tests.py	5	0	0	0
+tests/test_png_policy.py	6	0	0	0
+tests/test_png_policy_outputs.py	5	0	0	0
+tests/test_run_all.py	9	0	0	0

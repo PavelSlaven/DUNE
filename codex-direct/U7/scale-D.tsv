@@ -1,0 +1,19 @@
+record	source	factor	constraint
+UNIT_DEVASTATOR	current	1.009868421052631	ширина или высота кадра; альфа LANCZOS и сохранение полного силуэта в рамке игры
+UNIT_DEVIATOR	current	0.9094119641150825	
+UNIT_HARVESTER	current	1.0477307507593085	
+UNIT_LAUNCHER	current	0.9057815625199193	
+UNIT_MCV	current	1.0	ширина или высота кадра
+UNIT_QUAD	current	0.7096276690080756	
+UNIT_RAIDER	current	0.7788822816877188	
+UNIT_SABOTEUR	current	0.663795902368398	
+UNIT_SIEGE	current	0.9111842105263153	ширина или высота кадра; альфа LANCZOS и сохранение полного силуэта в рамке игры
+UNIT_SINGLEFREMEN	current	0.663795902368398	
+UNIT_SOLDIER	current	0.637754474132401	
+UNIT_SOLDIERS	current	0.637754474132401	
+UNIT_SONICTANK	current	1.0	
+UNIT_TANK	current	1.0117187499999991	ширина или высота кадра; альфа LANCZOS и сохранение полного силуэта в рамке игры
+UNIT_TRIKE	current	0.7581083437418511	
+UNIT_TRIPLEFREMEN	current	0.663795902368398	
+UNIT_TROOPER	current	0.6693976548863201	
+UNIT_TROOPERS	current	0.6693976548863201	
