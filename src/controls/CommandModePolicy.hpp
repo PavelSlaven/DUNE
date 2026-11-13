@@ -34,3 +34,10 @@ enum class RightClickCommandPolicy {
         ? RightClickCommandPolicy::CancelCommand
         : RightClickCommandPolicy::DefaultAction;
 }
+
+struct CommandTargetingState {
+    bool move = false;
+    bool attack = false;
+    bool repair = false;
+    bool rally = false;
+};

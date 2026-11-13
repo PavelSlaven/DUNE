@@ -55,6 +55,7 @@
 #include "gamestates/cMainMenuState.h"
 #include "save/SaveGameManager.hpp"
 #include "save/SaveSlotsDialog.hpp"
+#include "drawers/CommandBarLayout.hpp"
 #include "drawers/cCommandBarDrawer.h"
 #include "gameobjects/structures/OutpostDish.hpp"
 #include "gameobjects/structures/cUnitFactory.h"
@@ -814,7 +815,7 @@ bool UiAuditAccess::prepareGameScreen(cGame &currentGame, int house, int kind)
     cPlayer *player = currentGame.m_gameObjectsContext->getPlayer(HUMAN);
     BaseResult base;
     const bool withRadar = kind != GameKind::RadarNone;
-    if (!buildBase(currentGame, currentGame.m_eventEmitter.get(), withRadar, kind == GameKind::DamagedUnit ? 0.4f : 1.0f, base)) {
+    if (!buildBase(currentGame, currentGame.m_eventEmitter.get(), withRadar, kind == GameKind::DamagedUnit || kind == GameKind::RepairMode ? 0.4f : 1.0f, base)) {
         return false;
     }
     if (kind == GameKind::RadarNoPower) {
@@ -877,6 +878,15 @@ bool UiAuditAccess::prepareGameScreen(cGame &currentGame, int house, int kind)
         case GameKind::DamagedUnit:
             selectOnly(currentGame, base.tankId);
             return true;
+        case GameKind::RepairMode: {
+            selectOnly(currentGame, base.tankId);
+            player->setContextMouseState(eMouseState::MOUSESTATE_REPAIR);
+            const CommandBarLayout layout = CommandBarLayout::create(
+                currentGame.m_gameSettings->getScreenW(), currentGame.m_gameSettings->getScreenH(), cSideBar::SidebarWidth);
+            const cRectangle &repairButton = layout.actions[2];
+            uiaudit::setHover(repairButton.getX() + repairButton.getWidth() / 2, repairButton.getY() + repairButton.getHeight() / 2);
+            return true;
+        }
         case GameKind::Harvester:
             selectOnly(currentGame, base.harvesterId);
             return true;

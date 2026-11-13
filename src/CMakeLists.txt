@@ -33,6 +33,7 @@ set(D2TM_SOURCES
     drawers/cMouseDrawer.cpp
     drawers/cOrderDrawer.cpp
     drawers/cCommandBarDrawer.cpp
+    drawers/CommandIcons.cpp
     drawers/cParticleDrawer.cpp
     drawers/cPlaceItDrawer.cpp
     drawers/CreditsDrawer.cpp

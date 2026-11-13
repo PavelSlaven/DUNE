@@ -141,6 +141,16 @@ void cGameControlsContext::activateRallyPointCommand()
     m_mouseNormalState->setRallyPointCommandMode();
 }
 
+CommandTargetingState cGameControlsContext::commandTargetingState() const
+{
+    return CommandTargetingState{
+        .move = isState(MOUSESTATE_UNITS_SELECTED) && m_mouseUnitsSelectedState->isMoveCommandActive(),
+        .attack = isState(MOUSESTATE_UNITS_SELECTED) && m_mouseUnitsSelectedState->isForceAttackCommandActive(),
+        .repair = isState(MOUSESTATE_REPAIR),
+        .rally = isState(MOUSESTATE_SELECT) && m_mouseNormalState->isRallyPointCommandMode()
+    };
+}
+
 int cGameControlsContext::getMouseCellFromScreen(int mouseX, int mouseY) const
 {
     int absMapX = m_mapCamera->getAbsMapMouseX(mouseX);

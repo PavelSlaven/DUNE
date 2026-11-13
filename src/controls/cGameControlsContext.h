@@ -25,6 +25,7 @@
 //
 // a context belongs to a player
 
+#include "controls/CommandModePolicy.hpp"
 #include "controls/mousestates/eMouseStates.h"
 #include "controls/cMouse.h"
 #include "observers/cInputObserver.h"
@@ -132,6 +133,8 @@ public:
     void activateMoveCommand();
     void activateAttackCommand();
     void activateRallyPointCommand();
+
+    [[nodiscard]] CommandTargetingState commandTargetingState() const;
 
 protected:
     void determineHoveringOverStructureId();

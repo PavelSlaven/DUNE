@@ -13,6 +13,8 @@
 #include "drawers/cTextDrawer.h"
 #include "game/cEventEmitter.h"
 #include "game/cGameSettings.h"
+#include "gui/GuiTheme.hpp"
+#include "gui/RemasterButtonFrame.hpp"
 #include "gameobjects/players/cPlayer.h"
 #include "gameobjects/structures/cAbstractStructure.h"
 #include "gameobjects/structures/cStructureFactory.h"
@@ -23,7 +25,6 @@
 #include "include/sGameEvent.h"
 #include "include/sGameServices.h"
 #include "sidebar/cSideBar.h"
-#include "utils/HdUiTextureLoader.hpp"
 #include "utils/Localization.hpp"
 
 #include <algorithm>
@@ -33,9 +34,6 @@
 namespace {
 Color panelColor() { return Color{13, 17, 19, 242}; }
 Color panelBorder() { return Color{105, 80, 39, 255}; }
-Color brass() { return Color{188, 139, 47, 255}; }
-Color disabledText() { return Color{105, 105, 100, 255}; }
-Color blueFilter() { return Color{5, 24, 48, 38}; }
 }
 
 cCommandBarDrawer::cCommandBarDrawer(GameContext *ctx, cPlayer *player, sGameServices *services) :
@@ -47,8 +45,8 @@ cCommandBarDrawer::cCommandBarDrawer(GameContext *ctx, cPlayer *player, sGameSer
     m_eventEmitter(services->eventEmitter),
     m_keyboard(services->keyboard),
     m_keyTextDrawer(ctx->getTextContext()->getSmallTextDrawer()),
-    m_commandBarTexture(nullptr),
-    m_disabledCommandBarTexture(nullptr),
+    m_iconTextures(),
+    m_iconSides(),
     m_panelRect(),
     m_buttons(),
     m_hoveredButton(-1)
@@ -61,24 +59,11 @@ cCommandBarDrawer::cCommandBarDrawer(GameContext *ctx, cPlayer *player, sGameSer
     d2tm_assert(m_keyboard != nullptr);
     d2tm_assert(m_keyTextDrawer != nullptr);
 
-    m_commandBarTexture = loadHdUiTexture(
-        m_sdlDrawer->getRenderer(),
-        "command_bar.png",
-        "HD command bar"
-    );
-    m_disabledCommandBarTexture = loadHdUiTexture(
-        m_sdlDrawer->getRenderer(),
-        "command_bar_disabled.png",
-        "disabled HD command bar"
-    );
+    m_iconSides.fill(0);
     m_panelRect = CommandBarLayout::create(m_settings->getScreenW(), m_settings->getScreenH(), cSideBar::SidebarWidth).panel;
 }
 
-cCommandBarDrawer::~cCommandBarDrawer()
-{
-    delete m_commandBarTexture;
-    delete m_disabledCommandBarTexture;
-}
+cCommandBarDrawer::~cCommandBarDrawer() = default;
 
 void cCommandBarDrawer::setPlayer(cPlayer *player)
 {
@@ -101,14 +86,16 @@ void cCommandBarDrawer::rebuildLayout()
     const auto selectedUnits = m_player->getSelectedUnits();
     cAbstractStructure *selectedStructure = m_player->getSelectedStructure();
     const bool ownsSelectedStructure = selectedStructure && selectedStructure->belongsTo(m_player);
+    const cGameControlsContext *controls = m_player->getGameControlsContext();
+    const CommandTargetingState targeting = controls != nullptr ? controls->commandTargetingState() : CommandTargetingState{};
     const std::array<Button, CommandBarLayout::ActionCount> actions{{
-        {Command::Move, layout.actions[0], localization::text("Move", "Переместить"), localization::text("LMB", "ЛКМ"), isMoveCommandEnabled(!selectedUnits.empty()), false},
-        {Command::Attack, layout.actions[1], localization::text("Attack", "Атаковать"), getKeyLabel(eKeyAction::ATTACK_MODE), isAttackCommandEnabled(hasAttackCapableUnit()), false},
-        {Command::Repair, layout.actions[2], localization::text("Repair", "Ремонт"), getKeyLabel(eKeyAction::REPAIR_UNIT), isRepairCommandEnabled(), false},
-        {Command::Unload, layout.actions[3], localization::text("Unload", "Разгрузить"), getKeyLabel(eKeyAction::SEND_TO_REFINERY), isUnloadCommandEnabled(hasUnloadableHarvester()), false},
-        {Command::Deploy, layout.actions[4], localization::text("Deploy", "Развернуть"), getKeyLabel(eKeyAction::DEPLOY_UNIT), isDeployCommandEnabled(hasSelectedMcv()), false},
-        {Command::Rally, layout.actions[5], localization::text("Rally", "Точка сбора"), getKeyLabel(eKeyAction::ATTACK_MODE), isRallyCommandEnabled(ownsSelectedStructure, ownsSelectedStructure && selectedStructure->canHaveRallyPoint()), false},
-        {Command::Release, layout.actions[6], localization::text("Release", "Выпустить"), getKeyLabel(eKeyAction::DEPLOY_UNIT), isReleaseCommandEnabled(ownsSelectedStructure, ownsSelectedStructure && selectedStructure->getType() == REPAIR), false}
+        {Command::Move, layout.actions[0], localization::text("Move", "Переместить"), localization::text("LMB", "ЛКМ"), isMoveCommandEnabled(!selectedUnits.empty()), isCommandButtonActive(Command::Move, targeting)},
+        {Command::Attack, layout.actions[1], localization::text("Attack", "Атаковать"), getKeyLabel(eKeyAction::ATTACK_MODE), isAttackCommandEnabled(hasAttackCapableUnit()), isCommandButtonActive(Command::Attack, targeting)},
+        {Command::Repair, layout.actions[2], localization::text("Repair", "Ремонт"), getKeyLabel(eKeyAction::REPAIR_UNIT), isRepairCommandEnabled(), isCommandButtonActive(Command::Repair, targeting)},
+        {Command::Unload, layout.actions[3], localization::text("Unload", "Разгрузить"), getKeyLabel(eKeyAction::SEND_TO_REFINERY), isUnloadCommandEnabled(hasUnloadableHarvester()), isCommandButtonActive(Command::Unload, targeting)},
+        {Command::Deploy, layout.actions[4], localization::text("Deploy", "Развернуть"), getKeyLabel(eKeyAction::DEPLOY_UNIT), isDeployCommandEnabled(hasSelectedMcv()), isCommandButtonActive(Command::Deploy, targeting)},
+        {Command::Rally, layout.actions[5], localization::text("Rally", "Точка сбора"), std::string(), isRallyCommandEnabled(ownsSelectedStructure, ownsSelectedStructure && selectedStructure->canHaveRallyPoint()), isCommandButtonActive(Command::Rally, targeting)},
+        {Command::Release, layout.actions[6], localization::text("Release", "Выпустить"), getKeyLabel(eKeyAction::DEPLOY_UNIT), isReleaseCommandEnabled(ownsSelectedStructure, ownsSelectedStructure && selectedStructure->getType() == REPAIR), isCommandButtonActive(Command::Release, targeting)}
     }};
     m_buttons.assign(actions.begin(), actions.end());
 }
@@ -121,151 +108,113 @@ void cCommandBarDrawer::draw()
         UiAuditAccess::recordCommandBarClicks(*this);
     }
 
-    if (m_disabledCommandBarTexture) {
-        m_sdlDrawer->renderStrechFullSprite(m_disabledCommandBarTexture, m_panelRect);
-    }
-    else if (m_commandBarTexture) {
-        m_sdlDrawer->renderStrechFullSprite(m_commandBarTexture, m_panelRect);
-    }
-    else {
-        m_sdlDrawer->renderRectFillColor(m_panelRect, panelColor(), 242);
-        m_sdlDrawer->renderLine(m_panelRect.getX(), m_panelRect.getY(), m_panelRect.getEndX(), m_panelRect.getY(), brass());
-        m_sdlDrawer->renderRectColor(m_panelRect, panelBorder());
+    const GuiTheme theme = GuiTheme::Remaster();
+    m_sdlDrawer->renderRectFillColor(m_panelRect, panelColor(), panelColor().a);
+    m_sdlDrawer->renderRectColor(m_panelRect, panelBorder());
+
+    for (int index = 0; index < static_cast<int>(m_buttons.size()); ++index) {
+        drawButton(m_buttons[index], theme, index == m_hoveredButton);
     }
 
-    for (const Button &button : m_buttons) {
-        drawButton(button);
+    if (m_hoveredButton >= 0 && m_hoveredButton < static_cast<int>(m_buttons.size())) {
+        drawTooltip(m_buttons[m_hoveredButton], theme);
     }
-
-    // A restrained cool overlay keeps the bright supplied artwork readable
-    // against the battlefield without baking another set of source images.
-    m_sdlDrawer->renderRectFillColor(m_panelRect, blueFilter(), 38);
 }
 
-void cCommandBarDrawer::drawButton(const Button &button) const
+void cCommandBarDrawer::drawButton(const Button &button, const GuiTheme &theme, bool hovered)
 {
-    const int index = static_cast<int>(&button - m_buttons.data());
-
-    if (m_commandBarTexture) {
-        if (button.enabled && m_disabledCommandBarTexture) {
-            const int sourceWidth = m_commandBarTexture->w / CommandBarLayout::ActionCount;
-            const cRectangle sourceRect(
-                index * sourceWidth,
-                0,
-                index == CommandBarLayout::ActionCount - 1
-                    ? m_commandBarTexture->w - index * sourceWidth
-                    : sourceWidth,
-                m_commandBarTexture->h
-            );
-            m_sdlDrawer->renderStrechSprite(m_commandBarTexture, sourceRect, button.rect);
-        }
-        else if (!button.enabled && !m_disabledCommandBarTexture) {
-            m_sdlDrawer->renderRectFillColor(button.rect, Color{2, 3, 3, 118}, 118);
-        }
+    GuiTheme look = theme;
+    Color iconColor = theme.textColor;
+    if (!button.enabled) {
+        look.fillColor = theme.disabledFillColor;
+        look.borderLight = theme.disabledBorderLight;
+        look.borderDark = theme.disabledBorderDark;
+        iconColor = theme.disabledTextColor;
     }
-    else {
-        m_sdlDrawer->renderRectFillColor(
-            button.rect,
-            button.active ? Color{69, 54, 27, 255} : Color{25, 30, 32, 255}
-        );
-        m_sdlDrawer->renderRectColor(
-            button.rect,
-            button.enabled ? panelBorder() : Color{57, 59, 58, 255}
-        );
+    else if (button.active) {
+        look.fillColor = Color{63, 52, 31, 255};
+        look.borderLight = Color{188, 137, 42, 255};
+        look.borderDark = Color{232, 184, 78, 255};
+        iconColor = theme.textColorHover;
+    }
+    else if (hovered) {
+        iconColor = theme.textColorHover;
     }
 
-    if (!m_commandBarTexture) {
-        const cRectangle iconRect(
-            button.rect.getX() + 4,
-            button.rect.getY() + 5,
-            button.rect.getWidth() - 8,
-            button.rect.getHeight() * 52 / 100
+    const cRectangle frame(
+        button.rect.getX() + 2,
+        button.rect.getY() + 2,
+        button.rect.getWidth() - 4,
+        button.rect.getHeight() - 4
+    );
+    drawRemasterButtonFrame(*m_sdlDrawer, frame, look, button.enabled && hovered, false);
+
+    const int side = std::min(frame.getWidth(), frame.getHeight()) * 70 / 100;
+    if (Texture *icon = iconTexture(button.command, side)) {
+        SDL_SetTextureColorMod(icon->tex.get(), iconColor.r, iconColor.g, iconColor.b);
+        m_sdlDrawer->renderTexture(
+            icon->tex.get(),
+            frame.getX() + (frame.getWidth() - side) / 2,
+            frame.getY() + (frame.getHeight() - side) / 2,
+            side,
+            side,
+            iconColor.a
         );
-        drawIcon(button.command, iconRect, button.enabled ? Color{210, 170, 82, 255} : disabledText());
     }
 
-    if (button.enabled && !button.hotkey.empty()) {
-        const int keyWidth = std::max(9, button.rect.getWidth() * 30 / 100);
-        const int keyHeight = std::max(9, button.rect.getHeight() * 30 / 100);
-        const bool circleAtBottomLeft = index % 2 == 0;
-        const cRectangle keyRect(
-            button.rect.getX() + button.rect.getWidth() * (circleAtBottomLeft ? 6 : 65) / 100,
-            button.rect.getY() + button.rect.getHeight() * (circleAtBottomLeft ? 67 : 4) / 100,
-            keyWidth,
-            keyHeight
-        );
-        const float widthScale = static_cast<float>(keyRect.getWidth() - 4) /
-            std::max(1, m_keyTextDrawer->getTextLength(button.hotkey));
-        const float heightScale = static_cast<float>(keyRect.getHeight() - 4) /
-            std::max(1, m_keyTextDrawer->getFontHeight());
-        const float maximumKeyScale = button.hotkey.size() == 1 ? 1.45F : 1.15F;
-        const float keyScale = std::clamp(
-            std::min(widthScale, heightScale),
-            0.50F,
-            maximumKeyScale
-        );
-        m_keyTextDrawer->drawTextScaledCenteredInBox(
-            button.hotkey,
-            keyRect,
-            keyScale,
-            Color{83, 50, 19, 255},
-            false
+    const std::string cornerKey = cornerKeyLabel(button.hotkey);
+    if (button.enabled && !cornerKey.empty()) {
+        m_keyTextDrawer->drawText(
+            frame.getEndX() - 3 - m_keyTextDrawer->getTextLength(cornerKey),
+            frame.getEndY() - 3 - m_keyTextDrawer->getFontHeight(),
+            theme.textColor,
+            cornerKey
         );
     }
 }
 
-void cCommandBarDrawer::drawIcon(Command command, const cRectangle &rect, Color color) const
+void cCommandBarDrawer::drawTooltip(const Button &button, const GuiTheme &theme) const
 {
-    const int cx = rect.getX() + rect.getWidth() / 2;
-    const int cy = rect.getY() + rect.getHeight() / 2;
-    const int left = cx - 8;
-    const int right = cx + 8;
-    const int top = cy - 7;
-    const int bottom = cy + 7;
+    constexpr int padding = 6;
+    constexpr int gap = 6;
+    const std::string text = commandTooltip(button.label, button.hotkey);
+    const int width = m_keyTextDrawer->getTextLength(text) + padding * 2;
+    const int height = m_keyTextDrawer->getFontHeight() + padding * 2;
+    const int centreX = button.rect.getX() + button.rect.getWidth() / 2;
+    const cRectangle box(
+        std::clamp(centreX - width / 2, 0, std::max(0, m_settings->getScreenW() - width)),
+        std::max(0, m_panelRect.getY() - gap - height),
+        width,
+        height
+    );
+    m_sdlDrawer->renderRectFillColor(box, theme.fillColor);
+    m_sdlDrawer->renderRectColor(box, theme.borderLight);
+    m_keyTextDrawer->drawText(box.getX() + padding, box.getY() + padding, theme.textColor, text);
+}
 
-    switch (command) {
-        case Command::Move:
-            m_sdlDrawer->renderLine(left, cy, right, cy, color);
-            m_sdlDrawer->renderLine(right, cy, right - 5, cy - 5, color);
-            m_sdlDrawer->renderLine(right, cy, right - 5, cy + 5, color);
-            m_sdlDrawer->renderLine(cx, top, cx, bottom, color);
-            break;
-        case Command::Attack:
-            m_sdlDrawer->renderRectColor(cx - 6, cy - 6, 12, 12, color);
-            m_sdlDrawer->renderLine(left, cy, cx - 3, cy, color);
-            m_sdlDrawer->renderLine(cx + 3, cy, right, cy, color);
-            m_sdlDrawer->renderLine(cx, top, cx, cy - 3, color);
-            m_sdlDrawer->renderLine(cx, cy + 3, cx, bottom, color);
-            break;
-        case Command::Repair:
-            m_sdlDrawer->renderRectFillColor(cx - 2, top, 4, 14, color);
-            m_sdlDrawer->renderRectFillColor(left + 1, cy - 2, 14, 4, color);
-            break;
-        case Command::Unload:
-            m_sdlDrawer->renderLine(cx, top, cx, bottom - 2, color);
-            m_sdlDrawer->renderLine(cx, bottom - 2, cx - 5, bottom - 7, color);
-            m_sdlDrawer->renderLine(cx, bottom - 2, cx + 5, bottom - 7, color);
-            m_sdlDrawer->renderDot(left + 2, top + 2, color, 2);
-            m_sdlDrawer->renderDot(right - 2, top + 2, color, 2);
-            break;
-        case Command::Deploy:
-            m_sdlDrawer->renderLine(left, top, cx, bottom, color);
-            m_sdlDrawer->renderLine(right, top, cx, bottom, color);
-            m_sdlDrawer->renderLine(left + 5, top, cx, bottom - 5, color);
-            m_sdlDrawer->renderLine(right - 5, top, cx, bottom - 5, color);
-            break;
-        case Command::Rally:
-            m_sdlDrawer->renderLine(left + 3, top, left + 3, bottom, color);
-            m_sdlDrawer->renderLine(left + 3, top, right, top + 4, color);
-            m_sdlDrawer->renderLine(right, top + 4, left + 3, cy + 1, color);
-            break;
-        case Command::Release:
-            m_sdlDrawer->renderRectColor(left, top, 16, 14, color);
-            m_sdlDrawer->renderLine(cx, top + 3, cx, bottom + 1, color);
-            m_sdlDrawer->renderLine(cx, bottom + 1, cx - 4, bottom - 3, color);
-            m_sdlDrawer->renderLine(cx, bottom + 1, cx + 4, bottom - 3, color);
-            break;
-    }
+Texture *cCommandBarDrawer::iconTexture(Command command, int side)
+{
+    const std::size_t index = static_cast<std::size_t>(command);
+    if (side <= 0) return nullptr;
+    if (m_iconTextures[index] && m_iconSides[index] == side) return m_iconTextures[index].get();
+
+    constexpr int supersampling = 4;
+    const int pixels = side * supersampling;
+    m_iconTextures[index].reset(m_sdlDrawer->createRenderTargetTexture(pixels, pixels));
+    m_iconSides[index] = side;
+    SDL_Texture *texture = m_iconTextures[index]->tex.get();
+    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_LINEAR);
+    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+
+    const std::vector<SDL_Vertex> vertices = tessellateCommandIcon(command, static_cast<float>(pixels), SDL_FColor{1.0F, 1.0F, 1.0F, 1.0F});
+    SDL_Renderer *renderer = m_sdlDrawer->getRenderer();
+    m_sdlDrawer->beginDrawingToTexture(m_iconTextures[index].get());
+    // Transparent white, so that the linear downscale does not darken the edge pixels.
+    m_sdlDrawer->renderClearToColor(Color{255, 255, 255, 0});
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_RenderGeometry(renderer, nullptr, vertices.data(), static_cast<int>(vertices.size()), nullptr, 0);
+    m_sdlDrawer->endDrawingToTexture();
+    return m_iconTextures[index].get();
 }
 
 void cCommandBarDrawer::onNotifyMouseEvent(const s_MouseEvent &event)

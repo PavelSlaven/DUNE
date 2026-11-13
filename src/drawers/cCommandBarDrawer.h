@@ -2,10 +2,14 @@
 
 #include "controls/eKeyAction.h"
 #include "controls/sMouseEvent.h"
+#include "drawers/CommandBarLayout.hpp"
+#include "drawers/CommandIcons.hpp"
 #include "utils/Color.hpp"
 #include "utils/cPoint.h"
 #include "utils/cRectangle.h"
 
+#include <array>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -18,6 +22,7 @@ class cTextDrawer;
 class GameContext;
 class SDLDrawer;
 class Texture;
+struct GuiTheme;
 struct sGameServices;
 
 class cCommandBarDrawer {
@@ -33,15 +38,7 @@ public:
     [[nodiscard]] bool isMouseOver(const cPoint &point) const;
 
 private:
-    enum class Command {
-        Move,
-        Attack,
-        Repair,
-        Unload,
-        Deploy,
-        Rally,
-        Release
-    };
+    using Command = CommandIcon;
 
     struct Button {
         Command command;
@@ -53,8 +50,9 @@ private:
     };
 
     void rebuildLayout();
-    void drawButton(const Button &button) const;
-    void drawIcon(Command command, const cRectangle &rect, Color color) const;
+    void drawButton(const Button &button, const GuiTheme &theme, bool hovered);
+    void drawTooltip(const Button &button, const GuiTheme &theme) const;
+    [[nodiscard]] Texture *iconTexture(Command command, int side);
     void execute(Command command);
     void executeUnload();
     void executeDeploy();
@@ -73,8 +71,8 @@ private:
     cEventEmitter *m_eventEmitter;
     cKeyboard *m_keyboard;
     cTextDrawer *m_keyTextDrawer;
-    Texture *m_commandBarTexture;
-    Texture *m_disabledCommandBarTexture;
+    std::array<std::unique_ptr<Texture>, CommandBarLayout::ActionCount> m_iconTextures;
+    std::array<int, CommandBarLayout::ActionCount> m_iconSides;
     cRectangle m_panelRect;
     std::vector<Button> m_buttons;
     int m_hoveredButton;

@@ -45,7 +45,7 @@ required=(
     data/sdl_world_hd4.dat data/sdl_mentat_hd4.dat data/sdl_gfxeditor.dat
     data/PTSansNarrow-Regular.ttf data/RussoOne-Regular.ttf data/PTMono-Regular.ttf
 )
-for png in campaign_map command_bar command_bar_disabled credits_team credits_title \
+for png in campaign_map credits_team credits_title \
     hud_house_atreides hud_house_harkonnen hud_house_ordos main_menu_background main_menu_logo \
     outcome_defeat_en outcome_defeat_ru outcome_victory_en outcome_victory_ru
 do

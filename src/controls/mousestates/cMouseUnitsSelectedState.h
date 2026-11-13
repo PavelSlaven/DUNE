@@ -64,6 +64,8 @@ public:
     void selectSameUnitsOnScreen(int iType);
     void selectSameUnitsOnMap(int iType);
     void setCommandState(eMouseUnitsSelectedState newState);
+    [[nodiscard]] bool isForceAttackCommandActive() const { return m_state == SELECTED_STATE_FORCE_ATTACK; }
+    [[nodiscard]] bool isMoveCommandActive() const { return m_moveCommandActive; }
 private:
     // A list of unit id's that we have selected
     std::vector<int> m_selectedUnits;
@@ -79,6 +81,9 @@ private:
 
     eMouseUnitsSelectedState m_state;
     eMouseUnitsSelectedState m_prevState;
+
+    // The move state is also the idle state; this tells a move picked from the command bar apart from it.
+    bool m_moveCommandActive = false;
 
     void onMouseLeftButtonClicked();
 
