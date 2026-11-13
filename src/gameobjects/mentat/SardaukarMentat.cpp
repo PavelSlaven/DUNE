@@ -31,23 +31,22 @@ SardaukarMentat::SardaukarMentat(GameContext* ctx, cGameSettings* settings, Game
     d2tm_assert(ctx != nullptr);
     d2tm_assert(m_mentatFlow != nullptr);
     iBackgroundFrame = MENTATS;
-    buildLeftButton(gfxmentat->getTexture(BTN_REPEAT), 293, 423);
-    buildRightButton(gfxmentat->getTexture(BTN_PROCEED), 466, 423);
+    buildHdButtons(kHarkonnenMentatHdButtons);
     leftGuiButton = GuiButtonBuilder()
             .withRect(*leftButton)        
             .withLabel(localization::text("Repeat", "Повторить"))
-            .withTexture(gfxmentat->getTexture(BTN_REPEAT))
+            .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
-            .withKind(GuiRenderKind::WITH_TEXTURE)
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([this]() {this->resetSpeak();})
             .build();
 
     rightGuiButton = GuiButtonBuilder()
             .withRect(*rightButton)        
-            .withLabel(localization::text("Yes", "Да"))
-            .withTexture(gfxmentat->getTexture(BTN_YES))
+            .withLabel(localization::text("Next", "Далее"))
+            .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
-            .withKind(GuiRenderKind::WITH_TEXTURE)
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([this]() {
                 Logger::info(COMP_NONE, "cYesButtonCommand::changeStateFromMentat", "called");
                 m_mentatFlow->leave();})
