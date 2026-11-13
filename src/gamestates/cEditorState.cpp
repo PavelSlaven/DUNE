@@ -138,6 +138,13 @@ std::string cEditorState::keyLabel(eKeyAction action) const
     return name;
 }
 
+std::string cEditorState::groupKeyLabel(int number) const
+{
+    constexpr std::array<eKeyAction, 6> groupKeys{eKeyAction::GROUP_1, eKeyAction::GROUP_2, eKeyAction::GROUP_3,
+                                                  eKeyAction::GROUP_4, eKeyAction::GROUP_5, eKeyAction::GROUP_6};
+    return number >= 1 && number <= static_cast<int>(groupKeys.size()) ? keyLabel(groupKeys[number - 1]) : std::string();
+}
+
 void cEditorState::drawToolButton(const cRectangle &rect, bool selected, bool enabled, EditorText name,
                                   const std::string &key, const ToolContent &content) const
 {
@@ -266,7 +273,7 @@ void cEditorState::populateTopologyBar()
     }};
     for (int index = 0; index < static_cast<int>(terrains.size()); ++index) {
         const int tile = terrains[index].tile;
-        addToolButton(*m_topologyBar, *m_topologyGroup, tile == TERRAIN_SAND, terrains[index].name, "",
+        addToolButton(*m_topologyBar, *m_topologyGroup, tile == TERRAIN_SAND, terrains[index].name, groupKeyLabel(index + 1),
                       [this, tile](const cRectangle &frame, Color) {
                           const cRectangle inner(frame.getX() + 4, frame.getY() + 4, frame.getWidth() - 8, frame.getHeight() - 8);
                           m_sdlDrawer->renderStrechSprite(m_gfxdata->getTexture(tile), cRectangle{0, 0, 32, 32}, inner);
@@ -301,7 +308,7 @@ void cEditorState::populateStartCellBar()
                                               EditorText::StartPoint4, EditorText::StartPoint5};
     for (int index = 0; index < static_cast<int>(names.size()); ++index) {
         const EditorIcon icon = static_cast<EditorIcon>(static_cast<int>(EditorIcon::Start1) + index);
-        addToolButton(*m_startCellBar, *m_startCellGroup, index == 0, names[index], "",
+        addToolButton(*m_startCellBar, *m_startCellGroup, index == 0, names[index], groupKeyLabel(index + 1),
                       [this, icon](const cRectangle &frame, Color color) { drawIcon(frame, icon, color); },
                       [this, index]() { idStartCellPlayer = index; });
     }
@@ -327,7 +334,7 @@ void cEditorState::populateSymmetricBar()
     }};
     for (int index = 0; index < static_cast<int>(mirrors.size()); ++index) {
         const Mirror mirror = mirrors[index];
-        addToolButton(*m_symmetricBar, *m_symmetricGroup, false, mirror.name, "",
+        addToolButton(*m_symmetricBar, *m_symmetricGroup, false, mirror.name, groupKeyLabel(index + 1),
                       [this, icon = mirror.icon](const cRectangle &frame, Color color) { drawIcon(frame, icon, color); },
                       [this, direction = mirror.direction]() { modifySymmetricArea(direction); });
     }
