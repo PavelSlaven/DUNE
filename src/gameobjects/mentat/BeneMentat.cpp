@@ -40,24 +40,23 @@ BeneMentat::BeneMentat(GameContext* ctx, cGameSettings* settings, GameStateTrans
     d2tm_assert(dataCampaign != nullptr);
     iBackgroundFrame = MENTATM;
     m_hdLayout = &kBeneMentatHdLayout;
-    buildLeftButton(gfxmentat->getTexture(BTN_NO), 293, 423);
-    buildRightButton(gfxmentat->getTexture(BTN_YES), 466, 423);
+    buildHdButtons(kBeneMentatHdButtons);
 
     leftGuiButton = GuiButtonBuilder()
             .withRect(*leftButton)
             .withLabel(localization::text("No", "Нет"))
-            .withTexture(gfxmentat->getTexture(BTN_NO))
+            .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
-            .withKind(GuiRenderKind::WITH_TEXTURE)
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([this]() { this->onNoButtonPressed(); })
             .build();
 
     rightGuiButton = GuiButtonBuilder()
             .withRect(*rightButton)
             .withLabel(localization::text("Yes", "Да"))
-            .withTexture(gfxmentat->getTexture(BTN_YES))
+            .withTextDrawer(m_textDrawer)
             .withRenderer(m_sdlDrawer)
-            .withKind(GuiRenderKind::WITH_TEXTURE)
+            .withKind(GuiRenderKind::TRANSPARENT_WITHOUT_BORDER)
             .onClick([this]() { this->onYesButtonPressed(); })
             .build();
 }

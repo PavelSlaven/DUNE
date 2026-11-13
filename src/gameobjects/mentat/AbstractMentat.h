@@ -114,8 +114,7 @@ protected:
     Texture *leftButtonBmp;
     Texture *rightButtonBmp;
 
-    void buildLeftButton(Texture *bmp, int x, int y);
-    void buildRightButton(Texture *bmp, int x, int y);
+    void buildHdButtons(const MentatHdButtons &buttons);
     std::unique_ptr<GuiButton> leftGuiButton;
     std::unique_ptr<GuiButton> rightGuiButton;
     int house;

@@ -418,16 +418,12 @@ void AbstractMentat::speak()
     state = SPEAKING;
 }
 
-void AbstractMentat::buildLeftButton(Texture *bmp, int x, int y)
+void AbstractMentat::buildHdButtons(const MentatHdButtons &buttons)
 {
-    leftButton = std::make_unique<cRectangle>(offsetX + x, offsetY + y, bmp->w, bmp->h);
-    leftButtonBmp = bmp;
-}
-
-void AbstractMentat::buildRightButton(Texture *bmp, int x, int y)
-{
-    rightButton = std::make_unique<cRectangle>(offsetX + x, offsetY + y, bmp->w, bmp->h);
-    rightButtonBmp = bmp;
+    leftButton = std::make_unique<cRectangle>(offsetX + buttons.left.x, offsetY + buttons.left.y, buttons.left.width, buttons.left.height);
+    rightButton = std::make_unique<cRectangle>(offsetX + buttons.right.x, offsetY + buttons.right.y, buttons.right.width, buttons.right.height);
+    leftButtonBmp = nullptr;
+    rightButtonBmp = nullptr;
 }
 
 void AbstractMentat::resetSpeak()

@@ -18,6 +18,11 @@ struct MentatHdRect {
     int height;
 };
 
+struct MentatHdButtons {
+    MentatHdRect left;
+    MentatHdRect right;
+};
+
 struct MentatSceneEdgePoint {
     int y;
     int rightX;
@@ -68,6 +73,22 @@ inline constexpr MentatHdLayout kHarkonnenMentatHdLayout = {
 
 inline constexpr MentatHdLayout kOrdosMentatHdLayout = {
     {48, 174}, {52, 207}, {211, 93, 400, 243}, {215, 104, 398, 215}, 14, kOrdosShoulderEdge
+};
+
+inline constexpr MentatHdButtons kAtreidesMentatHdButtons = {
+    {342, 393, 124, 52}, {482, 393, 110, 52}
+};
+
+inline constexpr MentatHdButtons kHarkonnenMentatHdButtons = {
+    {313, 397, 148, 59}, {479, 397, 139, 59}
+};
+
+inline constexpr MentatHdButtons kOrdosMentatHdButtons = {
+    {313, 397, 148, 59}, {479, 397, 139, 59}
+};
+
+inline constexpr MentatHdButtons kBeneMentatHdButtons = {
+    {336, 405, 112, 49}, {492, 405, 112, 49}
 };
 
 inline MentatHdRowSpan sceneOpeningSpan(const MentatHdLayout &layout, int y)
