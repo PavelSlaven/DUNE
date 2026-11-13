@@ -28,7 +28,7 @@ CLASSIC_WITHOUT_HD = {
     ],
 }
 HD_DRAWINGS = {
-    "sdl_data_hd4.dat": ["EXPLOSION_CARRYALL"],
+    "sdl_data_hd4.dat": ["UNIT_DEVASTATOR", "UNIT_DEVASTATOR_SHADOW", "UNIT_DEVIATOR", "UNIT_LAUNCHER", "UNIT_LAUNCHER_SHADOW", "UNIT_QUAD", "UNIT_QUAD_SHADOW", "UNIT_RAIDER", "UNIT_RAIDER_SHADOW", "UNIT_SIEGEBASE", "UNIT_SIEGEBASE_SHADOW", "UNIT_TANKBASE", "UNIT_TANKBASE_SHADOW", "UNIT_TANKTOP", "UNIT_TRIKE", "UNIT_TRIKE_SHADOW", "EXPLOSION_CARRYALL", "HM_UNIT_TANKBASE", "HM_UNIT_TANKTOP", "HM_UNIT_LAUNCHER", "HM_UNIT_DEVASTATOR", "HM_UNIT_SIEGEBASE", "HM_UNIT_TRIKE", "HM_UNIT_RAIDER", "HM_UNIT_DEVIATOR", "HM_UNIT_QUAD"],
     "sdl_inter_hd4.dat": ["ICON_STR_LIGHTFACTORY", "ICON_STR_RADAR", "BMP_SELECT_HOUSE_SARDAUKAR", "ICON_POWER_LOW"],
     "sdl_mentat_hd4.dat": ["MENTATS"],
     "scenes/hd4/sdl_harvest.dat": ["01"],
@@ -57,7 +57,7 @@ HEADERS = {
     "sdl_world_hd4.dat": "src/include/gfxworld.h",
 }
 TAG_COUNTS = {
-    "sdl_data_hd4.dat": 241,
+    "sdl_data_hd4.dat": 216,
     "sdl_inter_hd4.dat": 142,
     "sdl_mentat_hd4.dat": 51,
     "sdl_world_hd4.dat": 36,
